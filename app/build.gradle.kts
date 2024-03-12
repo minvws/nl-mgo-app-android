@@ -18,6 +18,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -27,6 +31,11 @@ android {
             )
         }
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -37,11 +46,19 @@ android {
 }
 
 dependencies {
+    // Compose
+    val composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
+    implementation(libs.compose.activity)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
 }

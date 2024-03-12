@@ -1,0 +1,39 @@
+name: 'Run CI/CD'
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+      - name: "Setup Gradle"
+        uses: gradle/actions/setup-gradle@v3  
+      - name: Lint
+        run: ./gradlew lint
+      - name: Unit Tests
+        run: ./gradlew test
+      - name: Android Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedAndroidTest
+          profile: pixel
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: |
+            build/reports
+          retention-days: 2
+      

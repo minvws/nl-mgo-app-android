@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-      - name: "Setup Gradle"
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3  
       - name: Lint
         run: ./gradlew lintTstDebug
@@ -35,5 +35,13 @@ jobs:
           name: test-results
           path: |
             build/reports
-          retention-days: 2
-      
+          retention-days: 5
+      - name: Build Apps
+        run: ./gradlew bundleTstRelease bundleAccRelease bundleProdRelease
+      - name: Archive Apps
+        uses: actions/upload-artifact@v3
+        with:
+          name: bundles
+          path: |
+            app/build/outputs/bundle
+          retention-days: 5

@@ -20,14 +20,14 @@ jobs:
       - name: "Setup Gradle"
         uses: gradle/actions/setup-gradle@v3  
       - name: Lint
-        run: ./gradlew lint
+        run: ./gradlew lintTstDebug
       - name: Unit Tests
-        run: ./gradlew test
+        run: ./gradlew testTstDebug
       - name: Android Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew connectedAndroidTest
+          script: ./gradlew connectedTstDebugAndroidTest
           profile: pixel
       - name: Archive Test Results
         uses: actions/upload-artifact@v3

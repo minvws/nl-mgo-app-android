@@ -22,6 +22,26 @@ android {
         compose = true
     }
 
+    flavorDimensions += listOf("environment")
+    productFlavors {
+        create("tst") {
+            dimension = "environment"
+            applicationIdSuffix = ".tst"
+            versionNameSuffix = "-tst"
+            manifestPlaceholders["appLabel"] = "@string/app_name_tst"
+        }
+        create("acc") {
+            dimension = "environment"
+            applicationIdSuffix = ".acc"
+            versionNameSuffix = "-acc"
+            manifestPlaceholders["appLabel"] = "@string/app_name_acc"
+        }
+        create("prod") {
+            dimension = "environment"
+            manifestPlaceholders["appLabel"] = "@string/app_name"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false

@@ -39,7 +39,7 @@ jobs:
       - name: Build Apps
         run: ./gradlew bundleTstRelease bundleAccRelease bundleProdRelease
       - name: Archive Apps
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bundles
           path: |

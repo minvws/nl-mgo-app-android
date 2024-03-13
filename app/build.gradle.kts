@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.firebaseAppdistribution)
 }
 
 android {
@@ -72,6 +73,9 @@ android {
             keyAlias = System.getenv("KEYSTORE_KEY_ALIAS")
             keyPassword = System.getenv("KEYSTORE_PASSWORD")
             storePassword = System.getenv("KEYSTORE_KEY_PASSWORD")
+            productFlavors.getByName("tst").signingConfig = signingConfigs.getByName("release")
+            productFlavors.getByName("acc").signingConfig = signingConfigs.getByName("release")
+            productFlavors.getByName("prod").signingConfig = signingConfigs.getByName("release")
         }
     }
 }

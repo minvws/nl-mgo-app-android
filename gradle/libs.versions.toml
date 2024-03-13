@@ -8,6 +8,7 @@ material = "1.11.0"
 compose-bom = "2024.02.02"
 compose-activity = "1.8.2"
 google-services = "4.4.1"
+firebase-appdistribution = "4.2.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -26,4 +27,5 @@ compose-activity = { group = "androidx.activity", name = "activity-compose", ver
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebaseAppdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-appdistribution" }
 

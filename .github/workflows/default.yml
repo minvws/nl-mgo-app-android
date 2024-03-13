@@ -56,4 +56,4 @@ jobs:
           retention-days: 5
       - name: Distribute Apps
         if: "contains(github.event.pull_request.labels.*.name, 'Generate Builds')"
-        run: ./gradlew appDistributionUploadTstRelease appDistributionUploadAccRelease appDistributionUploadProdRelease --groups=android-intern --releaseNotes='${{ github.event.pull_request.title }}'
+        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern --releaseNotes='${{ github.event.pull_request.title }}' appDistributionUploadAccRelease --groups=android-intern --releaseNotes='${{ github.event.pull_request.title }}' appDistributionUploadProdRelease --groups=android-intern --releaseNotes='${{ github.event.pull_request.title }}'

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.firebaseAppdistribution)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -49,7 +50,7 @@ android {
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -77,6 +78,12 @@ android {
             productFlavors.getByName("acc").signingConfig = signingConfigs.getByName("release")
             productFlavors.getByName("prod").signingConfig = signingConfigs.getByName("release")
         }
+    }
+
+    ktlint {
+        version = "1.2.1"
+        android = true
+        ignoreFailures = false
     }
 }
 

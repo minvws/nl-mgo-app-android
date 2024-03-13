@@ -11,16 +11,18 @@ import androidx.compose.ui.Modifier
 import nl.rijksoverheid.mgo.ui.MgoTheme
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MgoTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
-                    Text(text = "Hello World", style = MaterialTheme.typography.headlineLarge)
+                    Text(
+                        text = "Hello World",
+                        style = MaterialTheme.typography.headlineLarge,
+                    )
                 }
             }
         }

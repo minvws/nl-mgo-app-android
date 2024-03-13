@@ -55,4 +55,4 @@ jobs:
           retention-days: 5
       - name: Distribute Apps
         if: "contains(github.event.pull_request.labels.*.name, 'Generate Builds')"
-        uses: ./gradlew appDistributionUploadTstRelease appDistributionUploadAccRelease appDistributionUploadProdRelease
+        run: ./gradlew appDistributionUploadTstRelease appDistributionUploadAccRelease appDistributionUploadProdRelease

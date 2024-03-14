@@ -16,9 +16,15 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
+repositories {
+    google()
+    gradlePluginPortal()
+}
+
 dependencies {
-    compileOnly(libs.android.gradlePlugin)
-    compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.android)
+    compileOnly(libs.kotlin)
+    compileOnly(libs.ktlint)
 }
 
 gradlePlugin {

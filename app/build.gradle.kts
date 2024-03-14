@@ -1,19 +1,13 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("AndroidApplicationPlugin")
-    alias(libs.plugins.googleServices)
-    alias(libs.plugins.firebaseAppdistribution)
-    alias(libs.plugins.ktlint)
 }
 
 android {
     namespace = "nl.rijksoverheid.mgo"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "nl.rijksoverheid.mgo"
-        minSdk = 29
-        targetSdk = 34
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 999999999
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -58,11 +52,6 @@ android {
         kotlinCompilerExtensionVersion = "1.5.10"
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -77,12 +66,6 @@ android {
             productFlavors.getByName("acc").signingConfig = signingConfigs.getByName("release")
             productFlavors.getByName("prod").signingConfig = signingConfigs.getByName("release")
         }
-    }
-
-    ktlint {
-        version = "1.2.1"
-        android = true
-        ignoreFailures = false
     }
 }
 

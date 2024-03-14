@@ -2,6 +2,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.googleServices)
+    alias(libs.plugins.firebaseAppdistribution)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -12,9 +15,8 @@ android {
         applicationId = "nl.rijksoverheid.mgo"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
+        versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 999999999
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -22,12 +24,33 @@ android {
         compose = true
     }
 
+    flavorDimensions += listOf("environment")
+    productFlavors {
+        create("tst") {
+            dimension = "environment"
+            applicationIdSuffix = ".tst"
+            versionNameSuffix = "-tst"
+            manifestPlaceholders["appLabel"] = "@string/app_name_tst"
+        }
+        create("acc") {
+            dimension = "environment"
+            applicationIdSuffix = ".acc"
+            versionNameSuffix = "-acc"
+            manifestPlaceholders["appLabel"] = "@string/app_name_acc"
+        }
+        create("prod") {
+            dimension = "environment"
+            manifestPlaceholders["appLabel"] = "@string/app_name"
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -40,8 +63,27 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("../mgo.keystore")
+            keyAlias = System.getenv("KEYSTORE_KEY_ALIAS")
+            keyPassword = System.getenv("KEYSTORE_PASSWORD")
+            storePassword = System.getenv("KEYSTORE_KEY_PASSWORD")
+            productFlavors.getByName("tst").signingConfig = signingConfigs.getByName("release")
+            productFlavors.getByName("acc").signingConfig = signingConfigs.getByName("release")
+            productFlavors.getByName("prod").signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
+    ktlint {
+        version = "1.2.1"
+        android = true
+        ignoreFailures = false
     }
 }
 
@@ -54,7 +96,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.compose.material3)
+    implementation(libs.compose.material)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.test.junit4)

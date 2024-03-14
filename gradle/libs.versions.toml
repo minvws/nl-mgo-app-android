@@ -1,4 +1,7 @@
 [versions]
+android-sdk-min = "29"
+android-sdk-target = "34"
+android-sdk-compile = "34"
 agp = "8.3.0"
 kotlin = "1.9.22"
 core-ktx = "1.12.0"
@@ -23,6 +26,8 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

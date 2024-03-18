@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.ui
+package nl.rijksoverheid.mgo.component.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -11,7 +11,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import nl.rijksoverheid.mgo.R
 
 private val DarkColorScheme =
     darkColors(

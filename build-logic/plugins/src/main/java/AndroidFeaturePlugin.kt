@@ -1,26 +1,25 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
 
 class AndroidFeaturePlugin : Plugin<Project> {
     override fun apply(target: Project) {
+        target.configurePlugins()
         target.configureDependencies()
     }
 
-    private fun Project.configureDependencies() {
-        dependencies.apply {
-            // Android
-            add("implementation", versionCatalog.findLibrary("core.ktx").get())
-            add("implementation", versionCatalog.findLibrary("appcompat").get())
-            add("implementation", versionCatalog.findLibrary("material").get())
+    private fun Project.configurePlugins() {
+        plugins.apply {
+            apply(versionCatalog.findPlugin("androidLibrary").get().get().pluginId)
+            apply(AndroidConventionsPlugin::class.java)
+            apply(AndroidUiPlugin::class.java)
+            apply(LintPlugin::class.java)
+        }
+    }
 
-            // Compose
-            add("implementation", versionCatalog.findLibrary("compose.material").get())
-            add("implementation", versionCatalog.findLibrary("compose.ui.tooling.preview").get())
-            add("implementation", versionCatalog.findLibrary("compose.ui.tooling").get())
-            add("implementation", versionCatalog.findLibrary("compose.activity").get())
-            add("debugImplementation", versionCatalog.findLibrary("compose.ui.tooling").get())
-            add("debugImplementation", versionCatalog.findLibrary("compose.ui.test.manifest").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("compose.ui.test.junit4").get())
+    private fun Project.configureDependencies() {
+        dependencies {
+            add("implementation", project(":component:theme"))
         }
     }
 }

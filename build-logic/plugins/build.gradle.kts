@@ -33,9 +33,17 @@ gradlePlugin {
             id = "AndroidApplicationPlugin"
             implementationClass = "AndroidApplicationPlugin"
         }
-        register("androidLibrary") {
-            id = "AndroidLibraryPlugin"
-            implementationClass = "AndroidLibraryPlugin"
+        register("androidFeature") {
+            id = "AndroidFeaturePlugin"
+            implementationClass = "AndroidFeaturePlugin"
+        }
+        register("androidFramework") {
+            id = "AndroidFrameworkPlugin"
+            implementationClass = "AndroidFrameworkPlugin"
+        }
+        register("androidUi") {
+            id = "AndroidUiPlugin"
+            implementationClass = "AndroidUiPlugin"
         }
     }
 }

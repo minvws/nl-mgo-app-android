@@ -33,5 +33,9 @@ gradlePlugin {
             id = "AndroidApplicationPlugin"
             implementationClass = "AndroidApplicationPlugin"
         }
+        register("androidLibrary") {
+            id = "AndroidLibraryPlugin"
+            implementationClass = "AndroidLibraryPlugin"
+        }
     }
 }

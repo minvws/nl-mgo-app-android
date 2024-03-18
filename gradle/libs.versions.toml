@@ -30,6 +30,7 @@ compose-activity = { group = "androidx.activity", name = "activity-compose", ver
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebaseAppdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-appdistribution" }

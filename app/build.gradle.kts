@@ -56,3 +56,8 @@ android {
         }
     }
 }
+
+dependencies {
+    // Features
+    implementation(project(":feature:onboarding"))
+}

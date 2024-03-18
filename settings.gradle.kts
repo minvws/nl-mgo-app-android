@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MijnGezondheidsOverzicht"
 include(":app")
+include(":feature:onboarding")

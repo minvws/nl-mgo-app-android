@@ -54,6 +54,14 @@ jobs:
           path: |
             app/build/outputs/apk
           retention-days: 5
+      - name: Set Release Notes
+        if: "contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main'"
+        run: |
+          if [ ${{ github.event_name }} = 'pull_request' ]; then
+            echo "RELEASE_NOTES=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+          else
+            echo "RELEASE_NOTES=main" >> $GITHUB_ENV
+          fi
       - name: Distribute Apps
         if: "contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main'"
-        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern --releaseNotes='${{ github.event.pull_request.title }}' appDistributionUploadAccRelease --groups=android-intern --releaseNotes='${{ github.event.pull_request.title }}' appDistributionUploadProdRelease --groups=android-intern --releaseNotes='${{ github.event.pull_request.title }}'
+        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadAccRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadProdRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}"

@@ -1,0 +1,41 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    `kotlin-dsl`
+}
+
+group = "nl.rijksoverheid.mgo.buildlogic"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
+
+repositories {
+    google()
+    gradlePluginPortal()
+}
+
+dependencies {
+    compileOnly(libs.android)
+    compileOnly(libs.kotlin)
+    compileOnly(libs.ktlint)
+}
+
+gradlePlugin {
+    plugins {
+        register("androidApplication") {
+            id = "AndroidApplicationPlugin"
+            implementationClass = "AndroidApplicationPlugin"
+        }
+        register("androidLibrary") {
+            id = "AndroidLibraryPlugin"
+            implementationClass = "AndroidLibraryPlugin"
+        }
+    }
+}

@@ -1,0 +1,26 @@
+package nl.rijksoverheid.mgo.component.theme
+
+import androidx.compose.ui.graphics.Color
+
+val White = Color(0xFFFFFFFF)
+val Grey1 = Color(0xFFF3F3F3)
+val Grey2 = Color(0xFFE6E6E6)
+val Grey3 = Color(0xFFCCCCCC)
+val Grey4 = Color(0xFFB4B4B4)
+val Grey5 = Color(0xFF999999)
+val Grey6 = Color(0xFF696969)
+val Grey7 = Color(0xFF535353)
+val Grey8 = Color(0xFF404040)
+val Grey9 = Color(0xFF1D1D1D)
+val Black = Color(0xFF000000)
+val BackgroundLight = Color(0xFFFAFAFA)
+val BackgroundDark = Color(0xFF050505)
+val LogoBlue = Color(0xFF154273)
+val DarkBlue = Color(0xFF01689B)
+val SkyBlue = Color(0xFF007BC7)
+val SkyBlueTint1 = Color(0xFFB2D7EE)
+val SkyBlueTint2 = Color(0xD9EBF7)
+val LightBlue = Color(0xFF8FCAE7)
+val LightBlueTint1 = Color(0xFFDDEFF8)
+val LightBlueTint2 = Color(0xFFEEF7FB)
+val LinkDefault = Color(0xFF01689B)

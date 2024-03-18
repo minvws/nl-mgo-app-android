@@ -13,10 +13,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures {
-        compose = true
-    }
-
     flavorDimensions += listOf("environment")
     productFlavors {
         create("tst") {
@@ -46,14 +42,6 @@ android {
                 "proguard-rules.pro",
             )
         }
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     signingConfigs {

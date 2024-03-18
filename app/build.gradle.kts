@@ -56,21 +56,3 @@ android {
         }
     }
 }
-
-dependencies {
-    // Compose
-    val composeBom = platform(libs.compose.bom)
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
-
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.compose.material)
-    implementation(libs.compose.ui.tooling.preview)
-    debugImplementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.test.junit4)
-    debugImplementation(libs.compose.ui.test.manifest)
-    implementation(libs.compose.activity)
-    testImplementation(libs.junit)
-}

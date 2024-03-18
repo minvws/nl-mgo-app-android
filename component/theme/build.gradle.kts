@@ -1,6 +1,5 @@
 plugins {
-    id("AndroidFrameworkPlugin")
-    id("AndroidUiPlugin")
+    id("AndroidComponentPlugin")
 }
 
 android {

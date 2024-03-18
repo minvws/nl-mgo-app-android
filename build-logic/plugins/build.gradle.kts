@@ -37,13 +37,13 @@ gradlePlugin {
             id = "AndroidFeaturePlugin"
             implementationClass = "AndroidFeaturePlugin"
         }
+        register("androidComponent") {
+            id = "AndroidComponentPlugin"
+            implementationClass = "AndroidComponentPlugin"
+        }
         register("androidFramework") {
             id = "AndroidFrameworkPlugin"
             implementationClass = "AndroidFrameworkPlugin"
-        }
-        register("androidUi") {
-            id = "AndroidUiPlugin"
-            implementationClass = "AndroidUiPlugin"
         }
     }
 }

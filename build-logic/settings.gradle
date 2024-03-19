@@ -10,7 +10,7 @@ dependencyResolutionManagement {
             library("ktlint", "org.jlleitschuh.gradle", "ktlint-gradle").versionRef("ktlint")
             library("android", "com.android.tools.build", "gradle").versionRef("agp")
             library("kotlin", "org.jetbrains.kotlin", "kotlin-gradle-plugin").versionRef("kotlin")
-            library("paparazzi", "app.cash.paparazzi", "paparazzi-gradle-plugin").versionRef("paparazzi")
+            library("paparazzi-gradle", "app.cash.paparazzi", "paparazzi-gradle-plugin").versionRef("paparazzi")
         }
     }
 }

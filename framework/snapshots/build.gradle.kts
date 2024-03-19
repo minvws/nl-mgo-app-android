@@ -1,6 +1,6 @@
 plugins {
     id("AndroidFrameworkPlugin")
-    alias(libs.plugins.paparazzi)
+    id("AndroidUiPlugin")
 }
 
 android {
@@ -8,4 +8,5 @@ android {
 }
 
 dependencies {
+    implementation(libs.paparazzi)
 }

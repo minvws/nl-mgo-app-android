@@ -16,7 +16,7 @@ class SnapshotsPlugin : Plugin<Project> {
 
     private fun Project.configureDependencies() {
         dependencies {
-            add("implementation", project(":framework:snapshots"))
+            add("testImplementation", project(":framework:snapshots"))
         }
     }
 }

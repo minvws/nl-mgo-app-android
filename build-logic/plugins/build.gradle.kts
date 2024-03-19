@@ -25,7 +25,7 @@ dependencies {
     compileOnly(libs.android)
     compileOnly(libs.kotlin)
     compileOnly(libs.ktlint)
-    compileOnly(libs.paparazzi)
+    compileOnly(libs.paparazzi.gradle)
 }
 
 gradlePlugin {
@@ -45,6 +45,10 @@ gradlePlugin {
         register("androidFramework") {
             id = "AndroidFrameworkPlugin"
             implementationClass = "AndroidFrameworkPlugin"
+        }
+        register("androidUi") {
+            id = "AndroidUiPlugin"
+            implementationClass = "AndroidUiPlugin"
         }
     }
 }

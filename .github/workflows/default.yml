@@ -26,7 +26,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3  
       - name: Lint
-        run: ./gradlew lintTstDebug ktlintCheck
+        run: ./gradlew lintTstDebug ktlintCheck verifyPaparazziDebug
       - name: Unit Tests
         run: ./gradlew testTstDebug
       - name: Android Tests

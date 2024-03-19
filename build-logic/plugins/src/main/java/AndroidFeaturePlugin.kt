@@ -14,6 +14,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
             apply(AndroidConventionsPlugin::class.java)
             apply(AndroidUiPlugin::class.java)
             apply(LintPlugin::class.java)
+            apply(SnapshotsPlugin::class.java)
         }
     }
 

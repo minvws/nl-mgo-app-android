@@ -25,6 +25,7 @@ dependencies {
     compileOnly(libs.android)
     compileOnly(libs.kotlin)
     compileOnly(libs.ktlint)
+    compileOnly(libs.paparazzi)
 }
 
 gradlePlugin {

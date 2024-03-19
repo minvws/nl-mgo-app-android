@@ -17,9 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.PreviewDifferentSizes
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -45,6 +47,8 @@ fun SplashScreen() {
     }
 }
 
+@PreviewDifferentSizes
+@PreviewFontScale
 @PreviewLightDark
 @Composable
 internal fun SplashScreenPreview() {

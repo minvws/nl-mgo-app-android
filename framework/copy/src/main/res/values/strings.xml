@@ -3,6 +3,6 @@
     <string name="app_name">MGO</string>
     <string name="app_name_tst">MGO (Test)</string>
     <string name="app_name_acc">MGO (Acc)</string>
-    <string name="splash_title">Mijn Gezondsheidoverzicht</string>
+    <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
 </resources>

@@ -22,10 +22,14 @@ class SnapshotTestRule : TestRule {
         rule.apply {
             setPhone()
             snapshot(name = "phone-portrait-light") { content() }
+            setPhone(fontScale = 2f)
+            snapshot(name = "phone-portrait-light-font-increased") { content() }
             setPhone(nightMode = NightMode.NIGHT)
             snapshot(name = "phone-portrait-dark") { content() }
             setPhone(orientation = ScreenOrientation.LANDSCAPE)
             snapshot(name = "phone-landscape-light") { content() }
+            setPhone(fontScale = 1.5f, orientation = ScreenOrientation.LANDSCAPE)
+            snapshot(name = "phone-landscape-light-font-increased") { content() }
             setTablet()
             snapshot(name = "tablet-portrait-light") { content() }
             setTablet(orientation = ScreenOrientation.LANDSCAPE)
@@ -35,6 +39,7 @@ class SnapshotTestRule : TestRule {
     private fun setPhone(
         nightMode: NightMode = NightMode.NOTNIGHT,
         orientation: ScreenOrientation = ScreenOrientation.PORTRAIT,
+        fontScale: Float = 1f,
     ) {
         val deviceConfig = DeviceConfig.PIXEL_5
         val screenSize = deviceConfig.getScreenSize(orientation = orientation)
@@ -44,6 +49,7 @@ class SnapshotTestRule : TestRule {
                     screenWidth = screenSize.width,
                     screenHeight = screenSize.height,
                     nightMode = nightMode,
+                    fontScale = fontScale,
                 ),
         )
     }

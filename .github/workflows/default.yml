@@ -8,6 +8,13 @@ on:
       - main
 
 jobs:
+  check-license:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v2
+
   default:
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

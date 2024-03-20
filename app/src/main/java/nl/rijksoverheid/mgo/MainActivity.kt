@@ -10,7 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.feature.splash.SplashScreen
+import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.framework.navigation.ProvideNavigationManager
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -20,12 +22,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             MgoTheme {
                 val rootNavController = rememberNavController()
-                NavHost(
-                    navController = rootNavController,
-                    startDestination = NavigationScreen.Splash.getRoute(),
-                ) {
-                    composable(route = NavigationScreen.Splash.getRoute()) {
-                        SplashScreen()
+                ProvideNavigationManager(navigationManager = DefaultNavigationManager(navController = rootNavController)) {
+                    NavHost(
+                        navController = rootNavController,
+                        startDestination = NavigationScreen.Splash.getRoute(),
+                    ) {
+                        composable(route = NavigationScreen.Splash.getRoute()) {
+                            SplashScreen()
+                        }
                     }
                 }
             }

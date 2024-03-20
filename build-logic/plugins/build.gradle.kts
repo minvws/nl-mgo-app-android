@@ -26,6 +26,7 @@ dependencies {
     compileOnly(libs.kotlin)
     compileOnly(libs.ktlint)
     compileOnly(libs.paparazzi.gradle)
+    compileOnly(libs.ksp.gradle)
 }
 
 gradlePlugin {

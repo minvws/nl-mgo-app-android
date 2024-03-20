@@ -11,6 +11,7 @@ dependencyResolutionManagement {
             library("android", "com.android.tools.build", "gradle").versionRef("agp")
             library("kotlin", "org.jetbrains.kotlin", "kotlin-gradle-plugin").versionRef("kotlin")
             library("paparazzi-gradle", "app.cash.paparazzi", "paparazzi-gradle-plugin").versionRef("paparazzi")
+            library("ksp-gradle", "com.google.devtools.ksp", "symbol-processing-gradle-plugin").versionRef("ksp")
         }
     }
 }

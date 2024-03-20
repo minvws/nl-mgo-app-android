@@ -15,6 +15,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
     private fun Project.configurePlugins() {
         plugins.apply {
             apply(versionCatalog.findPlugin("kotlinAndroid").get().get().pluginId)
+            apply(versionCatalog.findPlugin("ksp").get().get().pluginId)
         }
     }
 
@@ -51,6 +52,10 @@ class AndroidConventionsPlugin : Plugin<Project> {
         dependencies {
             // Add BOMs
             addBillOfMaterials("compose.bom")
+
+            // Dagger
+            add("implementation", versionCatalog.findLibrary("dagger.hilt.android").get())
+            add("ksp", versionCatalog.findLibrary("dagger.hilt.compiler").get())
 
             // Testing
             add("testImplementation", versionCatalog.findLibrary("junit").get())

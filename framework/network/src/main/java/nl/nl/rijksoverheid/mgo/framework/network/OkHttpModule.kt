@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object OkHttpModule {
+internal object OkHttpModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(

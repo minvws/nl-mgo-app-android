@@ -41,7 +41,7 @@ jobs:
         with:
           name: test-results
           path: |
-            app/build/reports
+            **/build/reports/
           retention-days: 5
       - name: Download Keystore
         run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore

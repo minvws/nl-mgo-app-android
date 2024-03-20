@@ -16,6 +16,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
         plugins.apply {
             apply(versionCatalog.findPlugin("kotlinAndroid").get().get().pluginId)
             apply(versionCatalog.findPlugin("ksp").get().get().pluginId)
+            apply(versionCatalog.findPlugin("daggerHilt").get().get().pluginId)
         }
     }
 
@@ -59,6 +60,9 @@ class AndroidConventionsPlugin : Plugin<Project> {
 
             // Testing
             add("testImplementation", versionCatalog.findLibrary("junit").get())
+
+            // Logging
+            add("implementation", versionCatalog.findLibrary("timber").get())
         }
     }
 }

@@ -19,6 +19,7 @@ paparazzi = "1.3.1" # Cannot update due to https://github.com/cashapp/paparazzi/
 dagger-hilt = "2.49"
 dagger-hilt-compose-navigation = "1.2.0"
 ksp = "1.9.22-1.0.17"
+dagger = "5.0.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -37,6 +38,7 @@ paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "p
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger-hilt" }
 dagger-hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref ="dagger-hilt-compose-navigation" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref= "dagger" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -36,6 +36,7 @@ jobs:
           script: ./gradlew connectedTstDebugAndroidTest
           profile: pixel
       - name: Archive Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results

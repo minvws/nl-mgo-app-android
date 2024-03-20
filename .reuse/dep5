@@ -3,3 +3,11 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Files: *
 Copyright: iRealisatie - Ministerie van Volksgezondheid, Welzijn en Sport
 License: EUPL-1.2
+
+File: */ic_launcher*
+Copyright: iRealisatie - Ministerie van Volksgezondheid, Welzijn en Sport
+License: LicenseRef-Rijkshuisstijl
+
+File: */ro*.ttf
+Copyright: iRealisatie - Ministerie van Volksgezondheid, Welzijn en Sport
+License: LicenseRef-Rijkshuisstijl

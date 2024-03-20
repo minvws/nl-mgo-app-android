@@ -22,15 +22,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import timber.log.Timber
+import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun SplashScreen(viewModel: SplashScreenViewModel = hiltViewModel()) {
+    val navigationManager = LocalNavigationManager.current
     LaunchedEffect(Unit) {
         viewModel.navigation.collectLatest {
-            Timber.v("Navigate to onboarding")
+            navigationManager.navigate(NavigationScreen.Onboarding.Start)
         }
     }
     SplashScreenContent()

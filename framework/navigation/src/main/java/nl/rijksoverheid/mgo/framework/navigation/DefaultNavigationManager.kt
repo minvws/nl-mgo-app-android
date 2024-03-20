@@ -12,7 +12,11 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             NavigationScreen.Onboarding.PrivacyOverview -> TODO()
             NavigationScreen.Onboarding.PrivacyStatement -> TODO()
             NavigationScreen.Onboarding.Start -> {
-                navController.navigate(NavigationScreen.Onboarding.Introduction.getRoute())
+                navController.navigate(NavigationScreen.Onboarding.Introduction.getRoute()) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             }
 
             NavigationScreen.Splash -> {

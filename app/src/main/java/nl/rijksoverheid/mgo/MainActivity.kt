@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.feature.onboarding.addOnboardingNavigationGraph
 import nl.rijksoverheid.mgo.feature.splash.SplashScreen
 import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
                         composable(route = NavigationScreen.Splash.getRoute()) {
                             SplashScreen()
                         }
+                        addOnboardingNavigationGraph()
                     }
                 }
             }

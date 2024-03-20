@@ -6,5 +6,6 @@ plugins {
     alias(libs.plugins.googleServices) apply false
     alias(libs.plugins.firebaseAppdistribution) apply false
     alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.paparazzi) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block

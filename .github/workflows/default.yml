@@ -18,6 +18,8 @@ jobs:
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: 'true'
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -26,7 +28,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3  
       - name: Lint
-        run: ./gradlew lintTstDebug ktlintCheck
+        run: ./gradlew lintTstDebug ktlintCheck verifyPaparazziDebug
       - name: Unit Tests
         run: ./gradlew testTstDebug
       - name: Android Tests
@@ -36,11 +38,12 @@ jobs:
           script: ./gradlew connectedTstDebugAndroidTest
           profile: pixel
       - name: Archive Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
-            app/build/reports
+            **/build/reports/
           retention-days: 5
       - name: Download Keystore
         run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore

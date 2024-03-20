@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.onboarding"
+    namespace = "nl.rijksoverheid.mgo.feature.splash"
 }
 
 dependencies {

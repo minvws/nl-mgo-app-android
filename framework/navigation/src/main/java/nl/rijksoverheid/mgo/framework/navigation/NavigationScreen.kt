@@ -40,4 +40,12 @@ sealed class NavigationScreen {
             return "dashboard"
         }
     }
+
+    sealed class Error : NavigationScreen() {
+        data object NoInternet : Onboarding() {
+            override fun getRoute(): String {
+                return "errorNoInternet"
+            }
+        }
+    }
 }

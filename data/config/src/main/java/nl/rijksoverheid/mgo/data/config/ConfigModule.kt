@@ -14,6 +14,11 @@ import javax.inject.Singleton
 @Module
 internal object ConfigModule {
     @Provides
+    fun provideConfigRepository(configApi: ConfigApi): ConfigRepository {
+        return DefaultConfigRepository(configApi = configApi)
+    }
+
+    @Provides
     @Singleton
     fun provideApi(retrofit: Retrofit): ConfigApi {
         return retrofit.create(ConfigApi::class.java)

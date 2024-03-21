@@ -18,6 +18,10 @@ class SplashScreenViewModel
         val navigation = _navigation.asSharedFlow()
 
         init {
+            getConfig()
+        }
+
+        fun getConfig() {
             viewModelScope.launch {
                 configRepository
                     .getConfig()
@@ -25,7 +29,8 @@ class SplashScreenViewModel
                         _navigation.tryEmit(NavigationScreen.Onboarding.Start)
                     }
                     .onFailure {
-                        // TODO Error state
+                        // TODO Handle more error cases
+                        _navigation.tryEmit(NavigationScreen.Error.NoInternet)
                     }
             }
         }

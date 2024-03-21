@@ -11,6 +11,7 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             NavigationScreen.Onboarding.Introduction -> TODO()
             NavigationScreen.Onboarding.PrivacyOverview -> TODO()
             NavigationScreen.Onboarding.PrivacyStatement -> TODO()
+            NavigationScreen.Error.NoInternet -> TODO()
             NavigationScreen.Onboarding.Start -> {
                 navController.navigate(NavigationScreen.Onboarding.Introduction.getRoute()) {
                     popUpTo(navController.graph.id) {

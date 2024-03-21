@@ -46,13 +46,22 @@ class AndroidConventionsPlugin : Plugin<Project> {
         dependencies {
             // Add BOMs
             addBillOfMaterials("compose.bom")
+            addBillOfMaterials("coroutines.bom")
+
+            // Coroutines
+            add("implementation", versionCatalog.findLibrary("coroutines.core").get())
+            add("implementation", versionCatalog.findLibrary("coroutines.android").get())
+            add("testImplementation", versionCatalog.findLibrary("coroutines.test").get())
+            add("testFixturesImplementation", versionCatalog.findLibrary("coroutines.core").get())
 
             // Dagger
             add("implementation", versionCatalog.findLibrary("dagger.hilt.android").get())
             add("ksp", versionCatalog.findLibrary("dagger.hilt.compiler").get())
 
             // Testing
+            add("testImplementation", project(":framework:test"))
             add("testImplementation", versionCatalog.findLibrary("junit").get())
+            add("testImplementation", versionCatalog.findLibrary("turbine").get())
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())

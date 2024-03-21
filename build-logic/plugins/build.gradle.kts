@@ -51,5 +51,9 @@ gradlePlugin {
             id = "AndroidUiPlugin"
             implementationClass = "AndroidUiPlugin"
         }
+        register("androidData") {
+            id = "AndroidDataPlugin"
+            implementationClass = "AndroidDataPlugin"
+        }
     }
 }

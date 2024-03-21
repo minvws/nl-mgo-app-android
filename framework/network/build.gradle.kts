@@ -12,7 +12,9 @@ android {
 
 dependencies {
     api(libs.retrofit)
-    implementation(libs.okhttp)
+    api(libs.retrofit.moshi)
+    api(libs.moshi.kotlin)
+    api(libs.okhttp)
     debugImplementation(libs.chucker)
     releaseImplementation(libs.chucker.no.op)
 }

@@ -1,9 +1,27 @@
+import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
 
 class AndroidUiPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.configureDependencies()
+        target.configureAndroid()
+    }
+
+    private fun Project.configureAndroid() {
+        plugins.apply {
+            val androidExtension = extensions.getByType<BaseExtension>()
+            androidExtension.apply {
+                buildFeatures.apply {
+                    compose = true
+                }
+                @Suppress("UnstableApiUsage")
+                composeOptions {
+                    kotlinCompilerExtensionVersion = versionCatalog.findVersion("compose.compiler").get().requiredVersion
+                }
+            }
+        }
     }
 
     private fun Project.configureDependencies() {
@@ -21,6 +39,7 @@ class AndroidUiPlugin : Plugin<Project> {
             add("debugImplementation", versionCatalog.findLibrary("compose.ui.tooling").get())
             add("debugImplementation", versionCatalog.findLibrary("compose.ui.test.manifest").get())
             add("androidTestImplementation", versionCatalog.findLibrary("compose.ui.test.junit4").get())
+            add("implementation", versionCatalog.findLibrary("dagger.hilt.compose.navigation").get())
         }
     }
 }

@@ -26,6 +26,7 @@ dependencies {
     compileOnly(libs.kotlin)
     compileOnly(libs.ktlint)
     compileOnly(libs.paparazzi.gradle)
+    compileOnly(libs.ksp.gradle)
 }
 
 gradlePlugin {
@@ -49,6 +50,10 @@ gradlePlugin {
         register("androidUi") {
             id = "AndroidUiPlugin"
             implementationClass = "AndroidUiPlugin"
+        }
+        register("androidData") {
+            id = "AndroidDataPlugin"
+            implementationClass = "AndroidDataPlugin"
         }
     }
 }

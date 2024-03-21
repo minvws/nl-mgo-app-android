@@ -15,6 +15,8 @@ class AndroidConventionsPlugin : Plugin<Project> {
     private fun Project.configurePlugins() {
         plugins.apply {
             apply(versionCatalog.findPlugin("kotlinAndroid").get().get().pluginId)
+            apply(versionCatalog.findPlugin("ksp").get().get().pluginId)
+            apply(versionCatalog.findPlugin("daggerHilt").get().get().pluginId)
         }
     }
 
@@ -34,13 +36,6 @@ class AndroidConventionsPlugin : Plugin<Project> {
                     setSourceCompatibility(JAVA_LANGUAGE_VERSION.toString())
                     setTargetCompatibility(JAVA_LANGUAGE_VERSION.toString())
                 }
-                buildFeatures.apply {
-                    compose = true
-                }
-                @Suppress("UnstableApiUsage")
-                composeOptions {
-                    kotlinCompilerExtensionVersion = versionCatalog.findVersion("compose.compiler").get().requiredVersion
-                }
                 val kotlinExtension = extensions.getByType<KotlinProjectExtension>()
                 kotlinExtension.jvmToolchain(JAVA_LANGUAGE_VERSION.asInt())
             }
@@ -51,9 +46,25 @@ class AndroidConventionsPlugin : Plugin<Project> {
         dependencies {
             // Add BOMs
             addBillOfMaterials("compose.bom")
+            addBillOfMaterials("coroutines.bom")
+
+            // Coroutines
+            add("implementation", versionCatalog.findLibrary("coroutines.core").get())
+            add("implementation", versionCatalog.findLibrary("coroutines.android").get())
+            add("testImplementation", versionCatalog.findLibrary("coroutines.test").get())
+            add("testFixturesImplementation", versionCatalog.findLibrary("coroutines.core").get())
+
+            // Dagger
+            add("implementation", versionCatalog.findLibrary("dagger.hilt.android").get())
+            add("ksp", versionCatalog.findLibrary("dagger.hilt.compiler").get())
 
             // Testing
+            add("testImplementation", project(":framework:test"))
             add("testImplementation", versionCatalog.findLibrary("junit").get())
+            add("testImplementation", versionCatalog.findLibrary("turbine").get())
+
+            // Logging
+            add("implementation", versionCatalog.findLibrary("timber").get())
         }
     }
 }

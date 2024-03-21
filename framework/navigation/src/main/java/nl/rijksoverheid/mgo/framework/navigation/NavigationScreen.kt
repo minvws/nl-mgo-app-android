@@ -10,6 +10,12 @@ sealed class NavigationScreen {
     }
 
     sealed class Onboarding : NavigationScreen() {
+        data object Start : Onboarding() {
+            override fun getRoute(): String {
+                return "start"
+            }
+        }
+
         data object Introduction : Onboarding() {
             override fun getRoute(): String {
                 return "introduction"
@@ -32,6 +38,14 @@ sealed class NavigationScreen {
     sealed class Dashboard : NavigationScreen() {
         override fun getRoute(): String {
             return "dashboard"
+        }
+    }
+
+    sealed class Error : NavigationScreen() {
+        data object NoInternet : Onboarding() {
+            override fun getRoute(): String {
+                return "errorNoInternet"
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -18,12 +19,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(viewModel: SplashScreenViewModel = hiltViewModel()) {
+    val navigationManager = LocalNavigationManager.current
+    LaunchedEffect(Unit) {
+        viewModel.navigation.collectLatest {
+            navigationManager.navigate(NavigationScreen.Onboarding.Start)
+        }
+    }
+    SplashScreenContent()
+}
+
+@Composable
+private fun SplashScreenContent() {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Image(painter = painterResource(id = R.drawable.logo_vws), contentDescription = null)
         Text(
@@ -53,7 +69,7 @@ internal fun SplashScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background,
         ) {
-            SplashScreen()
+            SplashScreenContent()
         }
     }
 }

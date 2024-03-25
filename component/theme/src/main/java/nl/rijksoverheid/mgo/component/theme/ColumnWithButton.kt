@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -84,16 +83,12 @@ internal fun NotScrollingPreview() {
             canScrollForward = false,
             scrollState = rememberScrollState(),
         ) {
-            Card(modifier = Modifier.padding(all = 32.dp)) {
-                Text(text = "Hello World")
-            }
-
             PreviewTextNotScrolling()
         }
     }
 }
 
-@PreviewLightDark
+@DefaultPreviews
 @Composable
 internal fun ScrollingPreview() {
     MgoTheme {
@@ -103,14 +98,12 @@ internal fun ScrollingPreview() {
             canScrollForward = true,
             scrollState = rememberScrollState(),
         ) {
-            Card(modifier = Modifier.padding(all = 32.dp)) {
-                Text(text = "Hello World")
-            }
             PreviewTextScrolling()
         }
     }
 }
 
+@DefaultPreviews
 @Composable
 private fun PreviewTextNotScrolling() {
     Text(

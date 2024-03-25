@@ -5,8 +5,15 @@ import org.gradle.kotlin.dsl.getByType
 
 class AndroidUiPlugin : Plugin<Project> {
     override fun apply(target: Project) {
+        target.configurePlugins()
         target.configureDependencies()
         target.configureAndroid()
+    }
+
+    private fun Project.configurePlugins() {
+        plugins.apply {
+            apply(SnapshotsPlugin::class.java)
+        }
     }
 
     private fun Project.configureAndroid() {

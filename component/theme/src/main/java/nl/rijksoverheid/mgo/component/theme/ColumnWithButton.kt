@@ -17,8 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+
+internal const val TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION = "COLUMN_WITH_BUTTON_ELEVATION"
+internal const val TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN = "COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN"
 
 /**
  * A column with a button fixed to the bottom. This button will automatically add elevation when the column is scrollable (as per design).
@@ -55,11 +59,17 @@ internal fun ColumnWithButtonContent(
             modifier =
                 Modifier
                     .weight(1f)
-                    .verticalScroll(scrollState),
+                    .verticalScroll(scrollState)
+                    .testTag(TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN),
             content = columnContent,
         )
         if (canScrollForward) {
-            Box(modifier = Modifier.fillMaxWidth().height(2.dp).shadow(elevation = 1.dp, spotColor = Color.Gray))
+            Box(
+                modifier =
+                    Modifier.fillMaxWidth().height(
+                        2.dp,
+                    ).shadow(elevation = 1.dp, spotColor = Color.Gray).testTag(TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION),
+            )
         }
         Button(
             modifier =
@@ -105,7 +115,7 @@ internal fun ScrollingPreview() {
 
 @DefaultPreviews
 @Composable
-private fun PreviewTextNotScrolling() {
+internal fun PreviewTextNotScrolling() {
     Text(
         modifier = Modifier.padding(all = 16.dp),
         text =
@@ -115,7 +125,7 @@ private fun PreviewTextNotScrolling() {
 }
 
 @Composable
-private fun PreviewTextScrolling() {
+internal fun PreviewTextScrolling() {
     Text(
         modifier = Modifier.padding(all = 16.dp),
         text =

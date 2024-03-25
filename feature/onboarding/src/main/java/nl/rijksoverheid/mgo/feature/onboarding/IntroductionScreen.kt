@@ -1,15 +1,11 @@
 package nl.rijksoverheid.mgo.feature.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -22,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -35,7 +32,11 @@ internal fun IntroductionScreen() {
         },
         backgroundColor = Color.Transparent,
         content = { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
+            ColumnWithButton(
+                modifier = Modifier.padding(innerPadding),
+                buttonText = stringResource(id = CopyR.string.general_next),
+                onButtonClick = {},
+            ) {
                 Image(
                     modifier =
                         Modifier
@@ -57,16 +58,6 @@ internal fun IntroductionScreen() {
                     modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
                     text = stringResource(id = CopyR.string.introduction_description),
                     style = MaterialTheme.typography.body2,
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Button(
-                    modifier = Modifier.fillMaxWidth().padding(all = 16.dp),
-                    contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
-                    content = { Text(text = stringResource(id = CopyR.string.general_next)) },
-                    onClick = {
-                    },
                 )
             }
         },

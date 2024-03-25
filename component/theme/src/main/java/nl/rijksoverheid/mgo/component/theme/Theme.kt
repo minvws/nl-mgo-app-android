@@ -49,13 +49,13 @@ fun MgoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background,
+    MaterialTheme(
+        colors = if (darkTheme) DarkColorScheme else LightColorScheme,
+        typography = Typography,
     ) {
-        MaterialTheme(
-            colors = if (darkTheme) DarkColorScheme else LightColorScheme,
-            typography = Typography,
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background,
             content = content,
         )
     }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,11 +64,6 @@ private fun SplashScreenContent() {
 @Composable
 internal fun SplashScreenPreview() {
     MgoTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background,
-        ) {
-            SplashScreenContent()
-        }
+        SplashScreenContent()
     }
 }

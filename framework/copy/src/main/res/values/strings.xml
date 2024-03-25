@@ -3,6 +3,9 @@
     <string name="app_name">MGO</string>
     <string name="app_name_tst">MGO (Test)</string>
     <string name="app_name_acc">MGO (Acc)</string>
+    <string name="general_next">Volgende</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
+    <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
+    <string name="introduction_description">Alle informatie die je huisarts, ziekenhuis en andere zorgverleners over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
 </resources>

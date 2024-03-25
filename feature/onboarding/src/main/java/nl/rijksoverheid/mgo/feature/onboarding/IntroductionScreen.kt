@@ -1,18 +1,82 @@
 package nl.rijksoverheid.mgo.feature.onboarding
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun IntroductionScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(Color.Red),
+internal fun IntroductionScreen() {
+    Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
+        topBar = {
+            TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
+        },
+        backgroundColor = Color.Transparent,
+        content = { innerPadding ->
+            Column(modifier = Modifier.padding(innerPadding)) {
+                Image(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally),
+                    painter = painterResource(id = R.drawable.illustration_introduction),
+                    contentDescription =
+                    null,
+                )
+
+                Text(
+                    modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    text = stringResource(id = CopyR.string.introduction_title),
+                    style = MaterialTheme.typography.h5,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    text = stringResource(id = CopyR.string.introduction_description),
+                    style = MaterialTheme.typography.body2,
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Button(
+                    modifier = Modifier.fillMaxWidth().padding(all = 16.dp),
+                    contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
+                    content = { Text(text = stringResource(id = CopyR.string.general_next)) },
+                    onClick = {
+                    },
+                )
+            }
+        },
     )
+}
+
+@DefaultPreviews
+@Composable
+internal fun IntroductionScreenPreview() {
+    MgoTheme {
+        IntroductionScreen()
+    }
 }

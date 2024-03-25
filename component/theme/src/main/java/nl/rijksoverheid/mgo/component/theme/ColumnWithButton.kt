@@ -107,6 +107,7 @@ internal fun ScrollingPreview() {
 @Composable
 private fun PreviewTextNotScrolling() {
     Text(
+        modifier = Modifier.padding(all = 16.dp),
         text =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt " +
                 "ut labore et dolore magna aliqua.",
@@ -116,6 +117,7 @@ private fun PreviewTextNotScrolling() {
 @Composable
 private fun PreviewTextScrolling() {
     Text(
+        modifier = Modifier.padding(all = 16.dp),
         text =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
                 "dolore magna aliqua. Facilisi morbi tempus iaculis urna id volutpat. Iaculis at erat pellentesque adipiscing. " +

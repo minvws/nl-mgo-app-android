@@ -21,6 +21,7 @@ private val DarkColorScheme =
         secondary = Color.Blue,
         background = BackgroundDark,
         surface = Color.Gray,
+        onPrimary = Color.White,
         onBackground = White,
         onSurface = Color.White,
     )
@@ -30,9 +31,10 @@ private val LightColorScheme =
         primary = SkyBlue,
         secondary = Color.Blue,
         background = BackgroundLight,
+        onPrimary = Color.White,
         surface = Color.Gray,
         onBackground = Black,
-        onSurface = Color.Black,
+        onSurface = Color.White,
     )
 
 private val fonts =

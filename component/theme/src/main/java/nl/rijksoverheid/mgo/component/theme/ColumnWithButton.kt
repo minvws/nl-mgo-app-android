@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.component.theme
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -75,6 +77,7 @@ internal fun ColumnWithButtonContent(
             modifier =
                 Modifier
                     .fillMaxWidth()
+                    .background(MaterialTheme.colors.surface)
                     .padding(all = 16.dp),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
             content = { Text(text = buttonText) },

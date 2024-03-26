@@ -20,7 +20,7 @@ private val DarkColorScheme =
         primary = SkyBlue,
         secondary = Color.Blue,
         background = BackgroundDark,
-        surface = Color.Gray,
+        surface = Color.Black,
         onPrimary = Color.White,
         onBackground = White,
         onSurface = Color.White,
@@ -32,7 +32,7 @@ private val LightColorScheme =
         secondary = Color.Blue,
         background = BackgroundLight,
         onPrimary = Color.White,
-        surface = Color.Gray,
+        surface = Color.White,
         onBackground = Black,
         onSurface = Color.White,
     )

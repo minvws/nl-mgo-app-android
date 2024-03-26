@@ -8,10 +8,6 @@ import androidx.navigation.NavController
 class DefaultNavigationManager(private val navController: NavController) : NavigationManager {
     override fun navigate(screen: NavigationScreen) {
         when (screen) {
-            NavigationScreen.Onboarding.Introduction -> TODO()
-            NavigationScreen.Onboarding.PrivacyOverview -> TODO()
-            NavigationScreen.Onboarding.PrivacyStatement -> TODO()
-            NavigationScreen.Error.NoInternet -> TODO()
             NavigationScreen.Onboarding.Start -> {
                 navController.navigate(NavigationScreen.Onboarding.Introduction.getRoute()) {
                     popUpTo(navController.graph.id) {
@@ -19,6 +15,16 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
                     }
                 }
             }
+
+            NavigationScreen.Onboarding.Introduction -> {
+                // You never navigate to the start of the onboarding, only to the root of the graph which shows the start.
+            }
+
+            NavigationScreen.Onboarding.PrivacyOverview -> {
+                navController.navigate(NavigationScreen.Onboarding.PrivacyOverview.getRoute())
+            }
+
+            NavigationScreen.Error.NoInternet -> TODO()
 
             NavigationScreen.Splash -> {
                 navController.navigate(NavigationScreen.Splash.getRoute())

@@ -37,6 +37,9 @@ private val LightColorScheme =
         onSurface = Color.White,
     )
 
+@Composable
+fun styleLink() = if (isSystemInDarkTheme()) SkyBlueTint1 else LinkDefault
+
 private val fonts =
     FontFamily(
         Font(R.font.ro_regular, weight = FontWeight.Normal),

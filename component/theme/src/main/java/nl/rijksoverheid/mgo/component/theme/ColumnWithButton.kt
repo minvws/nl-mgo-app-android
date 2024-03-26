@@ -34,6 +34,7 @@ fun ColumnWithButton(
     buttonText: String,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -43,6 +44,7 @@ fun ColumnWithButton(
         canScrollForward = scrollState.canScrollForward,
         buttonText = buttonText,
         onButtonClick = { onButtonClick() },
+        contentPadding = contentPadding,
         columnContent = columnContent,
     )
 }
@@ -53,6 +55,7 @@ internal fun ColumnWithButtonContent(
     canScrollForward: Boolean,
     buttonText: String,
     onButtonClick: () -> Unit,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
@@ -62,22 +65,23 @@ internal fun ColumnWithButtonContent(
                 Modifier
                     .weight(1f)
                     .verticalScroll(scrollState)
-                    .testTag(TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN),
+                    .testTag(TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN)
+                    .padding(contentPadding),
             content = columnContent,
         )
         if (canScrollForward) {
             Box(
                 modifier =
-                    Modifier.fillMaxWidth().height(
-                        2.dp,
-                    ).shadow(elevation = 1.dp, spotColor = Color.Gray).testTag(TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION),
+                    Modifier.fillMaxWidth().height(2.dp).shadow(elevation = 1.dp, spotColor = Color.Gray)
+                        .testTag(TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION),
             )
         }
+        val background = if (canScrollForward) MaterialTheme.colors.surface else Color.Transparent
         Button(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colors.surface)
+                    .background(background)
                     .padding(all = 16.dp),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
             content = { Text(text = buttonText) },
@@ -94,6 +98,7 @@ internal fun NotScrollingPreview() {
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = false,
+            contentPadding = PaddingValues(0.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextNotScrolling()
@@ -109,6 +114,7 @@ internal fun ScrollingPreview() {
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = true,
+            contentPadding = PaddingValues(0.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextScrolling()

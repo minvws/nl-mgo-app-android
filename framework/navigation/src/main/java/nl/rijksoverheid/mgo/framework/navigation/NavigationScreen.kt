@@ -27,12 +27,6 @@ sealed class NavigationScreen {
                 return "privacyOverview"
             }
         }
-
-        data object PrivacyStatement : Onboarding() {
-            override fun getRoute(): String {
-                return "privacyStatement"
-            }
-        }
     }
 
     sealed class Dashboard : NavigationScreen() {

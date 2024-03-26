@@ -21,10 +21,13 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 internal fun IntroductionScreen() {
+    val navigationManager = LocalNavigationManager.current
     Scaffold(
         modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
@@ -35,7 +38,7 @@ internal fun IntroductionScreen() {
             ColumnWithButton(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.general_next),
-                onButtonClick = {},
+                onButtonClick = { navigationManager.navigate(NavigationScreen.Onboarding.PrivacyOverview) },
             ) {
                 Image(
                     modifier =
@@ -55,7 +58,7 @@ internal fun IntroductionScreen() {
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                     text = stringResource(id = CopyR.string.introduction_description),
                     style = MaterialTheme.typography.body2,
                 )

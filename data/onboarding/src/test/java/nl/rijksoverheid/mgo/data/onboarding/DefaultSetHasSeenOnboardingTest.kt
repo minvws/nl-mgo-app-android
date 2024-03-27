@@ -7,12 +7,12 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlinx.coroutines.runBlocking
 
-internal class SetHasSeenOnboardingTest {
+internal class DefaultSetHasSeenOnboardingTest {
     @Test
     fun `Given the key value store, When setting the onboarding flag to false, Then store has that value`() {
         // Given
         val keyValueStore = TestKeyValueStore()
-        val setHasSeenOnboarding = SetHasSeenOnboarding(keyValueStore = keyValueStore)
+        val setHasSeenOnboarding = DefaultSetHasSeenOnboarding(keyValueStore = keyValueStore)
 
         // When
         setHasSeenOnboarding.invoke(false)
@@ -25,7 +25,7 @@ internal class SetHasSeenOnboardingTest {
     fun `Given the key value store, When setting the onboarding flag to true, Then store has that value`() {
         // Given
         val keyValueStore = TestKeyValueStore()
-        val setHasSeenOnboarding = SetHasSeenOnboarding(keyValueStore = keyValueStore)
+        val setHasSeenOnboarding = DefaultSetHasSeenOnboarding(keyValueStore = keyValueStore)
 
         // When
         setHasSeenOnboarding.invoke(true)

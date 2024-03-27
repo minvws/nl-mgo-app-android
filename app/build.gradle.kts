@@ -64,7 +64,11 @@ dependencies {
     // Features
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:splash"))
+    implementation(project(":feature:dashboard"))
 
     // Frameworks
     implementation(project(":framework:copy"))
+
+    // Data
+    implementation(project(":data:onboarding"))
 }

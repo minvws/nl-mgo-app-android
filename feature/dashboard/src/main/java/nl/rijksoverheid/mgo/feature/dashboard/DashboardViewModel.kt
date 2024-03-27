@@ -1,10 +1,9 @@
 package nl.rijksoverheid.mgo.feature.dashboard
 
-import android.app.Application
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
 import javax.inject.Inject
 
@@ -12,11 +11,10 @@ import javax.inject.Inject
 internal class DashboardViewModel
     @Inject
     constructor(
-        @ApplicationContext private val context: Application,
         private val setHasSeenOnboarding: SetHasSeenOnboarding,
     ) : ViewModel
         () {
-        fun reset() {
+        fun reset(context: Context) {
             setHasSeenOnboarding.invoke(false)
 
             // Restart app

@@ -29,6 +29,9 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             NavigationScreen.Splash -> {
                 navController.navigate(NavigationScreen.Splash.getRoute())
             }
+            NavigationScreen.Dashboard -> {
+                navController.navigate(NavigationScreen.Dashboard.getRoute())
+            }
         }
     }
 

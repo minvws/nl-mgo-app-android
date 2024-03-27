@@ -5,8 +5,15 @@ import org.gradle.kotlin.dsl.getByType
 
 class AndroidUiPlugin : Plugin<Project> {
     override fun apply(target: Project) {
+        target.configurePlugins()
         target.configureDependencies()
         target.configureAndroid()
+    }
+
+    private fun Project.configurePlugins() {
+        plugins.apply {
+            apply(SnapshotsPlugin::class.java)
+        }
     }
 
     private fun Project.configureAndroid() {
@@ -30,6 +37,7 @@ class AndroidUiPlugin : Plugin<Project> {
             add("implementation", versionCatalog.findLibrary("core.ktx").get())
             add("implementation", versionCatalog.findLibrary("appcompat").get())
             add("implementation", versionCatalog.findLibrary("material").get())
+            add("implementation", versionCatalog.findLibrary("compose.markdown").get())
 
             // Compose
             add("implementation", versionCatalog.findLibrary("compose.material").get())

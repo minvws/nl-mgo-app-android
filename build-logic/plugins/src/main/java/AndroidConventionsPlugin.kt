@@ -31,6 +31,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 defaultConfig.apply {
                     minSdk = minSdkVersion.requiredVersion.toInt()
                     setTargetSdkVersion(targetSdkVersion.requiredVersion.toInt())
+                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
                 compileOptions.apply {
                     setSourceCompatibility(JAVA_LANGUAGE_VERSION.toString())

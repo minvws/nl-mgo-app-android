@@ -21,5 +21,14 @@ fun NavGraphBuilder.addOnboardingNavigationGraph() {
         ) {
             IntroductionScreen()
         }
+
+        composable(
+            route = NavigationScreen.Onboarding.PrivacyOverview.getRoute(),
+            enterTransition = { defaultScreenEnterTransition() },
+            exitTransition = { defaultScreenExitTransition() },
+            popEnterTransition = { defaultScreenPopEnterTransition() },
+        ) {
+            PrivacyOverviewScreen()
+        }
     }
 }

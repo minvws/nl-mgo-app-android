@@ -3,6 +3,17 @@
     <string name="app_name">MGO</string>
     <string name="app_name_tst">MGO (Test)</string>
     <string name="app_name_acc">MGO (Acc)</string>
+    <string name="general_next">Volgende</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
+    <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
+    <string name="introduction_description">Alle informatie die je huisarts, ziekenhuis en andere zorgverleners over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
+    <string name="privacy_overview_title">Zo gebruikt de app jouw gegevens</string>
+    <string name="privacy_overview_description">In de [privacyverklaring](https://www.google.nl) staat hoe Mijn Gezondheidsoverzicht jouw
+        gegevens gebruikt. Dit zijn de belangrijkste punten:</string>
+    <string name="privacy_overview_item_1">Je gegevens worden **versleuteld** en via een **veilige** verbinding opgehaald.</string>
+    <string name="privacy_overview_item_2">De app haalt je gegevens direct op bij de zorgverleners die jij kiest. **Alleen jij hebt
+        toegang**.</string>
+    <string name="privacy_overview_item_3">**Je kiest zelf** hoe je je gegevens wilt gebruiken en of je ze wel of niet deelt met anderen.</string>
+    <string name="privacy_overview_item_4">Je kunt de gegevens in je overzicht **altijd verwijderen of opnieuw opvragen**.</string>
 </resources>

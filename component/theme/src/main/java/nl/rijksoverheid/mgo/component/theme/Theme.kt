@@ -20,7 +20,8 @@ private val DarkColorScheme =
         primary = SkyBlue,
         secondary = Color.Blue,
         background = BackgroundDark,
-        surface = Color.Gray,
+        surface = Color.Black,
+        onPrimary = Color.White,
         onBackground = White,
         onSurface = Color.White,
     )
@@ -30,10 +31,14 @@ private val LightColorScheme =
         primary = SkyBlue,
         secondary = Color.Blue,
         background = BackgroundLight,
-        surface = Color.Gray,
+        onPrimary = Color.White,
+        surface = Color.White,
         onBackground = Black,
-        onSurface = Color.Black,
+        onSurface = Color.White,
     )
+
+@Composable
+fun styleLink() = if (isSystemInDarkTheme()) SkyBlueTint1 else LinkDefault
 
 private val fonts =
     FontFamily(
@@ -49,13 +54,13 @@ fun MgoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background,
+    MaterialTheme(
+        colors = if (darkTheme) DarkColorScheme else LightColorScheme,
+        typography = Typography,
     ) {
-        MaterialTheme(
-            colors = if (darkTheme) DarkColorScheme else LightColorScheme,
-            typography = Typography,
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background,
             content = content,
         )
     }

@@ -1,15 +1,9 @@
-package nl.rijksoverheid.mgo
+package nl.rijksoverheid.mgo.component.theme
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
-import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.PreviewTextNotScrolling
-import nl.rijksoverheid.mgo.component.theme.PreviewTextScrolling
-import nl.rijksoverheid.mgo.component.theme.TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION
-import nl.rijksoverheid.mgo.component.theme.TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN
 import org.junit.Rule
 import org.junit.Test
 

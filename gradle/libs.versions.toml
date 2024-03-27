@@ -29,6 +29,9 @@ turbine = "0.8.0"
 compose-markdown = "0.4.1"
 androidx-browser = "1.8.0"
 datastore = "1.0.0"
+androidx-test-core = "1.5.0"
+androidx-junit = "1.1.5"
+androidx-test-runner = "1.5.2"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -63,6 +66,9 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 datastore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidx-test-core" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

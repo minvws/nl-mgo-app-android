@@ -5,6 +5,7 @@ import nl.rijksoverheid.mgo.framework.storage.TestKeyValueStore
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlinx.coroutines.runBlocking
 
 internal class SetHasSeenOnboardingTest {
     @Test
@@ -17,7 +18,7 @@ internal class SetHasSeenOnboardingTest {
         setHasSeenOnboarding.invoke(false)
 
         // Then
-        assertFalse(keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING))
+        assertFalse(runBlocking { keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING) })
     }
 
     @Test
@@ -30,6 +31,6 @@ internal class SetHasSeenOnboardingTest {
         setHasSeenOnboarding.invoke(true)
 
         // Then
-        assertTrue(keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING))
+        assertTrue(runBlocking { keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING) })
     }
 }

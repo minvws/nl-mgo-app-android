@@ -53,7 +53,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
             add("implementation", versionCatalog.findLibrary("coroutines.core").get())
             add("implementation", versionCatalog.findLibrary("coroutines.android").get())
             add("testImplementation", versionCatalog.findLibrary("coroutines.test").get())
-            add("testFixturesImplementation", versionCatalog.findLibrary("coroutines.core").get())
+            add("androidTestImplementation", versionCatalog.findLibrary("coroutines.test").get())
 
             // Dagger
             add("implementation", versionCatalog.findLibrary("dagger.hilt.android").get())
@@ -62,7 +62,11 @@ class AndroidConventionsPlugin : Plugin<Project> {
             // Testing
             add("testImplementation", project(":framework:test"))
             add("testImplementation", versionCatalog.findLibrary("junit").get())
+            add("androidTestImplementation", versionCatalog.findLibrary("junit").get())
             add("testImplementation", versionCatalog.findLibrary("turbine").get())
+            add("androidTestImplementation", versionCatalog.findLibrary("androidx.test.core").get())
+            add("androidTestImplementation", versionCatalog.findLibrary("androidx.junit").get())
+            add("androidTestImplementation", versionCatalog.findLibrary("androidx.test.runner").get())
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())

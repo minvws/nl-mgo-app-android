@@ -60,7 +60,7 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
                     IconButton(onClick = { navigationManager.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
+                            contentDescription = stringResource(id = CopyR.string.general_previous),
                         )
                     }
                 },

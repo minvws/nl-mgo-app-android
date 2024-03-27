@@ -11,5 +11,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.datastore.preference)
+    api(libs.datastore.preference)
 }

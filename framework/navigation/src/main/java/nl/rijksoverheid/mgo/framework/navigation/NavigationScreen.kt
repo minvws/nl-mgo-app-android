@@ -29,7 +29,7 @@ sealed class NavigationScreen {
         }
     }
 
-    sealed class Dashboard : NavigationScreen() {
+    data object Dashboard : NavigationScreen() {
         override fun getRoute(): String {
             return "dashboard"
         }

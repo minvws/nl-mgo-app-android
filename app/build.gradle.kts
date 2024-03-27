@@ -10,7 +10,6 @@ android {
         applicationId = "nl.rijksoverheid.mgo"
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 999999999
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     flavorDimensions += listOf("environment")
@@ -65,7 +64,11 @@ dependencies {
     // Features
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:splash"))
+    implementation(project(":feature:dashboard"))
 
     // Frameworks
     implementation(project(":framework:copy"))
+
+    // Data
+    implementation(project(":data:onboarding"))
 }

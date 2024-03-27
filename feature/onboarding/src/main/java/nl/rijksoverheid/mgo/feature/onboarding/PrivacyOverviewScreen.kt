@@ -24,17 +24,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.styleLink
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 internal fun PrivacyOverviewScreen() {
+    val navigationManager = LocalNavigationManager.current
+    val viewModel: PrivacyOverviewScreenViewModel = hiltViewModel()
+    PrivacyOverviewScreenContent {
+        viewModel.setHasSeenOnboarding()
+        navigationManager.navigate(NavigationScreen.Dashboard)
+    }
+}
+
+@Composable
+internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
     val context = LocalContext.current
     val navigationManager = LocalNavigationManager.current
     Scaffold(
@@ -48,7 +60,7 @@ internal fun PrivacyOverviewScreen() {
                     IconButton(onClick = { navigationManager.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
+                            contentDescription = stringResource(id = CopyR.string.general_previous),
                         )
                     }
                 },
@@ -60,7 +72,7 @@ internal fun PrivacyOverviewScreen() {
                 modifier = Modifier.padding(innerPadding),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = CopyR.string.general_next),
-                onButtonClick = {},
+                onButtonClick = { onClickNext.invoke() },
             ) {
                 Text(
                     text = stringResource(id = CopyR.string.privacy_overview_title),
@@ -121,6 +133,6 @@ private fun ListItem(
 @Composable
 internal fun PrivacyOverviewScreenPreview() {
     MgoTheme {
-        PrivacyOverviewScreen()
+        PrivacyOverviewScreenContent { }
     }
 }

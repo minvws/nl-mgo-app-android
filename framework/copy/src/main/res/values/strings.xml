@@ -4,6 +4,7 @@
     <string name="app_name_tst">MGO (Test)</string>
     <string name="app_name_acc">MGO (Acc)</string>
     <string name="general_next">Volgende</string>
+    <string name="general_previous">Vorige</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
     <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>

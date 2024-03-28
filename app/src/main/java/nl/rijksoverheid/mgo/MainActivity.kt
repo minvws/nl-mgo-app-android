@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,17 +26,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             MgoTheme {
                 val rootNavController = rememberNavController()
-                val mainViewModel: MainActivityViewModel = hiltViewModel()
                 ProvideNavigationManager(navigationManager = DefaultNavigationManager(navController = rootNavController)) {
-                    val startDestination =
-                        if (mainViewModel.hasSeenOnboarding()) {
-                            NavigationScreen.Dashboard.getRoute()
-                        } else {
-                            NavigationScreen.Onboarding.Start.getRoute()
-                        }
                     NavHost(
                         navController = rootNavController,
-                        startDestination = startDestination,
+                        startDestination = NavigationScreen.Splash.getRoute(),
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None },
                     ) {

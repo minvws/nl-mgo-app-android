@@ -68,6 +68,7 @@ dependencies {
 
     // Frameworks
     implementation(project(":framework:copy"))
+    implementation(project(":framework:environment"))
 
     // Data
     implementation(project(":data:onboarding"))

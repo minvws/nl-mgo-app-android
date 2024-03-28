@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.config.test
 
 import nl.rijksoverheid.mgo.data.config.Config
 import nl.rijksoverheid.mgo.data.config.ConfigRepository
+import nl.rijksoverheid.mgo.data.config.TEST_CONFIG
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class TestConfigRepository : ConfigRepository {

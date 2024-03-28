@@ -5,9 +5,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.framework.environment.Environment
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -26,12 +28,28 @@ internal object ConfigModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        @Named("configBaseUrl") configBaseUrl: String,
+    ): Retrofit {
         val moshi = Moshi.Builder().build()
         return Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .baseUrl(configBaseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
             .build()
+    }
+
+    // TODO Set urls for other environments when available.
+    @Provides
+    @Singleton
+    @Named("configBaseUrl")
+    fun provideConfigBaseUrl(environment: Environment): String {
+        return when (environment) {
+            Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/"
+            Environment.Custom -> "https://app-api.test.mgo.irealisatie.nl/"
+            Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/"
+            Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/"
+        }
     }
 }

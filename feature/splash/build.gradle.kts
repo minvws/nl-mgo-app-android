@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(project(":data:config"))
+    implementation(project(":data:onboarding"))
 }

@@ -10,5 +10,6 @@ internal class DefaultConfigRepository
         override suspend fun getConfig(): Result<Config> {
             delay(2000)
             return executeNetworkRequest { configApi.getConfig() }
+                .mapCatching { response -> response.toConfig() }
         }
     }

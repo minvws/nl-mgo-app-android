@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.config.ConfigRepository
+import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,9 +12,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class SplashScreenViewModel
+internal class SplashScreenViewModel
     @Inject
-    constructor(private val configRepository: ConfigRepository) : ViewModel() {
+    constructor(private val configRepository: ConfigRepository, private val hasSeenOnboarding: HasSeenOnboarding) : ViewModel() {
         private val _navigation = MutableSharedFlow<NavigationScreen>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
 
@@ -26,7 +27,11 @@ class SplashScreenViewModel
                 configRepository
                     .getConfig()
                     .onSuccess {
-                        _navigation.tryEmit(NavigationScreen.Onboarding.Start)
+                        if (hasSeenOnboarding.invoke()) {
+                            _navigation.tryEmit(NavigationScreen.Dashboard)
+                        } else {
+                            _navigation.tryEmit(NavigationScreen.Onboarding.Start)
+                        }
                     }
                     .onFailure {
                         // TODO Handle more error cases

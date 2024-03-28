@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.config
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
+import nl.rijksoverheid.mgo.data.config.api.ConfigApi
 import javax.inject.Inject
 import kotlinx.coroutines.delay
 

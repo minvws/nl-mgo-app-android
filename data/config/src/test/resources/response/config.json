@@ -1,0 +1,9 @@
+{
+   "androidMinimumVersion":1,
+   "androidRecommendedVersion":1,
+   "iosMinimumVersion":"0.0.1",
+   "iosRecommendedVersion":"0.0.1",
+   "appDeactivated":false,
+   "configTTL":300,
+   "configMinimumIntervalSeconds":60
+}

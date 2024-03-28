@@ -5,12 +5,27 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.data.config.api.ConfigApi
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
+
+internal fun createApi(
+    okHttpClient: OkHttpClient,
+    baseUrl: String,
+): ConfigApi {
+    val moshi = Moshi.Builder().build()
+    val retrofit =
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .build()
+    return retrofit.create(ConfigApi::class.java)
+}
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -22,22 +37,11 @@ internal object ConfigModule {
 
     @Provides
     @Singleton
-    fun provideApi(retrofit: Retrofit): ConfigApi {
-        return retrofit.create(ConfigApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(
+    fun provideApi(
         okHttpClient: OkHttpClient,
-        @Named("configBaseUrl") configBaseUrl: String,
-    ): Retrofit {
-        val moshi = Moshi.Builder().build()
-        return Retrofit.Builder()
-            .baseUrl(configBaseUrl)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
-            .build()
+        @Named("configBaseUrl") baseUrl: String,
+    ): ConfigApi {
+        return createApi(okHttpClient = okHttpClient, baseUrl = baseUrl)
     }
 
     // TODO Set urls for other environments when available.

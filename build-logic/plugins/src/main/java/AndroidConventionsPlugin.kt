@@ -37,6 +37,11 @@ class AndroidConventionsPlugin : Plugin<Project> {
                     setSourceCompatibility(JAVA_LANGUAGE_VERSION.toString())
                     setTargetCompatibility(JAVA_LANGUAGE_VERSION.toString())
                 }
+                testOptions.apply {
+                    unitTests.apply {
+                        isIncludeAndroidResources = true
+                    }
+                }
                 val kotlinExtension = extensions.getByType<KotlinProjectExtension>()
                 kotlinExtension.jvmToolchain(JAVA_LANGUAGE_VERSION.asInt())
             }

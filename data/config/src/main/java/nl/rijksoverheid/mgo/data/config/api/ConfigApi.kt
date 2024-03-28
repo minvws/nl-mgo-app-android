@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.config
+package nl.rijksoverheid.mgo.data.config.api
 
 import retrofit2.http.GET
 

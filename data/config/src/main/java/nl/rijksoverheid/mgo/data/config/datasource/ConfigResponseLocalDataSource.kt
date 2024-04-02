@@ -40,14 +40,14 @@ internal class ConfigResponseLocalDataSource
             }
         }
 
-        fun store(configResponse: ConfigResponse) {
+        override fun store(response: ConfigResponse) {
             try {
                 if (!file.exists()) {
                     file.createNewFile()
                 }
                 val sink = file.sink()
                 val bufferSink = sink.buffer()
-                val content = configMoshi.adapter(ConfigResponse::class.java).toJson(configResponse)
+                val content = configMoshi.adapter(ConfigResponse::class.java).toJson(response)
                 bufferSink.writeUtf8(content)
                 bufferSink.close()
             } catch (e: Exception) {

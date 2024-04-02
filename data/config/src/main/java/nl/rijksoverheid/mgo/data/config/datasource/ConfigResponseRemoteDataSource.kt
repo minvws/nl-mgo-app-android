@@ -13,4 +13,7 @@ internal class ConfigResponseRemoteDataSource
         override suspend fun get(): Result<ConfigResponse> {
             return executeNetworkRequest { configApi.getConfig() }
         }
+
+        override fun store(response: ConfigResponse) {
+        }
     }

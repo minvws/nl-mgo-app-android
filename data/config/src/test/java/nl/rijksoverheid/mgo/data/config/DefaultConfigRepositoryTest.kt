@@ -1,27 +1,25 @@
 package nl.rijksoverheid.mgo.data.config
 
+import nl.rijksoverheid.mgo.data.config.api.ConfigResponse
+import nl.rijksoverheid.mgo.data.config.datasource.TestLocalDataSource
 import nl.rijksoverheid.mgo.data.config.repository.DefaultConfigRepository
-import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
-import nl.rijksoverheid.mgo.framework.test.TestServer
-import nl.rijksoverheid.mgo.framework.test.loadJsonFromResources
-import okhttp3.mockwebserver.MockResponse
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
 internal class DefaultConfigRepositoryTest {
-    private val testServer = TestServer()
+    private val localDataSource = TestLocalDataSource()
+    private val remoteDataSource = TestLocalDataSource()
+    private val repository = DefaultConfigRepository(localDataSource = localDataSource, remoteDataSource = remoteDataSource)
 
     @Test
-    fun `Given a successful config fetch, When getting the config, return Config object`() =
+    fun `Given remote data source has a config, When getting the config file, Then return Config object`() =
         runTest {
             // Given
-            testServer.start()
-            testServer.enqueue(MockResponse().setBody(javaClass.loadJsonFromResources(filePath = "response/config.json")))
+            remoteDataSource.store(response = getConfigResponse())
 
             // When
-            val result = getRepository(baseUrl = testServer.url()).getConfig()
+            val result = repository.getConfig()
 
             // Then
             val expectedConfig = Config(androidMinimumVersion = 1, configTTL = 300, configMinimumIntervalSeconds = 60)
@@ -29,22 +27,52 @@ internal class DefaultConfigRepositoryTest {
         }
 
     @Test
-    fun `Given a failed config fetch, When getting the config, return failed`() =
+    fun `Given remote data source has a config, When getting the config file, Then store the config response in the local data source`() =
         runTest {
             // Given
-            testServer.start()
-            testServer.enqueue(MockResponse().setResponseCode(404))
+            remoteDataSource.store(response = getConfigResponse())
 
             // When
-            val result = getRepository(baseUrl = testServer.url()).getConfig()
+            repository.getConfig()
 
             // Then
-            assertTrue(result.isFailure)
+            assertEquals(Result.success(getConfigResponse()), localDataSource.get())
         }
 
-    private fun getRepository(baseUrl: String): DefaultConfigRepository {
-        val okHttpClient = TEST_OKHTTP_CLIENT
-        val configApi = createApi(okHttpClient = okHttpClient, baseUrl = baseUrl)
-        return DefaultConfigRepository(configApi = configApi)
+    @Test
+    fun `Given local data source has a config, When getting the config file, Then return Config object`() =
+        runTest {
+            // Given
+            localDataSource.store(response = getConfigResponse())
+
+            // When
+            val result = repository.getConfig()
+
+            // Then
+            val expectedConfig = Config(androidMinimumVersion = 1, configTTL = 300, configMinimumIntervalSeconds = 60)
+            assertEquals(Result.success(expectedConfig), result)
+        }
+
+    @Test
+    fun `Given local data source has a config, When getting the config file, No call to remote config is done`() =
+        runTest {
+            // Given
+            localDataSource.store(response = getConfigResponse())
+            remoteDataSource.store(response = getConfigResponse(androidMinimumVersion = 2))
+
+            // When
+            val result = repository.getConfig()
+
+            // Then
+            val expectedConfig = Config(androidMinimumVersion = 1, configTTL = 300, configMinimumIntervalSeconds = 60)
+            assertEquals(Result.success(expectedConfig), result)
+        }
+
+    private fun getConfigResponse(androidMinimumVersion: Int = 1): ConfigResponse {
+        return ConfigResponse(
+            androidMinimumVersion = androidMinimumVersion,
+            configTTL = 300L,
+            configMinimumIntervalSeconds = 60L,
+        )
     }
 }

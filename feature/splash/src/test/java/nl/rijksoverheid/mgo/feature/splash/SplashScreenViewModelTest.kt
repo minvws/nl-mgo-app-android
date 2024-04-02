@@ -20,7 +20,7 @@ class SplashScreenViewModelTest {
     val coroutineRule = TestCoroutineRule()
 
     @Test
-    fun `Given viewmodel, When config is fetched successfully and onboarding is not seen, Then navigate to onboarding welcome screen`() =
+    fun `Given successful config and onboarding not seen, When getting the config, Then navigate to onboarding welcome screen`() =
         runTest {
             // Given
             configRepository.setConfig(TEST_CONFIG)
@@ -37,7 +37,7 @@ class SplashScreenViewModelTest {
         }
 
     @Test
-    fun `Given viewmodel, When config is fetched successfully and onboarding is seen, Then navigate to onboarding welcome screen`() =
+    fun `Given successful config and onboarding not seen, When getting the config, Then navigate to dashboard screen`() =
         runTest {
             // Given
             configRepository.setConfig(TEST_CONFIG)
@@ -54,7 +54,7 @@ class SplashScreenViewModelTest {
         }
 
     @Test
-    fun `Given viewmodel, When fetching config failed, Then navigate to error screen`() =
+    fun `Given failed config, When getting the config, Then navigate to error screen`() =
         runTest {
             // Given
             configRepository.setError(Exception("No Internet"))

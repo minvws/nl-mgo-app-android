@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import java.io.File
+import java.time.Clock
 import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -41,5 +42,11 @@ internal object MainModule {
     @Named("backgroundDispatcher")
     fun provideBackgroundDispatcher(): CoroutineDispatcher {
         return Dispatchers.IO
+    }
+
+    @Provides
+    @Singleton
+    fun provideClock(): Clock {
+        return Clock.systemUTC()
     }
 }

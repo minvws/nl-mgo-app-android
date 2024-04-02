@@ -33,6 +33,7 @@ androidx-test-core = "1.5.0"
 androidx-junit = "1.1.5"
 androidx-test-runner = "1.5.2"
 okhttp-mockwebserver = "4.12.0"
+okio = "3.9.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -71,6 +72,7 @@ androidx-test-core = { group = "androidx.test", name = "core", version.ref = "an
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp-mockwebserver" }
+okio = { group = "com.squareup.okio", name ="okio", version.ref = "okio" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

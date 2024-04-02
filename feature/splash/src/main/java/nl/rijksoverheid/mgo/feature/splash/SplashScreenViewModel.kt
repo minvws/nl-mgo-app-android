@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.config.ConfigRepository
+import nl.rijksoverheid.mgo.data.config.repository.ConfigRepository
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import javax.inject.Inject

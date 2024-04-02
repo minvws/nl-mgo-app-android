@@ -6,6 +6,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.config.api.ConfigApi
+import nl.rijksoverheid.mgo.data.config.datasource.ConfigResponseLocalDataSource
+import nl.rijksoverheid.mgo.data.config.datasource.ConfigResponseRemoteDataSource
+import nl.rijksoverheid.mgo.data.config.repository.ConfigRepository
+import nl.rijksoverheid.mgo.data.config.repository.DefaultConfigRepository
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -27,12 +31,19 @@ internal fun createApi(
     return retrofit.create(ConfigApi::class.java)
 }
 
+internal fun createMoshi(): Moshi {
+    return Moshi.Builder().build()
+}
+
 @InstallIn(SingletonComponent::class)
 @Module
 internal object ConfigModule {
     @Provides
-    fun provideConfigRepository(configApi: ConfigApi): ConfigRepository {
-        return DefaultConfigRepository(configApi = configApi)
+    fun provideConfigRepository(
+        localDataSource: ConfigResponseLocalDataSource,
+        remoteDataSource: ConfigResponseRemoteDataSource,
+    ): ConfigRepository {
+        return DefaultConfigRepository(localDataSource = localDataSource, remoteDataSource = remoteDataSource)
     }
 
     @Provides
@@ -55,5 +66,12 @@ internal object ConfigModule {
             Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/"
             Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/"
         }
+    }
+
+    @Provides
+    @Singleton
+    @Named("configMoshi")
+    fun provideMoshi(): Moshi {
+        return createMoshi()
     }
 }

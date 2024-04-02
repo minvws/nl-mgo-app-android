@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.splash
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.config.TEST_CONFIG
-import nl.rijksoverheid.mgo.data.config.test.TestConfigRepository
+import nl.rijksoverheid.mgo.data.config.repository.TestConfigRepository
 import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.test.TestCoroutineRule

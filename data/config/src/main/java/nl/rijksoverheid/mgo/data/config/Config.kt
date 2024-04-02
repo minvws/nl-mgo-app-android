@@ -1,9 +1,7 @@
 package nl.rijksoverheid.mgo.data.config
 
-import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.mgo.data.config.api.ConfigResponse
 
-@JsonClass(generateAdapter = true)
 data class Config(
     val androidMinimumVersion: Int,
     val configTTL: Long,

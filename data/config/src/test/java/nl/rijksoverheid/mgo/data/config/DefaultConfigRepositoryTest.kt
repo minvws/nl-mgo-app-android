@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.config
 
+import nl.rijksoverheid.mgo.data.config.repository.DefaultConfigRepository
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServer
 import nl.rijksoverheid.mgo.framework.test.loadJsonFromResources

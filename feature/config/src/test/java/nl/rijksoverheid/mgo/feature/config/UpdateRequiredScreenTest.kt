@@ -4,14 +4,14 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class ConfigOldVersionScreenTest {
+internal class UpdateRequiredScreenTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
     fun launchView() {
         snapshotTestRule.snapshots {
-            ConfigOldVersionScreenPreview()
+            UpdateRequiredScreenPreview()
         }
     }
 }

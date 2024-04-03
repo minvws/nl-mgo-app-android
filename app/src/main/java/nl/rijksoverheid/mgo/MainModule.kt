@@ -54,6 +54,6 @@ internal object MainModule {
     @Provides
     @Singleton
     fun provideAppInfo(): AppInfo {
-        return DefaultAppInfo
+        return DefaultAppInfo(versionCode = BuildConfig.VERSION_CODE)
     }
 }

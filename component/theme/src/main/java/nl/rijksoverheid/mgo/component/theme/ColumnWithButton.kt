@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 
+const val TEST_TAG_COLUMN_WITH_BUTTON_BUTTON = "COLUMN_WITH_BUTTON_BUTTON"
 internal const val TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION = "COLUMN_WITH_BUTTON_ELEVATION"
 internal const val TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN = "COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN"
 
@@ -82,7 +83,8 @@ internal fun ColumnWithButtonContent(
                 Modifier
                     .fillMaxWidth()
                     .background(background)
-                    .padding(all = 16.dp),
+                    .padding(all = 16.dp)
+                    .testTag(TEST_TAG_COLUMN_WITH_BUTTON_BUTTON),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
             content = { Text(text = buttonText) },
             onClick = onButtonClick,

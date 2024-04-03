@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                             exitTransition = { defaultScreenExitTransition() },
                             popEnterTransition = { defaultScreenPopEnterTransition() },
                         ) {
-                            UpdateRequiredScreen()
+                            UpdateRequiredScreen(packageName = packageName)
                         }
                     }
 

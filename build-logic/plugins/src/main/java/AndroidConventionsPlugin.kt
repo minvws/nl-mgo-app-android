@@ -63,6 +63,8 @@ class AndroidConventionsPlugin : Plugin<Project> {
             // Dagger
             add("implementation", versionCatalog.findLibrary("dagger.hilt.android").get())
             add("ksp", versionCatalog.findLibrary("dagger.hilt.compiler").get())
+            add("androidTestImplementation", versionCatalog.findLibrary("dagger.hilt.testing").get())
+            add("kspAndroidTest", versionCatalog.findLibrary("dagger.hilt.compiler").get())
 
             // Testing
             add("testImplementation", project(":framework:test"))

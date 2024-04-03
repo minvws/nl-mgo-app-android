@@ -26,7 +26,7 @@ import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun UpdateRequiredScreen() {
+fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName) {
     val context = LocalContext.current
     Scaffold(
         modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
@@ -38,7 +38,7 @@ fun UpdateRequiredScreen() {
             ColumnWithButton(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.config_old_version_button),
-                onButtonClick = { "https://play.google.com/store/apps/details?id=${context.packageName}".launchBrowser(context) },
+                onButtonClick = { "https://play.google.com/store/apps/details?id=$packageName".launchBrowser(context) },
             ) {
                 Image(
                     modifier =

@@ -1,5 +1,3 @@
 package nl.rijksoverheid.mgo.framework.environment
 
-interface AppInfo {
-    val versionCode: Int
-}
+open class AppInfo(open val versionCode: Int)

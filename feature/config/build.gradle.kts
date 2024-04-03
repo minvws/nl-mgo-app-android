@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "nl.rijksoverheid.mgo.feature.config"
 }
+
+dependencies {
+    implementation(project(":framework:environment"))
+}

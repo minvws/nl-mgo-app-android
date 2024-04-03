@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,13 +22,12 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-internal fun ConfigOldVersionScreen() {
-    val navigationManager = LocalNavigationManager.current
+fun UpdateRequiredScreen() {
+    val context = LocalContext.current
     Scaffold(
         modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
@@ -38,7 +38,7 @@ internal fun ConfigOldVersionScreen() {
             ColumnWithButton(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.config_old_version_button),
-                onButtonClick = { navigationManager.navigate(NavigationScreen.Onboarding.PrivacyOverview) },
+                onButtonClick = { "https://play.google.com/store/apps/details?id=${context.packageName}".launchBrowser(context) },
             ) {
                 Image(
                     modifier =
@@ -69,8 +69,8 @@ internal fun ConfigOldVersionScreen() {
 
 @DefaultPreviews
 @Composable
-internal fun ConfigOldVersionScreenPreview() {
+internal fun UpdateRequiredScreenPreview() {
     MgoTheme {
-        ConfigOldVersionScreen()
+        UpdateRequiredScreen()
     }
 }

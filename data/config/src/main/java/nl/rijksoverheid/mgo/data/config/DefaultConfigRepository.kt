@@ -11,7 +11,7 @@ internal class DefaultConfigRepository(
     private val appInfo: AppInfo,
     private val configApi: ConfigApi,
 ) : ConfigRepository {
-    override val configStateFlow: MutableStateFlow<ConfigState?> = MutableStateFlow(null)
+    override val configStateFlow: MutableStateFlow<ConfigState> = MutableStateFlow(ConfigState.NoAction)
 
     override suspend fun refresh(): Result<ConfigState> {
         val result = executeNetworkRequest { configApi.getConfig() }

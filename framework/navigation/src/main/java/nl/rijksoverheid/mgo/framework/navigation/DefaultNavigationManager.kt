@@ -24,10 +24,16 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
                 navController.navigate(NavigationScreen.Onboarding.PrivacyOverview.getRoute())
             }
 
-            NavigationScreen.Error.NoInternet -> TODO()
-
             NavigationScreen.Dashboard -> {
                 navController.navigate(NavigationScreen.Dashboard.getRoute())
+            }
+
+            NavigationScreen.Config.UpdatedRequired -> {
+                navController.navigate(NavigationScreen.Config.UpdatedRequired.getRoute()) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             }
         }
     }

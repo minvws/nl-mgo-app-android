@@ -23,17 +23,17 @@ sealed class NavigationScreen {
         }
     }
 
-    data object Dashboard : NavigationScreen() {
-        override fun getRoute(): String {
-            return "dashboard"
+    sealed class Config : NavigationScreen() {
+        data object UpdatedRequired : Onboarding() {
+            override fun getRoute(): String {
+                return "updateRequired"
+            }
         }
     }
 
-    sealed class Error : NavigationScreen() {
-        data object NoInternet : Onboarding() {
-            override fun getRoute(): String {
-                return "errorNoInternet"
-            }
+    data object Dashboard : NavigationScreen() {
+        override fun getRoute(): String {
+            return "dashboard"
         }
     }
 }

@@ -63,7 +63,6 @@ android {
 dependencies {
     // Features
     implementation(project(":feature:onboarding"))
-    implementation(project(":feature:splash"))
     implementation(project(":feature:dashboard"))
 
     // Frameworks

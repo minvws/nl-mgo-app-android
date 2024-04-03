@@ -19,7 +19,6 @@ rootProject.name = "MijnGezondheidsOverzicht"
 include(":app")
 include(":component:theme")
 include(":feature:onboarding")
-include(":feature:splash")
 include(":feature:dashboard")
 include(":feature:config")
 include(":framework:navigation")

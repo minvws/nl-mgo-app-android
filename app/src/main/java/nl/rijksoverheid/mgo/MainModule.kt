@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import java.io.File
 import java.time.Clock
@@ -48,5 +49,11 @@ internal object MainModule {
     @Singleton
     fun provideClock(): Clock {
         return Clock.systemUTC()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppInfo(): AppInfo {
+        return DefaultAppInfo
     }
 }

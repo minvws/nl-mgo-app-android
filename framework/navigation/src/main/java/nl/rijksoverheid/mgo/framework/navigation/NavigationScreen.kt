@@ -3,12 +3,6 @@ package nl.rijksoverheid.mgo.framework.navigation
 sealed class NavigationScreen {
     abstract fun getRoute(): String
 
-    data object Splash : NavigationScreen() {
-        override fun getRoute(): String {
-            return "splash"
-        }
-    }
-
     sealed class Onboarding : NavigationScreen() {
         data object Start : Onboarding() {
             override fun getRoute(): String {

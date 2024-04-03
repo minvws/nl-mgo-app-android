@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.data.config
 
 import nl.rijksoverheid.mgo.data.config.api.ConfigResponse
 import nl.rijksoverheid.mgo.data.config.datasource.TestLocalDataSource
-import nl.rijksoverheid.mgo.data.config.repository.DefaultConfigRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before

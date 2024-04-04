@@ -5,6 +5,7 @@
     <string name="app_name_acc">MGO (Acc)</string>
     <string name="general_next">Volgende</string>
     <string name="general_previous">Vorige</string>
+    <string name="general_try_again">Probeer opnieuw</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
     <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
@@ -17,4 +18,9 @@
         toegang**.</string>
     <string name="privacy_overview_item_3">**Je kiest zelf** hoe je je gegevens wilt gebruiken en of je ze wel of niet deelt met anderen.</string>
     <string name="privacy_overview_item_4">Je kunt de gegevens in je overzicht **altijd verwijderen of opnieuw opvragen**.</string>
+    <string name="config_old_version_title">Je hebt een verouderde versie van de app</string>
+    <string name="config_old_version_description">Download een nieuwe versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>
+    <string name="config_old_version_button">Nu downloaden</string>
+    <string name="config_no_internet_title">Je hebt geen internetverbinding</string>
+    <string name="config_no_internet_description">Om de app op te starten heb je internet nodig. Probeer opnieuw verbinding te maken met WiFi of gebruik mobiele data.</string>
 </resources>

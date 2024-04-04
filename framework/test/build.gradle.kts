@@ -9,4 +9,6 @@ android {
 dependencies {
     implementation(libs.junit)
     implementation(libs.coroutines.test)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.mockwebserver)
 }

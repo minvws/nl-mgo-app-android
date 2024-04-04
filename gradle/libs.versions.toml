@@ -12,6 +12,7 @@ compose-bom = "2024.02.02"
 compose-activity = "1.8.2"
 compose-compiler = "1.5.8"
 compose-navigation = "2.7.7"
+compose-lifecycle = "2.7.0"
 google-services = "4.4.1"
 firebase-appdistribution = "4.2.0"
 ktlint = "12.1.0"
@@ -32,6 +33,9 @@ datastore = "1.0.0"
 androidx-test-core = "1.5.0"
 androidx-junit = "1.1.5"
 androidx-test-runner = "1.5.2"
+okhttp-mockwebserver = "4.12.0"
+okio = "3.9.0"
+espresso-intents = "3.4.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -46,11 +50,13 @@ compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
 compose-markdown = { group = "com.github.jeziellago", name = "compose-markdown", version.ref = "compose-markdown" }
+compose-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose-lifecycle" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger-hilt" }
 dagger-hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref ="dagger-hilt-compose-navigation" }
+dagger-hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "dagger-hilt" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "dagger" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 chucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
@@ -69,6 +75,9 @@ datastore-preference = { group = "androidx.datastore", name = "datastore-prefere
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidx-test-core" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp-mockwebserver" }
+okio = { group = "com.squareup.okio", name ="okio", version.ref = "okio" }
+espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso-intents" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

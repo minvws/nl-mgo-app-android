@@ -1,5 +1,9 @@
 package nl.rijksoverheid.mgo.data.config
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 interface ConfigRepository {
-    suspend fun getConfig(): Result<Config>
+    val configStateFlow: MutableStateFlow<ConfigState>
+
+    suspend fun refresh(): Result<ConfigState>
 }

@@ -37,6 +37,11 @@ class AndroidConventionsPlugin : Plugin<Project> {
                     setSourceCompatibility(JAVA_LANGUAGE_VERSION.toString())
                     setTargetCompatibility(JAVA_LANGUAGE_VERSION.toString())
                 }
+                testOptions.apply {
+                    unitTests.apply {
+                        isIncludeAndroidResources = true
+                    }
+                }
                 val kotlinExtension = extensions.getByType<KotlinProjectExtension>()
                 kotlinExtension.jvmToolchain(JAVA_LANGUAGE_VERSION.asInt())
             }
@@ -58,6 +63,8 @@ class AndroidConventionsPlugin : Plugin<Project> {
             // Dagger
             add("implementation", versionCatalog.findLibrary("dagger.hilt.android").get())
             add("ksp", versionCatalog.findLibrary("dagger.hilt.compiler").get())
+            add("androidTestImplementation", versionCatalog.findLibrary("dagger.hilt.testing").get())
+            add("kspAndroidTest", versionCatalog.findLibrary("dagger.hilt.compiler").get())
 
             // Testing
             add("testImplementation", project(":framework:test"))

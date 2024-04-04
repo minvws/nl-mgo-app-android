@@ -7,7 +7,7 @@ import androidx.compose.ui.test.swipeUp
 import org.junit.Rule
 import org.junit.Test
 
-class ColumnWithButtonTest {
+internal class ColumnWithButtonTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 

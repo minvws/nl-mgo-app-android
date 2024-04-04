@@ -1,15 +1,22 @@
 package nl.rijksoverheid.mgo.data.config
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
-import javax.inject.Inject
-import kotlinx.coroutines.delay
+import nl.rijksoverheid.mgo.data.config.api.ConfigApi
+import nl.rijksoverheid.mgo.framework.environment.AppInfo
+import javax.inject.Singleton
+import kotlinx.coroutines.flow.MutableStateFlow
 
-internal class DefaultConfigRepository
-    @Inject
-    constructor(private val configApi: ConfigApi) : ConfigRepository {
-        override suspend fun getConfig(): Result<Config> {
-            delay(2000)
-            return executeNetworkRequest { configApi.getConfig() }
-                .mapCatching { response -> response.toConfig() }
-        }
+@Singleton
+internal class DefaultConfigRepository(
+    private val appInfo: AppInfo,
+    private val configApi: ConfigApi,
+) : ConfigRepository {
+    override val configStateFlow: MutableStateFlow<ConfigState> = MutableStateFlow(ConfigState.NoAction)
+
+    override suspend fun refresh(): Result<ConfigState> {
+        val result = executeNetworkRequest { configApi.getConfig() }
+        return result
+            .mapCatching { response -> response.toConfigState(appInfo) }
+            .onSuccess { configState -> configStateFlow.value = configState }
     }
+}

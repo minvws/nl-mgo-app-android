@@ -63,8 +63,8 @@ android {
 dependencies {
     // Features
     implementation(project(":feature:onboarding"))
-    implementation(project(":feature:splash"))
     implementation(project(":feature:dashboard"))
+    implementation(project(":feature:config"))
 
     // Frameworks
     implementation(project(":framework:copy"))
@@ -72,4 +72,5 @@ dependencies {
 
     // Data
     implementation(project(":data:onboarding"))
+    implementation(project(":data:config"))
 }

@@ -3,12 +3,6 @@ package nl.rijksoverheid.mgo.framework.navigation
 sealed class NavigationScreen {
     abstract fun getRoute(): String
 
-    data object Splash : NavigationScreen() {
-        override fun getRoute(): String {
-            return "splash"
-        }
-    }
-
     sealed class Onboarding : NavigationScreen() {
         data object Start : Onboarding() {
             override fun getRoute(): String {
@@ -29,17 +23,17 @@ sealed class NavigationScreen {
         }
     }
 
-    data object Dashboard : NavigationScreen() {
-        override fun getRoute(): String {
-            return "dashboard"
+    sealed class Config : NavigationScreen() {
+        data object UpdatedRequired : Onboarding() {
+            override fun getRoute(): String {
+                return "updateRequired"
+            }
         }
     }
 
-    sealed class Error : NavigationScreen() {
-        data object NoInternet : Onboarding() {
-            override fun getRoute(): String {
-                return "errorNoInternet"
-            }
+    data object Dashboard : NavigationScreen() {
+        override fun getRoute(): String {
+            return "dashboard"
         }
     }
 }

@@ -5,7 +5,7 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class PrivacyOverviewScreenTest {
+internal class PrivacyOverviewScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 

@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(project(":data:onboarding"))
+    androidTestImplementation("com.android.support.test.uiautomator:uiautomator-v18:2.1.3")
 }

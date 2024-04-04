@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.onboarding
 
+import android.view.View.generateViewId
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,6 +35,8 @@ import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+internal val VIEW_ID_TEXT_WITH_LINK = generateViewId()
 
 @Composable
 internal fun PrivacyOverviewScreen() {
@@ -81,6 +84,7 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
                 )
                 MarkdownText(
                     modifier = Modifier.padding(top = 16.dp),
+                    viewId = VIEW_ID_TEXT_WITH_LINK,
                     markdown = stringResource(id = CopyR.string.privacy_overview_description),
                     style = MaterialTheme.typography.body2,
                     linkColor = styleLink(),

@@ -10,10 +10,12 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 private val DarkColorScheme =
     darkColors(
@@ -48,6 +50,60 @@ private val fonts =
     )
 
 private val Typography = Typography(defaultFontFamily = fonts)
+
+val Typography.headingExtraLarge: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Bold,
+            fontSize = 34.sp,
+            lineHeight = 41.sp,
+        )
+
+val Typography.headingLarge: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Bold,
+            fontSize = 28.sp,
+            lineHeight = 34.sp,
+        )
+
+val Typography.headingRegular: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
+            lineHeight = 28.sp,
+        )
+
+val Typography.headingSmall: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+            lineHeight = 28.sp,
+        )
+
+val Typography.headingExtraSmall: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            lineHeight = 25.sp,
+        )
+
+val Typography.bodyText: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Normal,
+            fontSize = 17.sp,
+            lineHeight = 22.sp,
+        )
 
 @Composable
 fun MgoTheme(

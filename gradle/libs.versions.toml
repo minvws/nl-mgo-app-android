@@ -8,7 +8,7 @@ core-ktx = "1.12.0"
 junit = "4.13.2"
 appcompat = "1.6.1"
 material = "1.11.0"
-compose-bom = "2024.02.02"
+compose-bom = "2024.03.00"
 compose-activity = "1.8.2"
 compose-compiler = "1.5.8"
 compose-navigation = "2.7.7"
@@ -35,7 +35,7 @@ androidx-junit = "1.1.5"
 androidx-test-runner = "1.5.2"
 okhttp-mockwebserver = "4.12.0"
 okio = "3.9.0"
-espresso-intents = "3.4.0"
+espresso-intents = "3.5.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

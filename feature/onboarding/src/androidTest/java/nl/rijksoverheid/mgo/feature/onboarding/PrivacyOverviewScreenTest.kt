@@ -1,29 +1,27 @@
-package nl.rijksoverheid.mgo.feature.config
+package nl.rijksoverheid.mgo.feature.onboarding
 
 import android.app.Activity
 import android.app.Instrumentation
-import android.content.Context
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
-import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.TEST_TAG_COLUMN_WITH_BUTTON_BUTTON
 import org.hamcrest.Matchers
 import org.junit.Rule
 import org.junit.Test
 
-internal class UpdateRequiredScreenTest {
+internal class PrivacyOverviewScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun playStorePageIsOpenedOnButtonClick() {
+    fun privacyPolicyIsOpenedOnButtonClick() {
         composeTestRule.setContent {
             MgoTheme {
-                UpdateRequiredScreen()
+                PrivacyOverviewScreenContent(onClickNext = {})
             }
         }
 
@@ -32,13 +30,14 @@ internal class UpdateRequiredScreenTest {
         val intentMatcher =
             IntentMatchers.hasDataString(
                 Matchers.equalTo(
-                    "https://play.google.com/store/apps/details?id=${ApplicationProvider.getApplicationContext<Context>().packageName}",
+                    "https://www.google.nl",
                 ),
             )
         Intents.intending(intentMatcher).respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, null))
 
-        // When clicking the button
-        composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_BUTTON).performClick()
+        // When clicking the link
+        // Using Espresso because compose does not seem to have a "openLinkWithText"
+        Espresso.onView(withId(VIEW_ID_TEXT_WITH_LINK)).perform(ViewActions.openLinkWithText("privacyverklaring"))
 
         Intents.intended(intentMatcher)
         Intents.release()

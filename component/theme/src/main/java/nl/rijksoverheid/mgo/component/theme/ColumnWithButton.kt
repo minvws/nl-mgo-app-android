@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -39,10 +40,11 @@ fun ColumnWithButton(
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val canScrollForward = if (LocalInspectionMode.current) false else scrollState.canScrollForward
     ColumnWithButtonContent(
         modifier = modifier,
         scrollState = scrollState,
-        canScrollForward = scrollState.canScrollForward,
+        canScrollForward = canScrollForward,
         buttonText = buttonText,
         onButtonClick = { onButtonClick() },
         contentPadding = contentPadding,

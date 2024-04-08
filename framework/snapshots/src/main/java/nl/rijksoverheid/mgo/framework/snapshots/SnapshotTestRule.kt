@@ -2,6 +2,8 @@ package nl.rijksoverheid.mgo.framework.snapshots
 
 import android.util.Size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalInspectionMode
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
@@ -41,31 +43,31 @@ class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, render
             when (device) {
                 SnapshotDevice.PHONE_PORTRAIT_LIGHT -> {
                     setPhone(nightMode = NightMode.NOTNIGHT)
-                    snapshot(name = "phone-portrait-light") { content() }
+                    previewSnapshot(fileName = "phone-portrait-light") { content() }
                 }
                 SnapshotDevice.PHONE_PORTRAIT_LIGHT_FONT_INCREASED -> {
                     setPhone(nightMode = NightMode.NOTNIGHT, fontScale = 2f)
-                    snapshot(name = "phone-portrait-light-font-increased") { content() }
+                    previewSnapshot(fileName = "phone-portrait-light-font-increased") { content() }
                 }
                 SnapshotDevice.PHONE_LANDSCAPE_LIGHT -> {
                     setPhone(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.LANDSCAPE)
-                    snapshot(name = "phone-landscape-light") { content() }
+                    previewSnapshot(fileName = "phone-landscape-light") { content() }
                 }
                 SnapshotDevice.PHONE_LANDSCAPE_LIGHT_FONT_INCREASED -> {
                     setPhone(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.LANDSCAPE, fontScale = 1.5f)
-                    snapshot(name = "phone-landscape-light-font-increased") { content() }
+                    previewSnapshot(fileName = "phone-landscape-light-font-increased") { content() }
                 }
                 SnapshotDevice.PHONE_PORTRAIT_DARK -> {
                     setPhone(nightMode = NightMode.NIGHT)
-                    snapshot(name = "phone-portrait-dark") { content() }
+                    previewSnapshot(fileName = "phone-portrait-dark") { content() }
                 }
                 SnapshotDevice.TABLET_PORTRAIT_LIGHT -> {
                     setTablet(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.PORTRAIT)
-                    snapshot(name = "tablet-portrait-light") { content() }
+                    previewSnapshot(fileName = "tablet-portrait-light") { content() }
                 }
                 SnapshotDevice.TABLET_LANDSCAPE_LIGHT -> {
                     setTablet(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.LANDSCAPE)
-                    snapshot(name = "tablet-landscape-light") { content() }
+                    previewSnapshot(fileName = "tablet-landscape-light") { content() }
                 }
             }
         }
@@ -109,6 +111,17 @@ class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, render
         val screenWidthForOrientation = if (orientation == ScreenOrientation.PORTRAIT) screenWidth else screenHeight
         val screenHeightForOrientation = if (orientation == ScreenOrientation.PORTRAIT) screenHeight else screenWidth
         return Size(screenWidthForOrientation, screenHeightForOrientation)
+    }
+
+    private fun Paparazzi.previewSnapshot(
+        fileName: String,
+        content: @Composable () -> Unit,
+    ) {
+        snapshot(name = fileName) {
+            CompositionLocalProvider(LocalInspectionMode provides true) {
+                content()
+            }
+        }
     }
 
     override fun apply(

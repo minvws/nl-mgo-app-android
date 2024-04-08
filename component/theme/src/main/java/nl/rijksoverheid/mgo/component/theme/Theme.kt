@@ -9,101 +9,6 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-
-private val DarkColorScheme =
-    darkColors(
-        primary = SkyBlue,
-        secondary = Color.Blue,
-        background = BackgroundDark,
-        surface = Color.Black,
-        onPrimary = Color.White,
-        onBackground = White,
-        onSurface = Color.White,
-    )
-
-private val LightColorScheme =
-    lightColors(
-        primary = SkyBlue,
-        secondary = Color.Blue,
-        background = BackgroundLight,
-        onPrimary = Color.White,
-        surface = Color.White,
-        onBackground = Black,
-        onSurface = Color.White,
-    )
-
-@Composable
-fun styleLink() = if (isSystemInDarkTheme()) SkyBlueTint1 else LinkDefault
-
-private val fonts =
-    FontFamily(
-        Font(R.font.ro_regular, weight = FontWeight.Normal),
-        Font(R.font.ro_bold, weight = FontWeight.Bold),
-        Font(R.font.ro_italic, weight = FontWeight.Normal, style = FontStyle.Italic),
-    )
-
-private val Typography = Typography(defaultFontFamily = fonts)
-
-val Typography.headingExtraLarge: TextStyle
-    get() =
-        TextStyle(
-            fontFamily = fonts,
-            fontWeight = FontWeight.Bold,
-            fontSize = 34.sp,
-            lineHeight = 41.sp,
-        )
-
-val Typography.headingLarge: TextStyle
-    get() =
-        TextStyle(
-            fontFamily = fonts,
-            fontWeight = FontWeight.Bold,
-            fontSize = 28.sp,
-            lineHeight = 34.sp,
-        )
-
-val Typography.headingRegular: TextStyle
-    get() =
-        TextStyle(
-            fontFamily = fonts,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            lineHeight = 28.sp,
-        )
-
-val Typography.headingSmall: TextStyle
-    get() =
-        TextStyle(
-            fontFamily = fonts,
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            lineHeight = 28.sp,
-        )
-
-val Typography.headingExtraSmall: TextStyle
-    get() =
-        TextStyle(
-            fontFamily = fonts,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            lineHeight = 25.sp,
-        )
-
-val Typography.bodyText: TextStyle
-    get() =
-        TextStyle(
-            fontFamily = fonts,
-            fontWeight = FontWeight.Normal,
-            fontSize = 17.sp,
-            lineHeight = 22.sp,
-        )
 
 @Composable
 fun MgoTheme(
@@ -111,8 +16,8 @@ fun MgoTheme(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colors = if (darkTheme) DarkColorScheme else LightColorScheme,
-        typography = Typography,
+        colors = if (darkTheme) getDarkColorScheme() else getLightColorScheme(),
+        typography = Typography(defaultFontFamily = fonts),
     ) {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -121,3 +26,27 @@ fun MgoTheme(
         )
     }
 }
+
+@Composable
+private fun getDarkColorScheme() =
+    darkColors(
+        primary = MaterialTheme.colors.actionPrimary(true),
+        secondary = MaterialTheme.colors.contentSecondary(true),
+        background = MaterialTheme.colors.backgroundPrimary(true),
+        surface = MaterialTheme.colors.backgroundSecondary(true),
+        onPrimary = MaterialTheme.colors.backgroundSecondary(true),
+        onBackground = MaterialTheme.colors.contentPrimary(true),
+        onSurface = MaterialTheme.colors.contentPrimary(true),
+    )
+
+@Composable
+private fun getLightColorScheme() =
+    lightColors(
+        primary = MaterialTheme.colors.actionPrimary(false),
+        secondary = MaterialTheme.colors.contentSecondary(false),
+        background = MaterialTheme.colors.backgroundPrimary(false),
+        surface = MaterialTheme.colors.backgroundSecondary(false),
+        onPrimary = MaterialTheme.colors.backgroundSecondary(false),
+        onBackground = MaterialTheme.colors.contentPrimary(false),
+        onSurface = MaterialTheme.colors.contentPrimary(false),
+    )

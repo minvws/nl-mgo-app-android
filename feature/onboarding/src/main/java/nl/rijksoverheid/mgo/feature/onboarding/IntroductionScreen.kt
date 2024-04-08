@@ -1,11 +1,8 @@
 package nl.rijksoverheid.mgo.feature.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -29,7 +26,6 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 internal fun IntroductionScreen() {
     val navigationManager = LocalNavigationManager.current
     Scaffold(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
         },

@@ -34,7 +34,7 @@ private fun getDarkColorScheme() =
         secondary = MaterialTheme.colors.contentSecondary(true),
         background = MaterialTheme.colors.backgroundPrimary(true),
         surface = MaterialTheme.colors.backgroundSecondary(true),
-        onPrimary = MaterialTheme.colors.backgroundSecondary(true),
+        onPrimary = MaterialTheme.colors.backgroundSecondary(false), // Not a typo! Color on primary is always a light color.
         onBackground = MaterialTheme.colors.contentPrimary(true),
         onSurface = MaterialTheme.colors.contentPrimary(true),
     )

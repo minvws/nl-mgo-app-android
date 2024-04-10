@@ -3,8 +3,8 @@ package nl.rijksoverheid.mgo.data.localisation
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.localisation.api.SearchApi
 import nl.rijksoverheid.mgo.data.localisation.api.SearchRequestBody
-import nl.rijksoverheid.mgo.data.search.models.SearchResult
-import nl.rijksoverheid.mgo.data.search.models.toSearchResults
+import nl.rijksoverheid.mgo.data.localisation.models.SearchResult
+import nl.rijksoverheid.mgo.data.localisation.models.toSearchResults
 
 internal class DefaultSearchRepository(private val searchApi: SearchApi) : SearchRepository {
     override suspend fun search(

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.search.models
+package nl.rijksoverheid.mgo.data.localisation.models
 
 import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
 

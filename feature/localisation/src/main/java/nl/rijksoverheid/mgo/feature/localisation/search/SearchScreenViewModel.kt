@@ -36,8 +36,8 @@ class SearchScreenViewModel
             viewModelScope.launch {
                 val name = _viewState.value.name
                 val city = _viewState.value.city
-                val nameError = if (name.isEmpty()) FrameworkR.string.search_name_error else null
-                val cityError = if (city.isEmpty()) FrameworkR.string.search_city_error else null
+                val nameError = if (name.isEmpty()) FrameworkR.string.localisation_search_name_error else null
+                val cityError = if (city.isEmpty()) FrameworkR.string.localisation_search_city_error else null
                 _viewState.update { viewState -> viewState.copy(nameError = nameError, cityError = cityError) }
                 if (nameError == null && cityError == null) {
                     _navigation.tryEmit(NavigationScreen.AddHealthCare.GetSearchResults)

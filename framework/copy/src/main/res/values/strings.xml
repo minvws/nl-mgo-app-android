@@ -6,6 +6,7 @@
     <string name="general_next">Volgende</string>
     <string name="general_previous">Vorige</string>
     <string name="general_try_again">Probeer opnieuw</string>
+    <string name="general_search">Zoeken</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
     <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
@@ -23,6 +24,9 @@
     <string name="config_old_version_button">Nu downloaden</string>
     <string name="config_no_internet_title">Je hebt geen internetverbinding</string>
     <string name="config_no_internet_description">Om de app op te starten heb je internet nodig. Probeer opnieuw verbinding te maken met WiFi of gebruik mobiele data.</string>
-    <string name="search_name_error">Vul een naam in</string>
-    <string name="search_city_error">Vul een plaats in</string>
+    <string name="localisation_search_title">Welke zorgverlener wil je toevoegen?</string>
+    <string name="localisation_search_name_error">Vul een naam in</string>
+    <string name="localisation_search_city_error">Vul een plaats in</string>
+    <string name="localisation_search_name_hint">Naam (verplicht)</string>
+    <string name="localisation_search_city_hint">Plaats (verplicht)</string>
 </resources>

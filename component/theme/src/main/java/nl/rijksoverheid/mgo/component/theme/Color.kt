@@ -54,7 +54,7 @@ fun Colors.linesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 
 @Composable
 fun Colors.actionBorder(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF696969) else Color(0xFFB4B4B4)
+    if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
 
 // Support
 @Composable

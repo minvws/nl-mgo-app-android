@@ -65,7 +65,7 @@ dependencies {
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:config"))
-    implementation(project(":feature:addhealthcare"))
+    implementation(project(":feature:localisation"))
 
     // Frameworks
     implementation(project(":framework:copy"))

@@ -16,9 +16,9 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
-import nl.rijksoverheid.mgo.feature.addhealthcare.addAddHealthCareNavigationGraph
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
+import nl.rijksoverheid.mgo.feature.localisation.addAddHealthCareNavigationGraph
 import nl.rijksoverheid.mgo.feature.onboarding.addOnboardingNavigationGraph
 import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager

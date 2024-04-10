@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.theme
+package nl.rijksoverheid.mgo.component.theme.samples
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule

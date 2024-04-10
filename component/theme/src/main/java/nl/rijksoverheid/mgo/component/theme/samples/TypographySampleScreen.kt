@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.theme
+package nl.rijksoverheid.mgo.component.theme.samples
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +8,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.bodyText
+import nl.rijksoverheid.mgo.component.theme.headingExtraLarge
+import nl.rijksoverheid.mgo.component.theme.headingExtraSmall
+import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.component.theme.headingRegular
+import nl.rijksoverheid.mgo.component.theme.headingSmall
 
 @Composable
 private fun TypographySampleScreen() {

@@ -1,10 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -27,9 +24,6 @@ fun DashboardScreen() {
     val navigationManager = LocalNavigationManager.current
     val viewModel: DashboardViewModel = hiltViewModel()
     Scaffold(
-        modifier =
-            Modifier
-                .windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
             TopAppBar(
                 title = { Text(text = "Dashboard") },

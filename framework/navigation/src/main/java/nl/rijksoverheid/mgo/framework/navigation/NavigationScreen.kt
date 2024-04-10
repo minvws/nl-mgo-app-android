@@ -6,7 +6,7 @@ sealed class NavigationScreen {
     sealed class Onboarding : NavigationScreen() {
         data object Start : Onboarding() {
             override fun getRoute(): String {
-                return "start"
+                return "onboardingStart"
             }
         }
 
@@ -19,6 +19,26 @@ sealed class NavigationScreen {
         data object PrivacyOverview : Onboarding() {
             override fun getRoute(): String {
                 return "privacyOverview"
+            }
+        }
+    }
+
+    sealed class AddHealthCare : NavigationScreen() {
+        data object Start : Onboarding() {
+            override fun getRoute(): String {
+                return "addHealthCareStart"
+            }
+        }
+
+        data object Search : Onboarding() {
+            override fun getRoute(): String {
+                return "search"
+            }
+        }
+
+        data object GetSearchResults : Onboarding() {
+            override fun getRoute(): String {
+                return "searchResults"
             }
         }
     }

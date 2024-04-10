@@ -5,6 +5,3 @@ plugins {
 android {
     namespace = "nl.rijksoverheid.mgo.component.theme"
 }
-
-dependencies {
-}

@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 
 /**
  * Temporary place holder screen to show after the onboarding so you can reset the app to first launch state.
@@ -22,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun DashboardScreen() {
     val context = LocalContext.current
+    val navigationManager = LocalNavigationManager.current
     val viewModel: DashboardViewModel = hiltViewModel()
     Scaffold(
         modifier =
@@ -39,6 +42,9 @@ fun DashboardScreen() {
         Column(
             modifier = Modifier.padding(paddingValues).padding(all = 16.dp),
         ) {
+            Button(onClick = { navigationManager.navigate(NavigationScreen.AddHealthCare.Start) }) {
+                Text(text = "Search")
+            }
             Button(onClick = { viewModel.reset(context) }) {
                 Text(text = "Reset")
             }

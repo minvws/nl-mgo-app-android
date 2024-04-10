@@ -17,15 +17,11 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             }
 
             NavigationScreen.Onboarding.Introduction -> {
-                // You never navigate to the start of the onboarding, only to the root of the graph which shows the start.
+                // You never navigate to the introduction, only to the root of the graph which shows the introduction.
             }
 
             NavigationScreen.Onboarding.PrivacyOverview -> {
                 navController.navigate(NavigationScreen.Onboarding.PrivacyOverview.getRoute())
-            }
-
-            NavigationScreen.Dashboard -> {
-                navController.navigate(NavigationScreen.Dashboard.getRoute())
             }
 
             NavigationScreen.Config.UpdatedRequired -> {
@@ -34,6 +30,22 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
                         inclusive = true
                     }
                 }
+            }
+
+            NavigationScreen.Dashboard -> {
+                navController.navigate(NavigationScreen.Dashboard.getRoute())
+            }
+
+            NavigationScreen.AddHealthCare.Start -> {
+                navController.navigate(NavigationScreen.AddHealthCare.Start.getRoute())
+            }
+
+            NavigationScreen.AddHealthCare.Search -> {
+                // You never navigate to search, only to the root of the graph which shows the search.
+            }
+
+            NavigationScreen.AddHealthCare.GetSearchResults -> {
+                navController.navigate(NavigationScreen.AddHealthCare.GetSearchResults.getRoute())
             }
         }
     }

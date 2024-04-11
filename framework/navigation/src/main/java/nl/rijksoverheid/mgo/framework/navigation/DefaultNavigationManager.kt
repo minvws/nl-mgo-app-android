@@ -44,7 +44,7 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
                 // You never navigate to search, only to the root of the graph which shows the search.
             }
 
-            NavigationScreen.AddHealthCare.GetSearchResults -> {
+            is NavigationScreen.AddHealthCare.GetSearchResults -> {
                 navController.navigate(NavigationScreen.AddHealthCare.GetSearchResults.getRoute())
             }
         }

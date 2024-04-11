@@ -1,59 +1,67 @@
 package nl.rijksoverheid.mgo.framework.navigation
 
-sealed class NavigationScreen {
-    abstract fun getRoute(): String
+sealed class NavigationScreen(val name: String, val placeholders: List<String> = listOf()) {
+    protected var builder = NavigationRouteBuilder(name = name)
 
-    sealed class Onboarding : NavigationScreen() {
-        data object Start : Onboarding() {
-            override fun getRoute(): String {
-                return "onboardingStart"
-            }
-        }
-
-        data object Introduction : Onboarding() {
-            override fun getRoute(): String {
-                return "introduction"
-            }
-        }
-
-        data object PrivacyOverview : Onboarding() {
-            override fun getRoute(): String {
-                return "privacyOverview"
+    fun getRoute(): String {
+        return buildString {
+            append(name)
+            placeholders.forEach { placeholder ->
+                append("/{$placeholder}")
             }
         }
     }
 
-    sealed class AddHealthCare : NavigationScreen() {
-        data object Start : Onboarding() {
-            override fun getRoute(): String {
-                return "addHealthCareStart"
-            }
-        }
+    open fun getNavigationRoute(): String {
+        return getRoute()
+    }
 
-        data object Search : Onboarding() {
-            override fun getRoute(): String {
-                return "search"
-            }
-        }
+    sealed class Onboarding(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
+        data object Start : Onboarding("onboardingStart")
 
-        data object GetSearchResults : Onboarding() {
-            override fun getRoute(): String {
-                return "searchResults"
+        data object Introduction : Onboarding("introduction")
+
+        data object PrivacyOverview : Onboarding("privacyOverview")
+    }
+
+    sealed class AddHealthCare(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
+        data object Start : AddHealthCare("addHealthCareStart")
+
+        data object Search : AddHealthCare("search")
+
+        data object GetSearchResults : AddHealthCare(name = "getSearchResults", placeholders = listOf("name", "city")) {
+            fun setName(name: String): GetSearchResults {
+                builder.addArgument(name)
+                return this
+            }
+
+            fun setCity(city: String): GetSearchResults {
+                builder.addArgument(city)
+                return this
             }
         }
     }
 
-    sealed class Config : NavigationScreen() {
-        data object UpdatedRequired : Onboarding() {
-            override fun getRoute(): String {
-                return "updateRequired"
-            }
-        }
+    sealed class Config(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
+        data object UpdatedRequired : Onboarding("updatedRequired")
     }
 
-    data object Dashboard : NavigationScreen() {
-        override fun getRoute(): String {
-            return "dashboard"
+    data object Dashboard : NavigationScreen("dashboard")
+
+    data class NavigationRouteBuilder(val name: String) {
+        private var arguments: MutableList<String> = mutableListOf()
+
+        fun addArgument(argument: String) {
+            arguments.add(argument)
+        }
+
+        fun buildRoute(): String {
+            return buildString {
+                append(name)
+                arguments.forEach { argument ->
+                    append("/$argument")
+                }
+            }
         }
     }
 }

@@ -37,8 +37,7 @@ class MainActivity : ComponentActivity() {
                     if (viewModel.hasSeenOnboarding()) {
                         NavigationScreen.Dashboard.getRoute()
                     } else {
-                        NavigationScreen
-                            .Onboarding.Start.getRoute()
+                        NavigationScreen.Onboarding.Start.getRoute()
                     }
                 val rootNavController = rememberNavController()
                 ProvideNavigationManager(navigationManager = DefaultNavigationManager(navController = rootNavController)) {

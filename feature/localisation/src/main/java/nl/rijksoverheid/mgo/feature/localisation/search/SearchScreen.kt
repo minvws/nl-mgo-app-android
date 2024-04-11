@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,12 +45,21 @@ import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 
 @Composable
 fun SearchScreen() {
+    val navigationManager = LocalNavigationManager.current
     val viewModel: SearchScreenViewModel = hiltViewModel()
     val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+
+    LaunchedEffect("navigation") {
+        viewModel.navigation.collectLatest { screen ->
+            navigationManager.navigate(screen)
+        }
+    }
+
     SearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
@@ -113,8 +123,8 @@ private fun SearchScreenContent(
 
                 BasicTextField(
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                    value = viewState.city,
-                    onValueChange = onSetCity,
+                    value = viewState.name,
+                    onValueChange = onSetName,
                     textStyle = MaterialTheme.typography.bodyText,
                     decorationBox = { innerTextField ->
                         Row(
@@ -147,7 +157,7 @@ private fun SearchScreenContent(
                 BasicTextField(
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     value = viewState.city,
-                    onValueChange = onSetName,
+                    onValueChange = onSetCity,
                     textStyle = MaterialTheme.typography.bodyText,
                     decorationBox = { innerTextField ->
                         Row(

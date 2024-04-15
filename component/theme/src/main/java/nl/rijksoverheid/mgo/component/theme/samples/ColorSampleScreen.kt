@@ -35,9 +35,11 @@ import nl.rijksoverheid.mgo.component.theme.contentPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
+import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.linesInput
 import nl.rijksoverheid.mgo.component.theme.linesPrimary
 import nl.rijksoverheid.mgo.component.theme.linesSecondary
+import nl.rijksoverheid.mgo.component.theme.linesTertiary
 import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
@@ -48,6 +50,7 @@ import nl.rijksoverheid.mgo.component.theme.supportGgz
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.component.theme.supportKliniek
 import nl.rijksoverheid.mgo.component.theme.supportOverige
+import nl.rijksoverheid.mgo.component.theme.supportRijkslint
 import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
@@ -83,13 +86,16 @@ private fun ColorSampleScreen() {
             ColorSample(color = MaterialTheme.colors.iconsPrimary(), text = "Icons Primary")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.iconsPrimary(), text = "Icons Secondary")
+            ColorSample(color = MaterialTheme.colors.iconsSecondary(), text = "Icons Secondary")
         }
         item {
             ColorSample(color = MaterialTheme.colors.linesPrimary(), text = "Lines Primary")
         }
         item {
             ColorSample(color = MaterialTheme.colors.linesSecondary(), text = "Lines Secondary")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.linesTertiary(), text = "Lines Tertiary")
         }
         item {
             ColorSample(color = MaterialTheme.colors.linesInput(), text = "Lines Input")
@@ -152,7 +158,7 @@ private fun ColorSampleScreen() {
             ColorSample(color = MaterialTheme.colors.supportOverige(), text = "Support Overige")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.supportOverige(), text = "Support Rijkslint")
+            ColorSample(color = MaterialTheme.colors.supportRijkslint(), text = "Support Rijkslint")
         }
     }
 }

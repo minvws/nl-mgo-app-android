@@ -39,7 +39,7 @@ fun Colors.iconsPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF535353) else Color(0xFF696969)
 
 @Composable
-fun Colors.iconSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun Colors.iconsSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF999999) else Color(0xFF999999)
 
 // Lines
@@ -51,6 +51,10 @@ fun Colors.linesPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 @Composable
 fun Colors.linesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF535353) else Color(0xFFE6E6E6)
+
+@Composable
+fun Colors.linesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF1D1D1D) else Color(0xFFF3F3F3)
 
 @Composable
 fun Colors.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)

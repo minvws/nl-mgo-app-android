@@ -98,7 +98,7 @@ private fun Error(
 
 @PreviewLightDark
 @Composable
-internal fun Empty() {
+internal fun MgoBasicTextFieldEmptyPreview() {
     MgoTheme {
         MgoBasicTextField(
             value = "",
@@ -111,7 +111,7 @@ internal fun Empty() {
 
 @PreviewLightDark
 @Composable
-internal fun Filled() {
+internal fun MgoBasicTextFieldFilledPreview() {
     MgoTheme {
         MgoBasicTextField(
             value = "Jan Jansen",
@@ -124,7 +124,7 @@ internal fun Filled() {
 
 @PreviewLightDark
 @Composable
-internal fun Error() {
+internal fun MgoBasicTextFieldErrorPreview() {
     MgoTheme {
         MgoBasicTextField(
             value = "",

@@ -31,7 +31,7 @@ sealed class SnapshotDevices(val devices: List<SnapshotDevice>) {
     data object PhoneLightDarkPortrait : SnapshotDevices(listOf(SnapshotDevice.PHONE_PORTRAIT_LIGHT, SnapshotDevice.PHONE_PORTRAIT_DARK))
 }
 
-class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, renderingMode: RenderingMode = RenderingMode.NORMAL) : TestRule {
+class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, renderingMode: RenderingMode = RenderingMode.SHRINK) : TestRule {
     @get:Rule
     val rule = Paparazzi(deviceConfig = deviceConfig, renderingMode = renderingMode)
 

@@ -130,7 +130,7 @@ private fun SearchScreenContent(
 internal fun SearchScreenPreview() {
     MgoTheme {
         SearchScreenContent(
-            viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Rotterdam", nameError = null, cityError = null),
+            viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
             onSetName = {},
             onSetCity = {},
             onSearch = {},

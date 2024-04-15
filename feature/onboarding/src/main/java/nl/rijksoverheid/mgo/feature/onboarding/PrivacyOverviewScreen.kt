@@ -26,7 +26,7 @@ import dev.jeziellago.compose.markdowntext.MarkdownText
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiary
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -80,7 +80,7 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
                     viewId = VIEW_ID_TEXT_WITH_LINK,
                     markdown = stringResource(id = CopyR.string.privacy_overview_description),
                     style = MaterialTheme.typography.body2,
-                    linkColor = MaterialTheme.colors.actionTertiary(),
+                    linkColor = MaterialTheme.colors.actionTertiaryDefault(),
                 )
                 ListItem(
                     modifier = Modifier.padding(top = 16.dp),

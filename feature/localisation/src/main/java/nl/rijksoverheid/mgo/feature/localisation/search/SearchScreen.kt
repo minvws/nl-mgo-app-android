@@ -39,9 +39,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionBorder
 import nl.rijksoverheid.mgo.component.theme.bodyText
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.component.theme.linesInput
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
@@ -132,7 +132,7 @@ private fun SearchScreenContent(
                                 Modifier
                                     .heightIn(40.dp)
                                     .border(
-                                        BorderStroke(1.dp, SolidColor(MaterialTheme.colors.actionBorder())),
+                                        BorderStroke(1.dp, SolidColor(MaterialTheme.colors.linesInput())),
                                         shape = RoundedCornerShape(8.dp),
                                     )
                                     .padding(horizontal = 8.dp),
@@ -165,7 +165,7 @@ private fun SearchScreenContent(
                                 Modifier
                                     .heightIn(40.dp)
                                     .border(
-                                        BorderStroke(1.dp, SolidColor(MaterialTheme.colors.actionBorder())),
+                                        BorderStroke(1.dp, SolidColor(MaterialTheme.colors.linesInput())),
                                         shape = RoundedCornerShape(8.dp),
                                     )
                                     .padding(horizontal = 8.dp),

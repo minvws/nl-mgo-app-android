@@ -22,11 +22,11 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionBorder
-import nl.rijksoverheid.mgo.component.theme.actionPrimary
-import nl.rijksoverheid.mgo.component.theme.actionSecondary
-import nl.rijksoverheid.mgo.component.theme.actionTertiary
-import nl.rijksoverheid.mgo.component.theme.apotheek
+import nl.rijksoverheid.mgo.component.theme.actionPrimaryBackground
+import nl.rijksoverheid.mgo.component.theme.actionPrimaryText
+import nl.rijksoverheid.mgo.component.theme.actionSecondaryBackground
+import nl.rijksoverheid.mgo.component.theme.actionSecondaryText
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.backgroundPrimary
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
@@ -34,21 +34,27 @@ import nl.rijksoverheid.mgo.component.theme.bodyText
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.fysiotherapeut
-import nl.rijksoverheid.mgo.component.theme.ggz
-import nl.rijksoverheid.mgo.component.theme.huisarts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
-import nl.rijksoverheid.mgo.component.theme.kliniek
+import nl.rijksoverheid.mgo.component.theme.iconsSecondary
+import nl.rijksoverheid.mgo.component.theme.linesInput
 import nl.rijksoverheid.mgo.component.theme.linesPrimary
 import nl.rijksoverheid.mgo.component.theme.linesSecondary
+import nl.rijksoverheid.mgo.component.theme.linesTertiary
 import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
 import nl.rijksoverheid.mgo.component.theme.notificationWarning
-import nl.rijksoverheid.mgo.component.theme.overige
-import nl.rijksoverheid.mgo.component.theme.rijksLint
-import nl.rijksoverheid.mgo.component.theme.tandarts
-import nl.rijksoverheid.mgo.component.theme.verpleeghuis
-import nl.rijksoverheid.mgo.component.theme.ziekenhuis
+import nl.rijksoverheid.mgo.component.theme.supportApotheek
+import nl.rijksoverheid.mgo.component.theme.supportFysiotherapeut
+import nl.rijksoverheid.mgo.component.theme.supportGgz
+import nl.rijksoverheid.mgo.component.theme.supportHuisarts
+import nl.rijksoverheid.mgo.component.theme.supportKliniek
+import nl.rijksoverheid.mgo.component.theme.supportOverige
+import nl.rijksoverheid.mgo.component.theme.supportRijkslint
+import nl.rijksoverheid.mgo.component.theme.supportTandarts
+import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
+import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
+import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
 
 @Composable
 private fun ColorSampleScreen() {
@@ -80,7 +86,7 @@ private fun ColorSampleScreen() {
             ColorSample(color = MaterialTheme.colors.iconsPrimary(), text = "Icons Primary")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.iconsPrimary(), text = "Icons Secondary")
+            ColorSample(color = MaterialTheme.colors.iconsSecondary(), text = "Icons Secondary")
         }
         item {
             ColorSample(color = MaterialTheme.colors.linesPrimary(), text = "Lines Primary")
@@ -89,55 +95,70 @@ private fun ColorSampleScreen() {
             ColorSample(color = MaterialTheme.colors.linesSecondary(), text = "Lines Secondary")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionBorder(), text = "Action Border")
+            ColorSample(color = MaterialTheme.colors.linesTertiary(), text = "Lines Tertiary")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionPrimary(), text = "Action Primary")
+            ColorSample(color = MaterialTheme.colors.linesInput(), text = "Lines Input")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionSecondary(), text = "Action Secondary")
+            ColorSample(color = MaterialTheme.colors.actionPrimaryBackground(), text = "Action Primary Background")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionTertiary(), text = "Action Tertiary")
+            ColorSample(color = MaterialTheme.colors.actionPrimaryText(), text = "Action Primary Text")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.rijksLint(), text = "Rijkslint")
+            ColorSample(color = MaterialTheme.colors.actionSecondaryBackground(), text = "Action Secondary Background")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.notificationSuccess(), text = "NotificationSuccess")
+            ColorSample(color = MaterialTheme.colors.actionSecondaryText(), text = "Action Secondary Text")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.notificationWarning(), text = "NotificationWarning")
+            ColorSample(color = MaterialTheme.colors.actionTertiaryDefault(), text = "Action Tertiary Default")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.notificationError(), text = "NotificationError")
+            ColorSample(color = MaterialTheme.colors.notificationInformation(), text = "Notification Information")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.apotheek(), text = "Apotheek")
+            ColorSample(color = MaterialTheme.colors.notificationSuccess(), text = "Notification Success")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.ziekenhuis(), text = "Ziekenhuis")
+            ColorSample(color = MaterialTheme.colors.notificationWarning(), text = "Notification Warning")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.huisarts(), text = "Huisarts")
+            ColorSample(color = MaterialTheme.colors.notificationError(), text = "Notification Error")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.tandarts(), text = "Tandarts")
+            ColorSample(color = MaterialTheme.colors.supportApotheek(), text = "Support Apotheek")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.ggz(), text = "GGZ")
+            ColorSample(color = MaterialTheme.colors.supportZiekenhuis(), text = "Support Ziekenhuis")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.fysiotherapeut(), text = "Fysiotherapeut")
+            ColorSample(color = MaterialTheme.colors.supportHuisarts(), text = "Support Huisarts")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.verpleeghuis(), text = "Verpleeghuis")
+            ColorSample(color = MaterialTheme.colors.supportTandarts(), text = "Support Tandarts")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.kliniek(), text = "Kliniek")
+            ColorSample(color = MaterialTheme.colors.supportGgz(), text = "Support GGZ")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.overige(), text = "Overige")
+            ColorSample(color = MaterialTheme.colors.supportFysiotherapeut(), text = "Support Fysiotherapeut")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.supportVerpleeghuis(), text = "Support Verpleeghuis")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.supportThuiszorg(), text = "Support Thuiszorg")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.supportKliniek(), text = "Support Kliniek")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.supportOverige(), text = "Support Overige")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.supportRijkslint(), text = "Support Rijkslint")
         }
     }
 }

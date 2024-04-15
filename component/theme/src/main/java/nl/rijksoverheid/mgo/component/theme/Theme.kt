@@ -30,7 +30,7 @@ fun MgoTheme(
 @Composable
 private fun getDarkColorScheme() =
     darkColors(
-        primary = MaterialTheme.colors.actionPrimary(true),
+        primary = MaterialTheme.colors.actionPrimaryBackground(true),
         secondary = MaterialTheme.colors.contentSecondary(true),
         background = MaterialTheme.colors.backgroundPrimary(true),
         surface = MaterialTheme.colors.backgroundPrimary(true), // Not a typo! Surface in dark is same as primary.
@@ -42,7 +42,7 @@ private fun getDarkColorScheme() =
 @Composable
 private fun getLightColorScheme() =
     lightColors(
-        primary = MaterialTheme.colors.actionPrimary(false),
+        primary = MaterialTheme.colors.actionPrimaryBackground(false),
         secondary = MaterialTheme.colors.contentSecondary(false),
         background = MaterialTheme.colors.backgroundPrimary(false),
         surface = MaterialTheme.colors.backgroundSecondary(false),

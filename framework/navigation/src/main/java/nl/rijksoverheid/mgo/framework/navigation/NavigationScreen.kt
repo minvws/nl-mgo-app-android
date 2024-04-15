@@ -1,7 +1,9 @@
 package nl.rijksoverheid.mgo.framework.navigation
 
+import androidx.lifecycle.SavedStateHandle
+
 sealed class NavigationScreen(val name: String, val placeholders: List<String> = listOf()) {
-    protected var builder = NavigationRouteBuilder(name = name)
+    protected var builder = NavigationRouteBuilder(name = name, placeholders = placeholders)
 
     fun getRoute(): String {
         return buildString {
@@ -13,7 +15,7 @@ sealed class NavigationScreen(val name: String, val placeholders: List<String> =
     }
 
     open fun getNavigationRoute(): String {
-        return getRoute()
+        return builder.buildRoute()
     }
 
     sealed class Onboarding(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
@@ -31,13 +33,21 @@ sealed class NavigationScreen(val name: String, val placeholders: List<String> =
 
         data object GetSearchResults : AddHealthCare(name = "getSearchResults", placeholders = listOf("name", "city")) {
             fun setName(name: String): GetSearchResults {
-                builder.addArgument(name)
+                builder.addArgument(placeholders[0], name)
                 return this
             }
 
             fun setCity(city: String): GetSearchResults {
-                builder.addArgument(city)
+                builder.addArgument(placeholders[1], city)
                 return this
+            }
+
+            fun getName(savedStateHandle: SavedStateHandle): String {
+                return requireNotNull(savedStateHandle[placeholders[0]])
+            }
+
+            fun getCity(savedStateHandle: SavedStateHandle): String {
+                return requireNotNull(savedStateHandle[placeholders[1]])
             }
         }
     }
@@ -48,17 +58,26 @@ sealed class NavigationScreen(val name: String, val placeholders: List<String> =
 
     data object Dashboard : NavigationScreen("dashboard")
 
-    data class NavigationRouteBuilder(val name: String) {
-        private var arguments: MutableList<String> = mutableListOf()
+    data class NavigationRouteBuilder(val name: String, val placeholders: List<String>) {
+        private var arguments: MutableMap<String, String?> = mutableMapOf()
 
-        fun addArgument(argument: String) {
-            arguments.add(argument)
+        init {
+            placeholders.forEach { placeholder ->
+                arguments[placeholder] = null
+            }
+        }
+
+        fun addArgument(
+            key: String,
+            value: String,
+        ) {
+            arguments[key] = value
         }
 
         fun buildRoute(): String {
             return buildString {
                 append(name)
-                arguments.forEach { argument ->
+                arguments.values.forEach { argument ->
                     append("/$argument")
                 }
             }

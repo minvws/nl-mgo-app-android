@@ -45,7 +45,7 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             }
 
             is NavigationScreen.AddHealthCare.GetSearchResults -> {
-                navController.navigate(NavigationScreen.AddHealthCare.GetSearchResults.getRoute())
+                navController.navigate(NavigationScreen.AddHealthCare.GetSearchResults.getNavigationRoute())
             }
         }
     }

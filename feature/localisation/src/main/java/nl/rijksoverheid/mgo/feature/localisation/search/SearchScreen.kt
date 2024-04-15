@@ -1,11 +1,8 @@
 package nl.rijksoverheid.mgo.feature.localisation.search
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -69,7 +66,6 @@ private fun SearchScreenContent(
 ) {
     val navigationManager: NavigationManager = LocalNavigationManager.current
     Scaffold(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
             TopAppBar(
                 title = { Text(text = "") },

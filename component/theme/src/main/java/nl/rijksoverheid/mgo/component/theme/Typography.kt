@@ -60,7 +60,16 @@ val Typography.headingExtraSmall: TextStyle
             lineHeight = 25.sp,
         )
 
-val Typography.bodyText: TextStyle
+val Typography.bodyDefault: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Normal,
+            fontSize = 18.sp,
+            lineHeight = 28.sp,
+        )
+
+val Typography.bodySmall: TextStyle
     get() =
         TextStyle(
             fontFamily = fonts,

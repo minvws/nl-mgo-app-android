@@ -29,4 +29,6 @@
     <string name="localisation_search_city_error">Vul een plaats in</string>
     <string name="localisation_search_name_header">Naam (verplicht)</string>
     <string name="localisation_search_city_header">Plaats (verplicht)</string>
+    <string name="localisation_searchresults_title">Deze zorgverleners hebben we gevonden</string>
+    <string name="localisation_searchresults_loading">Zorgverleners aan het zoeken…</string>
 </resources>

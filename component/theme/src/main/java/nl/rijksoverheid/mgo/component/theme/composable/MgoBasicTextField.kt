@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.R
-import nl.rijksoverheid.mgo.component.theme.bodyText
+import nl.rijksoverheid.mgo.component.theme.bodySmall
 
 @Composable
 fun MgoBasicTextField(
@@ -90,7 +90,7 @@ private fun Error(
         Text(
             modifier = Modifier.padding(start = 6.dp),
             text = text,
-            style = MaterialTheme.typography.bodyText,
+            style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
         )
     }

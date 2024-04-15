@@ -27,6 +27,6 @@
     <string name="localisation_search_title">Welke zorgverlener wil je toevoegen?</string>
     <string name="localisation_search_name_error">Vul een naam in</string>
     <string name="localisation_search_city_error">Vul een plaats in</string>
-    <string name="localisation_search_name_hint">Naam (verplicht)</string>
-    <string name="localisation_search_city_hint">Plaats (verplicht)</string>
+    <string name="localisation_search_name_header">Naam (verplicht)</string>
+    <string name="localisation_search_city_header">Plaats (verplicht)</string>
 </resources>

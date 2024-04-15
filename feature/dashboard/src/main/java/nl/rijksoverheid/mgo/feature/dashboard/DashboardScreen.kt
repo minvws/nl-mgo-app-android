@@ -36,7 +36,7 @@ fun DashboardScreen() {
         Column(
             modifier = Modifier.padding(paddingValues).padding(all = 16.dp),
         ) {
-            Button(onClick = { navigationManager.navigate(NavigationScreen.AddHealthCare.Start) }) {
+            Button(onClick = { navigationManager.navigate(NavigationScreen.Localisation.Start) }) {
                 Text(text = "Search")
             }
             Button(onClick = { viewModel.reset(context) }) {

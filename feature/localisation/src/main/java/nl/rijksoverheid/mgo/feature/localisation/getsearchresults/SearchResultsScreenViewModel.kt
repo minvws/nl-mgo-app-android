@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-internal class GetSearchResultsScreenViewModel
+internal class SearchResultsScreenViewModel
     @Inject
     constructor(
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
-        private val name = NavigationScreen.AddHealthCare.GetSearchResults.getName(savedStateHandle)
-        private val city = NavigationScreen.AddHealthCare.GetSearchResults.getCity(savedStateHandle)
+        private val name = NavigationScreen.Localisation.SearchResults.getName(savedStateHandle)
+        private val city = NavigationScreen.Localisation.SearchResults.getCity(savedStateHandle)
 
         private val _viewState = MutableStateFlow(SearchResultsViewState.initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, SearchResultsViewState.initialState)

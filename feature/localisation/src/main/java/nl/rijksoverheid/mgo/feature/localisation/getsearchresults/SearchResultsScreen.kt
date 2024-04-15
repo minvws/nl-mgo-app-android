@@ -10,7 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun GetSearchResultsScreen() {
-    val viewModel: GetSearchResultsScreenViewModel = hiltViewModel()
+    val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     viewModel.getSearchResults()
     Box(modifier = Modifier.fillMaxSize().background(Color.Blue))
 }

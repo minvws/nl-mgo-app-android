@@ -26,18 +26,18 @@ sealed class NavigationScreen(val name: String, val placeholders: List<String> =
         data object PrivacyOverview : Onboarding("privacyOverview")
     }
 
-    sealed class AddHealthCare(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
-        data object Start : AddHealthCare("addHealthCareStart")
+    sealed class Localisation(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
+        data object Start : Localisation("start")
 
-        data object Search : AddHealthCare("search")
+        data object Search : Localisation("search")
 
-        data object GetSearchResults : AddHealthCare(name = "getSearchResults", placeholders = listOf("name", "city")) {
-            fun setName(name: String): GetSearchResults {
+        data object SearchResults : Localisation(name = "getSearchResults", placeholders = listOf("name", "city")) {
+            fun setName(name: String): SearchResults {
                 builder.addArgument(placeholders[0], name)
                 return this
             }
 
-            fun setCity(city: String): GetSearchResults {
+            fun setCity(city: String): SearchResults {
                 builder.addArgument(placeholders[1], city)
                 return this
             }

@@ -9,17 +9,17 @@ import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTran
 
 fun NavGraphBuilder.addAddHealthCareNavigationGraph() {
     navigation(
-        startDestination = NavigationScreen.AddHealthCare.Search.getRoute(),
-        route = NavigationScreen.AddHealthCare.Start.getRoute(),
+        startDestination = NavigationScreen.Localisation.Search.getRoute(),
+        route = NavigationScreen.Localisation.Start.getRoute(),
     ) {
         composableWithDefaultScreenTransitions(
-            route = NavigationScreen.AddHealthCare.Search.getRoute(),
+            route = NavigationScreen.Localisation.Search.getRoute(),
         ) {
             SearchScreen()
         }
 
         composableWithDefaultScreenTransitions(
-            route = NavigationScreen.AddHealthCare.GetSearchResults.getRoute(),
+            route = NavigationScreen.Localisation.SearchResults.getRoute(),
         ) {
             GetSearchResultsScreen()
         }

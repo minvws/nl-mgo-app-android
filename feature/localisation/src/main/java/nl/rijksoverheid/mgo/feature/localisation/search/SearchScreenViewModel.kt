@@ -40,7 +40,7 @@ class SearchScreenViewModel
                 val cityError = if (city.isEmpty()) FrameworkR.string.localisation_search_city_error else null
                 _viewState.update { viewState -> viewState.copy(nameError = nameError, cityError = cityError) }
                 if (nameError == null && cityError == null) {
-                    val route = NavigationScreen.AddHealthCare.GetSearchResults.setName(name).setCity(city)
+                    val route = NavigationScreen.Localisation.SearchResults.setName(name).setCity(city)
                     _navigation.tryEmit(route)
                 }
             }

@@ -36,16 +36,16 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
                 navController.navigate(NavigationScreen.Dashboard.getRoute())
             }
 
-            NavigationScreen.AddHealthCare.Start -> {
-                navController.navigate(NavigationScreen.AddHealthCare.Start.getRoute())
+            NavigationScreen.Localisation.Start -> {
+                navController.navigate(NavigationScreen.Localisation.Start.getRoute())
             }
 
-            NavigationScreen.AddHealthCare.Search -> {
+            NavigationScreen.Localisation.Search -> {
                 // You never navigate to search, only to the root of the graph which shows the search.
             }
 
-            is NavigationScreen.AddHealthCare.GetSearchResults -> {
-                navController.navigate(NavigationScreen.AddHealthCare.GetSearchResults.getNavigationRoute())
+            is NavigationScreen.Localisation.SearchResults -> {
+                navController.navigate(NavigationScreen.Localisation.SearchResults.getNavigationRoute())
             }
         }
     }

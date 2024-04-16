@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.localisation.getsearchresults
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -27,10 +28,11 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun SearchResultCard(
     searchResult: SearchResult,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier) {
-        Row(modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 12.dp)) {
+    Card {
+        Row(modifier = Modifier.clickable { onClick() }.padding(top = 12.dp, start = 12.dp, bottom = 12.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 val address = searchResult.address
@@ -45,7 +47,7 @@ fun SearchResultCard(
                     Text(text = "$postalCode $city", style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
                 }
             }
-            IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { /*TODO*/ }) {
+            IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search_result_card_add),
                     contentDescription = stringResource(id = CopyR.string.general_add),
@@ -62,6 +64,7 @@ internal fun SearchResultCardPreview() {
     MgoTheme {
         SearchResultCard(
             searchResult = TEST_SEARCH_RESULT,
+            onClick = { },
             modifier = Modifier.padding(all = 16.dp),
         )
     }

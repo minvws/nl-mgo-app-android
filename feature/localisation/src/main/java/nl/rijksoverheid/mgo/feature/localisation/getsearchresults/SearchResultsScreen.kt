@@ -32,7 +32,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.data.localisation.models.SearchResult
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_SEARCH_RESULT
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -114,15 +113,11 @@ private fun LazyListScope.loadingContent() {
 }
 
 private fun LazyListScope.searchResultsContent(searchResults: List<SearchResult>) {
-    val test = mutableListOf<SearchResult>()
-    for (i in 0 until 100) {
-        test.add(TEST_SEARCH_RESULT)
-    }
     item {
         Spacer(modifier = Modifier.padding(top = 16.dp))
     }
-    items(test.size) {
-        SearchResultCard(modifier = Modifier.padding(bottom = 8.dp), searchResult = test[it])
+    items(searchResults.size) { position ->
+        SearchResultCard(modifier = Modifier.padding(bottom = 8.dp), searchResult = searchResults[position], onClick = {})
     }
 }
 

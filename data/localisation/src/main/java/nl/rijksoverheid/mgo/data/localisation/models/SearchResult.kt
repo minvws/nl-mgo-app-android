@@ -10,6 +10,15 @@ data class SearchResult(
     val postalCode: String?,
 )
 
+val TEST_SEARCH_RESULT =
+    SearchResult(
+        id = "1",
+        name = "Tandarts Tandje Erbij",
+        city = "Roermond",
+        address = "Boorplatform 5",
+        postalCode = "1234AB",
+    )
+
 internal fun SearchResponse.toSearchResults(): List<SearchResult> {
     return organizations.mapNotNull { organization ->
         val name = organization.displayName ?: return@mapNotNull null

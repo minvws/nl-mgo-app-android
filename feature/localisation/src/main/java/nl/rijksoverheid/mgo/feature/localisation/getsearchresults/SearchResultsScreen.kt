@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.localisation.getsearchresults
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,6 +32,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.data.localisation.models.SearchResult
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_SEARCH_RESULT
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -112,8 +114,15 @@ private fun LazyListScope.loadingContent() {
 }
 
 private fun LazyListScope.searchResultsContent(searchResults: List<SearchResult>) {
+    val test = mutableListOf<SearchResult>()
+    for (i in 0 until 100) {
+        test.add(TEST_SEARCH_RESULT)
+    }
     item {
-        Text(text = "Amount of searchresults: ${searchResults.size}")
+        Spacer(modifier = Modifier.padding(top = 16.dp))
+    }
+    items(test.size) {
+        SearchResultCard(modifier = Modifier.padding(bottom = 8.dp), searchResult = test[it])
     }
 }
 

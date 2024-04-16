@@ -7,6 +7,7 @@
     <string name="general_previous">Vorige</string>
     <string name="general_try_again">Probeer opnieuw</string>
     <string name="general_search">Zoeken</string>
+    <string name="general_add">Toevoegen</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
     <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>

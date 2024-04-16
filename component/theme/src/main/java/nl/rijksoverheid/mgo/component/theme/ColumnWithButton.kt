@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +22,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 
 const val TEST_TAG_COLUMN_WITH_BUTTON_BUTTON = "COLUMN_WITH_BUTTON_BUTTON"
 internal const val TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION = "COLUMN_WITH_BUTTON_ELEVATION"
@@ -80,15 +80,14 @@ internal fun ColumnWithButtonContent(
             )
         }
         val background = if (canScrollForward) MaterialTheme.colors.surface else Color.Transparent
-        Button(
+        MgoButton(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .background(background)
                     .padding(all = 16.dp)
                     .testTag(TEST_TAG_COLUMN_WITH_BUTTON_BUTTON),
-            contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
-            content = { Text(text = buttonText) },
+            buttonText = buttonText,
             onClick = onButtonClick,
         )
     }

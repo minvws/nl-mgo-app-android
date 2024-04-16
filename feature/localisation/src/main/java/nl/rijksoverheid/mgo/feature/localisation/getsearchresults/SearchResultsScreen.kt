@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -29,6 +30,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.data.localisation.models.SearchResult
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -69,22 +71,56 @@ private fun SearchResultsScreenContent(viewState: SearchResultsViewState) {
                         fontWeight = FontWeight.Bold,
                     )
                 }
-                item {
-                    Column(modifier = Modifier.fillMaxWidth().padding(top = 64.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(48.dp),
-                            strokeWidth = 6.dp,
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 20.dp),
-                            text = stringResource(id = CopyR.string.localisation_searchresults_loading),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
+                when (viewState) {
+                    SearchResultsViewState.Loading -> {
+                        loadingContent()
+                    }
+
+                    is SearchResultsViewState.Success -> {
+                        searchResultsContent(viewState.results)
+                    }
+
+                    is SearchResultsViewState.Error -> {
+                        errorContent(viewState.error)
                     }
                 }
             }
         },
     )
+}
+
+private fun LazyListScope.loadingContent() {
+    item {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 64.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(48.dp),
+                strokeWidth = 6.dp,
+            )
+            Text(
+                modifier = Modifier.padding(top = 20.dp),
+                text = stringResource(id = CopyR.string.localisation_searchresults_loading),
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+    }
+}
+
+private fun LazyListScope.searchResultsContent(searchResults: List<SearchResult>) {
+    item {
+        Text(text = "Amount of searchresults: ${searchResults.size}")
+    }
+}
+
+private fun LazyListScope.errorContent(throwable: Throwable) {
+    item {
+        Text(text = "Something went wrong: " + throwable)
+    }
 }
 
 @DefaultPreviews

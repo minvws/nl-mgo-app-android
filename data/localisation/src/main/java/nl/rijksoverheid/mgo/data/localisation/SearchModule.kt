@@ -4,8 +4,7 @@ import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.localisation.api.SearchApi
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import okhttp3.OkHttpClient
@@ -32,11 +31,11 @@ internal fun createMoshi(): Moshi {
     return Moshi.Builder().build()
 }
 
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 internal object SearchModule {
     @Provides
-    @ViewModelScoped
+    @Singleton
     fun provideSearchRepository(searchApi: SearchApi): SearchRepository {
         return DefaultSearchRepository(searchApi = searchApi)
     }

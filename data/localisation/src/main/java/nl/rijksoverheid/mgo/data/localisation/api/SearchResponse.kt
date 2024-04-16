@@ -5,10 +5,10 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 internal class SearchResponse(
-    val organisations: List<Organisation>,
+    val organizations: List<Organization>,
 ) {
     @JsonClass(generateAdapter = true)
-    data class Organisation(
+    data class Organization(
         @Json(name = "identification_value") val id: String,
         @Json(name = "display_name") val displayName: String?,
         val addresses: List<Address>,

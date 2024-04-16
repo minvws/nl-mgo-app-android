@@ -11,11 +11,11 @@ data class SearchResult(
 )
 
 internal fun SearchResponse.toSearchResults(): List<SearchResult> {
-    return organisations.mapNotNull { organisation ->
-        val name = organisation.displayName ?: return@mapNotNull null
-        val address = organisation.addresses.firstOrNull() ?: return@mapNotNull null
+    return organizations.mapNotNull { organization ->
+        val name = organization.displayName ?: return@mapNotNull null
+        val address = organization.addresses.firstOrNull() ?: return@mapNotNull null
         SearchResult(
-            id = organisation.id,
+            id = organization.id,
             name = name,
             city = address.city,
             address = address.address,

@@ -96,7 +96,7 @@ private fun LazyListScope.loadingContent() {
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 64.dp),
+                    .padding(top = 72.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             CircularProgressIndicator(

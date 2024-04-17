@@ -37,7 +37,12 @@ fun SearchScreen() {
     val viewModel: SearchScreenViewModel = hiltViewModel()
     val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
-    LaunchedEffect("navigation") {
+    LaunchedEffect(Unit) {
+        // Reset name and city every time this composable is created for the first time
+        viewModel.setName("")
+        viewModel.setCity("")
+
+        // Handle navigation
         viewModel.navigation.collectLatest { screen ->
             navigationManager.navigate(screen)
         }

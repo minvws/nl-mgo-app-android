@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import java.io.File
@@ -54,6 +55,13 @@ internal object MainModule {
     @Provides
     @Singleton
     fun provideAppInfo(): AppInfo {
-        return DefaultAppInfo(versionCode = BuildConfig.VERSION_CODE)
+        val appFlavor =
+            when (BuildConfig.FLAVOR) {
+                "tst" -> AppFlavor.TEST
+                "acc" -> AppFlavor.ACC
+                "prod" -> AppFlavor.PROD
+                else -> AppFlavor.TEST
+            }
+        return DefaultAppInfo(versionCode = BuildConfig.VERSION_CODE, appFlavor = appFlavor)
     }
 }

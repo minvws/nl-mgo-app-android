@@ -11,6 +11,8 @@
     <string name="general_add">Toevoegen</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
+    <string name="error_title">Er ging iets mis</string>
+    <string name="error_subtitle">Controleer of je telefoon verbonden is met het internet en probeer het opnieuw.</string>
     <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
     <string name="introduction_description">Alle informatie die je huisarts, ziekenhuis en andere zorgverleners over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
     <string name="privacy_overview_title">Zo gebruikt de app jouw gegevens</string>

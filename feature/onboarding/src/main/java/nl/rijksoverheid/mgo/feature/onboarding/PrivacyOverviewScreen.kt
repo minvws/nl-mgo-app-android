@@ -27,6 +27,8 @@ import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
+import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -72,14 +74,14 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
             ) {
                 Text(
                     text = stringResource(id = CopyR.string.privacy_overview_title),
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.headingMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 MarkdownText(
                     modifier = Modifier.padding(top = 16.dp),
                     viewId = VIEW_ID_TEXT_WITH_LINK,
                     markdown = stringResource(id = CopyR.string.privacy_overview_description),
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.bodySmall,
                     linkColor = MaterialTheme.colors.actionTertiaryDefault(),
                 )
                 ListItem(
@@ -115,10 +117,10 @@ private fun ListItem(
 ) {
     Row(modifier = modifier) {
         Image(painter = painterResource(id = icon), contentDescription = null)
-        MarkdownText(
+        Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-            markdown = text,
-            style = MaterialTheme.typography.body2,
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }

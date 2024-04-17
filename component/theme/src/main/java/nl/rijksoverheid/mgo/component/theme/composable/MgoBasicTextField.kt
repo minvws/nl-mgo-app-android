@@ -47,6 +47,7 @@ fun MgoBasicTextField(
                     modifier = Modifier.padding(bottom = 8.dp),
                     text = header,
                     color = MaterialTheme.colors.onBackground,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
 

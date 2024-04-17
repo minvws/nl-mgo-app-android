@@ -33,6 +33,15 @@ val Typography.headingLarge: TextStyle
             lineHeight = 34.sp,
         )
 
+val Typography.headingMedium: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Bold,
+            fontSize = 28.sp,
+            lineHeight = 34.sp,
+        )
+
 val Typography.headingRegular: TextStyle
     get() =
         TextStyle(

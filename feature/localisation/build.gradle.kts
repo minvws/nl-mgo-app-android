@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(project(":data:localisation"))
+    implementation(project(":framework:environment"))
 }

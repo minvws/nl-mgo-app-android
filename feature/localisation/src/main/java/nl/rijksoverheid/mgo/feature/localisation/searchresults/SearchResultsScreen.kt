@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -26,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.jeziellago.compose.markdowntext.MarkdownText
@@ -45,11 +48,14 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun SearchResultsScreen() {
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    SearchResultsScreenContent(viewState = viewState)
+    SearchResultsScreenContent(viewState = viewState, onGetSearchResults = { viewModel.getSearchResults() })
 }
 
 @Composable
-private fun SearchResultsScreenContent(viewState: SearchResultsViewState) {
+private fun SearchResultsScreenContent(
+    viewState: SearchResultsScreenViewState,
+    onGetSearchResults: () -> Unit,
+) {
     val navigationManager = LocalNavigationManager.current
     Scaffold(
         topBar = {
@@ -70,11 +76,11 @@ private fun SearchResultsScreenContent(viewState: SearchResultsViewState) {
         backgroundColor = Color.Transparent,
         content = { innerPadding ->
             when (viewState) {
-                SearchResultsViewState.Loading -> {
+                SearchResultsScreenViewState.Loading -> {
                     SearchResultsLoadingContent(modifier = Modifier.padding(innerPadding))
                 }
 
-                is SearchResultsViewState.Success -> {
+                is SearchResultsScreenViewState.Success -> {
                     if (viewState.results.isEmpty()) {
                         SearchResultsEmptyContent(
                             modifier = Modifier.padding(innerPadding),
@@ -89,7 +95,12 @@ private fun SearchResultsScreenContent(viewState: SearchResultsViewState) {
                     }
                 }
 
-                is SearchResultsViewState.Error -> TODO()
+                is SearchResultsScreenViewState.Error ->
+                    SearchResultsErrorContent(
+                        isProductionBuild = viewState.isProductionBuild,
+                        error = viewState.error,
+                        onButtonClick = onGetSearchResults,
+                    )
             }
         },
     )
@@ -101,6 +112,7 @@ private fun SearchResultsLoadingContent(modifier: Modifier = Modifier) {
         modifier =
             modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .padding(start = 16.dp, end = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -223,12 +235,57 @@ private fun SearchResultEmptyListItem(
     }
 }
 
+@Composable
+private fun SearchResultsErrorContent(
+    isProductionBuild: Boolean,
+    error: Throwable,
+    onButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ColumnWithButton(
+        modifier = modifier.padding(start = 16.dp, end = 16.dp),
+        buttonText = stringResource(id = CopyR.string.general_try_again),
+        onButtonClick = onButtonClick,
+    ) {
+        Text(
+            text = stringResource(id = CopyR.string.error_title),
+            style = MaterialTheme.typography.headingLarge,
+            fontWeight = FontWeight.Bold,
+        )
+
+        Image(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 24.dp),
+            painter = painterResource(id = R.drawable.illustration_alert),
+            contentDescription = null,
+        )
+
+        MarkdownText(
+            modifier = Modifier.padding(top = 24.dp),
+            markdown = stringResource(id = CopyR.string.error_subtitle),
+            style = MaterialTheme.typography.bodySmall,
+        )
+
+        if (!isProductionBuild) {
+            Text(
+                modifier = Modifier.padding(top = 16.dp),
+                text = error.toString(),
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
+            )
+        }
+    }
+}
+
 @DefaultPreviews
 @Composable
 internal fun SearchResultsLoadingPreview() {
     MgoTheme {
         SearchResultsScreenContent(
-            viewState = SearchResultsViewState.Loading,
+            viewState = SearchResultsScreenViewState.Loading,
+            onGetSearchResults = {},
         )
     }
 }
@@ -238,7 +295,8 @@ internal fun SearchResultsLoadingPreview() {
 internal fun SearchResultsEmptyPreview() {
     MgoTheme {
         SearchResultsScreenContent(
-            viewState = SearchResultsViewState.Success(name = "Tandarts Tandje Erbij", city = "Roermond", results = listOf()),
+            viewState = SearchResultsScreenViewState.Success(name = "Tandarts Tandje Erbij", city = "Roermond", results = listOf()),
+            onGetSearchResults = {},
         )
     }
 }
@@ -249,7 +307,7 @@ internal fun SearchResultsPreview() {
     MgoTheme {
         SearchResultsScreenContent(
             viewState =
-                SearchResultsViewState.Success(
+                SearchResultsScreenViewState.Success(
                     name = "Tandarts Tandje Erbij",
                     city = "Roermond",
                     results =
@@ -259,6 +317,19 @@ internal fun SearchResultsPreview() {
                             TEST_SEARCH_RESULT,
                         ),
                 ),
+            onGetSearchResults = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun SearchResultsErrorPreview() {
+    MgoTheme {
+        SearchResultsScreenContent(
+            viewState =
+                SearchResultsScreenViewState.Error(isProductionBuild = false, error = IllegalStateException("Something went wrong")),
+            onGetSearchResults = {},
         )
     }
 }

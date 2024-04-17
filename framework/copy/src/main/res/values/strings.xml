@@ -7,6 +7,7 @@
     <string name="general_previous">Vorige</string>
     <string name="general_try_again">Probeer opnieuw</string>
     <string name="general_search">Zoeken</string>
+    <string name="general_search_again">Opnieuw zoeken</string>
     <string name="general_add">Toevoegen</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
@@ -32,4 +33,9 @@
     <string name="localisation_search_city_header">Plaats (verplicht)</string>
     <string name="localisation_searchresults_title">Deze zorgverleners hebben we gevonden</string>
     <string name="localisation_searchresults_loading">Zorgverleners aan het zoeken…</string>
+    <string name="localisation_searchresults_empty_title">Geen zorgverleners gevonden</string>
+    <string name="localisation_searchresults_empty_list_header">Je hebt gezocht naar **%1$s** in **%2$s**.</string>
+    <string name="localisation_searchresults_empty_list_item_1">Controleer de spelling.</string>
+    <string name="localisation_searchresults_empty_list_item_2">Vul de juiste naam in. Je vindt deze  op de rekening. Of vraag aan de zorgverlener hoe je hun naam schrijft.</string>
+    <string name="localisation_searchresults_empty_list_item_3">Heeft deze zorgverlener meerdere vestigingen? Vul dan de plaatsnaam van de hoofdvestiging in.</string>
 </resources>

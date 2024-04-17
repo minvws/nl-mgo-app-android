@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.getsearchresults
+package nl.rijksoverheid.mgo.feature.localisation.searchresults
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -33,7 +33,7 @@ internal class SearchResultsScreenViewModel
         private fun getSearchResults() {
             viewModelScope.launch {
                 searchRepository.search(name = name, city = city)
-                    .onSuccess { results -> _viewState.update { SearchResultsViewState.Success(results) } }
+                    .onSuccess { results -> _viewState.update { SearchResultsViewState.Success(name, city, results) } }
                     .onFailure { throwable -> _viewState.update { SearchResultsViewState.Error(throwable) } }
             }
         }

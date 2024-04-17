@@ -106,7 +106,7 @@ fun Colors.supportZiekenhuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme())
 
 @Composable
 fun Colors.supportHuisarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF01689B) else Color(0xFF66A4C3)
+    if (isSystemDarkTheme) Color(0xFF66A4C3) else Color(0xFF01689B)
 
 @Composable
 fun Colors.supportTandarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =

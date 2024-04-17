@@ -42,8 +42,7 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
                             .fillMaxWidth()
                             .align(Alignment.CenterHorizontally),
                     painter = painterResource(id = R.drawable.illustration_old_version),
-                    contentDescription =
-                    null,
+                    contentDescription = null,
                 )
 
                 Text(

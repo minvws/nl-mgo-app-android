@@ -1,6 +1,5 @@
-package nl.rijksoverheid.mgo.feature.localisation
+package nl.rijksoverheid.mgo.feature.localisation.search
 
-import nl.rijksoverheid.mgo.feature.localisation.search.SearchScreenPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test

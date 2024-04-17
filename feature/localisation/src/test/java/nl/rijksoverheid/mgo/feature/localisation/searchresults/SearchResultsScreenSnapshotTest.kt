@@ -21,4 +21,18 @@ internal class SearchResultsScreenSnapshotTest {
             SearchResultsPreview()
         }
     }
+
+    @Test
+    fun empty() {
+        snapshotTestRule.snapshots {
+            SearchResultsEmptyPreview()
+        }
+    }
+
+    @Test
+    fun error() {
+        snapshotTestRule.snapshots {
+            SearchResultsErrorPreview()
+        }
+    }
 }

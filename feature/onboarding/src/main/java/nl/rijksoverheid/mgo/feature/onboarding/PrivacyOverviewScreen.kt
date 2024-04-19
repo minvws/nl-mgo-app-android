@@ -117,9 +117,9 @@ private fun ListItem(
 ) {
     Row(modifier = modifier) {
         Image(painter = painterResource(id = icon), contentDescription = null)
-        Text(
+        MarkdownText(
             modifier = Modifier.padding(horizontal = 16.dp),
-            text = text,
+            markdown = text,
             style = MaterialTheme.typography.bodySmall,
         )
     }

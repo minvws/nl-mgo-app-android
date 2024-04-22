@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.data.localisation.models
 
 import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
 
-data class SearchResult(
+data class HealthCareProvider(
     val id: String,
     val name: String,
     val city: String?,
@@ -10,8 +10,8 @@ data class SearchResult(
     val postalCode: String?,
 )
 
-val TEST_SEARCH_RESULT =
-    SearchResult(
+val TEST_HEALTH_CARE_PROVIDER =
+    HealthCareProvider(
         id = "1",
         name = "Tandarts Tandje Erbij",
         city = "Roermond",
@@ -19,11 +19,11 @@ val TEST_SEARCH_RESULT =
         postalCode = "1234AB",
     )
 
-internal fun SearchResponse.toSearchResults(): List<SearchResult> {
+internal fun SearchResponse.toHealthCareProviders(): List<HealthCareProvider> {
     return organizations.mapNotNull { organization ->
         val name = organization.displayName ?: return@mapNotNull null
         val address = organization.addresses.firstOrNull() ?: return@mapNotNull null
-        SearchResult(
+        HealthCareProvider(
             id = organization.id,
             name = name,
             city = address.city,

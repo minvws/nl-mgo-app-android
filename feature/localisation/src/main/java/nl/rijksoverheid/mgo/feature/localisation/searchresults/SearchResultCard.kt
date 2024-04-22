@@ -21,14 +21,14 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
-import nl.rijksoverheid.mgo.data.localisation.models.SearchResult
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_SEARCH_RESULT
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun SearchResultCard(
-    searchResult: SearchResult,
+    searchResult: HealthCareProvider,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -64,7 +64,7 @@ fun SearchResultCard(
 internal fun SearchResultCardPreview() {
     MgoTheme {
         SearchResultCard(
-            searchResult = TEST_SEARCH_RESULT,
+            searchResult = TEST_HEALTH_CARE_PROVIDER,
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
         )

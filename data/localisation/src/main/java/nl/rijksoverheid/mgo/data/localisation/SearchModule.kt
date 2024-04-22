@@ -36,8 +36,8 @@ internal fun createMoshi(): Moshi {
 internal object SearchModule {
     @Provides
     @Singleton
-    fun provideSearchRepository(searchApi: SearchApi): SearchRepository {
-        return DefaultSearchRepository(searchApi = searchApi)
+    fun provideSearchRepository(searchApi: SearchApi): HealthCareProviderRepository {
+        return DefaultHealthCareProviderRepository(searchApi = searchApi)
     }
 
     @Provides

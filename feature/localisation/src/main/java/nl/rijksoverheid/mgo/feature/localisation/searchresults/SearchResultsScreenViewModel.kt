@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.localisation.SearchRepository
+import nl.rijksoverheid.mgo.data.localisation.HealthCareProviderRepository
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
@@ -21,7 +21,7 @@ internal class SearchResultsScreenViewModel
     constructor(
         savedStateHandle: SavedStateHandle,
         private val appInfo: AppInfo,
-        private val searchRepository: SearchRepository,
+        private val healthCareProviderRepository: HealthCareProviderRepository,
     ) : ViewModel() {
         private val name = NavigationScreen.Localisation.SearchResults.getName(savedStateHandle)
         private val city = NavigationScreen.Localisation.SearchResults.getCity(savedStateHandle)
@@ -36,7 +36,7 @@ internal class SearchResultsScreenViewModel
         fun getSearchResults() {
             viewModelScope.launch {
                 _viewState.update { SearchResultsScreenViewState.Loading }
-                searchRepository.search(name = name, city = city)
+                healthCareProviderRepository.search(name = name, city = city)
                     .onSuccess { results -> _viewState.update { SearchResultsScreenViewState.Success(name, city, results) } }
                     .onFailure { throwable ->
                         _viewState.update {

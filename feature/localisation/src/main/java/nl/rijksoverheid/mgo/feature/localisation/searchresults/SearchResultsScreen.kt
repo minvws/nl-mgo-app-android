@@ -38,8 +38,8 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
-import nl.rijksoverheid.mgo.data.localisation.models.SearchResult
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_SEARCH_RESULT
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -139,7 +139,7 @@ private fun SearchResultsLoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SearchResultsContent(
-    searchResults: List<SearchResult>,
+    searchResults: List<HealthCareProvider>,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
@@ -312,9 +312,9 @@ internal fun SearchResultsPreview() {
                     city = "Roermond",
                     results =
                         listOf(
-                            TEST_SEARCH_RESULT,
-                            TEST_SEARCH_RESULT,
-                            TEST_SEARCH_RESULT,
+                            TEST_HEALTH_CARE_PROVIDER,
+                            TEST_HEALTH_CARE_PROVIDER,
+                            TEST_HEALTH_CARE_PROVIDER,
                         ),
                 ),
             onGetSearchResults = {},

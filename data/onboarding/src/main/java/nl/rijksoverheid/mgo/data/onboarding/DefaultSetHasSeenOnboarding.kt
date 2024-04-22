@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.onboarding
 
-import nl.rijksoverheid.mgo.framework.storage.KEY_HAS_SEEN_ONBOARDING
-import nl.rijksoverheid.mgo.framework.storage.KeyValueStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_HAS_SEEN_ONBOARDING
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 

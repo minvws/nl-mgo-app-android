@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.onboarding
 
-import nl.rijksoverheid.mgo.framework.storage.KEY_HAS_SEEN_ONBOARDING
-import nl.rijksoverheid.mgo.framework.storage.TestKeyValueStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_HAS_SEEN_ONBOARDING
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.framework.storage
+package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import android.content.Context
 import androidx.datastore.core.DataStore

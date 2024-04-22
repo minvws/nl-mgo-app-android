@@ -19,6 +19,9 @@ class AndroidDataPlugin : Plugin<Project> {
     private fun Project.configureDependencies() {
         dependencies {
             add("implementation", project(":framework:network"))
+            add("implementation", project(":framework:test"))
+            add("testImplementation", project(":framework:test"))
+            add("androidTestImplementation", project(":framework:test"))
             // Ideally this would go in :framework:network as a dependency, but ksp is not transitive so it needs to be
             // declared in each module separately.
             add("ksp", versionCatalog.findLibrary("moshi.kotlin.codegen").get())

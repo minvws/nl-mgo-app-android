@@ -37,7 +37,6 @@ fun ColumnWithButton(
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    buttonVisible: Boolean = true,
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     val scrollState = rememberScrollState()

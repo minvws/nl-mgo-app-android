@@ -23,6 +23,9 @@ class AndroidFeaturePlugin : Plugin<Project> {
             add("implementation", project(":component:theme"))
             add("implementation", project(":framework:navigation"))
             add("implementation", project(":framework:copy"))
+            add("implementation", project(":framework:test"))
+            add("testImplementation", project(":framework:test"))
+            add("androidTestImplementation", project(":framework:test"))
         }
     }
 }

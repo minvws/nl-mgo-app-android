@@ -54,7 +54,7 @@ fun Colors.linesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 
 @Composable
 fun Colors.linesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF1D1D1D) else Color(0xFFF3F3F3)
+    if (isSystemDarkTheme) Color(0xFF404040) else Color(0xFFF3F3F3)
 
 @Composable
 fun Colors.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)

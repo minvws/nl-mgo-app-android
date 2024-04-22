@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -18,28 +20,26 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
+import nl.rijksoverheid.mgo.feature.localisation.addAddHealthCareNavigationGraph
 import nl.rijksoverheid.mgo.feature.onboarding.addOnboardingNavigationGraph
 import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.navigation.ProvideNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.defaultScreenEnterTransition
-import nl.rijksoverheid.mgo.framework.navigation.defaultScreenExitTransition
-import nl.rijksoverheid.mgo.framework.navigation.defaultScreenPopEnterTransition
+import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MgoTheme {
+            MgoTheme(modifier = Modifier.fillMaxSize()) {
                 val viewModel: MainViewModel = hiltViewModel()
                 val startDestination =
                     if (viewModel.hasSeenOnboarding()) {
                         NavigationScreen.Dashboard.getRoute()
                     } else {
-                        NavigationScreen
-                            .Onboarding.Start.getRoute()
+                        NavigationScreen.Onboarding.Start.getRoute()
                     }
                 val rootNavController = rememberNavController()
                 ProvideNavigationManager(navigationManager = DefaultNavigationManager(navController = rootNavController)) {
@@ -50,14 +50,12 @@ class MainActivity : ComponentActivity() {
                         exitTransition = { ExitTransition.None },
                     ) {
                         addOnboardingNavigationGraph()
+                        addAddHealthCareNavigationGraph()
                         composable(route = NavigationScreen.Dashboard.getRoute()) {
                             DashboardScreen()
                         }
-                        composable(
+                        composableWithDefaultScreenTransitions(
                             route = NavigationScreen.Config.UpdatedRequired.getRoute(),
-                            enterTransition = { defaultScreenEnterTransition() },
-                            exitTransition = { defaultScreenExitTransition() },
-                            popEnterTransition = { defaultScreenPopEnterTransition() },
                         ) {
                             UpdateRequiredScreen(packageName = packageName)
                         }

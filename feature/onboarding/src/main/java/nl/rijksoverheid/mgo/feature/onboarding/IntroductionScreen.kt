@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -49,14 +51,14 @@ internal fun IntroductionScreen() {
                 Text(
                     modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
                     text = stringResource(id = CopyR.string.introduction_title),
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.headingMedium,
                     fontWeight = FontWeight.Bold,
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                     text = stringResource(id = CopyR.string.introduction_description),
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         },

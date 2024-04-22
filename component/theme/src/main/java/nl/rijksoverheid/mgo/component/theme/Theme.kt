@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.component.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Typography
@@ -12,6 +11,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun MgoTheme(
+    modifier: Modifier = Modifier,
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
@@ -20,7 +20,7 @@ fun MgoTheme(
         typography = Typography(defaultFontFamily = fonts),
     ) {
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier,
             color = MaterialTheme.colors.background,
             content = content,
         )
@@ -37,6 +37,7 @@ private fun getDarkColorScheme() =
         onPrimary = MaterialTheme.colors.backgroundSecondary(false), // Not a typo! Color on primary is always a light color.
         onBackground = MaterialTheme.colors.contentPrimary(true),
         onSurface = MaterialTheme.colors.contentPrimary(true),
+        error = MaterialTheme.colors.notificationError(true),
     )
 
 @Composable
@@ -49,4 +50,5 @@ private fun getLightColorScheme() =
         onPrimary = MaterialTheme.colors.backgroundSecondary(false),
         onBackground = MaterialTheme.colors.contentPrimary(false),
         onSurface = MaterialTheme.colors.contentPrimary(false),
+        error = MaterialTheme.colors.notificationError(false),
     )

@@ -1,39 +1,86 @@
 package nl.rijksoverheid.mgo.framework.navigation
 
-sealed class NavigationScreen {
-    abstract fun getRoute(): String
+import androidx.lifecycle.SavedStateHandle
 
-    sealed class Onboarding : NavigationScreen() {
-        data object Start : Onboarding() {
-            override fun getRoute(): String {
-                return "start"
-            }
-        }
+sealed class NavigationScreen(val name: String, val placeholders: List<String> = listOf()) {
+    protected var builder = NavigationRouteBuilder(name = name, placeholders = placeholders)
 
-        data object Introduction : Onboarding() {
-            override fun getRoute(): String {
-                return "introduction"
-            }
-        }
-
-        data object PrivacyOverview : Onboarding() {
-            override fun getRoute(): String {
-                return "privacyOverview"
+    fun getRoute(): String {
+        return buildString {
+            append(name)
+            placeholders.forEach { placeholder ->
+                append("/{$placeholder}")
             }
         }
     }
 
-    sealed class Config : NavigationScreen() {
-        data object UpdatedRequired : Onboarding() {
-            override fun getRoute(): String {
-                return "updateRequired"
+    open fun getNavigationRoute(): String {
+        return builder.buildRoute()
+    }
+
+    sealed class Onboarding(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
+        data object Start : Onboarding("onboardingStart")
+
+        data object Introduction : Onboarding("introduction")
+
+        data object PrivacyOverview : Onboarding("privacyOverview")
+    }
+
+    sealed class Localisation(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
+        data object Start : Localisation("start")
+
+        data object Search : Localisation("search")
+
+        data object SearchResults : Localisation(name = "getSearchResults", placeholders = listOf("name", "city")) {
+            fun setName(name: String): SearchResults {
+                builder.addArgument(placeholders[0], name)
+                return this
+            }
+
+            fun setCity(city: String): SearchResults {
+                builder.addArgument(placeholders[1], city)
+                return this
+            }
+
+            fun getName(savedStateHandle: SavedStateHandle): String {
+                return requireNotNull(savedStateHandle[placeholders[0]])
+            }
+
+            fun getCity(savedStateHandle: SavedStateHandle): String {
+                return requireNotNull(savedStateHandle[placeholders[1]])
             }
         }
     }
 
-    data object Dashboard : NavigationScreen() {
-        override fun getRoute(): String {
-            return "dashboard"
+    sealed class Config(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
+        data object UpdatedRequired : Onboarding("updatedRequired")
+    }
+
+    data object Dashboard : NavigationScreen("dashboard")
+
+    data class NavigationRouteBuilder(val name: String, val placeholders: List<String>) {
+        private var arguments: MutableMap<String, String?> = mutableMapOf()
+
+        init {
+            placeholders.forEach { placeholder ->
+                arguments[placeholder] = null
+            }
+        }
+
+        fun addArgument(
+            key: String,
+            value: String,
+        ) {
+            arguments[key] = value
+        }
+
+        fun buildRoute(): String {
+            return buildString {
+                append(name)
+                arguments.values.forEach { argument ->
+                    append("/$argument")
+                }
+            }
         }
     }
 }

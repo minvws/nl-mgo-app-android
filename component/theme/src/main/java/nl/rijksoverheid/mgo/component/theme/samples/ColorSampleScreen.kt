@@ -30,7 +30,7 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.backgroundPrimary
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
-import nl.rijksoverheid.mgo.component.theme.bodyText
+import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
@@ -181,7 +181,7 @@ private fun ColorSample(
             Text(
                 modifier = Modifier.padding(4.dp),
                 text = text,
-                style = MaterialTheme.typography.bodyText.copy(fontSize = 10.sp),
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
             )

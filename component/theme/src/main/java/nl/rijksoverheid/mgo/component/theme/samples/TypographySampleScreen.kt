@@ -10,7 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodyText
+import nl.rijksoverheid.mgo.component.theme.bodyDefault
+import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingExtraLarge
 import nl.rijksoverheid.mgo.component.theme.headingExtraSmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
@@ -30,7 +31,9 @@ private fun TypographySampleScreen() {
         Spacer(modifier = Modifier.padding(top = 24.dp))
         Text(text = "Heading Extra Small", style = MaterialTheme.typography.headingExtraSmall)
         Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Body text", style = MaterialTheme.typography.bodyText)
+        Text(text = "Body Default", style = MaterialTheme.typography.bodyDefault)
+        Spacer(modifier = Modifier.padding(top = 24.dp))
+        Text(text = "Body Small", style = MaterialTheme.typography.bodySmall)
     }
 }
 

@@ -3,23 +3,24 @@ package nl.rijksoverheid.mgo.data.config
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
-import nl.rijksoverheid.mgo.framework.test.TestServer
+import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
 internal class DefaultConfigRepositoryTest {
-    private val testServer = TestServer()
+    @get:Rule
+    val testServerRule = TestServerRule()
+
+    private val testServer = testServerRule.testServer
 
     @Test
     fun `Given config has lower app version than app, When refreshing the config, Then NoAction required is returned`() {
         runTest {
             // Given (config has minimum app version of 1000)
-            testServer.apply {
-                start()
-                enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/config.json"))
-            }
+            testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/config.json"))
 
             // When
             val repository = getRepository(appVersion = 1001)
@@ -35,10 +36,7 @@ internal class DefaultConfigRepositoryTest {
     fun `Given config has higher app version than app, When refreshing the config, Then UpdatedRequired is returned`() {
         runTest {
             // Given (config has minimum app version of 1000)
-            testServer.apply {
-                start()
-                enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/config.json"))
-            }
+            testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/config.json"))
 
             // When
             val repository = getRepository(appVersion = 999)

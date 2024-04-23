@@ -3,24 +3,35 @@ package nl.rijksoverheid.mgo.localisation
 import nl.rijksoverheid.mgo.data.localisation.DefaultHealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.createApi
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProviders
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.storage.file.TestFileStore
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
-import nl.rijksoverheid.mgo.framework.test.TestServer
+import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
 import kotlinx.coroutines.test.runTest
 
 internal class DefaultHealthCareProviderRepositoryTest {
-    private val testServer = TestServer()
+    @get:Rule
+    val testServerRule = TestServerRule()
+
+    private val testServer = testServerRule.testServer
     private val fileStore = TestFileStore()
+
+    @Before
+    fun setUp() {
+        fileStore.clear()
+    }
 
     @Test
     fun `Given searchApi request is successful, When calling search, Then return health providers`() =
         runTest {
             // Given
-            testServer.start()
             testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/search.json"))
 
             // When
@@ -44,7 +55,6 @@ internal class DefaultHealthCareProviderRepositoryTest {
     fun `Given searchApi request failed, When calling search, Then return error`() =
         runTest {
             // Given
-            testServer.start()
             testServer.enqueue500()
 
             // When
@@ -54,6 +64,67 @@ internal class DefaultHealthCareProviderRepositoryTest {
             // Then
             val exception = result.exceptionOrNull() as HttpException
             assertEquals(500, exception.code())
+        }
+
+    @Test
+    fun `Given no health care providers saved, When calling get, Then return empty health care providers`() =
+        runTest {
+            // Given no files
+
+            // When
+            val repository = getRepository()
+            val healthCareProviders = repository.get()
+
+            // Then
+            assertEquals(listOf<HealthCareProvider>(), healthCareProviders)
+        }
+
+    @Test
+    fun `Given health care providers saved, When calling get, Then return health care providers`() =
+        runTest {
+            // Given
+            val storedHealthCareProviders =
+                HealthCareProviders(
+                    providers =
+                        listOf(
+                            TEST_HEALTH_CARE_PROVIDER.copy(id = "1"),
+                            TEST_HEALTH_CARE_PROVIDER.copy(id = "2"),
+                            TEST_HEALTH_CARE_PROVIDER.copy(id = "3"),
+                        ),
+                )
+            fileStore.saveFile(storedHealthCareProviders, "healthcareproviders.json")
+
+            // When
+            val repository = getRepository()
+            val healthCareProviders = repository.get()
+
+            // Then
+            assertEquals(storedHealthCareProviders.providers, healthCareProviders)
+        }
+
+    @Test
+    fun `Given health care provider, When calling delete, Then delete health care provider from storage`() =
+        runTest {
+            // Given
+            val storedHealthCareProviders =
+                HealthCareProviders(
+                    providers =
+                        listOf(
+                            TEST_HEALTH_CARE_PROVIDER.copy(id = "1"),
+                            TEST_HEALTH_CARE_PROVIDER.copy(id = "2"),
+                            TEST_HEALTH_CARE_PROVIDER.copy(id = "3"),
+                        ),
+                )
+            fileStore.saveFile(storedHealthCareProviders, "healthcareproviders.json")
+
+            // When
+            val repository = getRepository()
+            repository.delete(storedHealthCareProviders.providers.first())
+
+            // Then
+            val expectedProviders = storedHealthCareProviders.providers.drop(1)
+            val storedProviders = repository.get()
+            assertEquals(expectedProviders, storedProviders)
         }
 
     private fun getRepository(): DefaultHealthCareProviderRepository {

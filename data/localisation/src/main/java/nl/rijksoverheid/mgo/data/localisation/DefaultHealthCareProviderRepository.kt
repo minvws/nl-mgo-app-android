@@ -23,8 +23,8 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
     }
 
     override suspend fun get(): List<HealthCareProvider> {
-        val localHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
-        return localHealthCareProviders.providers
+        val localHealthCareProviders = fileStore.getFile(HealthCareProviders::class.java, fileName)
+        return localHealthCareProviders?.providers ?: listOf()
     }
 
     override suspend fun save(provider: HealthCareProvider) {

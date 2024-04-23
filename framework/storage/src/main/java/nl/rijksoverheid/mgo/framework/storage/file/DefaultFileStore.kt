@@ -32,9 +32,6 @@ internal class DefaultFileStore
         ): O? {
             return withContext(Dispatchers.IO) {
                 val cacheFile = File(context.cacheDir, name)
-                if (!cacheFile.exists()) {
-                    cacheFile.createNewFile()
-                }
                 val jsonString = cacheFile.readText()
                 moshi.adapter(clazz).fromJson(jsonString)
             }

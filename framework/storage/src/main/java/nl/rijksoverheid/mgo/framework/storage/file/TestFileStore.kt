@@ -17,4 +17,8 @@ class TestFileStore : FileStore {
     ): O? {
         return files[name] as O?
     }
+
+    fun clear() {
+        files.clear()
+    }
 }

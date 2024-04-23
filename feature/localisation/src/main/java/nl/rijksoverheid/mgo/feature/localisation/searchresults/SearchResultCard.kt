@@ -37,15 +37,8 @@ fun SearchResultCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 val address = searchResult.address
-                val postalCode = searchResult.postalCode
-                val city = searchResult.city
-
                 if (address != null) {
                     Text(text = address, style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
-                }
-
-                if (postalCode != null && city != null) {
-                    Text(text = "$postalCode $city", style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
                 }
             }
             IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick() }) {

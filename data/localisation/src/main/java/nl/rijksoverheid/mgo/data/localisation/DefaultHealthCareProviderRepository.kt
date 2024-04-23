@@ -29,7 +29,7 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
 
     override suspend fun save(provider: HealthCareProvider) {
         // Get locally stored health care providers
-        val localHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
+        val localHealthCareProviders = fileStore.getFile(HealthCareProviders::class.java, fileName) ?: HealthCareProviders(listOf())
 
         // Add our provider we want to save
         val newProviders = localHealthCareProviders.providers.toMutableList()

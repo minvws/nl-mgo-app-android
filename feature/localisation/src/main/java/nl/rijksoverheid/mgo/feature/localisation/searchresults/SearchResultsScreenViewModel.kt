@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.localisation.HealthCareProviderRepository
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
@@ -46,6 +47,12 @@ internal class SearchResultsScreenViewModel
                             )
                         }
                     }
+            }
+        }
+
+        fun addHealthCareProvider(provider: HealthCareProvider) {
+            viewModelScope.launch {
+                healthCareProviderRepository.save(provider)
             }
         }
     }

@@ -48,13 +48,18 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun SearchResultsScreen() {
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    SearchResultsScreenContent(viewState = viewState, onGetSearchResults = { viewModel.getSearchResults() })
+    SearchResultsScreenContent(
+        viewState = viewState,
+        onGetSearchResults = { viewModel.getSearchResults() },
+        onAddSearchResult = { searchResult -> viewModel.addHealthCareProvider(searchResult) },
+    )
 }
 
 @Composable
 private fun SearchResultsScreenContent(
     viewState: SearchResultsScreenViewState,
     onGetSearchResults: () -> Unit,
+    onAddSearchResult: (provider: HealthCareProvider) -> Unit,
 ) {
     val navigationManager = LocalNavigationManager.current
     Scaffold(
@@ -91,7 +96,11 @@ private fun SearchResultsScreenContent(
                             },
                         )
                     } else {
-                        SearchResultsContent(modifier = Modifier.padding(innerPadding), searchResults = viewState.results)
+                        SearchResultsContent(
+                            modifier = Modifier.padding(innerPadding),
+                            searchResults = viewState.results,
+                            onAddSearchResult = onAddSearchResult,
+                        )
                     }
                 }
 
@@ -140,6 +149,7 @@ private fun SearchResultsLoadingContent(modifier: Modifier = Modifier) {
 @Composable
 private fun SearchResultsContent(
     searchResults: List<HealthCareProvider>,
+    onAddSearchResult: (provider: HealthCareProvider) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
@@ -152,7 +162,11 @@ private fun SearchResultsContent(
             )
         }
         items(searchResults.size) { position ->
-            SearchResultCard(modifier = Modifier.padding(bottom = 8.dp), searchResult = searchResults[position], onClick = {})
+            SearchResultCard(
+                modifier = Modifier.padding(bottom = 8.dp),
+                searchResult = searchResults[position],
+                onClick = onAddSearchResult,
+            )
         }
     }
 }
@@ -286,6 +300,7 @@ internal fun SearchResultsLoadingPreview() {
         SearchResultsScreenContent(
             viewState = SearchResultsScreenViewState.Loading,
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }
@@ -297,6 +312,7 @@ internal fun SearchResultsEmptyPreview() {
         SearchResultsScreenContent(
             viewState = SearchResultsScreenViewState.Success(name = "Tandarts Tandje Erbij", city = "Roermond", results = listOf()),
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }
@@ -318,6 +334,7 @@ internal fun SearchResultsPreview() {
                         ),
                 ),
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }
@@ -330,6 +347,7 @@ internal fun SearchResultsErrorPreview() {
             viewState =
                 SearchResultsScreenViewState.Error(isProductionBuild = false, error = IllegalStateException("Something went wrong")),
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }

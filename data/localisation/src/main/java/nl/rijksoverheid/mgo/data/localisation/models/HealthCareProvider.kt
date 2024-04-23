@@ -1,7 +1,9 @@
 package nl.rijksoverheid.mgo.data.localisation.models
 
+import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
 
+@JsonClass(generateAdapter = true)
 data class HealthCareProvider(
     val id: String,
     val name: String,

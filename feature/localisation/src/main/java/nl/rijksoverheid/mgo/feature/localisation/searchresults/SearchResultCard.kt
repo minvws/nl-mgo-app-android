@@ -29,11 +29,11 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun SearchResultCard(
     searchResult: HealthCareProvider,
-    onClick: () -> Unit,
+    onClick: (searchResult: HealthCareProvider) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(modifier = modifier, shape = RoundedCornerShape(8.dp)) {
-        Row(modifier = Modifier.clickable { onClick() }.padding(top = 12.dp, start = 12.dp, bottom = 12.dp)) {
+        Row(modifier = Modifier.clickable { onClick(searchResult) }.padding(top = 12.dp, start = 12.dp, bottom = 12.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 val address = searchResult.address
@@ -41,7 +41,7 @@ fun SearchResultCard(
                     Text(text = address, style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
                 }
             }
-            IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick() }) {
+            IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick(searchResult) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search_result_card_add),
                     contentDescription = stringResource(id = CopyR.string.general_add),

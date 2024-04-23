@@ -10,6 +10,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.framework.storage.file.DefaultFileStore
+import nl.rijksoverheid.mgo.framework.storage.file.FileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.DataStoreKeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Named
@@ -27,6 +29,18 @@ internal object StorageModule {
     ): KeyValueStore {
         return DataStoreKeyValueStore(
             dataStore = context.dataStore,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFileStore(
+        @ApplicationContext context: Context,
+        @Named("storageMoshi") moshi: Moshi,
+    ): FileStore {
+        return DefaultFileStore(
+            context = context,
+            moshi = moshi,
         )
     }
 

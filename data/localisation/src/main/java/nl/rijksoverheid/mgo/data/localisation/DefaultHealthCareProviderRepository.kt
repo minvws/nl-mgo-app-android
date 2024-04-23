@@ -4,9 +4,14 @@ import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.localisation.api.SearchApi
 import nl.rijksoverheid.mgo.data.localisation.api.SearchRequestBody
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProviders
 import nl.rijksoverheid.mgo.data.localisation.models.toHealthCareProviders
+import nl.rijksoverheid.mgo.framework.storage.file.FileStore
 
-internal class DefaultHealthCareProviderRepository(private val searchApi: SearchApi) : HealthCareProviderRepository {
+internal class DefaultHealthCareProviderRepository(private val searchApi: SearchApi, private val fileStore: FileStore) :
+    HealthCareProviderRepository {
+    private val fileName = "healthcareproviders.json"
+
     override suspend fun search(
         name: String,
         city: String,
@@ -17,15 +22,34 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
             .mapCatching { response -> response.toHealthCareProviders() }
     }
 
-    override suspend fun get(): Result<List<HealthCareProvider>> {
-        TODO("Not yet implemented")
+    override suspend fun get(): List<HealthCareProvider> {
+        val localHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
+        return localHealthCareProviders.providers
     }
 
     override suspend fun save(provider: HealthCareProvider) {
-        TODO("Not yet implemented")
+        // Get locally stored health care providers
+        val localHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
+
+        // Add our provider we want to save
+        val newProviders = localHealthCareProviders.providers.toMutableList()
+        newProviders.add(provider)
+        val newLocalHealthCareProviders = localHealthCareProviders.copy(providers = newProviders)
+
+        // Save new file
+        fileStore.saveFile(file = newLocalHealthCareProviders, name = fileName)
     }
 
     override suspend fun delete(provider: HealthCareProvider) {
-        TODO("Not yet implemented")
+        // Get locally stored health care providers
+        val localHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
+
+        // Delete the provider from the file
+        val newProviders = localHealthCareProviders.providers.toMutableList()
+        newProviders.remove(provider)
+        val newLocalHealthCareProviders = localHealthCareProviders.copy(providers = newProviders)
+
+        // Save new file
+        fileStore.saveFile(file = newLocalHealthCareProviders, name = fileName)
     }
 }

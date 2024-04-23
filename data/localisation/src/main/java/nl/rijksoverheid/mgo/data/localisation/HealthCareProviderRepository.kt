@@ -8,7 +8,7 @@ interface HealthCareProviderRepository {
         city: String,
     ): Result<List<HealthCareProvider>>
 
-    suspend fun get(): Result<List<HealthCareProvider>>
+    suspend fun get(): List<HealthCareProvider>
 
     suspend fun save(provider: HealthCareProvider)
 

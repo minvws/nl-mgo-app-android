@@ -6,6 +6,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Named
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 internal class DefaultFileStore
     @Inject
@@ -17,17 +19,24 @@ internal class DefaultFileStore
             file: O,
             name: String,
         ) {
-            val json = moshi.adapter<O>(file::class.java).toJson(file)
-            val cacheFile = File(context.cacheDir, name)
-            cacheFile.writeText(json)
+            withContext(Dispatchers.IO) {
+                val json = moshi.adapter<O>(file::class.java).toJson(file)
+                val cacheFile = File(context.cacheDir, name)
+                cacheFile.writeText(json)
+            }
         }
 
         override suspend fun <O : Any> getFile(
             clazz: Class<O>,
             name: String,
         ): O? {
-            val cacheFile = File(context.cacheDir, name)
-            val jsonString = cacheFile.readText()
-            return moshi.adapter(clazz).fromJson(jsonString)
+            return withContext(Dispatchers.IO) {
+                val cacheFile = File(context.cacheDir, name)
+                if (!cacheFile.exists()) {
+                    cacheFile.createNewFile()
+                }
+                val jsonString = cacheFile.readText()
+                moshi.adapter(clazz).fromJson(jsonString)
+            }
         }
     }

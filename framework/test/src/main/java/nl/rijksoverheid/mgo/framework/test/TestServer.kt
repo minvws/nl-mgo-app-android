@@ -21,6 +21,10 @@ class TestServer {
         return requireNotNull(server?.url("/").toString())
     }
 
+    fun enqueue500() {
+        server?.enqueue(MockResponse().setResponseCode(500))
+    }
+
     fun enqueueJson(json: TestServerBody) {
         server?.enqueue(MockResponse().setBody(json))
     }

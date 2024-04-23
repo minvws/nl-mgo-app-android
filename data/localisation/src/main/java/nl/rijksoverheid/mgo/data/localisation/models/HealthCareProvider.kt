@@ -8,6 +8,7 @@ data class HealthCareProvider(
     val id: String,
     val name: String,
     val address: String?,
+    val category: String?,
 )
 
 val TEST_HEALTH_CARE_PROVIDER =
@@ -15,6 +16,7 @@ val TEST_HEALTH_CARE_PROVIDER =
         id = "1",
         name = "Tandarts Tandje Erbij",
         address = "Boorplatform 5\r\n1234AB Roermond",
+        category = "Tandarts",
     )
 
 internal fun SearchResponse.toHealthCareProviders(): List<HealthCareProvider> {
@@ -25,6 +27,7 @@ internal fun SearchResponse.toHealthCareProviders(): List<HealthCareProvider> {
             id = organization.id,
             name = name,
             address = address.address,
+            category = organization.types.firstOrNull()?.displayName,
         )
     }
 }

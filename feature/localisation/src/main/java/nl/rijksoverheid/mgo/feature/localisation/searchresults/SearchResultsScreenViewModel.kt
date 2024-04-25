@@ -69,7 +69,7 @@ class SearchResultsScreenViewModel
         fun addHealthCareProvider(provider: HealthCareProvider) {
             viewModelScope.launch {
                 healthCareProviderRepository.save(provider)
-                _navigation.tryEmit(NavigationScreen.Localisation.AddHealthCareProvider)
+                _navigation.tryEmit(NavigationScreen.Localisation.Overview)
             }
         }
     }

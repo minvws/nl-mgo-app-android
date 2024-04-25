@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.add
+package nl.rijksoverheid.mgo.feature.localisation.overview
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -17,34 +17,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
-import nl.rijksoverheid.mgo.framework.navigation.scopedViewModel
 
 @Composable
-fun AddHealthCareProviderScreen() {
-    val addHealthCareProviderScreenViewModel: AddHealthCareProviderScreenViewModel =
-        scopedViewModel(
-            navigationScreen =
-                NavigationScreen
-                    .Localisation.Start,
-        )
-    val viewState by addHealthCareProviderScreenViewModel.viewState.collectAsStateWithLifecycle()
-    AddHealthCareProviderScreenContent(
+fun AddedHealthCareOverviewScreen() {
+    val viewModel: AddedHealthCareOverviewScreenViewModel = hiltViewModel()
+    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+    AddedHealthCareOverviewScreenContent(
         viewState = viewState,
+        onRemoveProvider = { provider -> viewModel.delete(provider) },
     )
 }
 
 @Composable
-private fun AddHealthCareProviderScreenContent(viewState: AddHealthCareProviderViewState) {
+private fun AddedHealthCareOverviewScreenContent(
+    viewState: AddedHealthCareOverviewScreenViewState,
+    onRemoveProvider: (provider: HealthCareProvider) -> Unit,
+) {
     val navigationManager = LocalNavigationManager.current
     Scaffold(
         topBar = {
@@ -79,9 +79,19 @@ private fun AddHealthCareProviderScreenContent(viewState: AddHealthCareProviderV
                 )
 
                 Text(
+                    modifier = Modifier.padding(vertical = 16.dp),
                     text = stringResource(id = R.string.localisation_add_healthcareprovider_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                 )
+
+                viewState.providers.forEach { provider ->
+                    RemoveHealthCareProviderCard(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        provider = provider,
+                        onClick =
+                        onRemoveProvider,
+                    )
+                }
             }
         },
     )
@@ -89,10 +99,11 @@ private fun AddHealthCareProviderScreenContent(viewState: AddHealthCareProviderV
 
 @DefaultPreviews
 @Composable
-internal fun SearchScreenPreview() {
+internal fun AddedHealthCareOverviewScreenPreview() {
     MgoTheme {
-        AddHealthCareProviderScreenContent(
-            viewState = AddHealthCareProviderViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
+        AddedHealthCareOverviewScreenContent(
+            viewState = AddedHealthCareOverviewScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
+            onRemoveProvider = {},
         )
     }
 }

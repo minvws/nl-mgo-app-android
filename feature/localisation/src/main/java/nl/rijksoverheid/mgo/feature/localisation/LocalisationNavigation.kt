@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.localisation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import nl.rijksoverheid.mgo.feature.localisation.add.AddHealthCareProviderScreen
+import nl.rijksoverheid.mgo.feature.localisation.overview.AddedHealthCareOverviewScreen
 import nl.rijksoverheid.mgo.feature.localisation.search.SearchScreen
 import nl.rijksoverheid.mgo.feature.localisation.searchresults.SearchResultsScreen
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
@@ -26,9 +26,9 @@ fun NavGraphBuilder.addLocalisationNavigationGraph() {
         }
 
         composableWithDefaultScreenTransitions(
-            route = NavigationScreen.Localisation.AddHealthCareProvider.getRoute(),
+            route = NavigationScreen.Localisation.Overview.getRoute(),
         ) {
-            AddHealthCareProviderScreen()
+            AddedHealthCareOverviewScreen()
         }
     }
 }

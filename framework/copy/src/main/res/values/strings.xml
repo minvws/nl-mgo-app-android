@@ -9,6 +9,8 @@
     <string name="general_search">Zoeken</string>
     <string name="general_search_again">Opnieuw zoeken</string>
     <string name="general_add">Toevoegen</string>
+    <string name="general_remove">Verwijderen</string>
+    <string name="general_unknown">Onbekend</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
     <string name="error_title">Er ging iets mis</string>

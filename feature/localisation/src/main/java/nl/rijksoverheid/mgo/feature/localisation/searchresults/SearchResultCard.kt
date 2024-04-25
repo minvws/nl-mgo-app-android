@@ -38,7 +38,7 @@ fun SearchResultCard(
         Row(
             modifier =
                 Modifier
-                    .clickable { onClick(searchResult) }
+                    .clickable(enabled = !searchResult.added) { onClick(searchResult) }
                     .padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {

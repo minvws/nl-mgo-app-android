@@ -11,6 +11,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,15 +30,25 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddedHealthCareOverviewScreen() {
+    val navigationManager = LocalNavigationManager.current
     val viewModel: AddedHealthCareOverviewScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     AddedHealthCareOverviewScreenContent(
         viewState = viewState,
-        onRemoveProvider = { provider -> viewModel.delete(provider) },
+        onRemoveProvider = { provider ->
+            viewModel.delete(provider)
+        },
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.navigateBack.collectLatest {
+            navigationManager.popBackStack()
+        }
+    }
 }
 
 @Composable

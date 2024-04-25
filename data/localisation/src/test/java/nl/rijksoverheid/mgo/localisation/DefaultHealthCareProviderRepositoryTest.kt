@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.localisation
 
+import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.DefaultHealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.createApi
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
@@ -29,58 +30,66 @@ internal class DefaultHealthCareProviderRepositoryTest {
     }
 
     @Test
-    fun `Given searchApi request is successful, When calling search, Then return health providers`() =
+    fun `Given searchApi request is successful, When calling search, Then emit health providers`() =
         runTest {
             // Given
             testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/search.json"))
 
             // When
             val repository = getRepository()
-            val result = repository.search(name = "name", city = "city")
+            val searchFlow = repository.search(name = "name", city = "city")
 
             // Then
-            val healthCareProviders = result.getOrNull()
-            assertEquals(45, healthCareProviders?.size)
+            searchFlow.test {
+                val healthCareProviders = awaitItem()
+                assertEquals(45, healthCareProviders.size)
 
-            val expectedFirstHealthProvider =
-                HealthCareProvider(
-                    id = "12001468",
-                    name = "Tandartspraktijk Van Dijck",
-                    address = "Ginnekenweg 183\r\n4835NA BREDA",
-                )
-            assertEquals(expectedFirstHealthProvider, healthCareProviders?.firstOrNull())
+                val expectedFirstHealthProvider =
+                    HealthCareProvider(
+                        id = "12001468",
+                        name = "Tandartspraktijk Van Dijck",
+                        address = "Ginnekenweg 183\r\n4835NA BREDA",
+                        category = "Tandartsen",
+                        added = false,
+                    )
+                assertEquals(expectedFirstHealthProvider, healthCareProviders.firstOrNull())
+            }
         }
 
     @Test
-    fun `Given searchApi request failed, When calling search, Then return error`() =
+    fun `Given searchApi request failed, When calling search, Then emit error`() =
         runTest {
             // Given
             testServer.enqueue500()
 
             // When
             val repository = getRepository()
-            val result = repository.search(name = "name", city = "city")
+            val searchFlow = repository.search(name = "name", city = "city")
 
             // Then
-            val exception = result.exceptionOrNull() as HttpException
-            assertEquals(500, exception.code())
+            searchFlow.test {
+                val exception = awaitError() as HttpException
+                assertEquals(500, exception.code())
+            }
         }
 
     @Test
-    fun `Given no health care providers saved, When calling get, Then return empty health care providers`() =
+    fun `Given no health care providers saved, When collecting stored providers flow, Then emit no health care providers`() =
         runTest {
-            // Given no files
+            // Given no providers
 
             // When
             val repository = getRepository()
             val healthCareProviders = repository.get()
 
             // Then
-            assertEquals(listOf<HealthCareProvider>(), healthCareProviders)
+            repository.storedHealthCareProvidersFlow.test {
+                assertEquals(listOf<HealthCareProvider>(), awaitItem())
+            }
         }
 
     @Test
-    fun `Given health care providers saved, When calling get, Then return health care providers`() =
+    fun `Given health care providers saved, When collecting providers flow, Then emit health care providers`() =
         runTest {
             // Given
             val storedHealthCareProviders =
@@ -99,7 +108,26 @@ internal class DefaultHealthCareProviderRepositoryTest {
             val healthCareProviders = repository.get()
 
             // Then
-            assertEquals(storedHealthCareProviders.providers, healthCareProviders)
+            repository.storedHealthCareProvidersFlow.test {
+                assertEquals(storedHealthCareProviders.providers, awaitItem())
+            }
+        }
+
+    @Test
+    fun `Given health care provider, When calling save, Then save health care provider to storage`() =
+        runTest {
+            // Given no providers
+
+            // When
+            val provider = TEST_HEALTH_CARE_PROVIDER
+            val repository = getRepository()
+            repository.save(provider)
+
+            // Then
+            repository.storedHealthCareProvidersFlow.test {
+                val storedProviders = awaitItem()
+                assertEquals(listOf(provider), storedProviders)
+            }
         }
 
     @Test
@@ -122,9 +150,11 @@ internal class DefaultHealthCareProviderRepositoryTest {
             repository.delete(storedHealthCareProviders.providers.first())
 
             // Then
-            val expectedProviders = storedHealthCareProviders.providers.drop(1)
-            val storedProviders = repository.get()
-            assertEquals(expectedProviders, storedProviders)
+            repository.storedHealthCareProvidersFlow.test {
+                val expectedProviders = storedHealthCareProviders.providers.drop(1)
+                val storedProviders = awaitItem()
+                assertEquals(expectedProviders, storedProviders)
+            }
         }
 
     private fun getRepository(): DefaultHealthCareProviderRepository {

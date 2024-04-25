@@ -67,7 +67,7 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
         val newStoredHealthCareProviders = storedHealthCareProviders.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(file = storedHealthCareProviders, name = fileName)
+        fileStore.saveFile(file = newStoredHealthCareProviders, name = fileName)
 
         // Update flow
         storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers

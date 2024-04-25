@@ -43,6 +43,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -55,7 +56,11 @@ fun SearchResultsScreen() {
         viewState = viewState,
         onGetSearchResults = { viewModel.getSearchResults() },
         onAddSearchResult = { searchResult ->
-            viewModel.addHealthCareProvider(searchResult)
+            if (searchResult.added) {
+                navigationManager.navigate(NavigationScreen.Localisation.Overview)
+            } else {
+                viewModel.addHealthCareProvider(searchResult)
+            }
         },
     )
     LaunchedEffect(Unit) {

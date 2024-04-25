@@ -40,6 +40,7 @@
     <string name="localisation_searchresults_empty_list_item_1">Controleer de spelling.</string>
     <string name="localisation_searchresults_empty_list_item_2">Vul de juiste naam in. Je vindt deze  op de rekening. Of vraag aan de zorgverlener hoe je hun naam schrijft.</string>
     <string name="localisation_searchresults_empty_list_item_3">Heeft deze zorgverlener meerdere vestigingen? Vul dan de plaatsnaam van de hoofdvestiging in.</string>
+    <string name="localisation_searchresults_list_item_already_added">Deze zorgaanbieder heb je al toegevoegd</string>
     <string name="localisation_add_healthcareprovider_title">Welke zorgaanbieders wil je in de app tonen?</string>
     <string name="localisation_add_healthcareprovider_subtitle">Je kunt deze lijst nu aanpassen of dit later in je profiel doen.</string>
     <string name="localisation_add_healthcareprovider_primary_button">Klaar</string>

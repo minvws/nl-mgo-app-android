@@ -52,6 +52,8 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
 
         // Save new file
         fileStore.saveFile(file = newStoredHealthCareProviders, name = fileName)
+
+        // Update flow
         storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers
     }
 
@@ -66,6 +68,8 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
 
         // Save new file
         fileStore.saveFile(file = storedHealthCareProviders, name = fileName)
+
+        // Update flow
         storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers
     }
 }

@@ -8,9 +8,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,31 +35,70 @@ fun SearchResultCard(
     modifier: Modifier = Modifier,
 ) {
     Card(modifier = modifier, shape = RoundedCornerShape(8.dp)) {
-        Row(modifier = Modifier.clickable { onClick(searchResult) }.padding(top = 12.dp, start = 12.dp, bottom = 12.dp)) {
+        Row(
+            modifier =
+                Modifier
+                    .clickable { onClick(searchResult) }
+                    .padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
+        ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 val address = searchResult.address
                 if (address != null) {
                     Text(text = address, style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
                 }
+                if (searchResult.added) {
+                    AddedText(modifier = Modifier.padding(top = 8.dp))
+                }
             }
-            IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick(searchResult) }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_search_result_card_add),
-                    contentDescription = stringResource(id = CopyR.string.general_add),
-                    tint = MaterialTheme.colors.primary,
-                )
+            if (!searchResult.added) {
+                IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick(searchResult) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search_result_card_add),
+                        contentDescription = stringResource(id = CopyR.string.general_add),
+                        tint = MaterialTheme.colors.primary,
+                    )
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun AddedText(modifier: Modifier = Modifier) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colors.primary) {
+        Row(modifier = modifier) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_search_result_card_added),
+                contentDescription = null,
+            )
+            Text(
+                modifier = Modifier.padding(start = 4.dp),
+                text = stringResource(id = CopyR.string.localisation_searchresults_list_item_already_added),
+                style = MaterialTheme.typography.bodySmall,
+            )
         }
     }
 }
 
 @PreviewLightDark
 @Composable
-internal fun SearchResultCardPreview() {
+internal fun SearchResultCardNotAddedPreview() {
     MgoTheme {
         SearchResultCard(
             searchResult = TEST_HEALTH_CARE_PROVIDER,
+            onClick = { },
+            modifier = Modifier.padding(all = 16.dp),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun SearchResultCardAddedPreview() {
+    MgoTheme {
+        SearchResultCard(
+            searchResult = TEST_HEALTH_CARE_PROVIDER.copy(added = true),
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
         )

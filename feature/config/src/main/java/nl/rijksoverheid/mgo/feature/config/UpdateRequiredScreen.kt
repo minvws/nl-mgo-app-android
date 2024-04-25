@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
@@ -31,7 +31,7 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
         },
         backgroundColor = Color.Transparent,
         content = { innerPadding ->
-            ColumnWithButton(
+            ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.config_old_version_button),
                 onButtonClick = { "https://play.google.com/store/apps/details?id=$packageName".launchBrowser(context) },

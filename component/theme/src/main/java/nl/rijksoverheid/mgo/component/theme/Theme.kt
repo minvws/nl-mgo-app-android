@@ -31,10 +31,11 @@ fun MgoTheme(
 private fun getDarkColorScheme() =
     darkColors(
         primary = MaterialTheme.colors.actionPrimaryBackground(true),
-        secondary = MaterialTheme.colors.contentSecondary(true),
+        secondary = MaterialTheme.colors.actionSecondaryBackground(true),
         background = MaterialTheme.colors.backgroundPrimary(true),
         surface = MaterialTheme.colors.backgroundPrimary(true), // Not a typo! Surface in dark is same as primary.
         onPrimary = MaterialTheme.colors.backgroundSecondary(false), // Not a typo! Color on primary is always a light color.
+        onSecondary = MaterialTheme.colors.actionSecondaryText(true),
         onBackground = MaterialTheme.colors.contentPrimary(true),
         onSurface = MaterialTheme.colors.contentPrimary(true),
         error = MaterialTheme.colors.notificationError(true),
@@ -44,10 +45,11 @@ private fun getDarkColorScheme() =
 private fun getLightColorScheme() =
     lightColors(
         primary = MaterialTheme.colors.actionPrimaryBackground(false),
-        secondary = MaterialTheme.colors.contentSecondary(false),
+        secondary = MaterialTheme.colors.actionSecondaryBackground(false),
         background = MaterialTheme.colors.backgroundPrimary(false),
         surface = MaterialTheme.colors.backgroundSecondary(false),
         onPrimary = MaterialTheme.colors.backgroundSecondary(false),
+        onSecondary = MaterialTheme.colors.actionSecondaryText(false),
         onBackground = MaterialTheme.colors.contentPrimary(false),
         onSurface = MaterialTheme.colors.contentPrimary(false),
         error = MaterialTheme.colors.notificationError(false),

@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.jeziellago.compose.markdowntext.MarkdownText
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
@@ -188,7 +188,7 @@ private fun SearchResultsEmptyContent(
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ColumnWithButton(
+    ColumnWithButtons(
         modifier = modifier.padding(start = 16.dp, end = 16.dp),
         buttonText = stringResource(id = CopyR.string.general_search_again),
         onButtonClick = onButtonClick,
@@ -266,7 +266,7 @@ private fun SearchResultsErrorContent(
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ColumnWithButton(
+    ColumnWithButtons(
         modifier = modifier.padding(start = 16.dp, end = 16.dp),
         buttonText = stringResource(id = CopyR.string.general_try_again),
         onButtonClick = onButtonClick,

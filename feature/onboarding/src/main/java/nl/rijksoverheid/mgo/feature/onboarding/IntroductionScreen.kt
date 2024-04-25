@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
@@ -33,7 +33,7 @@ internal fun IntroductionScreen() {
         },
         backgroundColor = Color.Transparent,
         content = { innerPadding ->
-            ColumnWithButton(
+            ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.general_next),
                 onButtonClick = { navigationManager.navigate(NavigationScreen.Onboarding.PrivacyOverview) },

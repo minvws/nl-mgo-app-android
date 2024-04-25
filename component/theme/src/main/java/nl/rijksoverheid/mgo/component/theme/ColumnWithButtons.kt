@@ -23,8 +23,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
+import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 
-const val TEST_TAG_COLUMN_WITH_BUTTON_BUTTON = "COLUMN_WITH_BUTTON_BUTTON"
+const val TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON = "COLUMN_WITH_BUTTON_PRIMARY_BUTTON"
+const val TEST_TAG_COLUMN_WITH_BUTTON_SECONDARY_BUTTON = "COLUMN_WITH_BUTTON_SECONDARY_BUTTON"
 internal const val TEST_TAG_COLUMN_WITH_BUTTON_ELEVATION = "COLUMN_WITH_BUTTON_ELEVATION"
 internal const val TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN = "COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN"
 
@@ -32,34 +34,40 @@ internal const val TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN = "COLUMN_WITH_
  * A column with a button fixed to the bottom. This button will automatically add elevation when the column is scrollable (as per design).
  */
 @Composable
-fun ColumnWithButton(
+fun ColumnWithButtons(
     buttonText: String,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    secondaryButtonText: String? = null,
+    onSecondaryButtonClick: (() -> Unit)? = null,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val canScrollForward = if (LocalInspectionMode.current) false else scrollState.canScrollForward
-    ColumnWithButtonContent(
+    ColumnWithButtonsContent(
         modifier = modifier,
         scrollState = scrollState,
         canScrollForward = canScrollForward,
         buttonText = buttonText,
         onButtonClick = { onButtonClick() },
+        secondaryButtonText = secondaryButtonText,
+        onSecondaryButtonClick = onSecondaryButtonClick,
         contentPadding = contentPadding,
         columnContent = columnContent,
     )
 }
 
 @Composable
-internal fun ColumnWithButtonContent(
+internal fun ColumnWithButtonsContent(
     scrollState: ScrollState,
     canScrollForward: Boolean,
     buttonText: String,
     onButtonClick: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    secondaryButtonText: String? = null,
+    onSecondaryButtonClick: (() -> Unit)? = null,
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     Column(modifier = modifier.fillMaxHeight()) {
@@ -80,16 +88,29 @@ internal fun ColumnWithButtonContent(
             )
         }
         val background = if (canScrollForward) MaterialTheme.colors.surface else Color.Transparent
-        MgoButton(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(background)
-                    .padding(all = 16.dp)
-                    .testTag(TEST_TAG_COLUMN_WITH_BUTTON_BUTTON),
-            buttonText = buttonText,
-            onClick = onButtonClick,
-        )
+
+        Column(modifier = Modifier.fillMaxWidth().background(background).padding(all = 16.dp)) {
+            if (secondaryButtonText != null && onSecondaryButtonClick != null) {
+                MgoButton(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .testTag(TEST_TAG_COLUMN_WITH_BUTTON_SECONDARY_BUTTON)
+                            .padding(bottom = 16.dp),
+                    buttonText = secondaryButtonText,
+                    onClick = onSecondaryButtonClick,
+                    buttonTheme = MgoButtonTheme.Secondary,
+                )
+            }
+            MgoButton(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .testTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON),
+                buttonText = buttonText,
+                onClick = onButtonClick,
+            )
+        }
     }
 }
 
@@ -97,7 +118,7 @@ internal fun ColumnWithButtonContent(
 @Composable
 internal fun NotScrollingPreview() {
     MgoTheme {
-        ColumnWithButtonContent(
+        ColumnWithButtonsContent(
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = false,
@@ -113,7 +134,7 @@ internal fun NotScrollingPreview() {
 @Composable
 internal fun ScrollingPreview() {
     MgoTheme {
-        ColumnWithButtonContent(
+        ColumnWithButtonsContent(
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = true,
@@ -125,7 +146,24 @@ internal fun ScrollingPreview() {
     }
 }
 
-@DefaultPreviews
+@PreviewLightDark
+@Composable
+internal fun TwoButtonsPreview() {
+    MgoTheme {
+        ColumnWithButtonsContent(
+            buttonText = "Lorem ipsum",
+            onButtonClick = {},
+            secondaryButtonText = "Lorem ipsum 2",
+            onSecondaryButtonClick = {},
+            canScrollForward = true,
+            contentPadding = PaddingValues(0.dp),
+            scrollState = rememberScrollState(),
+        ) {
+            PreviewTextScrolling()
+        }
+    }
+}
+
 @Composable
 internal fun PreviewTextNotScrolling() {
     Text(

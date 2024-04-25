@@ -7,7 +7,7 @@ import androidx.compose.ui.test.swipeUp
 import org.junit.Rule
 import org.junit.Test
 
-internal class ColumnWithButtonTest {
+internal class ColumnWithButtonsTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -15,7 +15,7 @@ internal class ColumnWithButtonTest {
     fun elevationIsNotVisibleWhenContentIsNotScrollable() {
         composeTestRule.setContent {
             MgoTheme {
-                ColumnWithButton(buttonText = "Button", onButtonClick = { }) {
+                ColumnWithButtons(buttonText = "Button", onButtonClick = { }) {
                     PreviewTextNotScrolling()
                 }
             }
@@ -27,7 +27,7 @@ internal class ColumnWithButtonTest {
     fun elevationIsVisibleWhenContentIsScrollable() {
         composeTestRule.setContent {
             MgoTheme {
-                ColumnWithButton(buttonText = "Button", onButtonClick = { }) {
+                ColumnWithButtons(buttonText = "Button", onButtonClick = { }) {
                     PreviewTextScrolling()
                 }
             }
@@ -39,7 +39,7 @@ internal class ColumnWithButtonTest {
     fun elevationIsNotVisibleWhenContentIsScrollableAndScrolledToBottom() {
         composeTestRule.setContent {
             MgoTheme {
-                ColumnWithButton(buttonText = "Button", onButtonClick = { }) {
+                ColumnWithButtons(buttonText = "Button", onButtonClick = { }) {
                     PreviewTextScrolling()
                 }
             }

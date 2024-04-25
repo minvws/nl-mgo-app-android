@@ -10,9 +10,16 @@ internal class MgoButtonSnapshotTest {
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
-    fun preview() {
+    fun primary() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            MgoButtonPreview()
+            MgoButtonPrimaryPreview()
+        }
+    }
+
+    @Test
+    fun secondary() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            MgoButtonSecondaryPreview()
         }
     }
 }

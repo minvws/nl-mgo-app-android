@@ -34,16 +34,16 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun SearchScreen() {
     val navigationManager = LocalNavigationManager.current
-    val viewModel: SearchScreenViewModel = hiltViewModel()
-    val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+    val searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
+    val viewState: SearchScreenViewState by searchScreenViewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         // Reset name and city every time this composable is created for the first time
-        viewModel.setName("")
-        viewModel.setCity("")
+        searchScreenViewModel.setName("")
+        searchScreenViewModel.setCity("")
 
         // Handle navigation
-        viewModel.navigation.collectLatest { screen ->
+        searchScreenViewModel.navigation.collectLatest { screen ->
             navigationManager.navigate(screen)
         }
     }
@@ -51,13 +51,13 @@ fun SearchScreen() {
     SearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
-            viewModel.setName(name)
+            searchScreenViewModel.setName(name)
         },
         onSetCity = { city ->
-            viewModel.setCity(city)
+            searchScreenViewModel.setCity(city)
         },
         onSearch = {
-            viewModel.getSearchResults()
+            searchScreenViewModel.getSearchResults()
         },
     )
 }

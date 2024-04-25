@@ -20,6 +20,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,17 +43,26 @@ import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun SearchResultsScreen() {
+    val navigationManager = LocalNavigationManager.current
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     SearchResultsScreenContent(
         viewState = viewState,
         onGetSearchResults = { viewModel.getSearchResults() },
-        onAddSearchResult = { searchResult -> viewModel.addHealthCareProvider(searchResult) },
+        onAddSearchResult = { searchResult ->
+            viewModel.addHealthCareProvider(searchResult)
+        },
     )
+    LaunchedEffect(Unit) {
+        viewModel.navigation.collectLatest { screen ->
+            navigationManager.navigate(screen)
+        }
+    }
 }
 
 @Composable

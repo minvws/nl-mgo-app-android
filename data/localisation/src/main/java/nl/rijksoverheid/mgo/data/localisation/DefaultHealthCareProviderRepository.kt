@@ -5,21 +5,35 @@ import nl.rijksoverheid.mgo.data.localisation.api.SearchApi
 import nl.rijksoverheid.mgo.data.localisation.api.SearchRequestBody
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProviders
-import nl.rijksoverheid.mgo.data.localisation.models.toHealthCareProviders
+import nl.rijksoverheid.mgo.data.localisation.models.toHealthCareProvider
 import nl.rijksoverheid.mgo.framework.storage.file.FileStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 
 internal class DefaultHealthCareProviderRepository(private val searchApi: SearchApi, private val fileStore: FileStore) :
     HealthCareProviderRepository {
     private val fileName = "healthcareproviders.json"
 
+    override val storedHealthCareProvidersFlow: MutableStateFlow<List<HealthCareProvider>> = MutableStateFlow(runBlocking { get() })
+
     override suspend fun search(
         name: String,
         city: String,
-    ): Result<List<HealthCareProvider>> {
+    ): Flow<List<HealthCareProvider>> {
         val requestBody = SearchRequestBody(name = name, city = city)
-        val result = executeNetworkRequest { searchApi.search(requestBody) }
-        return result
-            .mapCatching { response -> response.toHealthCareProviders() }
+        val searchResponseFlow =
+            flow {
+                val result = executeNetworkRequest { searchApi.search(requestBody) }
+                emit(result.getOrThrow())
+            }
+        return combine(searchResponseFlow, storedHealthCareProvidersFlow) { searchResponse, storedHealthCareProviders ->
+            searchResponse.organizations.map { organization ->
+                organization.toHealthCareProvider(added = storedHealthCareProviders.any { provider -> provider.id == organization.id })
+            }
+        }
     }
 
     override suspend fun get(): List<HealthCareProvider> {
@@ -28,28 +42,30 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
     }
 
     override suspend fun save(provider: HealthCareProvider) {
-        // Get locally stored health care providers
-        val localHealthCareProviders = fileStore.getFile(HealthCareProviders::class.java, fileName) ?: HealthCareProviders(listOf())
+        // Get stored health care providers
+        val storedHealthCareProviders = fileStore.getFile(HealthCareProviders::class.java, fileName) ?: HealthCareProviders(listOf())
 
         // Add our provider we want to save
-        val newProviders = localHealthCareProviders.providers.toMutableList()
+        val newProviders = storedHealthCareProviders.providers.toMutableList()
         newProviders.add(provider)
-        val newLocalHealthCareProviders = localHealthCareProviders.copy(providers = newProviders)
+        val newStoredHealthCareProviders = storedHealthCareProviders.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(file = newLocalHealthCareProviders, name = fileName)
+        fileStore.saveFile(file = newStoredHealthCareProviders, name = fileName)
+        storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers
     }
 
     override suspend fun delete(provider: HealthCareProvider) {
-        // Get locally stored health care providers
-        val localHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
+        // Get stored health care providers
+        val storedHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
 
         // Delete the provider from the file
-        val newProviders = localHealthCareProviders.providers.toMutableList()
+        val newProviders = storedHealthCareProviders.providers.toMutableList()
         newProviders.remove(provider)
-        val newLocalHealthCareProviders = localHealthCareProviders.copy(providers = newProviders)
+        val newStoredHealthCareProviders = storedHealthCareProviders.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(file = newLocalHealthCareProviders, name = fileName)
+        fileStore.saveFile(file = storedHealthCareProviders, name = fileName)
+        storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers
     }
 }

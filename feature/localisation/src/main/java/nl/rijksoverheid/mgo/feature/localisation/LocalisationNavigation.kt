@@ -2,12 +2,13 @@ package nl.rijksoverheid.mgo.feature.localisation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import nl.rijksoverheid.mgo.feature.localisation.add.AddHealthCareProviderScreen
 import nl.rijksoverheid.mgo.feature.localisation.search.SearchScreen
 import nl.rijksoverheid.mgo.feature.localisation.searchresults.SearchResultsScreen
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
-fun NavGraphBuilder.addAddHealthCareNavigationGraph() {
+fun NavGraphBuilder.addLocalisationNavigationGraph() {
     navigation(
         startDestination = NavigationScreen.Localisation.Search.getRoute(),
         route = NavigationScreen.Localisation.Start.getRoute(),
@@ -22,6 +23,12 @@ fun NavGraphBuilder.addAddHealthCareNavigationGraph() {
             route = NavigationScreen.Localisation.SearchResults.getRoute(),
         ) {
             SearchResultsScreen()
+        }
+
+        composableWithDefaultScreenTransitions(
+            route = NavigationScreen.Localisation.AddHealthCareProvider.getRoute(),
+        ) {
+            AddHealthCareProviderScreen()
         }
     }
 }

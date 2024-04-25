@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.framework.navigation
 
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 
 /**
@@ -47,10 +48,18 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             is NavigationScreen.Localisation.SearchResults -> {
                 navController.navigate(NavigationScreen.Localisation.SearchResults.getNavigationRoute())
             }
+
+            is NavigationScreen.Localisation.AddHealthCareProvider -> {
+                navController.navigate(NavigationScreen.Localisation.AddHealthCareProvider.getNavigationRoute())
+            }
         }
     }
 
     override fun popBackStack() {
         navController.popBackStack()
+    }
+
+    override fun getBackStackEntry(screen: NavigationScreen): NavBackStackEntry {
+        return navController.getBackStackEntry(screen.getRoute())
     }
 }

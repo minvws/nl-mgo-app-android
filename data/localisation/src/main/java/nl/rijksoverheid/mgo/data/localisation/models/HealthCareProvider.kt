@@ -9,6 +9,7 @@ data class HealthCareProvider(
     val name: String,
     val address: String?,
     val category: String?,
+    val added: Boolean,
 )
 
 val TEST_HEALTH_CARE_PROVIDER =
@@ -17,17 +18,15 @@ val TEST_HEALTH_CARE_PROVIDER =
         name = "Tandarts Tandje Erbij",
         address = "Boorplatform 5\r\n1234AB Roermond",
         category = "Tandarts",
+        added = false,
     )
 
-internal fun SearchResponse.toHealthCareProviders(): List<HealthCareProvider> {
-    return organizations.mapNotNull { organization ->
-        val name = organization.displayName ?: return@mapNotNull null
-        val address = organization.addresses.firstOrNull() ?: return@mapNotNull null
-        HealthCareProvider(
-            id = organization.id,
-            name = name,
-            address = address.address,
-            category = organization.types.firstOrNull()?.displayName,
-        )
-    }
+internal fun SearchResponse.Organization.toHealthCareProvider(added: Boolean): HealthCareProvider {
+    return HealthCareProvider(
+        id = id,
+        name = displayName ?: "",
+        address = addresses.firstOrNull()?.address,
+        category = types.firstOrNull()?.displayName,
+        added = added,
+    )
 }

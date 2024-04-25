@@ -34,11 +34,19 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             }
 
             NavigationScreen.Dashboard -> {
-                navController.navigate(NavigationScreen.Dashboard.getRoute())
+                navController.navigate(NavigationScreen.Dashboard.getRoute()) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             }
 
             NavigationScreen.Localisation.Start -> {
-                navController.navigate(NavigationScreen.Localisation.Start.getRoute())
+                navController.navigate(NavigationScreen.Localisation.Start.getRoute()) {
+                    popUpTo(NavigationScreen.Localisation.Start.getRoute()) {
+                        inclusive = true
+                    }
+                }
             }
 
             NavigationScreen.Localisation.Search -> {

@@ -68,7 +68,9 @@ private fun AddHealthCareProviderScreenContent(viewState: AddHealthCareProviderV
                 modifier = Modifier.padding(innerPadding),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.localisation_add_healthcareprovider_primary_button),
-                onButtonClick = {},
+                onButtonClick = { navigationManager.navigate(NavigationScreen.Dashboard) },
+                secondaryButtonText = stringResource(id = R.string.localisation_add_healthcareprovider_secondary_button),
+                onSecondaryButtonClick = { navigationManager.navigate(NavigationScreen.Localisation.Start) },
             ) {
                 Text(
                     text = stringResource(id = R.string.localisation_add_healthcareprovider_title),

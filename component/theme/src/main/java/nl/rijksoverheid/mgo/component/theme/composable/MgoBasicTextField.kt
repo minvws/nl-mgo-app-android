@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.R
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.fonts
 
 @Composable
 fun MgoBasicTextField(
@@ -39,7 +40,7 @@ fun MgoBasicTextField(
 ) {
     val localContentColor = if (error == null) MaterialTheme.colors.onBackground else MaterialTheme.colors.error
     val localStyle = LocalTextStyle.current
-    val mergedStyle = localStyle.merge(TextStyle(color = LocalContentColor.current))
+    val mergedStyle = localStyle.merge(TextStyle(color = LocalContentColor.current, fontFamily = fonts))
     CompositionLocalProvider(LocalContentColor provides localContentColor) {
         Column(modifier = modifier) {
             if (header != null) {

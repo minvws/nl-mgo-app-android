@@ -11,7 +11,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
@@ -48,10 +48,11 @@ internal fun RemoveHealthCareProviderCard(
                     Text(text = address, style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
                 }
             }
-            IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick(provider) }) {
+            IconButton(onClick = { onClick(provider) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_remove_healthcare_provider_card_remove),
                     contentDescription = stringResource(id = CopyR.string.general_remove),
+                    tint = MaterialTheme.colors.iconsPrimary(),
                 )
             }
         }

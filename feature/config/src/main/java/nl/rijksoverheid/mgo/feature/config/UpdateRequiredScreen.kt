@@ -14,11 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -48,14 +49,13 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
                 Text(
                     modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
                     text = stringResource(id = CopyR.string.config_old_version_title),
-                    style = MaterialTheme.typography.h5,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headingMedium,
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                     text = stringResource(id = CopyR.string.config_old_version_description),
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         },

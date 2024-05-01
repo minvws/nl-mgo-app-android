@@ -17,7 +17,7 @@ fun MgoTheme(
 ) {
     MaterialTheme(
         colors = if (darkTheme) getDarkColorScheme() else getLightColorScheme(),
-        typography = Typography(defaultFontFamily = fonts),
+        typography = Typography(),
     ) {
         Surface(
             modifier = modifier,

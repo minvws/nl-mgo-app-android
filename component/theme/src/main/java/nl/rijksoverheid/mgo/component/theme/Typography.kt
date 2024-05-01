@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-internal val fonts =
+val fonts =
     FontFamily(
         Font(R.font.ro_regular, weight = FontWeight.Normal),
         Font(R.font.ro_bold, weight = FontWeight.Bold),

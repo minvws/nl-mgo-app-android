@@ -2,20 +2,26 @@ package nl.rijksoverheid.mgo.feature.localisation.overview
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,10 +40,26 @@ import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 fun AddedHealthCareOverviewScreen() {
     val viewModel: AddedHealthCareOverviewScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+
+    // Remove provider dialog
+    var removeProvider by remember { mutableStateOf<HealthCareProvider?>(null) }
+    removeProvider?.let { provider ->
+        RemoveProviderDialog(
+            provider = provider,
+            onDismissRequest = {
+                removeProvider = null
+            },
+            onConfirmButton = {
+                viewModel.delete(provider)
+                removeProvider = null
+            },
+        )
+    }
+
     AddedHealthCareOverviewScreenContent(
         viewState = viewState,
         onRemoveProvider = { provider ->
-            viewModel.delete(provider)
+            removeProvider = provider
         },
     )
 }
@@ -105,6 +127,37 @@ private fun AddedHealthCareOverviewScreenContent(
     )
 }
 
+@Composable
+private fun RemoveProviderDialog(
+    provider: HealthCareProvider,
+    onDismissRequest: () -> Unit,
+    onConfirmButton: () -> Unit,
+) {
+    AlertDialog(
+        title = { Text(text = stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_title, provider.name)) },
+        text = { Text(text = stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_text)) },
+        onDismissRequest = { onDismissRequest() },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmButton()
+                },
+            ) {
+                Text(stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_confirm_button))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                },
+            ) {
+                Text(stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_dismiss_button))
+            }
+        },
+    )
+}
+
 @DefaultPreviews
 @Composable
 internal fun AddedHealthCareOverviewScreenPreview() {
@@ -112,6 +165,18 @@ internal fun AddedHealthCareOverviewScreenPreview() {
         AddedHealthCareOverviewScreenContent(
             viewState = AddedHealthCareOverviewScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
             onRemoveProvider = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun RemoveProviderDialogPreview() {
+    MgoTheme {
+        RemoveProviderDialog(
+            provider = TEST_HEALTH_CARE_PROVIDER,
+            onDismissRequest = {},
+            onConfirmButton = {},
         )
     }
 }

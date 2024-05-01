@@ -45,6 +45,7 @@
     <string name="localisation_searchresults_list_item_already_added">Deze zorgaanbieder heb je al toegevoegd</string>
     <string name="localisation_add_healthcareprovider_title">Welke zorgaanbieders wil je in de app tonen?</string>
     <string name="localisation_add_healthcareprovider_subtitle">Je kunt deze lijst nu aanpassen of dit later in je profiel doen.</string>
+    <string name="localisation_add_healthcareprovider_empty_subtitle">Je hebt nog geen zorgaanbieders toegevoegd aan deze lijst. Je kunt dit nu doen, of later via je profiel.</string>
     <string name="localisation_add_healthcareprovider_primary_button">Klaar</string>
     <string name="localisation_add_healthcareprovider_secondary_button">Voeg een zorgaanbieder toe</string>
 

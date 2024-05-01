@@ -11,7 +11,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,11 +29,9 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddedHealthCareOverviewScreen() {
-    val navigationManager = LocalNavigationManager.current
     val viewModel: AddedHealthCareOverviewScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     AddedHealthCareOverviewScreenContent(
@@ -43,12 +40,6 @@ fun AddedHealthCareOverviewScreen() {
             viewModel.delete(provider)
         },
     )
-
-    LaunchedEffect(Unit) {
-        viewModel.navigateBack.collectLatest {
-            navigationManager.popBackStack()
-        }
-    }
 }
 
 @Composable
@@ -89,9 +80,15 @@ private fun AddedHealthCareOverviewScreenContent(
                     fontWeight = FontWeight.Bold,
                 )
 
+                val subtitleTextResource =
+                    if (viewState.providers.isEmpty()) {
+                        R.string.localisation_add_healthcareprovider_empty_subtitle
+                    } else {
+                        R.string.localisation_add_healthcareprovider_subtitle
+                    }
                 Text(
                     modifier = Modifier.padding(vertical = 16.dp),
-                    text = stringResource(id = R.string.localisation_add_healthcareprovider_subtitle),
+                    text = stringResource(id = subtitleTextResource),
                     style = MaterialTheme.typography.bodySmall,
                 )
 

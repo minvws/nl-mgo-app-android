@@ -121,11 +121,11 @@ fun Colors.supportFysiotherapeut(isSystemDarkTheme: Boolean = isSystemInDarkThem
 
 @Composable
 fun Colors.supportVerpleeghuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFF092CD) else Color(0xFFF6BDE1)
+    if (isSystemDarkTheme) Color(0xFFF6BDE1) else Color(0xFFF092CD)
 
 @Composable
 fun Colors.supportThuiszorg(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFF092CD) else Color(0xFFF6BDE1)
+    if (isSystemDarkTheme) Color(0xFFBFA96C) else Color(0xFF94710A)
 
 @Composable
 fun Colors.supportKliniek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =

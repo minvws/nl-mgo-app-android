@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -55,6 +57,10 @@ fun MgoBasicTextField(
             BasicTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = value,
+                keyboardOptions =
+                    KeyboardOptions.Default.copy(
+                        capitalization = KeyboardCapitalization.Sentences,
+                    ),
                 onValueChange = onValueChange,
                 textStyle = mergedStyle,
                 cursorBrush = SolidColor(LocalContentColor.current),

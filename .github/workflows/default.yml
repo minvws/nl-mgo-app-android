@@ -10,13 +10,15 @@ on:
 
 jobs:
   check-license:
+    name: Check licenses
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@v2
 
-  default:
+  validate:
+    name: Build & validate
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}

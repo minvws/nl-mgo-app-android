@@ -10,7 +10,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.TEST_TAG_COLUMN_WITH_BUTTON_BUTTON
+import nl.rijksoverheid.mgo.component.theme.TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON
 import org.hamcrest.Matchers
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +38,7 @@ internal class UpdateRequiredScreenTest {
         Intents.intending(intentMatcher).respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, null))
 
         // When clicking the button
-        composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON).performClick()
 
         Intents.intended(intentMatcher)
         Intents.release()

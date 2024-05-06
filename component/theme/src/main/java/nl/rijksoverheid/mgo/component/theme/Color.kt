@@ -36,7 +36,7 @@ fun Colors.contentTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 
 @Composable
 fun Colors.iconsPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF535353) else Color(0xFF696969)
+    if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
 
 @Composable
 fun Colors.iconsSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
@@ -54,7 +54,7 @@ fun Colors.linesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 
 @Composable
 fun Colors.linesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF1D1D1D) else Color(0xFFF3F3F3)
+    if (isSystemDarkTheme) Color(0xFF404040) else Color(0xFFF3F3F3)
 
 @Composable
 fun Colors.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
@@ -121,11 +121,11 @@ fun Colors.supportFysiotherapeut(isSystemDarkTheme: Boolean = isSystemInDarkThem
 
 @Composable
 fun Colors.supportVerpleeghuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFF092CD) else Color(0xFFF6BDE1)
+    if (isSystemDarkTheme) Color(0xFFF6BDE1) else Color(0xFFF092CD)
 
 @Composable
 fun Colors.supportThuiszorg(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFF092CD) else Color(0xFFF6BDE1)
+    if (isSystemDarkTheme) Color(0xFFBFA96C) else Color(0xFF94710A)
 
 @Composable
 fun Colors.supportKliniek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =

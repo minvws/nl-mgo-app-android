@@ -3,21 +3,21 @@ package nl.rijksoverheid.mgo.data.onboarding
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
-import nl.rijksoverheid.mgo.framework.storage.KeyValueStore
+import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import javax.inject.Singleton
 
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
-internal object OnboardingDataModule {
+object OnboardingDataModule {
     @Provides
-    @ViewModelScoped
+    @Singleton
     fun provideHasSeenOnboarding(keyValueStore: KeyValueStore): HasSeenOnboarding {
         return DefaultHasSeenOnboarding(keyValueStore)
     }
 
     @Provides
-    @ViewModelScoped
+    @Singleton
     fun provideSetHasSeenOnboarding(keyValueStore: KeyValueStore): SetHasSeenOnboarding {
         return DefaultSetHasSeenOnboarding(keyValueStore)
     }

@@ -20,6 +20,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,29 +33,48 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.jeziellago.compose.markdowntext.MarkdownText
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
-import nl.rijksoverheid.mgo.data.localisation.models.SearchResult
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_SEARCH_RESULT
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun SearchResultsScreen() {
+    val navigationManager = LocalNavigationManager.current
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    SearchResultsScreenContent(viewState = viewState, onGetSearchResults = { viewModel.getSearchResults() })
+    SearchResultsScreenContent(
+        viewState = viewState,
+        onGetSearchResults = { viewModel.getSearchResults() },
+        onAddSearchResult = { searchResult ->
+            if (searchResult.added) {
+                navigationManager.navigate(NavigationScreen.Localisation.Overview)
+            } else {
+                viewModel.addHealthCareProvider(searchResult)
+            }
+        },
+    )
+    LaunchedEffect(Unit) {
+        viewModel.navigation.collectLatest { screen ->
+            navigationManager.navigate(screen)
+        }
+    }
 }
 
 @Composable
 private fun SearchResultsScreenContent(
     viewState: SearchResultsScreenViewState,
     onGetSearchResults: () -> Unit,
+    onAddSearchResult: (provider: HealthCareProvider) -> Unit,
 ) {
     val navigationManager = LocalNavigationManager.current
     Scaffold(
@@ -87,11 +107,15 @@ private fun SearchResultsScreenContent(
                             name = viewState.name,
                             city = viewState.city,
                             onButtonClick = {
-                                navigationManager.popBackStack()
+                                navigationManager.navigate(NavigationScreen.Localisation.Start)
                             },
                         )
                     } else {
-                        SearchResultsContent(modifier = Modifier.padding(innerPadding), searchResults = viewState.results)
+                        SearchResultsContent(
+                            modifier = Modifier.padding(innerPadding),
+                            searchResults = viewState.results,
+                            onAddSearchResult = onAddSearchResult,
+                        )
                     }
                 }
 
@@ -139,7 +163,8 @@ private fun SearchResultsLoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SearchResultsContent(
-    searchResults: List<SearchResult>,
+    searchResults: List<HealthCareProvider>,
+    onAddSearchResult: (provider: HealthCareProvider) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
@@ -152,7 +177,11 @@ private fun SearchResultsContent(
             )
         }
         items(searchResults.size) { position ->
-            SearchResultCard(modifier = Modifier.padding(bottom = 8.dp), searchResult = searchResults[position], onClick = {})
+            SearchResultCard(
+                modifier = Modifier.padding(bottom = 8.dp),
+                searchResult = searchResults[position],
+                onClick = onAddSearchResult,
+            )
         }
     }
 }
@@ -164,7 +193,7 @@ private fun SearchResultsEmptyContent(
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ColumnWithButton(
+    ColumnWithButtons(
         modifier = modifier.padding(start = 16.dp, end = 16.dp),
         buttonText = stringResource(id = CopyR.string.general_search_again),
         onButtonClick = onButtonClick,
@@ -242,7 +271,7 @@ private fun SearchResultsErrorContent(
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ColumnWithButton(
+    ColumnWithButtons(
         modifier = modifier.padding(start = 16.dp, end = 16.dp),
         buttonText = stringResource(id = CopyR.string.general_try_again),
         onButtonClick = onButtonClick,
@@ -286,6 +315,7 @@ internal fun SearchResultsLoadingPreview() {
         SearchResultsScreenContent(
             viewState = SearchResultsScreenViewState.Loading,
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }
@@ -297,6 +327,7 @@ internal fun SearchResultsEmptyPreview() {
         SearchResultsScreenContent(
             viewState = SearchResultsScreenViewState.Success(name = "Tandarts Tandje Erbij", city = "Roermond", results = listOf()),
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }
@@ -312,12 +343,13 @@ internal fun SearchResultsPreview() {
                     city = "Roermond",
                     results =
                         listOf(
-                            TEST_SEARCH_RESULT,
-                            TEST_SEARCH_RESULT,
-                            TEST_SEARCH_RESULT,
+                            TEST_HEALTH_CARE_PROVIDER,
+                            TEST_HEALTH_CARE_PROVIDER,
+                            TEST_HEALTH_CARE_PROVIDER,
                         ),
                 ),
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }
@@ -330,6 +362,7 @@ internal fun SearchResultsErrorPreview() {
             viewState =
                 SearchResultsScreenViewState.Error(isProductionBuild = false, error = IllegalStateException("Something went wrong")),
             onGetSearchResults = {},
+            onAddSearchResult = {},
         )
     }
 }

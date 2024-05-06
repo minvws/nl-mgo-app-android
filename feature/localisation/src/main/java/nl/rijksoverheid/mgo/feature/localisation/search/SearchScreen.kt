@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
@@ -34,16 +34,12 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun SearchScreen() {
     val navigationManager = LocalNavigationManager.current
-    val viewModel: SearchScreenViewModel = hiltViewModel()
-    val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+    val searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
+    val viewState: SearchScreenViewState by searchScreenViewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        // Reset name and city every time this composable is created for the first time
-        viewModel.setName("")
-        viewModel.setCity("")
-
         // Handle navigation
-        viewModel.navigation.collectLatest { screen ->
+        searchScreenViewModel.navigation.collectLatest { screen ->
             navigationManager.navigate(screen)
         }
     }
@@ -51,13 +47,13 @@ fun SearchScreen() {
     SearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
-            viewModel.setName(name)
+            searchScreenViewModel.setName(name)
         },
         onSetCity = { city ->
-            viewModel.setCity(city)
+            searchScreenViewModel.setCity(city)
         },
         onSearch = {
-            viewModel.getSearchResults()
+            searchScreenViewModel.getSearchResults()
         },
     )
 }
@@ -88,7 +84,7 @@ private fun SearchScreenContent(
         },
         backgroundColor = Color.Transparent,
         content = { innerPadding ->
-            ColumnWithButton(
+            ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.general_search),

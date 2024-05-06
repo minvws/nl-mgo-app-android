@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.jeziellago.compose.markdowntext.MarkdownText
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButton
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
@@ -66,7 +66,7 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
         },
         backgroundColor = Color.Transparent,
         content = { innerPadding ->
-            ColumnWithButton(
+            ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = CopyR.string.general_next),

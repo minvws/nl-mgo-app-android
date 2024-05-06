@@ -9,17 +9,20 @@
     <string name="general_search">Zoeken</string>
     <string name="general_search_again">Opnieuw zoeken</string>
     <string name="general_add">Toevoegen</string>
+    <string name="general_remove">Verwijderen</string>
+    <string name="general_unknown">Onbekend</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="splash_loading">Aan het laden</string>
     <string name="error_title">Er ging iets mis</string>
     <string name="error_subtitle">Controleer of je telefoon verbonden is met het internet en probeer het opnieuw.</string>
     <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
-    <string name="introduction_description">Alle informatie die je huisarts, ziekenhuis en andere zorgverleners over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
+    <string name="introduction_description">Alle informatie die je huisarts, ziekenhuis en andere zorgaanbieders over jou hebben. Op één
+        plek. Veilig en overzichtelijk.</string>
     <string name="privacy_overview_title">Zo gebruikt de app jouw gegevens</string>
     <string name="privacy_overview_description">In de [privacyverklaring](https://www.google.nl) staat hoe Mijn Gezondheidsoverzicht jouw
         gegevens gebruikt. Dit zijn de belangrijkste punten:</string>
     <string name="privacy_overview_item_1">Je gegevens worden **versleuteld** en via een **veilige** verbinding opgehaald.</string>
-    <string name="privacy_overview_item_2">De app haalt je gegevens direct op bij de zorgverleners die jij kiest. **Alleen jij hebt
+    <string name="privacy_overview_item_2">De app haalt je gegevens direct op bij de zorgaanbieders die jij kiest. **Alleen jij hebt
         toegang**.</string>
     <string name="privacy_overview_item_3">**Je kiest zelf** hoe je je gegevens wilt gebruiken en of je ze wel of niet deelt met anderen.</string>
     <string name="privacy_overview_item_4">Je kunt de gegevens in je overzicht **altijd verwijderen of opnieuw opvragen**.</string>
@@ -28,16 +31,30 @@
     <string name="config_old_version_button">Nu downloaden</string>
     <string name="config_no_internet_title">Je hebt geen internetverbinding</string>
     <string name="config_no_internet_description">Om de app op te starten heb je internet nodig. Probeer opnieuw verbinding te maken met WiFi of gebruik mobiele data.</string>
-    <string name="localisation_search_title">Welke zorgverlener wil je toevoegen?</string>
+    <string name="localisation_search_title">Welke zorgaanbieder wil je toevoegen?</string>
     <string name="localisation_search_name_error">Vul een naam in</string>
     <string name="localisation_search_city_error">Vul een plaats in</string>
     <string name="localisation_search_name_header">Naam (verplicht)</string>
     <string name="localisation_search_city_header">Plaats (verplicht)</string>
-    <string name="localisation_searchresults_title">Deze zorgverleners hebben we gevonden</string>
-    <string name="localisation_searchresults_loading">Zorgverleners aan het zoeken…</string>
-    <string name="localisation_searchresults_empty_title">Geen zorgverleners gevonden</string>
+    <string name="localisation_searchresults_title">Deze zorgaanbieders hebben we gevonden</string>
+    <string name="localisation_searchresults_loading">Zorgaanbieders aan het zoeken…</string>
+    <string name="localisation_searchresults_empty_title">Geen zorgaanbieders gevonden</string>
     <string name="localisation_searchresults_empty_list_header">Je hebt gezocht naar **%1$s** in **%2$s**.</string>
     <string name="localisation_searchresults_empty_list_item_1">Controleer de spelling.</string>
-    <string name="localisation_searchresults_empty_list_item_2">Vul de juiste naam in. Je vindt deze  op de rekening. Of vraag aan de zorgverlener hoe je hun naam schrijft.</string>
-    <string name="localisation_searchresults_empty_list_item_3">Heeft deze zorgverlener meerdere vestigingen? Vul dan de plaatsnaam van de hoofdvestiging in.</string>
+    <string name="localisation_searchresults_empty_list_item_2">Vul de juiste naam in. Je vindt deze  op de rekening. Of vraag aan de
+        zorgaanbieder hoe je hun naam schrijft.</string>
+    <string name="localisation_searchresults_empty_list_item_3">Heeft deze zorgaanbieder meerdere vestigingen? Vul dan de plaatsnaam van de
+        hoofdvestiging in.</string>
+    <string name="localisation_searchresults_list_item_already_added">Deze zorgaanbieder heb je al toegevoegd</string>
+    <string name="localisation_add_healthcareprovider_title">Welke zorgaanbieders wil je in de app tonen?</string>
+    <string name="localisation_add_healthcareprovider_subtitle">Je kunt deze lijst nu aanpassen of dit later in je profiel doen.</string>
+    <string name="localisation_add_healthcareprovider_empty_subtitle">Je hebt nog geen zorgaanbieders toegevoegd aan deze lijst. Je kunt dit nu doen, of later via je profiel.</string>
+    <string name="localistaion_add_healthcareprovider_remove_dialog_title">%1$s weglaten?</string>
+    <string name="localistaion_add_healthcareprovider_remove_dialog_text">We halen je dossier van deze zorgaanbieder niet op. Je kunt deze later alsnog toevoegen via je profiel.</string>
+    <string name="localistaion_add_healthcareprovider_remove_dialog_confirm_button">Weglaten</string>
+    <string name="localistaion_add_healthcareprovider_remove_dialog_dismiss_button">Toch tonen</string>
+    <string name="localisation_add_healthcareprovider_primary_button">Klaar</string>
+    <string name="localisation_add_healthcareprovider_secondary_button">Voeg een zorgaanbieder toe</string>
+
+
 </resources>

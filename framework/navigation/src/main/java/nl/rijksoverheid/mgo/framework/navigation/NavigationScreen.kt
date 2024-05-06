@@ -50,6 +50,8 @@ sealed class NavigationScreen(val name: String, val placeholders: List<String> =
                 return requireNotNull(savedStateHandle[placeholders[1]])
             }
         }
+
+        data object Overview : Localisation(name = "overview")
     }
 
     sealed class Config(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.framework.navigation
 
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 
 /**
@@ -33,11 +34,19 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             }
 
             NavigationScreen.Dashboard -> {
-                navController.navigate(NavigationScreen.Dashboard.getRoute())
+                navController.navigate(NavigationScreen.Dashboard.getRoute()) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             }
 
             NavigationScreen.Localisation.Start -> {
-                navController.navigate(NavigationScreen.Localisation.Start.getRoute())
+                navController.navigate(NavigationScreen.Localisation.Start.getRoute()) {
+                    popUpTo(NavigationScreen.Localisation.Start.getRoute()) {
+                        inclusive = true
+                    }
+                }
             }
 
             NavigationScreen.Localisation.Search -> {
@@ -47,10 +56,18 @@ class DefaultNavigationManager(private val navController: NavController) : Navig
             is NavigationScreen.Localisation.SearchResults -> {
                 navController.navigate(NavigationScreen.Localisation.SearchResults.getNavigationRoute())
             }
+
+            is NavigationScreen.Localisation.Overview -> {
+                navController.navigate(NavigationScreen.Localisation.Overview.getNavigationRoute())
+            }
         }
     }
 
     override fun popBackStack() {
         navController.popBackStack()
+    }
+
+    override fun getBackStackEntry(screen: NavigationScreen): NavBackStackEntry {
+        return navController.getBackStackEntry(screen.getRoute())
     }
 }

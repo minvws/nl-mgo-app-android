@@ -7,6 +7,5 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.okhttp.mockwebserver)
     implementation(project(":framework:environment"))
 }

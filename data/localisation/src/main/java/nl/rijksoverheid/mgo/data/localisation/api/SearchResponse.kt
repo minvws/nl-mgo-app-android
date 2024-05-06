@@ -12,6 +12,7 @@ internal class SearchResponse(
         @Json(name = "identification_value") val id: String,
         @Json(name = "display_name") val displayName: String?,
         val addresses: List<Address>,
+        val types: List<Types>,
     )
 
     @JsonClass(generateAdapter = true)
@@ -19,5 +20,10 @@ internal class SearchResponse(
         val address: String?,
         val city: String?,
         @Json(name = "postalcode") val postalCode: String?,
+    )
+
+    @JsonClass(generateAdapter = true)
+    data class Types(
+        @Json(name = "display_name") val displayName: String?,
     )
 }

@@ -67,13 +67,13 @@ class AndroidConventionsPlugin : Plugin<Project> {
             add("kspAndroidTest", versionCatalog.findLibrary("dagger.hilt.compiler").get())
 
             // Testing
-            add("testImplementation", project(":framework:test"))
             add("testImplementation", versionCatalog.findLibrary("junit").get())
             add("androidTestImplementation", versionCatalog.findLibrary("junit").get())
             add("testImplementation", versionCatalog.findLibrary("turbine").get())
             add("androidTestImplementation", versionCatalog.findLibrary("androidx.test.core").get())
             add("androidTestImplementation", versionCatalog.findLibrary("androidx.junit").get())
             add("androidTestImplementation", versionCatalog.findLibrary("androidx.test.runner").get())
+            add("testImplementation", versionCatalog.findLibrary("okhttp.mockwebserver").get())
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())

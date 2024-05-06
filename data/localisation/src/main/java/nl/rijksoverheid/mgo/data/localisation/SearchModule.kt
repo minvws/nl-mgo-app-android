@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.localisation.api.SearchApi
 import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.storage.file.FileStore
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -36,8 +37,11 @@ internal fun createMoshi(): Moshi {
 internal object SearchModule {
     @Provides
     @Singleton
-    fun provideSearchRepository(searchApi: SearchApi): SearchRepository {
-        return DefaultSearchRepository(searchApi = searchApi)
+    fun provideSearchRepository(
+        searchApi: SearchApi,
+        fileStore: FileStore,
+    ): HealthCareProviderRepository {
+        return DefaultHealthCareProviderRepository(searchApi = searchApi, fileStore = fileStore)
     }
 
     @Provides

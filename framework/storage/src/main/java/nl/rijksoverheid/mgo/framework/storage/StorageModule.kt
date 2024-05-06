@@ -4,11 +4,17 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.framework.storage.file.DefaultFileStore
+import nl.rijksoverheid.mgo.framework.storage.file.FileStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.DataStoreKeyValueStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -24,5 +30,24 @@ internal object StorageModule {
         return DataStoreKeyValueStore(
             dataStore = context.dataStore,
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFileStore(
+        @ApplicationContext context: Context,
+        @Named("storageMoshi") moshi: Moshi,
+    ): FileStore {
+        return DefaultFileStore(
+            context = context,
+            moshi = moshi,
+        )
+    }
+
+    @Provides
+    @Singleton
+    @Named("storageMoshi")
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder().build()
     }
 }

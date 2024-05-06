@@ -38,10 +38,6 @@ fun SearchScreen() {
     val viewState: SearchScreenViewState by searchScreenViewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        // Reset name and city every time this composable is created for the first time
-        searchScreenViewModel.setName("")
-        searchScreenViewModel.setCity("")
-
         // Handle navigation
         searchScreenViewModel.navigation.collectLatest { screen ->
             navigationManager.navigate(screen)

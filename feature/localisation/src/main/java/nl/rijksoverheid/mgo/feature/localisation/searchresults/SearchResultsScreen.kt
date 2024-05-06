@@ -107,7 +107,7 @@ private fun SearchResultsScreenContent(
                             name = viewState.name,
                             city = viewState.city,
                             onButtonClick = {
-                                navigationManager.popBackStack()
+                                navigationManager.navigate(NavigationScreen.Localisation.Start)
                             },
                         )
                     } else {

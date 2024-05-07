@@ -34,12 +34,12 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun HealthCareSearchScreen() {
     val navigationManager = LocalNavigationManager.current
-    val searchScreenViewModel: HealthCareSearchViewModel = hiltViewModel()
-    val viewState: HealthCareSearchViewState by searchScreenViewModel.viewState.collectAsStateWithLifecycle()
+    val viewModel: HealthCareSearchScreenViewModel = hiltViewModel()
+    val viewState: HealthCareSearchViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         // Handle navigation
-        searchScreenViewModel.navigation.collectLatest { screen ->
+        viewModel.navigation.collectLatest { screen ->
             navigationManager.navigate(screen)
         }
     }
@@ -47,13 +47,13 @@ fun HealthCareSearchScreen() {
     HealthCareSearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
-            searchScreenViewModel.setName(name)
+            viewModel.setName(name)
         },
         onSetCity = { city ->
-            searchScreenViewModel.setCity(city)
+            viewModel.setCity(city)
         },
         onSearch = {
-            searchScreenViewModel.validate()
+            viewModel.validate()
         },
     )
 }

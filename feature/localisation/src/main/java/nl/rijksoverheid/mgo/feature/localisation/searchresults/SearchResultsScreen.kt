@@ -57,13 +57,14 @@ fun HealthCareSearchResultsScreen() {
         onGetSearchResults = { viewModel.getSearchResults() },
         onAddSearchResult = { searchResult ->
             if (searchResult.added) {
-                navigationManager.navigate(NavigationScreen.Localisation.Overview)
+                navigationManager.navigate(NavigationScreen.Localisation.StoredHealthCareProviders)
             } else {
                 viewModel.addHealthCareProvider(searchResult)
             }
         },
     )
     LaunchedEffect(Unit) {
+        viewModel.getSearchResults()
         viewModel.navigation.collectLatest { screen ->
             navigationManager.navigate(screen)
         }
@@ -325,7 +326,12 @@ internal fun HealthCareSearchResultsLoadingPreview() {
 internal fun HealthCareSearchResultsEmptyPreview() {
     MgoTheme {
         HealthCareSearchResultsScreenContent(
-            viewState = SearchResultsScreenViewState.Success(name = "Tandarts Tandje Erbij", city = "Roermond", results = listOf()),
+            viewState =
+                SearchResultsScreenViewState.Success(
+                    name = "Tandarts Tandje Erbij",
+                    city = "Roermond",
+                    results = listOf(),
+                ),
             onGetSearchResults = {},
             onAddSearchResult = {},
         )
@@ -360,7 +366,10 @@ internal fun HealthCareSearchResultsErrorPreview() {
     MgoTheme {
         HealthCareSearchResultsScreenContent(
             viewState =
-                SearchResultsScreenViewState.Error(isProductionBuild = false, error = IllegalStateException("Something went wrong")),
+                SearchResultsScreenViewState.Error(
+                    isProductionBuild = false,
+                    error = IllegalStateException("Something went wrong"),
+                ),
             onGetSearchResults = {},
             onAddSearchResult = {},
         )

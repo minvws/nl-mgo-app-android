@@ -10,7 +10,7 @@ import org.junit.Test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-internal class HealthCareSearchScreenViewModelTest {
+internal class SearchScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -18,7 +18,7 @@ internal class HealthCareSearchScreenViewModelTest {
     fun `Given ViewModel, When no name and city have been entered, Then emit error`() =
         runTest {
             // Given
-            val viewModel = HealthCareSearchScreenViewModel()
+            val viewModel = SearchScreenViewModel()
 
             // When
             viewModel.validate()
@@ -26,7 +26,7 @@ internal class HealthCareSearchScreenViewModelTest {
             // Then
             viewModel.viewState.test {
                 val expectedViewState =
-                    HealthCareSearchViewState(
+                    SearchScreenViewState(
                         name = "",
                         nameError = CopyR.string.localisation_search_name_error,
                         city = "",
@@ -40,7 +40,7 @@ internal class HealthCareSearchScreenViewModelTest {
     fun `Given ViewModel, When no name has been entered, Then emit error`() =
         runTest {
             // Given
-            val viewModel = HealthCareSearchScreenViewModel()
+            val viewModel = SearchScreenViewModel()
 
             // When
             viewModel.setCity("Roermond")
@@ -49,7 +49,7 @@ internal class HealthCareSearchScreenViewModelTest {
             // Then
             viewModel.viewState.test {
                 val expectedViewState =
-                    HealthCareSearchViewState(
+                    SearchScreenViewState(
                         name = "",
                         nameError = CopyR.string.localisation_search_name_error,
                         city = "Roermond",
@@ -63,7 +63,7 @@ internal class HealthCareSearchScreenViewModelTest {
     fun `Given ViewModel, When no city has been entered, Then emit error`() =
         runTest {
             // Given
-            val viewModel = HealthCareSearchScreenViewModel()
+            val viewModel = SearchScreenViewModel()
 
             // When
             viewModel.setName("Tandarts")
@@ -72,7 +72,7 @@ internal class HealthCareSearchScreenViewModelTest {
             // Then
             viewModel.viewState.test {
                 val expectedViewState =
-                    HealthCareSearchViewState(
+                    SearchScreenViewState(
                         name = "Tandarts",
                         nameError = null,
                         city = "",
@@ -86,7 +86,7 @@ internal class HealthCareSearchScreenViewModelTest {
     fun `Given ViewModel, When name and city have been entered, Then navigate`() =
         runTest {
             // Given
-            val viewModel = HealthCareSearchScreenViewModel()
+            val viewModel = SearchScreenViewModel()
 
             // When
             viewModel.setName("Tandarts")
@@ -99,7 +99,7 @@ internal class HealthCareSearchScreenViewModelTest {
 
                 // Then
                 val expectedViewState =
-                    HealthCareSearchViewState(
+                    SearchScreenViewState(
                         name = "Tandarts",
                         nameError = null,
                         city = "Roermond",

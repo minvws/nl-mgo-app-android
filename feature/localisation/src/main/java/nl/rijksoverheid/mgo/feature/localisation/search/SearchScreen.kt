@@ -34,8 +34,8 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun HealthCareSearchScreen() {
     val navigationManager = LocalNavigationManager.current
-    val viewModel: HealthCareSearchScreenViewModel = hiltViewModel()
-    val viewState: HealthCareSearchViewState by viewModel.viewState.collectAsStateWithLifecycle()
+    val viewModel: SearchScreenViewModel = hiltViewModel()
+    val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         // Handle navigation
@@ -60,7 +60,7 @@ fun HealthCareSearchScreen() {
 
 @Composable
 private fun HealthCareSearchScreenContent(
-    viewState: HealthCareSearchViewState,
+    viewState: SearchScreenViewState,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
@@ -127,7 +127,7 @@ private fun HealthCareSearchScreenContent(
 internal fun HealthCareSearchScreenPreview() {
     MgoTheme {
         HealthCareSearchScreenContent(
-            viewState = HealthCareSearchViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
+            viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
             onSetName = {},
             onSetCity = {},
             onSearch = {},

@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.localisation.search
 
 import androidx.annotation.StringRes
 
-internal data class HealthCareSearchViewState(
+internal data class SearchScreenViewState(
     val name: String,
     @StringRes val nameError: Int?,
     val city: String,
@@ -10,7 +10,7 @@ internal data class HealthCareSearchViewState(
 ) {
     companion object {
         val initialState =
-            HealthCareSearchViewState(
+            SearchScreenViewState(
                 name = "",
                 nameError = null,
                 city = "",

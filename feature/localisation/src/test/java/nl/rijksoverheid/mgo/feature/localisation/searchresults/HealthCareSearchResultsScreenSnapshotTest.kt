@@ -4,35 +4,35 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class SearchResultsScreenSnapshotTest {
+internal class HealthCareSearchResultsScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
     fun loading() {
         snapshotTestRule.snapshots {
-            SearchResultsLoadingPreview()
-        }
-    }
-
-    @Test
-    fun searchResults() {
-        snapshotTestRule.snapshots {
-            SearchResultsPreview()
+            HealthCareSearchResultsLoadingPreview()
         }
     }
 
     @Test
     fun empty() {
         snapshotTestRule.snapshots {
-            SearchResultsEmptyPreview()
+            HealthCareSearchResultsEmptyPreview()
+        }
+    }
+
+    @Test
+    fun searchResults() {
+        snapshotTestRule.snapshots {
+            HealthCareSearchResultsPreview()
         }
     }
 
     @Test
     fun error() {
         snapshotTestRule.snapshots {
-            SearchResultsErrorPreview()
+            HealthCareSearchResultsErrorPreview()
         }
     }
 }

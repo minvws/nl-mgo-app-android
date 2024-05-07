@@ -48,11 +48,11 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun SearchResultsScreen() {
+fun HealthCareSearchResultsScreen() {
     val navigationManager = LocalNavigationManager.current
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    SearchResultsScreenContent(
+    HealthCareSearchResultsScreenContent(
         viewState = viewState,
         onGetSearchResults = { viewModel.getSearchResults() },
         onAddSearchResult = { searchResult ->
@@ -71,7 +71,7 @@ fun SearchResultsScreen() {
 }
 
 @Composable
-private fun SearchResultsScreenContent(
+private fun HealthCareSearchResultsScreenContent(
     viewState: SearchResultsScreenViewState,
     onGetSearchResults: () -> Unit,
     onAddSearchResult: (provider: HealthCareProvider) -> Unit,
@@ -97,12 +97,12 @@ private fun SearchResultsScreenContent(
         content = { innerPadding ->
             when (viewState) {
                 SearchResultsScreenViewState.Loading -> {
-                    SearchResultsLoadingContent(modifier = Modifier.padding(innerPadding))
+                    LoadingContent(modifier = Modifier.padding(innerPadding))
                 }
 
                 is SearchResultsScreenViewState.Success -> {
                     if (viewState.results.isEmpty()) {
-                        SearchResultsEmptyContent(
+                        EmptyContent(
                             modifier = Modifier.padding(innerPadding),
                             name = viewState.name,
                             city = viewState.city,
@@ -120,7 +120,7 @@ private fun SearchResultsScreenContent(
                 }
 
                 is SearchResultsScreenViewState.Error ->
-                    SearchResultsErrorContent(
+                    ErrorContent(
                         isProductionBuild = viewState.isProductionBuild,
                         error = viewState.error,
                         onButtonClick = onGetSearchResults,
@@ -131,7 +131,7 @@ private fun SearchResultsScreenContent(
 }
 
 @Composable
-private fun SearchResultsLoadingContent(modifier: Modifier = Modifier) {
+private fun LoadingContent(modifier: Modifier = Modifier) {
     Column(
         modifier =
             modifier
@@ -187,7 +187,7 @@ private fun SearchResultsContent(
 }
 
 @Composable
-private fun SearchResultsEmptyContent(
+private fun EmptyContent(
     name: String,
     city: String,
     onButtonClick: () -> Unit,
@@ -219,7 +219,7 @@ private fun SearchResultsEmptyContent(
             style = MaterialTheme.typography.bodySmall,
         )
 
-        SearchResultEmptyListItem(
+        EmptyListItem(
             modifier = Modifier.padding(top = 16.dp),
             text =
                 stringResource(
@@ -228,7 +228,7 @@ private fun SearchResultsEmptyContent(
                             .localisation_searchresults_empty_list_item_1,
                 ),
         )
-        SearchResultEmptyListItem(
+        EmptyListItem(
             modifier = Modifier.padding(top = 8.dp),
             text =
                 stringResource(
@@ -237,7 +237,7 @@ private fun SearchResultsEmptyContent(
                             .localisation_searchresults_empty_list_item_2,
                 ),
         )
-        SearchResultEmptyListItem(
+        EmptyListItem(
             modifier = Modifier.padding(top = 8.dp),
             text =
                 stringResource(
@@ -250,7 +250,7 @@ private fun SearchResultsEmptyContent(
 }
 
 @Composable
-private fun SearchResultEmptyListItem(
+private fun EmptyListItem(
     text: String,
     modifier: Modifier = Modifier,
 ) {
@@ -265,7 +265,7 @@ private fun SearchResultEmptyListItem(
 }
 
 @Composable
-private fun SearchResultsErrorContent(
+private fun ErrorContent(
     isProductionBuild: Boolean,
     error: Throwable,
     onButtonClick: () -> Unit,
@@ -310,9 +310,9 @@ private fun SearchResultsErrorContent(
 
 @DefaultPreviews
 @Composable
-internal fun SearchResultsLoadingPreview() {
+internal fun HealthCareSearchResultsLoadingPreview() {
     MgoTheme {
-        SearchResultsScreenContent(
+        HealthCareSearchResultsScreenContent(
             viewState = SearchResultsScreenViewState.Loading,
             onGetSearchResults = {},
             onAddSearchResult = {},
@@ -322,9 +322,9 @@ internal fun SearchResultsLoadingPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun SearchResultsEmptyPreview() {
+internal fun HealthCareSearchResultsEmptyPreview() {
     MgoTheme {
-        SearchResultsScreenContent(
+        HealthCareSearchResultsScreenContent(
             viewState = SearchResultsScreenViewState.Success(name = "Tandarts Tandje Erbij", city = "Roermond", results = listOf()),
             onGetSearchResults = {},
             onAddSearchResult = {},
@@ -334,9 +334,9 @@ internal fun SearchResultsEmptyPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun SearchResultsPreview() {
+internal fun HealthCareSearchResultsPreview() {
     MgoTheme {
-        SearchResultsScreenContent(
+        HealthCareSearchResultsScreenContent(
             viewState =
                 SearchResultsScreenViewState.Success(
                     name = "Tandarts Tandje Erbij",
@@ -356,9 +356,9 @@ internal fun SearchResultsPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun SearchResultsErrorPreview() {
+internal fun HealthCareSearchResultsErrorPreview() {
     MgoTheme {
-        SearchResultsScreenContent(
+        HealthCareSearchResultsScreenContent(
             viewState =
                 SearchResultsScreenViewState.Error(isProductionBuild = false, error = IllegalStateException("Something went wrong")),
             onGetSearchResults = {},

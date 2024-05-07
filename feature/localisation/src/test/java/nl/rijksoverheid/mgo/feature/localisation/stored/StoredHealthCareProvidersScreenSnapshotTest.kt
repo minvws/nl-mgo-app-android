@@ -1,17 +1,17 @@
-package nl.rijksoverheid.mgo.feature.localisation.search
+package nl.rijksoverheid.mgo.feature.localisation.stored
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class SearchScreenSnapshotTest {
+internal class StoredHealthCareProvidersScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
-    fun launchView() {
+    fun preview() {
         snapshotTestRule.snapshots {
-            HealthCareSearchScreenPreview()
+            StoredHealthCareProvidersScreenPreview()
         }
     }
 }

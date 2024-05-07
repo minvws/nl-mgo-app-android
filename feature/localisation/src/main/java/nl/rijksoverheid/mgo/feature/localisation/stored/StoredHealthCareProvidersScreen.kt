@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.overview
+package nl.rijksoverheid.mgo.feature.localisation.stored
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -37,8 +37,8 @@ import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 
 @Composable
-fun AddedHealthCareOverviewScreen() {
-    val viewModel: AddedHealthCareOverviewScreenViewModel = hiltViewModel()
+fun StoredHealthCareProvidersScreen() {
+    val viewModel: StoredHealthCareProvidersScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     // Remove provider dialog
@@ -56,7 +56,7 @@ fun AddedHealthCareOverviewScreen() {
         )
     }
 
-    AddedHealthCareOverviewScreenContent(
+    StoredHealthCareProvidersScreenContent(
         viewState = viewState,
         onRemoveProvider = { provider ->
             removeProvider = provider
@@ -65,8 +65,8 @@ fun AddedHealthCareOverviewScreen() {
 }
 
 @Composable
-private fun AddedHealthCareOverviewScreenContent(
-    viewState: AddedHealthCareOverviewScreenViewState,
+private fun StoredHealthCareProvidersScreenContent(
+    viewState: StoredHealthCareProvidersScreenViewState,
     onRemoveProvider: (provider: HealthCareProvider) -> Unit,
 ) {
     val navigationManager = LocalNavigationManager.current
@@ -160,10 +160,10 @@ private fun RemoveProviderDialog(
 
 @DefaultPreviews
 @Composable
-internal fun AddedHealthCareOverviewScreenPreview() {
+internal fun StoredHealthCareProvidersScreenPreview() {
     MgoTheme {
-        AddedHealthCareOverviewScreenContent(
-            viewState = AddedHealthCareOverviewScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
+        StoredHealthCareProvidersScreenContent(
+            viewState = StoredHealthCareProvidersScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
             onRemoveProvider = {},
         )
     }

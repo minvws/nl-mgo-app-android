@@ -34,7 +34,8 @@ class SearchResultsScreenViewModel
         private val _navigation = MutableSharedFlow<NavigationScreen>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
 
-        private val _viewState: MutableStateFlow<SearchResultsScreenViewState> = MutableStateFlow(SearchResultsScreenViewState.initialState)
+        private val _viewState: MutableStateFlow<SearchResultsScreenViewState> =
+            MutableStateFlow(SearchResultsScreenViewState.initialState)
         val viewState =
             _viewState.stateIn(
                 viewModelScope,
@@ -43,33 +44,39 @@ class SearchResultsScreenViewModel
                     .initialState,
             )
 
-        init {
-            getSearchResults()
-        }
-
         fun getSearchResults() {
             viewModelScope.launch {
-                _viewState.update { SearchResultsScreenViewState.Loading }
-                healthCareProviderRepository
-                    .search(name = name, city = city)
-                    .catch { throwable ->
-                        _viewState.update {
-                            SearchResultsScreenViewState.Error(
-                                isProductionBuild = appInfo.appFlavor == AppFlavor.PROD,
-                                error = throwable,
-                            )
+                if (shouldGetSearchResults()) {
+                    _viewState.update { SearchResultsScreenViewState.Loading }
+                    healthCareProviderRepository
+                        .search(name = name, city = city)
+                        .catch { throwable ->
+                            _viewState.update {
+                                SearchResultsScreenViewState.Error(
+                                    isProductionBuild = appInfo.appFlavor == AppFlavor.PROD,
+                                    error = throwable,
+                                )
+                            }
                         }
-                    }
-                    .collectLatest { results ->
-                        _viewState.update { SearchResultsScreenViewState.Success(name = name, city = city, results = results) }
-                    }
+                        .collectLatest { results ->
+                            _viewState.update {
+                                SearchResultsScreenViewState.Success(
+                                    name = name,
+                                    city = city,
+                                    results = results,
+                                )
+                            }
+                        }
+                }
             }
         }
+
+        private fun shouldGetSearchResults() = _viewState.value !is SearchResultsScreenViewState.Success
 
         fun addHealthCareProvider(provider: HealthCareProvider) {
             viewModelScope.launch {
                 healthCareProviderRepository.save(provider)
-                _navigation.tryEmit(NavigationScreen.Localisation.Overview)
+                _navigation.tryEmit(NavigationScreen.Localisation.StoredHealthCareProviders)
             }
         }
     }

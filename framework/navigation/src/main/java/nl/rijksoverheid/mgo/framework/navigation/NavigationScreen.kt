@@ -51,7 +51,7 @@ sealed class NavigationScreen(val name: String, val placeholders: List<String> =
             }
         }
 
-        data object Overview : Localisation(name = "overview")
+        data object StoredHealthCareProviders : Localisation(name = "storedHealthCareProviders")
     }
 
     sealed class Config(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {

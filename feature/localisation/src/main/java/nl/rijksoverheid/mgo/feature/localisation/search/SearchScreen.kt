@@ -32,34 +32,34 @@ import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun SearchScreen() {
+fun HealthCareSearchScreen() {
     val navigationManager = LocalNavigationManager.current
-    val searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
-    val viewState: SearchScreenViewState by searchScreenViewModel.viewState.collectAsStateWithLifecycle()
+    val viewModel: SearchScreenViewModel = hiltViewModel()
+    val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         // Handle navigation
-        searchScreenViewModel.navigation.collectLatest { screen ->
+        viewModel.navigation.collectLatest { screen ->
             navigationManager.navigate(screen)
         }
     }
 
-    SearchScreenContent(
+    HealthCareSearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
-            searchScreenViewModel.setName(name)
+            viewModel.setName(name)
         },
         onSetCity = { city ->
-            searchScreenViewModel.setCity(city)
+            viewModel.setCity(city)
         },
         onSearch = {
-            searchScreenViewModel.getSearchResults()
+            viewModel.validate()
         },
     )
 }
 
 @Composable
-private fun SearchScreenContent(
+private fun HealthCareSearchScreenContent(
     viewState: SearchScreenViewState,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
@@ -124,9 +124,9 @@ private fun SearchScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun SearchScreenPreview() {
+internal fun HealthCareSearchScreenPreview() {
     MgoTheme {
-        SearchScreenContent(
+        HealthCareSearchScreenContent(
             viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
             onSetName = {},
             onSetCity = {},

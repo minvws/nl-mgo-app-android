@@ -105,7 +105,6 @@ internal class DefaultHealthCareProviderRepositoryTest {
 
             // When
             val repository = getRepository()
-            val healthCareProviders = repository.get()
 
             // Then
             repository.storedHealthCareProvidersFlow.test {

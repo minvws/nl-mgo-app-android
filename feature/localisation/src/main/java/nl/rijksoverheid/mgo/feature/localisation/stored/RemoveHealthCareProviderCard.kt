@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.overview
+package nl.rijksoverheid.mgo.feature.localisation.stored
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

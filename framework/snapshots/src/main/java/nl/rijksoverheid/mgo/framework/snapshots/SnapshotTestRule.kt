@@ -28,6 +28,14 @@ enum class SnapshotDevice {
 sealed class SnapshotDevices(val devices: List<SnapshotDevice>) {
     data object All : SnapshotDevices(SnapshotDevice.entries)
 
+    data object Default : SnapshotDevices(
+        listOf(
+            SnapshotDevice.PHONE_PORTRAIT_LIGHT,
+            SnapshotDevice.PHONE_PORTRAIT_DARK,
+            SnapshotDevice.PHONE_LANDSCAPE_LIGHT,
+        ),
+    )
+
     data object PhoneLightDarkPortrait : SnapshotDevices(listOf(SnapshotDevice.PHONE_PORTRAIT_LIGHT, SnapshotDevice.PHONE_PORTRAIT_DARK))
 }
 
@@ -36,7 +44,7 @@ class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, render
     val rule = Paparazzi(deviceConfig = deviceConfig, renderingMode = renderingMode)
 
     fun snapshots(
-        devices: SnapshotDevices = SnapshotDevices.All,
+        devices: SnapshotDevices = SnapshotDevices.Default,
         content: @Composable () -> Unit,
     ) = rule.apply {
         devices.devices.forEach { device ->
@@ -45,26 +53,32 @@ class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, render
                     setPhone(nightMode = NightMode.NOTNIGHT)
                     previewSnapshot(fileName = "phone-portrait-light") { content() }
                 }
+
                 SnapshotDevice.PHONE_PORTRAIT_LIGHT_FONT_INCREASED -> {
                     setPhone(nightMode = NightMode.NOTNIGHT, fontScale = 2f)
                     previewSnapshot(fileName = "phone-portrait-light-font-increased") { content() }
                 }
+
                 SnapshotDevice.PHONE_LANDSCAPE_LIGHT -> {
                     setPhone(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.LANDSCAPE)
                     previewSnapshot(fileName = "phone-landscape-light") { content() }
                 }
+
                 SnapshotDevice.PHONE_LANDSCAPE_LIGHT_FONT_INCREASED -> {
                     setPhone(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.LANDSCAPE, fontScale = 1.5f)
                     previewSnapshot(fileName = "phone-landscape-light-font-increased") { content() }
                 }
+
                 SnapshotDevice.PHONE_PORTRAIT_DARK -> {
                     setPhone(nightMode = NightMode.NIGHT)
                     previewSnapshot(fileName = "phone-portrait-dark") { content() }
                 }
+
                 SnapshotDevice.TABLET_PORTRAIT_LIGHT -> {
                     setTablet(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.PORTRAIT)
                     previewSnapshot(fileName = "tablet-portrait-light") { content() }
                 }
+
                 SnapshotDevice.TABLET_LANDSCAPE_LIGHT -> {
                     setTablet(nightMode = NightMode.NOTNIGHT, orientation = ScreenOrientation.LANDSCAPE)
                     previewSnapshot(fileName = "tablet-landscape-light") { content() }

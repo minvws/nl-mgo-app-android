@@ -32,10 +32,10 @@ import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun SearchScreen() {
+fun HealthCareSearchScreen() {
     val navigationManager = LocalNavigationManager.current
-    val searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
-    val viewState: SearchScreenViewState by searchScreenViewModel.viewState.collectAsStateWithLifecycle()
+    val searchScreenViewModel: HealthCareSearchViewModel = hiltViewModel()
+    val viewState: HealthCareSearchViewState by searchScreenViewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         // Handle navigation
@@ -44,7 +44,7 @@ fun SearchScreen() {
         }
     }
 
-    SearchScreenContent(
+    HealthCareSearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
             searchScreenViewModel.setName(name)
@@ -53,14 +53,14 @@ fun SearchScreen() {
             searchScreenViewModel.setCity(city)
         },
         onSearch = {
-            searchScreenViewModel.getSearchResults()
+            searchScreenViewModel.validate()
         },
     )
 }
 
 @Composable
-private fun SearchScreenContent(
-    viewState: SearchScreenViewState,
+private fun HealthCareSearchScreenContent(
+    viewState: HealthCareSearchViewState,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
@@ -124,10 +124,10 @@ private fun SearchScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun SearchScreenPreview() {
+internal fun HealthCareSearchScreenPreview() {
     MgoTheme {
-        SearchScreenContent(
-            viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
+        HealthCareSearchScreenContent(
+            viewState = HealthCareSearchViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
             onSetName = {},
             onSetCity = {},
             onSearch = {},

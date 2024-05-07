@@ -15,11 +15,11 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as FrameworkR
 
 @HiltViewModel
-class SearchScreenViewModel
+class HealthCareSearchViewModel
     @Inject
     constructor() : ViewModel() {
-        private val _viewState = MutableStateFlow(SearchScreenViewState.initialState)
-        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, SearchScreenViewState.initialState)
+        private val _viewState = MutableStateFlow(HealthCareSearchViewState.initialState)
+        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, HealthCareSearchViewState.initialState)
 
         private val _navigation = MutableSharedFlow<NavigationScreen>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
@@ -32,7 +32,7 @@ class SearchScreenViewModel
             _viewState.update { viewState -> viewState.copy(city = city) }
         }
 
-        fun getSearchResults() {
+        fun validate() {
             viewModelScope.launch {
                 val name = _viewState.value.name
                 val city = _viewState.value.city

@@ -41,6 +41,11 @@ jobs:
         run: ./gradlew lintTstDebug ktlintCheck verifyPaparazziDebug
       - name: Unit Tests
         run: ./gradlew testTstDebug
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml # TODO
       - name: Android Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -87,6 +92,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
       - name: Run SonarCloud scanner
         uses: SonarSource/sonarcloud-github-action@master
         env: 

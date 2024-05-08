@@ -38,7 +38,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3  
       - name: Execute gradle tasks
-        run: ./gradlew lintTstDebug ktlintCheck verifyPaparazziDebug testTstDebug jacocoTestReport
+        run: ./gradlew clean lintTstDebug ktlintCheck verifyPaparazziDebug testTstDebug jacocoTestReport
       - name: Android Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:

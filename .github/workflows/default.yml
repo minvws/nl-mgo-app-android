@@ -37,15 +37,8 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3  
-      - name: Lint
-        run: ./gradlew lintTstDebug ktlintCheck verifyPaparazziDebug
-      - name: Unit Tests
-        run: ./gradlew testTstDebug
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: coverage.xml # TODO
+      - name: Execute gradle tasks
+        run: ./gradlew lintTstDebug ktlintCheck verifyPaparazziDebug testTstDebug jacocoTestReport
       - name: Android Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:

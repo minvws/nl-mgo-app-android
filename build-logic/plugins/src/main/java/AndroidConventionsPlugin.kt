@@ -1,13 +1,19 @@
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
+import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
+import org.gradle.testing.jacoco.tasks.JacocoReport
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 class AndroidConventionsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.configurePlugins()
+        target.configureJacoco()
         target.configureAndroid()
         target.configureDependencies()
     }
@@ -17,7 +23,53 @@ class AndroidConventionsPlugin : Plugin<Project> {
             apply(versionCatalog.findPlugin("kotlinAndroid").get().get().pluginId)
             apply(versionCatalog.findPlugin("ksp").get().get().pluginId)
             apply(versionCatalog.findPlugin("daggerHilt").get().get().pluginId)
+            apply("jacoco")
         }
+    }
+
+    private fun Project.configureJacoco() {
+        plugins.apply {
+            val jacocoPluginExtension = extensions.getByType<JacocoPluginExtension>()
+            jacocoPluginExtension.apply {
+                toolVersion = "0.8.11"
+            }
+            tasks.withType(Test::class.java) {
+                configure<JacocoTaskExtension> {
+                    isIncludeNoLocationClasses = true
+                    excludes =
+                        listOf(
+                            "jdk.internal.*",
+                            "androidx.core.*",
+                            "com.android.*",
+                            "android.*",
+                        )
+                }
+            }
+            tasks.register("jacocoTestReport", JacocoReport::class.java) {
+                reports {
+                    xml.required.set(true)
+                    html.required.set(true)
+                }
+                val buildDir = project.buildDir
+                val javaTree = fileTree("$buildDir/intermediates/javac/debug/classes") { setExcludes(fileFilter) }
+                val kotlinTree = fileTree("$buildDir/tmp/kotlin-classes/debug") { setExcludes(fileFilter) }
+                val execSrc = fileTree(buildDir) { setIncludes(listOf("**/*.exec")) }
+                sourceDirectories.setFrom(files("${project.projectDir}/src/main/java"))
+                classDirectories.setFrom(files(javaTree, kotlinTree))
+                executionData.setFrom(execSrc)
+            }
+        }
+    }
+
+    private val fileFilter by lazy {
+        listOf(
+            "**/R.class",
+            "**/R$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "**/androidTest/**",
+        )
     }
 
     private fun Project.configureAndroid() {

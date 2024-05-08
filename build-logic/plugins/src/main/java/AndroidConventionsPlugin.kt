@@ -46,6 +46,13 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 }
             }
             tasks.register("jacocoTestReport", JacocoReport::class.java) {
+                // TODO Very ugly :( Needs to be looked at since the app module has flavors and the others do not.
+                val task = tasks.findByName("testDebugUnitTest")
+                if (task == null) {
+                    dependsOn("testTstDebugUnitTest")
+                } else {
+                    dependsOn("testDebugUnitTest")
+                }
                 reports {
                     xml.required.set(true)
                     html.required.set(true)

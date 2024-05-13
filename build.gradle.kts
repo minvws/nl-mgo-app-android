@@ -9,5 +9,14 @@ plugins {
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.ksp) apply false
+    id("org.sonarqube")
 }
 true // Needed to make the Suppress annotation work for the plugins block
+
+sonar {
+  properties {
+    property("sonar.organization", "vws") 
+    property("sonar.projectKey", "nl-mgo-app-android-private")
+    property("sonar.host.url", "https://sonarcloud.io")
+  }
+}

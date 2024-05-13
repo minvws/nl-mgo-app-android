@@ -13,20 +13,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
-import nl.rijksoverheid.mgo.feature.localisation.addLocalisationNavigationGraph
-import nl.rijksoverheid.mgo.feature.onboarding.addOnboardingNavigationGraph
-import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
-import nl.rijksoverheid.mgo.framework.navigation.ProvideNavigationManager
+import nl.rijksoverheid.mgo.feature.localisation.LocalisationScreen
+import nl.rijksoverheid.mgo.feature.onboarding.OnboardingScreen
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.LocalRootNavigationManager
+import nl.rijksoverheid.mgo.navigation.ProvideNavigationManager
+import nl.rijksoverheid.mgo.navigation.RootNavigationManager
+import nl.rijksoverheid.mgo.navigation.RootNavigationScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -37,25 +36,42 @@ class MainActivity : ComponentActivity() {
                 val viewModel: MainViewModel = hiltViewModel()
                 val startDestination =
                     if (viewModel.hasSeenOnboarding()) {
-                        NavigationScreen.Dashboard.getRoute()
+                        RootNavigationScreen.Dashboard.getRoute()
                     } else {
-                        NavigationScreen.Onboarding.Start.getRoute()
+                        RootNavigationScreen.Onboarding.getRoute()
                     }
-                val rootNavController = rememberNavController()
-                ProvideNavigationManager(navigationManager = DefaultNavigationManager(navController = rootNavController)) {
+                val navController = rememberNavController()
+                val navigationManager = RootNavigationManager(navController = navController)
+                ProvideNavigationManager(navigationManager = navigationManager) {
                     NavHost(
-                        navController = rootNavController,
+                        navController = navController,
                         startDestination = startDestination,
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None },
                     ) {
-                        addOnboardingNavigationGraph()
-                        addLocalisationNavigationGraph()
-                        composable(route = NavigationScreen.Dashboard.getRoute()) {
-                            DashboardScreen()
+                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Onboarding.getRoute()) {
+                            OnboardingScreen(
+                                onOnboardingFinished = {
+                                    navigationManager.navigate(RootNavigationScreen.Dashboard)
+                                },
+                            )
+                        }
+                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Dashboard.getRoute()) {
+                            DashboardScreen(
+                                onNavigateToLocalisation = {
+                                    navigationManager.navigate(RootNavigationScreen.Localisation)
+                                },
+                            )
+                        }
+                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Localisation.getRoute()) {
+                            LocalisationScreen(
+                                onLocalisationFinished = {
+                                    navController.popBackStack(RootNavigationScreen.Dashboard.getRoute(), false)
+                                },
+                            )
                         }
                         composableWithDefaultScreenTransitions(
-                            route = NavigationScreen.Config.UpdatedRequired.getRoute(),
+                            route = RootNavigationScreen.UpdatedRequired.getRoute(),
                         ) {
                             UpdateRequiredScreen(packageName = packageName)
                         }
@@ -70,7 +86,7 @@ class MainActivity : ComponentActivity() {
                     val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
                     when (configState) {
                         ConfigState.NoAction -> {}
-                        ConfigState.UpdateRequired -> LocalNavigationManager.current.navigate(NavigationScreen.Config.UpdatedRequired)
+                        ConfigState.UpdateRequired -> LocalRootNavigationManager.current.navigate(RootNavigationScreen.UpdatedRequired)
                     }
                 }
             }

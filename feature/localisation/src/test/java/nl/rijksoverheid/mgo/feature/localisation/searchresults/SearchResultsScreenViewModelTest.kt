@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.TestHealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -108,7 +108,7 @@ internal class SearchResultsScreenViewModelTest {
                 viewModel.addHealthCareProvider(TEST_HEALTH_CARE_PROVIDER)
 
                 // Then
-                assertEquals(NavigationScreen.Localisation.StoredHealthCareProviders, awaitItem())
+                assertEquals(LocalisationNavigationScreen.StoredHealthCareProviders, awaitItem())
             }
         }
 }

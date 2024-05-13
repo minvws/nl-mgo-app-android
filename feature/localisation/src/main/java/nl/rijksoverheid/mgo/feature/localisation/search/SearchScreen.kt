@@ -26,14 +26,13 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun HealthCareSearchScreen() {
-    val navigationManager = LocalNavigationManager.current
+fun SearchScreen() {
+    val navigationManager = LocalLocalisationNavigationManager.current
     val viewModel: SearchScreenViewModel = hiltViewModel()
     val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -44,7 +43,7 @@ fun HealthCareSearchScreen() {
         }
     }
 
-    HealthCareSearchScreenContent(
+    SearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
             viewModel.setName(name)
@@ -59,13 +58,13 @@ fun HealthCareSearchScreen() {
 }
 
 @Composable
-private fun HealthCareSearchScreenContent(
+private fun SearchScreenContent(
     viewState: SearchScreenViewState,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
 ) {
-    val navigationManager: NavigationManager = LocalNavigationManager.current
+    val navigationManager = LocalLocalisationNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -82,7 +81,6 @@ private fun HealthCareSearchScreenContent(
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
@@ -124,9 +122,9 @@ private fun HealthCareSearchScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun HealthCareSearchScreenPreview() {
+internal fun SearchScreenPreview() {
     MgoTheme {
-        HealthCareSearchScreenContent(
+        SearchScreenContent(
             viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
             onSetName = {},
             onSetCity = {},

@@ -29,25 +29,23 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingMedium
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.feature.onboarding.navigation.LocalOnboardingNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 internal val VIEW_ID_TEXT_WITH_LINK = generateViewId()
 
 @Composable
-internal fun PrivacyOverviewScreen() {
-    val navigationManager = LocalNavigationManager.current
+internal fun PrivacyOverviewScreen(onOnboardingFinished: () -> Unit) {
     val viewModel: PrivacyOverviewScreenViewModel = hiltViewModel()
     PrivacyOverviewScreenContent {
         viewModel.setHasSeenOnboarding()
-        navigationManager.navigate(NavigationScreen.Dashboard)
+        onOnboardingFinished()
     }
 }
 
 @Composable
 internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
-    val navigationManager = LocalNavigationManager.current
+    val navigationManager = LocalOnboardingNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -64,7 +62,6 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),

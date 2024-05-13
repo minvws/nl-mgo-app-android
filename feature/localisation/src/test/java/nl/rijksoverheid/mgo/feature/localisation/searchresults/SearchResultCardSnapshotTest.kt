@@ -12,14 +12,14 @@ internal class SearchResultCardSnapshotTest {
     @Test
     fun added() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            HealthCareSearchResultCardAddedPreview()
+            SearchResultCardAddedPreview()
         }
     }
 
     @Test
     fun notAdded() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            HealthCareSearchResultCardNotAddedPreview()
+            SearchResultCardNotAddedPreview()
         }
     }
 }

@@ -32,12 +32,12 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 
 @Composable
-fun StoredHealthCareProvidersScreen() {
+fun StoredHealthCareProvidersScreen(onLocalisationFinished: () -> Unit) {
     val viewModel: StoredHealthCareProvidersScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -61,6 +61,7 @@ fun StoredHealthCareProvidersScreen() {
         onRemoveProvider = { provider ->
             removeProvider = provider
         },
+        onLocalisationFinished = onLocalisationFinished,
     )
 }
 
@@ -68,8 +69,9 @@ fun StoredHealthCareProvidersScreen() {
 private fun StoredHealthCareProvidersScreenContent(
     viewState: StoredHealthCareProvidersScreenViewState,
     onRemoveProvider: (provider: HealthCareProvider) -> Unit,
+    onLocalisationFinished: () -> Unit,
 ) {
-    val navigationManager = LocalNavigationManager.current
+    val navigationManager = LocalLocalisationNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -86,15 +88,14 @@ private fun StoredHealthCareProvidersScreenContent(
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.localisation_add_healthcareprovider_primary_button),
-                onButtonClick = { navigationManager.navigate(NavigationScreen.Dashboard) },
+                onButtonClick = onLocalisationFinished,
                 secondaryButtonText = stringResource(id = R.string.localisation_add_healthcareprovider_secondary_button),
-                onSecondaryButtonClick = { navigationManager.navigate(NavigationScreen.Localisation.Start) },
+                onSecondaryButtonClick = { navigationManager.navigate(LocalisationNavigationScreen.Search) },
             ) {
                 Text(
                     text = stringResource(id = R.string.localisation_add_healthcareprovider_title),
@@ -165,6 +166,7 @@ internal fun StoredHealthCareProvidersScreenPreview() {
         StoredHealthCareProvidersScreenContent(
             viewState = StoredHealthCareProvidersScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
             onRemoveProvider = {},
+            onLocalisationFinished = {},
         )
     }
 }

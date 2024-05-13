@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.localisation.search
 
 import app.cash.turbine.test
 import app.cash.turbine.turbineScope
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -107,7 +107,7 @@ internal class SearchScreenViewModelTest {
                     )
                 assertEquals(expectedViewState, viewStateFlow.awaitItem())
 
-                val expectedRoute = NavigationScreen.Localisation.SearchResults.setName("Tandarts").setCity("Roermond")
+                val expectedRoute = LocalisationNavigationScreen.SearchResults.setName("Tandarts").setCity("Roermond")
                 assertEquals(expectedRoute, navigationFlow.awaitItem())
             }
         }

@@ -12,7 +12,10 @@ import nl.rijksoverheid.mgo.feature.dashboard.overview.detail.DetailScreen
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
 @Composable
-fun OverviewTabScreen(navController: NavHostController) {
+fun OverviewTabScreen(
+    navController: NavHostController,
+    onNavigateToLocalisation: () -> Unit,
+) {
     ProvideDashboardNavigationManager(navigationManager = DashboardNavigationManager(navController = navController)) {
         NavHost(
             navController = navController,
@@ -23,7 +26,7 @@ fun OverviewTabScreen(navController: NavHostController) {
             composableWithDefaultScreenTransitions(
                 route = DashboardNavigationScreen.Start.getRoute(),
             ) {
-                OverviewScreen()
+                OverviewScreen(onNavigateToLocalisation = onNavigateToLocalisation)
             }
 
             composableWithDefaultScreenTransitions(

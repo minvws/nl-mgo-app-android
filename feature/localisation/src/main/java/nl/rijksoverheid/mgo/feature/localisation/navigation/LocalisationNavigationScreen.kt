@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.feature.localisation.navigation
 
 import androidx.lifecycle.SavedStateHandle
-import nl.rijksoverheid.mgo.framework.navigation.BaseNavigationScreen
+import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 
-internal sealed class LocalisationNavigationScreen(name: String, placeholders: List<String> = listOf()) : BaseNavigationScreen(
+internal sealed class LocalisationNavigationScreen(name: String, placeholders: List<String> = listOf()) : NavigationScreen(
     name,
     placeholders,
 ) {

@@ -28,7 +28,7 @@ import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewTabScreen
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(onNavigateToLocalisation: () -> Unit) {
     val navController = rememberNavController()
     var selectedBottomBarItem by remember { mutableStateOf<BottomBarItem>(BottomBarItem.Overview) }
     Scaffold(
@@ -55,7 +55,7 @@ fun DashboardScreen() {
         ) {
             when (selectedBottomBarItem) {
                 BottomBarItem.Overview -> {
-                    OverviewTabScreen(navController)
+                    OverviewTabScreen(navController = navController, onNavigateToLocalisation = onNavigateToLocalisation)
                 }
 
                 BottomBarItem.AboutThisApp -> {

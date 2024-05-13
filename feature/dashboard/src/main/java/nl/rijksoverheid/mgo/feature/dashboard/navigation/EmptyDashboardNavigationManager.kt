@@ -10,9 +10,6 @@ internal class EmptyDashboardNavigationManager : NavigationManager<DashboardNavi
     override fun popBackStack() {
     }
 
-    override fun popBackToStart() {
-    }
-
     override fun getBackStackEntry(screen: DashboardNavigationScreen): NavBackStackEntry? {
         return null
     }

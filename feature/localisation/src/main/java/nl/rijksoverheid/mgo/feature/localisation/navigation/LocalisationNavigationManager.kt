@@ -20,9 +20,6 @@ internal class LocalisationNavigationManager(private val navController: NavContr
         }
     }
 
-    override fun popBackToStart() {
-    }
-
     override fun popBackStack() {
         navController.popBackStack()
     }

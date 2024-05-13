@@ -10,9 +10,6 @@ internal class EmptyLocalisationNavigationManager : NavigationManager<Localisati
     override fun popBackStack() {
     }
 
-    override fun popBackToStart() {
-    }
-
     override fun getBackStackEntry(screen: LocalisationNavigationScreen): NavBackStackEntry? {
         return null
     }

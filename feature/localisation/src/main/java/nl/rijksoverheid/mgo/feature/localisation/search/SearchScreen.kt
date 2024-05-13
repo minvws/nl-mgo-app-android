@@ -28,7 +28,6 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -65,7 +64,7 @@ private fun SearchScreenContent(
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
 ) {
-    val navigationManager = LocalNavigationManager.current
+    val navigationManager = LocalLocalisationNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(

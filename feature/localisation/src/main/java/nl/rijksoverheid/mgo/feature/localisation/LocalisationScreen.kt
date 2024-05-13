@@ -14,7 +14,7 @@ import nl.rijksoverheid.mgo.feature.localisation.stored.StoredHealthCareProvider
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
 @Composable
-fun LocalisationScreen() {
+fun LocalisationScreen(onLocalisationFinished: () -> Unit) {
     val navController = rememberNavController()
     ProvideLocalisationNavigationManager(navigationManager = LocalisationNavigationManager(navController = navController)) {
         NavHost(
@@ -38,7 +38,9 @@ fun LocalisationScreen() {
             composableWithDefaultScreenTransitions(
                 route = LocalisationNavigationScreen.StoredHealthCareProviders.getRoute(),
             ) {
-                StoredHealthCareProvidersScreen()
+                StoredHealthCareProvidersScreen(
+                    onLocalisationFinished = onLocalisationFinished,
+                )
             }
         }
     }

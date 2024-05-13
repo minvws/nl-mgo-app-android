@@ -11,12 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import nl.rijksoverheid.mgo.feature.dashboard.navigation.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.feature.dashboard.navigation.LocalDashboardNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
 
 @Composable
-fun OverviewScreen() {
-    val rootNavigationManager = LocalNavigationManager.current
+fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
     val navigationManager = LocalDashboardNavigationManager.current
     Box(
         modifier =
@@ -29,7 +26,7 @@ fun OverviewScreen() {
                     )
                 },
     ) {
-        Button(onClick = { rootNavigationManager.navigate(NavigationScreen.Localisation) }) {
+        Button(onClick = { onNavigateToLocalisation() }) {
             Text(text = "Localisation")
         }
     }

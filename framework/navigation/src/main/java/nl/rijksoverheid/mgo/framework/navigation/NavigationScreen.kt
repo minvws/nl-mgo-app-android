@@ -1,14 +1,18 @@
 package nl.rijksoverheid.mgo.framework.navigation
 
-sealed class NavigationScreen(override val name: String, override val placeholders: List<String> = listOf()) : BaseNavigationScreen(
-    name,
-    placeholders,
-) {
-    data object Onboarding : NavigationScreen("onboarding")
+abstract class NavigationScreen(open val name: String, open val placeholders: List<String> = listOf()) {
+    protected val builder by lazy { NavigationRouteBuilder(name = name, placeholders = placeholders) }
 
-    data object Dashboard : NavigationScreen("dashboard")
+    fun getRoute(): String {
+        return buildString {
+            append(name)
+            placeholders.forEach { placeholder ->
+                append("/{$placeholder}")
+            }
+        }
+    }
 
-    data object Localisation : NavigationScreen("localisation")
-
-    data object UpdatedRequired : NavigationScreen("updatedRequired")
+    open fun getNavigationRoute(): String {
+        return builder.buildRoute()
+    }
 }

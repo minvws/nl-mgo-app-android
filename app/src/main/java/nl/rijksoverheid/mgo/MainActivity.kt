@@ -21,11 +21,11 @@ import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
 import nl.rijksoverheid.mgo.feature.localisation.LocalisationScreen
 import nl.rijksoverheid.mgo.feature.onboarding.OnboardingScreen
-import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
-import nl.rijksoverheid.mgo.framework.navigation.ProvideNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.LocalRootNavigationManager
+import nl.rijksoverheid.mgo.navigation.ProvideNavigationManager
+import nl.rijksoverheid.mgo.navigation.RootNavigationManager
+import nl.rijksoverheid.mgo.navigation.RootNavigationScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -36,29 +36,42 @@ class MainActivity : ComponentActivity() {
                 val viewModel: MainViewModel = hiltViewModel()
                 val startDestination =
                     if (viewModel.hasSeenOnboarding()) {
-                        NavigationScreen.Dashboard.getRoute()
+                        RootNavigationScreen.Dashboard.getRoute()
                     } else {
-                        NavigationScreen.Onboarding.getRoute()
+                        RootNavigationScreen.Onboarding.getRoute()
                     }
-                val rootNavController = rememberNavController()
-                ProvideNavigationManager(navigationManager = DefaultNavigationManager(navController = rootNavController)) {
+                val navController = rememberNavController()
+                val navigationManager = RootNavigationManager(navController = navController)
+                ProvideNavigationManager(navigationManager = navigationManager) {
                     NavHost(
-                        navController = rootNavController,
+                        navController = navController,
                         startDestination = startDestination,
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None },
                     ) {
-                        composableWithDefaultScreenTransitions(route = NavigationScreen.Onboarding.getRoute()) {
-                            OnboardingScreen()
+                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Onboarding.getRoute()) {
+                            OnboardingScreen(
+                                onOnboardingFinished = {
+                                    navigationManager.navigate(RootNavigationScreen.Dashboard)
+                                },
+                            )
                         }
-                        composableWithDefaultScreenTransitions(route = NavigationScreen.Dashboard.getRoute()) {
-                            DashboardScreen()
+                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Dashboard.getRoute()) {
+                            DashboardScreen(
+                                onNavigateToLocalisation = {
+                                    navigationManager.navigate(RootNavigationScreen.Localisation)
+                                },
+                            )
                         }
-                        composableWithDefaultScreenTransitions(route = NavigationScreen.Localisation.getRoute()) {
-                            LocalisationScreen()
+                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Localisation.getRoute()) {
+                            LocalisationScreen(
+                                onLocalisationFinished = {
+                                    navController.popBackStack(RootNavigationScreen.Dashboard.getRoute(), false)
+                                },
+                            )
                         }
                         composableWithDefaultScreenTransitions(
-                            route = NavigationScreen.UpdatedRequired.getRoute(),
+                            route = RootNavigationScreen.UpdatedRequired.getRoute(),
                         ) {
                             UpdateRequiredScreen(packageName = packageName)
                         }
@@ -73,7 +86,7 @@ class MainActivity : ComponentActivity() {
                     val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
                     when (configState) {
                         ConfigState.NoAction -> {}
-                        ConfigState.UpdateRequired -> LocalNavigationManager.current.navigate(NavigationScreen.UpdatedRequired)
+                        ConfigState.UpdateRequired -> LocalRootNavigationManager.current.navigate(RootNavigationScreen.UpdatedRequired)
                     }
                 }
             }

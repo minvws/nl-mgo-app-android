@@ -11,7 +11,7 @@ import nl.rijksoverheid.mgo.feature.onboarding.navigation.ProvideOnboardingNavig
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
 @Composable
-fun OnboardingScreen() {
+fun OnboardingScreen(onOnboardingFinished: () -> Unit) {
     val navController = rememberNavController()
     ProvideOnboardingNavigationManager(navigationManager = OnboardingNavigationManager(navController = navController)) {
         NavHost(
@@ -29,7 +29,7 @@ fun OnboardingScreen() {
             composableWithDefaultScreenTransitions(
                 route = OnboardingNavigationScreen.PrivacyOverview.getRoute(),
             ) {
-                PrivacyOverviewScreen()
+                PrivacyOverviewScreen(onOnboardingFinished)
             }
         }
     }

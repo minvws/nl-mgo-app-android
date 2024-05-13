@@ -1,40 +1,35 @@
-package nl.rijksoverheid.mgo.framework.navigation
+package nl.rijksoverheid.mgo.navigation
 
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 
 /**
  * Default navigation manager that is used by the app.
  */
-open class DefaultNavigationManager(private val navController: NavController) : NavigationManager<NavigationScreen> {
-    override fun navigate(screen: NavigationScreen) {
+open class RootNavigationManager(private val navController: NavController) : NavigationManager<RootNavigationScreen> {
+    override fun navigate(screen: RootNavigationScreen) {
         when (screen) {
-            NavigationScreen.Onboarding -> {
+            RootNavigationScreen.Onboarding -> {
                 navController.navigate(screen.getNavigationRoute())
             }
-            NavigationScreen.Dashboard -> {
+            RootNavigationScreen.Dashboard -> {
                 navController.navigate(screen.getNavigationRoute()) {
                     popUpTo(navController.graph.id) {
                         inclusive = true
                     }
                 }
             }
-            NavigationScreen.Localisation -> {
+            RootNavigationScreen.Localisation -> {
                 navController.navigate(screen.getNavigationRoute())
             }
-            NavigationScreen.UpdatedRequired -> {
+            RootNavigationScreen.UpdatedRequired -> {
                 navController.navigate(screen.getNavigationRoute()) {
                     popUpTo(navController.graph.id) {
                         inclusive = true
                     }
                 }
             }
-        }
-    }
-
-    override fun popBackToStart() {
-        navController.graph.startDestinationRoute?.let { starDestinationRoute ->
-            navController.popBackStack(starDestinationRoute, false)
         }
     }
 
@@ -42,7 +37,7 @@ open class DefaultNavigationManager(private val navController: NavController) : 
         navController.popBackStack()
     }
 
-    override fun getBackStackEntry(screen: NavigationScreen): NavBackStackEntry {
+    override fun getBackStackEntry(screen: RootNavigationScreen): NavBackStackEntry {
         return navController.getBackStackEntry(screen.getRoute())
     }
 }

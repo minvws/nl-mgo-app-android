@@ -35,10 +35,9 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 
 @Composable
-fun StoredHealthCareProvidersScreen() {
+fun StoredHealthCareProvidersScreen(onLocalisationFinished: () -> Unit) {
     val viewModel: StoredHealthCareProvidersScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -62,6 +61,7 @@ fun StoredHealthCareProvidersScreen() {
         onRemoveProvider = { provider ->
             removeProvider = provider
         },
+        onLocalisationFinished = onLocalisationFinished,
     )
 }
 
@@ -69,8 +69,8 @@ fun StoredHealthCareProvidersScreen() {
 private fun StoredHealthCareProvidersScreenContent(
     viewState: StoredHealthCareProvidersScreenViewState,
     onRemoveProvider: (provider: HealthCareProvider) -> Unit,
+    onLocalisationFinished: () -> Unit,
 ) {
-    val rootNavigationManager = LocalNavigationManager.current
     val navigationManager = LocalLocalisationNavigationManager.current
     Scaffold(
         topBar = {
@@ -93,7 +93,7 @@ private fun StoredHealthCareProvidersScreenContent(
                 modifier = Modifier.padding(innerPadding),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.localisation_add_healthcareprovider_primary_button),
-                onButtonClick = { rootNavigationManager.popBackToStart() },
+                onButtonClick = onLocalisationFinished,
                 secondaryButtonText = stringResource(id = R.string.localisation_add_healthcareprovider_secondary_button),
                 onSecondaryButtonClick = { navigationManager.navigate(LocalisationNavigationScreen.Search) },
             ) {
@@ -166,6 +166,7 @@ internal fun StoredHealthCareProvidersScreenPreview() {
         StoredHealthCareProvidersScreenContent(
             viewState = StoredHealthCareProvidersScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
             onRemoveProvider = {},
+            onLocalisationFinished = {},
         )
     }
 }

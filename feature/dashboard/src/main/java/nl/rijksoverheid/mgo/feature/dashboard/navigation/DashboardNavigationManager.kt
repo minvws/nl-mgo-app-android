@@ -13,9 +13,6 @@ internal class DashboardNavigationManager(private val navController: NavControll
         navController.popBackStack()
     }
 
-    override fun popBackToStart() {
-    }
-
     override fun getBackStackEntry(screen: DashboardNavigationScreen): NavBackStackEntry? {
         return navController.getBackStackEntry(screen.getRoute())
     }

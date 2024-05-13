@@ -13,9 +13,6 @@ internal class OnboardingNavigationManager(private val navController: NavControl
         navController.popBackStack()
     }
 
-    override fun popBackToStart() {
-    }
-
     override fun getBackStackEntry(screen: OnboardingNavigationScreen): NavBackStackEntry {
         return navController.getBackStackEntry(screen.getRoute())
     }

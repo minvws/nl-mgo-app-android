@@ -2,12 +2,10 @@ package nl.rijksoverheid.mgo.framework.navigation
 
 import androidx.navigation.NavBackStackEntry
 
-interface NavigationManager<NS : BaseNavigationScreen> {
+interface NavigationManager<NS : NavigationScreen> {
     fun navigate(screen: NS)
 
     fun popBackStack()
-
-    fun popBackToStart()
 
     fun getBackStackEntry(screen: NS): NavBackStackEntry?
 }

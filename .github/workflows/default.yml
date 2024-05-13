@@ -42,6 +42,8 @@ jobs:
         run: ./gradlew verifyPaparazziDebug
       - name: Unit Tests
         run: ./gradlew testTstDebug jacocoTestReport
+      - name: Sonar
+        run: ./gradlew sonar
       - name: Android Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:

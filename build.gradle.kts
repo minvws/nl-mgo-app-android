@@ -19,6 +19,6 @@ sonar {
     property("sonar.projectKey", "nl-mgo-app-android-private")
     property("sonar.host.url", "https://sonarcloud.io")
     property("sonar.sources","app,component,data,feature,framework")
-    property("sonar.tests","**/test/**")
+    property("sonar.exclusions","**/test/**")
   }
 }

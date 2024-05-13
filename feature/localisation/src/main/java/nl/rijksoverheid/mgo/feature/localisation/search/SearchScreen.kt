@@ -28,7 +28,6 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -65,7 +64,7 @@ private fun HealthCareSearchScreenContent(
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
 ) {
-    val navigationManager: NavigationManager = LocalNavigationManager.current
+    val navigationManager = LocalNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(

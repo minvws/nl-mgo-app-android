@@ -2,18 +2,10 @@ package nl.rijksoverheid.mgo.framework.navigation
 
 import androidx.lifecycle.SavedStateHandle
 
-sealed class NavigationScreen(val name: String, val placeholders: List<String> = listOf()) {
-    protected var builder = NavigationRouteBuilder(name = name, placeholders = placeholders)
-
-    fun getRoute(): String {
-        return buildString {
-            append(name)
-            placeholders.forEach { placeholder ->
-                append("/{$placeholder}")
-            }
-        }
-    }
-
+sealed class NavigationScreen(override val name: String, override val placeholders: List<String> = listOf()) : BaseNavigationScreen(
+    name,
+    placeholders,
+) {
     open fun getNavigationRoute(): String {
         return builder.buildRoute()
     }
@@ -59,30 +51,4 @@ sealed class NavigationScreen(val name: String, val placeholders: List<String> =
     }
 
     data object Dashboard : NavigationScreen("dashboard")
-
-    data class NavigationRouteBuilder(val name: String, val placeholders: List<String>) {
-        private var arguments: MutableMap<String, String?> = mutableMapOf()
-
-        init {
-            placeholders.forEach { placeholder ->
-                arguments[placeholder] = null
-            }
-        }
-
-        fun addArgument(
-            key: String,
-            value: String,
-        ) {
-            arguments[key] = value
-        }
-
-        fun buildRoute(): String {
-            return buildString {
-                append(name)
-                arguments.values.forEach { argument ->
-                    append("/$argument")
-                }
-            }
-        }
-    }
 }

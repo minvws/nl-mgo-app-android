@@ -5,7 +5,7 @@ import androidx.navigation.NavBackStackEntry
 /**
  * Empty navigation manager that exists so that Jetpack Compose Previews and snapshot tests work.
  */
-class EmptyNavigationManager : NavigationManager {
+class EmptyNavigationManager : NavigationManager<NavigationScreen> {
     override fun navigate(screen: NavigationScreen) {
     }
 

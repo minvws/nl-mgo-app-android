@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 /**
  * Default navigation manager that is used by the app.
  */
-class DefaultNavigationManager(private val navController: NavController) : NavigationManager {
+open class DefaultNavigationManager(private val navController: NavController) : NavigationManager<NavigationScreen> {
     override fun navigate(screen: NavigationScreen) {
         when (screen) {
             NavigationScreen.Onboarding.Start -> {

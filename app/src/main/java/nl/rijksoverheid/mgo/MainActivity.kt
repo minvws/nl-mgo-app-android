@@ -13,7 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -21,7 +20,7 @@ import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
 import nl.rijksoverheid.mgo.feature.localisation.addLocalisationNavigationGraph
-import nl.rijksoverheid.mgo.feature.onboarding.addOnboardingNavigationGraph
+import nl.rijksoverheid.mgo.feature.onboarding.OnboardingScreen
 import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     if (viewModel.hasSeenOnboarding()) {
                         NavigationScreen.Dashboard.getRoute()
                     } else {
-                        NavigationScreen.Onboarding.Start.getRoute()
+                        NavigationScreen.Onboarding.getRoute()
                     }
                 val rootNavController = rememberNavController()
                 ProvideNavigationManager(navigationManager = DefaultNavigationManager(navController = rootNavController)) {
@@ -49,11 +48,14 @@ class MainActivity : ComponentActivity() {
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None },
                     ) {
-                        addOnboardingNavigationGraph()
-                        addLocalisationNavigationGraph()
-                        composable(route = NavigationScreen.Dashboard.getRoute()) {
+                        composableWithDefaultScreenTransitions(route = NavigationScreen.Onboarding.getRoute()) {
+                            OnboardingScreen()
+                        }
+                        composableWithDefaultScreenTransitions(route = NavigationScreen.Dashboard.getRoute()) {
                             DashboardScreen()
                         }
+
+                        addLocalisationNavigationGraph()
                         composableWithDefaultScreenTransitions(
                             route = NavigationScreen.Config.UpdatedRequired.getRoute(),
                         ) {

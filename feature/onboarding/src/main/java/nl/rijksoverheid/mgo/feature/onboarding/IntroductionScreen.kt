@@ -20,13 +20,13 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingMedium
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.feature.onboarding.navigation.LocalOnboardingNavigationManager
+import nl.rijksoverheid.mgo.feature.onboarding.navigation.OnboardingNavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 internal fun IntroductionScreen() {
-    val navigationManager = LocalNavigationManager.current
+    val navigationManager = LocalOnboardingNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
@@ -35,7 +35,7 @@ internal fun IntroductionScreen() {
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.general_next),
-                onButtonClick = { navigationManager.navigate(NavigationScreen.Onboarding.PrivacyOverview) },
+                onButtonClick = { navigationManager.navigate(OnboardingNavigationScreen.PrivacyOverview) },
             ) {
                 Image(
                     modifier =

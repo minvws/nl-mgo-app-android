@@ -10,13 +10,7 @@ sealed class NavigationScreen(override val name: String, override val placeholde
         return builder.buildRoute()
     }
 
-    sealed class Onboarding(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
-        data object Start : Onboarding("onboardingStart")
-
-        data object Introduction : Onboarding("introduction")
-
-        data object PrivacyOverview : Onboarding("privacyOverview")
-    }
+    data object Onboarding : NavigationScreen("onboarding")
 
     sealed class Localisation(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
         data object Start : Localisation("start")
@@ -47,7 +41,7 @@ sealed class NavigationScreen(override val name: String, override val placeholde
     }
 
     sealed class Config(name: String, placeholders: List<String> = listOf()) : NavigationScreen(name, placeholders) {
-        data object UpdatedRequired : Onboarding("updatedRequired")
+        data object UpdatedRequired : NavigationScreen("updatedRequired")
     }
 
     data object Dashboard : NavigationScreen("dashboard")

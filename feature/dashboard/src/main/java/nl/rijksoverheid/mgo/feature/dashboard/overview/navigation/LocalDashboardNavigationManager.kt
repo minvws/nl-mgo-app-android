@@ -1,10 +1,8 @@
-package nl.rijksoverheid.mgo.feature.dashboard
+package nl.rijksoverheid.mgo.feature.dashboard.overview.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
-import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.DashboardNavigationScreen
-import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.EmptyDashboardNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 
 val LocalDashboardNavigationManager = compositionLocalOf<NavigationManager<DashboardNavigationScreen>> { EmptyDashboardNavigationManager() }

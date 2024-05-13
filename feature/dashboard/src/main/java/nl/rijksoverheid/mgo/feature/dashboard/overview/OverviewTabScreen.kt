@@ -5,10 +5,10 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import nl.rijksoverheid.mgo.feature.dashboard.ProvideDashboardNavigationManager
 import nl.rijksoverheid.mgo.feature.dashboard.overview.detail.DetailScreen
 import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.DashboardNavigationManager
 import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.ProvideDashboardNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
 @Composable

@@ -9,20 +9,8 @@ import androidx.navigation.NavController
 open class DefaultNavigationManager(private val navController: NavController) : NavigationManager<NavigationScreen> {
     override fun navigate(screen: NavigationScreen) {
         when (screen) {
-            NavigationScreen.Onboarding.Start -> {
-                navController.navigate(NavigationScreen.Onboarding.Introduction.getRoute()) {
-                    popUpTo(navController.graph.id) {
-                        inclusive = true
-                    }
-                }
-            }
-
-            NavigationScreen.Onboarding.Introduction -> {
-                // You never navigate to the introduction, only to the root of the graph which shows the introduction.
-            }
-
-            NavigationScreen.Onboarding.PrivacyOverview -> {
-                navController.navigate(NavigationScreen.Onboarding.PrivacyOverview.getRoute())
+            NavigationScreen.Onboarding -> {
+                navController.navigate(screen.getRoute())
             }
 
             NavigationScreen.Config.UpdatedRequired -> {

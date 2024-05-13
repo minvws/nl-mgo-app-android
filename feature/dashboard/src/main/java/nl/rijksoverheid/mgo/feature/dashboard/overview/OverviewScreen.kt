@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import nl.rijksoverheid.mgo.feature.dashboard.LocalDashboardNavigationManager
 import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.LocalDashboardNavigationManager
 
 @Composable
 fun OverviewScreen() {

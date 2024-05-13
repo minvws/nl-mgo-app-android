@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard
+package nl.rijksoverheid.mgo.feature.dashboard.overview.navigation
 
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -6,7 +6,7 @@ import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 
 internal class DashboardNavigationManager(private val navController: NavController) : NavigationManager<DashboardNavigationScreen> {
     override fun navigate(screen: DashboardNavigationScreen) {
-        TODO("Not yet implemented")
+        navController.navigate(screen.getRoute())
     }
 
     override fun popBackStack() {
@@ -14,6 +14,6 @@ internal class DashboardNavigationManager(private val navController: NavControll
     }
 
     override fun getBackStackEntry(screen: DashboardNavigationScreen): NavBackStackEntry? {
-        return null
+        return navController.getBackStackEntry(screen.getRoute())
     }
 }

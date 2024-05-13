@@ -1,0 +1,36 @@
+package nl.rijksoverheid.mgo.feature.dashboard.overview
+
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import nl.rijksoverheid.mgo.feature.dashboard.ProvideDashboardNavigationManager
+import nl.rijksoverheid.mgo.feature.dashboard.overview.detail.DetailScreen
+import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.DashboardNavigationManager
+import nl.rijksoverheid.mgo.feature.dashboard.overview.navigation.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
+
+@Composable
+fun OverviewTabScreen(navController: NavHostController) {
+    ProvideDashboardNavigationManager(navigationManager = DashboardNavigationManager(navController = navController)) {
+        NavHost(
+            navController = navController,
+            startDestination = DashboardNavigationScreen.Start.getRoute(),
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+        ) {
+            composableWithDefaultScreenTransitions(
+                route = DashboardNavigationScreen.Start.getRoute(),
+            ) {
+                OverviewScreen()
+            }
+
+            composableWithDefaultScreenTransitions(
+                route = DashboardNavigationScreen.Detail.getRoute(),
+            ) {
+                DetailScreen()
+            }
+        }
+    }
+}

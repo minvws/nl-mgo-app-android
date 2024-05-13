@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard
+package nl.rijksoverheid.mgo.feature.dashboard.overview.navigation
 
 import androidx.navigation.NavBackStackEntry
 import nl.rijksoverheid.mgo.framework.navigation.NavigationManager

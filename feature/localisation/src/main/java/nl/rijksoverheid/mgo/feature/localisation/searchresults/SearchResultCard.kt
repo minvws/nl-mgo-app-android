@@ -83,7 +83,7 @@ private fun AddedText(modifier: Modifier = Modifier) {
 
 @PreviewLightDark
 @Composable
-internal fun HealthCareSearchResultCardNotAddedPreview() {
+internal fun SearchResultCardNotAddedPreview() {
     MgoTheme {
         SearchResultCard(
             searchResult = TEST_HEALTH_CARE_PROVIDER,
@@ -95,7 +95,7 @@ internal fun HealthCareSearchResultCardNotAddedPreview() {
 
 @PreviewLightDark
 @Composable
-internal fun HealthCareSearchResultCardAddedPreview() {
+internal fun SearchResultCardAddedPreview() {
     MgoTheme {
         SearchResultCard(
             searchResult = TEST_HEALTH_CARE_PROVIDER.copy(added = true),

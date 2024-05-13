@@ -11,4 +11,8 @@ abstract class BaseNavigationScreen(open val name: String, open val placeholders
             }
         }
     }
+
+    open fun getNavigationRoute(): String {
+        return builder.buildRoute()
+    }
 }

@@ -1,13 +1,16 @@
-package nl.rijksoverheid.mgo.feature.dashboard.overview.navigation
+package nl.rijksoverheid.mgo.feature.dashboard.navigation
 
 import androidx.navigation.NavBackStackEntry
 import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
 
-class EmptyDashboardNavigationManager : NavigationManager<DashboardNavigationScreen> {
+internal class EmptyDashboardNavigationManager : NavigationManager<DashboardNavigationScreen> {
     override fun navigate(screen: DashboardNavigationScreen) {
     }
 
     override fun popBackStack() {
+    }
+
+    override fun popBackToStart() {
     }
 
     override fun getBackStackEntry(screen: DashboardNavigationScreen): NavBackStackEntry? {

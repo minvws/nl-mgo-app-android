@@ -7,5 +7,7 @@ interface NavigationManager<NS : BaseNavigationScreen> {
 
     fun popBackStack()
 
+    fun popBackToStart()
+
     fun getBackStackEntry(screen: NS): NavBackStackEntry?
 }

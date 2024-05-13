@@ -10,6 +10,9 @@ internal class EmptyOnboardingNavigationManager : NavigationManager<OnboardingNa
     override fun popBackStack() {
     }
 
+    override fun popBackToStart() {
+    }
+
     override fun getBackStackEntry(screen: OnboardingNavigationScreen): NavBackStackEntry? {
         return null
     }

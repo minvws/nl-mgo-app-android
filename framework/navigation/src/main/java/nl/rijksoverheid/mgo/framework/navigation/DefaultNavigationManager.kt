@@ -10,44 +10,31 @@ open class DefaultNavigationManager(private val navController: NavController) : 
     override fun navigate(screen: NavigationScreen) {
         when (screen) {
             NavigationScreen.Onboarding -> {
-                navController.navigate(screen.getRoute())
+                navController.navigate(screen.getNavigationRoute())
             }
-
-            NavigationScreen.Config.UpdatedRequired -> {
-                navController.navigate(NavigationScreen.Config.UpdatedRequired.getRoute()) {
-                    popUpTo(navController.graph.id) {
-                        inclusive = true
-                    }
-                }
-            }
-
             NavigationScreen.Dashboard -> {
-                navController.navigate(NavigationScreen.Dashboard.getRoute()) {
+                navController.navigate(screen.getNavigationRoute()) {
                     popUpTo(navController.graph.id) {
                         inclusive = true
                     }
                 }
             }
-
-            NavigationScreen.Localisation.Start -> {
-                navController.navigate(NavigationScreen.Localisation.Start.getRoute()) {
-                    popUpTo(NavigationScreen.Localisation.Start.getRoute()) {
+            NavigationScreen.Localisation -> {
+                navController.navigate(screen.getNavigationRoute())
+            }
+            NavigationScreen.UpdatedRequired -> {
+                navController.navigate(screen.getNavigationRoute()) {
+                    popUpTo(navController.graph.id) {
                         inclusive = true
                     }
                 }
             }
+        }
+    }
 
-            NavigationScreen.Localisation.Search -> {
-                // You never navigate to search, only to the root of the graph which shows the search.
-            }
-
-            is NavigationScreen.Localisation.SearchResults -> {
-                navController.navigate(NavigationScreen.Localisation.SearchResults.getNavigationRoute())
-            }
-
-            is NavigationScreen.Localisation.StoredHealthCareProviders -> {
-                navController.navigate(NavigationScreen.Localisation.StoredHealthCareProviders.getNavigationRoute())
-            }
+    override fun popBackToStart() {
+        navController.graph.startDestinationRoute?.let { starDestinationRoute ->
+            navController.popBackStack(starDestinationRoute, false)
         }
     }
 

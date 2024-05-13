@@ -11,7 +11,7 @@ internal class SearchScreenSnapshotTest {
     @Test
     fun launchView() {
         snapshotTestRule.snapshots {
-            HealthCareSearchScreenPreview()
+            SearchScreenPreview()
         }
     }
 }

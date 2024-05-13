@@ -42,14 +42,14 @@ import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun HealthCareSearchResultsScreen() {
-    val navigationManager = LocalNavigationManager.current
+fun SearchResultsScreen() {
+    val navigationManager = LocalLocalisationNavigationManager.current
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     HealthCareSearchResultsScreenContent(
@@ -57,7 +57,7 @@ fun HealthCareSearchResultsScreen() {
         onGetSearchResults = { viewModel.getSearchResults() },
         onAddSearchResult = { searchResult ->
             if (searchResult.added) {
-                navigationManager.navigate(NavigationScreen.Localisation.StoredHealthCareProviders)
+                navigationManager.navigate(LocalisationNavigationScreen.StoredHealthCareProviders)
             } else {
                 viewModel.addHealthCareProvider(searchResult)
             }
@@ -77,7 +77,7 @@ private fun HealthCareSearchResultsScreenContent(
     onGetSearchResults: () -> Unit,
     onAddSearchResult: (provider: HealthCareProvider) -> Unit,
 ) {
-    val navigationManager = LocalNavigationManager.current
+    val navigationManager = LocalLocalisationNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -107,7 +107,7 @@ private fun HealthCareSearchResultsScreenContent(
                             name = viewState.name,
                             city = viewState.city,
                             onButtonClick = {
-                                navigationManager.navigate(NavigationScreen.Localisation.Start)
+                                navigationManager.navigate(LocalisationNavigationScreen.Search)
                             },
                         )
                     } else {

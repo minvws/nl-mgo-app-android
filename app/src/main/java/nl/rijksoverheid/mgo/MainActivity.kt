@@ -19,7 +19,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
-import nl.rijksoverheid.mgo.feature.localisation.addLocalisationNavigationGraph
+import nl.rijksoverheid.mgo.feature.localisation.LocalisationScreen
 import nl.rijksoverheid.mgo.feature.onboarding.OnboardingScreen
 import nl.rijksoverheid.mgo.framework.navigation.DefaultNavigationManager
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
@@ -54,10 +54,11 @@ class MainActivity : ComponentActivity() {
                         composableWithDefaultScreenTransitions(route = NavigationScreen.Dashboard.getRoute()) {
                             DashboardScreen()
                         }
-
-                        addLocalisationNavigationGraph()
+                        composableWithDefaultScreenTransitions(route = NavigationScreen.Localisation.getRoute()) {
+                            LocalisationScreen()
+                        }
                         composableWithDefaultScreenTransitions(
-                            route = NavigationScreen.Config.UpdatedRequired.getRoute(),
+                            route = NavigationScreen.UpdatedRequired.getRoute(),
                         ) {
                             UpdateRequiredScreen(packageName = packageName)
                         }
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
                     when (configState) {
                         ConfigState.NoAction -> {}
-                        ConfigState.UpdateRequired -> LocalNavigationManager.current.navigate(NavigationScreen.Config.UpdatedRequired)
+                        ConfigState.UpdateRequired -> LocalNavigationManager.current.navigate(NavigationScreen.UpdatedRequired)
                     }
                 }
             }

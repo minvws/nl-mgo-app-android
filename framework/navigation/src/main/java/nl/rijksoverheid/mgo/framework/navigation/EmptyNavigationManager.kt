@@ -12,6 +12,9 @@ class EmptyNavigationManager : NavigationManager<NavigationScreen> {
     override fun popBackStack() {
     }
 
+    override fun popBackToStart() {
+    }
+
     override fun getBackStackEntry(screen: NavigationScreen): NavBackStackEntry? {
         return null
     }

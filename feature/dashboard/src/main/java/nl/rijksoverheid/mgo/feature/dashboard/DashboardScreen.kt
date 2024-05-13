@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -18,9 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import nl.rijksoverheid.mgo.component.theme.fonts
+import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
 
 /**
@@ -44,9 +50,12 @@ fun DashboardScreen() {
                 )
             },
             bottomBar = {
-                BottomNavigationBar { selectedItem ->
-                    selectedBottomBarItem = selectedItem
-                }
+                BottomNavigationBar(
+                    selectedItem = selectedBottomBarItem,
+                    onSelectBottomBarItem = { selectedItem ->
+                        selectedBottomBarItem = selectedItem
+                    },
+                )
             },
         ) { paddingValues ->
             Column(
@@ -58,6 +67,7 @@ fun DashboardScreen() {
                     BottomBarItem.Overview -> {
                         OverviewScreen()
                     }
+
                     BottomBarItem.AboutThisApp -> {
                         AboutThisAppScreen()
                     }
@@ -68,18 +78,28 @@ fun DashboardScreen() {
 }
 
 @Composable
-private fun BottomNavigationBar(onSelectBottomBarItem: (item: BottomBarItem) -> Unit) {
-    val selectedItem by remember { mutableStateOf<BottomBarItem>(BottomBarItem.Overview) }
+private fun BottomNavigationBar(
+    selectedItem: BottomBarItem,
+    onSelectBottomBarItem: (item: BottomBarItem) -> Unit,
+) {
     val items = listOf(BottomBarItem.Overview, BottomBarItem.AboutThisApp)
-    BottomNavigation {
+    val bottomBarItemTextStyle =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+        )
+    BottomNavigation(backgroundColor = Color.White, contentColor = MaterialTheme.colors.primary) {
         items.forEach { item ->
             BottomNavigationItem(
                 icon = { Icon(painter = painterResource(id = item.iconId), contentDescription = null) },
-                label = { Text(stringResource(item.titleId)) },
+                label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
                 selected = item == selectedItem,
                 onClick = {
                     onSelectBottomBarItem(item)
                 },
+                unselectedContentColor = MaterialTheme.colors.iconsPrimary(),
             )
         }
     }

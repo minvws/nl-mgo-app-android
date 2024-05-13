@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.ksp) apply false
-    id("org.sonarqube")
+    id("org.sonarqube") version "5.0.0.4638"
 }
 true // Needed to make the Suppress annotation work for the plugins block
 

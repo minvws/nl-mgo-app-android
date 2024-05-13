@@ -82,7 +82,6 @@ private fun HealthCareSearchScreenContent(
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),

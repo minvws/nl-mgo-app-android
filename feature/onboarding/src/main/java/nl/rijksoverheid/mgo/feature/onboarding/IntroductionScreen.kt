@@ -31,7 +31,6 @@ internal fun IntroductionScreen() {
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),

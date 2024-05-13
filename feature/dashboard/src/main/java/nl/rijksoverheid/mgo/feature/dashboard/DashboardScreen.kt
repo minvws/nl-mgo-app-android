@@ -31,7 +31,6 @@ fun DashboardScreen() {
                 elevation = 0.dp,
             )
         },
-        backgroundColor = Color.Transparent,
     ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues).padding(all = 16.dp),

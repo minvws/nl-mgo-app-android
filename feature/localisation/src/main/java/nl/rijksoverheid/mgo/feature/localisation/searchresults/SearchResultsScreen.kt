@@ -94,7 +94,6 @@ private fun HealthCareSearchResultsScreenContent(
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             when (viewState) {
                 SearchResultsScreenViewState.Loading -> {

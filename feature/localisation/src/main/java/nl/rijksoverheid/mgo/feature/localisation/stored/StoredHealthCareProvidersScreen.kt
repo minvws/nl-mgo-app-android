@@ -86,7 +86,6 @@ private fun StoredHealthCareProvidersScreenContent(
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),

@@ -64,7 +64,6 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),

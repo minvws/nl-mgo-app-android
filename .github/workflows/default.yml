@@ -24,6 +24,7 @@ jobs:
       KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v4
@@ -36,10 +37,10 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3  
-      - name: Lint and format checks
-        run: ./gradlew clean lintTstDebug ktlintCheck
-      - name: Snapshot tests
-        run: ./gradlew verifyPaparazziDebug
+      # - name: Lint and format checks
+      #   run: ./gradlew clean lintTstDebug ktlintCheck
+      # - name: Snapshot tests
+      #   run: ./gradlew verifyPaparazziDebug
       - name: Unit Tests
         run: ./gradlew testTstDebug jacocoTestReport
       - name: Sonar

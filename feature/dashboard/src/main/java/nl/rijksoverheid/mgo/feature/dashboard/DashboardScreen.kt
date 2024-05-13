@@ -1,15 +1,23 @@
 package nl.rijksoverheid.mgo.feature.dashboard
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
@@ -23,6 +31,7 @@ fun DashboardScreen() {
     val context = LocalContext.current
     val navigationManager = LocalNavigationManager.current
     val viewModel: DashboardViewModel = hiltViewModel()
+    var selectedBottomBarItem by remember { mutableStateOf<BottomBarItem>(BottomBarItem.Overview) }
 
     val dashboardNavController = rememberNavController()
     ProvideDashboardNavigationManager(navigationManager = DashboardNavigationManager(dashboardNavController)) {
@@ -34,17 +43,44 @@ fun DashboardScreen() {
                     elevation = 0.dp,
                 )
             },
+            bottomBar = {
+                BottomNavigationBar { selectedItem ->
+                    selectedBottomBarItem = selectedItem
+                }
+            },
         ) { paddingValues ->
             Column(
-                modifier = Modifier.padding(paddingValues).padding(all = 16.dp).background(Color.Green),
+                modifier =
+                    Modifier
+                        .padding(paddingValues),
             ) {
-//                Button(onClick = { navigationManager.navigate(NavigationScreen.Localisation.Start) }) {
-//                    Text(text = "Search")
-//                }
-//                Button(onClick = { viewModel.reset(context) }) {
-//                    Text(text = "Reset")
-//                }
+                when (selectedBottomBarItem) {
+                    BottomBarItem.Overview -> {
+                        OverviewScreen()
+                    }
+                    BottomBarItem.AboutThisApp -> {
+                        AboutThisAppScreen()
+                    }
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun BottomNavigationBar(onSelectBottomBarItem: (item: BottomBarItem) -> Unit) {
+    val selectedItem by remember { mutableStateOf<BottomBarItem>(BottomBarItem.Overview) }
+    val items = listOf(BottomBarItem.Overview, BottomBarItem.AboutThisApp)
+    BottomNavigation {
+        items.forEach { item ->
+            BottomNavigationItem(
+                icon = { Icon(painter = painterResource(id = item.iconId), contentDescription = null) },
+                label = { Text(stringResource(item.titleId)) },
+                selected = item == selectedItem,
+                onClick = {
+                    onSelectBottomBarItem(item)
+                },
+            )
         }
     }
 }

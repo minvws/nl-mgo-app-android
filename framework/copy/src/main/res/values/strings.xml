@@ -55,6 +55,6 @@
     <string name="localistaion_add_healthcareprovider_remove_dialog_dismiss_button">Toch tonen</string>
     <string name="localisation_add_healthcareprovider_primary_button">Klaar</string>
     <string name="localisation_add_healthcareprovider_secondary_button">Voeg een zorgaanbieder toe</string>
-
-
+    <string name="dashboard_bottombar_item_overview">Overzicht</string>
+    <string name="dashboard_bottombar_item_about_this_app">Over de app</string>
 </resources>

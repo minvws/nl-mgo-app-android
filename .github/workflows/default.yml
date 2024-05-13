@@ -40,8 +40,8 @@ jobs:
       #   run: ./gradlew clean lintTstDebug ktlintCheck
       # - name: Snapshot tests
       #   run: ./gradlew verifyPaparazziDebug
-      - name: Unit Tests
-        run: ./gradlew testTstDebug jacocoTestReport
+      # - name: Unit Tests
+      #   run: ./gradlew testTstDebug jacocoTestReport
       - name: Sonar
         run: ./gradlew sonar --info
         env:

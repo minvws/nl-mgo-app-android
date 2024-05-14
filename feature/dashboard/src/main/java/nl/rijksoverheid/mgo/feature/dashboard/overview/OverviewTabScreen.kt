@@ -12,7 +12,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.overview.detail.DetailScreen
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
 @Composable
-fun OverviewTabScreen(
+internal fun OverviewTabScreen(
     navController: NavHostController,
     onNavigateToLocalisation: () -> Unit,
 ) {

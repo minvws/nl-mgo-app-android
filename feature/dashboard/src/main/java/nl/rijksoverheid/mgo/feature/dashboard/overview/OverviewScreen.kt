@@ -12,12 +12,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -28,12 +31,12 @@ import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
-    val providers = listOf(TEST_HEALTH_CARE_PROVIDER, TEST_HEALTH_CARE_PROVIDER, TEST_HEALTH_CARE_PROVIDER)
+internal fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
+    val viewModel: OverviewScreenViewModel = hiltViewModel()
+    val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     Scaffold { innerPadding ->
         ColumnWithButtons(
@@ -48,7 +51,7 @@ fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
         ) {
             Header(modifier = Modifier.padding(top = 32.dp))
             Spacer(modifier = Modifier.padding(top = 24.dp))
-            providers.fastForEachIndexed { _, provider ->
+            viewState.providers.fastForEachIndexed { _, provider ->
                 HealthCareProviderCard(
                     modifier =
                         Modifier

@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.component.theme.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -25,7 +26,7 @@ fun MgoButton(
 ) {
     val buttonColors = ButtonDefaults.buttonColors(backgroundColor = buttonTheme.getColor())
     Button(
-        modifier = modifier.height(48.dp),
+        modifier = modifier.heightIn(min = 48.dp),
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
         content = { Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
         onClick = onClick,

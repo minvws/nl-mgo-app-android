@@ -57,4 +57,6 @@
     <string name="localisation_add_healthcareprovider_secondary_button">Voeg een zorgaanbieder toe</string>
     <string name="dashboard_bottombar_item_overview">Overzicht</string>
     <string name="dashboard_bottombar_item_about_this_app">Over de app</string>
+    <string name="dashboard_overview_title">Goedemorgen,\n mevrouw de Bruijn</string>
+    <string name="dashboard_overview_description">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
 </resources>

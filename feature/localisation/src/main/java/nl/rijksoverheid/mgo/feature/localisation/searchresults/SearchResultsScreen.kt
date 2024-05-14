@@ -194,7 +194,7 @@ private fun EmptyContent(
     modifier: Modifier = Modifier,
 ) {
     ColumnWithButtons(
-        modifier = modifier.padding(start = 16.dp, end = 16.dp),
+        modifier = modifier,
         buttonText = stringResource(id = CopyR.string.general_search_again),
         onButtonClick = onButtonClick,
     ) {
@@ -272,7 +272,7 @@ private fun ErrorContent(
     modifier: Modifier = Modifier,
 ) {
     ColumnWithButtons(
-        modifier = modifier.padding(start = 16.dp, end = 16.dp),
+        modifier = modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         buttonText = stringResource(id = CopyR.string.general_try_again),
         onButtonClick = onButtonClick,
     ) {

@@ -1,11 +1,9 @@
 package nl.rijksoverheid.mgo.feature.dashboard.overview
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -14,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundPrimary
@@ -26,17 +25,23 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
     Scaffold { innerPadding ->
-        LazyColumn(modifier = Modifier.padding(innerPadding), contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp)) {
-            item {
-                Header()
-            }
+        ColumnWithButtons(
+            modifier = Modifier.padding(innerPadding),
+            buttonText =
+                stringResource(
+                    id = CopyR.string.dashboard_overview_button,
+                ),
+            onButtonClick =
+            onNavigateToLocalisation,
+        ) {
+            Header(modifier = Modifier.padding(top = 32.dp))
         }
     }
 }
 
 @Composable
-private fun Header() {
-    Row {
+private fun Header(modifier: Modifier = Modifier) {
+    Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(id = CopyR.string.dashboard_overview_title),

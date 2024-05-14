@@ -40,7 +40,7 @@ fun ColumnWithButtons(
     modifier: Modifier = Modifier,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -89,7 +89,7 @@ internal fun ColumnWithButtonsContent(
         }
         val background = if (canScrollForward) MaterialTheme.colors.surface else Color.Transparent
 
-        Column(modifier = Modifier.fillMaxWidth().background(background).padding(all = 16.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().background(background).padding(contentPadding)) {
             if (secondaryButtonText != null && onSecondaryButtonClick != null) {
                 MgoButton(
                     modifier =
@@ -122,7 +122,7 @@ internal fun NotScrollingPreview() {
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = false,
-            contentPadding = PaddingValues(0.dp),
+            contentPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextNotScrolling()
@@ -138,7 +138,7 @@ internal fun ScrollingPreview() {
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = true,
-            contentPadding = PaddingValues(0.dp),
+            contentPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextScrolling()
@@ -156,7 +156,7 @@ internal fun TwoButtonsPreview() {
             secondaryButtonText = "Lorem ipsum 2",
             onSecondaryButtonClick = {},
             canScrollForward = true,
-            contentPadding = PaddingValues(0.dp),
+            contentPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextScrolling()
@@ -167,7 +167,6 @@ internal fun TwoButtonsPreview() {
 @Composable
 internal fun PreviewTextNotScrolling() {
     Text(
-        modifier = Modifier.padding(all = 16.dp),
         text =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt " +
                 "ut labore et dolore magna aliqua.",
@@ -177,7 +176,6 @@ internal fun PreviewTextNotScrolling() {
 @Composable
 internal fun PreviewTextScrolling() {
     Text(
-        modifier = Modifier.padding(all = 16.dp),
         text =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
                 "dolore magna aliqua. Facilisi morbi tempus iaculis urna id volutpat. Iaculis at erat pellentesque adipiscing. " +

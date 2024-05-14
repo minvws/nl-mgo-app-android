@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.onboarding
 import android.view.View.generateViewId
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -65,7 +64,6 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = CopyR.string.general_next),
                 onButtonClick = { onClickNext.invoke() },
             ) {

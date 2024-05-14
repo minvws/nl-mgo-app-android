@@ -46,13 +46,13 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(top = 32.dp),
                     text = stringResource(id = CopyR.string.config_old_version_title),
                     style = MaterialTheme.typography.headingMedium,
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(top = 16.dp),
                     text = stringResource(id = CopyR.string.config_old_version_description),
                     style = MaterialTheme.typography.bodySmall,
                 )

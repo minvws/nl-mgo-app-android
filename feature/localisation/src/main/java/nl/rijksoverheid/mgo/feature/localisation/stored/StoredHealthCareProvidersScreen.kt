@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.localisation.stored
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
@@ -91,7 +90,6 @@ private fun StoredHealthCareProvidersScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.localisation_add_healthcareprovider_primary_button),
                 onButtonClick = onLocalisationFinished,
                 secondaryButtonText = stringResource(id = R.string.localisation_add_healthcareprovider_secondary_button),

@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.localisation.search
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -84,7 +83,6 @@ private fun SearchScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.general_search),
                 onButtonClick = onSearch,
             ) {

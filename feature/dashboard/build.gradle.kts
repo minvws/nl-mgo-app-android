@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:onboarding"))
+    implementation(project(":data:localisation"))
 }

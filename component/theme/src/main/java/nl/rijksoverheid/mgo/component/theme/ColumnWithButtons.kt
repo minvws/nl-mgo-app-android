@@ -41,6 +41,7 @@ fun ColumnWithButtons(
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
     contentPadding: PaddingValues = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
+    buttonPadding: PaddingValues = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -55,6 +56,7 @@ fun ColumnWithButtons(
         onSecondaryButtonClick = onSecondaryButtonClick,
         contentPadding = contentPadding,
         columnContent = columnContent,
+        buttonPadding = buttonPadding,
     )
 }
 
@@ -65,6 +67,7 @@ internal fun ColumnWithButtonsContent(
     buttonText: String,
     onButtonClick: () -> Unit,
     contentPadding: PaddingValues,
+    buttonPadding: PaddingValues,
     modifier: Modifier = Modifier,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
@@ -89,7 +92,7 @@ internal fun ColumnWithButtonsContent(
         }
         val background = if (canScrollForward) MaterialTheme.colors.surface else Color.Transparent
 
-        Column(modifier = Modifier.fillMaxWidth().background(background).padding(contentPadding)) {
+        Column(modifier = Modifier.fillMaxWidth().background(background).padding(buttonPadding)) {
             if (secondaryButtonText != null && onSecondaryButtonClick != null) {
                 MgoButton(
                     modifier =
@@ -123,6 +126,7 @@ internal fun NotScrollingPreview() {
             onButtonClick = {},
             canScrollForward = false,
             contentPadding = PaddingValues(16.dp),
+            buttonPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextNotScrolling()
@@ -139,6 +143,7 @@ internal fun ScrollingPreview() {
             onButtonClick = {},
             canScrollForward = true,
             contentPadding = PaddingValues(16.dp),
+            buttonPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextScrolling()
@@ -157,6 +162,7 @@ internal fun TwoButtonsPreview() {
             onSecondaryButtonClick = {},
             canScrollForward = true,
             contentPadding = PaddingValues(16.dp),
+            buttonPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextScrolling()

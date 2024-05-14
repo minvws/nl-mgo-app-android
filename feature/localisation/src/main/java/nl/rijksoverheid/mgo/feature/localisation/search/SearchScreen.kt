@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R
+import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -63,7 +65,7 @@ private fun SearchScreenContent(
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
 ) {
-    val navigationManager = LocalLocalisationNavigationManager.current
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -71,7 +73,7 @@ private fun SearchScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { navigationManager.popBackStack() }) {
+                    IconButton(onClick = { context.navigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.general_previous),

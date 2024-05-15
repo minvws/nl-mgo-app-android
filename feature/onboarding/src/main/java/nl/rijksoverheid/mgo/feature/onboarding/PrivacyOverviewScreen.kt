@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.onboarding
 import android.view.View.generateViewId
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -17,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +30,7 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.feature.onboarding.navigation.LocalOnboardingNavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 internal val VIEW_ID_TEXT_WITH_LINK = generateViewId()
@@ -46,6 +47,7 @@ internal fun PrivacyOverviewScreen(onOnboardingFinished: () -> Unit) {
 @Composable
 internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
     val navigationManager = LocalOnboardingNavigationManager.current
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -53,7 +55,7 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { navigationManager.popBackStack() }) {
+                    IconButton(onClick = { context.navigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = CopyR.string.general_previous),
@@ -65,7 +67,6 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = CopyR.string.general_next),
                 onButtonClick = { onClickNext.invoke() },
             ) {

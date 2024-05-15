@@ -30,7 +30,7 @@ fun Colors.contentSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) 
 
 @Composable
 fun Colors.contentTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFCCCCCC) else Color(0xFF353535)
+    if (isSystemDarkTheme) Color(0xFF535353) else Color(0xFF535353)
 
 // Icons
 

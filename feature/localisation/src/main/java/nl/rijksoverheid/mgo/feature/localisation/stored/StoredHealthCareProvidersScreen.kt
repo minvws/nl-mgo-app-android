@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.localisation.stored
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
@@ -19,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -35,6 +35,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R
+import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 
 @Composable
 fun StoredHealthCareProvidersScreen(onLocalisationFinished: () -> Unit) {
@@ -72,6 +73,7 @@ private fun StoredHealthCareProvidersScreenContent(
     onLocalisationFinished: () -> Unit,
 ) {
     val navigationManager = LocalLocalisationNavigationManager.current
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -79,7 +81,7 @@ private fun StoredHealthCareProvidersScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { navigationManager.popBackStack() }) {
+                    IconButton(onClick = { context.navigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.general_previous),
@@ -91,7 +93,6 @@ private fun StoredHealthCareProvidersScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.localisation_add_healthcareprovider_primary_button),
                 onButtonClick = onLocalisationFinished,
                 secondaryButtonText = stringResource(id = R.string.localisation_add_healthcareprovider_secondary_button),

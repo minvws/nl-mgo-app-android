@@ -16,10 +16,10 @@
     <string name="error_title">Er ging iets mis</string>
     <string name="error_subtitle">Controleer of je telefoon verbonden is met het internet en probeer het opnieuw.</string>
     <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
-    <string name="introduction_description">Alle informatie die je huisarts, ziekenhuis en andere zorgaanbieders over jou hebben. Op één
+    <string name="introduction_subtitle">Alle informatie die je huisarts, ziekenhuis en andere zorgaanbieders over jou hebben. Op één
         plek. Veilig en overzichtelijk.</string>
     <string name="privacy_overview_title">Zo gebruikt de app jouw gegevens</string>
-    <string name="privacy_overview_description">In de [privacyverklaring](https://www.google.nl) staat hoe Mijn Gezondheidsoverzicht jouw
+    <string name="privacy_overview_subtitle">In de [privacyverklaring](https://www.google.nl) staat hoe Mijn Gezondheidsoverzicht jouw
         gegevens gebruikt. Dit zijn de belangrijkste punten:</string>
     <string name="privacy_overview_item_1">Je gegevens worden **versleuteld** en via een **veilige** verbinding opgehaald.</string>
     <string name="privacy_overview_item_2">De app haalt je gegevens direct op bij de zorgaanbieders die jij kiest. **Alleen jij hebt
@@ -27,10 +27,10 @@
     <string name="privacy_overview_item_3">**Je kiest zelf** hoe je je gegevens wilt gebruiken en of je ze wel of niet deelt met anderen.</string>
     <string name="privacy_overview_item_4">Je kunt de gegevens in je overzicht **altijd verwijderen of opnieuw opvragen**.</string>
     <string name="config_old_version_title">Je hebt een verouderde versie van de app</string>
-    <string name="config_old_version_description">Download een nieuwe versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>
+    <string name="config_old_version_subtitle">Download een nieuwe versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>
     <string name="config_old_version_button">Nu downloaden</string>
     <string name="config_no_internet_title">Je hebt geen internetverbinding</string>
-    <string name="config_no_internet_description">Om de app op te starten heb je internet nodig. Probeer opnieuw verbinding te maken met WiFi of gebruik mobiele data.</string>
+    <string name="config_no_internet_subtitle">Om de app op te starten heb je internet nodig. Probeer opnieuw verbinding te maken met WiFi of gebruik mobiele data.</string>
     <string name="localisation_search_title">Welke zorgaanbieder wil je toevoegen?</string>
     <string name="localisation_search_name_error">Vul een naam in</string>
     <string name="localisation_search_city_error">Vul een plaats in</string>

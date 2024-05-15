@@ -15,7 +15,7 @@ internal class SearchScreenViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `Given ViewModel, When no name and city have been entered, Then emit error`() =
+    fun `Given no name and city have been entered, When calling validate, Then emit error`() =
         runTest {
             // Given
             val viewModel = SearchScreenViewModel()
@@ -37,7 +37,7 @@ internal class SearchScreenViewModelTest {
         }
 
     @Test
-    fun `Given ViewModel, When no name has been entered, Then emit error`() =
+    fun `Given no name has been entered, When calling validate, Then emit error`() =
         runTest {
             // Given
             val viewModel = SearchScreenViewModel()
@@ -60,7 +60,7 @@ internal class SearchScreenViewModelTest {
         }
 
     @Test
-    fun `Given ViewModel, When no city has been entered, Then emit error`() =
+    fun `Given no city has been entered, When calling validate, Then emit error`() =
         runTest {
             // Given
             val viewModel = SearchScreenViewModel()
@@ -83,7 +83,7 @@ internal class SearchScreenViewModelTest {
         }
 
     @Test
-    fun `Given ViewModel, When name and city have been entered, Then navigate`() =
+    fun `Given name and city have been entered, When calling validate, Then navigate`() =
         runTest {
             // Given
             val viewModel = SearchScreenViewModel()

@@ -16,7 +16,7 @@ internal class StoredHealthCareProvidersScreenViewModelTest {
     private val healthCareProviderRepository = TestHealthCareProviderRepository()
 
     @Test
-    fun `Given viewmodel, When deleting health care provider, view state is updated`() =
+    fun `Given a stored health care provider, When deleting that health care provider, view state is updated with no providers`() =
         runTest {
             // Given
             healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_HEALTH_CARE_PROVIDER))

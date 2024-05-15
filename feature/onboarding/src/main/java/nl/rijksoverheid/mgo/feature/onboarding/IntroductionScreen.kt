@@ -56,7 +56,7 @@ internal fun IntroductionScreen() {
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.introduction_description),
+                    text = stringResource(id = CopyR.string.introduction_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

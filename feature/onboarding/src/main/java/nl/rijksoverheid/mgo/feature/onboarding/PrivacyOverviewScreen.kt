@@ -78,7 +78,7 @@ internal fun PrivacyOverviewScreenContent(onClickNext: () -> Unit) {
                 MarkdownText(
                     modifier = Modifier.padding(top = 16.dp),
                     viewId = VIEW_ID_TEXT_WITH_LINK,
-                    markdown = stringResource(id = CopyR.string.privacy_overview_description),
+                    markdown = stringResource(id = CopyR.string.privacy_overview_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                     linkColor = MaterialTheme.colors.actionTertiaryDefault(),
                 )

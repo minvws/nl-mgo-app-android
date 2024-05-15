@@ -7,10 +7,10 @@ data class OverviewScreenViewState(
     val providers: List<HealthCareProvider>,
 ) {
     companion object {
-        val initialState =
+        fun initialState(providers: List<HealthCareProvider>) =
             OverviewScreenViewState(
-                name = "",
-                providers = listOf(),
+                name = "Wendy de Bruijn",
+                providers = providers,
             )
     }
 }

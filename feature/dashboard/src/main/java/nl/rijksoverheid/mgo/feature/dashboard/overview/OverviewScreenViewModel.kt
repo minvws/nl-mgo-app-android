@@ -9,14 +9,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.runBlocking
 
 @HiltViewModel
 internal class OverviewScreenViewModel
     @Inject
     constructor(healthCareProviderRepository: HealthCareProviderRepository) : ViewModel() {
-        private val _viewState = MutableStateFlow(OverviewScreenViewState.initialState)
+        private val initialViewState =
+            OverviewScreenViewState.initialState(
+                providers =
+                    runBlocking {
+                        healthCareProviderRepository.get()
+                    },
+            )
+        private val _viewState = MutableStateFlow(initialViewState)
         val viewState =
             combine(_viewState, healthCareProviderRepository.storedHealthCareProvidersFlow) { viewState, providers ->
                 OverviewScreenViewState(name = viewState.name, providers = providers)
-            }.stateIn(viewModelScope, SharingStarted.Lazily, OverviewScreenViewState.initialState)
+            }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
     }

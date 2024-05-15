@@ -6,8 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 
 class TestHealthCareProviderRepository : HealthCareProviderRepository {
-    override val storedHealthCareProvidersFlow: MutableStateFlow<List<HealthCareProvider>>
-        get() = MutableStateFlow(listOf())
+    override val storedHealthCareProvidersFlow: MutableStateFlow<List<HealthCareProvider>> = MutableStateFlow(listOf())
 
     private var searchResults: List<HealthCareProvider> = listOf()
     private var searchResultError: Throwable? = null

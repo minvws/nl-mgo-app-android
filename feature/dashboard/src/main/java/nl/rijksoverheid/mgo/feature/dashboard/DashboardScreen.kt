@@ -21,6 +21,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewTabScreen
@@ -70,7 +73,7 @@ private fun BottomNavigationBar(
             fontSize = 12.sp,
             lineHeight = 16.sp,
         )
-    BottomNavigation(backgroundColor = Color.White, contentColor = MaterialTheme.colors.primary) {
+    BottomNavigation(backgroundColor = MaterialTheme.colors.backgroundSecondary(), contentColor = MaterialTheme.colors.primary) {
         items.forEach { item ->
             BottomNavigationItem(
                 icon = { Icon(painter = painterResource(id = item.iconId), contentDescription = null) },
@@ -82,5 +85,13 @@ private fun BottomNavigationBar(
                 unselectedContentColor = MaterialTheme.colors.iconsPrimary(),
             )
         }
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun DashboardBottomNavigationBar() {
+    MgoTheme {
+        BottomNavigationBar(selectedItem = BottomBarItem.Overview, onSelectBottomBarItem = {})
     }
 }

@@ -18,5 +18,6 @@ sonar {
     property("sonar.organization", "vws") 
     property("sonar.projectKey", "nl-mgo-app-android-private")
     property("sonar.host.url", "https://sonarcloud.io")
+    property("sonar.coverage.jacoco.xmlReportPaths", "*/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
   }
 }

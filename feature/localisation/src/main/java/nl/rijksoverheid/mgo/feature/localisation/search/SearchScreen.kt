@@ -31,6 +31,9 @@ import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
 
+const val TEST_TAG_NAME_TEXT_FIELD = "NAME_TEXT_FIELD"
+const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
+
 @Composable
 fun SearchScreen() {
     val navigationManager = LocalLocalisationNavigationManager.current
@@ -103,6 +106,7 @@ private fun SearchScreenContent(
                     header = stringResource(id = R.string.localisation_search_name_header),
                     onValueChange = onSetName,
                     error = viewState.nameError?.let { resource -> stringResource(id = resource) },
+                    textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
                 )
 
                 MgoBasicTextField(
@@ -114,6 +118,7 @@ private fun SearchScreenContent(
                     header = stringResource(id = R.string.localisation_search_city_header),
                     onValueChange = onSetCity,
                     error = viewState.cityError?.let { resource -> stringResource(id = resource) },
+                    textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,
                 )
             }
         },

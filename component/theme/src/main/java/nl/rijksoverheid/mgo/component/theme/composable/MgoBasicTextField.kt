@@ -21,6 +21,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +40,7 @@ fun MgoBasicTextField(
     modifier: Modifier = Modifier,
     header: String? = null,
     error: String? = null,
+    textFieldTestTag: String? = null,
 ) {
     val localContentColor = if (error == null) MaterialTheme.colors.onBackground else MaterialTheme.colors.error
     val localStyle = LocalTextStyle.current
@@ -55,7 +57,10 @@ fun MgoBasicTextField(
             }
 
             BasicTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .then(if (textFieldTestTag == null) Modifier else Modifier.testTag(textFieldTestTag)),
                 value = value,
                 keyboardOptions =
                     KeyboardOptions.Default.copy(
@@ -112,7 +117,10 @@ internal fun MgoBasicTextFieldEmptyPreview() {
             value = "",
             header = "Naam (verplicht)",
             onValueChange = {},
-            modifier = Modifier.width(300.dp).padding(16.dp),
+            modifier =
+                Modifier
+                    .width(300.dp)
+                    .padding(16.dp),
         )
     }
 }
@@ -125,7 +133,10 @@ internal fun MgoBasicTextFieldFilledPreview() {
             value = "Jan Jansen",
             header = "Naam (verplicht)",
             onValueChange = {},
-            modifier = Modifier.width(300.dp).padding(16.dp),
+            modifier =
+                Modifier
+                    .width(300.dp)
+                    .padding(16.dp),
         )
     }
 }
@@ -139,7 +150,10 @@ internal fun MgoBasicTextFieldErrorPreview() {
             header = "Naam (verplicht)",
             error = "Vul een naam in",
             onValueChange = {},
-            modifier = Modifier.width(300.dp).padding(16.dp),
+            modifier =
+                Modifier
+                    .width(300.dp)
+                    .padding(16.dp),
         )
     }
 }

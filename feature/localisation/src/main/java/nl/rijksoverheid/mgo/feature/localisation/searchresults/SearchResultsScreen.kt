@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -181,7 +182,7 @@ private fun SearchResultsContent(
         }
         items(searchResults.size) { position ->
             SearchResultCard(
-                modifier = Modifier.padding(bottom = 8.dp),
+                modifier = Modifier.padding(bottom = 8.dp).testTag(TEST_TAG_SEARCH_RESULT_CARD),
                 searchResult = searchResults[position],
                 onClick = onAddSearchResult,
             )
@@ -275,6 +276,7 @@ private fun ErrorContent(
     modifier: Modifier = Modifier,
 ) {
     ColumnWithButtons(
+        modifier = modifier,
         buttonText = stringResource(id = CopyR.string.general_try_again),
         onButtonClick = onButtonClick,
     ) {

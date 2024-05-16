@@ -13,8 +13,23 @@ import org.junit.runner.RunWith
 internal class LocalisationFlowTest : MainActivityTest() {
     @Test
     fun providerAddedAfterLocalisationFlow() {
-        launchApp(skipOnboarding = true) {
-            clickLocalisationButton()
+        launchAppSkipOnboarding {
+            // On fresh app launch, no providers are shown.
+            assertNoProviders()
+
+            // Enter localisation flow.
+            clickLocalisationButton {
+                inputName("Tandarts")
+                inputCity("Breda")
+                pressSearchButton {
+                    clickFirstSearchResult {
+                        pressDoneButton {
+                            // After adding provider in localisation flow, provider is shown in dashboard.
+                            assertOneProvider()
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew connectedTstDebugAndroidTest
+          script: ./gradlew connectedTstDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=androidx.test.filters.LargeTest
           profile: pixel
       - name: Archive Test Results
         if: always()

@@ -21,3 +21,11 @@ sonar {
     property("sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
   }
 }
+
+subprojects {
+    sonar {
+        properties {
+            property("sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+        }
+    }
+}

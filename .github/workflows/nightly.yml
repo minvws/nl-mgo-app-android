@@ -1,0 +1,37 @@
+name: "Nightly Run CI/CD"
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs at 00:00 UTC every day
+
+jobs:
+  nightly-job:
+    runs-on: macos-12
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 'main',
+          lfs: 'true'
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Android End to End Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedTstDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.annotation=androidx.test.filters.LargeTest
+          profile: pixel
+      - name: Archive Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            **/build/reports/
+          retention-days: 5
+

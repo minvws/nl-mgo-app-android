@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -28,6 +29,8 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+const val TEST_TAG_SEARCH_RESULT_CARD = "TEST_TAG_SEARCH_RESULT_CARD"
+
 @Composable
 fun SearchResultCard(
     searchResult: HealthCareProvider,
@@ -39,7 +42,8 @@ fun SearchResultCard(
             modifier =
                 Modifier
                     .clickable { onClick(searchResult) }
-                    .padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
+                    .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
+                    .testTag(TEST_TAG_SEARCH_RESULT_CARD),
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)

@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.localisation.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ internal class SearchScreenViewModel
         private val _viewState = MutableStateFlow(SearchScreenViewState.initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, SearchScreenViewState.initialState)
 
-        private val _navigation = MutableSharedFlow<NavigationScreen>(extraBufferCapacity = 1)
+        private val _navigation = MutableSharedFlow<LocalisationNavigationScreen>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
 
         fun setName(name: String) {
@@ -40,7 +40,7 @@ internal class SearchScreenViewModel
                 val cityError = if (city.isEmpty()) CopyR.string.localisation_search_city_error else null
                 _viewState.update { viewState -> viewState.copy(nameError = nameError, cityError = cityError) }
                 if (nameError == null && cityError == null) {
-                    val route = NavigationScreen.Localisation.SearchResults.setName(name).setCity(city)
+                    val route = LocalisationNavigationScreen.SearchResults.setName(name).setCity(city)
                     _navigation.tryEmit(route)
                 }
             }

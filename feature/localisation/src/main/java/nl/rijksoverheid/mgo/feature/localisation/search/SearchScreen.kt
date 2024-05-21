@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.localisation.search
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -16,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,14 +26,14 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
+import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun HealthCareSearchScreen() {
-    val navigationManager = LocalNavigationManager.current
+fun SearchScreen() {
+    val navigationManager = LocalLocalisationNavigationManager.current
     val viewModel: SearchScreenViewModel = hiltViewModel()
     val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -44,7 +44,7 @@ fun HealthCareSearchScreen() {
         }
     }
 
-    HealthCareSearchScreenContent(
+    SearchScreenContent(
         viewState = viewState,
         onSetName = { name ->
             viewModel.setName(name)
@@ -59,13 +59,13 @@ fun HealthCareSearchScreen() {
 }
 
 @Composable
-private fun HealthCareSearchScreenContent(
+private fun SearchScreenContent(
     viewState: SearchScreenViewState,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
 ) {
-    val navigationManager: NavigationManager = LocalNavigationManager.current
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -73,7 +73,7 @@ private fun HealthCareSearchScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { navigationManager.popBackStack() }) {
+                    IconButton(onClick = { context.navigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.general_previous),
@@ -82,11 +82,9 @@ private fun HealthCareSearchScreenContent(
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                contentPadding = PaddingValues(horizontal = 16.dp),
                 buttonText = stringResource(id = R.string.general_search),
                 onButtonClick = onSearch,
             ) {
@@ -124,9 +122,9 @@ private fun HealthCareSearchScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun HealthCareSearchScreenPreview() {
+internal fun SearchScreenPreview() {
     MgoTheme {
-        HealthCareSearchScreenContent(
+        SearchScreenContent(
             viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
             onSetName = {},
             onSetCity = {},

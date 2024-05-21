@@ -20,23 +20,22 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingMedium
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.feature.onboarding.navigation.LocalOnboardingNavigationManager
+import nl.rijksoverheid.mgo.feature.onboarding.navigation.OnboardingNavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 internal fun IntroductionScreen() {
-    val navigationManager = LocalNavigationManager.current
+    val navigationManager = LocalOnboardingNavigationManager.current
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.general_next),
-                onButtonClick = { navigationManager.navigate(NavigationScreen.Onboarding.PrivacyOverview) },
+                onButtonClick = { navigationManager.navigate(OnboardingNavigationScreen.PrivacyOverview) },
             ) {
                 Image(
                     modifier =
@@ -49,15 +48,15 @@ internal fun IntroductionScreen() {
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(top = 32.dp),
                     text = stringResource(id = CopyR.string.introduction_title),
                     style = MaterialTheme.typography.headingMedium,
                     fontWeight = FontWeight.Bold,
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                    text = stringResource(id = CopyR.string.introduction_description),
+                    modifier = Modifier.padding(top = 16.dp),
+                    text = stringResource(id = CopyR.string.introduction_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

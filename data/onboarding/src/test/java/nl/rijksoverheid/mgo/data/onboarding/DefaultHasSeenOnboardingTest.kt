@@ -9,7 +9,7 @@ import kotlinx.coroutines.runBlocking
 
 internal class DefaultHasSeenOnboardingTest {
     @Test
-    fun `Given the key value store, When it does not have the onboarding flag, Then return false`() {
+    fun `Given the key value store, When setting the has seen onboarding flag to false, Then return false`() {
         // Given
         val keyValueStore = TestKeyValueStore()
         val hasSeenOnboarding = DefaultHasSeenOnboarding(keyValueStore = keyValueStore)
@@ -22,7 +22,7 @@ internal class DefaultHasSeenOnboardingTest {
     }
 
     @Test
-    fun `Given the key value store, When it does have the onboarding flag, Then return true`() {
+    fun `Given the key value store, When setting the has seen onboarding flag to true, Then return true`() {
         // Given
         val keyValueStore = TestKeyValueStore()
         val hasSeenOnboarding = DefaultHasSeenOnboarding(keyValueStore = keyValueStore)

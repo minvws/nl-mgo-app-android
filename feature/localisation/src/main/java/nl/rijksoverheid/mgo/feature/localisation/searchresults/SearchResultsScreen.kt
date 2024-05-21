@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,14 +43,15 @@ import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.localisation.R
-import nl.rijksoverheid.mgo.framework.navigation.LocalNavigationManager
-import nl.rijksoverheid.mgo.framework.navigation.NavigationScreen
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
+import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
+import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun HealthCareSearchResultsScreen() {
-    val navigationManager = LocalNavigationManager.current
+fun SearchResultsScreen() {
+    val navigationManager = LocalLocalisationNavigationManager.current
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     HealthCareSearchResultsScreenContent(
@@ -57,7 +59,7 @@ fun HealthCareSearchResultsScreen() {
         onGetSearchResults = { viewModel.getSearchResults() },
         onAddSearchResult = { searchResult ->
             if (searchResult.added) {
-                navigationManager.navigate(NavigationScreen.Localisation.StoredHealthCareProviders)
+                navigationManager.navigate(LocalisationNavigationScreen.StoredHealthCareProviders)
             } else {
                 viewModel.addHealthCareProvider(searchResult)
             }
@@ -77,7 +79,8 @@ private fun HealthCareSearchResultsScreenContent(
     onGetSearchResults: () -> Unit,
     onAddSearchResult: (provider: HealthCareProvider) -> Unit,
 ) {
-    val navigationManager = LocalNavigationManager.current
+    val navigationManager = LocalLocalisationNavigationManager.current
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -85,7 +88,7 @@ private fun HealthCareSearchResultsScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { navigationManager.popBackStack() }) {
+                    IconButton(onClick = { context.navigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = CopyR.string.general_previous),
@@ -94,7 +97,6 @@ private fun HealthCareSearchResultsScreenContent(
                 },
             )
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             when (viewState) {
                 SearchResultsScreenViewState.Loading -> {
@@ -108,7 +110,7 @@ private fun HealthCareSearchResultsScreenContent(
                             name = viewState.name,
                             city = viewState.city,
                             onButtonClick = {
-                                navigationManager.navigate(NavigationScreen.Localisation.Start)
+                                navigationManager.navigate(LocalisationNavigationScreen.Search)
                             },
                         )
                     } else {
@@ -195,7 +197,7 @@ private fun EmptyContent(
     modifier: Modifier = Modifier,
 ) {
     ColumnWithButtons(
-        modifier = modifier.padding(start = 16.dp, end = 16.dp),
+        modifier = modifier,
         buttonText = stringResource(id = CopyR.string.general_search_again),
         onButtonClick = onButtonClick,
     ) {
@@ -273,7 +275,6 @@ private fun ErrorContent(
     modifier: Modifier = Modifier,
 ) {
     ColumnWithButtons(
-        modifier = modifier.padding(start = 16.dp, end = 16.dp),
         buttonText = stringResource(id = CopyR.string.general_try_again),
         onButtonClick = onButtonClick,
     ) {

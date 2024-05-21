@@ -30,7 +30,6 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
         },
-        backgroundColor = Color.Transparent,
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
@@ -47,14 +46,14 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(top = 32.dp),
                     text = stringResource(id = CopyR.string.config_old_version_title),
                     style = MaterialTheme.typography.headingMedium,
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                    text = stringResource(id = CopyR.string.config_old_version_description),
+                    modifier = Modifier.padding(top = 16.dp),
+                    text = stringResource(id = CopyR.string.config_old_version_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

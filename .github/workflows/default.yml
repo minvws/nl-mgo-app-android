@@ -38,13 +38,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3  
       - name: Lint and format checks
-        run: ./gradlew clean lintTstDebug ktlintCheck
+        run: ./gradlew lintTstDebug ktlintCheck
       - name: Snapshot tests
         run: ./gradlew verifyPaparazziDebug
       - name: Unit Tests
         run: ./gradlew testTstDebug jacocoTestReport
       - name: Run SonarCloud scanner
-        run: ./gradlew sonar --info
+        run: ./gradlew sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

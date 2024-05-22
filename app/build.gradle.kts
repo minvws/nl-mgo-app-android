@@ -62,21 +62,38 @@ android {
 }
 
 dependencies {
-    // Features
-    implementation(project(":feature:dashboard:bottombar"))
-    implementation(project(":feature:dashboard:overview"))
-    implementation(project(":feature:localisation:search"))
-    implementation(project(":feature:localisation:searchresults"))
-    implementation(project(":feature:localisation:stored"))
-    implementation(project(":feature:config"))
-    implementation(project(":feature:onboarding:introduction"))
-    implementation(project(":feature:onboarding:privacyoverview"))
 
-    // Frameworks
-    implementation(project(":framework:copy"))
-    implementation(project(":framework:environment"))
+    // ================================
+    // FEATURES
+    // ================================
 
-    // Data
-    implementation(project(":data:onboarding"))
-    implementation(project(":data:config"))
+    // Onboarding
+    implementation(projects.feature.onboarding.introduction)
+    implementation(projects.feature.onboarding.privacyoverview)
+
+    // Dashboard
+    implementation(projects.feature.dashboard.bottombar)
+    implementation(projects.feature.dashboard.overview)
+
+    // Localisation
+    implementation(projects.feature.localisation.search)
+    implementation(projects.feature.localisation.searchresults)
+    implementation(projects.feature.localisation.stored)
+
+    // Config
+    implementation(projects.feature.config)
+
+    // ================================
+    // FRAMEWORKS
+    // ================================
+
+    implementation(projects.framework.copy)
+    implementation(projects.framework.environment)
+
+    // ================================
+    // DATA
+    // ================================
+
+    implementation(projects.data.onboarding)
+    implementation(projects.data.config)
 }

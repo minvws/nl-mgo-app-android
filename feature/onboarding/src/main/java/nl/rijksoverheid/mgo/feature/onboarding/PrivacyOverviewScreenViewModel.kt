@@ -17,6 +17,5 @@ internal class PrivacyOverviewScreenViewModel
         }
 
         fun doSomething() {
-
         }
     }

@@ -22,7 +22,7 @@ fun NavGraphBuilder.addBottomBarNavGraph(navController: NavController) {
                 overviewScreen = {
                     OverviewScreen(
                         onNavigateToLocalisation = {
-                            navController.navigate(LocalisationNavigationScreen.Start.getRoute())
+                            navController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                         },
                     )
                 },

@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @HiltViewModel
-internal class SearchScreenViewModel
+class SearchScreenViewModel
     @Inject
     constructor() : ViewModel() {
         private val _viewState = MutableStateFlow(SearchScreenViewState.initialState)

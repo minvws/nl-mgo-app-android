@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -32,13 +31,14 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
-import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
-import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.framework.copy.R
-import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 
 @Composable
-fun StoredHealthCareProvidersScreen(onLocalisationFinished: () -> Unit) {
+fun StoredHealthCareProvidersScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onLocalisationFinished: () -> Unit,
+) {
     val viewModel: StoredHealthCareProvidersScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -59,9 +59,11 @@ fun StoredHealthCareProvidersScreen(onLocalisationFinished: () -> Unit) {
 
     StoredHealthCareProvidersScreenContent(
         viewState = viewState,
+        onNavigateBack = onNavigateBack,
         onRemoveProvider = { provider ->
             removeProvider = provider
         },
+        onNavigateToSearch = onNavigateToSearch,
         onLocalisationFinished = onLocalisationFinished,
     )
 }
@@ -69,11 +71,11 @@ fun StoredHealthCareProvidersScreen(onLocalisationFinished: () -> Unit) {
 @Composable
 private fun StoredHealthCareProvidersScreenContent(
     viewState: StoredHealthCareProvidersScreenViewState,
+    onNavigateBack: () -> Unit,
+    onNavigateToSearch: () -> Unit,
     onRemoveProvider: (provider: HealthCareProvider) -> Unit,
     onLocalisationFinished: () -> Unit,
 ) {
-    val navigationManager = LocalLocalisationNavigationManager.current
-    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -81,7 +83,7 @@ private fun StoredHealthCareProvidersScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { context.navigateBack() }) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.general_previous),
@@ -96,7 +98,7 @@ private fun StoredHealthCareProvidersScreenContent(
                 buttonText = stringResource(id = R.string.localisation_add_healthcareprovider_primary_button),
                 onButtonClick = onLocalisationFinished,
                 secondaryButtonText = stringResource(id = R.string.localisation_add_healthcareprovider_secondary_button),
-                onSecondaryButtonClick = { navigationManager.navigate(LocalisationNavigationScreen.Search) },
+                onSecondaryButtonClick = onNavigateToSearch,
             ) {
                 Text(
                     text = stringResource(id = R.string.localisation_add_healthcareprovider_title),
@@ -166,6 +168,8 @@ internal fun StoredHealthCareProvidersScreenPreview() {
     MgoTheme {
         StoredHealthCareProvidersScreenContent(
             viewState = StoredHealthCareProvidersScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
+            onNavigateBack = {},
+            onNavigateToSearch = {},
             onRemoveProvider = {},
             onLocalisationFinished = {},
         )

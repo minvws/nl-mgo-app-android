@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class StoredHealthCareProvidersScreenViewModel
+internal class StoredHealthCareProvidersScreenViewModel
     @Inject
     constructor(
         private val healthCareProviderRepository: HealthCareProviderRepository,

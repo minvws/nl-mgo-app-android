@@ -26,9 +26,9 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 const val TEST_TAG_NAME_TEXT_FIELD = "NAME_TEXT_FIELD"
 const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
@@ -76,7 +76,7 @@ private fun SearchScreenContent(
                     IconButton(onClick = { context.navigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.general_previous),
+                            contentDescription = stringResource(id = CopyR.string.general_previous),
                         )
                     }
                 },
@@ -85,11 +85,11 @@ private fun SearchScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                buttonText = stringResource(id = R.string.general_search),
+                buttonText = stringResource(id = CopyR.string.general_search),
                 onButtonClick = onSearch,
             ) {
                 Text(
-                    text = stringResource(id = R.string.localisation_search_title),
+                    text = stringResource(id = CopyR.string.localisation_search_title),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
@@ -100,7 +100,7 @@ private fun SearchScreenContent(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                     value = viewState.name,
-                    header = stringResource(id = R.string.localisation_search_name_header),
+                    header = stringResource(id = CopyR.string.localisation_search_name_header),
                     onValueChange = onSetName,
                     error = viewState.nameError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
@@ -112,7 +112,7 @@ private fun SearchScreenContent(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                     value = viewState.city,
-                    header = stringResource(id = R.string.localisation_search_city_header),
+                    header = stringResource(id = CopyR.string.localisation_search_city_header),
                     onValueChange = onSetCity,
                     error = viewState.cityError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,

@@ -1,12 +1,10 @@
 package nl.rijksoverheid.mgo.feature.localisation.searchresults
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.localisation.HealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import javax.inject.Inject
@@ -24,14 +22,10 @@ import kotlinx.coroutines.launch
 internal class SearchResultsScreenViewModel
     @Inject
     constructor(
-        savedStateHandle: SavedStateHandle,
         private val appInfo: AppInfo,
         private val healthCareProviderRepository: HealthCareProviderRepository,
     ) : ViewModel() {
-        private val name = LocalisationNavigationScreen.SearchResults.getName(savedStateHandle)
-        private val city = LocalisationNavigationScreen.SearchResults.getCity(savedStateHandle)
-
-        private val _navigation = MutableSharedFlow<LocalisationNavigationScreen>(extraBufferCapacity = 1)
+        private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
 
         private val _viewState: MutableStateFlow<SearchResultsScreenViewState> =
@@ -44,7 +38,10 @@ internal class SearchResultsScreenViewModel
                     .initialState,
             )
 
-        fun getSearchResults() {
+        fun getSearchResults(
+            name: String,
+            city: String,
+        ) {
             viewModelScope.launch {
                 if (shouldGetSearchResults()) {
                     _viewState.update { SearchResultsScreenViewState.Loading }
@@ -76,7 +73,7 @@ internal class SearchResultsScreenViewModel
         fun addHealthCareProvider(provider: HealthCareProvider) {
             viewModelScope.launch {
                 healthCareProviderRepository.save(provider)
-                _navigation.tryEmit(LocalisationNavigationScreen.StoredHealthCareProviders)
+                _navigation.tryEmit(Unit)
             }
         }
     }

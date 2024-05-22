@@ -68,6 +68,8 @@ dependencies {
     implementation(project(":feature:dashboard:bottombar"))
     implementation(project(":feature:dashboard:overview"))
     implementation(project(":feature:localisation:search"))
+    implementation(project(":feature:localisation:searchresults"))
+    implementation(project(":feature:localisation:stored"))
     implementation(project(":feature:config"))
     implementation(project(":feature:localisation"))
 

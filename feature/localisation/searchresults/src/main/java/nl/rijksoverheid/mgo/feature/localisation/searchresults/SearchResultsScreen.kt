@@ -25,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,45 +42,48 @@ import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
-import nl.rijksoverheid.mgo.feature.localisation.R
-import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
-import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
-import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun SearchResultsScreen() {
-    val navigationManager = LocalLocalisationNavigationManager.current
+fun SearchResultsScreen(
+    name: String,
+    city: String,
+    onNavigateBack: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToStoredProviders: () -> Unit,
+) {
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) {
+        viewModel.getSearchResults(name = name, city = city)
+        viewModel.navigation.collectLatest { screen ->
+            onNavigateToStoredProviders()
+        }
+    }
     HealthCareSearchResultsScreenContent(
         viewState = viewState,
-        onGetSearchResults = { viewModel.getSearchResults() },
+        onNavigateBack = onNavigateBack,
+        onGetSearchResults = { viewModel.getSearchResults(name = name, city = city) },
         onAddSearchResult = { searchResult ->
             if (searchResult.added) {
-                navigationManager.navigate(LocalisationNavigationScreen.StoredHealthCareProviders)
+                onNavigateToStoredProviders()
             } else {
                 viewModel.addHealthCareProvider(searchResult)
             }
         },
+        onNavigateToSearch = onNavigateToSearch,
     )
-    LaunchedEffect(Unit) {
-        viewModel.getSearchResults()
-        viewModel.navigation.collectLatest { screen ->
-            navigationManager.navigate(screen)
-        }
-    }
 }
 
 @Composable
 private fun HealthCareSearchResultsScreenContent(
     viewState: SearchResultsScreenViewState,
+    onNavigateBack: () -> Unit,
     onGetSearchResults: () -> Unit,
     onAddSearchResult: (provider: HealthCareProvider) -> Unit,
+    onNavigateToSearch: () -> Unit,
 ) {
-    val navigationManager = LocalLocalisationNavigationManager.current
-    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -89,7 +91,7 @@ private fun HealthCareSearchResultsScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { context.navigateBack() }) {
+                    IconButton(onClick = { onNavigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = CopyR.string.general_previous),
@@ -110,9 +112,7 @@ private fun HealthCareSearchResultsScreenContent(
                             modifier = Modifier.padding(innerPadding),
                             name = viewState.name,
                             city = viewState.city,
-                            onButtonClick = {
-                                navigationManager.navigate(LocalisationNavigationScreen.Search)
-                            },
+                            onButtonClick = onNavigateToSearch,
                         )
                     } else {
                         SearchResultsContent(
@@ -182,7 +182,10 @@ private fun SearchResultsContent(
         }
         items(searchResults.size) { position ->
             SearchResultCard(
-                modifier = Modifier.padding(bottom = 8.dp).testTag(TEST_TAG_SEARCH_RESULT_CARD),
+                modifier =
+                    Modifier
+                        .padding(bottom = 8.dp)
+                        .testTag(TEST_TAG_SEARCH_RESULT_CARD),
                 searchResult = searchResults[position],
                 onClick = onAddSearchResult,
             )
@@ -227,27 +230,21 @@ private fun EmptyContent(
             modifier = Modifier.padding(top = 16.dp),
             text =
                 stringResource(
-                    id =
-                        CopyR.string
-                            .localisation_searchresults_empty_list_item_1,
+                    id = CopyR.string.localisation_searchresults_empty_list_item_1,
                 ),
         )
         EmptyListItem(
             modifier = Modifier.padding(top = 8.dp),
             text =
                 stringResource(
-                    id =
-                        CopyR.string
-                            .localisation_searchresults_empty_list_item_2,
+                    id = CopyR.string.localisation_searchresults_empty_list_item_2,
                 ),
         )
         EmptyListItem(
             modifier = Modifier.padding(top = 8.dp),
             text =
                 stringResource(
-                    id =
-                        CopyR.string
-                            .localisation_searchresults_empty_list_item_3,
+                    id = CopyR.string.localisation_searchresults_empty_list_item_3,
                 ),
         )
     }
@@ -318,8 +315,10 @@ internal fun HealthCareSearchResultsLoadingPreview() {
     MgoTheme {
         HealthCareSearchResultsScreenContent(
             viewState = SearchResultsScreenViewState.Loading,
+            onNavigateBack = {},
             onGetSearchResults = {},
             onAddSearchResult = {},
+            onNavigateToSearch = {},
         )
     }
 }
@@ -335,8 +334,10 @@ internal fun HealthCareSearchResultsEmptyPreview() {
                     city = "Roermond",
                     results = listOf(),
                 ),
+            onNavigateBack = {},
             onGetSearchResults = {},
             onAddSearchResult = {},
+            onNavigateToSearch = {},
         )
     }
 }
@@ -357,6 +358,8 @@ internal fun HealthCareSearchResultsPreview() {
                             TEST_HEALTH_CARE_PROVIDER,
                         ),
                 ),
+            onNavigateBack = {},
+            onNavigateToSearch = {},
             onGetSearchResults = {},
             onAddSearchResult = {},
         )
@@ -373,6 +376,8 @@ internal fun HealthCareSearchResultsErrorPreview() {
                     isProductionBuild = false,
                     error = IllegalStateException("Something went wrong"),
                 ),
+            onNavigateBack = {},
+            onNavigateToSearch = {},
             onGetSearchResults = {},
             onAddSearchResult = {},
         )

@@ -8,8 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationManager
 import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.feature.localisation.navigation.ProvideLocalisationNavigationManager
-import nl.rijksoverheid.mgo.feature.localisation.searchresults.SearchResultsScreen
-import nl.rijksoverheid.mgo.feature.localisation.stored.StoredHealthCareProvidersScreen
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
 
 @Composable
@@ -30,15 +28,12 @@ fun LocalisationScreen(onLocalisationFinished: () -> Unit) {
             composableWithDefaultScreenTransitions(
                 route = LocalisationNavigationScreen.SearchResults.getRoute(),
             ) {
-                SearchResultsScreen()
+                // SearchResultsScreen()
             }
 
             composableWithDefaultScreenTransitions(
                 route = LocalisationNavigationScreen.StoredHealthCareProviders.getRoute(),
             ) {
-                StoredHealthCareProvidersScreen(
-                    onLocalisationFinished = onLocalisationFinished,
-                )
             }
         }
     }

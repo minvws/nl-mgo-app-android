@@ -6,7 +6,7 @@ sealed class BottomBarNavigationScreen(override val name: String, override val p
     name,
     placeholders,
 ) {
-    data object Start : RootNavigationScreen("dashboard-start")
+    data object Start : BottomBarNavigationScreen("dashboard-start")
 
-    data object BottomBar : RootNavigationScreen("dashboard-bottombar")
+    data object BottomBar : BottomBarNavigationScreen("dashboard-bottombar")
 }

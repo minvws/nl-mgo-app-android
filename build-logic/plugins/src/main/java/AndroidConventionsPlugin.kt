@@ -31,7 +31,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
         plugins.apply {
             val jacocoPluginExtension = extensions.getByType<JacocoPluginExtension>()
             jacocoPluginExtension.apply {
-                toolVersion = "0.8.11"
+                toolVersion = versionCatalog.findVersion("jacoco-tool").get().requiredVersion.toString()
             }
             tasks.withType(Test::class.java) {
                 configure<JacocoTaskExtension> {

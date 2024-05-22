@@ -17,13 +17,14 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
-import nl.rijksoverheid.mgo.navigation.BottomBarNavigationScreen
-import nl.rijksoverheid.mgo.navigation.LocalRootNavigationManager
-import nl.rijksoverheid.mgo.navigation.ProvideNavigationManager
-import nl.rijksoverheid.mgo.navigation.RootNavigationManager
-import nl.rijksoverheid.mgo.navigation.RootNavigationScreen
-import nl.rijksoverheid.mgo.navigation.addBottomBarNavGraph
-import nl.rijksoverheid.mgo.navigation.addLocalisationNavGraph
+import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
+import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
+import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
+import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
+import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -32,31 +33,37 @@ class MainActivity : ComponentActivity() {
         setContent {
             MgoTheme(modifier = Modifier.fillMaxSize()) {
                 val viewModel: MainViewModel = hiltViewModel()
-                val startDestination = BottomBarNavigationScreen.Start.getRoute()
+                val startDestination =
+                    if (viewModel.hasSeenOnboarding()) {
+                        DashboardNavigationScreen.Start.getNavigationRoute()
+                    } else {
+                        OnboardingNavigationScreen.Start.getNavigationRoute()
+                    }
                 val navController = rememberNavController()
-                val navigationManager = RootNavigationManager(navController = navController)
-                ProvideNavigationManager(navigationManager = navigationManager) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = startDestination,
-                        enterTransition = { EnterTransition.None },
-                        exitTransition = { ExitTransition.None },
-                    ) {
-                        addBottomBarNavGraph(navController = navController)
-                        addLocalisationNavGraph(navController = navController)
+                NavHost(
+                    navController = navController,
+                    startDestination = startDestination,
+                    enterTransition = { EnterTransition.None },
+                    exitTransition = { ExitTransition.None },
+                ) {
+                    addOnboardingNavGraph(navController = navController)
+                    addDashboardNavGraph(navController = navController)
+                    addLocalisationNavGraph(navController = navController)
+                    composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
+                        UpdateRequiredScreen()
                     }
+                }
 
-                    // Refresh config on every app resume. The backend handles caching.
-                    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-                        viewModel.refreshConfig()
-                    }
+                // Refresh config on every app resume. The backend handles caching.
+                LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+                    viewModel.refreshConfig()
+                }
 
-                    // Handle config state changes
-                    val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
-                    when (configState) {
-                        ConfigState.NoAction -> {}
-                        ConfigState.UpdateRequired -> LocalRootNavigationManager.current.navigate(RootNavigationScreen.UpdatedRequired)
-                    }
+                // Handle config state changes
+                val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
+                when (configState) {
+                    ConfigState.NoAction -> {}
+                    ConfigState.UpdateRequired -> navController.navigate(ConfigNavigationScreen.UpdateRequired.getNavigationRoute())
                 }
             }
         }

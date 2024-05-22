@@ -89,7 +89,7 @@ private fun BottomNavigationBar(
 
 @DefaultPreviews
 @Composable
-internal fun DashboardBottomNavigationBar() {
+internal fun DashboardBottomBarScreenPreview() {
     MgoTheme {
         BottomNavigationBar(selectedItem = BottomBarItem.Overview, onSelectBottomBarItem = {})
     }

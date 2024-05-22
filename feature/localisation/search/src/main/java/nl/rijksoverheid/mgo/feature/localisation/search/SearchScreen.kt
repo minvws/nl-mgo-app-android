@@ -26,7 +26,6 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -34,7 +33,10 @@ const val TEST_TAG_NAME_TEXT_FIELD = "NAME_TEXT_FIELD"
 const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
 
 @Composable
-fun SearchScreen(onNavigateToSearchResults: (name: String, city: String) -> Unit) {
+fun SearchScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToSearchResults: (name: String, city: String) -> Unit,
+) {
     val viewModel: SearchScreenViewModel = hiltViewModel()
     val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -46,6 +48,7 @@ fun SearchScreen(onNavigateToSearchResults: (name: String, city: String) -> Unit
 
     SearchScreenContent(
         viewState = viewState,
+        onNavigateBack = onNavigateBack,
         onSetName = { name ->
             viewModel.setName(name)
         },
@@ -61,6 +64,7 @@ fun SearchScreen(onNavigateToSearchResults: (name: String, city: String) -> Unit
 @Composable
 private fun SearchScreenContent(
     viewState: SearchScreenViewState,
+    onNavigateBack: () -> Unit,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
@@ -73,7 +77,7 @@ private fun SearchScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { context.navigateBack() }) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = CopyR.string.general_previous),
@@ -128,6 +132,7 @@ internal fun SearchScreenPreview() {
     MgoTheme {
         SearchScreenContent(
             viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
+            onNavigateBack = {},
             onSetName = {},
             onSetCity = {},
             onSearch = {},

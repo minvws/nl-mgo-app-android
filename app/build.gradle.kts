@@ -63,15 +63,14 @@ android {
 
 dependencies {
     // Features
-    implementation(project(":feature:onboarding"))
-    implementation(project(":feature:dashboard"))
     implementation(project(":feature:dashboard:bottombar"))
     implementation(project(":feature:dashboard:overview"))
     implementation(project(":feature:localisation:search"))
     implementation(project(":feature:localisation:searchresults"))
     implementation(project(":feature:localisation:stored"))
     implementation(project(":feature:config"))
-    implementation(project(":feature:localisation"))
+    implementation(project(":feature:onboarding:introduction"))
+    implementation(project(":feature:onboarding:privacyoverview"))
 
     // Frameworks
     implementation(project(":framework:copy"))

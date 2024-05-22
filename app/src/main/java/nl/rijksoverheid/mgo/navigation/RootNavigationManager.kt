@@ -30,6 +30,9 @@ open class RootNavigationManager(private val navController: NavController) : Nav
                     }
                 }
             }
+            RootNavigationScreen.NewDashboard.BottomBar -> {
+                navController.navigate(screen.getNavigationRoute())
+            }
         }
     }
 

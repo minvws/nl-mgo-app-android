@@ -5,9 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -19,6 +22,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
+import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.feature.localisation.LocalisationScreen
 import nl.rijksoverheid.mgo.feature.onboarding.OnboardingScreen
 import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
@@ -36,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 val viewModel: MainViewModel = hiltViewModel()
                 val startDestination =
                     if (viewModel.hasSeenOnboarding()) {
-                        RootNavigationScreen.Dashboard.getRoute()
+                        RootNavigationScreen.NewDashboard.BottomBar.getRoute()
                     } else {
                         RootNavigationScreen.Onboarding.getRoute()
                     }
@@ -56,6 +60,18 @@ class MainActivity : ComponentActivity() {
                                 },
                             )
                         }
+
+                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.NewDashboard.BottomBar.getRoute()) {
+                            DashboardBottomBarScreen(
+                                overviewScreen = {
+                                    Box(modifier = Modifier.fillMaxSize().background(Color.Red))
+                                },
+                                aboutThisAppScreen = {
+                                    Box(modifier = Modifier.fillMaxSize().background(Color.Blue))
+                                },
+                            )
+                        }
+
                         composableWithDefaultScreenTransitions(route = RootNavigationScreen.Dashboard.getRoute()) {
                             DashboardScreen(
                                 onNavigateToLocalisation = {

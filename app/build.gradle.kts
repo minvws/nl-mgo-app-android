@@ -65,6 +65,7 @@ dependencies {
     // Features
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:dashboard"))
+    implementation(project(":feature:dashboard:bottombar"))
     implementation(project(":feature:config"))
     implementation(project(":feature:localisation"))
 

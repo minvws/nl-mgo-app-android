@@ -35,13 +35,13 @@ import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
-import nl.rijksoverheid.mgo.feature.dashboard.R
+import nl.rijksoverheid.mgo.feature.overview.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
 
 @Composable
-internal fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
+fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     OverviewScreenContent(viewState = viewState, onNavigateToLocalisation = onNavigateToLocalisation)

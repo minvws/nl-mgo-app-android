@@ -9,31 +9,31 @@ import nl.rijksoverheid.mgo.framework.navigation.NavigationManager
  */
 open class RootNavigationManager(private val navController: NavController) : NavigationManager<RootNavigationScreen> {
     override fun navigate(screen: RootNavigationScreen) {
-        when (screen) {
-            RootNavigationScreen.Onboarding -> {
-                navController.navigate(screen.getNavigationRoute())
-            }
-            RootNavigationScreen.Dashboard -> {
-                navController.navigate(screen.getNavigationRoute()) {
-                    popUpTo(navController.graph.id) {
-                        inclusive = true
-                    }
-                }
-            }
-            RootNavigationScreen.Localisation -> {
-                navController.navigate(screen.getNavigationRoute())
-            }
-            RootNavigationScreen.UpdatedRequired -> {
-                navController.navigate(screen.getNavigationRoute()) {
-                    popUpTo(navController.graph.id) {
-                        inclusive = true
-                    }
-                }
-            }
-            RootNavigationScreen.NewDashboard.BottomBar -> {
-                navController.navigate(screen.getNavigationRoute())
-            }
-        }
+//        when (screen) {
+//            RootNavigationScreen.Onboarding -> {
+//                navController.navigate(screen.getNavigationRoute())
+//            }
+//            RootNavigationScreen.Dashboard -> {
+//                navController.navigate(screen.getNavigationRoute()) {
+//                    popUpTo(navController.graph.id) {
+//                        inclusive = true
+//                    }
+//                }
+//            }
+//            RootNavigationScreen.Localisation -> {
+//                navController.navigate(screen.getNavigationRoute())
+//            }
+//            RootNavigationScreen.UpdatedRequired -> {
+//                navController.navigate(screen.getNavigationRoute()) {
+//                    popUpTo(navController.graph.id) {
+//                        inclusive = true
+//                    }
+//                }
+//            }
+//            RootNavigationScreen.NewDashboard.BottomBar -> {
+//                navController.navigate(screen.getNavigationRoute())
+//            }
+//        }
     }
 
     override fun popBackStack() {

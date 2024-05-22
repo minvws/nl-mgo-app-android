@@ -26,7 +26,6 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.feature.localisation.navigation.LocalLocalisationNavigationManager
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.navigation.navigateBack
 import kotlinx.coroutines.flow.collectLatest
@@ -35,15 +34,13 @@ const val TEST_TAG_NAME_TEXT_FIELD = "NAME_TEXT_FIELD"
 const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
 
 @Composable
-fun SearchScreen() {
-    val navigationManager = LocalLocalisationNavigationManager.current
+fun SearchScreen(onNavigateToSearchResults: (name: String, city: String) -> Unit) {
     val viewModel: SearchScreenViewModel = hiltViewModel()
     val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        // Handle navigation
         viewModel.navigation.collectLatest { screen ->
-            navigationManager.navigate(screen)
+            onNavigateToSearchResults(viewState.name, viewState.city)
         }
     }
 

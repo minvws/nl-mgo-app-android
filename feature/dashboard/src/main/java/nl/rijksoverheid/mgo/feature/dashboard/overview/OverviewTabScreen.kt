@@ -26,7 +26,7 @@ internal fun OverviewTabScreen(
             composableWithDefaultScreenTransitions(
                 route = DashboardNavigationScreen.Start.getRoute(),
             ) {
-                OverviewScreen(onNavigateToLocalisation = onNavigateToLocalisation)
+                // OverviewScreen(onNavigateToLocalisation = onNavigateToLocalisation)
             }
 
             composableWithDefaultScreenTransitions(

@@ -5,12 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -20,16 +17,13 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
-import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
-import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
-import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
-import nl.rijksoverheid.mgo.feature.localisation.LocalisationScreen
-import nl.rijksoverheid.mgo.feature.onboarding.OnboardingScreen
-import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.BottomBarNavigationScreen
 import nl.rijksoverheid.mgo.navigation.LocalRootNavigationManager
 import nl.rijksoverheid.mgo.navigation.ProvideNavigationManager
 import nl.rijksoverheid.mgo.navigation.RootNavigationManager
 import nl.rijksoverheid.mgo.navigation.RootNavigationScreen
+import nl.rijksoverheid.mgo.navigation.addBottomBarNavGraph
+import nl.rijksoverheid.mgo.navigation.addLocalisationNavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,12 +32,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MgoTheme(modifier = Modifier.fillMaxSize()) {
                 val viewModel: MainViewModel = hiltViewModel()
-                val startDestination =
-                    if (viewModel.hasSeenOnboarding()) {
-                        RootNavigationScreen.NewDashboard.BottomBar.getRoute()
-                    } else {
-                        RootNavigationScreen.Onboarding.getRoute()
-                    }
+                val startDestination = BottomBarNavigationScreen.Start.getRoute()
                 val navController = rememberNavController()
                 val navigationManager = RootNavigationManager(navController = navController)
                 ProvideNavigationManager(navigationManager = navigationManager) {
@@ -53,44 +42,8 @@ class MainActivity : ComponentActivity() {
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None },
                     ) {
-                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Onboarding.getRoute()) {
-                            OnboardingScreen(
-                                onOnboardingFinished = {
-                                    navigationManager.navigate(RootNavigationScreen.Dashboard)
-                                },
-                            )
-                        }
-
-                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.NewDashboard.BottomBar.getRoute()) {
-                            DashboardBottomBarScreen(
-                                overviewScreen = {
-                                    Box(modifier = Modifier.fillMaxSize().background(Color.Red))
-                                },
-                                aboutThisAppScreen = {
-                                    Box(modifier = Modifier.fillMaxSize().background(Color.Blue))
-                                },
-                            )
-                        }
-
-                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Dashboard.getRoute()) {
-                            DashboardScreen(
-                                onNavigateToLocalisation = {
-                                    navigationManager.navigate(RootNavigationScreen.Localisation)
-                                },
-                            )
-                        }
-                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Localisation.getRoute()) {
-                            LocalisationScreen(
-                                onLocalisationFinished = {
-                                    navController.popBackStack(RootNavigationScreen.Dashboard.getRoute(), false)
-                                },
-                            )
-                        }
-                        composableWithDefaultScreenTransitions(
-                            route = RootNavigationScreen.UpdatedRequired.getRoute(),
-                        ) {
-                            UpdateRequiredScreen(packageName = packageName)
-                        }
+                        addBottomBarNavGraph(navController = navController)
+                        addLocalisationNavGraph(navController = navController)
                     }
 
                     // Refresh config on every app resume. The backend handles caching.

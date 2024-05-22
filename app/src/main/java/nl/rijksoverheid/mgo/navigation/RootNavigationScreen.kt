@@ -11,7 +11,15 @@ sealed class RootNavigationScreen(override val name: String, override val placeh
     data object Dashboard : RootNavigationScreen("dashboard")
 
     sealed class NewDashboard(name: String, placeholders: List<String> = listOf()) : RootNavigationScreen(name, placeholders) {
+        data object Start : RootNavigationScreen("dashboard-start")
+
         data object BottomBar : RootNavigationScreen("dashboard-bottombar")
+    }
+
+    sealed class NewLocalisation(name: String, placeholders: List<String> = listOf()) : RootNavigationScreen(name, placeholders) {
+        data object Start : RootNavigationScreen("localisation-start")
+
+        data object Search : RootNavigationScreen("localisation-search")
     }
 
     data object Localisation : RootNavigationScreen("localisation")

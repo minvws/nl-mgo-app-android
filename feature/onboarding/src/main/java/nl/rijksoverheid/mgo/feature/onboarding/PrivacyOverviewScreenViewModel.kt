@@ -15,7 +15,4 @@ internal class PrivacyOverviewScreenViewModel
         fun setHasSeenOnboarding() {
             runBlocking { setHasSeenOnboarding.invoke(true) }
         }
-
-        fun doSomething() {
-        }
     }

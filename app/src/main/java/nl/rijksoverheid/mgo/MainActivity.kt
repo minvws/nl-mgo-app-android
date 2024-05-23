@@ -18,14 +18,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
-import nl.rijksoverheid.mgo.feature.dashboard.DashboardScreen
-import nl.rijksoverheid.mgo.feature.localisation.LocalisationScreen
-import nl.rijksoverheid.mgo.feature.onboarding.OnboardingScreen
-import nl.rijksoverheid.mgo.framework.navigation.composableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.LocalRootNavigationManager
-import nl.rijksoverheid.mgo.navigation.ProvideNavigationManager
-import nl.rijksoverheid.mgo.navigation.RootNavigationManager
-import nl.rijksoverheid.mgo.navigation.RootNavigationScreen
+import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
+import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
+import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
+import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -36,58 +35,35 @@ class MainActivity : ComponentActivity() {
                 val viewModel: MainViewModel = hiltViewModel()
                 val startDestination =
                     if (viewModel.hasSeenOnboarding()) {
-                        RootNavigationScreen.Dashboard.getRoute()
+                        DashboardNavigationScreen.Start.getNavigationRoute()
                     } else {
-                        RootNavigationScreen.Onboarding.getRoute()
+                        OnboardingNavigationScreen.Start.getNavigationRoute()
                     }
                 val navController = rememberNavController()
-                val navigationManager = RootNavigationManager(navController = navController)
-                ProvideNavigationManager(navigationManager = navigationManager) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = startDestination,
-                        enterTransition = { EnterTransition.None },
-                        exitTransition = { ExitTransition.None },
-                    ) {
-                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Onboarding.getRoute()) {
-                            OnboardingScreen(
-                                onOnboardingFinished = {
-                                    navigationManager.navigate(RootNavigationScreen.Dashboard)
-                                },
-                            )
-                        }
-                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Dashboard.getRoute()) {
-                            DashboardScreen(
-                                onNavigateToLocalisation = {
-                                    navigationManager.navigate(RootNavigationScreen.Localisation)
-                                },
-                            )
-                        }
-                        composableWithDefaultScreenTransitions(route = RootNavigationScreen.Localisation.getRoute()) {
-                            LocalisationScreen(
-                                onLocalisationFinished = {
-                                    navController.popBackStack(RootNavigationScreen.Dashboard.getRoute(), false)
-                                },
-                            )
-                        }
-                        composableWithDefaultScreenTransitions(
-                            route = RootNavigationScreen.UpdatedRequired.getRoute(),
-                        ) {
-                            UpdateRequiredScreen(packageName = packageName)
-                        }
+                NavHost(
+                    navController = navController,
+                    startDestination = startDestination,
+                    enterTransition = { EnterTransition.None },
+                    exitTransition = { ExitTransition.None },
+                ) {
+                    addOnboardingNavGraph(navController = navController)
+                    addDashboardNavGraph(navController = navController)
+                    addLocalisationNavGraph(navController = navController)
+                    composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
+                        UpdateRequiredScreen()
                     }
+                }
 
-                    // Refresh config on every app resume. The backend handles caching.
-                    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-                        viewModel.refreshConfig()
-                    }
+                // Refresh config on every app resume. The backend handles caching.
+                LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+                    viewModel.refreshConfig()
+                }
 
-                    // Handle config state changes
-                    val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
-                    when (configState) {
-                        ConfigState.NoAction -> {}
-                        ConfigState.UpdateRequired -> LocalRootNavigationManager.current.navigate(RootNavigationScreen.UpdatedRequired)
-                    }
+                // Handle config state changes
+                val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
+                when (configState) {
+                    ConfigState.NoAction -> {}
+                    ConfigState.UpdateRequired -> navController.navigate(ConfigNavigationScreen.UpdateRequired.getNavigationRoute())
                 }
             }
         }

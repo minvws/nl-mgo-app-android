@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -18,10 +20,7 @@ dependencyResolutionManagement {
 rootProject.name = "MijnGezondheidsOverzicht"
 include(":app")
 include(":component:theme")
-include(":feature:onboarding")
-include(":feature:dashboard")
 include(":feature:config")
-include(":feature:localisation")
 include(":framework:navigation")
 include(":framework:copy")
 include(":framework:snapshots")
@@ -32,3 +31,10 @@ include(":framework:environment")
 include(":data:config")
 include(":data:onboarding")
 include(":data:localisation")
+include(":feature:dashboard:bottombar")
+include(":feature:dashboard:overview")
+include(":feature:localisation:search")
+include(":feature:localisation:searchresults")
+include(":feature:localisation:stored")
+include(":feature:onboarding:introduction")
+include(":feature:onboarding:privacyoverview")

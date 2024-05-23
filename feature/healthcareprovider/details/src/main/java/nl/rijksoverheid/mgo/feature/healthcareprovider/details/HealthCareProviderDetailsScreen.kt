@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -37,6 +35,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun HealthCareProviderDetailsScreen(
     providerName: String,
+    providerCategory: String,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -58,8 +57,8 @@ fun HealthCareProviderDetailsScreen(
         content = { innerPadding ->
             Column(
                 modifier =
-                Modifier
-                    .padding(innerPadding),
+                    Modifier
+                        .padding(innerPadding),
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -70,32 +69,35 @@ fun HealthCareProviderDetailsScreen(
 
                 Text(
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    text = stringResource(id = CopyR.string.healthcareprovider_details_subtitle),
+                    text = providerCategory,
                     style = MaterialTheme.typography.bodySmall,
                 )
 
                 ProviderRow(
-                    modifier = Modifier
-                        .padding(top = 24.dp)
-                        .clickable { },
+                    modifier =
+                        Modifier
+                            .padding(top = 24.dp)
+                            .clickable { },
                     icon = R.drawable.ic_medicine,
                     title = CopyR.string.healthcareprovider_details_list_item_medicine_title,
                     subtitle = CopyR.string.healthcareprovider_details_list_item_medicine_subtitle,
                 )
 
                 ProviderRow(
-                    modifier = Modifier
-                        .padding(top = 4.dp)
-                        .clickable { },
+                    modifier =
+                        Modifier
+                            .padding(top = 4.dp)
+                            .clickable { },
                     icon = R.drawable.ic_complaints,
                     title = CopyR.string.healthcareprovider_details_list_item_complaints_title,
                     subtitle = CopyR.string.healthcareprovider_details_list_item_complaints_subtitle,
                 )
 
                 ProviderRow(
-                    modifier = Modifier
-                        .padding(top = 4.dp)
-                        .clickable { },
+                    modifier =
+                        Modifier
+                            .padding(top = 4.dp)
+                            .clickable { },
                     icon = R.drawable.ic_results,
                     title = CopyR.string.healthcareprovider_details_list_item_results_title,
                     subtitle = CopyR.string.healthcareprovider_details_list_item_results_subtitle,
@@ -134,6 +136,7 @@ internal fun HealthCareProviderDetailsScreenPreview() {
     MgoTheme {
         HealthCareProviderDetailsScreen(
             providerName = "UMC Ziekenhuis",
+            providerCategory = "Ziekenhuizen, medische centra en klinieken",
             onNavigateBack = {},
         )
     }

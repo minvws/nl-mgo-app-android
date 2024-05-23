@@ -28,8 +28,12 @@ fun HealthCareProviderNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToHealthCareProvider = { providerName ->
-                    navController.navigate(HealthCareProviderNavigationScreen.Details.setProviderName(providerName).getNavigationRoute())
+                onNavigateToHealthCareProvider = { providerName, providerCategory ->
+                    navController.navigate(
+                        HealthCareProviderNavigationScreen.Details.setProviderName(
+                            providerName,
+                        ).setProviderCategory(providerCategory).getNavigationRoute(),
+                    )
                 },
             )
         }
@@ -37,6 +41,7 @@ fun HealthCareProviderNavigation(
         composableWithDefaultScreenTransitions(route = HealthCareProviderNavigationScreen.Details.getRoute()) { backStackEntry ->
             HealthCareProviderDetailsScreen(
                 providerName = HealthCareProviderNavigationScreen.Details.getProviderName(backStackEntry),
+                providerCategory = HealthCareProviderNavigationScreen.Details.getProviderCategory(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

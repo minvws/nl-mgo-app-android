@@ -44,7 +44,7 @@ const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (name: String) -> Unit,
+    onNavigateToHealthCareProvider: (name: String, category: String) -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -59,7 +59,7 @@ fun OverviewScreen(
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (name: String) -> Unit,
+    onNavigateToHealthCareProvider: (name: String, category: String) -> Unit,
 ) {
     Scaffold { innerPadding ->
         ColumnWithButtons(
@@ -83,7 +83,7 @@ private fun OverviewScreenContent(
                             Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 4.dp)
-                                .clickable { onNavigateToHealthCareProvider(provider.name) },
+                                .clickable { onNavigateToHealthCareProvider(provider.name, provider.category ?: "") },
                         provider = provider,
                     )
                 }
@@ -179,7 +179,7 @@ internal fun OverviewScreenWithProvidersPreview() {
                         ),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = {},
+            onNavigateToHealthCareProvider = { _, _ -> },
         )
     }
 }
@@ -195,7 +195,7 @@ internal fun OverviewScreenEmptyStatePreview() {
                     providers = listOf(),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = {},
+            onNavigateToHealthCareProvider = { _, _ -> },
         )
     }
 }

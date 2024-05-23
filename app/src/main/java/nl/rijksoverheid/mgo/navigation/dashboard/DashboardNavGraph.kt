@@ -26,8 +26,11 @@ fun NavGraphBuilder.addDashboardNavGraph(navController: NavController) {
                         onNavigateToLocalisation = {
                             navController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                         },
-                        onNavigateToHealthCareProvider = {
-                            navController.navigate(HealthCareProviderNavigationScreen.Start.getNavigationRoute())
+                        onNavigateToHealthCareProvider = { providerName ->
+                            navController.navigate(
+                                HealthCareProviderNavigationScreen.Start.setProviderName(providerName)
+                                    .getNavigationRoute(),
+                            )
                         },
                     )
                 },

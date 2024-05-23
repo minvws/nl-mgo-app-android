@@ -11,8 +11,13 @@ fun NavGraphBuilder.addHealthCareProviderNavGraph(navController: NavController) 
         startDestination = HealthCareProviderNavigationScreen.Details.getRoute(),
         route = HealthCareProviderNavigationScreen.Start.getRoute(),
     ) {
-        composableWithDefaultScreenTransitions(route = HealthCareProviderNavigationScreen.Details.getRoute()) {
-            HealthCareProviderDetailsScreen()
+        composableWithDefaultScreenTransitions(route = HealthCareProviderNavigationScreen.Details.getRoute()) { backStackEntry ->
+            HealthCareProviderDetailsScreen(
+                providerName = HealthCareProviderNavigationScreen.Details.getProviderName(backStackEntry),
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
         }
     }
 }

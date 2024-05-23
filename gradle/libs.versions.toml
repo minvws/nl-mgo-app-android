@@ -36,6 +36,8 @@ androidx-test-runner = "1.5.2"
 okhttp-mockwebserver = "4.12.0"
 okio = "3.9.0"
 espresso-intents = "3.5.1"
+sonarqube = "5.0.0.4638"
+jacoco-tool = "0.8.11"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -89,4 +91,4 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.overview
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -41,16 +42,24 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
 
 @Composable
-fun OverviewScreen(onNavigateToLocalisation: () -> Unit) {
+fun OverviewScreen(
+    onNavigateToLocalisation: () -> Unit,
+    onNavigateToHealthCareProvider: (name: String) -> Unit,
+) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
-    OverviewScreenContent(viewState = viewState, onNavigateToLocalisation = onNavigateToLocalisation)
+    OverviewScreenContent(
+        viewState = viewState,
+        onNavigateToLocalisation = onNavigateToLocalisation,
+        onNavigateToHealthCareProvider = onNavigateToHealthCareProvider,
+    )
 }
 
 @Composable
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
     onNavigateToLocalisation: () -> Unit,
+    onNavigateToHealthCareProvider: (name: String) -> Unit,
 ) {
     Scaffold { innerPadding ->
         ColumnWithButtons(
@@ -73,7 +82,8 @@ private fun OverviewScreenContent(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 4.dp),
+                                .padding(bottom = 4.dp)
+                                .clickable { onNavigateToHealthCareProvider(provider.name) },
                         provider = provider,
                     )
                 }
@@ -125,7 +135,10 @@ private fun HealthCareProviderCard(
 @Composable
 private fun EmptyState(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier.fillMaxWidth().height(300.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(300.dp),
         painter = painterResource(id = R.drawable.illustration_overview_empty),
         contentDescription = null,
     )
@@ -166,6 +179,7 @@ internal fun OverviewScreenWithProvidersPreview() {
                         ),
                 ),
             onNavigateToLocalisation = {},
+            onNavigateToHealthCareProvider = {},
         )
     }
 }
@@ -181,6 +195,7 @@ internal fun OverviewScreenEmptyStatePreview() {
                     providers = listOf(),
                 ),
             onNavigateToLocalisation = {},
+            onNavigateToHealthCareProvider = {},
         )
     }
 }

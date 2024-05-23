@@ -11,6 +11,7 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.healthcareprovider.HealthCareProviderNavigationScreen
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
 fun NavGraphBuilder.addDashboardNavGraph(navController: NavController) {
@@ -24,6 +25,9 @@ fun NavGraphBuilder.addDashboardNavGraph(navController: NavController) {
                     OverviewScreen(
                         onNavigateToLocalisation = {
                             navController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
+                        },
+                        onNavigateToHealthCareProvider = {
+                            navController.navigate(HealthCareProviderNavigationScreen.Start.getNavigationRoute())
                         },
                     )
                 },

@@ -22,6 +22,7 @@ import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
+import nl.rijksoverheid.mgo.navigation.healthcareprovider.addHealthCareProviderNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
@@ -49,6 +50,7 @@ class MainActivity : ComponentActivity() {
                     addOnboardingNavGraph(navController = navController)
                     addDashboardNavGraph(navController = navController)
                     addLocalisationNavGraph(navController = navController)
+                    addHealthCareProviderNavGraph(navController = navController)
                     composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
                         UpdateRequiredScreen()
                     }

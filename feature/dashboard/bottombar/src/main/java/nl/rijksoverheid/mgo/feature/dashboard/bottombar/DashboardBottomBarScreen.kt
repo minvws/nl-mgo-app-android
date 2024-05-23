@@ -27,8 +27,8 @@ import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 
 @Composable
 fun DashboardBottomBarScreen(
-    overviewScreen: @Composable () -> Unit,
-    aboutThisAppScreen: @Composable () -> Unit,
+    overviewTab: @Composable () -> Unit,
+    aboutThisAppTab: @Composable () -> Unit,
 ) {
     var selectedBottomBarItem by remember { mutableStateOf<BottomBarItem>(BottomBarItem.Overview) }
     Scaffold(
@@ -48,11 +48,11 @@ fun DashboardBottomBarScreen(
         ) {
             when (selectedBottomBarItem) {
                 BottomBarItem.Overview -> {
-                    overviewScreen()
+                    overviewTab()
                 }
 
                 BottomBarItem.AboutThisApp -> {
-                    aboutThisAppScreen()
+                    aboutThisAppTab()
                 }
             }
         }

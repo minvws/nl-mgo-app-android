@@ -22,7 +22,6 @@ import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
-import nl.rijksoverheid.mgo.navigation.healthcareprovider.addHealthCareProviderNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
@@ -40,6 +39,7 @@ class MainActivity : ComponentActivity() {
                     } else {
                         OnboardingNavigationScreen.Start.getNavigationRoute()
                     }
+                val healthCareProviderNavController = rememberNavController()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -48,9 +48,11 @@ class MainActivity : ComponentActivity() {
                     exitTransition = { ExitTransition.None },
                 ) {
                     addOnboardingNavGraph(navController = navController)
-                    addDashboardNavGraph(navController = navController)
+                    addDashboardNavGraph(
+                        rootNavController = navController,
+                        healthCareProviderNavController = healthCareProviderNavController,
+                    )
                     addLocalisationNavGraph(navController = navController)
-                    addHealthCareProviderNavGraph(navController = navController)
                     composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
                         UpdateRequiredScreen()
                     }

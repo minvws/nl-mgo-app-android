@@ -1,16 +1,39 @@
 package nl.rijksoverheid.mgo.navigation.healthcareprovider
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
+import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.details.HealthCareProviderDetailsScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
-fun NavGraphBuilder.addHealthCareProviderNavGraph(navController: NavController) {
-    navigation(
-        startDestination = HealthCareProviderNavigationScreen.Details.getRoute(),
-        route = HealthCareProviderNavigationScreen.Start.getRoute(),
+@Composable
+fun HealthCareProviderNavigation(
+    rootNavController: NavHostController,
+    navController: NavHostController,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = HealthCareProviderNavigationScreen.Overview.getRoute(),
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
     ) {
+        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Overview.getRoute()) {
+            OverviewScreen(
+                onNavigateToLocalisation = {
+                    rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
+                },
+                onNavigateToHealthCareProvider = { providerName ->
+                    navController.navigate(HealthCareProviderNavigationScreen.Details.setProviderName(providerName).getNavigationRoute())
+                },
+            )
+        }
+
         composableWithDefaultScreenTransitions(route = HealthCareProviderNavigationScreen.Details.getRoute()) { backStackEntry ->
             HealthCareProviderDetailsScreen(
                 providerName = HealthCareProviderNavigationScreen.Details.getProviderName(backStackEntry),

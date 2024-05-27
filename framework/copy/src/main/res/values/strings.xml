@@ -61,4 +61,10 @@
     <string name="dashboard_overview_subtitle">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
     <string name="dashboard_overview_subtitle_empty">Je overzicht is leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
     <string name="dashboard_overview_button">Zorgaanbieder toevoegen</string>
+    <string name="healthcareprovider_details_list_item_medicine_title">Medicijnen</string>
+    <string name="healthcareprovider_details_list_item_medicine_subtitle">Voorgeschreven door je zorgaanbieder</string>
+    <string name="healthcareprovider_details_list_item_complaints_title">Klachten en diagnoses</string>
+    <string name="healthcareprovider_details_list_item_complaints_subtitle">Vastgesteld door je zorgaanbieder</string>
+    <string name="healthcareprovider_details_list_item_results_title">Uitslagen</string>
+    <string name="healthcareprovider_details_list_item_results_subtitle">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans</string>
 </resources>

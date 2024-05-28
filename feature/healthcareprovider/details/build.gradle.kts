@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":framework:environment"))
+    implementation(projects.data.healthcareprovider)
 }

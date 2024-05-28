@@ -13,6 +13,19 @@ plugins {
 }
 true // Needed to make the Suppress annotation work for the plugins block
 
+// Dagger and FHIR dependencies both use guava which conflict. Force a single guava version here.
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+            eachDependency {
+                if (requested.group == "com.google.guava" && requested.name == "guava") {
+                    useVersion("33.2.0-jre")
+                }
+            }
+        }
+    }
+}
+
 sonar {
   properties {
     property("sonar.organization", "vws") 

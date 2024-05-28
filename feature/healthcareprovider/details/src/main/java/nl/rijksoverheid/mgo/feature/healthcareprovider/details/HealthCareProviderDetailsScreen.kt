@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
@@ -46,6 +47,8 @@ fun HealthCareProviderDetailsScreen(
     providerCategory: String,
     onNavigateBack: () -> Unit,
 ) {
+    val viewModel: HealthCareProviderDetailsViewModel = hiltViewModel()
+
     Scaffold(
         topBar = {
             TopAppBar(

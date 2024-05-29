@@ -1,9 +1,9 @@
-package nl.rijksoverheid.mgo.data.localisation.api
+package nl.rijksoverheid.mgo.data.api.load
 
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-internal interface SearchApi {
+interface LoadApi {
     @POST("/localization/organization/search")
     suspend fun search(
         @Body requestBody: SearchRequestBody,

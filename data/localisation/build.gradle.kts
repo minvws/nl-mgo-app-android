@@ -7,6 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":framework:environment"))
-    implementation(project(":framework:storage"))
+    implementation(projects.data.api.load)
+    implementation(projects.framework.storage)
 }

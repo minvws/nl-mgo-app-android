@@ -1,9 +1,9 @@
-package nl.rijksoverheid.mgo.data.localisation.api
+package nl.rijksoverheid.mgo.data.api.load
 
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-internal data class SearchRequestBody(
+data class SearchRequestBody(
     val name: String,
     val city: String,
 )

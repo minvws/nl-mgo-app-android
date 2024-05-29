@@ -1,10 +1,10 @@
-package nl.rijksoverheid.mgo.data.localisation.api
+package nl.rijksoverheid.mgo.data.api.load
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-internal class SearchResponse(
+class SearchResponse(
     val organizations: List<Organization>,
 ) {
     @JsonClass(generateAdapter = true)

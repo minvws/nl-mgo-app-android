@@ -7,7 +7,8 @@ import retrofit2.http.Query
 internal interface DvaApi {
     @GET("fhir/MedicationStatement")
     suspend fun medicationStatement(
-        @Query("_include") include: String = "MedicationStatement:medicatio",
-        @Query("category") category: String = "urn:oid:2.16.840.1.113883.2.4.3.11.60.20.77.5.3%7C6",
+        @Query("_format") format: String = "json",
+        @Query("category") category: String = "urn:oid:2.16.840.1.113883.2.4.3.11.60.20.77.5.3|6",
+        @Query("_include") include: String = "MedicationStatement:medication",
     ): List<MedicationStatement>
 }

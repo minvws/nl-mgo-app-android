@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.api.load
 
+import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -52,5 +53,19 @@ internal object LoadApiModule {
             Environment.Prod -> "https://lo-ad.test.mgo.irealisatie.nl/"
             Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/"
         }
+    }
+
+    @VisibleForTesting
+    fun createApi(
+        okHttpClient: OkHttpClient,
+        baseUrl: String,
+    ): LoadApi {
+        val retrofit =
+            Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(okHttpClient)
+                .addConverterFactory(MoshiConverterFactory.create(createMoshi()).asLenient())
+                .build()
+        return retrofit.create(LoadApi::class.java)
     }
 }

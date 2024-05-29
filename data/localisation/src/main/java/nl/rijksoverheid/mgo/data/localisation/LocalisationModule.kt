@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal object SearchModule {
+internal object LocalisationModule {
     @Provides
     @Singleton
     fun provideSearchRepository(

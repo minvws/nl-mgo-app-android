@@ -1,10 +1,10 @@
-package nl.rijksoverheid.mgo.data.healthcareprovider.api
+package nl.rijksoverheid.mgo.data.api.dva
 
 import org.hl7.fhir.dstu3.model.MedicationStatement
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-internal interface DvaApi {
+interface DvaApi {
     @GET("fhir/MedicationStatement")
     suspend fun medicationStatement(
         @Query("_format") format: String = "json",

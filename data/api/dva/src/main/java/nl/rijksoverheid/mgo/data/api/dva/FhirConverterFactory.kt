@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.healthcareprovider.api
+package nl.rijksoverheid.mgo.data.api.dva
 
 import ca.uhn.fhir.context.FhirContext
 import com.squareup.moshi.rawType

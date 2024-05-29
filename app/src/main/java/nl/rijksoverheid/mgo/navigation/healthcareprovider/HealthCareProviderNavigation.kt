@@ -3,12 +3,11 @@ package nl.rijksoverheid.mgo.navigation.healthcareprovider
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.details.HealthCareProviderDetailsScreen
+import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
@@ -45,7 +44,14 @@ fun HealthCareProviderNavigation(
                 onNavigateBack = {
                     navController.popBackStack()
                 },
+                onNavigateToMedication = {
+                    navController.navigate(HealthCareProviderNavigationScreen.Medication.getNavigationRoute())
+                },
             )
+        }
+
+        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Medication.getRoute()) {
+            MedicationScreen()
         }
     }
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.data.healthcareprovider"
+    namespace = "nl.rijksoverheid.mgo.data.api.dva"
 }
 
 dependencies {

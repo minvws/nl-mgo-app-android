@@ -86,3 +86,12 @@ val Typography.bodySmall: TextStyle
             fontSize = 17.sp,
             lineHeight = 22.sp,
         )
+
+val Typography.bodySmallMini: TextStyle
+    get() =
+        TextStyle(
+            fontFamily = fonts,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            lineHeight = 19.sp,
+        )

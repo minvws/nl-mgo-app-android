@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.component.theme.samples
 
+import nl.rijksoverheid.mgo.framework.snapshots.SnapshotDevices
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
@@ -10,7 +11,7 @@ internal class TypographySampleScreenSnapshotTest {
 
     @Test
     fun launchView() {
-        snapshotTestRule.snapshots {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
             TypographySampleScreenPreview()
         }
     }

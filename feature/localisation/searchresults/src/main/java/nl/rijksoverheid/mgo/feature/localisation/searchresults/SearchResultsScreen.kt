@@ -43,6 +43,7 @@ import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -217,7 +218,7 @@ private fun EmptyContent(
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 24.dp),
-            painter = painterResource(id = R.drawable.illustration_alert),
+            painter = painterResource(id = ThemeR.drawable.illustration_alert),
             contentDescription = null,
         )
         MarkdownText(
@@ -289,7 +290,7 @@ private fun ErrorContent(
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 24.dp),
-            painter = painterResource(id = R.drawable.illustration_alert),
+            painter = painterResource(id = ThemeR.drawable.illustration_alert),
             contentDescription = null,
         )
 

@@ -51,7 +51,11 @@ fun HealthCareProviderNavigation(
         }
 
         composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Medication.getRoute()) {
-            MedicationScreen()
+            MedicationScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
         }
     }
 }

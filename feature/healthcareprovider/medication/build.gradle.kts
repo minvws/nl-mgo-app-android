@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(projects.data.medication)
+    implementation(projects.framework.environment)
 }

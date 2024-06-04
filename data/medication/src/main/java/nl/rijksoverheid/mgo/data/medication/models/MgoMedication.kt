@@ -1,6 +1,8 @@
 package nl.rijksoverheid.mgo.data.medication.models
 
 import org.hl7.fhir.dstu3.model.MedicationStatement
+import org.hl7.fhir.dstu3.model.Period
+import org.hl7.fhir.dstu3.model.Reference
 
 data class MgoMedication(
     val title: String,
@@ -20,14 +22,20 @@ val TEST_MGO_MEDICATION =
     )
 
 internal fun MedicationStatement.toMedication(): MgoMedication {
-    val startDate = if (effectiveDateTimeType.value != null) effectiveDateTimeType.value else effectivePeriod.start
+    val startDate =
+        when (effectivePeriod) {
+            is Period -> {
+                effectivePeriod.startElement.valueAsString
+            } else -> {
+                ""
+            }
+        }
+    val extension = extension.find { it.url == "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse-Prescriber" }
     return MgoMedication(
-        title = medicationReference.display,
-        instructions = dosage.map { it.text }.joinToString(" "),
-        prescribedBy =
-            extension.find { it.url == "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse-Prescriber" }?.value
-                .toString(),
+        title = if (medicationReference.hasDisplay()) medicationReference.display else "",
+        instructions = dosage.joinToString(" ") { it.text },
+        prescribedBy = (extension?.value as? Reference)?.display ?: "",
         status = status.display,
-        startDate = startDate.toString(),
+        startDate = startDate,
     )
 }

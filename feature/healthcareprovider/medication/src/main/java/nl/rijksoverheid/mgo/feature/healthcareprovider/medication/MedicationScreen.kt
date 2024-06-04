@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -107,7 +108,10 @@ private fun MedicationScreenContent(
                                     .weight(1f)
                                     .padding(vertical = 16.dp),
                         )
-                    is MedicationScreenViewState.Success -> MedicationScreenSuccessContent(medications = viewState.medications)
+                    is MedicationScreenViewState.Success -> {
+                        Spacer(modifier = Modifier.padding(top = 8.dp))
+                        MedicationScreenSuccessContent(medications = viewState.medications)
+                    }
                     is MedicationScreenViewState.Error ->
                         MedicationScreenErrorContent(
                             modifier = Modifier.padding(vertical = 16.dp),
@@ -144,7 +148,7 @@ private fun MedicationScreenSuccessContent(medications: List<MgoMedication>) {
     medications.forEach { medication ->
         CollapsableCard(
             medication = medication,
-            modifier = Modifier.padding(top = 24.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         )
     }
 }

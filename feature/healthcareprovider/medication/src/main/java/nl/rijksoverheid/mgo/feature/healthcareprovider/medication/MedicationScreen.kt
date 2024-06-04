@@ -30,15 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.collapsablecard.CollapsableCard
+import nl.rijksoverheid.mgo.component.collapsablecard.CollapsableCardItem
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
-import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.headingExtraSmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
 import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
 import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -110,7 +109,26 @@ private fun MedicationScreenContent(
                                     Modifier
                                         .fillMaxWidth()
                                         .padding(bottom = 16.dp),
-                                medication = medication,
+                                title = medication.title,
+                                items =
+                                    listOf(
+                                        CollapsableCardItem(
+                                            title = stringResource(id = CopyR.string.medication_card_instructions_header),
+                                            value = medication.instructions,
+                                        ),
+                                        CollapsableCardItem(
+                                            title = stringResource(id = CopyR.string.medication_card_start_date_header),
+                                            value = medication.startDate,
+                                        ),
+                                        CollapsableCardItem(
+                                            title = stringResource(id = CopyR.string.medication_card_prescribed_by_header),
+                                            value = medication.prescribedBy,
+                                        ),
+                                        CollapsableCardItem(
+                                            title = stringResource(id = CopyR.string.medication_card_status_header),
+                                            value = medication.status,
+                                        ),
+                                    ),
                             )
                         }
                     }
@@ -187,62 +205,6 @@ private fun MedicationScreenErrorContent(
                     color = MaterialTheme.colors.error,
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun CollapsableCard(
-    medication: MgoMedication,
-    modifier: Modifier = Modifier,
-) {
-    Card(modifier = modifier) {
-        Column(modifier = Modifier.padding(all = 16.dp)) {
-            Text(text = medication.title, style = MaterialTheme.typography.headingExtraSmall)
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = CopyR.string.medication_card_instructions_header).uppercase(),
-                color = MaterialTheme.colors.contentTertiary(),
-                style = MaterialTheme.typography.bodySmallMini,
-            )
-            Text(
-                modifier = Modifier.padding(top = 4.dp),
-                text = medication.instructions,
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = CopyR.string.medication_card_start_date_header).uppercase(),
-                color = MaterialTheme.colors.contentTertiary(),
-                style = MaterialTheme.typography.bodySmallMini,
-            )
-            Text(
-                modifier = Modifier.padding(top = 4.dp),
-                text = medication.startDate,
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = CopyR.string.medication_card_prescribed_by_header).uppercase(),
-                color = MaterialTheme.colors.contentTertiary(),
-                style = MaterialTheme.typography.bodySmallMini,
-            )
-            Text(
-                modifier = Modifier.padding(top = 4.dp),
-                text = medication.prescribedBy,
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = CopyR.string.medication_card_status_header).uppercase(),
-                color = MaterialTheme.colors.contentTertiary(),
-                style = MaterialTheme.typography.bodySmallMini,
-            )
-            Text(
-                modifier = Modifier.padding(top = 4.dp),
-                text = medication.status,
-                style = MaterialTheme.typography.bodySmall,
-            )
         }
     }
 }

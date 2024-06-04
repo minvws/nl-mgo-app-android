@@ -10,9 +10,16 @@ internal class CollapsableCardSnapshotTest {
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
-    fun preview() {
+    fun collapsed() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            CollapsableCardPreview()
+            CollapsableCardCollapsedPreview()
+        }
+    }
+
+    @Test
+    fun expanded() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            CollapsableCardExpandedPreview()
         }
     }
 }

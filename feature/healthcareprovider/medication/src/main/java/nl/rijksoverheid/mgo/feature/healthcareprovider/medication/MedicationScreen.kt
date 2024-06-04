@@ -3,12 +3,12 @@ package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -75,49 +75,58 @@ private fun MedicationScreenContent(
             )
         },
         content = { innerPadding ->
-            Column(
-                modifier =
-                    Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(innerPadding)
-                        .then(
-                            if (viewState !is MedicationScreenViewState.Loading) {
-                                Modifier.verticalScroll(rememberScrollState())
-                            } else {
-                                Modifier
-                            },
-                        ),
-            ) {
-                Text(
-                    text = stringResource(id = CopyR.string.medication_title),
-                    style = MaterialTheme.typography.headingLarge,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.medication_subtitle),
-                    style = MaterialTheme.typography.bodySmall,
-                )
+            LazyColumn(modifier = Modifier.padding(innerPadding), contentPadding = PaddingValues(horizontal = 16.dp)) {
+                item {
+                    Text(
+                        text = stringResource(id = CopyR.string.medication_title),
+                        style = MaterialTheme.typography.headingLarge,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
+                        text = stringResource(id = CopyR.string.medication_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
 
                 when (viewState) {
-                    MedicationScreenViewState.Loading ->
-                        MedicationScreenLoadingContent(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                                    .padding(vertical = 16.dp),
-                        )
-                    is MedicationScreenViewState.Success -> {
-                        Spacer(modifier = Modifier.padding(top = 8.dp))
-                        MedicationScreenSuccessContent(medications = viewState.medications)
+                    is MedicationScreenViewState.Loading -> {
+                        item {
+                            MedicationScreenLoadingContent(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(400.dp)
+                                        .padding(bottom = 16.dp),
+                            )
+                        }
                     }
-                    is MedicationScreenViewState.Error ->
-                        MedicationScreenErrorContent(
-                            modifier = Modifier.padding(vertical = 16.dp),
-                            isProductionBuild = viewState.isProductionBuild,
-                            error = viewState.error,
-                        )
+
+                    is MedicationScreenViewState.Success -> {
+                        items(viewState.medications.size) { position ->
+                            val medication = viewState.medications[position]
+                            CollapsableCard(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 16.dp),
+                                medication = medication,
+                            )
+                        }
+                    }
+
+                    is MedicationScreenViewState.Error -> {
+                        item {
+                            MedicationScreenErrorContent(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 16.dp),
+                                isProductionBuild = viewState.isProductionBuild,
+                                error = viewState.error,
+                            )
+                        }
+                    }
                 }
             }
         },
@@ -140,16 +149,6 @@ private fun MedicationScreenLoadingContent(modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodySmall,
             )
         }
-    }
-}
-
-@Composable
-private fun MedicationScreenSuccessContent(medications: List<MgoMedication>) {
-    medications.forEach { medication ->
-        CollapsableCard(
-            medication = medication,
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-        )
     }
 }
 

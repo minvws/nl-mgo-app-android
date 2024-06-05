@@ -10,6 +10,19 @@ import retrofit2.Retrofit
 import javax.inject.Named
 import javax.inject.Singleton
 
+fun createDvaApi(
+    okHttpClient: OkHttpClient,
+    baseUrl: String,
+): DvaApi {
+    val retrofit =
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(FhirConverterFactory())
+            .build()
+    return retrofit.create(DvaApi::class.java)
+}
+
 @InstallIn(SingletonComponent::class)
 @Module
 internal class DvaApiModule {
@@ -19,7 +32,7 @@ internal class DvaApiModule {
         okHttpClient: OkHttpClient,
         @Named("dvaApiBaseUrl") baseUrl: String,
     ): DvaApi {
-        return createApi(okHttpClient = okHttpClient, baseUrl = baseUrl)
+        return createDvaApi(okHttpClient = okHttpClient, baseUrl = baseUrl)
     }
 
     // TODO Set urls for other environments when available.
@@ -33,18 +46,5 @@ internal class DvaApiModule {
             Environment.Prod -> "https://dva.test.mgo.irealisatie.nl/"
             Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
         }
-    }
-
-    private fun createApi(
-        okHttpClient: OkHttpClient,
-        baseUrl: String,
-    ): DvaApi {
-        val retrofit =
-            Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(okHttpClient)
-                .addConverterFactory(FhirConverterFactory())
-                .build()
-        return retrofit.create(DvaApi::class.java)
     }
 }

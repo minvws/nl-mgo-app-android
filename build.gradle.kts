@@ -38,6 +38,7 @@ sonar {
             "sonar.coverage.jacoco.xmlReportPaths",
             "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml",
         )
+        // We exclude all composable screens since it messes with our code coverage
         val exclusions = "**/res/**/*,**/*Module*.kt,**/*Navigation*.kt,**/*Screen*.kt"
         val composeExclusion = fileTree("../")
             .apply { include("**/*.kt") }

@@ -5,11 +5,8 @@ import com.squareup.moshi.rawType
 import okhttp3.ResponseBody
 import org.hl7.fhir.dstu3.model.Bundle
 import org.hl7.fhir.dstu3.model.DomainResource
-import org.hl7.fhir.dstu3.model.MedicationStatement
-import org.hl7.fhir.dstu3.model.ResourceType
 import retrofit2.Converter
 import retrofit2.Retrofit
-import timber.log.Timber
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -39,29 +36,12 @@ internal class FhirConverterFactory : Converter.Factory() {
             // Get the domain resources from the bundle entries
             val domainResources =
                 bundle.entry.map { entryComponent ->
-                    entryComponent.toDomainResource()
+                    entryComponent.resource as DomainResource
                 }
 
             // Filter out any domain resources that we don't expect
             domainResources
-                .filterNotNull()
                 .filter { it.javaClass == type }
-        }
-    }
-
-    private fun Bundle.BundleEntryComponent.toDomainResource(): DomainResource? {
-        return when (resource.resourceType) {
-            ResourceType.MedicationStatement -> {
-                resource as MedicationStatement
-            }
-
-            else -> {
-                Timber.e(
-                    "Cannot map resource ${resource.resourceType}, not supported. " +
-                        "To support add mapping in FhirConverterFactory",
-                )
-                null
-            }
         }
     }
 }

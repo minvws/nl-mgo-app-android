@@ -15,7 +15,7 @@ class FhirConverterFactoryTest {
     private val testServer = testServerRule.testServer
 
     @Test
-    fun test() =
+    fun `Given response has medication statement, When getting medication statement, Response is converted`() =
         runTest {
             // Given
             testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/medicationstatement.json"))
@@ -24,6 +24,7 @@ class FhirConverterFactoryTest {
             val dvaApi = getDvaApi()
             val medicationStatement = dvaApi.medicationStatement()
 
+            // Then
             assertEquals(1, medicationStatement.size)
         }
 

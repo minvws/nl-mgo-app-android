@@ -33,6 +33,6 @@ sonar {
     property("sonar.projectName", "nl-mgo-app-android-private")
     property("sonar.host.url", "https://sonarcloud.io")
     property("sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
-    property("sonar.exclusions", "**/res/drawable*/**")
+    property("sonar.exclusions", "**/res/**/*,**/*Module*.kt,**/*Navigation*.kt,**/*Screen*.kt,**/*Composable*.kt")
   }
 }

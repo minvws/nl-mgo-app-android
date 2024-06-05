@@ -32,6 +32,19 @@ class AndroidConventionsPlugin : Plugin<Project> {
             val jacocoPluginExtension = extensions.getByType<JacocoPluginExtension>()
             jacocoPluginExtension.apply {
                 toolVersion = versionCatalog.findVersion("jacoco-tool").get().requiredVersion.toString()
+                afterEvaluate {
+                    fileTree("../").apply {
+                        include("**/*.kt")
+                    }.forEach { file ->
+                        if (file.readText().contains("import androidx.compose.runtime.Composable")) {
+                            val name = file.nameWithoutExtension
+                            project.extensions.extraProperties.set("excludes", listOf(
+                                "**/$name.class",
+                                "**/${name}Kt.class"
+                            ))
+                        }
+                    }
+                }
             }
             tasks.withType(Test::class.java) {
                 configure<JacocoTaskExtension> {

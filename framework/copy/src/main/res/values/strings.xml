@@ -76,4 +76,6 @@
     <string name="healthcareprovider_card_error_title">Gegevens ophalen mislukt</string>
     <string name="healthcareprovider_card_error_subtitle">Sorry, we kunnen geen verbinding maken met ons systeem. Daardoor kunnen we je
         gegevens nu niet ophalen. Probeer het later opnieuw.</string>
+    <string name="healthcareprovider_card_expanded_arrow_content_description">Uitklapbaar component uitgeklapt</string>
+    <string name="healthcareprovider_card_collapsed_arrow_content_description">Uitklapbaar component gesloten</string>
 </resources>

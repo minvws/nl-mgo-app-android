@@ -39,8 +39,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -100,4 +100,5 @@ dependencies {
 
     implementation(projects.data.onboarding)
     implementation(projects.data.config)
+    implementation(libs.fhir.stdu3)
 }

@@ -1,3 +1,5 @@
+import org.sonarqube.gradle.SonarProperties
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -27,12 +29,20 @@ subprojects {
 }
 
 sonar {
-  properties {
-    property("sonar.organization", "vws") 
-    property("sonar.projectKey", "nl-mgo-app-android-private")
-    property("sonar.projectName", "nl-mgo-app-android-private")
-    property("sonar.host.url", "https://sonarcloud.io")
-    property("sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
-    property("sonar.exclusions", "**/res/**/*,**/*Module*.kt,**/*Navigation*.kt,**/*Screen*.kt,**/*Composable*.kt")
-  }
+    properties {
+        property("sonar.organization", "vws")
+        property("sonar.projectKey", "nl-mgo-app-android-private")
+        property("sonar.projectName", "nl-mgo-app-android-private")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml",
+        )
+        val exclusions = "**/res/**/*,**/*Module*.kt,**/*Navigation*.kt,**/*Screen*.kt"
+        val composeExclusion = fileTree("../")
+            .apply { include("**/*.kt") }
+            .filter { file -> file.readText().contains("import androidx.compose.runtime.Composable") }
+            .joinToString(",") { file -> "**/${file.name}" }
+        property("sonar.exclusions", "$exclusions,$composeExclusion")
+    }
 }

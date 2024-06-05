@@ -33,5 +33,14 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object Medication : HealthCareProviderNavigationScreen(name = "medication")
+    data object Medication : HealthCareProviderNavigationScreen(name = "medication", placeholders = listOf("providerName")) {
+        fun setProviderName(name: String): Medication {
+            builder.addArgument(placeholders[0], name)
+            return this
+        }
+
+        fun getProviderName(backStackEntry: NavBackStackEntry): String {
+            return requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
+        }
+    }
 }

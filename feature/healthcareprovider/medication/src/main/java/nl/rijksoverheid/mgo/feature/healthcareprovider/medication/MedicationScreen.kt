@@ -43,10 +43,14 @@ import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun MedicationScreen(onNavigateBack: () -> Unit) {
+fun MedicationScreen(
+    providerName: String,
+    onNavigateBack: () -> Unit,
+) {
     val viewModel: MedicationScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
     MedicationScreenContent(
+        providerName = providerName,
         viewState = viewState,
         onNavigateBack = onNavigateBack,
     )
@@ -54,6 +58,7 @@ fun MedicationScreen(onNavigateBack: () -> Unit) {
 
 @Composable
 private fun MedicationScreenContent(
+    providerName: String,
     viewState: MedicationScreenViewState,
     onNavigateBack: () -> Unit,
 ) {
@@ -83,7 +88,7 @@ private fun MedicationScreenContent(
                     )
                     Text(
                         modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
-                        text = stringResource(id = CopyR.string.medication_subtitle),
+                        text = stringResource(id = CopyR.string.medication_subtitle, providerName),
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
@@ -214,6 +219,7 @@ private fun MedicationScreenErrorContent(
 internal fun MedicationScreenLoadingPreview() {
     MgoTheme {
         MedicationScreenContent(
+            providerName = "UMC Groningen",
             viewState = MedicationScreenViewState.Loading,
             onNavigateBack = {},
         )
@@ -225,6 +231,7 @@ internal fun MedicationScreenLoadingPreview() {
 internal fun MedicationScreenMedicationsPreview() {
     MgoTheme {
         MedicationScreenContent(
+            providerName = "UMC Groningen",
             viewState = MedicationScreenViewState.Success(listOf(TEST_MGO_MEDICATION, TEST_MGO_MEDICATION)),
             onNavigateBack = {},
         )
@@ -236,6 +243,7 @@ internal fun MedicationScreenMedicationsPreview() {
 internal fun MedicationScreenErrorPreview() {
     MgoTheme {
         MedicationScreenContent(
+            providerName = "UMC Groningen",
             viewState = MedicationScreenViewState.Error(isProductionBuild = true, error = IllegalStateException("Something went wrong")),
             onNavigateBack = {},
         )

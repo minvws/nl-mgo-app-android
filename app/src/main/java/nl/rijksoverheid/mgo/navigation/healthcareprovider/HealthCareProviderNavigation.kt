@@ -44,14 +44,15 @@ fun HealthCareProviderNavigation(
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToMedication = {
-                    navController.navigate(HealthCareProviderNavigationScreen.Medication.getNavigationRoute())
+                onNavigateToMedication = { providerName ->
+                    navController.navigate(HealthCareProviderNavigationScreen.Medication.setProviderName(providerName).getNavigationRoute())
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Medication.getRoute()) {
+        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Medication.getRoute()) { backStackEntry ->
             MedicationScreen(
+                providerName = HealthCareProviderNavigationScreen.Medication.getProviderName(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

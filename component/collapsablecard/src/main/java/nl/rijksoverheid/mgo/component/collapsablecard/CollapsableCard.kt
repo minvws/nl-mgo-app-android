@@ -33,13 +33,13 @@ fun CollapsableCard(
     items: List<CollapsableCardItem>,
     modifier: Modifier = Modifier,
 ) {
-    val initialCollapsed = if (LocalInspectionMode.current) false else true
+    val initialCollapsed = !LocalInspectionMode.current
     var collapsed by remember { mutableStateOf(initialCollapsed) }
     CollapsableCardContent(
         modifier = modifier,
         title = title,
         items = items,
-        isCollapsed = initialCollapsed,
+        isCollapsed = collapsed,
         onCollapsed = { collapsed = it },
     )
 }
@@ -53,7 +53,7 @@ private fun CollapsableCardContent(
     modifier: Modifier = Modifier,
 ) {
     Card(modifier = modifier) {
-        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 16.dp)) {
+        Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 10.dp, bottom = 16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(modifier = Modifier.weight(1f), text = title.uppercase(), style = MaterialTheme.typography.headingExtraSmall)
 

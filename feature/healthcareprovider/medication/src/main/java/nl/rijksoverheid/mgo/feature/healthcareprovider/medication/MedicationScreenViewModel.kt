@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,12 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MedicationScreenViewModel
     @Inject
-    constructor(private val appInfo: AppInfo, private val medicationRepository: MedicationRepository) : ViewModel() {
+    constructor(
+        savedStateHandle: SavedStateHandle,
+        private val appInfo: AppInfo,
+        private val medicationRepository: MedicationRepository,
+    ) : ViewModel
+        () {
         private val _viewState: MutableStateFlow<MedicationScreenViewState> = MutableStateFlow(MedicationScreenViewState.Loading)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, MedicationScreenViewState.Loading)
 

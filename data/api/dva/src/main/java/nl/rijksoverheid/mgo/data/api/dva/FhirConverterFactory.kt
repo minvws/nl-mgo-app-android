@@ -30,17 +30,8 @@ internal class FhirConverterFactory : Converter.Factory() {
         retrofit: Retrofit,
     ): Converter<ResponseBody, *> {
         return Converter { responseBody ->
-            // We only support lists.
-            if (listType !is ParameterizedType) {
-                error("FhirConverterFactory only supports lists as a return type.")
-            }
-
-            // We only support DomainResource in that list.
-            val type = listType.actualTypeArguments.first().rawType
-            val isDomainResource = DomainResource::class.java.isAssignableFrom(type)
-            if (!isDomainResource) {
-                error("FhirConverterFactory only supports DomainResource.")
-            }
+            val parameterizedListType = listType as ParameterizedType
+            val type = parameterizedListType.actualTypeArguments.first().rawType
 
             // Parse the bundle
             val bundle = parser.parseResource(Bundle::class.java, responseBody.string())

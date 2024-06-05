@@ -49,7 +49,7 @@ internal class DefaultMedicationRepositoryTest {
 
     private fun getRepository(): DefaultMedicationRepository {
         val okHttpClient = TEST_OKHTTP_CLIENT
-        val loadApi = createDvaApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-        return DefaultMedicationRepository(dvaApi = loadApi)
+        val dvaApi = createDvaApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
+        return DefaultMedicationRepository(dvaApi = dvaApi)
     }
 }

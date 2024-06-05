@@ -1,5 +1,5 @@
 [versions]
-android-sdk-min = "29"
+android-sdk-min = "26"
 android-sdk-target = "34"
 android-sdk-compile = "34"
 agp = "8.4.0"

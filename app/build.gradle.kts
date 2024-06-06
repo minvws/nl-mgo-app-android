@@ -100,5 +100,4 @@ dependencies {
 
     implementation(projects.data.onboarding)
     implementation(projects.data.config)
-    implementation(libs.fhir.stdu3)
 }

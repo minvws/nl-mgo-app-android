@@ -2,7 +2,7 @@
 android-sdk-min = "29"
 android-sdk-target = "34"
 android-sdk-compile = "34"
-agp = "8.4.1"
+agp = "8.5.0-rc01"
 kotlin = "1.9.22"
 core-ktx = "1.13.1"
 junit = "4.13.2"

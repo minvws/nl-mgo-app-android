@@ -230,3 +230,5 @@
 -dontwarn org.w3c.dom.events.EventListener
 -dontwarn org.w3c.dom.events.EventTarget
 -dontwarn org.w3c.dom.events.MutationEvent
+-dontwarn com.google.j2objc.annotations.RetainedWith
+-dontwarn com.google.j2objc.annotations.Weak

@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.localisation
 
 import app.cash.turbine.test
+import nl.rijksoverheid.mgo.data.api.load.createLoadApi
 import nl.rijksoverheid.mgo.data.localisation.DefaultHealthCareProviderRepository
-import nl.rijksoverheid.mgo.data.localisation.createApi
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProviders
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
@@ -30,7 +30,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
     }
 
     @Test
-    fun `Given searchApi request is successful, When calling search, Then emit health providers`() =
+    fun `Given loadApi request is successful, When calling search, Then emit health providers`() =
         runTest {
             // Given
             testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/search.json"))
@@ -57,7 +57,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
         }
 
     @Test
-    fun `Given searchApi request failed, When calling search, Then emit error`() =
+    fun `Given loadApi request failed, When calling search, Then emit error`() =
         runTest {
             // Given
             testServer.enqueue500()
@@ -158,7 +158,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
 
     private fun getRepository(): DefaultHealthCareProviderRepository {
         val okHttpClient = TEST_OKHTTP_CLIENT
-        val searchApi = createApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-        return DefaultHealthCareProviderRepository(searchApi = searchApi, fileStore = fileStore)
+        val loadApi = createLoadApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
+        return DefaultHealthCareProviderRepository(loadApi = loadApi, fileStore = fileStore)
     }
 }

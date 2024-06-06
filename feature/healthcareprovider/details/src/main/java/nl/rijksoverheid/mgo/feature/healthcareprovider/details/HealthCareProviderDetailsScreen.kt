@@ -45,6 +45,7 @@ fun HealthCareProviderDetailsScreen(
     providerName: String,
     providerCategory: String,
     onNavigateBack: () -> Unit,
+    onNavigateToMedication: (providerName: String) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -85,7 +86,7 @@ fun HealthCareProviderDetailsScreen(
                     modifier =
                         Modifier
                             .padding(top = 24.dp)
-                            .clickable { },
+                            .clickable { onNavigateToMedication(providerName) },
                     icon = R.drawable.ic_medicine,
                     iconCircleColor = MaterialTheme.colors.supportVerpleeghuis(),
                     title = CopyR.string.healthcareprovider_details_list_item_medicine_title,
@@ -156,6 +157,7 @@ internal fun HealthCareProviderDetailsScreenPreview() {
             providerName = "UMC Ziekenhuis",
             providerCategory = "Ziekenhuizen, medische centra en klinieken",
             onNavigateBack = {},
+            onNavigateToMedication = {},
         )
     }
 }

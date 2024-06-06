@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.framework.test
 
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import java.io.InputStream
 
 typealias TestServerBody = String
 
@@ -39,11 +38,5 @@ class TestServer {
  * Useful for example unit tests where you want to load local json files into a mock web server.
  */
 fun getTestServerBodyForUnitTest(filePath: String): TestServerBody {
-    val classLoader = object {}.javaClass.classLoader
-    val `is`: InputStream = requireNotNull(classLoader?.getResourceAsStream(filePath))
-    val size: Int = `is`.available()
-    val buffer = ByteArray(size)
-    `is`.read(buffer)
-    `is`.close()
-    return String(buffer)
+    return getJsonFromResources(filePath)
 }

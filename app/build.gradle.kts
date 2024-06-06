@@ -80,8 +80,9 @@ dependencies {
     implementation(projects.feature.localisation.searchresults)
     implementation(projects.feature.localisation.stored)
 
-    // Health care provider
+    // Overview
     implementation(projects.feature.healthcareprovider.details)
+    implementation(projects.feature.healthcareprovider.medication)
 
     // Config
     implementation(projects.feature.config)

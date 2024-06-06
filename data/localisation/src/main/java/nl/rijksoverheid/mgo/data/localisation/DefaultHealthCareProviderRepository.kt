@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.localisation
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
-import nl.rijksoverheid.mgo.data.localisation.api.SearchApi
-import nl.rijksoverheid.mgo.data.localisation.api.SearchRequestBody
+import nl.rijksoverheid.mgo.data.api.load.LoadApi
+import nl.rijksoverheid.mgo.data.api.load.SearchRequestBody
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProviders
 import nl.rijksoverheid.mgo.data.localisation.models.toHealthCareProvider
@@ -13,7 +13,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 
-internal class DefaultHealthCareProviderRepository(private val searchApi: SearchApi, private val fileStore: FileStore) :
+internal class DefaultHealthCareProviderRepository(
+    private val loadApi: LoadApi,
+    private val
+    fileStore: FileStore,
+) :
     HealthCareProviderRepository {
     private val fileName = "healthcareproviders.json"
 
@@ -23,10 +27,11 @@ internal class DefaultHealthCareProviderRepository(private val searchApi: Search
         name: String,
         city: String,
     ): Flow<List<HealthCareProvider>> {
-        val requestBody = SearchRequestBody(name = name, city = city)
+        val requestBody =
+            SearchRequestBody(name = name, city = city)
         val searchResponseFlow =
             flow {
-                val result = executeNetworkRequest { searchApi.search(requestBody) }
+                val result = executeNetworkRequest { loadApi.search(requestBody) }
                 emit(result.getOrThrow())
             }
         return combine(searchResponseFlow, storedHealthCareProvidersFlow) { searchResponse, storedHealthCareProviders ->

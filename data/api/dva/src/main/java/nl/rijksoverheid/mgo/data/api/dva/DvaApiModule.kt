@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.data.api.dva
 
-import ca.uhn.fhir.context.FhirContext
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,12 +46,5 @@ internal class DvaApiModule {
             Environment.Prod -> "https://dva.test.mgo.irealisatie.nl/"
             Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
         }
-    }
-
-    // Expensive object to create, so only create this once
-    @Provides
-    @Singleton
-    fun provideFhirContext(): FhirContext {
-        return FhirContext.forDstu3()
     }
 }

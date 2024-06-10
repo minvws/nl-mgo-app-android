@@ -114,24 +114,24 @@ private fun MedicationScreenContent(
                                     Modifier
                                         .fillMaxWidth()
                                         .padding(bottom = 16.dp),
-                                title = medication.title,
+                                title = medication.title ?: "",
                                 items =
                                     listOf(
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_instructions_header),
-                                            value = medication.instructions,
+                                            value = medication.instructions ?: "",
                                         ),
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_start_date_header),
-                                            value = medication.startDate,
+                                            value = medication.startDate ?: "",
                                         ),
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_start_prescribed_by_header),
-                                            value = medication.prescribedBy,
+                                            value = medication.prescribedBy ?: "",
                                         ),
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_start_status_header),
-                                            value = medication.status,
+                                            value = medication.status ?: "",
                                         ),
                                     ),
                             )

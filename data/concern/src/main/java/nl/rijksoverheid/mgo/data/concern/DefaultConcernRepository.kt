@@ -6,9 +6,9 @@ import nl.rijksoverheid.mgo.data.concern.models.MgoConcern
 import nl.rijksoverheid.mgo.data.concern.models.toConcern
 import javax.inject.Inject
 
-internal class DefaultConcernsRepository
+internal class DefaultConcernRepository
     @Inject
-    constructor(private val dvaApi: DvaApi) : ConcernsRepository {
+    constructor(private val dvaApi: DvaApi) : ConcernRepository {
         override suspend fun getConcerns(): Result<List<MgoConcern>> {
             val result = executeNetworkRequest { dvaApi.condition() }
             return result.mapCatching { statements ->

@@ -109,28 +109,32 @@ private fun ConcernScreenContent(
                                     Modifier
                                         .fillMaxWidth()
                                         .padding(bottom = 16.dp),
-                                title = concern.title,
+                                title = concern.title ?: "",
                                 items =
                                     listOf(
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_start_category_header),
-                                            value = concern.category,
+                                            value = concern.category ?: "",
+                                        ),
+                                        CollapsableCardItem(
+                                            title = stringResource(id = CopyR.string.healthcareprovider_card_start_status_header),
+                                            value = concern.clinicalStatus ?: "",
                                         ),
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_begin_date_header),
-                                            value = concern.startDate,
+                                            value = concern.startDate ?: "",
                                         ),
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_end_date_header),
-                                            value = concern.endDate,
+                                            value = concern.endDate ?: "",
                                         ),
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_body_location_header),
-                                            value = concern.bodyLocation,
+                                            value = concern.bodyLocation ?: "",
                                         ),
                                         CollapsableCardItem(
                                             title = stringResource(id = CopyR.string.healthcareprovider_card_comment_header),
-                                            value = concern.comment,
+                                            value = concern.comment ?: "",
                                         ),
                                     ),
                             )

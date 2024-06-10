@@ -12,7 +12,7 @@ import javax.inject.Singleton
 internal object ConcernsModule {
     @Provides
     @Singleton
-    fun provideConcernsRepository(dvaApi: DvaApi): ConcernsRepository {
-        return DefaultConcernsRepository(dvaApi = dvaApi)
+    fun provideConcernRepository(dvaApi: DvaApi): ConcernRepository {
+        return DefaultConcernRepository(dvaApi = dvaApi)
     }
 }

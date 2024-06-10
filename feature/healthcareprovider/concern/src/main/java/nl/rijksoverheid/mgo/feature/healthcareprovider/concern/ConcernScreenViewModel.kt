@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.healthcareprovider.concern
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.concern.ConcernsRepository
+import nl.rijksoverheid.mgo.data.concern.ConcernRepository
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import javax.inject.Inject
@@ -16,14 +16,14 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ConcernScreenViewModel
     @Inject
-    constructor(private val appInfo: AppInfo, private val medicationRepository: ConcernsRepository) : ViewModel() {
+    constructor(private val appInfo: AppInfo, private val concernRepository: ConcernRepository) : ViewModel() {
         private val _viewState: MutableStateFlow<ConcernScreenViewState> = MutableStateFlow(ConcernScreenViewState.Loading)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, ConcernScreenViewState.Loading)
 
         init {
             viewModelScope.launch {
                 _viewState.update { ConcernScreenViewState.Loading }
-                medicationRepository
+                concernRepository
                     .getConcerns()
                     .onSuccess { concerns ->
                         _viewState.update { ConcernScreenViewState.Success(concerns) }

@@ -83,6 +83,7 @@ dependencies {
     // Overview
     implementation(projects.feature.healthcareprovider.details)
     implementation(projects.feature.healthcareprovider.medication)
+    implementation(projects.feature.healthcareprovider.concern)
 
     // Config
     implementation(projects.feature.config)

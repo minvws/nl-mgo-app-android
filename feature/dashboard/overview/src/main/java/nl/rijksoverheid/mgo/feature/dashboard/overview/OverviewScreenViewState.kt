@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.overview
 
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 
 data class OverviewScreenViewState(
     val name: String,
@@ -10,7 +11,7 @@ data class OverviewScreenViewState(
         fun initialState(providers: List<HealthCareProvider>) =
             OverviewScreenViewState(
                 name = "Wendy de Bruijn",
-                providers = providers,
+                providers = listOf(TEST_HEALTH_CARE_PROVIDER),
             )
     }
 }

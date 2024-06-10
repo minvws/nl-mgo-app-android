@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.medication
+package nl.rijksoverheid.mgo.data.concern
 
 import dagger.Module
 import dagger.Provides
@@ -9,10 +9,10 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal object MedicationModule {
+internal object ConcernsModule {
     @Provides
     @Singleton
-    fun provideMedicationRepository(dvaApi: DvaApi): MedicationRepository {
-        return DefaultMedicationRepository(dvaApi = dvaApi)
+    fun provideConcernsRepository(dvaApi: DvaApi): ConcernsRepository {
+        return DefaultConcernsRepository(dvaApi = dvaApi)
     }
 }

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
+package nl.rijksoverheid.mgo.feature.healthcareprovider.concern
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -38,28 +38,23 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
+import nl.rijksoverheid.mgo.data.concern.models.TEST_MGO_CONCERN
 import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun MedicationScreen(
-    providerName: String,
-    onNavigateBack: () -> Unit,
-) {
-    val viewModel: MedicationScreenViewModel = hiltViewModel()
+fun ConcernScreen(onNavigateBack: () -> Unit) {
+    val viewModel: ConcernScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
-    MedicationScreenContent(
-        providerName = providerName,
+    ConcernScreenContent(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
     )
 }
 
 @Composable
-private fun MedicationScreenContent(
-    providerName: String,
-    viewState: MedicationScreenViewState,
+private fun ConcernScreenContent(
+    viewState: ConcernScreenViewState,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -82,21 +77,21 @@ private fun MedicationScreenContent(
             LazyColumn(modifier = Modifier.padding(innerPadding), contentPadding = PaddingValues(horizontal = 16.dp)) {
                 item {
                     Text(
-                        text = stringResource(id = CopyR.string.medication_title),
+                        text = stringResource(id = CopyR.string.concern_title),
                         style = MaterialTheme.typography.headingLarge,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
-                        text = stringResource(id = CopyR.string.medication_subtitle, providerName),
+                        text = stringResource(id = CopyR.string.concern_subtitle),
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
 
                 when (viewState) {
-                    is MedicationScreenViewState.Loading -> {
+                    is ConcernScreenViewState.Loading -> {
                         item {
-                            MedicationScreenLoadingContent(
+                            ConcernScreenLoadingContent(
                                 modifier =
                                     Modifier
                                         .fillMaxWidth()
@@ -106,41 +101,45 @@ private fun MedicationScreenContent(
                         }
                     }
 
-                    is MedicationScreenViewState.Success -> {
-                        items(viewState.medications.size) { position ->
-                            val medication = viewState.medications[position]
+                    is ConcernScreenViewState.Success -> {
+                        items(viewState.concerns.size) { position ->
+                            val concern = viewState.concerns[position]
                             CollapsableCard(
                                 modifier =
                                     Modifier
                                         .fillMaxWidth()
                                         .padding(bottom = 16.dp),
-                                title = medication.title,
+                                title = concern.title,
                                 items =
                                     listOf(
                                         CollapsableCardItem(
-                                            title = stringResource(id = CopyR.string.healthcareprovider_card_instructions_header),
-                                            value = medication.instructions,
+                                            title = stringResource(id = CopyR.string.healthcareprovider_card_start_category_header),
+                                            value = concern.category,
                                         ),
                                         CollapsableCardItem(
-                                            title = stringResource(id = CopyR.string.healthcareprovider_card_start_date_header),
-                                            value = medication.startDate,
+                                            title = stringResource(id = CopyR.string.healthcareprovider_card_begin_date_header),
+                                            value = concern.startDate,
                                         ),
                                         CollapsableCardItem(
-                                            title = stringResource(id = CopyR.string.healthcareprovider_card_start_prescribed_by_header),
-                                            value = medication.prescribedBy,
+                                            title = stringResource(id = CopyR.string.healthcareprovider_card_end_date_header),
+                                            value = concern.endDate,
                                         ),
                                         CollapsableCardItem(
-                                            title = stringResource(id = CopyR.string.healthcareprovider_card_start_status_header),
-                                            value = medication.status,
+                                            title = stringResource(id = CopyR.string.healthcareprovider_card_body_location_header),
+                                            value = concern.bodyLocation,
+                                        ),
+                                        CollapsableCardItem(
+                                            title = stringResource(id = CopyR.string.healthcareprovider_card_comment_header),
+                                            value = concern.comment,
                                         ),
                                     ),
                             )
                         }
                     }
 
-                    is MedicationScreenViewState.Error -> {
+                    is ConcernScreenViewState.Error -> {
                         item {
-                            MedicationScreenErrorContent(
+                            ConcernScreenErrorContent(
                                 modifier =
                                     Modifier
                                         .fillMaxWidth()
@@ -157,7 +156,7 @@ private fun MedicationScreenContent(
 }
 
 @Composable
-private fun MedicationScreenLoadingContent(modifier: Modifier = Modifier) {
+private fun ConcernScreenLoadingContent(modifier: Modifier = Modifier) {
     Card(modifier = modifier) {
         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator(
@@ -176,7 +175,7 @@ private fun MedicationScreenLoadingContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun MedicationScreenErrorContent(
+private fun ConcernScreenErrorContent(
     isProductionBuild: Boolean,
     error: Throwable,
     modifier: Modifier = Modifier,
@@ -216,11 +215,10 @@ private fun MedicationScreenErrorContent(
 
 @DefaultPreviews
 @Composable
-internal fun MedicationScreenLoadingPreview() {
+internal fun ConcernScreenLoadingPreview() {
     MgoTheme {
-        MedicationScreenContent(
-            providerName = "UMC Groningen",
-            viewState = MedicationScreenViewState.Loading,
+        ConcernScreenContent(
+            viewState = ConcernScreenViewState.Loading,
             onNavigateBack = {},
         )
     }
@@ -228,11 +226,10 @@ internal fun MedicationScreenLoadingPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun MedicationScreenMedicationsPreview() {
+internal fun ConcernScreenConcernsPreview() {
     MgoTheme {
-        MedicationScreenContent(
-            providerName = "UMC Groningen",
-            viewState = MedicationScreenViewState.Success(listOf(TEST_MGO_MEDICATION, TEST_MGO_MEDICATION)),
+        ConcernScreenContent(
+            viewState = ConcernScreenViewState.Success(listOf(TEST_MGO_CONCERN, TEST_MGO_CONCERN)),
             onNavigateBack = {},
         )
     }
@@ -240,11 +237,10 @@ internal fun MedicationScreenMedicationsPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun MedicationScreenErrorPreview() {
+internal fun ConcernScreenErrorPreview() {
     MgoTheme {
-        MedicationScreenContent(
-            providerName = "UMC Groningen",
-            viewState = MedicationScreenViewState.Error(isProductionBuild = true, error = IllegalStateException("Something went wrong")),
+        ConcernScreenContent(
+            viewState = ConcernScreenViewState.Error(isProductionBuild = true, error = IllegalStateException("Something went wrong")),
             onNavigateBack = {},
         )
     }

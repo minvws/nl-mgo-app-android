@@ -1,11 +1,13 @@
 package nl.rijksoverheid.mgo.data.concern.models
 
-import androidx.annotation.VisibleForTesting
-import org.hl7.fhir.dstu3.model.CodeableConcept
+import nl.rijksoverheid.mgo.framework.fhirextension.getBodyLocationString
+import nl.rijksoverheid.mgo.framework.fhirextension.getCategoryString
+import nl.rijksoverheid.mgo.framework.fhirextension.getClinicalStatusString
+import nl.rijksoverheid.mgo.framework.fhirextension.getCommentString
+import nl.rijksoverheid.mgo.framework.fhirextension.getEndDateString
+import nl.rijksoverheid.mgo.framework.fhirextension.getStartDateString
+import nl.rijksoverheid.mgo.framework.fhirextension.getTitleString
 import org.hl7.fhir.dstu3.model.Condition
-import org.hl7.fhir.dstu3.model.Type
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 data class MgoConcern(
     val title: String?,
@@ -30,33 +32,12 @@ val TEST_MGO_CONCERN =
 
 internal fun Condition.toConcern(): MgoConcern {
     return MgoConcern(
-        title = Optional.ofNullable(code).getOrNull()?.coding?.firstOrNull()?.display,
-        comment = Optional.ofNullable(note).getOrNull()?.joinToString(", ") { it.text },
-        clinicalStatus = Optional.ofNullable(clinicalStatus).getOrNull()?.display?.lowercase(),
-        category =
-            category.map { categoryItem ->
-                categoryItem.coding.map { codingItem -> codingItem.display }
-            }.flatten().joinToString(", "),
-        startDate = Optional.ofNullable(onsetDateTimeType).getOrNull()?.valueAsString,
-        endDate = Optional.ofNullable(abatementDateTimeType).getOrNull()?.valueAsString,
-        bodyLocation = getBodyLocationString(bodySite),
+        title = getTitleString(),
+        comment = getCommentString(),
+        clinicalStatus = getClinicalStatusString(),
+        category = getCategoryString(),
+        startDate = getStartDateString(),
+        endDate = getEndDateString(),
+        bodyLocation = getBodyLocationString(),
     )
-}
-
-@VisibleForTesting
-internal fun getBodyLocationString(bodySite: MutableList<CodeableConcept>) =
-    buildString {
-        val firstPart = bodySite.firstOrNull()?.coding?.firstOrNull()?.display
-        if (firstPart != null) {
-            append(firstPart)
-            append(", ")
-        }
-        val secondPart = bodySite.firstOrNull()?.extension?.firstOrNull()?.value?.asCodeableConcept()?.coding?.firstOrNull()?.display
-        if (secondPart != null) {
-            append(secondPart)
-        }
-    }
-
-private fun Type.asCodeableConcept(): CodeableConcept? {
-    return (this as? CodeableConcept)
 }

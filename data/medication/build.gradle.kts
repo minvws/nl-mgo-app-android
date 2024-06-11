@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(projects.data.api.dva)
+    implementation(projects.framework.fhirExtension)
 }

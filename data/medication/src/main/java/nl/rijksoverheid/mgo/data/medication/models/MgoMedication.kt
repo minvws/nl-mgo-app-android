@@ -1,9 +1,11 @@
 package nl.rijksoverheid.mgo.data.medication.models
 
+import nl.rijksoverheid.mgo.framework.fhirextension.getInstructionsString
+import nl.rijksoverheid.mgo.framework.fhirextension.getLowercaseStatusString
+import nl.rijksoverheid.mgo.framework.fhirextension.getPrescribedByString
+import nl.rijksoverheid.mgo.framework.fhirextension.getStartDateString
+import nl.rijksoverheid.mgo.framework.fhirextension.getTitleString
 import org.hl7.fhir.dstu3.model.MedicationStatement
-import org.hl7.fhir.dstu3.model.Reference
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 data class MgoMedication(
     val title: String?,
@@ -23,12 +25,11 @@ val TEST_MGO_MEDICATION =
     )
 
 internal fun MedicationStatement.toMedication(): MgoMedication {
-    val extension = extension.find { it.url == "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse-Prescriber" }
     return MgoMedication(
-        title = Optional.ofNullable(medicationReference.display).getOrNull(),
-        instructions = Optional.ofNullable(dosage).getOrNull()?.joinToString(", ") { it.text },
-        prescribedBy = (extension?.value as? Reference)?.display,
-        status = Optional.ofNullable(status.display).getOrNull()?.lowercase(),
-        startDate = Optional.ofNullable(effectivePeriod).getOrNull()?.startElement?.valueAsString,
+        title = getTitleString(),
+        instructions = getInstructionsString(),
+        prescribedBy = getPrescribedByString(),
+        status = getLowercaseStatusString(),
+        startDate = getStartDateString(),
     )
 }

@@ -8,9 +8,6 @@ import org.hl7.fhir.dstu3.model.Period
 import org.hl7.fhir.dstu3.model.Reference
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.util.Date
 
 class MedicationStatementTest {
     @Test
@@ -147,17 +144,16 @@ class MedicationStatementTest {
     @Test
     fun `Given no errors, When calling getStartDate, Then return date`() {
         // Given
-        val instant = LocalDateTime.of(2024, 1, 5, 0, 0).toInstant(ZoneOffset.UTC)
         val medicationStatement =
             MedicationStatement().apply {
-                setEffective(Period().apply { setStartElement(DateTimeType(Date.from(instant))) })
+                setEffective(Period().apply { setStartElement(DateTimeType("2018-06-28")) })
             }
 
         // When
         val startDate = medicationStatement.getStartDateString()
 
         // Then
-        assertEquals("2024-01-05T01:00:00+01:00", startDate)
+        assertEquals("2018-06-28", startDate)
     }
 
     @Test

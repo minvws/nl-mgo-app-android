@@ -39,7 +39,13 @@ sonar {
             "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml",
         )
         // We exclude all composable screens since it messes with our code coverage
-        val exclusions = "**/res/**/*,**/*Module*.kt,**/*Navigation*.kt,**/*Screen*.kt"
+        val exclusions = buildString {
+            append("**/res/**/") // Resources folder
+            append("**/*Module*.kt") // Dagger modules
+            append("**/*Navigation*.kt") // Navigation classes
+            append("**/*Screen*.kt") // UI screens
+            append("src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
+        }
         val composeExclusion = fileTree("../")
             .apply { include("**/*.kt") }
             .filter { file -> file.readText().contains("import androidx.compose.runtime.Composable") }

@@ -9,9 +9,6 @@ import org.hl7.fhir.dstu3.model.Extension
 import org.hl7.fhir.dstu3.model.StringType
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.util.Date
 
 class ConditionTest {
     @Test
@@ -159,17 +156,16 @@ class ConditionTest {
     @Test
     fun `Given no errors, When calling getStartDateString, Then return start date`() {
         // Given
-        val instant = LocalDateTime.of(2024, 1, 5, 0, 0).toInstant(ZoneOffset.UTC)
         val condition =
             Condition().apply {
-                setOnset(DateTimeType(Date.from(instant)))
+                setOnset(DateTimeType("2018-06-28"))
             }
 
         // When
         val startDate = condition.getStartDateString()
 
         // Then
-        assertEquals("2024-01-05T01:00:00+01:00", startDate)
+        assertEquals("2018-06-28", startDate)
     }
 
     @Test
@@ -190,17 +186,16 @@ class ConditionTest {
     @Test
     fun `Given no errors, When calling getEndDateString, Then return end date`() {
         // Given
-        val instant = LocalDateTime.of(2024, 1, 5, 0, 0).toInstant(ZoneOffset.UTC)
         val condition =
             Condition().apply {
-                setAbatement(DateTimeType(Date.from(instant)))
+                setAbatement(DateTimeType("2018-06-28"))
             }
 
         // When
         val endDate = condition.getEndDateString()
 
         // Then
-        assertEquals("2024-01-05T01:00:00+01:00", endDate)
+        assertEquals("2018-06-28", endDate)
     }
 
     @Test

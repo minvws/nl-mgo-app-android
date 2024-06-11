@@ -4,6 +4,9 @@ plugins {
 
 android {
     namespace = "nl.rijksoverheid.mgo.data.concern"
+    testFixtures {
+        enable = true
+    }
 }
 
 dependencies {

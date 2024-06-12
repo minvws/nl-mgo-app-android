@@ -69,13 +69,20 @@
     <string name="healthcareprovider_details_list_item_results_subtitle">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans</string>
     <string name="medication_title">Medicijnen</string>
     <string name="medication_subtitle">Een overzicht van de medicijnen die zijn voorgeschreven door %1$s.</string>
-    <string name="medication_card_instructions_header">Gebruiksinstructie</string>
-    <string name="medication_card_start_date_header">Startdatum</string>
-    <string name="medication_card_prescribed_by_header">Voorgeschreven door</string>
-    <string name="medication_card_status_header">Status</string>
     <string name="healthcareprovider_card_error_title">Gegevens ophalen mislukt</string>
     <string name="healthcareprovider_card_error_subtitle">Sorry, we kunnen geen verbinding maken met ons systeem. Daardoor kunnen we je
         gegevens nu niet ophalen. Probeer het later opnieuw.</string>
     <string name="healthcareprovider_card_expanded_arrow_content_description">Uitklapbaar component uitgeklapt</string>
     <string name="healthcareprovider_card_collapsed_arrow_content_description">Uitklapbaar component gesloten</string>
+    <string name="concern_title">Klachten en diagnoses</string>
+    <string name="concern_subtitle">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>
+    <string name="healthcareprovider_card_instructions_header">Gebruiksinstructie</string>
+    <string name="healthcareprovider_card_start_date_header">Startdatum</string>
+    <string name="healthcareprovider_card_begin_date_header">Begindatum</string>
+    <string name="healthcareprovider_card_end_date_header">Einddatum</string>
+    <string name="healthcareprovider_card_body_location_header">Anatomische Locatie</string>
+    <string name="healthcareprovider_card_comment_header">Toelichting</string>
+    <string name="healthcareprovider_card_start_prescribed_by_header">Voorgeschreven door</string>
+    <string name="healthcareprovider_card_start_status_header">Status</string>
+    <string name="healthcareprovider_card_start_category_header">Type</string>
 </resources>

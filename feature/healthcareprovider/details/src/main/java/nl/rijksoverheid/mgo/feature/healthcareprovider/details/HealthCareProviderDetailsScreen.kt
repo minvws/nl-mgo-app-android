@@ -46,6 +46,7 @@ fun HealthCareProviderDetailsScreen(
     providerCategory: String,
     onNavigateBack: () -> Unit,
     onNavigateToMedication: (providerName: String) -> Unit,
+    onNavigateToConcern: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -97,7 +98,7 @@ fun HealthCareProviderDetailsScreen(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
-                            .clickable { },
+                            .clickable { onNavigateToConcern() },
                     icon = R.drawable.ic_complaints,
                     iconCircleColor = MaterialTheme.colors.supportTandarts(),
                     title = CopyR.string.healthcareprovider_details_list_item_complaints_title,
@@ -129,7 +130,13 @@ private fun ProviderRow(
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(16.dp)) {
-            Box(modifier = Modifier.size(32.dp).background(iconCircleColor, CircleShape), contentAlignment = Alignment.Center) {
+            Box(
+                modifier =
+                    Modifier
+                        .size(32.dp)
+                        .background(iconCircleColor, CircleShape),
+                contentAlignment = Alignment.Center,
+            ) {
                 Icon(
                     painter = painterResource(id = icon),
                     contentDescription = null,
@@ -158,6 +165,7 @@ internal fun HealthCareProviderDetailsScreenPreview() {
             providerCategory = "Ziekenhuizen, medische centra en klinieken",
             onNavigateBack = {},
             onNavigateToMedication = {},
+            onNavigateToConcern = {},
         )
     }
 }

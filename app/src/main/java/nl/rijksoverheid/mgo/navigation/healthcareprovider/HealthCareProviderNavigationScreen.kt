@@ -43,4 +43,6 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
             return requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
         }
     }
+
+    data object Concern : HealthCareProviderNavigationScreen(name = "concern")
 }

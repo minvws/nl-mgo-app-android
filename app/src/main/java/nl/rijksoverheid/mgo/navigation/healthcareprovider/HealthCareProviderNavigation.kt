@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
+import nl.rijksoverheid.mgo.feature.healthcareprovider.concern.ConcernScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.details.HealthCareProviderDetailsScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
@@ -47,12 +48,23 @@ fun HealthCareProviderNavigation(
                 onNavigateToMedication = { providerName ->
                     navController.navigate(HealthCareProviderNavigationScreen.Medication.setProviderName(providerName).getNavigationRoute())
                 },
+                onNavigateToConcern = {
+                    navController.navigate(HealthCareProviderNavigationScreen.Concern.getNavigationRoute())
+                },
             )
         }
 
         composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Medication.getRoute()) { backStackEntry ->
             MedicationScreen(
                 providerName = HealthCareProviderNavigationScreen.Medication.getProviderName(backStackEntry),
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+
+        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Concern.getRoute()) {
+            ConcernScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },

@@ -1,10 +1,12 @@
 package nl.rijksoverheid.mgo.data.medication
 
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
+import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
@@ -17,22 +19,21 @@ internal class DefaultMedicationRepositoryTest {
     private val testServer = testServerRule.testServer
 
     @Test
-    fun `Given dvaApi request is successful, When calling getMedication, Then return medications`() =
+    fun `Given valid request, When getting concerns, Then return expected objects`() =
         runTest {
             // Given
-            testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/medicationstatement.json"))
+            testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "medication_statement_input_1.json"))
 
             // When
             val repository = getRepository()
             val result = repository.getMedications()
 
             // Then
-            assertEquals(true, result.isSuccess)
-            assertEquals(1, result.getOrNull()?.size)
+            assertTrue(result.getOrNull()?.firstOrNull() is MgoMedication)
         }
 
     @Test
-    fun `Given dvaApi request failed, When calling getMedication, Then return error`() =
+    fun `Given request errors, When getting concerns, Then return error`() =
         runTest {
             // Given
             testServer.enqueue500()

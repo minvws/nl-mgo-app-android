@@ -77,7 +77,6 @@ fun Observation.getInterpretationString(): String? {
     }
 }
 
-
 fun Observation.getCollectionDateTimeString(): String? {
     return try {
         (specimen.resource as Specimen).collection.collectedDateTimeType.valueAsString

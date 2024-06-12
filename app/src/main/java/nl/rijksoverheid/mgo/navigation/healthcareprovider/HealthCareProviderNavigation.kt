@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.concern.ConcernScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.details.HealthCareProviderDetailsScreen
+import nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult.LaboratoryTestResultScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
@@ -51,6 +52,9 @@ fun HealthCareProviderNavigation(
                 onNavigateToConcern = {
                     navController.navigate(HealthCareProviderNavigationScreen.Concern.getNavigationRoute())
                 },
+                onNavigateToLaboratoryTestResult = {
+                    navController.navigate(HealthCareProviderNavigationScreen.LaboratoryTestResult.getNavigationRoute())
+                },
             )
         }
 
@@ -65,6 +69,14 @@ fun HealthCareProviderNavigation(
 
         composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Concern.getRoute()) {
             ConcernScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+
+        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.LaboratoryTestResult.getRoute()) {
+            LaboratoryTestResultScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },

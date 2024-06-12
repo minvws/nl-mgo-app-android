@@ -5,6 +5,7 @@ import org.hl7.fhir.dstu3.model.MedicationStatement
 import org.hl7.fhir.dstu3.model.Observation
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 // See https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
 interface DvaApi {
@@ -20,10 +21,10 @@ interface DvaApi {
         @Query("_format") format: String = "json",
     ): List<Condition>
 
-    @GET("fhir/Observation/'$'lastn")
+    // Doing it like needs to be done lik this it seems.
+    // Retrofit does not seem to like a dollar sign in the path doing it like the other calls :(.
+    @GET
     suspend fun observation(
-        @Query("_format") format: String = "json",
-        @Query("category") category: String = "http://snomed.info/sct%7C275711006",
-        @Query("_include") include: List<String> = listOf("Observation:related-target", "Observation:specimen"),
+        @Url url: String,
     ): List<Observation>
 }

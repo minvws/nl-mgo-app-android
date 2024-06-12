@@ -22,7 +22,7 @@ data class MgoLaboratoryTestResult(
     val referenceRangeHigh: String?,
     val interpretation: String?,
     val specimen: String?,
-    val collectionDateTime: String?
+    val collectionDateTime: String?,
 )
 
 internal fun Observation.toMgoLaboratoryTestResult(): MgoLaboratoryTestResult {

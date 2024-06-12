@@ -45,4 +45,6 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
     }
 
     data object Concern : HealthCareProviderNavigationScreen(name = "concern")
+
+    data object LaboratoryTestResult : HealthCareProviderNavigationScreen(name = "laboratory-test-result")
 }

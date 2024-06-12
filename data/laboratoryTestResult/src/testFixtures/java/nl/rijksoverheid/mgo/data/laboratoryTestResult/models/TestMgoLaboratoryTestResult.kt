@@ -11,5 +11,5 @@ val TEST_MGO_LABORATORY_TEST_RESULT =
         referenceRangeHigh = "108 mmol/l",
         interpretation = "boven referentiebereik (kwalificatiewaarde)",
         specimen = "Bloed (substantie)",
-        collectionDateTime = "2012-05-23T08:08:00+02:00"
+        collectionDateTime = "2012-05-23T08:08:00+02:00",
     )

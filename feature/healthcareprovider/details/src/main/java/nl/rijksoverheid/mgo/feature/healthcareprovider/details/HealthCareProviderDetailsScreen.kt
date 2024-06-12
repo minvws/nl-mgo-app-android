@@ -47,6 +47,7 @@ fun HealthCareProviderDetailsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToMedication: (providerName: String) -> Unit,
     onNavigateToConcern: () -> Unit,
+    onNavigateToLaboratoryTestResult: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -109,7 +110,7 @@ fun HealthCareProviderDetailsScreen(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
-                            .clickable { },
+                            .clickable { onNavigateToLaboratoryTestResult() },
                     icon = R.drawable.ic_results,
                     iconCircleColor = MaterialTheme.colors.supportFysiotherapeut(),
                     title = CopyR.string.healthcareprovider_details_list_item_results_title,
@@ -166,6 +167,7 @@ internal fun HealthCareProviderDetailsScreenPreview() {
             onNavigateBack = {},
             onNavigateToMedication = {},
             onNavigateToConcern = {},
+            onNavigateToLaboratoryTestResult = {},
         )
     }
 }

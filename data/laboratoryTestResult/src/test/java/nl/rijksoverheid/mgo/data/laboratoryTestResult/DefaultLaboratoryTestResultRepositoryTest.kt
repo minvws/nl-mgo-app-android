@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.laboratoryTestResult
 
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
+import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.MgoLaboratoryTestResult
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
@@ -10,7 +11,6 @@ import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.MgoLaboratoryTestResult
 
 internal class DefaultLaboratoryTestResultRepositoryTest {
     @get:Rule
@@ -50,7 +50,8 @@ internal class DefaultLaboratoryTestResultRepositoryTest {
 
     private fun getRepository(): DefaultLaboratoryTestResultRepository {
         val okHttpClient = TEST_OKHTTP_CLIENT
-        val dvaApi = createDvaApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-        return DefaultLaboratoryTestResultRepository(dvaApi = dvaApi)
+        val baseUrl = testServer.url()
+        val dvaApi = createDvaApi(okHttpClient = okHttpClient, baseUrl = baseUrl)
+        return DefaultLaboratoryTestResultRepository(dvaApi = dvaApi, dvaApiBaseUrl = baseUrl)
     }
 }

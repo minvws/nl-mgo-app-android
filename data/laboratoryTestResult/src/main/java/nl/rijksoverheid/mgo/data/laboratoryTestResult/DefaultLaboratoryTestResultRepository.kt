@@ -7,14 +7,22 @@ import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.toMgoLaboratoryTest
 import javax.inject.Inject
 
 internal class DefaultLaboratoryTestResultRepository
-@Inject
-constructor(private val dvaApi: DvaApi) : LaboratoryTestResultRepository {
-    override suspend fun getLaboratoryTestResults(): Result<List<MgoLaboratoryTestResult>> {
-        val result = executeNetworkRequest { dvaApi.observation() }
-        return result.mapCatching { statements ->
-            statements.map { statement ->
-                statement.toMgoLaboratoryTestResult()
+    @Inject
+    constructor(private val dvaApi: DvaApi, private val dvaApiBaseUrl: String) : LaboratoryTestResultRepository {
+        override suspend fun getLaboratoryTestResults(): Result<List<MgoLaboratoryTestResult>> {
+            val result =
+                executeNetworkRequest {
+                    dvaApi.observation(
+                        url =
+                            "${dvaApiBaseUrl}fhir/Observation/\$lastn?_format=json" +
+                                "&category=http://snomed.info/sct|275711006" +
+                                "&_include=Observation:related-target&_include=Observation:specimen",
+                    )
+                }
+            return result.mapCatching { statements ->
+                statements.map { statement ->
+                    statement.toMgoLaboratoryTestResult()
+                }
             }
         }
     }
-}

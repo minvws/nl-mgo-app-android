@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.concern.ConcernRepository
-import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +30,7 @@ class ConcernScreenViewModel
                     .onFailure { throwable ->
                         _viewState.update {
                             ConcernScreenViewState.Error(
-                                isProductionBuild = appInfo.appFlavor == AppFlavor.PROD,
+                                isProductionBuild = appInfo.isProductionBuild(),
                                 error = throwable,
                             )
                         }

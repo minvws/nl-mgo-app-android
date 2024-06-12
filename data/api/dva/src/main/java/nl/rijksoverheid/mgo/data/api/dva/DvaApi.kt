@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.api.dva
 
 import org.hl7.fhir.dstu3.model.Condition
 import org.hl7.fhir.dstu3.model.MedicationStatement
+import org.hl7.fhir.dstu3.model.Observation
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,4 +19,11 @@ interface DvaApi {
     suspend fun condition(
         @Query("_format") format: String = "json",
     ): List<Condition>
+
+    @GET("fhir/Observation/'$'lastn")
+    suspend fun observation(
+        @Query("_format") format: String = "json",
+        @Query("category") category: String = "http://snomed.info/sct%7C275711006",
+        @Query("_include") include: List<String> = listOf("Observation:related-target", "Observation:specimen"),
+    ): List<Observation>
 }

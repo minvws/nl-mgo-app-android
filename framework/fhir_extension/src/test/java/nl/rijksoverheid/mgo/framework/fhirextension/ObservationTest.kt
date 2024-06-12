@@ -12,7 +12,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ObservationTest {
-
     @Test
     fun `Given no errors, When calling getTitleString, Then return title`() {
         // Given
@@ -146,7 +145,7 @@ class ObservationTest {
                     Quantity().apply {
                         setValue(1.0)
                         setUnit("kg")
-                    }
+                    },
                 )
             }
 
@@ -180,9 +179,9 @@ class ObservationTest {
                             SimpleQuantity().apply {
                                 setValue(1.0)
                                 setUnit("kg")
-                            }
+                            },
                         )
-                    }
+                    },
                 )
             }
 
@@ -216,9 +215,9 @@ class ObservationTest {
                             SimpleQuantity().apply {
                                 setValue(2.0)
                                 setUnit("mg")
-                            }
+                            },
                         )
-                    }
+                    },
                 )
             }
 
@@ -255,13 +254,13 @@ class ObservationTest {
                                         addCoding(
                                             Coding().apply {
                                                 setDisplay("Hello World")
-                                            }
+                                            },
                                         )
-                                    }
+                                    },
                                 )
-                            }
+                            },
                         )
-                    }
+                    },
                 )
             }
 
@@ -295,9 +294,9 @@ class ObservationTest {
                             Coding().apply {
                                 setSystem("http://snomed.info/sct")
                                 setDisplay("Hello World")
-                            }
+                            },
                         )
-                    }
+                    },
                 )
             }
 
@@ -332,11 +331,11 @@ class ObservationTest {
                                 setCollection(
                                     Specimen.SpecimenCollectionComponent().apply {
                                         setCollected(DateTimeType("2012-05-23T12:00:00+02:00"))
-                                    }
+                                    },
                                 )
-                            }
+                            },
                         )
-                    }
+                    },
                 )
             }
 

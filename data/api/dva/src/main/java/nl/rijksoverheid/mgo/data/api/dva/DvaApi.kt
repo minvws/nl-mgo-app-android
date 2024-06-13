@@ -2,8 +2,10 @@ package nl.rijksoverheid.mgo.data.api.dva
 
 import org.hl7.fhir.dstu3.model.Condition
 import org.hl7.fhir.dstu3.model.MedicationStatement
+import org.hl7.fhir.dstu3.model.Observation
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 // See https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
 interface DvaApi {
@@ -18,4 +20,11 @@ interface DvaApi {
     suspend fun condition(
         @Query("_format") format: String = "json",
     ): List<Condition>
+
+    // Doing it like needs to be done lik this it seems.
+    // Retrofit does not seem to like a dollar sign in the path doing it like the other calls :(.
+    @GET
+    suspend fun observation(
+        @Url url: String,
+    ): List<Observation>
 }

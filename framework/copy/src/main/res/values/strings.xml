@@ -85,4 +85,16 @@
     <string name="healthcareprovider_card_start_prescribed_by_header">Voorgeschreven door</string>
     <string name="healthcareprovider_card_start_status_header">Status</string>
     <string name="healthcareprovider_card_start_category_header">Type</string>
+    <string name="healthcareprovider_card_start_category_test_code">Testcode</string>
+    <string name="healthcareprovider_card_start_category_test_result_status">Testuitslag status</string>
+    <string name="healthcareprovider_card_start_category_test_date">Testdatum</string>
+    <string name="healthcareprovider_card_start_category_test_result">Testuitslag</string>
+    <string name="healthcareprovider_card_start_category_reference_lower_limit">Referentie ondergrens</string>
+    <string name="healthcareprovider_card_start_category_reference_upper_limit">Referentie bovengrens</string>
+    <string name="healthcareprovider_card_start_category_reference_interpretation_flags">Interpretatie vlaggen</string>
+    <string name="healthcareprovider_card_start_category_reference_sample_material">Monstermateriaal</string>
+    <string name="healthcareprovider_card_start_category_reference_sampling_date">Afnamedatum</string>
+    <string name="laboratoryTestResult_title">Uitslagen</string>
+    <string name="laboratoryTestResult_subtitle">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans.</string>
+
 </resources>

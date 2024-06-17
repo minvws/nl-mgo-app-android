@@ -20,13 +20,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.headingExtraSmall
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -54,7 +54,12 @@ private fun CollapsableCardContent(
     Card(modifier = modifier) {
         Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 10.dp, bottom = 16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.weight(1f), text = item.title, style = MaterialTheme.typography.headingExtraSmall)
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = item.title,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                )
                 IconButton(onClick = { onCollapsed(!isCollapsed) }) {
                     val iconRotation = if (isCollapsed) 0f else 180f
                     Icon(

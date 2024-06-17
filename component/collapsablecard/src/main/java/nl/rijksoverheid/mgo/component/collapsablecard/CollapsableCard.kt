@@ -12,7 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +36,7 @@ fun CollapsableCard(
     modifier: Modifier = Modifier,
 ) {
     val initialCollapsed = !LocalInspectionMode.current
-    var collapsed by remember { mutableStateOf(initialCollapsed) }
+    var collapsed by rememberSaveable { mutableStateOf(initialCollapsed) }
     CollapsableCardContent(
         modifier = modifier,
         title = title,

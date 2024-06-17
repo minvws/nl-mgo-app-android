@@ -57,7 +57,7 @@ private fun CollapsableCardContent(
     Card(modifier = modifier) {
         Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 10.dp, bottom = 16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.weight(1f), text = title.uppercase(), style = MaterialTheme.typography.headingExtraSmall)
+                Text(modifier = Modifier.weight(1f), text = title, style = MaterialTheme.typography.headingExtraSmall)
                 IconButton(onClick = { onCollapsed(!isCollapsed) }) {
                     val iconRotation = if (isCollapsed) 0f else 180f
                     Icon(

@@ -9,7 +9,7 @@ android {
 dependencies {
     implementation(projects.data.medication)
     implementation(projects.framework.environment)
-    implementation(projects.component.collapsablecard)
     implementation(projects.framework.navigation)
+    implementation(projects.component.results)
     implementation(testFixtures(projects.data.medication))
 }

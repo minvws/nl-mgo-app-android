@@ -31,16 +31,14 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun CollapsableCard(
-    title: String,
-    items: List<CollapsableCardItem>,
+    item: CollapsableCardItem,
     modifier: Modifier = Modifier,
 ) {
     val initialCollapsed = !LocalInspectionMode.current
     var collapsed by rememberSaveable { mutableStateOf(initialCollapsed) }
     CollapsableCardContent(
         modifier = modifier,
-        title = title,
-        items = items,
+        item = item,
         isCollapsed = collapsed,
         onCollapsed = { collapsed = it },
     )
@@ -48,8 +46,7 @@ fun CollapsableCard(
 
 @Composable
 private fun CollapsableCardContent(
-    title: String,
-    items: List<CollapsableCardItem>,
+    item: CollapsableCardItem,
     isCollapsed: Boolean,
     onCollapsed: (collapsed: Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -57,7 +54,7 @@ private fun CollapsableCardContent(
     Card(modifier = modifier) {
         Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 10.dp, bottom = 16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.weight(1f), text = title, style = MaterialTheme.typography.headingExtraSmall)
+                Text(modifier = Modifier.weight(1f), text = item.title, style = MaterialTheme.typography.headingExtraSmall)
                 IconButton(onClick = { onCollapsed(!isCollapsed) }) {
                     val iconRotation = if (isCollapsed) 0f else 180f
                     Icon(
@@ -81,16 +78,16 @@ private fun CollapsableCardContent(
                 }
             }
             if (!isCollapsed) {
-                for (item in items) {
+                for (property in item.properties) {
                     Text(
                         modifier = Modifier.padding(top = 16.dp),
-                        text = item.title.uppercase(),
+                        text = property.heading.uppercase(),
                         color = MaterialTheme.colors.contentTertiary(),
                         style = MaterialTheme.typography.bodySmallMini,
                     )
                     Text(
                         modifier = Modifier.padding(top = 4.dp),
-                        text = item.value,
+                        text = property.value,
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
@@ -105,20 +102,20 @@ internal fun CollapsableCardCollapsedPreview() {
     MgoTheme {
         CollapsableCardContent(
             modifier = Modifier.fillMaxWidth(),
-            title = "Card 1",
+            item =
+                CollapsableCardItem(
+                    title = "Card 1",
+                    properties =
+                        listOf(
+                            CollapsableCardProperty(
+                                heading = "Header 1",
+                                value = "Value 1",
+                            ),
+                            CollapsableCardProperty(heading = "Header 2", value = "Value 2"),
+                        ),
+                ),
             isCollapsed = true,
             onCollapsed = {},
-            items =
-                listOf(
-                    CollapsableCardItem(
-                        title = "Header 1",
-                        value = "Value 1",
-                    ),
-                    CollapsableCardItem(
-                        title = "Header 2",
-                        value = "Value 2",
-                    ),
-                ),
         )
     }
 }
@@ -129,20 +126,20 @@ internal fun CollapsableCardExpandedPreview() {
     MgoTheme {
         CollapsableCardContent(
             modifier = Modifier.fillMaxWidth(),
-            title = "Card 1",
+            item =
+                CollapsableCardItem(
+                    title = "Card 1",
+                    properties =
+                        listOf(
+                            CollapsableCardProperty(
+                                heading = "Header 1",
+                                value = "Value 1",
+                            ),
+                            CollapsableCardProperty(heading = "Header 2", value = "Value 2"),
+                        ),
+                ),
             isCollapsed = false,
             onCollapsed = {},
-            items =
-                listOf(
-                    CollapsableCardItem(
-                        title = "Header 1",
-                        value = "Value 1",
-                    ),
-                    CollapsableCardItem(
-                        title = "Header 2",
-                        value = "Value 2",
-                    ),
-                ),
         )
     }
 }

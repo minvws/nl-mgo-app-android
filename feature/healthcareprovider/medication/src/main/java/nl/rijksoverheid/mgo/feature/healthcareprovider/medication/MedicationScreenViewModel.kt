@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 class MedicationScreenViewModel
     @Inject
     constructor(
-        savedStateHandle: SavedStateHandle,
         private val appInfo: AppInfo,
         private val medicationRepository: MedicationRepository,
     ) : ViewModel

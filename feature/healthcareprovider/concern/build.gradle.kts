@@ -11,5 +11,6 @@ dependencies {
     implementation(projects.framework.environment)
     implementation(projects.component.collapsablecard)
     implementation(projects.framework.navigation)
+    implementation(projects.component.results)
     implementation(testFixtures(projects.data.concern))
 }

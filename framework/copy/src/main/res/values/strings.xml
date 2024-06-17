@@ -69,6 +69,8 @@
     <string name="healthcareprovider_details_list_item_results_subtitle">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans</string>
     <string name="medication_title">Medicijnen</string>
     <string name="medication_subtitle">Een overzicht van de medicijnen die zijn voorgeschreven door %1$s.</string>
+    <string name="healthcareprovider_card_empty_title">Geen gegevens gevonden</string>
+    <string name="healthcareprovider_card_empty_subtitle">We hebben geen gegevens van jou gevonden in deze map. Klopt dit niet? Neem contact op met je zorgaanbieder voor meer informatie.</string>
     <string name="healthcareprovider_card_error_title">Gegevens ophalen mislukt</string>
     <string name="healthcareprovider_card_error_subtitle">Sorry, we kunnen geen verbinding maken met ons systeem. Daardoor kunnen we je
         gegevens nu niet ophalen. Probeer het later opnieuw.</string>

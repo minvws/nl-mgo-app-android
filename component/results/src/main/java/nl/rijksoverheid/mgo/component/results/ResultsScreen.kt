@@ -113,15 +113,21 @@ private fun ResultsLoadedContent(
         }
         when (viewState) {
             is ResultsScreenViewState.Loaded.Success -> {
-                items(viewState.cardItems.size) { position ->
-                    val cardItem = viewState.cardItems[position]
-                    CollapsableCard(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                        item = cardItem,
-                    )
+                if (viewState.cardItems.isEmpty()) {
+                    item {
+                        ResultsEmpty()
+                    }
+                } else {
+                    items(viewState.cardItems.size) { position ->
+                        val cardItem = viewState.cardItems[position]
+                        CollapsableCard(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 16.dp),
+                            item = cardItem,
+                        )
+                    }
                 }
             }
 
@@ -164,6 +170,33 @@ private fun ResultsLoading(modifier: Modifier = Modifier) {
             Text(
                 modifier = Modifier.padding(top = 20.dp),
                 text = stringResource(id = CopyR.string.general_loading),
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ResultsEmpty(modifier: Modifier = Modifier) {
+    Card(modifier = modifier) {
+        Column(modifier = Modifier.padding(all = 16.dp)) {
+            Image(
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+                painter = painterResource(id = ThemeR.drawable.illustration_woman_on_couch),
+                contentDescription = null,
+            )
+
+            Text(
+                modifier = Modifier.padding(top = 24.dp),
+                text = stringResource(id = CopyR.string.healthcareprovider_card_empty_title),
+                style = MaterialTheme.typography.headingSmall,
+            )
+
+            Text(
+                modifier = Modifier.padding(top = 8.dp),
+                text = stringResource(id = CopyR.string.healthcareprovider_card_empty_subtitle),
                 style = MaterialTheme.typography.bodySmall,
             )
         }
@@ -217,6 +250,19 @@ internal fun ResultsScreenLoadingPreview() {
             heading = "Heading",
             subHeading = "Subheading",
             viewState = ResultsScreenViewState.Loading,
+            onNavigateBack = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun ResultsScreenEmptyPreview() {
+    MgoTheme {
+        ResultsScreen(
+            heading = "Heading",
+            subHeading = "Subheading",
+            viewState = ResultsScreenViewState.Loaded.Success(listOf()),
             onNavigateBack = {},
         )
     }

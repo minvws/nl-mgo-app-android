@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.component.collapsablecard
 
 import nl.rijksoverheid.mgo.component.results.ResultsScreenCardsPreview
+import nl.rijksoverheid.mgo.component.results.ResultsScreenEmptyPreview
 import nl.rijksoverheid.mgo.component.results.ResultsScreenErrorPreview
 import nl.rijksoverheid.mgo.component.results.ResultsScreenLoadingPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
@@ -15,6 +16,13 @@ internal class ResultsScreenTest {
     fun loading() {
         snapshotTestRule.snapshots {
             ResultsScreenLoadingPreview()
+        }
+    }
+
+    @Test
+    fun empty() {
+        snapshotTestRule.snapshots {
+            ResultsScreenEmptyPreview()
         }
     }
 

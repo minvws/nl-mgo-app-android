@@ -25,7 +25,6 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 
@@ -47,8 +46,8 @@ fun DashboardBottomBarScreen(
     ) { paddingValues ->
         Box(
             modifier =
-            Modifier
-                .padding(paddingValues),
+                Modifier
+                    .padding(paddingValues),
         ) {
             when (selectedBottomBarItem) {
                 BottomBarItem.Overview -> {

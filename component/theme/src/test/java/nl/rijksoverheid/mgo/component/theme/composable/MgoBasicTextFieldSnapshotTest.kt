@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
-import nl.rijksoverheid.mgo.framework.snapshots.SnapshotDevices
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
@@ -11,21 +10,28 @@ internal class MgoBasicTextFieldSnapshotTest {
 
     @Test
     fun empty() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+        snapshotTestRule.snapshots {
             MgoBasicTextFieldEmptyPreview()
         }
     }
 
     @Test
+    fun focussed() {
+        snapshotTestRule.snapshots {
+            MgoBasicTextFieldFocussedPreview()
+        }
+    }
+
+    @Test
     fun filled() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+        snapshotTestRule.snapshots {
             MgoBasicTextFieldFilledPreview()
         }
     }
 
     @Test
     fun error() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+        snapshotTestRule.snapshots {
             MgoBasicTextFieldErrorPreview()
         }
     }

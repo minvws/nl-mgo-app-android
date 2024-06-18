@@ -20,8 +20,8 @@ val Typography.headingExtraLarge: TextStyle
         TextStyle(
             fontFamily = fonts,
             fontWeight = FontWeight.Bold,
-            fontSize = 34.sp,
-            lineHeight = 41.sp,
+            fontSize = 46.sp,
+            lineHeight = 54.sp,
         )
 
 val Typography.headingLarge: TextStyle
@@ -29,8 +29,8 @@ val Typography.headingLarge: TextStyle
         TextStyle(
             fontFamily = fonts,
             fontWeight = FontWeight.Bold,
-            fontSize = 28.sp,
-            lineHeight = 34.sp,
+            fontSize = 34.sp,
+            lineHeight = 41.sp,
         )
 
 val Typography.headingMedium: TextStyle

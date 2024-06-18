@@ -33,11 +33,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.jeziellago.compose.markdowntext.MarkdownText
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.composable.MgoSpannableText
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
@@ -221,9 +221,9 @@ private fun EmptyContent(
             painter = painterResource(id = ThemeR.drawable.illustration_alert),
             contentDescription = null,
         )
-        MarkdownText(
+        MgoSpannableText(
             modifier = Modifier.padding(top = 24.dp),
-            markdown = stringResource(id = CopyR.string.localisation_searchresults_empty_list_header, name, city),
+            text = stringResource(id = CopyR.string.localisation_searchresults_empty_list_header, name, city),
             style = MaterialTheme.typography.bodySmall,
         )
 
@@ -262,7 +262,7 @@ private fun EmptyListItem(
             contentDescription = null,
             tint = MaterialTheme.colors.supportHuisarts(),
         )
-        MarkdownText(modifier = Modifier.padding(start = 8.dp), markdown = text, style = MaterialTheme.typography.bodySmall)
+        MgoSpannableText(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -294,9 +294,9 @@ private fun ErrorContent(
             contentDescription = null,
         )
 
-        MarkdownText(
+        MgoSpannableText(
             modifier = Modifier.padding(top = 24.dp),
-            markdown = stringResource(id = CopyR.string.error_subtitle),
+            text = stringResource(id = CopyR.string.error_subtitle),
             style = MaterialTheme.typography.bodySmall,
         )
 

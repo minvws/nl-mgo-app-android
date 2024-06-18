@@ -15,5 +15,5 @@ interface HealthCareProviderRepository {
 
     suspend fun save(provider: HealthCareProvider)
 
-    suspend fun delete(provider: HealthCareProvider)
+    suspend fun delete(providerId: String)
 }

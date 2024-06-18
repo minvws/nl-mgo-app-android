@@ -146,7 +146,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
 
             // When
             val repository = getRepository()
-            repository.delete(storedHealthCareProviders.providers.first())
+            repository.delete(storedHealthCareProviders.providers.first().id)
 
             // Then
             repository.storedHealthCareProvidersFlow.test {

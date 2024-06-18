@@ -62,13 +62,13 @@ internal class DefaultHealthCareProviderRepository(
         storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers
     }
 
-    override suspend fun delete(provider: HealthCareProvider) {
+    override suspend fun delete(providerId: String) {
         // Get stored health care providers
         val storedHealthCareProviders = requireNotNull(fileStore.getFile(HealthCareProviders::class.java, fileName))
 
         // Delete the provider from the file
         val newProviders = storedHealthCareProviders.providers.toMutableList()
-        newProviders.remove(provider)
+        newProviders.removeIf { provider -> provider.id == providerId }
         val newStoredHealthCareProviders = storedHealthCareProviders.copy(providers = newProviders)
 
         // Save new file

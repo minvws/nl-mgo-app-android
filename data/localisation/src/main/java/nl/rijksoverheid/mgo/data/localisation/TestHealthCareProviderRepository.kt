@@ -47,9 +47,9 @@ class TestHealthCareProviderRepository : HealthCareProviderRepository {
         storedHealthCareProvidersFlow.value = newProviders
     }
 
-    override suspend fun delete(provider: HealthCareProvider) {
+    override suspend fun delete(providerId: String) {
         val newProviders = storedHealthCareProvidersFlow.value.toMutableList()
-        newProviders.remove(provider)
+        newProviders.removeIf { provider -> provider.id == providerId }
         storedHealthCareProvidersFlow.value = newProviders
     }
 }

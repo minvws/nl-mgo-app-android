@@ -12,6 +12,7 @@
     <string name="general_remove">Verwijderen</string>
     <string name="general_unknown">Onbekend</string>
     <string name="general_loading">Aan het laden</string>
+    <string name="general_settings">Instellingen</string>
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="error_title">Er ging iets mis</string>
     <string name="error_subtitle">Controleer of je telefoon verbonden is met het internet en probeer het opnieuw.</string>
@@ -98,5 +99,10 @@
     <string name="healthcareprovider_card_start_category_reference_sampling_date">Afnamedatum</string>
     <string name="laboratoryTestResult_title">Uitslagen</string>
     <string name="laboratoryTestResult_subtitle">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans.</string>
-
+    <string name="healthcareprovider_details_list_item_remove_title">Zorgaanbieder verwijderen</string>
+    <string name="healthcareprovider_details_list_item_remove_subtitle">Deze zorgaanbieder niet meer tonen in de app</string>
+    <string name="remove_provider_title">%1$s verwijderen?</string>
+    <string name="remove_provider_subtitle">Daarmee verwijder je deze gegevens uit de app. Je gegevens blijven altijd bewaard bij de zorgaanbieder zelf. Je kunt %1$s later altijd weer toevoegen aan de app.</string>
+    <string name="remove_provider_positive_button">Nee, annuleren</string>
+    <string name="remove_provider_negative_button">Ja, verwijderen</string>
 </resources>

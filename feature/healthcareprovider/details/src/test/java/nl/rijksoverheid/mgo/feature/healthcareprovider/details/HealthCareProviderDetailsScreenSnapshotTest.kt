@@ -1,6 +1,5 @@
-package org.sailmon.sailmon.feature.healthcareprovider.details
+package nl.rijksoverheid.mgo.feature.healthcareprovider.details
 
-import nl.rijksoverheid.mgo.feature.healthcareprovider.details.HealthCareProviderDetailsScreenPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test

@@ -10,7 +10,9 @@ import nl.rijksoverheid.mgo.feature.healthcareprovider.concern.ConcernScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.details.HealthCareProviderDetailsScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult.LaboratoryTestResultScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationScreen
+import nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider.RemoveProviderScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
 @Composable
@@ -29,24 +31,29 @@ fun HealthCareProviderNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToHealthCareProvider = { providerName, providerCategory ->
+                onNavigateToHealthCareProvider = { providerId, providerName, providerCategory ->
                     navController.navigate(
-                        HealthCareProviderNavigationScreen.Details.setProviderName(
-                            providerName,
-                        ).setProviderCategory(providerCategory).getNavigationRoute(),
+                        HealthCareProviderNavigationScreen.Details
+                            .setProviderId(providerId)
+                            .setProviderName(providerName)
+                            .setProviderCategory(providerCategory)
+                            .getNavigationRoute(),
                     )
                 },
             )
         }
 
         composableWithDefaultScreenTransitions(route = HealthCareProviderNavigationScreen.Details.getRoute()) { backStackEntry ->
+            val providerId = HealthCareProviderNavigationScreen.Details.getProviderId(backStackEntry)
+            val providerName = HealthCareProviderNavigationScreen.Details.getProviderName(backStackEntry)
+            val providerCategory = HealthCareProviderNavigationScreen.Details.getProviderCategory(backStackEntry)
             HealthCareProviderDetailsScreen(
-                providerName = HealthCareProviderNavigationScreen.Details.getProviderName(backStackEntry),
-                providerCategory = HealthCareProviderNavigationScreen.Details.getProviderCategory(backStackEntry),
+                providerName = providerName,
+                providerCategory = providerCategory,
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToMedication = { providerName ->
+                onNavigateToMedication = {
                     navController.navigate(HealthCareProviderNavigationScreen.Medication.setProviderName(providerName).getNavigationRoute())
                 },
                 onNavigateToConcern = {
@@ -54,6 +61,28 @@ fun HealthCareProviderNavigation(
                 },
                 onNavigateToLaboratoryTestResult = {
                     navController.navigate(HealthCareProviderNavigationScreen.LaboratoryTestResult.getNavigationRoute())
+                },
+                onNavigateToRemoveProvider = {
+                    navController.navigate(
+                        HealthCareProviderNavigationScreen.RemoveProvider.setProviderId(providerId).setProviderName
+                            (providerName).getNavigationRoute(),
+                    )
+                },
+            )
+        }
+
+        dialogWithDefaultScreenTransitions(
+            route = HealthCareProviderNavigationScreen.RemoveProvider.getRoute(),
+        ) { backStackEntry ->
+            RemoveProviderScreen(
+                providerId = HealthCareProviderNavigationScreen.RemoveProvider.getProviderId(backStackEntry),
+                providerName = HealthCareProviderNavigationScreen.RemoveProvider.getProviderName(backStackEntry),
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToDashboard = {
+                    navController.popBackStack(
+                        route = HealthCareProviderNavigationScreen.Overview.getRoute(),
+                        inclusive = false,
+                    )
                 },
             )
         }

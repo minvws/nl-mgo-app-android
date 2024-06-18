@@ -82,6 +82,7 @@ dependencies {
 
     // Overview
     implementation(projects.feature.healthcareprovider.details)
+    implementation(projects.feature.healthcareprovider.removeprovider)
     implementation(projects.feature.healthcareprovider.medication)
     implementation(projects.feature.healthcareprovider.concern)
     implementation(projects.feature.healthcareprovider.laboratoryTestResult)

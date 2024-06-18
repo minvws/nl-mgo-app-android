@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
@@ -18,10 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
+import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 
@@ -43,8 +47,8 @@ fun DashboardBottomBarScreen(
     ) { paddingValues ->
         Box(
             modifier =
-                Modifier
-                    .padding(paddingValues),
+            Modifier
+                .padding(paddingValues),
         ) {
             when (selectedBottomBarItem) {
                 BottomBarItem.Overview -> {
@@ -72,7 +76,13 @@ private fun BottomNavigationBar(
             fontSize = 12.sp,
             lineHeight = 16.sp,
         )
-    BottomNavigation(backgroundColor = MaterialTheme.colors.backgroundSecondary(), contentColor = MaterialTheme.colors.primary) {
+    // See [MgoCard] why this is done.
+    val elevation = if (isSystemInDarkTheme()) 0.dp else 1.dp
+    BottomNavigation(
+        backgroundColor = MaterialTheme.colors.backgroundSecondary(),
+        contentColor = MaterialTheme.colors.actionTertiaryDefault(),
+        elevation = elevation,
+    ) {
         items.forEach { item ->
             BottomNavigationItem(
                 icon = { Icon(painter = painterResource(id = item.iconId), contentDescription = null) },

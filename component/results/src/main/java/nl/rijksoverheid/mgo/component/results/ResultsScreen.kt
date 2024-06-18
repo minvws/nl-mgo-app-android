@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -33,6 +32,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.R as ThemeR
@@ -178,7 +178,7 @@ private fun ResultsLoading(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ResultsEmpty(modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
+    MgoCard(modifier = modifier) {
         Column(modifier = Modifier.padding(all = 16.dp)) {
             Image(
                 modifier =
@@ -209,7 +209,7 @@ private fun ResultsError(
     error: Throwable,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier) {
+    MgoCard(modifier = modifier) {
         Column(modifier = Modifier.padding(all = 16.dp)) {
             Image(
                 modifier =

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
@@ -24,7 +25,7 @@ fun MgoTheme(
     // Make sure the status bar is the same color as the background
     val view = LocalView.current
     val backgroundColor = MaterialTheme.colors.backgroundPrimary().toArgb()
-    if (!view.isInEditMode) {
+    if (!view.isInEditMode && !LocalInspectionMode.current) {
         SideEffect {
             val activity = view.context as Activity
             activity.window.statusBarColor = backgroundColor

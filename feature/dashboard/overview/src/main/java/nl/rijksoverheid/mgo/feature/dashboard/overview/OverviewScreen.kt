@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -31,6 +30,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundPrimary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
@@ -123,7 +123,7 @@ private fun HealthCareProviderCard(
     modifier: Modifier = Modifier,
     provider: HealthCareProvider,
 ) {
-    Card(modifier = modifier.testTag(TEST_TAG_HEALTH_PROVIDER_CARD)) {
+    MgoCard(modifier = modifier.testTag(TEST_TAG_HEALTH_PROVIDER_CARD)) {
         Column(modifier = Modifier.padding(16.dp)) {
             val category = provider.category ?: stringResource(id = CopyR.string.general_unknown)
             Text(text = provider.name, style = MaterialTheme.typography.bodyDefault, fontWeight = FontWeight.Bold)

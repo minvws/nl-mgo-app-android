@@ -107,7 +107,7 @@ private fun ResultsLoadedContent(
     viewState: ResultsScreenViewState.Loaded,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
+    LazyColumn(modifier = modifier, contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
         item {
             ResultsHeader(heading = heading, subHeading = subHeading)
         }
@@ -115,7 +115,7 @@ private fun ResultsLoadedContent(
             is ResultsScreenViewState.Loaded.Success -> {
                 if (viewState.cardItems.isEmpty()) {
                     item {
-                        ResultsEmpty()
+                        ResultsEmpty(modifier = Modifier.padding(top = 16.dp))
                     }
                 } else {
                     items(viewState.cardItems.size) { position ->
@@ -124,7 +124,7 @@ private fun ResultsLoadedContent(
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = 16.dp),
+                                    .padding(top = 16.dp),
                             item = cardItem,
                         )
                     }
@@ -133,7 +133,11 @@ private fun ResultsLoadedContent(
 
             is ResultsScreenViewState.Loaded.Error -> {
                 item {
-                    ResultsError(isProductionBuild = viewState.isProductionBuild, error = viewState.error)
+                    ResultsError(
+                        modifier = Modifier.padding(top = 16.dp),
+                        isProductionBuild = viewState.isProductionBuild,
+                        error = viewState.error,
+                    )
                 }
             }
         }
@@ -151,7 +155,7 @@ private fun ResultsHeader(
         fontWeight = FontWeight.Bold,
     )
     Text(
-        modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
+        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
         text = subHeading,
         style = MaterialTheme.typography.bodySmall,
     )

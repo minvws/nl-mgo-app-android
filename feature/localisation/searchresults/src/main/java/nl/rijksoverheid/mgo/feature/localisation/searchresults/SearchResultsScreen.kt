@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.localisation.searchresults
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -8,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -141,7 +140,6 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
         modifier =
             modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
                 .padding(start = 16.dp, end = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -151,18 +149,22 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
         )
 
-        CircularProgressIndicator(
-            modifier =
-                Modifier
-                    .padding(top = 72.dp)
-                    .size(48.dp),
-            strokeWidth = 6.dp,
-        )
-        Text(
-            modifier = Modifier.padding(top = 20.dp),
-            text = stringResource(id = CopyR.string.localisation_searchresults_loading),
-            style = MaterialTheme.typography.bodySmall,
-        )
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.Center,
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    strokeWidth = 6.dp,
+                )
+                Text(
+                    modifier = Modifier.padding(top = 20.dp),
+                    text = stringResource(id = CopyR.string.localisation_searchresults_loading),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
     }
 }
 

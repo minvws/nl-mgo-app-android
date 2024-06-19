@@ -16,9 +16,8 @@
     <string name="splash_title">Mijn Gezondheidsoverzicht</string>
     <string name="error_title">Er ging iets mis</string>
     <string name="error_subtitle">Controleer of je telefoon verbonden is met het internet en probeer het opnieuw.</string>
-    <string name="introduction_title">Je gezondheidsgegevens in één overzicht</string>
-    <string name="introduction_subtitle">Alle informatie die je huisarts, ziekenhuis en andere zorgaanbieders over jou hebben. Op één
-        plek. Veilig en overzichtelijk.</string>
+    <string name="introduction_title">Welkom in Mijn Gezondheidsoverzicht</string>
+    <string name="introduction_subtitle">Alle gegevens die je huisarts, ziekenhuis en andere zorgaanbieders over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
     <string name="privacy_overview_title">Zo gebruikt de app jouw gegevens</string>
     <string name="privacy_overview_subtitle">In de [privacyverklaring](https://www.google.nl) staat hoe Mijn Gezondheidsoverzicht jouw
         gegevens gebruikt. Dit zijn de belangrijkste punten:</string>
@@ -58,7 +57,7 @@
     <string name="localisation_add_healthcareprovider_secondary_button">Voeg een zorgaanbieder toe</string>
     <string name="dashboard_bottombar_item_overview">Overzicht</string>
     <string name="dashboard_bottombar_item_about_this_app">Over de app</string>
-    <string name="dashboard_overview_title">Goedemorgen,\nmevrouw de Bruijn</string>
+    <string name="dashboard_overview_title">Goedemorgen</string>
     <string name="dashboard_overview_subtitle">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
     <string name="dashboard_overview_subtitle_empty">Je overzicht is leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
     <string name="dashboard_overview_button">Zorgaanbieder toevoegen</string>

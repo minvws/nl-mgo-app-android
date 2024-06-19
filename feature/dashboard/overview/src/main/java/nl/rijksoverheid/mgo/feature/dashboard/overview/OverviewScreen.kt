@@ -108,13 +108,14 @@ private fun Header(
             val subtitleResource =
                 if (hasProviders) CopyR.string.dashboard_overview_subtitle else CopyR.string.dashboard_overview_subtitle_empty
             Text(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(id = subtitleResource),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colors.contentTertiary(),
             )
         }
-        Avatar()
+        // TODO No user information yet so don't display avatar
+        // Avatar()
     }
 }
 

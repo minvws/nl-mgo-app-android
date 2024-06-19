@@ -27,7 +27,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoSpannableText
-import nl.rijksoverheid.mgo.component.theme.headingMedium
+import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -78,7 +78,7 @@ internal fun PrivacyOverviewScreenContent(
             ) {
                 Text(
                     text = stringResource(id = CopyR.string.privacy_overview_title),
-                    style = MaterialTheme.typography.headingMedium,
+                    style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
                 MgoSpannableText(

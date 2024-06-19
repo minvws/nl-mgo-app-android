@@ -60,7 +60,7 @@ internal fun PrivacyOverviewScreenContent(
                 title = { Text(text = "") },
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
-                navigationIcon = {qaa
+                navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

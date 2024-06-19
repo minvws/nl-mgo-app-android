@@ -40,6 +40,7 @@ jacoco-tool = "0.8.12"
 fhir-stdu3 = "7.2.0"
 
 [libraries]
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }

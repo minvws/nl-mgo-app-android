@@ -10,7 +10,6 @@ import retrofit2.http.Url
 
 // See https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
 interface DvaApi {
-
     @Headers("x-mgo-dva-target: https://dva-mock.test.mgo.prolocation.net/48")
     @GET("fhir/MedicationStatement")
     suspend fun medicationStatement(

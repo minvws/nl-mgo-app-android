@@ -43,6 +43,7 @@ sonar {
             add("**/res/**/") // Resources folder
             add("**/*Module*.kt") // Dagger modules
             add("**/*Navigation*.kt") // Navigation classes
+            add("**/*NavGraph*.kt") // NavGraph classes
             add("**/*Screen*.kt") // We exclude all composable screens since it messes with our code coverage
             add("${project.projectDir}/framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
         }.joinToString(",")

@@ -23,10 +23,7 @@ internal class LocalisationFlowTest : MainActivityTest() {
                 inputCity("Breda")
                 pressSearchButton {
                     clickFirstSearchResult {
-                        pressDoneButton {
-                            // After adding provider in localisation flow, provider is shown in dashboard.
-                            assertOneProvider()
-                        }
+                        assertOneProvider()
                     }
                 }
             }

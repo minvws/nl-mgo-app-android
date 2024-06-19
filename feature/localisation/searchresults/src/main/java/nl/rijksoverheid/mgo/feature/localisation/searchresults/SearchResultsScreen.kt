@@ -52,14 +52,14 @@ fun SearchResultsScreen(
     city: String,
     onNavigateBack: () -> Unit,
     onNavigateToSearch: () -> Unit,
-    onNavigateToStoredProviders: () -> Unit,
+    onNavigateToDashboard: () -> Unit,
 ) {
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewModel.getSearchResults(name = name, city = city)
-        viewModel.navigation.collectLatest { screen ->
-            onNavigateToStoredProviders()
+        viewModel.navigation.collectLatest {
+            onNavigateToDashboard()
         }
     }
     HealthCareSearchResultsScreenContent(
@@ -68,7 +68,7 @@ fun SearchResultsScreen(
         onGetSearchResults = { viewModel.getSearchResults(name = name, city = city) },
         onAddSearchResult = { searchResult ->
             if (searchResult.added) {
-                onNavigateToStoredProviders()
+                onNavigateToDashboard()
             } else {
                 viewModel.addHealthCareProvider(searchResult)
             }

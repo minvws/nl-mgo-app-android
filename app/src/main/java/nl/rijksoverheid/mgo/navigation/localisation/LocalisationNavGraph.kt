@@ -38,8 +38,11 @@ fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
                     searchScreenViewModel?.setCity("")
                     navController.popBackStack(route = LocalisationNavigationScreen.Search.getNavigationRoute(), inclusive = false)
                 },
-                onNavigateToStoredProviders = {
-                    navController.navigate(LocalisationNavigationScreen.Stored.getNavigationRoute())
+                onNavigateToDashboard = {
+                    navController.popBackStack(
+                        route = LocalisationNavigationScreen.Search.getNavigationRoute(),
+                        inclusive = true,
+                    )
                 },
             )
         }

@@ -32,6 +32,7 @@ import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
+import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
@@ -103,7 +104,7 @@ private fun Header(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(id = CopyR.string.dashboard_overview_title),
-                style = MaterialTheme.typography.headingMedium,
+                style = MaterialTheme.typography.headingLarge,
             )
             val subtitleResource =
                 if (hasProviders) CopyR.string.dashboard_overview_subtitle else CopyR.string.dashboard_overview_subtitle_empty

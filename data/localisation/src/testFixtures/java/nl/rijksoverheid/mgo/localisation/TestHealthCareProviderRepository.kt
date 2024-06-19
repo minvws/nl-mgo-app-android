@@ -1,5 +1,6 @@
-package nl.rijksoverheid.mgo.data.localisation
+package nl.rijksoverheid.mgo.localisation
 
+import nl.rijksoverheid.mgo.data.localisation.HealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,9 +48,9 @@ class TestHealthCareProviderRepository : HealthCareProviderRepository {
         storedHealthCareProvidersFlow.value = newProviders
     }
 
-    override suspend fun delete(provider: HealthCareProvider) {
+    override suspend fun delete(providerId: String) {
         val newProviders = storedHealthCareProvidersFlow.value.toMutableList()
-        newProviders.remove(provider)
+        newProviders.removeIf { provider -> provider.id == providerId }
         storedHealthCareProvidersFlow.value = newProviders
     }
 }

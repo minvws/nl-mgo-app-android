@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.onboarding.privacyoverview
 
-import android.view.View.generateViewId
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
@@ -22,16 +21,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import dev.jeziellago.compose.markdowntext.MarkdownText
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
-import nl.rijksoverheid.mgo.component.theme.headingMedium
+import nl.rijksoverheid.mgo.component.theme.composable.MgoSpannableText
+import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-internal val VIEW_ID_TEXT_WITH_LINK = generateViewId()
+internal val TEST_TAG_TEXT_WITH_LINK = "TEXT_WITH_LINK"
 
 @Composable
 fun PrivacyOverviewScreen(
@@ -78,15 +78,17 @@ internal fun PrivacyOverviewScreenContent(
             ) {
                 Text(
                     text = stringResource(id = CopyR.string.privacy_overview_title),
-                    style = MaterialTheme.typography.headingMedium,
+                    style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
-                MarkdownText(
-                    modifier = Modifier.padding(top = 16.dp),
-                    viewId = VIEW_ID_TEXT_WITH_LINK,
-                    markdown = stringResource(id = CopyR.string.privacy_overview_subtitle),
+                MgoSpannableText(
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp),
+                    text = stringResource(id = CopyR.string.privacy_overview_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                     linkColor = MaterialTheme.colors.actionTertiaryDefault(),
+                    onUrlClick = { url -> url.launchBrowser(context) },
                 )
                 ListItem(
                     modifier = Modifier.padding(top = 16.dp),
@@ -121,9 +123,9 @@ private fun ListItem(
 ) {
     Row(modifier = modifier) {
         Image(painter = painterResource(id = icon), contentDescription = null)
-        MarkdownText(
+        MgoSpannableText(
             modifier = Modifier.padding(horizontal = 16.dp),
-            markdown = text,
+            text = text,
             style = MaterialTheme.typography.bodySmall,
         )
     }

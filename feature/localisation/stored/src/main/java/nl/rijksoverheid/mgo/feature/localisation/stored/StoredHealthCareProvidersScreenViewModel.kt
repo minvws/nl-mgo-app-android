@@ -25,7 +25,7 @@ internal class StoredHealthCareProvidersScreenViewModel
 
         fun delete(provider: HealthCareProvider) {
             viewModelScope.launch {
-                healthCareProviderRepository.delete(provider)
+                healthCareProviderRepository.delete(provider.id)
             }
         }
     }

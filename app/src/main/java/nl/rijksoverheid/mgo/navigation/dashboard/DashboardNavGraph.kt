@@ -1,10 +1,11 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
@@ -26,11 +27,17 @@ fun NavGraphBuilder.addDashboardNavGraph(
                     HealthCareProviderNavigation(rootNavController = rootNavController, navController = healthCareProviderNavController)
                 },
                 aboutThisAppTab = {
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .background(Color.Blue),
+                    val applicationContext = LocalContext.current.applicationContext
+                    Button(
+                        modifier = Modifier.padding(16.dp),
+                        onClick = {
+                            val packageName = applicationContext.packageName
+                            val runtime = Runtime.getRuntime()
+                            runtime.exec("pm clear $packageName")
+                        },
+                        content = {
+                            Text(text = "Reset App")
+                        },
                     )
                 },
             )

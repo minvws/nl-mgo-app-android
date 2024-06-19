@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -31,6 +30,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundPrimary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
@@ -44,7 +44,7 @@ const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (name: String, category: String) -> Unit,
+    onNavigateToHealthCareProvider: (id: String, name: String, category: String) -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -59,7 +59,7 @@ fun OverviewScreen(
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (name: String, category: String) -> Unit,
+    onNavigateToHealthCareProvider: (id: String, name: String, category: String) -> Unit,
 ) {
     Scaffold { innerPadding ->
         ColumnWithButtons(
@@ -83,7 +83,7 @@ private fun OverviewScreenContent(
                             Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 4.dp)
-                                .clickable { onNavigateToHealthCareProvider(provider.name, provider.category ?: "") },
+                                .clickable { onNavigateToHealthCareProvider(provider.id, provider.name, provider.category ?: "") },
                         provider = provider,
                     )
                 }
@@ -108,13 +108,14 @@ private fun Header(
             val subtitleResource =
                 if (hasProviders) CopyR.string.dashboard_overview_subtitle else CopyR.string.dashboard_overview_subtitle_empty
             Text(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(id = subtitleResource),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colors.contentTertiary(),
             )
         }
-        Avatar()
+        // TODO No user information yet so don't display avatar
+        // Avatar()
     }
 }
 
@@ -123,7 +124,7 @@ private fun HealthCareProviderCard(
     modifier: Modifier = Modifier,
     provider: HealthCareProvider,
 ) {
-    Card(modifier = modifier.testTag(TEST_TAG_HEALTH_PROVIDER_CARD)) {
+    MgoCard(modifier = modifier.testTag(TEST_TAG_HEALTH_PROVIDER_CARD)) {
         Column(modifier = Modifier.padding(16.dp)) {
             val category = provider.category ?: stringResource(id = CopyR.string.general_unknown)
             Text(text = provider.name, style = MaterialTheme.typography.bodyDefault, fontWeight = FontWeight.Bold)
@@ -179,7 +180,7 @@ internal fun OverviewScreenWithProvidersPreview() {
                         ),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = { _, _ -> },
+            onNavigateToHealthCareProvider = { _, _, _ -> },
         )
     }
 }
@@ -195,7 +196,7 @@ internal fun OverviewScreenEmptyStatePreview() {
                     providers = listOf(),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = { _, _ -> },
+            onNavigateToHealthCareProvider = { _, _, _ -> },
         )
     }
 }

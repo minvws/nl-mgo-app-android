@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,6 @@ import kotlinx.coroutines.launch
 class MedicationScreenViewModel
     @Inject
     constructor(
-        savedStateHandle: SavedStateHandle,
         private val appInfo: AppInfo,
         private val medicationRepository: MedicationRepository,
     ) : ViewModel

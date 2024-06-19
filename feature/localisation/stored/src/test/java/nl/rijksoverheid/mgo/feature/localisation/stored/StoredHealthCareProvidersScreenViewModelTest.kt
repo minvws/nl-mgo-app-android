@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.feature.localisation.stored
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.TestHealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.localisation.TestHealthCareProviderRepository
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -13,7 +13,8 @@ internal class StoredHealthCareProvidersScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val healthCareProviderRepository = TestHealthCareProviderRepository()
+    private val healthCareProviderRepository =
+        TestHealthCareProviderRepository()
 
     @Test
     fun `Given a stored health care provider, When deleting that health care provider, view state is updated with no providers`() =

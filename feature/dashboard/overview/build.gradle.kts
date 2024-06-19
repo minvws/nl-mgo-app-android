@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(project(":data:localisation"))
+    testImplementation(testFixtures((projects.data.localisation)))
 }

@@ -2,12 +2,13 @@ package nl.rijksoverheid.mgo.feature.onboarding.privacyoverview
 
 import android.app.Activity
 import android.app.Instrumentation
+import androidx.compose.ui.test.click
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
+import androidx.compose.ui.test.performTouchInput
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import org.hamcrest.Matchers
 import org.junit.Rule
@@ -36,8 +37,9 @@ internal class PrivacyOverviewScreenTest {
         Intents.intending(intentMatcher).respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, null))
 
         // When clicking the link
-        // Using Espresso because compose does not seem to have a "openLinkWithText"
-        Espresso.onView(withId(VIEW_ID_TEXT_WITH_LINK)).perform(ViewActions.openLinkWithText("privacyverklaring"))
+        // Verify fragile test because compose does not have a ViewActions.openLinkWithText
+        composeTestRule.onNode(hasText("privacyverklaring", substring = true))
+            .performTouchInput { click(percentOffset(0.1f, 0f)) }
 
         Intents.intended(intentMatcher)
         Intents.release()

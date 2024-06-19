@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo.feature.localisation.searchresults
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.TestHealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.localisation.TestHealthCareProviderRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -17,7 +17,8 @@ internal class SearchResultsScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val healthCareProviderRepository = TestHealthCareProviderRepository()
+    private val healthCareProviderRepository =
+        TestHealthCareProviderRepository()
     private val appInfo = AppInfo(versionCode = 1, appFlavor = AppFlavor.PROD)
 
     @After

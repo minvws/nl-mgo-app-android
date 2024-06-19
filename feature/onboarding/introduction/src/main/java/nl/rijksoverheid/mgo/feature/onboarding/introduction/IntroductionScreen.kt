@@ -19,7 +19,7 @@ import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
-import nl.rijksoverheid.mgo.component.theme.headingMedium
+import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -47,7 +47,7 @@ fun IntroductionScreen(onNavigateToPrivacyOverview: () -> Unit) {
                 Text(
                     modifier = Modifier.padding(top = 32.dp),
                     text = stringResource(id = CopyR.string.introduction_title),
-                    style = MaterialTheme.typography.headingMedium,
+                    style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
 

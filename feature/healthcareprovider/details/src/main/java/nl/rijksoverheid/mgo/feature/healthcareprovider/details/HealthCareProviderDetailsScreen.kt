@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -33,8 +32,10 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.supportFysiotherapeut
 import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
@@ -48,6 +49,7 @@ fun HealthCareProviderDetailsScreen(
     onNavigateToMedication: (providerName: String) -> Unit,
     onNavigateToConcern: () -> Unit,
     onNavigateToLaboratoryTestResult: () -> Unit,
+    onNavigateToRemoveProvider: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -84,7 +86,7 @@ fun HealthCareProviderDetailsScreen(
                     style = MaterialTheme.typography.bodySmall,
                 )
 
-                ProviderRow(
+                DetailRow(
                     modifier =
                         Modifier
                             .padding(top = 24.dp)
@@ -95,7 +97,7 @@ fun HealthCareProviderDetailsScreen(
                     subtitle = CopyR.string.healthcareprovider_details_list_item_medicine_subtitle,
                 )
 
-                ProviderRow(
+                DetailRow(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
@@ -106,7 +108,7 @@ fun HealthCareProviderDetailsScreen(
                     subtitle = CopyR.string.healthcareprovider_details_list_item_complaints_subtitle,
                 )
 
-                ProviderRow(
+                DetailRow(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
@@ -116,20 +118,38 @@ fun HealthCareProviderDetailsScreen(
                     title = CopyR.string.healthcareprovider_details_list_item_results_title,
                     subtitle = CopyR.string.healthcareprovider_details_list_item_results_subtitle,
                 )
+
+                Text(
+                    modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp),
+                    text = stringResource(id = CopyR.string.general_settings),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colors.contentTertiary(),
+                )
+
+                DetailRow(
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp)
+                            .clickable { onNavigateToRemoveProvider() },
+                    icon = R.drawable.ic_delete,
+                    iconCircleColor = MaterialTheme.colors.notificationError(),
+                    title = CopyR.string.healthcareprovider_details_list_item_remove_title,
+                    subtitle = CopyR.string.healthcareprovider_details_list_item_remove_subtitle,
+                )
             }
         },
     )
 }
 
 @Composable
-private fun ProviderRow(
+private fun DetailRow(
     @DrawableRes icon: Int,
     iconCircleColor: Color,
     @StringRes title: Int,
     @StringRes subtitle: Int,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier.fillMaxWidth()) {
+    MgoCard(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(16.dp)) {
             Box(
                 modifier =
@@ -168,6 +188,7 @@ internal fun HealthCareProviderDetailsScreenPreview() {
             onNavigateToMedication = {},
             onNavigateToConcern = {},
             onNavigateToLaboratoryTestResult = {},
+            onNavigateToRemoveProvider = {},
         )
     }
 }

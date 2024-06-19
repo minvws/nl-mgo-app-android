@@ -18,8 +18,13 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -42,6 +47,32 @@ fun MgoBasicTextField(
     error: String? = null,
     textFieldTestTag: String? = null,
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+    MgoBasicTextFieldContent(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        onFocusChange = { focus ->
+            isFocused = focus
+        },
+        hasFocus = isFocused,
+        header = header,
+        error = error,
+        textFieldTestTag = textFieldTestTag,
+    )
+}
+
+@Composable
+fun MgoBasicTextFieldContent(
+    value: String,
+    onValueChange: (String) -> Unit,
+    onFocusChange: (Boolean) -> Unit,
+    hasFocus: Boolean,
+    modifier: Modifier = Modifier,
+    header: String? = null,
+    error: String? = null,
+    textFieldTestTag: String? = null,
+) {
     val localContentColor = if (error == null) MaterialTheme.colors.onBackground else MaterialTheme.colors.error
     val localStyle = LocalTextStyle.current
     val mergedStyle = localStyle.merge(TextStyle(color = LocalContentColor.current, fontFamily = fonts))
@@ -55,12 +86,13 @@ fun MgoBasicTextField(
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
-
+            val border = if (hasFocus) 2.dp else 1.dp
             BasicTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .then(if (textFieldTestTag == null) Modifier else Modifier.testTag(textFieldTestTag)),
+                        .then(if (textFieldTestTag == null) Modifier else Modifier.testTag(textFieldTestTag))
+                        .onFocusChanged { state -> onFocusChange(state.hasFocus) },
                 value = value,
                 keyboardOptions =
                     KeyboardOptions.Default.copy(
@@ -76,7 +108,7 @@ fun MgoBasicTextField(
                             Modifier
                                 .heightIn(40.dp)
                                 .border(
-                                    BorderStroke(1.dp, SolidColor(LocalContentColor.current)),
+                                    BorderStroke(border, SolidColor(LocalContentColor.current)),
                                     shape = RoundedCornerShape(8.dp),
                                 )
                                 .padding(horizontal = 8.dp),
@@ -113,14 +145,34 @@ private fun Error(
 @Composable
 internal fun MgoBasicTextFieldEmptyPreview() {
     MgoTheme {
-        MgoBasicTextField(
-            value = "",
-            header = "Naam (verplicht)",
-            onValueChange = {},
+        MgoBasicTextFieldContent(
             modifier =
                 Modifier
                     .width(300.dp)
                     .padding(16.dp),
+            hasFocus = false,
+            onFocusChange = {},
+            value = "",
+            header = "Naam (verplicht)",
+            onValueChange = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoBasicTextFieldFocussedPreview() {
+    MgoTheme {
+        MgoBasicTextFieldContent(
+            modifier =
+                Modifier
+                    .width(300.dp)
+                    .padding(16.dp),
+            hasFocus = true,
+            onFocusChange = {},
+            value = "",
+            header = "Naam (verplicht)",
+            onValueChange = {},
         )
     }
 }
@@ -129,14 +181,16 @@ internal fun MgoBasicTextFieldEmptyPreview() {
 @Composable
 internal fun MgoBasicTextFieldFilledPreview() {
     MgoTheme {
-        MgoBasicTextField(
-            value = "Jan Jansen",
-            header = "Naam (verplicht)",
-            onValueChange = {},
+        MgoBasicTextFieldContent(
             modifier =
                 Modifier
                     .width(300.dp)
                     .padding(16.dp),
+            hasFocus = false,
+            onFocusChange = {},
+            value = "Jan Jansen",
+            header = "Naam (verplicht)",
+            onValueChange = {},
         )
     }
 }
@@ -145,15 +199,17 @@ internal fun MgoBasicTextFieldFilledPreview() {
 @Composable
 internal fun MgoBasicTextFieldErrorPreview() {
     MgoTheme {
-        MgoBasicTextField(
-            value = "",
-            header = "Naam (verplicht)",
-            error = "Vul een naam in",
-            onValueChange = {},
+        MgoBasicTextFieldContent(
             modifier =
                 Modifier
                     .width(300.dp)
                     .padding(16.dp),
+            hasFocus = false,
+            onFocusChange = {},
+            value = "",
+            header = "Naam (verplicht)",
+            error = "Vul een naam in",
+            onValueChange = {},
         )
     }
 }

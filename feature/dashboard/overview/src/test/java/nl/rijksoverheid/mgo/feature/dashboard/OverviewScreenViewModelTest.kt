@@ -1,10 +1,10 @@
 package nl.rijksoverheid.mgo.feature.dashboard
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.TestHealthCareProviderRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreenViewModel
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.localisation.TestHealthCareProviderRepository
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

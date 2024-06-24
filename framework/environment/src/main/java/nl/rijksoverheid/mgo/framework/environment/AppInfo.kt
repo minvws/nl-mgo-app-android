@@ -1,10 +1,16 @@
 package nl.rijksoverheid.mgo.framework.environment
 
-import nl.rijksoverheid.mgo.framework.environment.AppFlavor.PROD
-
 open class AppInfo(open val versionCode: Int, open val appFlavor: AppFlavor) {
     fun isProductionBuild(): Boolean {
-        return this.appFlavor == PROD
+        return this.appFlavor == AppFlavor.PROD
+    }
+
+    fun getPrivacyUrl(): String {
+        return when (appFlavor) {
+            AppFlavor.TEST -> "https://web.test.mgo.irealisatie.nl/privacy"
+            AppFlavor.ACC -> "https://web.test.mgo.irealisatie.nl/privacy"
+            AppFlavor.PROD -> "https://web.test.mgo.irealisatie.nl/privacy"
+        }
     }
 }
 

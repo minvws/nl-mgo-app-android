@@ -22,7 +22,7 @@ internal class PrivacyOverviewScreenTest {
     fun privacyPolicyIsOpenedOnButtonClick() {
         composeTestRule.setContent {
             MgoTheme {
-                PrivacyOverviewScreenContent(onNavigateBack = {}, onClickNext = {})
+                PrivacyOverviewScreenContent(url = "https://www.google.nl", onNavigateBack = {}, onClickNext = {})
             }
         }
 

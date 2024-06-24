@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:onboarding"))
+    implementation(projects.data.onboarding)
+    implementation(projects.framework.environment)
 }

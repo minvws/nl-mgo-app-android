@@ -8,12 +8,15 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 class AndroidConventionsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.configurePlugins()
         target.configureJacoco()
+        target.configureKotlin()
         target.configureAndroid()
         target.configureDependencies()
     }
@@ -79,6 +82,17 @@ class AndroidConventionsPlugin : Plugin<Project> {
         )
     }
 
+    private fun Project.configureKotlin() {
+        plugins.apply {
+            val kotlinExtension = extensions.getByType<KotlinAndroidProjectExtension>()
+            kotlinExtension.compilerOptions {
+                // This is different than setting the jvm in java
+                // See https://youtrack.jetbrains.com/issue/KT-66995/JvmTarget-and-JavaVersion-compatibility-for-easier-JVM-version-setup
+                jvmTarget.set(JvmTarget.JVM_17)
+            }
+        }
+    }
+
     private fun Project.configureAndroid() {
         plugins.apply {
             val minSdkVersion = versionCatalog.findVersion("android.sdk.min").get()
@@ -101,8 +115,6 @@ class AndroidConventionsPlugin : Plugin<Project> {
                         isIncludeAndroidResources = true
                     }
                 }
-                val kotlinExtension = extensions.getByType<KotlinProjectExtension>()
-                kotlinExtension.jvmToolchain(JAVA_LANGUAGE_VERSION.asInt())
             }
         }
     }

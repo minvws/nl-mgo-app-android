@@ -12,9 +12,11 @@ class PrivacyOverviewScreenViewModelTest {
     @Test
     fun `Given ViewModel, When setHasSeenOnboarding is called, Then use case is called`() {
         // Given
-        val viewModel = PrivacyOverviewScreenViewModel(
-            appInfo = AppInfo(1, AppFlavor.PROD), setHasSeenOnboarding = setHasSeenOnboarding,
-        )
+        val viewModel =
+            PrivacyOverviewScreenViewModel(
+                appInfo = AppInfo(1, AppFlavor.PROD),
+                setHasSeenOnboarding = setHasSeenOnboarding,
+            )
 
         // When
         viewModel.setHasSeenOnboarding()

@@ -12,6 +12,7 @@ class AndroidUiPlugin : Plugin<Project> {
 
     private fun Project.configurePlugins() {
         plugins.apply {
+            apply(versionCatalog.findPlugin("composeCompiler").get().get().pluginId)
             apply(SnapshotsPlugin::class.java)
         }
     }

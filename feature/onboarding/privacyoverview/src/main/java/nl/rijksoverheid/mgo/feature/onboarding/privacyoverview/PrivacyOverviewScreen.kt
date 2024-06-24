@@ -31,8 +31,6 @@ import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-internal val TEST_TAG_TEXT_WITH_LINK = "TEXT_WITH_LINK"
-
 @Composable
 fun PrivacyOverviewScreen(
     onNavigateBack: () -> Unit,
@@ -40,6 +38,7 @@ fun PrivacyOverviewScreen(
 ) {
     val viewModel: PrivacyOverviewScreenViewModel = hiltViewModel()
     PrivacyOverviewScreenContent(
+        url = viewModel.getUrl(),
         onNavigateBack = onNavigateBack,
         onClickNext = {
             viewModel.setHasSeenOnboarding()
@@ -50,6 +49,7 @@ fun PrivacyOverviewScreen(
 
 @Composable
 internal fun PrivacyOverviewScreenContent(
+    url: String,
     onNavigateBack: () -> Unit,
     onClickNext: () -> Unit,
 ) {
@@ -85,7 +85,7 @@ internal fun PrivacyOverviewScreenContent(
                     modifier =
                         Modifier
                             .padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.privacy_overview_subtitle),
+                    text = stringResource(id = CopyR.string.privacy_overview_subtitle, url),
                     style = MaterialTheme.typography.bodySmall,
                     linkColor = MaterialTheme.colors.actionTertiaryDefault(),
                     onUrlClick = { url -> url.launchBrowser(context) },
@@ -136,6 +136,7 @@ private fun ListItem(
 internal fun PrivacyOverviewScreenPreview() {
     MgoTheme {
         PrivacyOverviewScreenContent(
+            url = "",
             onNavigateBack = {},
             onClickNext = {},
         )

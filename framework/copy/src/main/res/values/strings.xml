@@ -19,7 +19,7 @@
     <string name="introduction_title">Welkom in Mijn Gezondheidsoverzicht</string>
     <string name="introduction_subtitle">Alle gegevens die je huisarts, ziekenhuis en andere zorgaanbieders over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
     <string name="privacy_overview_title">Zo gebruikt de app jouw gegevens</string>
-    <string name="privacy_overview_subtitle">In de [privacyverklaring](https://www.google.nl) staat hoe Mijn Gezondheidsoverzicht jouw
+    <string name="privacy_overview_subtitle">In de [privacyverklaring](%1$s) staat hoe Mijn Gezondheidsoverzicht jouw
         gegevens gebruikt. Dit zijn de belangrijkste punten:</string>
     <string name="privacy_overview_item_1">Je gegevens worden **versleuteld** en via een **veilige** verbinding opgehaald.</string>
     <string name="privacy_overview_item_2">De app haalt je gegevens direct op bij de zorgaanbieders die jij kiest. **Alleen jij hebt

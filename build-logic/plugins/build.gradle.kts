@@ -27,6 +27,8 @@ dependencies {
     compileOnly(libs.ktlint)
     compileOnly(libs.paparazzi.gradle)
     compileOnly(libs.ksp.gradle)
+    implementation(libs.okhttp)
+    implementation(libs.json)
 }
 
 gradlePlugin {

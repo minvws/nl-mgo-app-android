@@ -16,11 +16,11 @@ class LokalisePlugin: Plugin<Project> {
             val projectId = System.getenv("MGO_LOKALISE_PROJECT_ID")
             val apiToken = System.getenv("MGO_LOKALISE_API_TOKEN")
             if (projectId == null) {
-                println("Missing MGO_LOKALISE_API_TOKEN")
+                println("Missing MGO_LOKALISE_PROJECT_ID")
                 return@register
             }
             if (apiToken == null) {
-                println("Missing MGO_LOKALISE_PROJECT_ID")
+                println("Missing MGO_LOKALISE_API_TOKEN")
                 return@register
             }
             val downloadDir = File(project.rootDir, "framework/copy/src/main/res/")

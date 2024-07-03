@@ -78,7 +78,7 @@ private fun SearchScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.general_previous),
+                            contentDescription = stringResource(id = CopyR.string.common_previous),
                         )
                     }
                 },
@@ -87,11 +87,11 @@ private fun SearchScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                buttonText = stringResource(id = CopyR.string.general_search),
+                buttonText = stringResource(id = CopyR.string.common_search),
                 onButtonClick = onSearch,
             ) {
                 Text(
-                    text = stringResource(id = CopyR.string.localisation_search_title),
+                    text = stringResource(id = CopyR.string.add_organization_heading),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
@@ -102,7 +102,9 @@ private fun SearchScreenContent(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                     value = viewState.name,
-                    header = stringResource(id = CopyR.string.localisation_search_name_header),
+                    header = "${stringResource(
+                        id = CopyR.string.add_organization_name,
+                    )} ${stringResource(id = CopyR.string.common_required)}",
                     onValueChange = onSetName,
                     error = viewState.nameError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
@@ -114,7 +116,9 @@ private fun SearchScreenContent(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                     value = viewState.city,
-                    header = stringResource(id = CopyR.string.localisation_search_city_header),
+                    header = "${stringResource(
+                        id = CopyR.string.add_organization_city,
+                    )} ${stringResource(id = CopyR.string.common_required)}",
                     onValueChange = onSetCity,
                     error = viewState.cityError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,

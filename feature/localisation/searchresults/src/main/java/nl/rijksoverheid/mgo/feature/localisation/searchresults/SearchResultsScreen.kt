@@ -36,7 +36,7 @@ import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
-import nl.rijksoverheid.mgo.component.theme.composable.MgoSpannableText
+import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
@@ -94,7 +94,7 @@ private fun HealthCareSearchResultsScreenContent(
                     IconButton(onClick = { onNavigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.general_previous),
+                            contentDescription = stringResource(id = CopyR.string.common_previous),
                         )
                     }
                 },
@@ -144,7 +144,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = stringResource(id = CopyR.string.localisation_searchresults_title),
+            text = stringResource(id = CopyR.string.organization_search_heading),
             style = MaterialTheme.typography.headingLarge,
             fontWeight = FontWeight.Bold,
         )
@@ -160,7 +160,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
                 )
                 Text(
                     modifier = Modifier.padding(top = 20.dp),
-                    text = stringResource(id = CopyR.string.localisation_searchresults_loading),
+                    text = stringResource(id = CopyR.string.organization_search_searching),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -178,7 +178,7 @@ private fun SearchResultsContent(
         item {
             Text(
                 modifier = Modifier.padding(bottom = 24.dp),
-                text = stringResource(id = CopyR.string.localisation_searchresults_title),
+                text = stringResource(id = CopyR.string.organization_search_heading),
                 style = MaterialTheme.typography.headingLarge,
                 fontWeight = FontWeight.Bold,
             )
@@ -205,11 +205,11 @@ private fun EmptyContent(
 ) {
     ColumnWithButtons(
         modifier = modifier,
-        buttonText = stringResource(id = CopyR.string.general_search_again),
+        buttonText = stringResource(id = CopyR.string.common_search_again),
         onButtonClick = onButtonClick,
     ) {
         Text(
-            text = stringResource(id = CopyR.string.localisation_searchresults_empty_title),
+            text = stringResource(id = CopyR.string.organization_search_no_results_found_heading),
             style = MaterialTheme.typography.headingLarge,
             fontWeight = FontWeight.Bold,
         )
@@ -223,9 +223,9 @@ private fun EmptyContent(
             painter = painterResource(id = ThemeR.drawable.illustration_alert),
             contentDescription = null,
         )
-        MgoSpannableText(
+        MgoHtmlText(
             modifier = Modifier.padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.localisation_searchresults_empty_list_header, name, city),
+            html = stringResource(id = CopyR.string.organization_search_no_results_found_subheading, name, city),
             style = MaterialTheme.typography.bodySmall,
         )
 
@@ -233,21 +233,21 @@ private fun EmptyContent(
             modifier = Modifier.padding(top = 16.dp),
             text =
                 stringResource(
-                    id = CopyR.string.localisation_searchresults_empty_list_item_1,
+                    id = CopyR.string.organization_search_search_hint_1,
                 ),
         )
         EmptyListItem(
             modifier = Modifier.padding(top = 8.dp),
             text =
                 stringResource(
-                    id = CopyR.string.localisation_searchresults_empty_list_item_2,
+                    id = CopyR.string.organization_search_search_hint_2,
                 ),
         )
         EmptyListItem(
             modifier = Modifier.padding(top = 8.dp),
             text =
                 stringResource(
-                    id = CopyR.string.localisation_searchresults_empty_list_item_3,
+                    id = CopyR.string.organization_search_search_hint_3,
                 ),
         )
     }
@@ -264,7 +264,7 @@ private fun EmptyListItem(
             contentDescription = null,
             tint = MaterialTheme.colors.supportHuisarts(),
         )
-        MgoSpannableText(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodySmall)
+        Text(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -277,11 +277,11 @@ private fun ErrorContent(
 ) {
     ColumnWithButtons(
         modifier = modifier,
-        buttonText = stringResource(id = CopyR.string.general_try_again),
+        buttonText = stringResource(id = CopyR.string.common_try_again),
         onButtonClick = onButtonClick,
     ) {
         Text(
-            text = stringResource(id = CopyR.string.error_title),
+            text = stringResource(id = CopyR.string.common_error_heading),
             style = MaterialTheme.typography.headingLarge,
             fontWeight = FontWeight.Bold,
         )
@@ -296,9 +296,9 @@ private fun ErrorContent(
             contentDescription = null,
         )
 
-        MgoSpannableText(
+        Text(
             modifier = Modifier.padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.error_subtitle),
+            text = stringResource(id = CopyR.string.common_error_subheading),
             style = MaterialTheme.typography.bodySmall,
         )
 

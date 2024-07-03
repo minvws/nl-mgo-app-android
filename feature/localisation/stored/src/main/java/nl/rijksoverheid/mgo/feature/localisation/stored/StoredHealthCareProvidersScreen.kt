@@ -86,7 +86,7 @@ private fun StoredHealthCareProvidersScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.general_previous),
+                            contentDescription = stringResource(id = R.string.common_previous),
                         )
                     }
                 },
@@ -95,22 +95,22 @@ private fun StoredHealthCareProvidersScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                buttonText = stringResource(id = R.string.localisation_add_healthcareprovider_primary_button),
+                buttonText = stringResource(id = R.string.organization_list_add_organization),
                 onButtonClick = onLocalisationFinished,
-                secondaryButtonText = stringResource(id = R.string.localisation_add_healthcareprovider_secondary_button),
+                secondaryButtonText = stringResource(id = R.string.common_ready),
                 onSecondaryButtonClick = onNavigateToSearch,
             ) {
                 Text(
-                    text = stringResource(id = R.string.localisation_add_healthcareprovider_title),
+                    text = stringResource(id = R.string.organization_list_heading),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
 
                 val subtitleTextResource =
                     if (viewState.providers.isEmpty()) {
-                        R.string.localisation_add_healthcareprovider_empty_subtitle
+                        R.string.organization_list_no_results_subheading
                     } else {
-                        R.string.localisation_add_healthcareprovider_subtitle
+                        R.string.organization_list_subheading
                     }
                 Text(
                     modifier = Modifier.padding(vertical = 16.dp),
@@ -138,8 +138,8 @@ private fun RemoveProviderDialog(
     onConfirmButton: () -> Unit,
 ) {
     AlertDialog(
-        title = { Text(text = stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_title, provider.name)) },
-        text = { Text(text = stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_text)) },
+        title = { Text(text = stringResource(id = R.string.dialog_remove_organization_heading, provider.name)) },
+        text = { Text(text = stringResource(id = R.string.dialog_remove_organization_subheading)) },
         onDismissRequest = { onDismissRequest() },
         confirmButton = {
             TextButton(
@@ -147,7 +147,7 @@ private fun RemoveProviderDialog(
                     onConfirmButton()
                 },
             ) {
-                Text(stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_confirm_button))
+                Text(stringResource(id = R.string.dialog_remove_organization_yes))
             }
         },
         dismissButton = {
@@ -156,7 +156,7 @@ private fun RemoveProviderDialog(
                     onDismissRequest()
                 },
             ) {
-                Text(stringResource(id = R.string.localistaion_add_healthcareprovider_remove_dialog_dismiss_button))
+                Text(stringResource(id = R.string.dialog_remove_organization_no))
             }
         },
     )

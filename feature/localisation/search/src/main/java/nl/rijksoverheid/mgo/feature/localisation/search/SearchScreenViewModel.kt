@@ -35,8 +35,8 @@ class SearchScreenViewModel
             viewModelScope.launch {
                 val name = _viewState.value.name
                 val city = _viewState.value.city
-                val nameError = if (name.isEmpty()) CopyR.string.localisation_search_name_error else null
-                val cityError = if (city.isEmpty()) CopyR.string.localisation_search_city_error else null
+                val nameError = if (name.isEmpty()) CopyR.string.add_organization_error_missing_name else null
+                val cityError = if (city.isEmpty()) CopyR.string.add_organization_error_missing_city else null
                 _viewState.update { viewState -> viewState.copy(nameError = nameError, cityError = cityError) }
                 if (nameError == null && cityError == null) {
                     _navigation.tryEmit(Unit)

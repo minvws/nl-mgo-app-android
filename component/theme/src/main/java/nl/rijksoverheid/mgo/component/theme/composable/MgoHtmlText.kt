@@ -1,6 +1,8 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -66,7 +68,7 @@ fun MgoHtmlText(
     ClickableText(
         modifier = modifier,
         text = annotatedString,
-        style = style,
+        style = style.copy(color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)),
         onClick = { offset ->
             annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
                 .firstOrNull()?.let { annotation ->

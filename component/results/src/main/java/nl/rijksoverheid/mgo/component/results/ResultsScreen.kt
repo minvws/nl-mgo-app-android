@@ -225,7 +225,7 @@ private fun ResultsError(
 
             Text(
                 modifier = Modifier.padding(top = 24.dp),
-                text = stringResource(id = CopyR.string.common_loading),
+                text = stringResource(id = CopyR.string.common_error_heading),
                 style = MaterialTheme.typography.headingSmall,
             )
 

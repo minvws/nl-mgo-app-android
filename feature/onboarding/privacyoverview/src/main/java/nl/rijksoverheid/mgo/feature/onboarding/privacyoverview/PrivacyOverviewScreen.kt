@@ -136,7 +136,7 @@ private fun ListItem(
 internal fun PrivacyOverviewScreenPreview() {
     MgoTheme {
         PrivacyOverviewScreenContent(
-            url = "",
+            url = "https://www.google.nl",
             onNavigateBack = {},
             onClickNext = {},
         )

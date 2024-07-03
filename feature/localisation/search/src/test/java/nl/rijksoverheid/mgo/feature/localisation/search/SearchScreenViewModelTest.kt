@@ -27,9 +27,9 @@ internal class SearchScreenViewModelTest {
                 val expectedViewState =
                     SearchScreenViewState(
                         name = "",
-                        nameError = CopyR.string.localisation_search_name_error,
+                        nameError = CopyR.string.add_organization_error_missing_name,
                         city = "",
-                        cityError = CopyR.string.localisation_search_city_error,
+                        cityError = CopyR.string.add_organization_error_missing_city,
                     )
                 assertEquals(expectedViewState, awaitItem())
             }
@@ -50,7 +50,7 @@ internal class SearchScreenViewModelTest {
                 val expectedViewState =
                     SearchScreenViewState(
                         name = "",
-                        nameError = CopyR.string.localisation_search_name_error,
+                        nameError = CopyR.string.add_organization_error_missing_name,
                         city = "Roermond",
                         cityError = null,
                     )
@@ -75,7 +75,7 @@ internal class SearchScreenViewModelTest {
                         name = "Tandarts",
                         nameError = null,
                         city = "",
-                        cityError = CopyR.string.localisation_search_city_error,
+                        cityError = CopyR.string.add_organization_error_missing_city,
                     )
                 assertEquals(expectedViewState, awaitItem())
             }

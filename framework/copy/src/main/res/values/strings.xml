@@ -43,8 +43,7 @@
     <string name="fhir.startDate">Startdatum</string>
     <string name="fhir.status">Test status</string>
     <string name="fhir.unknown">Niet bekend</string>
-    <string name="introduction.heading">Je gezondheidsgegevens in één overzicht</string>
-    <string name="introduction.subheading">Alle informatie die je huisarts, ziekenhuis en andere zorg­verleners over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
+    <string name="introduction.subheading">Alle informatie die je huisarts, ziekenhuis en andere zorgverleners over jou hebben. Op één plek. Veilig en overzichtelijk.</string>
     <string name="lab_results.heading">Uitslagen</string>
     <string name="lab_results.subheading">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans.</string>
     <string name="medication_use.heading">Medicijnen</string>
@@ -59,12 +58,10 @@
     <string name="organization_list.no_results_subheading">Je hebt nog geen zorgaanbieders toegevoegd aan deze lijst. Je kunt dit nu doen, of later via je profiel.</string>
     <string name="organization_list.subheading">Je kunt deze lijst nu aanpassen of dit later in je profiel doen.</string>
     <string name="overview.heading">Goedemorgen</string>
-    <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen gegevens hebt opgehaald.</string>
-    <string name="overview.subheading">Dit is je persoonlijke overzicht. Je vindt hier al je medische gegevens.</string>
     <string name="problems.heading">Klachten en diagnoses</string>
     <string name="problems.subheading">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>
     <string name="proposition.statement_1"><![CDATA[Je gegevens worden <b>versleuteld</b> en via een <b>veilige</b> verbinding opgehaald.]]></string>
-    <string name="proposition.statement_2"><![CDATA[De website haalt je gegevens direct op bij de zorg­verleners die jij kiest. <b>Alleen jij hebt toegang.</b>]]></string>
+    <string name="proposition.statement_2"><![CDATA[De website haalt je gegevens direct op bij de zorgverleners die jij kiest. <b>Alleen jij hebt toegang.</b>]]></string>
     <string name="proposition.statement_3"><![CDATA[<b>Je kiest zelf</b> hoe je je gegevens wilt gebruiken en of je ze wel of niet deelt met anderen.]]></string>
     <string name="proposition.statement_4"><![CDATA[Je kunt de gegevens in je overzicht <b>altijd verwijderen of opnieuw opvragen.</b>]]></string>
     <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht jouw gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
@@ -95,4 +92,7 @@
     <string name="bottombar.about_this_app">Over de app</string>
     <string name="common.voice_over_expanded">Uitklapbaar component uitgeklapt</string>
     <string name="common.voice_over_collapsed">Uitklapbaar component gesloten</string>
+    <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
+    <string name="introduction.heading">Welkom in Mijn Gezondheidsoverzicht</string>
+    <string name="overview.subheading">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
 </resources>

@@ -95,9 +95,9 @@ private fun StoredHealthCareProvidersScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                buttonText = stringResource(id = R.string.organization_list_add_organization),
+                buttonText = stringResource(id = R.string.common_ready),
                 onButtonClick = onLocalisationFinished,
-                secondaryButtonText = stringResource(id = R.string.common_ready),
+                secondaryButtonText = stringResource(id = R.string.organization_list_add_organization),
                 onSecondaryButtonClick = onNavigateToSearch,
             ) {
                 Text(

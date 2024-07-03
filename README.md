@@ -1,3 +1,4 @@
+
 # MGO - Android
 
 ## Introduction
@@ -8,26 +9,25 @@ This repository contains the Android release of the MGO project.
 * The iOS app can also be [found on GitHub](https://github.com/minvws/nl-mgo-app-ios-private).
 
 See minvws/**[nl-rdo-mgo-coordination-private](https://github.com/minvws/nl-rdo-mgo-coordination-private)** for further technical documentation.
-  
----  
-
+    
+---   
 ## Development
 
 To compile the project, import it in Android Studio and run it.
 
 ### Build Variants
 
-| Build Flavor | Description                                |
-|--------------|--------------------------------------------|
-| Tst          | Connects to backend test environment       |
-| Acc          | Connects to backend acceptance environment |
-| Prod         | Connects to backend production environment |
+| Build Flavor | Description                                |  
+|--------------|--------------------------------------------|  
+| Tst          | Connects to backend test environment       |  
+| Acc          | Connects to backend acceptance environment |  
+| Prod         | Connects to backend production environment |  
 
 To run a certain flavor select it in Android Studio from the "Build Variants" tab. You can also compile it using the following gradle command:
 
-```
-./gradlew assemble[Flavor]Debug
-```
+```  
+./gradlew assemble[Flavor]Debug  
+```  
 
 ### Modules
 
@@ -35,14 +35,14 @@ This project is setup as a multi module project, with each module having it's ow
 
 The modules are grouped by the following folder structure:
 
-| Group       | Description                                                                                         |
-|-------------|-----------------------------------------------------------------------------------------------------|
-| build-logic | Gradle plugins to share build logic between modules                                                 |
-| app         | Main entry point and orchestrator of the entire application                                         |
-| feature     | Standalone features that together make the application                                              |
-| data        | The data layer with backend integration and business logic                                          |
-| component   | Standalone UI components that can be used in various features                                       |
-| framework   | All other modules that do not fit any specific group, but contain specific standalone functionality |
+| Group       | Description                                                                                         |  
+|-------------|-----------------------------------------------------------------------------------------------------|  
+| build-logic | Gradle plugins to share build logic between modules                                                 |  
+| app         | Main entry point and orchestrator of the entire application                                         |  
+| feature     | Standalone features that together make the application                                              |  
+| data        | The data layer with backend integration and business logic                                          |  
+| component   | Standalone UI components that can be used in various features                                       |  
+| framework   | All other modules that do not fit any specific group, but contain specific standalone functionality |  
 
 > Feature modules never depend on each other. Features are stand alone. Navigation between features happens in the app module.
 
@@ -52,7 +52,6 @@ This project uses [Jetpack Compose](https://developer.android.com/develop/ui/com
 #### Previews
 
 Each screen or component in the app has [Previews](https://developer.android.com/develop/ui/compose/tooling/previews) included. These previews reflect important states that can be quickly viewed from Android Studio without compiling the app. Usually, these previews also act as snapshot tests.
-
 
 ### Dependency Injection
 
@@ -73,3 +72,15 @@ Snapshot testing performed using  [Paparazzi](https://github.com/cashapp/paparaz
 - Phone portrait light mode
 - Phone portrait dark mode
 
+### Copy
+
+Copy is stored in [Lokalise](https://lokalise.com/). To update the copy from Lokalise, add the `MGO_LOKALISE_PROJECT_ID` and `MGO_LOKALISE_API_TOKEN` environment variables. Then run the following command to update the copy:
+
+    ./gradlew updateCopy
+Updating the copy is done in the editor on [Lokalise](https://lokalise.com/).
+
+#### HTML
+
+The app supports showing HTML. Currently `<b>` and `<a>` tags are supported. To show HTML text, use the `MgoHtmlText` composable. Be sure that the string resource is wrapped with CDATA so that the HTML is not stripped out.
+
+> Lokalise automatically wraps HTML content in CDATA tags when it is exporting copy for Android. However, it only does this in certain scenarios (as per the [docs](https://docs.lokalise.com/en/articles/1400740-android-resources-xml)). To force CDATA, add the following custom property in the Lokalise web editor: `{"force-cdata": true}`.

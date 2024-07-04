@@ -13,6 +13,7 @@ class SearchResponse(
         @Json(name = "display_name") val displayName: String?,
         val addresses: List<Address>,
         val types: List<Types>,
+        @Json(name = "data_services") val dataServices: List<DataService>,
     )
 
     @JsonClass(generateAdapter = true)
@@ -26,4 +27,15 @@ class SearchResponse(
     data class Types(
         @Json(name = "display_name") val displayName: String?,
     )
+
+    @JsonClass(generateAdapter = true)
+    data class DataService(
+        val id: Int,
+        val roles: List<Role>,
+    ) {
+        @JsonClass(generateAdapter = true)
+        data class Role(
+            @Json(name = "resource_endpoint") val resourceEndpoint: String,
+        )
+    }
 }

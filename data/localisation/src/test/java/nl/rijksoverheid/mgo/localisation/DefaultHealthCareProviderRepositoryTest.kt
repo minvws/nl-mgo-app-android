@@ -51,6 +51,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
                         address = "Ginnekenweg 183\r\n4835NA BREDA",
                         category = "Tandartsen",
                         added = false,
+                        resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
                     )
                 assertEquals(expectedFirstHealthProvider, healthCareProviders.firstOrNull())
             }

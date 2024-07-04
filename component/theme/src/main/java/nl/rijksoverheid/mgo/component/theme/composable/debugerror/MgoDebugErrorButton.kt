@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,9 +25,11 @@ import java.io.StringWriter
 
 @Composable
 fun MgoDebugErrorButton(error: Throwable) {
-    val viewModel: MgoDebugErrorButtonViewModel = hiltViewModel()
-    if (viewModel.showButton) {
-        MgoDebugErrorButtonContent(error)
+    if (!LocalInspectionMode.current) {
+        val viewModel: MgoDebugErrorButtonViewModel = hiltViewModel()
+        if (viewModel.showButton) {
+            MgoDebugErrorButtonContent(error)
+        }
     }
 }
 

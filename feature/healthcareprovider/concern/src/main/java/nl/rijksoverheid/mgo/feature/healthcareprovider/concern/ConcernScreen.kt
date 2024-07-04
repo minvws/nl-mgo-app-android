@@ -80,7 +80,7 @@ private fun ConcernScreenViewState.toResultsScreenViewState(): ResultsScreenView
             ResultsScreenViewState.Loaded.Success(cardItems = concerns.map { concern -> concern.toCollapsableCardItem() })
         }
 
-        is ConcernScreenViewState.Error -> ResultsScreenViewState.Loaded.Error(error = error, isProductionBuild = isProductionBuild)
+        is ConcernScreenViewState.Error -> ResultsScreenViewState.Loaded.Error(error = error)
     }
 }
 

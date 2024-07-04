@@ -92,7 +92,6 @@ private fun LaboratoryTestResultScreenViewState.toResultsScreenViewState(): Resu
         is LaboratoryTestResultScreenViewState.Error ->
             ResultsScreenViewState.Loaded.Error(
                 error = error,
-                isProductionBuild = isProductionBuild,
             )
     }
 }

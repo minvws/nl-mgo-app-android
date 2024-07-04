@@ -31,8 +31,8 @@ import nl.rijksoverheid.mgo.component.collapsablecard.CollapsableCardItem
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
-import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.composable.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.R as ThemeR
@@ -135,7 +135,6 @@ private fun ResultsLoadedContent(
                 item {
                     ResultsError(
                         modifier = Modifier.padding(top = 16.dp),
-                        isProductionBuild = viewState.isProductionBuild,
                         error = viewState.error,
                     )
                 }
@@ -209,7 +208,6 @@ private fun ResultsEmpty(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ResultsError(
-    isProductionBuild: Boolean,
     error: Throwable,
     modifier: Modifier = Modifier,
 ) {
@@ -234,14 +232,7 @@ private fun ResultsError(
                 text = stringResource(id = CopyR.string.healthcareprovider_card_error_subtitle),
                 style = MaterialTheme.typography.bodySmall,
             )
-            if (!isProductionBuild) {
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = error.toString(),
-                    style = MaterialTheme.typography.bodySmallMini,
-                    color = MaterialTheme.colors.error,
-                )
-            }
+            MgoDebugErrorButton(error = error)
         }
     }
 }
@@ -305,11 +296,7 @@ internal fun ResultsScreenErrorPreview() {
         ResultsScreen(
             heading = "Heading",
             subHeading = "Subheading",
-            viewState =
-                ResultsScreenViewState.Loaded.Error(
-                    error = IllegalStateException("Something went wrong"),
-                    isProductionBuild = false,
-                ),
+            viewState = ResultsScreenViewState.Loaded.Error(IllegalStateException("Something went wrong")),
             onNavigateBack = {},
         )
     }

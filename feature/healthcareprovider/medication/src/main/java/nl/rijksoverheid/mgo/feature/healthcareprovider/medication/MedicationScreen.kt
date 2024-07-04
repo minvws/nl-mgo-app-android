@@ -49,7 +49,7 @@ internal fun MedicationScreenLoadingPreview() {
     MgoTheme {
         MedicationScreenContent(
             providerName = "UMC Groningen",
-            viewState = MedicationScreenViewState.Loading,
+            viewState = MedicationScreenViewState.initialState,
             onNavigateBack = {},
         )
     }
@@ -61,7 +61,12 @@ internal fun MedicationScreenMedicationsPreview() {
     MgoTheme {
         MedicationScreenContent(
             providerName = "UMC Groningen",
-            viewState = MedicationScreenViewState.Success(listOf(TEST_MGO_MEDICATION, TEST_MGO_MEDICATION)),
+            viewState =
+                MedicationScreenViewState(
+                    loading = false,
+                    medications = listOf(TEST_MGO_MEDICATION, TEST_MGO_MEDICATION),
+                    error = null,
+                ),
             onNavigateBack = {},
         )
     }
@@ -73,7 +78,12 @@ internal fun MedicationScreenErrorPreview() {
     MgoTheme {
         MedicationScreenContent(
             providerName = "UMC Groningen",
-            viewState = MedicationScreenViewState.Error(isProductionBuild = true, error = IllegalStateException("Something went wrong")),
+            viewState =
+                MedicationScreenViewState(
+                    loading = false,
+                    medications = listOf(),
+                    error = null,
+                ),
             onNavigateBack = {},
         )
     }
@@ -81,12 +91,13 @@ internal fun MedicationScreenErrorPreview() {
 
 @Composable
 private fun MedicationScreenViewState.toResultsScreenViewState(): ResultsScreenViewState {
-    return when (this) {
-        MedicationScreenViewState.Loading -> ResultsScreenViewState.Loading
-        is MedicationScreenViewState.Success -> {
-            ResultsScreenViewState.Loaded.Success(cardItems = medications.map { medication -> medication.toCollapsableCardItem() })
+    return when {
+        loading -> ResultsScreenViewState.Loading
+        error != null -> ResultsScreenViewState.Loaded.Error(error = error)
+        else -> {
+            val cardItems = medications.map { medication -> medication.toCollapsableCardItem() }
+            ResultsScreenViewState.Loaded.Success(cardItems = cardItems)
         }
-        is MedicationScreenViewState.Error -> ResultsScreenViewState.Loaded.Error(error = error, isProductionBuild = isProductionBuild)
     }
 }
 

@@ -12,6 +12,7 @@ internal class DefaultMedicationRepository
         override suspend fun getMedications(): Result<List<MgoMedication>> {
             val result = executeNetworkRequest { dvaApi.medicationStatement() }
             return result.mapCatching { statements ->
+                error("Something went wrong")
                 statements.map { statement ->
                     statement.toMedication()
                 }

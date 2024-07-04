@@ -16,6 +16,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
             apply(AndroidConventionsPlugin::class.java)
             apply(AndroidUiPlugin::class.java)
             apply(LintPlugin::class.java)
+            apply(LokalisePlugin::class.java)
         }
     }
 

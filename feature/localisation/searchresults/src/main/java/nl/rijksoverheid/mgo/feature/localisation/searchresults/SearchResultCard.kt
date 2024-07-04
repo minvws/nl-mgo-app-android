@@ -57,7 +57,7 @@ fun SearchResultCard(
                 IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick(searchResult) }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_search_result_card_add),
-                        contentDescription = stringResource(id = CopyR.string.general_add),
+                        contentDescription = stringResource(id = CopyR.string.common_add).uppercase(),
                         tint = MaterialTheme.colors.primary,
                     )
                 }
@@ -76,7 +76,7 @@ private fun AddedText(modifier: Modifier = Modifier) {
             )
             Text(
                 modifier = Modifier.padding(start = 4.dp),
-                text = stringResource(id = CopyR.string.localisation_searchresults_list_item_already_added),
+                text = stringResource(id = CopyR.string.add_organization_already_added),
                 style = MaterialTheme.typography.bodySmall,
             )
         }

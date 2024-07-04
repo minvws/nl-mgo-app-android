@@ -36,8 +36,8 @@ private fun MedicationScreenContent(
     onNavigateBack: () -> Unit,
 ) {
     ResultsScreen(
-        heading = stringResource(id = CopyR.string.medication_title),
-        subHeading = stringResource(id = CopyR.string.medication_subtitle, providerName),
+        heading = stringResource(id = CopyR.string.medication_use_heading),
+        subHeading = stringResource(id = CopyR.string.medication_use_subheading, providerName),
         viewState = viewState.toResultsScreenViewState(),
         onNavigateBack = onNavigateBack,
     )
@@ -97,19 +97,19 @@ private fun MgoMedication.toCollapsableCardItem(): CollapsableCardItem {
         properties =
             listOf(
                 CollapsableCardProperty(
-                    heading = stringResource(id = CopyR.string.healthcareprovider_card_instructions_header),
+                    heading = stringResource(id = CopyR.string.fhir_instructions),
                     value = instructions ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = CopyR.string.healthcareprovider_card_start_date_header),
+                    heading = stringResource(id = CopyR.string.fhir_startDate),
                     value = startDate ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = CopyR.string.healthcareprovider_card_start_prescribed_by_header),
+                    heading = stringResource(id = CopyR.string.fhir_prescribedBy),
                     value = prescribedBy ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = CopyR.string.healthcareprovider_card_start_status_header),
+                    heading = stringResource(id = CopyR.string.fhir_status),
                     value = status ?: "",
                 ),
             ),

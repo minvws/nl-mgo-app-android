@@ -33,7 +33,7 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                buttonText = stringResource(id = CopyR.string.config_old_version_button),
+                buttonText = stringResource(id = CopyR.string.update_required_download),
                 onButtonClick = { "https://play.google.com/store/apps/details?id=$packageName".launchBrowser(context) },
             ) {
                 Image(
@@ -47,13 +47,13 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
 
                 Text(
                     modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = CopyR.string.config_old_version_title),
+                    text = stringResource(id = CopyR.string.update_required_heading),
                     style = MaterialTheme.typography.headingMedium,
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.config_old_version_subtitle),
+                    text = stringResource(id = CopyR.string.update_required_subheading),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

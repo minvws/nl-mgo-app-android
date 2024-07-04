@@ -71,7 +71,7 @@ private fun RemoveProviderScreenContent(
                     IconButton(onClick = { onNavigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.general_previous),
+                            contentDescription = stringResource(id = CopyR.string.common_previous),
                         )
                     }
                 },
@@ -82,8 +82,8 @@ private fun RemoveProviderScreenContent(
                 modifier =
                     Modifier
                         .padding(innerPadding),
-                buttonText = stringResource(id = CopyR.string.remove_provider_positive_button),
-                secondaryButtonText = stringResource(id = CopyR.string.remove_provider_negative_button),
+                buttonText = stringResource(id = CopyR.string.remove_organization_heading),
+                secondaryButtonText = stringResource(id = CopyR.string.remove_organization_subheading),
                 onButtonClick = onNavigateBack,
                 onSecondaryButtonClick = onDeleteProvider,
             ) {
@@ -108,14 +108,14 @@ private fun RemoveProviderScreenContent(
 
                 Text(
                     modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = CopyR.string.remove_provider_title, providerName),
+                    text = stringResource(id = CopyR.string.remove_organization_yes_delete, providerName),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.remove_provider_subtitle, providerName),
+                    text = stringResource(id = CopyR.string.remove_organization_no_cancel, providerName),
                     style = MaterialTheme.typography.bodyDefault,
                 )
             }

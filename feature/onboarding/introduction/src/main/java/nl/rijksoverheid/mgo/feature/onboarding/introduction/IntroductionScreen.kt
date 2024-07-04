@@ -31,7 +31,7 @@ fun IntroductionScreen(onNavigateToPrivacyOverview: () -> Unit) {
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                buttonText = stringResource(id = CopyR.string.general_next),
+                buttonText = stringResource(id = CopyR.string.common_next),
                 onButtonClick = onNavigateToPrivacyOverview,
             ) {
                 Image(
@@ -46,14 +46,14 @@ fun IntroductionScreen(onNavigateToPrivacyOverview: () -> Unit) {
 
                 Text(
                     modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = CopyR.string.introduction_title),
+                    text = stringResource(id = CopyR.string.introduction_heading),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.introduction_subtitle),
+                    text = stringResource(id = CopyR.string.introduction_subheading),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

@@ -38,7 +38,7 @@ internal fun RemoveHealthCareProviderCard(
                     .padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                val category = provider.category ?: stringResource(id = CopyR.string.general_unknown)
+                val category = provider.category ?: stringResource(id = CopyR.string.common_unknown)
                 Text(text = category, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 Text(text = provider.name, style = MaterialTheme.typography.bodySmall)
                 val address = provider.address
@@ -49,7 +49,7 @@ internal fun RemoveHealthCareProviderCard(
             IconButton(onClick = { onClick(provider) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_remove_healthcare_provider_card_remove),
-                    contentDescription = stringResource(id = CopyR.string.general_remove),
+                    contentDescription = stringResource(id = CopyR.string.common_delete).uppercase(),
                     tint = MaterialTheme.colors.iconsPrimary(),
                 )
             }

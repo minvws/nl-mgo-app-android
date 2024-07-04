@@ -26,7 +26,7 @@ internal class DefaultMedicationRepositoryTest {
 
             // When
             val repository = getRepository()
-            val result = repository.getMedications()
+            val result = repository.getMedications("https://www.google.nl")
 
             // Then
             assertTrue(result.getOrNull()?.firstOrNull() is MgoMedication)
@@ -40,7 +40,7 @@ internal class DefaultMedicationRepositoryTest {
 
             // When
             val repository = getRepository()
-            val result = repository.getMedications()
+            val result = repository.getMedications("https://www.google.nl")
 
             // Then
             assertEquals(false, result.isSuccess)

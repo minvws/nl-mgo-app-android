@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.navigation.healthcareprovider
 
 import androidx.navigation.NavBackStackEntry
+import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_NAME
 import nl.rijksoverheid.mgo.navigation.NavigationScreen
 
 sealed class HealthCareProviderNavigationScreen(override val name: String, override val placeholders: List<String> = listOf()) :
@@ -65,14 +66,13 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object Medication : HealthCareProviderNavigationScreen(name = "medication", placeholders = listOf("providerName")) {
+    data object Medication : HealthCareProviderNavigationScreen(
+        name = "medication",
+        placeholders = listOf(MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_NAME),
+    ) {
         fun setProviderName(name: String): Medication {
             builder.addArgument(placeholders[0], name)
             return this
-        }
-
-        fun getProviderName(backStackEntry: NavBackStackEntry): String {
-            return requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
         }
     }
 

@@ -16,14 +16,10 @@ import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun MedicationScreen(
-    providerName: String,
-    onNavigateBack: () -> Unit,
-) {
+fun MedicationScreen(onNavigateBack: () -> Unit) {
     val viewModel: MedicationScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
     MedicationScreenContent(
-        providerName = providerName,
         viewState = viewState,
         onNavigateBack = onNavigateBack,
     )
@@ -31,13 +27,12 @@ fun MedicationScreen(
 
 @Composable
 private fun MedicationScreenContent(
-    providerName: String,
     viewState: MedicationScreenViewState,
     onNavigateBack: () -> Unit,
 ) {
     ResultsScreen(
         heading = stringResource(id = CopyR.string.medication_title),
-        subHeading = stringResource(id = CopyR.string.medication_subtitle, providerName),
+        subHeading = stringResource(id = CopyR.string.medication_subtitle, viewState.providerName),
         viewState = viewState.toResultsScreenViewState(),
         onNavigateBack = onNavigateBack,
     )
@@ -48,8 +43,7 @@ private fun MedicationScreenContent(
 internal fun MedicationScreenLoadingPreview() {
     MgoTheme {
         MedicationScreenContent(
-            providerName = "UMC Groningen",
-            viewState = MedicationScreenViewState.initialState,
+            viewState = MedicationScreenViewState.initialState("UMC Groningen"),
             onNavigateBack = {},
         )
     }
@@ -60,9 +54,9 @@ internal fun MedicationScreenLoadingPreview() {
 internal fun MedicationScreenMedicationsPreview() {
     MgoTheme {
         MedicationScreenContent(
-            providerName = "UMC Groningen",
             viewState =
                 MedicationScreenViewState(
+                    providerName = "UMC Groningen",
                     loading = false,
                     medications = listOf(TEST_MGO_MEDICATION, TEST_MGO_MEDICATION),
                     error = null,
@@ -77,9 +71,9 @@ internal fun MedicationScreenMedicationsPreview() {
 internal fun MedicationScreenErrorPreview() {
     MgoTheme {
         MedicationScreenContent(
-            providerName = "UMC Groningen",
             viewState =
                 MedicationScreenViewState(
+                    providerName = "UMC Groningen",
                     loading = false,
                     medications = listOf(),
                     error = null,

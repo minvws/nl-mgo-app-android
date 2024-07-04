@@ -32,8 +32,8 @@ private fun LaboratoryTestResultScreenContent(
     onNavigateBack: () -> Unit,
 ) {
     ResultsScreen(
-        heading = stringResource(id = CopyR.string.laboratoryTestResult_title),
-        subHeading = stringResource(id = CopyR.string.laboratoryTestResult_subtitle),
+        heading = stringResource(id = CopyR.string.lab_results_heading),
+        subHeading = stringResource(id = CopyR.string.lab_results_subheading),
         viewState = viewState.toResultsScreenViewState(),
         onNavigateBack = onNavigateBack,
     )
@@ -103,39 +103,39 @@ private fun MgoLaboratoryTestResult.toCollapsableCardItem(): CollapsableCardItem
         properties =
             listOf(
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_test_code),
+                    heading = stringResource(id = R.string.fhir_code),
                     value = code ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_test_result_status),
+                    heading = stringResource(id = R.string.fhir_status),
                     value = status ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_test_date),
+                    heading = stringResource(id = R.string.fhir_dateTime),
                     value = dateTime ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_test_result),
+                    heading = stringResource(id = R.string.fhir_result),
                     value = result ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_reference_lower_limit),
+                    heading = stringResource(id = R.string.fhir_referenceRangeLow),
                     value = referenceRangeLow ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_reference_upper_limit),
+                    heading = stringResource(id = R.string.fhir_referenceRangeHigh),
                     value = referenceRangeHigh ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_reference_interpretation_flags),
+                    heading = stringResource(id = R.string.fhir_interpretation),
                     value = interpretation ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_reference_sample_material),
+                    heading = stringResource(id = R.string.fhir_specimen),
                     value = specimen ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_reference_sampling_date),
+                    heading = stringResource(id = R.string.fhir_collectionDateTime),
                     value = collectionDateTime ?: "",
                 ),
             ),

@@ -26,7 +26,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
-import nl.rijksoverheid.mgo.component.theme.composable.MgoSpannableText
+import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -64,7 +64,7 @@ internal fun PrivacyOverviewScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.general_previous),
+                            contentDescription = stringResource(id = CopyR.string.common_previous),
                         )
                     }
                 },
@@ -73,42 +73,42 @@ internal fun PrivacyOverviewScreenContent(
         content = { innerPadding ->
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
-                buttonText = stringResource(id = CopyR.string.general_next),
+                buttonText = stringResource(id = CopyR.string.common_next),
                 onButtonClick = { onClickNext.invoke() },
             ) {
                 Text(
-                    text = stringResource(id = CopyR.string.privacy_overview_title),
+                    text = stringResource(id = CopyR.string.proposition_heading),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
-                MgoSpannableText(
+                MgoHtmlText(
                     modifier =
                         Modifier
                             .padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.privacy_overview_subtitle, url),
+                    html = stringResource(id = CopyR.string.proposition_subheading, url),
                     style = MaterialTheme.typography.bodySmall,
                     linkColor = MaterialTheme.colors.actionTertiaryDefault(),
-                    onUrlClick = { url -> url.launchBrowser(context) },
+                    onLinkClicked = { url -> url.launchBrowser(context) },
                 )
                 ListItem(
                     modifier = Modifier.padding(top = 16.dp),
                     icon = R.drawable.ic_privacy_overview_encrypted,
-                    text = stringResource(id = nl.rijksoverheid.mgo.framework.copy.R.string.privacy_overview_item_1),
+                    text = stringResource(id = CopyR.string.proposition_statement_1),
                 )
                 ListItem(
                     modifier = Modifier.padding(top = 24.dp),
                     icon = R.drawable.ic_privacy_overview_health_and_safety,
-                    text = stringResource(id = nl.rijksoverheid.mgo.framework.copy.R.string.privacy_overview_item_2),
+                    text = stringResource(id = CopyR.string.proposition_statement_2),
                 )
                 ListItem(
                     modifier = Modifier.padding(top = 24.dp),
                     icon = R.drawable.ic_privacy_overview_verified_user,
-                    text = stringResource(id = nl.rijksoverheid.mgo.framework.copy.R.string.privacy_overview_item_3),
+                    text = stringResource(id = CopyR.string.proposition_statement_3),
                 )
                 ListItem(
                     modifier = Modifier.padding(top = 24.dp),
                     icon = R.drawable.ic_privacy_overview_gpp_bad,
-                    text = stringResource(id = nl.rijksoverheid.mgo.framework.copy.R.string.privacy_overview_item_4),
+                    text = stringResource(id = CopyR.string.proposition_statement_4),
                 )
             }
         },
@@ -123,9 +123,9 @@ private fun ListItem(
 ) {
     Row(modifier = modifier) {
         Image(painter = painterResource(id = icon), contentDescription = null)
-        MgoSpannableText(
+        MgoHtmlText(
             modifier = Modifier.padding(horizontal = 16.dp),
-            text = text,
+            html = text,
             style = MaterialTheme.typography.bodySmall,
         )
     }
@@ -136,7 +136,7 @@ private fun ListItem(
 internal fun PrivacyOverviewScreenPreview() {
     MgoTheme {
         PrivacyOverviewScreenContent(
-            url = "",
+            url = "https://www.google.nl",
             onNavigateBack = {},
             onClickNext = {},
         )

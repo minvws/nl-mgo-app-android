@@ -32,8 +32,8 @@ private fun ConcernScreenContent(
     onNavigateBack: () -> Unit,
 ) {
     ResultsScreen(
-        heading = stringResource(id = CopyR.string.concern_title),
-        subHeading = stringResource(id = CopyR.string.concern_subtitle),
+        heading = stringResource(id = CopyR.string.problems_heading),
+        subHeading = stringResource(id = CopyR.string.problems_subheading),
         viewState = viewState.toResultsScreenViewState(),
         onNavigateBack = onNavigateBack,
     )
@@ -91,27 +91,27 @@ private fun MgoConcern.toCollapsableCardItem(): CollapsableCardItem {
         properties =
             listOf(
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_category_header),
+                    heading = stringResource(id = R.string.fhir_category),
                     value = category ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_start_status_header),
+                    heading = stringResource(id = R.string.fhir_clinicalStatus),
                     value = clinicalStatus ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_begin_date_header),
+                    heading = stringResource(id = R.string.fhir_startDate),
                     value = startDate ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_end_date_header),
+                    heading = stringResource(id = R.string.fhir_endDate),
                     value = endDate ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_body_location_header),
+                    heading = stringResource(id = R.string.fhir_bodyLocation),
                     value = bodyLocation ?: "",
                 ),
                 CollapsableCardProperty(
-                    heading = stringResource(id = R.string.healthcareprovider_card_comment_header),
+                    heading = stringResource(id = R.string.fhir_comment),
                     value = comment ?: "",
                 ),
             ),

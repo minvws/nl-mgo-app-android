@@ -55,7 +55,7 @@ fun ResultsScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.general_previous),
+                            contentDescription = stringResource(id = CopyR.string.common_previous),
                         )
                     }
                 },
@@ -172,7 +172,7 @@ private fun ResultsLoading(modifier: Modifier = Modifier) {
             )
             Text(
                 modifier = Modifier.padding(top = 20.dp),
-                text = stringResource(id = CopyR.string.general_loading),
+                text = stringResource(id = CopyR.string.common_loading),
                 style = MaterialTheme.typography.bodySmall,
             )
         }
@@ -193,13 +193,13 @@ private fun ResultsEmpty(modifier: Modifier = Modifier) {
 
             Text(
                 modifier = Modifier.padding(top = 24.dp),
-                text = stringResource(id = CopyR.string.healthcareprovider_card_empty_title),
+                text = stringResource(id = CopyR.string.common_no_results_heading),
                 style = MaterialTheme.typography.headingSmall,
             )
 
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = stringResource(id = CopyR.string.healthcareprovider_card_empty_subtitle),
+                text = stringResource(id = CopyR.string.common_no_results_subheading),
                 style = MaterialTheme.typography.bodySmall,
             )
         }
@@ -223,13 +223,13 @@ private fun ResultsError(
 
             Text(
                 modifier = Modifier.padding(top = 24.dp),
-                text = stringResource(id = CopyR.string.healthcareprovider_card_error_title),
+                text = stringResource(id = CopyR.string.common_error_heading),
                 style = MaterialTheme.typography.headingSmall,
             )
 
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = stringResource(id = CopyR.string.healthcareprovider_card_error_subtitle),
+                text = stringResource(id = CopyR.string.common_error_subheading),
                 style = MaterialTheme.typography.bodySmall,
             )
             MgoDebugErrorButton(error = error)

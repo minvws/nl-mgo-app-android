@@ -67,7 +67,7 @@ private fun OverviewScreenContent(
             contentPadding = PaddingValues(bottom = 16.dp),
             buttonText =
                 stringResource(
-                    id = CopyR.string.dashboard_overview_button,
+                    id = CopyR.string.overview_add_organization,
                 ),
             onButtonClick =
             onNavigateToLocalisation,
@@ -104,11 +104,11 @@ private fun Header(
     Row(modifier = modifier.padding(horizontal = 16.dp)) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = stringResource(id = CopyR.string.dashboard_overview_title),
+                text = stringResource(id = CopyR.string.overview_heading),
                 style = MaterialTheme.typography.headingLarge,
             )
             val subtitleResource =
-                if (hasProviders) CopyR.string.dashboard_overview_subtitle else CopyR.string.dashboard_overview_subtitle_empty
+                if (hasProviders) CopyR.string.overview_subheading else CopyR.string.overview_no_organizations_found
             Text(
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(id = subtitleResource),
@@ -128,7 +128,7 @@ private fun HealthCareProviderCard(
 ) {
     MgoCard(modifier = modifier.testTag(TEST_TAG_HEALTH_PROVIDER_CARD)) {
         Column(modifier = Modifier.padding(16.dp)) {
-            val category = provider.category ?: stringResource(id = CopyR.string.general_unknown)
+            val category = provider.category ?: stringResource(id = CopyR.string.common_unknown)
             Text(text = provider.name, style = MaterialTheme.typography.bodyDefault, fontWeight = FontWeight.Bold)
             Text(modifier = Modifier.padding(top = 4.dp), text = category, style = MaterialTheme.typography.bodySmall)
         }

@@ -62,7 +62,7 @@ fun HealthCareProviderDetailsScreen(
                     IconButton(onClick = { onNavigateBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.general_previous),
+                            contentDescription = stringResource(id = CopyR.string.common_previous),
                         )
                     }
                 },
@@ -94,8 +94,8 @@ fun HealthCareProviderDetailsScreen(
                             .clickable { onNavigateToMedication(provider) },
                     icon = R.drawable.ic_medicine,
                     iconCircleColor = MaterialTheme.colors.supportVerpleeghuis(),
-                    title = CopyR.string.healthcareprovider_details_list_item_medicine_title,
-                    subtitle = CopyR.string.healthcareprovider_details_list_item_medicine_subtitle,
+                    title = CopyR.string.organization_medicine_heading,
+                    subtitle = CopyR.string.organization_medicine_subheading,
                 )
 
                 DetailRow(
@@ -105,8 +105,8 @@ fun HealthCareProviderDetailsScreen(
                             .clickable { onNavigateToConcern() },
                     icon = R.drawable.ic_complaints,
                     iconCircleColor = MaterialTheme.colors.supportTandarts(),
-                    title = CopyR.string.healthcareprovider_details_list_item_complaints_title,
-                    subtitle = CopyR.string.healthcareprovider_details_list_item_complaints_subtitle,
+                    title = CopyR.string.organization_diagnosis_heading,
+                    subtitle = CopyR.string.organization_diagnosis_subheading,
                 )
 
                 DetailRow(
@@ -116,13 +116,13 @@ fun HealthCareProviderDetailsScreen(
                             .clickable { onNavigateToLaboratoryTestResult() },
                     icon = R.drawable.ic_results,
                     iconCircleColor = MaterialTheme.colors.supportFysiotherapeut(),
-                    title = CopyR.string.healthcareprovider_details_list_item_results_title,
-                    subtitle = CopyR.string.healthcareprovider_details_list_item_results_subtitle,
+                    title = CopyR.string.organization_lab_results_heading,
+                    subtitle = CopyR.string.organization_lab_results_subheading,
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                    text = stringResource(id = CopyR.string.general_settings),
+                    text = stringResource(id = CopyR.string.common_settings),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colors.contentTertiary(),
                 )
@@ -134,8 +134,8 @@ fun HealthCareProviderDetailsScreen(
                             .clickable { onNavigateToRemoveProvider() },
                     icon = R.drawable.ic_delete,
                     iconCircleColor = MaterialTheme.colors.notificationError(),
-                    title = CopyR.string.healthcareprovider_details_list_item_remove_title,
-                    subtitle = CopyR.string.healthcareprovider_details_list_item_remove_subtitle,
+                    title = CopyR.string.organization_remove_organization_heading,
+                    subtitle = CopyR.string.organization_remove_organization_subheading,
                 )
             }
         },

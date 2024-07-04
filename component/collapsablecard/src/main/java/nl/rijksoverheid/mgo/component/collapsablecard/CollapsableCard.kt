@@ -70,13 +70,13 @@ private fun CollapsableCardContent(
                                 stringResource(
                                     id =
                                         CopyR.string
-                                            .healthcareprovider_card_collapsed_arrow_content_description,
+                                            .common_voice_over_collapsed,
                                 )
                             } else {
                                 stringResource(
                                     id =
                                         CopyR.string
-                                            .healthcareprovider_card_expanded_arrow_content_description,
+                                            .common_voice_over_expanded,
                                 )
                             },
                     )

@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.data.localisation)
     implementation(projects.data.medication)
     implementation(projects.framework.environment)
     implementation(projects.framework.navigation)

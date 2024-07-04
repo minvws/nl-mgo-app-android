@@ -9,8 +9,8 @@ import javax.inject.Inject
 internal class DefaultMedicationRepository
     @Inject
     constructor(private val dvaApi: DvaApi) : MedicationRepository {
-        override suspend fun getMedications(): Result<List<MgoMedication>> {
-            val result = executeNetworkRequest { dvaApi.medicationStatement() }
+        override suspend fun getMedications(resourceEndpoint: String): Result<List<MgoMedication>> {
+            val result = executeNetworkRequest { dvaApi.medicationStatement(resourceEndpoint) }
             return result.mapCatching { statements ->
                 statements.map { statement ->
                     statement.toMedication()

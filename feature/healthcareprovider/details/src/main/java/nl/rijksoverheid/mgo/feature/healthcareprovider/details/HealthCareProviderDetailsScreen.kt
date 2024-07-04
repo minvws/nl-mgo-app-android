@@ -39,14 +39,15 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.supportFysiotherapeut
 import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun HealthCareProviderDetailsScreen(
-    providerName: String,
-    providerCategory: String,
+    provider: HealthCareProvider,
     onNavigateBack: () -> Unit,
-    onNavigateToMedication: (providerName: String) -> Unit,
+    onNavigateToMedication: (provider: HealthCareProvider) -> Unit,
     onNavigateToConcern: () -> Unit,
     onNavigateToLaboratoryTestResult: () -> Unit,
     onNavigateToRemoveProvider: () -> Unit,
@@ -75,14 +76,14 @@ fun HealthCareProviderDetailsScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = providerName,
+                    text = provider.name,
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
 
                 Text(
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    text = providerCategory,
+                    text = provider.category ?: "",
                     style = MaterialTheme.typography.bodySmall,
                 )
 
@@ -90,7 +91,7 @@ fun HealthCareProviderDetailsScreen(
                     modifier =
                         Modifier
                             .padding(top = 24.dp)
-                            .clickable { onNavigateToMedication(providerName) },
+                            .clickable { onNavigateToMedication(provider) },
                     icon = R.drawable.ic_medicine,
                     iconCircleColor = MaterialTheme.colors.supportVerpleeghuis(),
                     title = CopyR.string.healthcareprovider_details_list_item_medicine_title,
@@ -182,8 +183,7 @@ private fun DetailRow(
 internal fun HealthCareProviderDetailsScreenPreview() {
     MgoTheme {
         HealthCareProviderDetailsScreen(
-            providerName = "UMC Ziekenhuis",
-            providerCategory = "Ziekenhuizen, medische centra en klinieken",
+            provider = TEST_HEALTH_CARE_PROVIDER,
             onNavigateBack = {},
             onNavigateToMedication = {},
             onNavigateToConcern = {},

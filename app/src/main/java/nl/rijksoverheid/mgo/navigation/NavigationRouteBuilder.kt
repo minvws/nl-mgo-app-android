@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.navigation
 
+import android.net.Uri
+
 data class NavigationRouteBuilder(val name: String, val placeholders: List<String>) {
     private var arguments: MutableMap<String, String?> = mutableMapOf()
 
@@ -16,12 +18,13 @@ data class NavigationRouteBuilder(val name: String, val placeholders: List<Strin
         arguments[key] = value
     }
 
-    fun buildRoute(): String {
-        return buildString {
-            append(name)
-            arguments.values.forEach { argument ->
-                append("/$argument")
+    fun buildRoute(): String =
+        buildString {
+            val uriBuilder = Uri.Builder()
+            uriBuilder.appendPath(name)
+            arguments.forEach { entry ->
+                uriBuilder.appendQueryParameter(entry.key, entry.value.toString())
             }
+            append(uriBuilder.build().toString())
         }
-    }
 }

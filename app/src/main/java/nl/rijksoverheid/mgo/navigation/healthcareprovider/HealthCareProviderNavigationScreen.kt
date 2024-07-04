@@ -1,7 +1,10 @@
 package nl.rijksoverheid.mgo.navigation.healthcareprovider
 
 import androidx.navigation.NavBackStackEntry
-import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_NAME
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_JSON
+import nl.rijksoverheid.mgo.framework.test.jsonStringToObject
+import nl.rijksoverheid.mgo.framework.test.toJsonString
 import nl.rijksoverheid.mgo.navigation.NavigationScreen
 
 sealed class HealthCareProviderNavigationScreen(override val name: String, override val placeholders: List<String> = listOf()) :
@@ -13,33 +16,17 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
 
     data object Details : HealthCareProviderNavigationScreen(
         name = "healthcareprovider-details",
-        placeholders = listOf("providerId", "providerName", "providerCategory"),
+        placeholders = listOf("providerJson"),
     ) {
-        fun setProviderId(id: String): Details {
-            builder.addArgument(placeholders[0], id)
+        fun setProvider(provider: HealthCareProvider): Details {
+            val providerJson = provider.toJsonString()
+            builder.addArgument(placeholders[0], providerJson)
             return this
         }
 
-        fun setProviderName(name: String): Details {
-            builder.addArgument(placeholders[1], name)
-            return this
-        }
-
-        fun setProviderCategory(category: String): Details {
-            builder.addArgument(placeholders[2], category)
-            return this
-        }
-
-        fun getProviderId(backStackEntry: NavBackStackEntry): String {
-            return requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
-        }
-
-        fun getProviderName(backStackEntry: NavBackStackEntry): String {
-            return requireNotNull(backStackEntry.arguments?.getString(placeholders[1]))
-        }
-
-        fun getProviderCategory(backStackEntry: NavBackStackEntry): String {
-            return requireNotNull(backStackEntry.arguments?.getString(placeholders[2]))
+        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+            val json = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
+            return json.jsonStringToObject()
         }
     }
 
@@ -68,10 +55,11 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
 
     data object Medication : HealthCareProviderNavigationScreen(
         name = "medication",
-        placeholders = listOf(MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_NAME),
+        placeholders = listOf(MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_JSON),
     ) {
-        fun setProviderName(name: String): Medication {
-            builder.addArgument(placeholders[0], name)
+        fun setProvider(provider: HealthCareProvider): Medication {
+            val providerJson = provider.toJsonString()
+            builder.addArgument(placeholders[0], providerJson)
             return this
         }
     }

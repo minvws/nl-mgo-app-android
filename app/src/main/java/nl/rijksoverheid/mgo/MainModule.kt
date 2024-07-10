@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo
 
 import android.content.Context
+import com.scottyab.rootbeer.RootBeer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -63,5 +64,15 @@ internal object MainModule {
                 else -> AppFlavor.TEST
             }
         return DefaultAppInfo(versionCode = BuildConfig.VERSION_CODE, appFlavor = appFlavor)
+    }
+
+    @Provides
+    @Singleton
+    @Named("deviceRooted")
+    fun provideDeviceRooted(
+        @ApplicationContext context: Context,
+    ): Boolean {
+        val rootBeer = RootBeer(context)
+        return rootBeer.isRooted
     }
 }

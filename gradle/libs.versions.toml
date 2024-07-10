@@ -40,6 +40,7 @@ jacoco-tool = "0.8.12"
 fhir-stdu3 = "7.2.0"
 lokalise = "5.2.0"
 json = "20210307"
+rootbeer = "0.1.0"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -85,6 +86,7 @@ espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents"
 fhir-stdu3 = { group = "ca.uhn.hapi.fhir", name = "hapi-fhir-structures-dstu3", version.ref = "fhir-stdu3" }
 lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "lokalise" }
 json = { group = "org.json", name = "json", version.ref = "json" }
+rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

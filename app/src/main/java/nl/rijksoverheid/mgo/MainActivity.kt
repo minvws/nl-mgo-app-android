@@ -71,6 +71,9 @@ class MainActivity : ComponentActivity() {
                     ConfigState.NoAction -> {}
                     ConfigState.UpdateRequired -> navController.navigate(ConfigNavigationScreen.UpdateRequired.getNavigationRoute())
                 }
+
+                // Device rooted dialog
+                DeviceRootedDialog(show = viewModel.deviceRooted)
             }
         }
     }

@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.data.config.ConfigRepository
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -14,7 +15,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MainViewModel
     @Inject
-    constructor(private val hasSeenOnboarding: HasSeenOnboarding, private val configRepository: ConfigRepository) : ViewModel() {
+    constructor(
+        @Named("deviceRooted") val deviceRooted: Boolean,
+        private val hasSeenOnboarding: HasSeenOnboarding,
+        private val configRepository: ConfigRepository,
+    ) : ViewModel() {
         val configStateFlow =
             configRepository.configStateFlow.stateIn(
                 scope = viewModelScope,

@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.navigation.healthcareprovider
 
 import androidx.navigation.NavBackStackEntry
 import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_JSON
 import nl.rijksoverheid.mgo.framework.test.jsonStringToObject
 import nl.rijksoverheid.mgo.framework.test.toJsonString
 import nl.rijksoverheid.mgo.navigation.NavigationScreen
@@ -55,12 +54,17 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
 
     data object Medication : HealthCareProviderNavigationScreen(
         name = "medication",
-        placeholders = listOf(MEDICATION_SCREEN_VIEW_MODEL_PROVIDER_JSON),
+        placeholders = listOf("provider"),
     ) {
         fun setProvider(provider: HealthCareProvider): Medication {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
             return this
+        }
+
+        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+            val providerJson = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
+            return providerJson.jsonStringToObject()
         }
     }
 

@@ -11,13 +11,20 @@ import nl.rijksoverheid.mgo.component.results.ResultsScreen
 import nl.rijksoverheid.mgo.component.results.ResultsScreenViewState
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
 import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun MedicationScreen(onNavigateBack: () -> Unit) {
-    val viewModel: MedicationScreenViewModel = hiltViewModel()
+fun MedicationScreen(
+    provider: HealthCareProvider,
+    onNavigateBack: () -> Unit,
+) {
+    val viewModel =
+        hiltViewModel<MedicationScreenViewModel, MedicationScreenViewModel.Factory>(
+            creationCallback = { factory -> factory.create(provider) },
+        )
     val viewState by viewModel.viewState.collectAsState()
     MedicationScreenContent(
         viewState = viewState,

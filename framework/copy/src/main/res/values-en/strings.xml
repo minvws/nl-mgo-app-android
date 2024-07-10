@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
   <string name="add_organization.already_added">Deze zorgaanbieder heb je al toegevoegd</string>
-  <string name="add_organization.city">Plaats</string>
+  <string name="add_organization.city">Plaats (verplicht)</string>
   <string name="add_organization.error_missing_city">Vul een plaats in</string>
   <string name="add_organization.error_missing_name">Vul een naam in</string>
-  <string name="add_organization.name">Naam</string>
+  <string name="add_organization.name">Naam (verplicht)</string>
   <string name="organization_search.no_results_found_heading">Geen zorgaanbieders gevonden</string>
   <string name="organization_search.search_hint_1">Controleer de spelling.</string>
   <string name="organization_search.search_hint_2">Vul de juiste naam in. Je vindt deze op de rekening. Of vraag aan de zorgaanbieder hoe je hun naam schrijft.</string>
@@ -56,7 +56,7 @@
   <string name="organization.medicine_subheading">Voorgeschreven door je zorgaanbieder</string>
   <string name="organization_list.add_organization">Voeg een zorgaanbieder toe</string>
   <string name="organization_list.no_results_subheading">Je hebt nog geen zorgaanbieders toegevoegd aan deze lijst. Je kunt dit nu doen, of later via je profiel.</string>
-  <string name="organization_list.subheading">Je kunt deze lijst nu aanpassen of dit later in je profiel doen.</string>
+  <string name="organization_list.subheading">Je kunt zelf zorgaanbieders toevoegen of verwijderen. Dit kun je ook later in je profiel doen.</string>
   <string name="overview.heading">Goedemorgen</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>
@@ -67,10 +67,10 @@
   <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht jouw gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
   <string name="proposition.heading">Zo gebruikt de app jouw gegevens </string>
   <string name="overview.add_organization">Zorgaanbieder toevoegen </string>
-  <string name="update_required.heading">Je hebt een verouderde versie van de app</string>
-  <string name="update_required.subheading">Download een nieuwe versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>
+  <string name="update_required.heading">Je hebt een oude versie van de app</string>
+  <string name="update_required.subheading">Download de nieuwste versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>
   <string name="update_required.download">Nu downloaden</string>
-  <string name="common_settings">Instellingen</string>
+  <string name="common.settings">Instellingen</string>
   <string name="organization.remove_organization_heading">Zorgaanbieder verwijderen</string>
   <string name="organization.remove_organization_subheading">Deze zorgaanbieder niet meer tonen in de app</string>
   <string name="remove_organization.heading">%1$s verwijderen?</string>
@@ -95,4 +95,11 @@
   <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
   <string name="introduction.heading">Welkom in Mijn Gezondheidsoverzicht</string>
   <string name="overview.subheading">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
+  <string name="common.no">Nee</string>
+  <string name="common.yes">Ja</string>
+  <string name="common.cancel">Annuleren</string>
+  <string name="common.ok">OK</string>
+  <string name="common.failure_heading">Gegevens ophalen mislukt</string>
+  <string name="common.failure_subheading">Sorry, maar het lijkt erop dat we geen verbinding kunnen maken met ons systeem. Daardoor kunnen we je gegevens niet ophalen. We proberen het probleem op te lossen. Kom later nog eens terug.</string>
+  <string name="add_organization.not_participating">Deze zorgaanbieder doet niet mee</string>
 </resources>

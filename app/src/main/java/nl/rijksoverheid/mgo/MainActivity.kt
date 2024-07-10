@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.config.ConfigState
+import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
@@ -73,7 +74,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 // Device rooted dialog
-                DeviceRootedDialog(show = viewModel.deviceRooted)
+                DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
             }
         }
     }

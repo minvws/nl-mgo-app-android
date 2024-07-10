@@ -145,6 +145,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
             add("androidTestImplementation", versionCatalog.findLibrary("androidx.junit").get())
             add("androidTestImplementation", versionCatalog.findLibrary("androidx.test.runner").get())
             add("testImplementation", versionCatalog.findLibrary("okhttp.mockwebserver").get())
+            add("testImplementation", versionCatalog.findLibrary("mockk.android").get())
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())

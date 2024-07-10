@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo
+package nl.rijksoverheid.mgo.devicerooted
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
@@ -14,7 +14,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
-internal fun DeviceRootedDialog(show: Boolean) {
+fun DeviceRootedDialog(show: Boolean) {
     var showDialog by remember { mutableStateOf(show) }
     if (showDialog) {
         AlertDialog(

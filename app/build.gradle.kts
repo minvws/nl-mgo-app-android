@@ -102,6 +102,7 @@ dependencies {
     implementation(projects.framework.copy)
     implementation(projects.framework.environment)
     implementation(projects.framework.test)
+    implementation(projects.framework.storage)
 
     // ================================
     // DATA

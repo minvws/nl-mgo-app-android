@@ -7,9 +7,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import java.io.File
 import java.time.Clock
 import javax.inject.Named
@@ -68,11 +70,11 @@ internal object MainModule {
 
     @Provides
     @Singleton
-    @Named("deviceRooted")
-    fun provideDeviceRooted(
+    fun provideShowDeviceRootedDialog(
         @ApplicationContext context: Context,
-    ): Boolean {
+        keyValueStore: KeyValueStore,
+    ): ShowDeviceRootedDialog {
         val rootBeer = RootBeer(context)
-        return rootBeer.isRooted
+        return ShowDeviceRootedDialog(rootBeer = rootBeer, keyValueStore = keyValueStore)
     }
 }

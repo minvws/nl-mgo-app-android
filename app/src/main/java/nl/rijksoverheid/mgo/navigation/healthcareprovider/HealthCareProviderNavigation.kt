@@ -54,10 +54,12 @@ fun HealthCareProviderNavigation(
                     )
                 },
                 onNavigateToConcern = {
-                    navController.navigate(HealthCareProviderNavigationScreen.Concern.getNavigationRoute())
+                    navController.navigate(HealthCareProviderNavigationScreen.Concern.setProvider(provider).getNavigationRoute())
                 },
                 onNavigateToLaboratoryTestResult = {
-                    navController.navigate(HealthCareProviderNavigationScreen.LaboratoryTestResult.getNavigationRoute())
+                    navController.navigate(
+                        HealthCareProviderNavigationScreen.LaboratoryTestResult.setProvider(provider).getNavigationRoute(),
+                    )
                 },
                 onNavigateToRemoveProvider = {
                     navController.navigate(
@@ -93,16 +95,18 @@ fun HealthCareProviderNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Concern.getRoute()) {
+        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Concern.getRoute()) { backStackEntry ->
             ConcernScreen(
+                provider = HealthCareProviderNavigationScreen.Concern.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.LaboratoryTestResult.getRoute()) {
+        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.LaboratoryTestResult.getRoute()) { backStackEntry ->
             LaboratoryTestResultScreen(
+                provider = HealthCareProviderNavigationScreen.LaboratoryTestResult.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

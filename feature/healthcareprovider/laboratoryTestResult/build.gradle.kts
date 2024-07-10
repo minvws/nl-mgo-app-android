@@ -12,5 +12,6 @@ dependencies {
     implementation(projects.component.collapsablecard)
     implementation(projects.framework.navigation)
     implementation(projects.component.results)
+    implementation(projects.data.localisation)
     implementation(testFixtures(projects.data.laboratoryTestResult))
 }

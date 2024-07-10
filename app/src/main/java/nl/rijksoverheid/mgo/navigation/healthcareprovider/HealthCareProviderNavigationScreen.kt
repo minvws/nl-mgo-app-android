@@ -52,10 +52,7 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object Medication : HealthCareProviderNavigationScreen(
-        name = "medication",
-        placeholders = listOf("provider"),
-    ) {
+    data object Medication : HealthCareProviderNavigationScreen(name = "medication", placeholders = listOf("provider")) {
         fun setProvider(provider: HealthCareProvider): Medication {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
@@ -68,7 +65,32 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object Concern : HealthCareProviderNavigationScreen(name = "concern")
+    data object Concern : HealthCareProviderNavigationScreen(name = "concern", placeholders = listOf("provider")) {
+        fun setProvider(provider: HealthCareProvider): Concern {
+            val providerJson = provider.toJsonString()
+            builder.addArgument(placeholders[0], providerJson)
+            return this
+        }
 
-    data object LaboratoryTestResult : HealthCareProviderNavigationScreen(name = "laboratory-test-result")
+        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+            val providerJson = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
+            return providerJson.jsonStringToObject()
+        }
+    }
+
+    data object LaboratoryTestResult : HealthCareProviderNavigationScreen(
+        name = "laboratory-test-result",
+        placeholders = listOf("provider"),
+    ) {
+        fun setProvider(provider: HealthCareProvider): LaboratoryTestResult {
+            val providerJson = provider.toJsonString()
+            builder.addArgument(placeholders[0], providerJson)
+            return this
+        }
+
+        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+            val providerJson = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
+            return providerJson.jsonStringToObject()
+        }
+    }
 }

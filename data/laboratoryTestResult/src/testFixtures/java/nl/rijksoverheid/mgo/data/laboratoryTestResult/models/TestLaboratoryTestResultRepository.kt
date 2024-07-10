@@ -4,7 +4,7 @@ import nl.rijksoverheid.mgo.data.laboratoryTestResult.LaboratoryTestResultReposi
 
 class TestLaboratoryTestResultRepository(private val result: Result<List<MgoLaboratoryTestResult>>) :
     LaboratoryTestResultRepository {
-    override suspend fun getLaboratoryTestResults(): Result<List<MgoLaboratoryTestResult>> {
+    override suspend fun getLaboratoryTestResults(resourceEndpoint: String): Result<List<MgoLaboratoryTestResult>> {
         return result
     }
 }

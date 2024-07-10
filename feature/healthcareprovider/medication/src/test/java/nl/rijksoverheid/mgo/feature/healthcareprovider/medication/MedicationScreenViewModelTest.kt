@@ -1,36 +1,36 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.concern
+package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.concern.models.TEST_MGO_CONCERN
-import nl.rijksoverheid.mgo.data.concern.models.TestConcernRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
+import nl.rijksoverheid.mgo.data.medication.models.TestMedicationRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
-internal class ConcernScreenViewModelTest {
+internal class MedicationScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `Given concerns, When creating viewmodel, View state is updated`() =
+    fun `Given medications, When creating viewmodel, View state is updated`() =
         runTest {
             // Given
-            val concerns = listOf(TEST_MGO_CONCERN)
-            val concernRepository = TestConcernRepository(Result.success(concerns))
+            val medications = listOf(TEST_MGO_MEDICATION)
+            val testLaboratoryResultRepository = TestMedicationRepository(Result.success(medications))
 
             // When
             val viewModel =
-                ConcernScreenViewModel(
+                MedicationScreenViewModel(
                     provider = TEST_HEALTH_CARE_PROVIDER,
-                    concernRepository = concernRepository,
+                    medicationRepository = testLaboratoryResultRepository,
                 )
 
             // Then
             viewModel.viewState.test {
-                Assert.assertEquals(concerns, awaitItem().concerns)
+                Assert.assertEquals(medications, awaitItem().medications)
             }
         }
 
@@ -39,13 +39,13 @@ internal class ConcernScreenViewModelTest {
         runTest {
             // Given
             val error = IllegalStateException("something went wrong")
-            val concernRepository = TestConcernRepository(Result.failure(error))
+            val testLaboratoryResultRepository = TestMedicationRepository(Result.failure(error))
 
             // When
             val viewModel =
-                ConcernScreenViewModel(
+                MedicationScreenViewModel(
                     provider = TEST_HEALTH_CARE_PROVIDER,
-                    concernRepository = concernRepository,
+                    medicationRepository = testLaboratoryResultRepository,
                 )
 
             // Then

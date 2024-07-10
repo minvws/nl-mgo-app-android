@@ -26,7 +26,7 @@ internal class DefaultLaboratoryTestResultRepositoryTest {
 
             // When
             val repository = getRepository()
-            val result = repository.getLaboratoryTestResults()
+            val result = repository.getLaboratoryTestResults("")
 
             // Then
             assertTrue(result.getOrNull()?.firstOrNull() is MgoLaboratoryTestResult)
@@ -40,7 +40,7 @@ internal class DefaultLaboratoryTestResultRepositoryTest {
 
             // When
             val repository = getRepository()
-            val result = repository.getLaboratoryTestResults()
+            val result = repository.getLaboratoryTestResults("")
 
             // Then
             assertEquals(false, result.isSuccess)

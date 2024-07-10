@@ -9,8 +9,8 @@ import javax.inject.Inject
 internal class DefaultConcernRepository
     @Inject
     constructor(private val dvaApi: DvaApi) : ConcernRepository {
-        override suspend fun getConcerns(): Result<List<MgoConcern>> {
-            val result = executeNetworkRequest { dvaApi.condition() }
+        override suspend fun getConcerns(resourceEndpoint: String): Result<List<MgoConcern>> {
+            val result = executeNetworkRequest { dvaApi.condition(resourceEndpoint) }
             return result.mapCatching { statements ->
                 statements.map { statement ->
                     statement.toConcern()

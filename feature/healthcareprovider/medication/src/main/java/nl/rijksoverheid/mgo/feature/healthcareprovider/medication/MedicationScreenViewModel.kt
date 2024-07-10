@@ -2,43 +2,43 @@ package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.medication.MedicationRepository
-import nl.rijksoverheid.mgo.framework.environment.AppFlavor
-import nl.rijksoverheid.mgo.framework.environment.AppInfo
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
+@HiltViewModel(assistedFactory = MedicationScreenViewModel.Factory::class)
 class MedicationScreenViewModel
-    @Inject
+    @AssistedInject
     constructor(
-        private val appInfo: AppInfo,
+        @Assisted val provider: HealthCareProvider,
         private val medicationRepository: MedicationRepository,
-    ) : ViewModel
-        () {
-        private val _viewState: MutableStateFlow<MedicationScreenViewState> = MutableStateFlow(MedicationScreenViewState.Loading)
-        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, MedicationScreenViewState.Loading)
+    ) : ViewModel() {
+        @AssistedFactory
+        interface Factory {
+            fun create(provider: HealthCareProvider): MedicationScreenViewModel
+        }
+
+        private val initialState = MedicationScreenViewState.initialState(providerName = provider.name)
+        private val _viewState: MutableStateFlow<MedicationScreenViewState> = MutableStateFlow(initialState)
+        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {
             viewModelScope.launch {
-                _viewState.update { MedicationScreenViewState.Loading }
                 medicationRepository
-                    .getMedications()
+                    .getMedications(provider.resourceEndpoint)
                     .onSuccess { medications ->
-                        _viewState.update { MedicationScreenViewState.Success(medications) }
+                        _viewState.update { viewState -> viewState.copy(loading = false, medications = medications) }
                     }
-                    .onFailure { throwable ->
-                        _viewState.update {
-                            MedicationScreenViewState.Error(
-                                isProductionBuild = appInfo.appFlavor == AppFlavor.PROD,
-                                error = throwable,
-                            )
-                        }
+                    .onFailure { error ->
+                        _viewState.update { viewState -> viewState.copy(loading = false, error = error) }
                     }
             }
         }

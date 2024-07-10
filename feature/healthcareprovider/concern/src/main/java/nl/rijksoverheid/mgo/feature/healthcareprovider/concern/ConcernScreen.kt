@@ -13,12 +13,19 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.concern.models.MgoConcern
 import nl.rijksoverheid.mgo.data.concern.models.TEST_MGO_CONCERN
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun ConcernScreen(onNavigateBack: () -> Unit) {
-    val viewModel: ConcernScreenViewModel = hiltViewModel()
+fun ConcernScreen(
+    provider: HealthCareProvider,
+    onNavigateBack: () -> Unit,
+) {
+    val viewModel =
+        hiltViewModel<ConcernScreenViewModel, ConcernScreenViewModel.Factory>(
+            creationCallback = { factory -> factory.create(provider) },
+        )
     val viewState by viewModel.viewState.collectAsState()
     ConcernScreenContent(
         viewState = viewState,
@@ -44,7 +51,7 @@ private fun ConcernScreenContent(
 internal fun ConcernScreenLoadingPreview() {
     MgoTheme {
         ConcernScreenContent(
-            viewState = ConcernScreenViewState.Loading,
+            viewState = ConcernScreenViewState.initialState,
             onNavigateBack = {},
         )
     }
@@ -55,7 +62,7 @@ internal fun ConcernScreenLoadingPreview() {
 internal fun ConcernScreenConcernsPreview() {
     MgoTheme {
         ConcernScreenContent(
-            viewState = ConcernScreenViewState.Success(listOf(TEST_MGO_CONCERN, TEST_MGO_CONCERN)),
+            viewState = ConcernScreenViewState.initialState.copy(loading = false, concerns = listOf(TEST_MGO_CONCERN, TEST_MGO_CONCERN)),
             onNavigateBack = {},
         )
     }
@@ -66,7 +73,7 @@ internal fun ConcernScreenConcernsPreview() {
 internal fun ConcernScreenErrorPreview() {
     MgoTheme {
         ConcernScreenContent(
-            viewState = ConcernScreenViewState.Error(isProductionBuild = true, error = IllegalStateException("Something went wrong")),
+            viewState = ConcernScreenViewState.initialState.copy(loading = false, error = IllegalStateException("Something went wrong")),
             onNavigateBack = {},
         )
     }
@@ -74,13 +81,13 @@ internal fun ConcernScreenErrorPreview() {
 
 @Composable
 private fun ConcernScreenViewState.toResultsScreenViewState(): ResultsScreenViewState {
-    return when (this) {
-        ConcernScreenViewState.Loading -> ResultsScreenViewState.Loading
-        is ConcernScreenViewState.Success -> {
-            ResultsScreenViewState.Loaded.Success(cardItems = concerns.map { concern -> concern.toCollapsableCardItem() })
+    return when {
+        loading -> ResultsScreenViewState.Loading
+        error != null -> ResultsScreenViewState.Loaded.Error(error = error)
+        else -> {
+            val cardItems = concerns.map { concern -> concern.toCollapsableCardItem() }
+            ResultsScreenViewState.Loaded.Success(cardItems = cardItems)
         }
-
-        is ConcernScreenViewState.Error -> ResultsScreenViewState.Loaded.Error(error = error, isProductionBuild = isProductionBuild)
     }
 }
 

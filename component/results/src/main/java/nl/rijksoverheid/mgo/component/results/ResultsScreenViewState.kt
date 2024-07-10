@@ -8,6 +8,6 @@ sealed class ResultsScreenViewState {
     sealed class Loaded : ResultsScreenViewState() {
         data class Success(val cardItems: List<CollapsableCardItem>) : Loaded()
 
-        data class Error(val error: Throwable, val isProductionBuild: Boolean) : Loaded()
+        data class Error(val error: Throwable) : Loaded()
     }
 }

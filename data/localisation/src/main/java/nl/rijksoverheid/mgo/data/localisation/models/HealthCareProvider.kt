@@ -10,6 +10,7 @@ data class HealthCareProvider(
     val address: String?,
     val category: String?,
     val added: Boolean,
+    val resourceEndpoint: String,
 )
 
 val TEST_HEALTH_CARE_PROVIDER =
@@ -19,6 +20,7 @@ val TEST_HEALTH_CARE_PROVIDER =
         address = "Boorplatform 5\r\n1234AB Roermond",
         category = "Tandarts",
         added = false,
+        resourceEndpoint = "https://www.google.nl",
     )
 
 internal fun SearchResponse.Organization.toHealthCareProvider(added: Boolean): HealthCareProvider {
@@ -28,5 +30,6 @@ internal fun SearchResponse.Organization.toHealthCareProvider(added: Boolean): H
         address = addresses.firstOrNull()?.address,
         category = types.firstOrNull()?.displayName,
         added = added,
+        resourceEndpoint = dataServices.first { dataService -> dataService.id == 48 }.roles.first().resourceEndpoint,
     )
 }

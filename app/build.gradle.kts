@@ -96,6 +96,7 @@ dependencies {
 
     implementation(projects.framework.copy)
     implementation(projects.framework.environment)
+    implementation(projects.framework.test)
 
     // ================================
     // DATA
@@ -103,4 +104,5 @@ dependencies {
 
     implementation(projects.data.onboarding)
     implementation(projects.data.config)
+    implementation(projects.data.localisation)
 }

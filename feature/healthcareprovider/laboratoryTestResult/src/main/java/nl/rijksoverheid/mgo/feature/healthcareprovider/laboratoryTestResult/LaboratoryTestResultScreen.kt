@@ -13,12 +13,19 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.MgoLaboratoryTestResult
 import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.TEST_MGO_LABORATORY_TEST_RESULT
+import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun LaboratoryTestResultScreen(onNavigateBack: () -> Unit) {
-    val viewModel: LaboratoryTestResultScreenViewModel = hiltViewModel()
+fun LaboratoryTestResultScreen(
+    provider: HealthCareProvider,
+    onNavigateBack: () -> Unit,
+) {
+    val viewModel =
+        hiltViewModel<LaboratoryTestResultScreenViewModel, LaboratoryTestResultScreenViewModel.Factory>(
+            creationCallback = { factory -> factory.create(provider) },
+        )
     val viewState by viewModel.viewState.collectAsState()
     LaboratoryTestResultScreenContent(
         viewState = viewState,
@@ -44,7 +51,7 @@ private fun LaboratoryTestResultScreenContent(
 internal fun LaboratoryTestResultScreenLoadingPreview() {
     MgoTheme {
         LaboratoryTestResultScreenContent(
-            viewState = LaboratoryTestResultScreenViewState.Loading,
+            viewState = LaboratoryTestResultScreenViewState.initialState,
             onNavigateBack = {},
         )
     }
@@ -56,11 +63,13 @@ internal fun LaboratoryTestResultScreenTestResultsPreview() {
     MgoTheme {
         LaboratoryTestResultScreenContent(
             viewState =
-                LaboratoryTestResultScreenViewState.Success(
-                    listOf(
-                        TEST_MGO_LABORATORY_TEST_RESULT,
-                        TEST_MGO_LABORATORY_TEST_RESULT,
-                    ),
+                LaboratoryTestResultScreenViewState.initialState.copy(
+                    loading = false,
+                    testResults =
+                        listOf(
+                            TEST_MGO_LABORATORY_TEST_RESULT,
+                            TEST_MGO_LABORATORY_TEST_RESULT,
+                        ),
                 ),
             onNavigateBack = {},
         )
@@ -73,8 +82,8 @@ internal fun LaboratoryTestResultScreenErrorPreview() {
     MgoTheme {
         LaboratoryTestResultScreenContent(
             viewState =
-                LaboratoryTestResultScreenViewState.Error(
-                    isProductionBuild = true,
+                LaboratoryTestResultScreenViewState.initialState.copy(
+                    loading = false,
                     error = IllegalStateException("Something went wrong"),
                 ),
             onNavigateBack = {},
@@ -84,16 +93,13 @@ internal fun LaboratoryTestResultScreenErrorPreview() {
 
 @Composable
 private fun LaboratoryTestResultScreenViewState.toResultsScreenViewState(): ResultsScreenViewState {
-    return when (this) {
-        LaboratoryTestResultScreenViewState.Loading -> ResultsScreenViewState.Loading
-        is LaboratoryTestResultScreenViewState.Success -> {
-            ResultsScreenViewState.Loaded.Success(cardItems = testResults.map { testResult -> testResult.toCollapsableCardItem() })
+    return when {
+        loading -> ResultsScreenViewState.Loading
+        error != null -> ResultsScreenViewState.Loaded.Error(error = error)
+        else -> {
+            val cardItems = testResults.map { testREsult -> testREsult.toCollapsableCardItem() }
+            ResultsScreenViewState.Loaded.Success(cardItems = cardItems)
         }
-        is LaboratoryTestResultScreenViewState.Error ->
-            ResultsScreenViewState.Loaded.Error(
-                error = error,
-                isProductionBuild = isProductionBuild,
-            )
     }
 }
 

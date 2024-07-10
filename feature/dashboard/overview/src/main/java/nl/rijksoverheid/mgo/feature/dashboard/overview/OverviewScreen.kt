@@ -44,7 +44,7 @@ const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (id: String, name: String, category: String) -> Unit,
+    onNavigateToHealthCareProvider: (provider: HealthCareProvider) -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -59,7 +59,7 @@ fun OverviewScreen(
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (id: String, name: String, category: String) -> Unit,
+    onNavigateToHealthCareProvider: (provider: HealthCareProvider) -> Unit,
 ) {
     Scaffold { innerPadding ->
         ColumnWithButtons(
@@ -83,7 +83,9 @@ private fun OverviewScreenContent(
                             Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 4.dp)
-                                .clickable { onNavigateToHealthCareProvider(provider.id, provider.name, provider.category ?: "") },
+                                .clickable {
+                                    onNavigateToHealthCareProvider(provider)
+                                },
                         provider = provider,
                     )
                 }
@@ -180,7 +182,7 @@ internal fun OverviewScreenWithProvidersPreview() {
                         ),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = { _, _, _ -> },
+            onNavigateToHealthCareProvider = {},
         )
     }
 }
@@ -196,7 +198,7 @@ internal fun OverviewScreenEmptyStatePreview() {
                     providers = listOf(),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = { _, _, _ -> },
+            onNavigateToHealthCareProvider = {},
         )
     }
 }

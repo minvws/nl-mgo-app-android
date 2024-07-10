@@ -28,7 +28,7 @@ class DvaApiTest {
 
             // When
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
-            val medicationStatements = dvaApi.medicationStatement()
+            val medicationStatements = dvaApi.medicationStatement("")
 
             // Then
             assertEquals(listOf<MedicationStatement>(), medicationStatements)
@@ -45,7 +45,7 @@ class DvaApiTest {
 
             // When
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
-            val medicationStatements = dvaApi.condition()
+            val medicationStatements = dvaApi.condition("")
 
             // Then
             assertEquals(listOf<MedicationStatement>(), medicationStatements)

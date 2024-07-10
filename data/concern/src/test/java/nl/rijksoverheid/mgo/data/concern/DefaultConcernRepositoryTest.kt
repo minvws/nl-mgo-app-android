@@ -26,7 +26,7 @@ internal class DefaultConcernRepositoryTest {
 
             // When
             val repository = getRepository()
-            val result = repository.getConcerns()
+            val result = repository.getConcerns("")
 
             // Then
             assertTrue(result.getOrNull()?.firstOrNull() is MgoConcern)
@@ -40,7 +40,7 @@ internal class DefaultConcernRepositoryTest {
 
             // When
             val repository = getRepository()
-            val result = repository.getConcerns()
+            val result = repository.getConcerns("")
 
             // Then
             assertEquals(false, result.isSuccess)

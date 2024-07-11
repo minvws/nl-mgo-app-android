@@ -69,7 +69,7 @@ dependencies {
 
     // Onboarding
     implementation(projects.feature.onboarding.introduction)
-    implementation(projects.feature.onboarding.privacyoverview)
+    implementation(projects.feature.onboarding.proposition)
 
     // Dashboard
     implementation(projects.feature.dashboard.bottombar)

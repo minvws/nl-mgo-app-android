@@ -10,5 +10,5 @@ sealed class OnboardingNavigationScreen(override val name: String, override val 
 
     data object Introduction : OnboardingNavigationScreen("onboarding-introduction")
 
-    data object PrivacyOverview : OnboardingNavigationScreen("privacy-overview")
+    data object Proposition : OnboardingNavigationScreen("proposition")
 }

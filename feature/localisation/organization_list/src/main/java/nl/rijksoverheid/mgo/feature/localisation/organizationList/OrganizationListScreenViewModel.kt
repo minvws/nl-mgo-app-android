@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.stored
+package nl.rijksoverheid.mgo.feature.localisation.organizationList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,16 +12,16 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-internal class StoredHealthCareProvidersScreenViewModel
+internal class OrganizationListScreenViewModel
     @Inject
     constructor(
         private val healthCareProviderRepository: HealthCareProviderRepository,
     ) : ViewModel() {
         private val _viewState =
             healthCareProviderRepository.storedHealthCareProvidersFlow.map { providers ->
-                StoredHealthCareProvidersScreenViewState(providers = providers)
+                OrganizationListScreenViewState(providers = providers)
             }
-        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, StoredHealthCareProvidersScreenViewState.initialState)
+        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, OrganizationListScreenViewState.initialState)
 
         fun delete(provider: HealthCareProvider) {
             viewModelScope.launch {

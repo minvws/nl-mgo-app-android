@@ -78,7 +78,7 @@ dependencies {
     // Localisation
     implementation(projects.feature.localisation.addOrganization)
     implementation(projects.feature.localisation.organizationSearch)
-    implementation(projects.feature.localisation.stored)
+    implementation(projects.feature.localisation.organizationList)
 
     // Overview
     implementation(projects.feature.healthcareprovider.details)

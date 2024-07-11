@@ -11,20 +11,20 @@ sealed class LocalisationNavigationScreen(override val name: String, override va
 
     data object AddOrganization : LocalisationNavigationScreen("localisation-add-organization")
 
-    data object OrganizationSearch : LocalisationNavigationScreen(
-        name = "localisation-organization-search",
+    data object OrganizationList : LocalisationNavigationScreen(
+        name = "localisation-organization-list",
         placeholders =
             listOf(
                 "name",
                 "city",
             ),
     ) {
-        fun setName(name: String): OrganizationSearch {
+        fun setName(name: String): OrganizationList {
             builder.addArgument(placeholders[0], name)
             return this
         }
 
-        fun setCity(city: String): OrganizationSearch {
+        fun setCity(city: String): OrganizationList {
             builder.addArgument(placeholders[1], city)
             return this
         }

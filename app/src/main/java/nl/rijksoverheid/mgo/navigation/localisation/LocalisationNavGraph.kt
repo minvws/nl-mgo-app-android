@@ -6,7 +6,7 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreen
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
 import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.OrganizationSearchScreen
-import nl.rijksoverheid.mgo.feature.localisation.stored.StoredHealthCareProvidersScreen
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationListScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.getViewModel
 
@@ -19,19 +19,19 @@ fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
             AddOrganizationScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToOrganizationSearch = { name, city ->
-                    navController.navigate(LocalisationNavigationScreen.OrganizationSearch.setName(name).setCity(city).getNavigationRoute())
+                    navController.navigate(LocalisationNavigationScreen.OrganizationList.setName(name).setCity(city).getNavigationRoute())
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.OrganizationSearch.getRoute()) { backStackEntry ->
+        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.OrganizationList.getRoute()) { backStackEntry ->
             val addOrganizationScreenViewModel =
                 navController.getViewModel<AddOrganizationScreenViewModel>(
                     route = LocalisationNavigationScreen.AddOrganization.getRoute(),
                 )
             OrganizationSearchScreen(
-                name = LocalisationNavigationScreen.OrganizationSearch.getName(backStackEntry),
-                city = LocalisationNavigationScreen.OrganizationSearch.getCity(backStackEntry),
+                name = LocalisationNavigationScreen.OrganizationList.getName(backStackEntry),
+                city = LocalisationNavigationScreen.OrganizationList.getCity(backStackEntry),
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToAddOrganization = {
                     addOrganizationScreenViewModel?.setName("")
@@ -52,7 +52,7 @@ fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
                 navController.getViewModel<AddOrganizationScreenViewModel>(
                     route = LocalisationNavigationScreen.AddOrganization.getRoute(),
                 )
-            StoredHealthCareProvidersScreen(
+            OrganizationListScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToAddOrganization = {
                     addOrganizationScreenViewModel?.setName("")

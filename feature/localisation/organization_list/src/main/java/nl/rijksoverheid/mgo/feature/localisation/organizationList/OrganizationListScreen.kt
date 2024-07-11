@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.stored
+package nl.rijksoverheid.mgo.feature.localisation.organizationList
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
@@ -34,12 +34,12 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
-fun StoredHealthCareProvidersScreen(
+fun OrganizationListScreen(
     onNavigateBack: () -> Unit,
     onNavigateToAddOrganization: () -> Unit,
     onLocalisationFinished: () -> Unit,
 ) {
-    val viewModel: StoredHealthCareProvidersScreenViewModel = hiltViewModel()
+    val viewModel: OrganizationListScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     // Remove provider dialog
@@ -57,7 +57,7 @@ fun StoredHealthCareProvidersScreen(
         )
     }
 
-    StoredHealthCareProvidersScreenContent(
+    OrganizationListScreenContent(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
         onRemoveProvider = { provider ->
@@ -69,8 +69,8 @@ fun StoredHealthCareProvidersScreen(
 }
 
 @Composable
-private fun StoredHealthCareProvidersScreenContent(
-    viewState: StoredHealthCareProvidersScreenViewState,
+private fun OrganizationListScreenContent(
+    viewState: OrganizationListScreenViewState,
     onNavigateBack: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onRemoveProvider: (provider: HealthCareProvider) -> Unit,
@@ -164,10 +164,10 @@ private fun RemoveProviderDialog(
 
 @DefaultPreviews
 @Composable
-internal fun StoredHealthCareProvidersScreenPreview() {
+internal fun OrganizationListScreenPreview() {
     MgoTheme {
-        StoredHealthCareProvidersScreenContent(
-            viewState = StoredHealthCareProvidersScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
+        OrganizationListScreenContent(
+            viewState = OrganizationListScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
             onNavigateBack = {},
             onNavigateToSearch = {},
             onRemoveProvider = {},

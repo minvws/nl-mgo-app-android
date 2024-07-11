@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.stored
+package nl.rijksoverheid.mgo.feature.localisation.organizationList
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
@@ -9,7 +9,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
-internal class StoredHealthCareProvidersScreenViewModelTest {
+internal class OrganizationListScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -17,12 +17,12 @@ internal class StoredHealthCareProvidersScreenViewModelTest {
         TestHealthCareProviderRepository()
 
     @Test
-    fun `Given a stored health care provider, When deleting that health care provider, view state is updated with no providers`() =
+    fun `Given a stored organization, When deleting that organization, view state is updated with no providers`() =
         runTest {
             // Given
             healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_HEALTH_CARE_PROVIDER))
             val viewModel =
-                StoredHealthCareProvidersScreenViewModel(
+                OrganizationListScreenViewModel(
                     healthCareProviderRepository = healthCareProviderRepository,
                 )
 

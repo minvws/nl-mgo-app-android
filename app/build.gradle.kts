@@ -64,6 +64,11 @@ android {
 dependencies {
 
     // ================================
+    // LIBRARIES
+    // ================================
+    implementation(libs.rootbeer)
+
+    // ================================
     // FEATURES
     // ================================
 
@@ -97,6 +102,7 @@ dependencies {
     implementation(projects.framework.copy)
     implementation(projects.framework.environment)
     implementation(projects.framework.test)
+    implementation(projects.framework.storage)
 
     // ================================
     // DATA
@@ -105,4 +111,11 @@ dependencies {
     implementation(projects.data.onboarding)
     implementation(projects.data.config)
     implementation(projects.data.localisation)
+
+    // ================================
+    // TESTING
+    // ================================
+
+    testImplementation(testFixtures(projects.data.onboarding))
+    testImplementation(testFixtures(projects.data.config))
 }

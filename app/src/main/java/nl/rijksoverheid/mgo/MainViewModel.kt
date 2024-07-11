@@ -6,15 +6,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.config.ConfigRepository
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
+import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class MainViewModel
+internal class MainViewModel
     @Inject
-    constructor(private val hasSeenOnboarding: HasSeenOnboarding, private val configRepository: ConfigRepository) : ViewModel() {
+    constructor(
+        val showDeviceRootedDialog: ShowDeviceRootedDialog,
+        private val hasSeenOnboarding: HasSeenOnboarding,
+        private val configRepository: ConfigRepository,
+    ) : ViewModel() {
         val configStateFlow =
             configRepository.configStateFlow.stateIn(
                 scope = viewModelScope,

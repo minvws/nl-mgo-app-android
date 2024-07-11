@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
+package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

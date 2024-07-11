@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult
+package nl.rijksoverheid.mgo.feature.organization.labResults
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.TEST_MGO_LABORATORY_TEST_RESULT
@@ -10,7 +10,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
-internal class LaboratoryTestResultScreenViewModelTest {
+internal class LabResultsScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -23,7 +23,7 @@ internal class LaboratoryTestResultScreenViewModelTest {
 
             // When
             val viewModel =
-                LaboratoryTestResultScreenViewModel(
+                LabResultsScreenViewModel(
                     provider = TEST_MGO_ORGANIZATION,
                     laboratoryTestResultRepository = testLaboratoryResultRepository,
                 )
@@ -43,7 +43,7 @@ internal class LaboratoryTestResultScreenViewModelTest {
 
             // When
             val viewModel =
-                LaboratoryTestResultScreenViewModel(
+                LabResultsScreenViewModel(
                     provider = TEST_MGO_ORGANIZATION,
                     laboratoryTestResultRepository = testLaboratoryResultRepository,
                 )

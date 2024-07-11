@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult"
+    namespace = "nl.rijksoverheid.mgo.feature.healthcareprovider.labResults"
 }
 
 dependencies {

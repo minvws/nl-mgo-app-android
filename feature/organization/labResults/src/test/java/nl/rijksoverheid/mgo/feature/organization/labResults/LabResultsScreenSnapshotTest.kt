@@ -1,31 +1,31 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult
+package nl.rijksoverheid.mgo.feature.organization.labResults
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class LaboratoryScreenSnapshotTest {
+internal class LabResultsScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
     fun loading() {
         snapshotTestRule.snapshots {
-            LaboratoryTestResultScreenLoadingPreview()
+            LabResultsScreenLoadingPreview()
         }
     }
 
     @Test
     fun concerns() {
         snapshotTestRule.snapshots {
-            LaboratoryTestResultScreenTestResultsPreview()
+            LabResultsScreenTestResultsPreview()
         }
     }
 
     @Test
     fun error() {
         snapshotTestRule.snapshots {
-            LaboratoryTestResultScreenErrorPreview()
+            LabResultsScreenErrorPreview()
         }
     }
 }

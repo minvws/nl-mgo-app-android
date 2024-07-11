@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
+package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

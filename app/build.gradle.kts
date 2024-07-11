@@ -90,7 +90,7 @@ dependencies {
     implementation(projects.feature.organization.removeprovider)
     implementation(projects.feature.organization.medicationUse)
     implementation(projects.feature.organization.concern)
-    implementation(projects.feature.organization.laboratoryTestResult)
+    implementation(projects.feature.organization.labResults)
 
     // Config
     implementation(projects.feature.config)

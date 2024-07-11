@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
+package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
 import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
 

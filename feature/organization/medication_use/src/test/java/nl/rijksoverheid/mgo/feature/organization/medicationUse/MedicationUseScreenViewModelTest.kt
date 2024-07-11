@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
+package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION

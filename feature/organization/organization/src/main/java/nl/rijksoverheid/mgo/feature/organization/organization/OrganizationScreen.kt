@@ -49,7 +49,7 @@ fun OrganizationScreen(
     onNavigateBack: () -> Unit,
     onNavigateToMedicationuse: (provider: MgoOrganization) -> Unit,
     onNavigateToConcern: () -> Unit,
-    onNavigateToLaboratoryTestResult: () -> Unit,
+    onNavigateToLabResults: () -> Unit,
     onNavigateToRemoveProvider: () -> Unit,
 ) {
     Scaffold(
@@ -113,7 +113,7 @@ fun OrganizationScreen(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
-                            .clickable { onNavigateToLaboratoryTestResult() },
+                            .clickable { onNavigateToLabResults() },
                     icon = R.drawable.ic_results,
                     iconCircleColor = MaterialTheme.colors.supportFysiotherapeut(),
                     title = CopyR.string.organization_lab_results_heading,
@@ -187,7 +187,7 @@ internal fun OrganizationScreenPreview() {
             onNavigateBack = {},
             onNavigateToMedicationuse = {},
             onNavigateToConcern = {},
-            onNavigateToLaboratoryTestResult = {},
+            onNavigateToLabResults = {},
             onNavigateToRemoveProvider = {},
         )
     }

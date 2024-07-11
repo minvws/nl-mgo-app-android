@@ -7,9 +7,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.concern.ConcernScreen
-import nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult.LaboratoryTestResultScreen
-import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationUseScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider.RemoveProviderScreen
+import nl.rijksoverheid.mgo.feature.organization.labResults.LabResultsScreen
+import nl.rijksoverheid.mgo.feature.organization.medicationUse.MedicationUseScreen
 import nl.rijksoverheid.mgo.feature.organization.organization.OrganizationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
@@ -56,9 +56,9 @@ fun OrganizationNavigation(
                 onNavigateToConcern = {
                     navController.navigate(OrganizationNavigationScreen.Concern.setProvider(provider).getNavigationRoute())
                 },
-                onNavigateToLaboratoryTestResult = {
+                onNavigateToLabResults = {
                     navController.navigate(
-                        OrganizationNavigationScreen.LaboratoryTestResult.setProvider(provider).getNavigationRoute(),
+                        OrganizationNavigationScreen.LabResults.setProvider(provider).getNavigationRoute(),
                     )
                 },
                 onNavigateToRemoveProvider = {
@@ -104,9 +104,9 @@ fun OrganizationNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.LaboratoryTestResult.getRoute()) { backStackEntry ->
-            LaboratoryTestResultScreen(
-                provider = OrganizationNavigationScreen.LaboratoryTestResult.getProvider(backStackEntry),
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.LabResults.getRoute()) { backStackEntry ->
+            LabResultsScreen(
+                provider = OrganizationNavigationScreen.LabResults.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

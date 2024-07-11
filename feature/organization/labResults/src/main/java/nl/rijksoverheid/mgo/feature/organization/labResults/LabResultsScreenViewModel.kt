@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult
+package nl.rijksoverheid.mgo.feature.organization.labResults
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = LaboratoryTestResultScreenViewModel.Factory::class)
-class LaboratoryTestResultScreenViewModel
+@HiltViewModel(assistedFactory = LabResultsScreenViewModel.Factory::class)
+class LabResultsScreenViewModel
     @AssistedInject
     constructor(
         @Assisted val provider: MgoOrganization,
@@ -23,11 +23,11 @@ class LaboratoryTestResultScreenViewModel
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
-            fun create(provider: MgoOrganization): LaboratoryTestResultScreenViewModel
+            fun create(provider: MgoOrganization): LabResultsScreenViewModel
         }
 
-        private val initialState = LaboratoryTestResultScreenViewState.initialState
-        private val _viewState: MutableStateFlow<LaboratoryTestResultScreenViewState> = MutableStateFlow(initialState)
+        private val initialState = LabResultsScreenViewState.initialState
+        private val _viewState: MutableStateFlow<LabResultsScreenViewState> = MutableStateFlow(initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {

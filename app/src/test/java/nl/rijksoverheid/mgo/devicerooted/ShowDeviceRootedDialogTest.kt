@@ -1,9 +1,8 @@
-package nl.rijksoverheid.mgo
+package nl.rijksoverheid.mgo.devicerooted
 
 import com.scottyab.rootbeer.RootBeer
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_IS_ROOT_CHECKED
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import org.junit.Assert.assertEquals

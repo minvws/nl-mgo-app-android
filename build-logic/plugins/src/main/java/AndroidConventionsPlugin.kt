@@ -2,6 +2,7 @@ import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import org.gradle.configurationcache.extensions.capitalized
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
@@ -49,37 +50,41 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 }
             }
             tasks.register("jacocoTestReport", JacocoReport::class.java) {
-                // TODO Very ugly :( Needs to be looked at since the app module has flavors and the others do not.
-                val task = tasks.findByName("testDebugUnitTest")
-                if (task == null) {
-                    dependsOn("testTstDebugUnitTest")
-                } else {
-                    dependsOn("testDebugUnitTest")
-                }
+                val isAndroidLibrary = project.plugins.hasPlugin("com.android.library")
+
+                // Our app has different flavors and we force the "tst" flavor to run the code coverage on for the main module.
+                // All other modules do not have flavors so just use debug.
+                val sourceName = if (isAndroidLibrary) "debug" else "tstDebug"
+
+                // Code coverage requires tests to be ran, so depend on that.
+                dependsOn("test${sourceName.capitalized()}UnitTest")
+
+                // Required for SonarCloud
                 reports {
                     xml.required.set(true)
                     html.required.set(true)
                 }
-                val buildDir = project.buildDir
-                val javaTree = fileTree("$buildDir/intermediates/javac/debug/classes") { setExcludes(fileFilter) }
-                val kotlinTree = fileTree("$buildDir/tmp/kotlin-classes/debug") { setExcludes(fileFilter) }
+
+                // Config stuff
+                val fileFilters = listOf(
+                    "**/R.class",
+                    "**/R$*.class",
+                    "**/BuildConfig.*",
+                    "**/Manifest*.*",
+                    "**/*Test*.*",
+                    "**/androidTest/**",
+                )
+                val buildDir = project.layout.buildDirectory.asFile.get()
+                val javaTree = fileTree("$buildDir/intermediates/javac/${sourceName}/classes") { setExcludes(fileFilters) }
+                val kotlinTree = fileTree("$buildDir/tmp/kotlin-classes/${sourceName}") { setExcludes(fileFilters) }
                 val execSrc = fileTree(buildDir) { setIncludes(listOf("**/*.exec")) }
-                sourceDirectories.setFrom(files("${project.projectDir}/src/main/java"))
+                val coverageSrcDirs = arrayOf("src/main/java")
+                sourceDirectories.setFrom(files(coverageSrcDirs))
+                additionalSourceDirs.setFrom(files(coverageSrcDirs))
                 classDirectories.setFrom(files(javaTree, kotlinTree))
                 executionData.setFrom(execSrc)
             }
         }
-    }
-
-    private val fileFilter by lazy {
-        listOf(
-            "**/R.class",
-            "**/R$*.class",
-            "**/BuildConfig.*",
-            "**/Manifest*.*",
-            "**/*Test*.*",
-            "**/androidTest/**",
-        )
     }
 
     private fun Project.configureKotlin() {

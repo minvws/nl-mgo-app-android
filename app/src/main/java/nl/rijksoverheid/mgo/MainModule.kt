@@ -1,14 +1,17 @@
 package nl.rijksoverheid.mgo
 
 import android.content.Context
+import com.scottyab.rootbeer.RootBeer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import java.io.File
 import java.time.Clock
 import javax.inject.Named
@@ -63,5 +66,15 @@ internal object MainModule {
                 else -> AppFlavor.TEST
             }
         return DefaultAppInfo(versionCode = BuildConfig.VERSION_CODE, appFlavor = appFlavor)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShowDeviceRootedDialog(
+        @ApplicationContext context: Context,
+        keyValueStore: KeyValueStore,
+    ): ShowDeviceRootedDialog {
+        val rootBeer = RootBeer(context)
+        return ShowDeviceRootedDialog(rootBeer = rootBeer, keyValueStore = keyValueStore)
     }
 }

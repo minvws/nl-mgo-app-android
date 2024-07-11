@@ -7,7 +7,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class PrivacyOverviewScreenViewModelTest {
-    private val setHasSeenOnboarding = TestSetHasSeenOnboarding()
+    private val setHasSeenOnboarding =
+        TestSetHasSeenOnboarding()
 
     @Test
     fun `Given ViewModel, When setHasSeenOnboarding is called, Then use case is called`() {

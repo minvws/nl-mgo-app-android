@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.searchresults
+package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
@@ -13,7 +13,7 @@ import org.junit.Test
 import java.lang.IllegalStateException
 import kotlinx.coroutines.test.runTest
 
-internal class SearchResultsScreenViewModelTest {
+internal class OrganizationSearchScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -31,7 +31,7 @@ internal class SearchResultsScreenViewModelTest {
         runTest {
             // Given
             val viewModel =
-                SearchResultsScreenViewModel(
+                OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
                     healthCareProviderRepository = healthCareProviderRepository,
                 )
@@ -42,11 +42,11 @@ internal class SearchResultsScreenViewModelTest {
                 viewModel.getSearchResults(name = "Tandarts", city = "Roermond")
 
                 // Emit loading state first
-                assertEquals(SearchResultsScreenViewState.Loading, awaitItem())
+                assertEquals(OrganizationSearchScreenViewState.Loading, awaitItem())
 
                 // Emit successful state second
                 val expectedViewState =
-                    SearchResultsScreenViewState.Success(
+                    OrganizationSearchScreenViewState.Success(
                         name = "Tandarts",
                         city = "Roermond",
                         results = listOf(TEST_HEALTH_CARE_PROVIDER),
@@ -61,7 +61,7 @@ internal class SearchResultsScreenViewModelTest {
             // Given
             val error = IllegalStateException("Something went wrong")
             val viewModel =
-                SearchResultsScreenViewModel(
+                OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
                     healthCareProviderRepository = healthCareProviderRepository,
                 )
@@ -72,11 +72,11 @@ internal class SearchResultsScreenViewModelTest {
                 viewModel.getSearchResults(name = "Tandarts", city = "Roermond")
 
                 // Emit loading state first
-                assertEquals(SearchResultsScreenViewState.Loading, awaitItem())
+                assertEquals(OrganizationSearchScreenViewState.Loading, awaitItem())
 
                 // Emit error state second
                 val expectedViewState =
-                    SearchResultsScreenViewState.Error(
+                    OrganizationSearchScreenViewState.Error(
                         isProductionBuild = true,
                         error = error,
                     )
@@ -89,7 +89,7 @@ internal class SearchResultsScreenViewModelTest {
         runTest {
             // Given
             val viewModel =
-                SearchResultsScreenViewModel(
+                OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
                     healthCareProviderRepository = healthCareProviderRepository,
                 )

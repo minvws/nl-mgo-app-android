@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.searchresults
+package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -27,10 +27,10 @@ import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-const val TEST_TAG_SEARCH_RESULT_CARD = "TEST_TAG_SEARCH_RESULT_CARD"
+const val TEST_TAG_ORGANIZATION_SEARCH_CARD = "ORGANIZATION_SEARCH_CARD"
 
 @Composable
-fun SearchResultCard(
+fun OrganizationSearchCard(
     searchResult: HealthCareProvider,
     onClick: (searchResult: HealthCareProvider) -> Unit,
     modifier: Modifier = Modifier,
@@ -41,7 +41,7 @@ fun SearchResultCard(
                 Modifier
                     .clickable { onClick(searchResult) }
                     .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
-                    .testTag(TEST_TAG_SEARCH_RESULT_CARD),
+                    .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
@@ -85,9 +85,9 @@ private fun AddedText(modifier: Modifier = Modifier) {
 
 @PreviewLightDark
 @Composable
-internal fun SearchResultCardNotAddedPreview() {
+internal fun OrganizationSearchCardNotAddedPreview() {
     MgoTheme {
-        SearchResultCard(
+        OrganizationSearchCard(
             searchResult = TEST_HEALTH_CARE_PROVIDER,
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
@@ -97,9 +97,9 @@ internal fun SearchResultCardNotAddedPreview() {
 
 @PreviewLightDark
 @Composable
-internal fun SearchResultCardAddedPreview() {
+internal fun OrganizationSearchCardAddedPreview() {
     MgoTheme {
-        SearchResultCard(
+        OrganizationSearchCard(
             searchResult = TEST_HEALTH_CARE_PROVIDER.copy(added = true),
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),

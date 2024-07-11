@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.searchresults
+package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-internal class SearchResultsScreenViewModel
+internal class OrganizationSearchScreenViewModel
     @Inject
     constructor(
         private val appInfo: AppInfo,
@@ -28,13 +28,13 @@ internal class SearchResultsScreenViewModel
         private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
 
-        private val _viewState: MutableStateFlow<SearchResultsScreenViewState> =
-            MutableStateFlow(SearchResultsScreenViewState.initialState)
+        private val _viewState: MutableStateFlow<OrganizationSearchScreenViewState> =
+            MutableStateFlow(OrganizationSearchScreenViewState.initialState)
         val viewState =
             _viewState.stateIn(
                 viewModelScope,
                 SharingStarted.Lazily,
-                SearchResultsScreenViewState
+                OrganizationSearchScreenViewState
                     .initialState,
             )
 
@@ -44,12 +44,12 @@ internal class SearchResultsScreenViewModel
         ) {
             viewModelScope.launch {
                 if (shouldGetSearchResults()) {
-                    _viewState.update { SearchResultsScreenViewState.Loading }
+                    _viewState.update { OrganizationSearchScreenViewState.Loading }
                     healthCareProviderRepository
                         .search(name = name, city = city)
                         .catch { throwable ->
                             _viewState.update {
-                                SearchResultsScreenViewState.Error(
+                                OrganizationSearchScreenViewState.Error(
                                     isProductionBuild = appInfo.appFlavor == AppFlavor.PROD,
                                     error = throwable,
                                 )
@@ -57,7 +57,7 @@ internal class SearchResultsScreenViewModel
                         }
                         .collectLatest { results ->
                             _viewState.update {
-                                SearchResultsScreenViewState.Success(
+                                OrganizationSearchScreenViewState.Success(
                                     name = name,
                                     city = city,
                                     results = results,
@@ -68,7 +68,7 @@ internal class SearchResultsScreenViewModel
             }
         }
 
-        private fun shouldGetSearchResults() = _viewState.value !is SearchResultsScreenViewState.Success
+        private fun shouldGetSearchResults() = _viewState.value !is OrganizationSearchScreenViewState.Success
 
         fun addHealthCareProvider(provider: HealthCareProvider) {
             viewModelScope.launch {

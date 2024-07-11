@@ -1,38 +1,38 @@
-package nl.rijksoverheid.mgo.feature.localisation.searchresults
+package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class SearchResultsScreenSnapshotTest {
+internal class OrganizationSearchScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
     fun loading() {
         snapshotTestRule.snapshots {
-            HealthCareSearchResultsLoadingPreview()
+            OrganizationSearchScreenLoadingPreview()
         }
     }
 
     @Test
     fun empty() {
         snapshotTestRule.snapshots {
-            HealthCareSearchResultsEmptyPreview()
+            OrganizationSearchScreenEmptyPreview()
         }
     }
 
     @Test
     fun searchResults() {
         snapshotTestRule.snapshots {
-            HealthCareSearchResultsPreview()
+            OrganizationSearchScreenSearchResultsPreview()
         }
     }
 
     @Test
     fun error() {
         snapshotTestRule.snapshots {
-            HealthCareSearchResultsErrorPreview()
+            OrganizationSearchScreenErrorPreview()
         }
     }
 }

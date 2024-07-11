@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.searchresults
+package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -46,14 +46,14 @@ import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun SearchResultsScreen(
+fun OrganizationSearchScreen(
     name: String,
     city: String,
     onNavigateBack: () -> Unit,
     onNavigateToAddOrganization: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
-    val viewModel: SearchResultsScreenViewModel = hiltViewModel()
+    val viewModel: OrganizationSearchScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewModel.getSearchResults(name = name, city = city)
@@ -61,7 +61,7 @@ fun SearchResultsScreen(
             onNavigateToDashboard()
         }
     }
-    HealthCareSearchResultsScreenContent(
+    OrganizationSearchScreenContent(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
         onGetSearchResults = { viewModel.getSearchResults(name = name, city = city) },
@@ -77,8 +77,8 @@ fun SearchResultsScreen(
 }
 
 @Composable
-private fun HealthCareSearchResultsScreenContent(
-    viewState: SearchResultsScreenViewState,
+private fun OrganizationSearchScreenContent(
+    viewState: OrganizationSearchScreenViewState,
     onNavigateBack: () -> Unit,
     onGetSearchResults: () -> Unit,
     onAddSearchResult: (provider: HealthCareProvider) -> Unit,
@@ -102,11 +102,11 @@ private fun HealthCareSearchResultsScreenContent(
         },
         content = { innerPadding ->
             when (viewState) {
-                SearchResultsScreenViewState.Loading -> {
+                OrganizationSearchScreenViewState.Loading -> {
                     LoadingContent(modifier = Modifier.padding(innerPadding))
                 }
 
-                is SearchResultsScreenViewState.Success -> {
+                is OrganizationSearchScreenViewState.Success -> {
                     if (viewState.results.isEmpty()) {
                         EmptyContent(
                             modifier = Modifier.padding(innerPadding),
@@ -115,7 +115,7 @@ private fun HealthCareSearchResultsScreenContent(
                             onButtonClick = onNavigateToSearch,
                         )
                     } else {
-                        SearchResultsContent(
+                        OrganizationSearchScreenContent(
                             modifier = Modifier.padding(innerPadding),
                             searchResults = viewState.results,
                             onAddSearchResult = onAddSearchResult,
@@ -123,7 +123,7 @@ private fun HealthCareSearchResultsScreenContent(
                     }
                 }
 
-                is SearchResultsScreenViewState.Error ->
+                is OrganizationSearchScreenViewState.Error ->
                     ErrorContent(
                         isProductionBuild = viewState.isProductionBuild,
                         error = viewState.error,
@@ -169,7 +169,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun SearchResultsContent(
+private fun OrganizationSearchScreenContent(
     searchResults: List<HealthCareProvider>,
     onAddSearchResult: (provider: HealthCareProvider) -> Unit,
     modifier: Modifier = Modifier,
@@ -184,11 +184,11 @@ private fun SearchResultsContent(
             )
         }
         items(searchResults.size) { position ->
-            SearchResultCard(
+            OrganizationSearchCard(
                 modifier =
                     Modifier
                         .padding(bottom = 8.dp)
-                        .testTag(TEST_TAG_SEARCH_RESULT_CARD),
+                        .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
                 searchResult = searchResults[position],
                 onClick = onAddSearchResult,
             )
@@ -314,10 +314,10 @@ private fun ErrorContent(
 
 @DefaultPreviews
 @Composable
-internal fun HealthCareSearchResultsLoadingPreview() {
+internal fun OrganizationSearchScreenLoadingPreview() {
     MgoTheme {
-        HealthCareSearchResultsScreenContent(
-            viewState = SearchResultsScreenViewState.Loading,
+        OrganizationSearchScreenContent(
+            viewState = OrganizationSearchScreenViewState.Loading,
             onNavigateBack = {},
             onGetSearchResults = {},
             onAddSearchResult = {},
@@ -328,11 +328,11 @@ internal fun HealthCareSearchResultsLoadingPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun HealthCareSearchResultsEmptyPreview() {
+internal fun OrganizationSearchScreenEmptyPreview() {
     MgoTheme {
-        HealthCareSearchResultsScreenContent(
+        OrganizationSearchScreenContent(
             viewState =
-                SearchResultsScreenViewState.Success(
+                OrganizationSearchScreenViewState.Success(
                     name = "Tandarts Tandje Erbij",
                     city = "Roermond",
                     results = listOf(),
@@ -347,11 +347,11 @@ internal fun HealthCareSearchResultsEmptyPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun HealthCareSearchResultsPreview() {
+internal fun OrganizationSearchScreenSearchResultsPreview() {
     MgoTheme {
-        HealthCareSearchResultsScreenContent(
+        OrganizationSearchScreenContent(
             viewState =
-                SearchResultsScreenViewState.Success(
+                OrganizationSearchScreenViewState.Success(
                     name = "Tandarts Tandje Erbij",
                     city = "Roermond",
                     results =
@@ -371,11 +371,11 @@ internal fun HealthCareSearchResultsPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun HealthCareSearchResultsErrorPreview() {
+internal fun OrganizationSearchScreenErrorPreview() {
     MgoTheme {
-        HealthCareSearchResultsScreenContent(
+        OrganizationSearchScreenContent(
             viewState =
-                SearchResultsScreenViewState.Error(
+                OrganizationSearchScreenViewState.Error(
                     isProductionBuild = false,
                     error = IllegalStateException("Something went wrong"),
                 ),

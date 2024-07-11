@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.localisation.search"
+    namespace = "nl.rijksoverheid.mgo.feature.localisation.addOrganization"
 }
 
 dependencies {

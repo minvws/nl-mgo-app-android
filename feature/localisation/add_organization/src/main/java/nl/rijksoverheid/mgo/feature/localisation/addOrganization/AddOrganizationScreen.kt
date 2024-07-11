@@ -34,14 +34,14 @@ const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
 @Composable
 fun AddOrganizationScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToSearchResults: (name: String, city: String) -> Unit,
+    onNavigateToOrganizationSearch: (name: String, city: String) -> Unit,
 ) {
     val viewModel: AddOrganizationScreenViewModel = hiltViewModel()
     val viewState: AddOrganizationScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.navigation.collectLatest { screen ->
-            onNavigateToSearchResults(viewState.name, viewState.city)
+            onNavigateToOrganizationSearch(viewState.name, viewState.city)
         }
     }
 

@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
-import nl.rijksoverheid.mgo.feature.healthcareprovider.concern.ConcernScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider.RemoveProviderScreen
 import nl.rijksoverheid.mgo.feature.organization.labResults.LabResultsScreen
 import nl.rijksoverheid.mgo.feature.organization.medicationUse.MedicationUseScreen
 import nl.rijksoverheid.mgo.feature.organization.organization.OrganizationScreen
+import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
@@ -53,8 +53,8 @@ fun OrganizationNavigation(
                         OrganizationNavigationScreen.MedicationUse.setProvider(provider).getNavigationRoute(),
                     )
                 },
-                onNavigateToConcern = {
-                    navController.navigate(OrganizationNavigationScreen.Concern.setProvider(provider).getNavigationRoute())
+                onNavigateToProblems = {
+                    navController.navigate(OrganizationNavigationScreen.Problems.setProvider(provider).getNavigationRoute())
                 },
                 onNavigateToLabResults = {
                     navController.navigate(
@@ -95,9 +95,9 @@ fun OrganizationNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.Concern.getRoute()) { backStackEntry ->
-            ConcernScreen(
-                provider = OrganizationNavigationScreen.Concern.getProvider(backStackEntry),
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.Problems.getRoute()) { backStackEntry ->
+            ProblemsScreen(
+                provider = OrganizationNavigationScreen.Problems.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

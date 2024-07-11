@@ -1,16 +1,17 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.concern
+package nl.rijksoverheid.mgo.feature.healthcareprovider.problems
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.concern.models.TEST_MGO_CONCERN
 import nl.rijksoverheid.mgo.data.concern.models.TestConcernRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreenViewModel
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
-internal class ConcernScreenViewModelTest {
+internal class ProblemsScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -23,7 +24,7 @@ internal class ConcernScreenViewModelTest {
 
             // When
             val viewModel =
-                ConcernScreenViewModel(
+                ProblemsScreenViewModel(
                     provider = TEST_MGO_ORGANIZATION,
                     concernRepository = concernRepository,
                 )
@@ -43,7 +44,7 @@ internal class ConcernScreenViewModelTest {
 
             // When
             val viewModel =
-                ConcernScreenViewModel(
+                ProblemsScreenViewModel(
                     provider = TEST_MGO_ORGANIZATION,
                     concernRepository = concernRepository,
                 )

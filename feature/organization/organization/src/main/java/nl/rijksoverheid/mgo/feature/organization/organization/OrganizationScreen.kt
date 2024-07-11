@@ -48,7 +48,7 @@ fun OrganizationScreen(
     provider: MgoOrganization,
     onNavigateBack: () -> Unit,
     onNavigateToMedicationuse: (provider: MgoOrganization) -> Unit,
-    onNavigateToConcern: () -> Unit,
+    onNavigateToProblems: () -> Unit,
     onNavigateToLabResults: () -> Unit,
     onNavigateToRemoveProvider: () -> Unit,
 ) {
@@ -102,7 +102,7 @@ fun OrganizationScreen(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
-                            .clickable { onNavigateToConcern() },
+                            .clickable { onNavigateToProblems() },
                     icon = R.drawable.ic_complaints,
                     iconCircleColor = MaterialTheme.colors.supportTandarts(),
                     title = CopyR.string.organization_diagnosis_heading,
@@ -186,7 +186,7 @@ internal fun OrganizationScreenPreview() {
             provider = TEST_MGO_ORGANIZATION,
             onNavigateBack = {},
             onNavigateToMedicationuse = {},
-            onNavigateToConcern = {},
+            onNavigateToProblems = {},
             onNavigateToLabResults = {},
             onNavigateToRemoveProvider = {},
         )

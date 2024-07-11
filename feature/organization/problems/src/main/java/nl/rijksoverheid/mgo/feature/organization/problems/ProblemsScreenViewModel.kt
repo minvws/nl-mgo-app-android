@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.concern
+package nl.rijksoverheid.mgo.feature.organization.problems
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = ConcernScreenViewModel.Factory::class)
-class ConcernScreenViewModel
+@HiltViewModel(assistedFactory = ProblemsScreenViewModel.Factory::class)
+class ProblemsScreenViewModel
     @AssistedInject
     constructor(
         @Assisted provider: MgoOrganization,
@@ -23,11 +23,11 @@ class ConcernScreenViewModel
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
-            fun create(provider: MgoOrganization): ConcernScreenViewModel
+            fun create(provider: MgoOrganization): ProblemsScreenViewModel
         }
 
-        private val initialState = ConcernScreenViewState.initialState
-        private val _viewState: MutableStateFlow<ConcernScreenViewState> = MutableStateFlow(initialState)
+        private val initialState = ProblemsScreenViewState.initialState
+        private val _viewState: MutableStateFlow<ProblemsScreenViewState> = MutableStateFlow(initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {

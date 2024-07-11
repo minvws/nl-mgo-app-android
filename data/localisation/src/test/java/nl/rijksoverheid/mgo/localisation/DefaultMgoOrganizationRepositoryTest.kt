@@ -102,7 +102,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
                             TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedMgoOrganizations, "healthcareproviders.json")
+            fileStore.saveFile(storedMgoOrganizations, "organizations.json")
 
             // When
             val repository = getRepository()
@@ -143,7 +143,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
                             TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedMgoOrganizations, "healthcareproviders.json")
+            fileStore.saveFile(storedMgoOrganizations, "organizations.json")
 
             // When
             val repository = getRepository()

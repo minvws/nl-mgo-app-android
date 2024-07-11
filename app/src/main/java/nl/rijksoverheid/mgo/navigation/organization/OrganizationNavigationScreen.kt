@@ -65,8 +65,8 @@ sealed class OrganizationNavigationScreen(override val name: String, override va
         }
     }
 
-    data object Concern : OrganizationNavigationScreen(name = "concern", placeholders = listOf("provider")) {
-        fun setProvider(provider: MgoOrganization): Concern {
+    data object Problems : OrganizationNavigationScreen(name = "organization-problems", placeholders = listOf("provider")) {
+        fun setProvider(provider: MgoOrganization): Problems {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
             return this

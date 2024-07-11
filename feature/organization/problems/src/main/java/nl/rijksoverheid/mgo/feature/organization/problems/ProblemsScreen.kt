@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.concern
+package nl.rijksoverheid.mgo.feature.organization.problems
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,24 +18,24 @@ import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun ConcernScreen(
+fun ProblemsScreen(
     provider: MgoOrganization,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
-        hiltViewModel<ConcernScreenViewModel, ConcernScreenViewModel.Factory>(
+        hiltViewModel<ProblemsScreenViewModel, ProblemsScreenViewModel.Factory>(
             creationCallback = { factory -> factory.create(provider) },
         )
     val viewState by viewModel.viewState.collectAsState()
-    ConcernScreenContent(
+    ProblemsScreenContent(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
     )
 }
 
 @Composable
-private fun ConcernScreenContent(
-    viewState: ConcernScreenViewState,
+private fun ProblemsScreenContent(
+    viewState: ProblemsScreenViewState,
     onNavigateBack: () -> Unit,
 ) {
     ResultsScreen(
@@ -48,10 +48,10 @@ private fun ConcernScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun ConcernScreenLoadingPreview() {
+internal fun ProblemsScreenLoadingPreview() {
     MgoTheme {
-        ConcernScreenContent(
-            viewState = ConcernScreenViewState.initialState,
+        ProblemsScreenContent(
+            viewState = ProblemsScreenViewState.initialState,
             onNavigateBack = {},
         )
     }
@@ -59,10 +59,10 @@ internal fun ConcernScreenLoadingPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun ConcernScreenConcernsPreview() {
+internal fun ProblemsScreenConcernsPreview() {
     MgoTheme {
-        ConcernScreenContent(
-            viewState = ConcernScreenViewState.initialState.copy(loading = false, concerns = listOf(TEST_MGO_CONCERN, TEST_MGO_CONCERN)),
+        ProblemsScreenContent(
+            viewState = ProblemsScreenViewState.initialState.copy(loading = false, concerns = listOf(TEST_MGO_CONCERN, TEST_MGO_CONCERN)),
             onNavigateBack = {},
         )
     }
@@ -70,17 +70,17 @@ internal fun ConcernScreenConcernsPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun ConcernScreenErrorPreview() {
+internal fun ProblemsScreenErrorPreview() {
     MgoTheme {
-        ConcernScreenContent(
-            viewState = ConcernScreenViewState.initialState.copy(loading = false, error = IllegalStateException("Something went wrong")),
+        ProblemsScreenContent(
+            viewState = ProblemsScreenViewState.initialState.copy(loading = false, error = IllegalStateException("Something went wrong")),
             onNavigateBack = {},
         )
     }
 }
 
 @Composable
-private fun ConcernScreenViewState.toResultsScreenViewState(): ResultsScreenViewState {
+private fun ProblemsScreenViewState.toResultsScreenViewState(): ResultsScreenViewState {
     return when {
         loading -> ResultsScreenViewState.Loading
         error != null -> ResultsScreenViewState.Loaded.Error(error = error)

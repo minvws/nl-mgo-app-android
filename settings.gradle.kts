@@ -47,7 +47,7 @@ include(":framework:fhir_extension")
 include(":data:laboratoryTestResult")
 include(":component:results")
 
-include(":feature:organization:concern")
+include(":feature:organization:problems")
 include(":feature:organization:organization")
 include(":feature:organization:medication_use")
 include(":feature:organization:labResults")

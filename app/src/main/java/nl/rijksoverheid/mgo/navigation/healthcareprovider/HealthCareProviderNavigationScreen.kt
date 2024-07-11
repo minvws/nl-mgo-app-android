@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.navigation.healthcareprovider
 
 import androidx.navigation.NavBackStackEntry
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.test.jsonStringToObject
 import nl.rijksoverheid.mgo.framework.test.toJsonString
 import nl.rijksoverheid.mgo.navigation.NavigationScreen
@@ -17,13 +17,13 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         name = "healthcareprovider-details",
         placeholders = listOf("providerJson"),
     ) {
-        fun setProvider(provider: HealthCareProvider): Details {
+        fun setProvider(provider: MgoOrganization): Details {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
             return this
         }
 
-        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+        fun getProvider(backStackEntry: NavBackStackEntry): MgoOrganization {
             val json = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
             return json.jsonStringToObject()
         }
@@ -53,26 +53,26 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
     }
 
     data object Medication : HealthCareProviderNavigationScreen(name = "medication", placeholders = listOf("provider")) {
-        fun setProvider(provider: HealthCareProvider): Medication {
+        fun setProvider(provider: MgoOrganization): Medication {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
             return this
         }
 
-        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+        fun getProvider(backStackEntry: NavBackStackEntry): MgoOrganization {
             val providerJson = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
             return providerJson.jsonStringToObject()
         }
     }
 
     data object Concern : HealthCareProviderNavigationScreen(name = "concern", placeholders = listOf("provider")) {
-        fun setProvider(provider: HealthCareProvider): Concern {
+        fun setProvider(provider: MgoOrganization): Concern {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
             return this
         }
 
-        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+        fun getProvider(backStackEntry: NavBackStackEntry): MgoOrganization {
             val providerJson = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
             return providerJson.jsonStringToObject()
         }
@@ -82,13 +82,13 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         name = "laboratory-test-result",
         placeholders = listOf("provider"),
     ) {
-        fun setProvider(provider: HealthCareProvider): LaboratoryTestResult {
+        fun setProvider(provider: MgoOrganization): LaboratoryTestResult {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
             return this
         }
 
-        fun getProvider(backStackEntry: NavBackStackEntry): HealthCareProvider {
+        fun getProvider(backStackEntry: NavBackStackEntry): MgoOrganization {
             val providerJson = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
             return providerJson.jsonStringToObject()
         }

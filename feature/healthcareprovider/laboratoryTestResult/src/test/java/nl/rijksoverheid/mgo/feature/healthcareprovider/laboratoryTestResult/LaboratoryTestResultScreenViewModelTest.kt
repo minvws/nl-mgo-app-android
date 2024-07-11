@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.TEST_MGO_LABORATORY_TEST_RESULT
 import nl.rijksoverheid.mgo.data.laboratoryTestResult.models.TestLaboratoryTestResultRepository
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert
 import org.junit.Rule
@@ -24,7 +24,7 @@ internal class LaboratoryTestResultScreenViewModelTest {
             // When
             val viewModel =
                 LaboratoryTestResultScreenViewModel(
-                    provider = TEST_HEALTH_CARE_PROVIDER,
+                    provider = TEST_MGO_ORGANIZATION,
                     laboratoryTestResultRepository = testLaboratoryResultRepository,
                 )
 
@@ -44,7 +44,7 @@ internal class LaboratoryTestResultScreenViewModelTest {
             // When
             val viewModel =
                 LaboratoryTestResultScreenViewModel(
-                    provider = TEST_HEALTH_CARE_PROVIDER,
+                    provider = TEST_MGO_ORGANIZATION,
                     laboratoryTestResultRepository = testLaboratoryResultRepository,
                 )
 

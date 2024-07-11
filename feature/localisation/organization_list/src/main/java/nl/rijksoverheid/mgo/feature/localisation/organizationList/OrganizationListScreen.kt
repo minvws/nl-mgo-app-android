@@ -29,8 +29,8 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
@@ -43,7 +43,7 @@ fun OrganizationListScreen(
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     // Remove provider dialog
-    var removeProvider by remember { mutableStateOf<HealthCareProvider?>(null) }
+    var removeProvider by remember { mutableStateOf<MgoOrganization?>(null) }
     removeProvider?.let { provider ->
         RemoveProviderDialog(
             provider = provider,
@@ -73,7 +73,7 @@ private fun OrganizationListScreenContent(
     viewState: OrganizationListScreenViewState,
     onNavigateBack: () -> Unit,
     onNavigateToSearch: () -> Unit,
-    onRemoveProvider: (provider: HealthCareProvider) -> Unit,
+    onRemoveProvider: (provider: MgoOrganization) -> Unit,
     onLocalisationFinished: () -> Unit,
 ) {
     Scaffold(
@@ -133,7 +133,7 @@ private fun OrganizationListScreenContent(
 
 @Composable
 private fun RemoveProviderDialog(
-    provider: HealthCareProvider,
+    provider: MgoOrganization,
     onDismissRequest: () -> Unit,
     onConfirmButton: () -> Unit,
 ) {
@@ -167,7 +167,7 @@ private fun RemoveProviderDialog(
 internal fun OrganizationListScreenPreview() {
     MgoTheme {
         OrganizationListScreenContent(
-            viewState = OrganizationListScreenViewState(providers = listOf(TEST_HEALTH_CARE_PROVIDER)),
+            viewState = OrganizationListScreenViewState(providers = listOf(TEST_MGO_ORGANIZATION)),
             onNavigateBack = {},
             onNavigateToSearch = {},
             onRemoveProvider = {},
@@ -181,7 +181,7 @@ internal fun OrganizationListScreenPreview() {
 internal fun RemoveProviderDialogPreview() {
     MgoTheme {
         RemoveProviderDialog(
-            provider = TEST_HEALTH_CARE_PROVIDER,
+            provider = TEST_MGO_ORGANIZATION,
             onDismissRequest = {},
             onConfirmButton = {},
         )

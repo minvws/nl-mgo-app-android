@@ -3,8 +3,8 @@ package nl.rijksoverheid.mgo.feature.localisation.organizationList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.localisation.HealthCareProviderRepository
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -15,17 +15,17 @@ import kotlinx.coroutines.launch
 internal class OrganizationListScreenViewModel
     @Inject
     constructor(
-        private val healthCareProviderRepository: HealthCareProviderRepository,
+        private val organizationRepository: OrganizationRepository,
     ) : ViewModel() {
         private val _viewState =
-            healthCareProviderRepository.storedHealthCareProvidersFlow.map { providers ->
+            organizationRepository.storedHealthCareProvidersFlow.map { providers ->
                 OrganizationListScreenViewState(providers = providers)
             }
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, OrganizationListScreenViewState.initialState)
 
-        fun delete(provider: HealthCareProvider) {
+        fun delete(provider: MgoOrganization) {
             viewModelScope.launch {
-                healthCareProviderRepository.delete(provider.id)
+                organizationRepository.delete(provider.id)
             }
         }
     }

@@ -13,13 +13,13 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.concern.models.MgoConcern
 import nl.rijksoverheid.mgo.data.concern.models.TEST_MGO_CONCERN
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun ConcernScreen(
-    provider: HealthCareProvider,
+    provider: MgoOrganization,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =

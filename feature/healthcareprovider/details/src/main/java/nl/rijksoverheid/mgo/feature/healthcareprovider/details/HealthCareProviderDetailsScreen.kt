@@ -39,15 +39,15 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.supportFysiotherapeut
 import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun HealthCareProviderDetailsScreen(
-    provider: HealthCareProvider,
+    provider: MgoOrganization,
     onNavigateBack: () -> Unit,
-    onNavigateToMedication: (provider: HealthCareProvider) -> Unit,
+    onNavigateToMedication: (provider: MgoOrganization) -> Unit,
     onNavigateToConcern: () -> Unit,
     onNavigateToLaboratoryTestResult: () -> Unit,
     onNavigateToRemoveProvider: () -> Unit,
@@ -183,7 +183,7 @@ private fun DetailRow(
 internal fun HealthCareProviderDetailsScreenPreview() {
     MgoTheme {
         HealthCareProviderDetailsScreen(
-            provider = TEST_HEALTH_CARE_PROVIDER,
+            provider = TEST_MGO_ORGANIZATION,
             onNavigateBack = {},
             onNavigateToMedication = {},
             onNavigateToConcern = {},

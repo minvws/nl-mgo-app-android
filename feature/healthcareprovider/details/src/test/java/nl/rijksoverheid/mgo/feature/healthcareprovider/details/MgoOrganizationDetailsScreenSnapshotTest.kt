@@ -4,7 +4,7 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class HealthCareProviderDetailsScreenSnapshotTest {
+internal class MgoOrganizationDetailsScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 

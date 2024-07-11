@@ -20,14 +20,14 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 internal fun RemoveHealthCareProviderCard(
-    provider: HealthCareProvider,
-    onClick: (provider: HealthCareProvider) -> Unit,
+    provider: MgoOrganization,
+    onClick: (provider: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     MgoCard(modifier = modifier) {
@@ -62,7 +62,7 @@ internal fun RemoveHealthCareProviderCard(
 internal fun RemoveHealthCareProviderCardPreview() {
     MgoTheme {
         RemoveHealthCareProviderCard(
-            provider = TEST_HEALTH_CARE_PROVIDER,
+            provider = TEST_MGO_ORGANIZATION,
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
         )

@@ -16,7 +16,7 @@ internal object LocalisationModule {
     fun provideSearchRepository(
         loadApi: LoadApi,
         fileStore: FileStore,
-    ): HealthCareProviderRepository {
-        return DefaultHealthCareProviderRepository(loadApi = loadApi, fileStore = fileStore)
+    ): OrganizationRepository {
+        return DefaultOrganizationRepository(loadApi = loadApi, fileStore = fileStore)
     }
 }

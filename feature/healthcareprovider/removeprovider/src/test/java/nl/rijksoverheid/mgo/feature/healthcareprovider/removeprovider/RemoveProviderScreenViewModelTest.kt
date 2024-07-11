@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import nl.rijksoverheid.mgo.localisation.TestHealthCareProviderRepository
+import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -14,21 +14,21 @@ internal class RemoveProviderScreenViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val healthCareProviderRepository =
-        TestHealthCareProviderRepository()
+        TestOrganizationRepository()
 
     @Test
     fun `Given a stored health care provider, When deleting that health care provider, ui is notified that provider is deleted`() =
         runTest {
             val viewModel =
                 RemoveProviderScreenViewModel(
-                    healthCareProviderRepository = healthCareProviderRepository,
+                    organizationRepository = healthCareProviderRepository,
                 )
             viewModel.providerDeleted.test {
                 // Given
-                healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_HEALTH_CARE_PROVIDER))
+                healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_MGO_ORGANIZATION))
 
                 // When
-                viewModel.delete(TEST_HEALTH_CARE_PROVIDER.id)
+                viewModel.delete(TEST_MGO_ORGANIZATION.id)
 
                 // Then
                 Assert.assertEquals(Unit, awaitItem())

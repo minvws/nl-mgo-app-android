@@ -7,7 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.laboratoryTestResult.LaboratoryTestResultRepository
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -18,12 +18,12 @@ import kotlinx.coroutines.launch
 class LaboratoryTestResultScreenViewModel
     @AssistedInject
     constructor(
-        @Assisted val provider: HealthCareProvider,
+        @Assisted val provider: MgoOrganization,
         private val laboratoryTestResultRepository: LaboratoryTestResultRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
-            fun create(provider: HealthCareProvider): LaboratoryTestResultScreenViewModel
+            fun create(provider: MgoOrganization): LaboratoryTestResultScreenViewModel
         }
 
         private val initialState = LaboratoryTestResultScreenViewState.initialState

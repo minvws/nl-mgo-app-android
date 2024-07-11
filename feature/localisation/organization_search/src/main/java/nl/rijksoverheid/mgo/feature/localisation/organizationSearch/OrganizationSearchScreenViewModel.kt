@@ -3,8 +3,8 @@ package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.localisation.HealthCareProviderRepository
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import javax.inject.Inject
@@ -23,7 +23,7 @@ internal class OrganizationSearchScreenViewModel
     @Inject
     constructor(
         private val appInfo: AppInfo,
-        private val healthCareProviderRepository: HealthCareProviderRepository,
+        private val organizationRepository: OrganizationRepository,
     ) : ViewModel() {
         private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
@@ -45,7 +45,7 @@ internal class OrganizationSearchScreenViewModel
             viewModelScope.launch {
                 if (shouldGetSearchResults()) {
                     _viewState.update { OrganizationSearchScreenViewState.Loading }
-                    healthCareProviderRepository
+                    organizationRepository
                         .search(name = name, city = city)
                         .catch { throwable ->
                             _viewState.update {
@@ -70,9 +70,9 @@ internal class OrganizationSearchScreenViewModel
 
         private fun shouldGetSearchResults() = _viewState.value !is OrganizationSearchScreenViewState.Success
 
-        fun addHealthCareProvider(provider: HealthCareProvider) {
+        fun addHealthCareProvider(provider: MgoOrganization) {
             viewModelScope.launch {
-                healthCareProviderRepository.save(provider)
+                organizationRepository.save(provider)
                 _navigation.tryEmit(Unit)
             }
         }

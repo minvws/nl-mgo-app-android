@@ -23,16 +23,16 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 const val TEST_TAG_ORGANIZATION_SEARCH_CARD = "ORGANIZATION_SEARCH_CARD"
 
 @Composable
 fun OrganizationSearchCard(
-    searchResult: HealthCareProvider,
-    onClick: (searchResult: HealthCareProvider) -> Unit,
+    searchResult: MgoOrganization,
+    onClick: (searchResult: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     MgoCard(modifier = modifier) {
@@ -88,7 +88,7 @@ private fun AddedText(modifier: Modifier = Modifier) {
 internal fun OrganizationSearchCardNotAddedPreview() {
     MgoTheme {
         OrganizationSearchCard(
-            searchResult = TEST_HEALTH_CARE_PROVIDER,
+            searchResult = TEST_MGO_ORGANIZATION,
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
         )
@@ -100,7 +100,7 @@ internal fun OrganizationSearchCardNotAddedPreview() {
 internal fun OrganizationSearchCardAddedPreview() {
     MgoTheme {
         OrganizationSearchCard(
-            searchResult = TEST_HEALTH_CARE_PROVIDER.copy(added = true),
+            searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
         )

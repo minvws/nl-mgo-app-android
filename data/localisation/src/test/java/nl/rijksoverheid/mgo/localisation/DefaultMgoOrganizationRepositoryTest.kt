@@ -2,10 +2,10 @@ package nl.rijksoverheid.mgo.localisation
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.api.load.createLoadApi
-import nl.rijksoverheid.mgo.data.localisation.DefaultHealthCareProviderRepository
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProviders
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.DefaultOrganizationRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.file.TestFileStore
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
@@ -17,7 +17,7 @@ import org.junit.Test
 import retrofit2.HttpException
 import kotlinx.coroutines.test.runTest
 
-internal class DefaultHealthCareProviderRepositoryTest {
+internal class DefaultMgoOrganizationRepositoryTest {
     @get:Rule
     val testServerRule = TestServerRule()
 
@@ -45,7 +45,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
                 assertEquals(45, healthCareProviders.size)
 
                 val expectedFirstHealthProvider =
-                    HealthCareProvider(
+                    MgoOrganization(
                         id = "12001468",
                         name = "Tandartspraktijk Van Dijck",
                         address = "Ginnekenweg 183\r\n4835NA BREDA",
@@ -85,7 +85,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
 
             // Then
             repository.storedHealthCareProvidersFlow.test {
-                assertEquals(listOf<HealthCareProvider>(), awaitItem())
+                assertEquals(listOf<MgoOrganization>(), awaitItem())
             }
         }
 
@@ -93,23 +93,23 @@ internal class DefaultHealthCareProviderRepositoryTest {
     fun `Given health care providers saved, When collecting providers flow, Then emit health care providers`() =
         runTest {
             // Given
-            val storedHealthCareProviders =
-                HealthCareProviders(
+            val storedMgoOrganizations =
+                MgoOrganizations(
                     providers =
                         listOf(
-                            TEST_HEALTH_CARE_PROVIDER.copy(id = "1"),
-                            TEST_HEALTH_CARE_PROVIDER.copy(id = "2"),
-                            TEST_HEALTH_CARE_PROVIDER.copy(id = "3"),
+                            TEST_MGO_ORGANIZATION.copy(id = "1"),
+                            TEST_MGO_ORGANIZATION.copy(id = "2"),
+                            TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedHealthCareProviders, "healthcareproviders.json")
+            fileStore.saveFile(storedMgoOrganizations, "healthcareproviders.json")
 
             // When
             val repository = getRepository()
 
             // Then
             repository.storedHealthCareProvidersFlow.test {
-                assertEquals(storedHealthCareProviders.providers, awaitItem())
+                assertEquals(storedMgoOrganizations.providers, awaitItem())
             }
         }
 
@@ -119,7 +119,7 @@ internal class DefaultHealthCareProviderRepositoryTest {
             // Given no providers
 
             // When
-            val provider = TEST_HEALTH_CARE_PROVIDER
+            val provider = TEST_MGO_ORGANIZATION
             val repository = getRepository()
             repository.save(provider)
 
@@ -134,32 +134,32 @@ internal class DefaultHealthCareProviderRepositoryTest {
     fun `Given health care provider, When calling delete, Then delete health care provider from storage`() =
         runTest {
             // Given
-            val storedHealthCareProviders =
-                HealthCareProviders(
+            val storedMgoOrganizations =
+                MgoOrganizations(
                     providers =
                         listOf(
-                            TEST_HEALTH_CARE_PROVIDER.copy(id = "1"),
-                            TEST_HEALTH_CARE_PROVIDER.copy(id = "2"),
-                            TEST_HEALTH_CARE_PROVIDER.copy(id = "3"),
+                            TEST_MGO_ORGANIZATION.copy(id = "1"),
+                            TEST_MGO_ORGANIZATION.copy(id = "2"),
+                            TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedHealthCareProviders, "healthcareproviders.json")
+            fileStore.saveFile(storedMgoOrganizations, "healthcareproviders.json")
 
             // When
             val repository = getRepository()
-            repository.delete(storedHealthCareProviders.providers.first().id)
+            repository.delete(storedMgoOrganizations.providers.first().id)
 
             // Then
             repository.storedHealthCareProvidersFlow.test {
-                val expectedProviders = storedHealthCareProviders.providers.drop(1)
+                val expectedProviders = storedMgoOrganizations.providers.drop(1)
                 val storedProviders = awaitItem()
                 assertEquals(expectedProviders, storedProviders)
             }
         }
 
-    private fun getRepository(): DefaultHealthCareProviderRepository {
+    private fun getRepository(): DefaultOrganizationRepository {
         val okHttpClient = TEST_OKHTTP_CLIENT
         val loadApi = createLoadApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-        return DefaultHealthCareProviderRepository(loadApi = loadApi, fileStore = fileStore)
+        return DefaultOrganizationRepository(loadApi = loadApi, fileStore = fileStore)
     }
 }

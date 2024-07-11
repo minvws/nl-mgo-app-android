@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.healthcareprovider.concern
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.concern.models.TEST_MGO_CONCERN
 import nl.rijksoverheid.mgo.data.concern.models.TestConcernRepository
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert
 import org.junit.Rule
@@ -24,7 +24,7 @@ internal class ConcernScreenViewModelTest {
             // When
             val viewModel =
                 ConcernScreenViewModel(
-                    provider = TEST_HEALTH_CARE_PROVIDER,
+                    provider = TEST_MGO_ORGANIZATION,
                     concernRepository = concernRepository,
                 )
 
@@ -44,7 +44,7 @@ internal class ConcernScreenViewModelTest {
             // When
             val viewModel =
                 ConcernScreenViewModel(
-                    provider = TEST_HEALTH_CARE_PROVIDER,
+                    provider = TEST_MGO_ORGANIZATION,
                     concernRepository = concernRepository,
                 )
 

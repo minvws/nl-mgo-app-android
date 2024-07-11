@@ -39,8 +39,8 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -81,7 +81,7 @@ private fun OrganizationSearchScreenContent(
     viewState: OrganizationSearchScreenViewState,
     onNavigateBack: () -> Unit,
     onGetSearchResults: () -> Unit,
-    onAddSearchResult: (provider: HealthCareProvider) -> Unit,
+    onAddSearchResult: (provider: MgoOrganization) -> Unit,
     onNavigateToSearch: () -> Unit,
 ) {
     Scaffold(
@@ -170,8 +170,8 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 private fun OrganizationSearchScreenContent(
-    searchResults: List<HealthCareProvider>,
-    onAddSearchResult: (provider: HealthCareProvider) -> Unit,
+    searchResults: List<MgoOrganization>,
+    onAddSearchResult: (provider: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
@@ -356,9 +356,9 @@ internal fun OrganizationSearchScreenSearchResultsPreview() {
                     city = "Roermond",
                     results =
                         listOf(
-                            TEST_HEALTH_CARE_PROVIDER,
-                            TEST_HEALTH_CARE_PROVIDER,
-                            TEST_HEALTH_CARE_PROVIDER,
+                            TEST_MGO_ORGANIZATION,
+                            TEST_MGO_ORGANIZATION,
+                            TEST_MGO_ORGANIZATION,
                         ),
                 ),
             onNavigateBack = {},

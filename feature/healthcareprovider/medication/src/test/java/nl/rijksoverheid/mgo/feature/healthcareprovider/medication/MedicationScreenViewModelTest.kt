@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
 import nl.rijksoverheid.mgo.data.medication.models.TestMedicationRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -24,7 +24,7 @@ internal class MedicationScreenViewModelTest {
             // When
             val viewModel =
                 MedicationScreenViewModel(
-                    provider = TEST_HEALTH_CARE_PROVIDER,
+                    provider = TEST_MGO_ORGANIZATION,
                     medicationRepository = testLaboratoryResultRepository,
                 )
 
@@ -44,7 +44,7 @@ internal class MedicationScreenViewModelTest {
             // When
             val viewModel =
                 MedicationScreenViewModel(
-                    provider = TEST_HEALTH_CARE_PROVIDER,
+                    provider = TEST_MGO_ORGANIZATION,
                     medicationRepository = testLaboratoryResultRepository,
                 )
 

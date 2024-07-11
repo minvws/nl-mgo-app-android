@@ -6,7 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.medication.MedicationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,12 +18,12 @@ import kotlinx.coroutines.launch
 class MedicationScreenViewModel
     @AssistedInject
     constructor(
-        @Assisted val provider: HealthCareProvider,
+        @Assisted val provider: MgoOrganization,
         private val medicationRepository: MedicationRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
-            fun create(provider: HealthCareProvider): MedicationScreenViewModel
+            fun create(provider: MgoOrganization): MedicationScreenViewModel
         }
 
         private val initialState = MedicationScreenViewState.initialState(providerName = provider.name)

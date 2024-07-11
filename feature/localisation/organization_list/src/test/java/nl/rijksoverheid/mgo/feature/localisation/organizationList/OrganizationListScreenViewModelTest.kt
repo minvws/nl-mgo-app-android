@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.feature.localisation.organizationList
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import nl.rijksoverheid.mgo.localisation.TestHealthCareProviderRepository
+import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -14,20 +14,20 @@ internal class OrganizationListScreenViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val healthCareProviderRepository =
-        TestHealthCareProviderRepository()
+        TestOrganizationRepository()
 
     @Test
     fun `Given a stored organization, When deleting that organization, view state is updated with no providers`() =
         runTest {
             // Given
-            healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_HEALTH_CARE_PROVIDER))
+            healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_MGO_ORGANIZATION))
             val viewModel =
                 OrganizationListScreenViewModel(
-                    healthCareProviderRepository = healthCareProviderRepository,
+                    organizationRepository = healthCareProviderRepository,
                 )
 
             // When
-            viewModel.delete(TEST_HEALTH_CARE_PROVIDER)
+            viewModel.delete(TEST_MGO_ORGANIZATION)
 
             // Then
             viewModel.viewState.test {

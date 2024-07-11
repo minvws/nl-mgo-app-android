@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.mgo.data.api.load.SearchResponse
 
 @JsonClass(generateAdapter = true)
-data class HealthCareProvider(
+data class MgoOrganization(
     val id: String,
     val name: String,
     val address: String?,
@@ -13,8 +13,8 @@ data class HealthCareProvider(
     val resourceEndpoint: String,
 )
 
-val TEST_HEALTH_CARE_PROVIDER =
-    HealthCareProvider(
+val TEST_MGO_ORGANIZATION =
+    MgoOrganization(
         id = "1",
         name = "Tandarts Tandje Erbij",
         address = "Boorplatform 5\r\n1234AB Roermond",
@@ -23,8 +23,8 @@ val TEST_HEALTH_CARE_PROVIDER =
         resourceEndpoint = "https://www.google.nl",
     )
 
-internal fun SearchResponse.Organization.toHealthCareProvider(added: Boolean): HealthCareProvider {
-    return HealthCareProvider(
+internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoOrganization {
+    return MgoOrganization(
         id = id,
         name = displayName ?: "",
         address = addresses.firstOrNull()?.address,

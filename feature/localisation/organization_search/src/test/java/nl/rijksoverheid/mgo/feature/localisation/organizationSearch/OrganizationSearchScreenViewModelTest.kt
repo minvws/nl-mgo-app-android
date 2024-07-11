@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.environment.AppFlavor
 import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import nl.rijksoverheid.mgo.localisation.TestHealthCareProviderRepository
+import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -18,7 +18,7 @@ internal class OrganizationSearchScreenViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val healthCareProviderRepository =
-        TestHealthCareProviderRepository()
+        TestOrganizationRepository()
     private val appInfo = AppInfo(versionCode = 1, appFlavor = AppFlavor.PROD)
 
     @After
@@ -33,9 +33,9 @@ internal class OrganizationSearchScreenViewModelTest {
             val viewModel =
                 OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
-                    healthCareProviderRepository = healthCareProviderRepository,
+                    organizationRepository = healthCareProviderRepository,
                 )
-            healthCareProviderRepository.setSearchResults(listOf(TEST_HEALTH_CARE_PROVIDER))
+            healthCareProviderRepository.setSearchResults(listOf(TEST_MGO_ORGANIZATION))
 
             viewModel.viewState.test {
                 // When
@@ -49,7 +49,7 @@ internal class OrganizationSearchScreenViewModelTest {
                     OrganizationSearchScreenViewState.Success(
                         name = "Tandarts",
                         city = "Roermond",
-                        results = listOf(TEST_HEALTH_CARE_PROVIDER),
+                        results = listOf(TEST_MGO_ORGANIZATION),
                     )
                 assertEquals(expectedViewState, awaitItem())
             }
@@ -63,7 +63,7 @@ internal class OrganizationSearchScreenViewModelTest {
             val viewModel =
                 OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
-                    healthCareProviderRepository = healthCareProviderRepository,
+                    organizationRepository = healthCareProviderRepository,
                 )
             healthCareProviderRepository.setSearchResultsError(error)
 
@@ -91,12 +91,12 @@ internal class OrganizationSearchScreenViewModelTest {
             val viewModel =
                 OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
-                    healthCareProviderRepository = healthCareProviderRepository,
+                    organizationRepository = healthCareProviderRepository,
                 )
 
             viewModel.navigation.test {
                 // When
-                viewModel.addHealthCareProvider(TEST_HEALTH_CARE_PROVIDER)
+                viewModel.addHealthCareProvider(TEST_MGO_ORGANIZATION)
 
                 // Then
                 assertEquals(Unit, awaitItem())

@@ -49,6 +49,6 @@ include(":component:results")
 
 include(":feature:organization:concern")
 include(":feature:organization:organization")
-include(":feature:organization:medication")
+include(":feature:organization:medication_use")
 include(":feature:organization:laboratoryTestResult")
 include(":feature:organization:removeprovider")

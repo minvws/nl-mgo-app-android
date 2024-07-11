@@ -10,7 +10,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
-internal class MedicationScreenViewModelTest {
+internal class MedicationUseScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -23,7 +23,7 @@ internal class MedicationScreenViewModelTest {
 
             // When
             val viewModel =
-                MedicationScreenViewModel(
+                MedicationUseScreenViewModel(
                     provider = TEST_MGO_ORGANIZATION,
                     medicationRepository = testLaboratoryResultRepository,
                 )
@@ -43,7 +43,7 @@ internal class MedicationScreenViewModelTest {
 
             // When
             val viewModel =
-                MedicationScreenViewModel(
+                MedicationUseScreenViewModel(
                     provider = TEST_MGO_ORGANIZATION,
                     medicationRepository = testLaboratoryResultRepository,
                 )

@@ -4,28 +4,28 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class MedicationScreenSnapshotTest {
+internal class MedicationUseScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
     fun loading() {
         snapshotTestRule.snapshots {
-            MedicationScreenLoadingPreview()
+            MedicationUseScreenLoadingPreview()
         }
     }
 
     @Test
     fun medications() {
         snapshotTestRule.snapshots {
-            MedicationScreenMedicationsPreview()
+            MedicationUseScreenMedicationsPreview()
         }
     }
 
     @Test
     fun error() {
         snapshotTestRule.snapshots {
-            MedicationScreenErrorPreview()
+            MedicationUseScreenErrorPreview()
         }
     }
 }

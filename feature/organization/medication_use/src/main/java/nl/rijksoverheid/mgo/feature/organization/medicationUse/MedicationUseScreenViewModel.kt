@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = MedicationScreenViewModel.Factory::class)
-class MedicationScreenViewModel
+@HiltViewModel(assistedFactory = MedicationUseScreenViewModel.Factory::class)
+class MedicationUseScreenViewModel
     @AssistedInject
     constructor(
         @Assisted val provider: MgoOrganization,
@@ -23,11 +23,11 @@ class MedicationScreenViewModel
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
-            fun create(provider: MgoOrganization): MedicationScreenViewModel
+            fun create(provider: MgoOrganization): MedicationUseScreenViewModel
         }
 
-        private val initialState = MedicationScreenViewState.initialState(providerName = provider.name)
-        private val _viewState: MutableStateFlow<MedicationScreenViewState> = MutableStateFlow(initialState)
+        private val initialState = MedicationUseScreenViewState.initialState(providerName = provider.name)
+        private val _viewState: MutableStateFlow<MedicationUseScreenViewState> = MutableStateFlow(initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {

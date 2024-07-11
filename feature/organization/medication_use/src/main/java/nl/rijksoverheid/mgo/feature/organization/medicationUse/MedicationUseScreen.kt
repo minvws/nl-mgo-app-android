@@ -17,24 +17,24 @@ import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun MedicationScreen(
+fun MedicationUseScreen(
     provider: MgoOrganization,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
-        hiltViewModel<MedicationScreenViewModel, MedicationScreenViewModel.Factory>(
+        hiltViewModel<MedicationUseScreenViewModel, MedicationUseScreenViewModel.Factory>(
             creationCallback = { factory -> factory.create(provider) },
         )
     val viewState by viewModel.viewState.collectAsState()
-    MedicationScreenContent(
+    MedicationUseScreenContent(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
     )
 }
 
 @Composable
-private fun MedicationScreenContent(
-    viewState: MedicationScreenViewState,
+private fun MedicationUseScreenContent(
+    viewState: MedicationUseScreenViewState,
     onNavigateBack: () -> Unit,
 ) {
     ResultsScreen(
@@ -47,10 +47,10 @@ private fun MedicationScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun MedicationScreenLoadingPreview() {
+internal fun MedicationUseScreenLoadingPreview() {
     MgoTheme {
-        MedicationScreenContent(
-            viewState = MedicationScreenViewState.initialState("UMC Groningen"),
+        MedicationUseScreenContent(
+            viewState = MedicationUseScreenViewState.initialState("UMC Groningen"),
             onNavigateBack = {},
         )
     }
@@ -58,11 +58,11 @@ internal fun MedicationScreenLoadingPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun MedicationScreenMedicationsPreview() {
+internal fun MedicationUseScreenMedicationsPreview() {
     MgoTheme {
-        MedicationScreenContent(
+        MedicationUseScreenContent(
             viewState =
-                MedicationScreenViewState(
+                MedicationUseScreenViewState(
                     providerName = "UMC Groningen",
                     loading = false,
                     medications = listOf(TEST_MGO_MEDICATION, TEST_MGO_MEDICATION),
@@ -75,11 +75,11 @@ internal fun MedicationScreenMedicationsPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun MedicationScreenErrorPreview() {
+internal fun MedicationUseScreenErrorPreview() {
     MgoTheme {
-        MedicationScreenContent(
+        MedicationUseScreenContent(
             viewState =
-                MedicationScreenViewState(
+                MedicationUseScreenViewState(
                     providerName = "UMC Groningen",
                     loading = false,
                     medications = listOf(),
@@ -91,7 +91,7 @@ internal fun MedicationScreenErrorPreview() {
 }
 
 @Composable
-private fun MedicationScreenViewState.toResultsScreenViewState(): ResultsScreenViewState {
+private fun MedicationUseScreenViewState.toResultsScreenViewState(): ResultsScreenViewState {
     return when {
         loading -> ResultsScreenViewState.Loading
         error != null -> ResultsScreenViewState.Loaded.Error(error = error)

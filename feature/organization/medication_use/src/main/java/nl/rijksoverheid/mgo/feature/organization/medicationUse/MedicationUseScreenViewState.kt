@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.healthcareprovider.medication
 
 import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
 
-data class MedicationScreenViewState(
+data class MedicationUseScreenViewState(
     val providerName: String,
     val loading: Boolean,
     val medications: List<MgoMedication>,
@@ -10,7 +10,7 @@ data class MedicationScreenViewState(
 ) {
     companion object {
         fun initialState(providerName: String) =
-            MedicationScreenViewState(
+            MedicationUseScreenViewState(
                 providerName = providerName,
                 loading = true,
                 medications = listOf(),

@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.concern.ConcernScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult.LaboratoryTestResultScreen
-import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationScreen
+import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationUseScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider.RemoveProviderScreen
 import nl.rijksoverheid.mgo.feature.organization.organization.OrganizationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
@@ -48,9 +48,9 @@ fun OrganizationNavigation(
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToMedication = {
+                onNavigateToMedicationuse = {
                     navController.navigate(
-                        OrganizationNavigationScreen.Medication.setProvider(provider).getNavigationRoute(),
+                        OrganizationNavigationScreen.MedicationUse.setProvider(provider).getNavigationRoute(),
                     )
                 },
                 onNavigateToConcern = {
@@ -86,9 +86,9 @@ fun OrganizationNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.Medication.getRoute()) { backStackEntry ->
-            MedicationScreen(
-                provider = OrganizationNavigationScreen.Medication.getProvider(backStackEntry),
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.MedicationUse.getRoute()) { backStackEntry ->
+            MedicationUseScreen(
+                provider = OrganizationNavigationScreen.MedicationUse.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

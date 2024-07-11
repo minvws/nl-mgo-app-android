@@ -47,7 +47,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun OrganizationScreen(
     provider: MgoOrganization,
     onNavigateBack: () -> Unit,
-    onNavigateToMedication: (provider: MgoOrganization) -> Unit,
+    onNavigateToMedicationuse: (provider: MgoOrganization) -> Unit,
     onNavigateToConcern: () -> Unit,
     onNavigateToLaboratoryTestResult: () -> Unit,
     onNavigateToRemoveProvider: () -> Unit,
@@ -91,7 +91,7 @@ fun OrganizationScreen(
                     modifier =
                         Modifier
                             .padding(top = 24.dp)
-                            .clickable { onNavigateToMedication(provider) },
+                            .clickable { onNavigateToMedicationuse(provider) },
                     icon = R.drawable.ic_medicine,
                     iconCircleColor = MaterialTheme.colors.supportVerpleeghuis(),
                     title = CopyR.string.organization_medicine_heading,
@@ -185,7 +185,7 @@ internal fun OrganizationScreenPreview() {
         OrganizationScreen(
             provider = TEST_MGO_ORGANIZATION,
             onNavigateBack = {},
-            onNavigateToMedication = {},
+            onNavigateToMedicationuse = {},
             onNavigateToConcern = {},
             onNavigateToLaboratoryTestResult = {},
             onNavigateToRemoveProvider = {},

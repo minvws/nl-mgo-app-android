@@ -111,4 +111,11 @@ dependencies {
     implementation(projects.data.onboarding)
     implementation(projects.data.config)
     implementation(projects.data.localisation)
+
+    // ================================
+    // TESTING
+    // ================================
+
+    testImplementation(testFixtures(projects.data.onboarding))
+    testImplementation(testFixtures(projects.data.config))
 }

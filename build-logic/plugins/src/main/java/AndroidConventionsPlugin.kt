@@ -154,6 +154,10 @@ class AndroidConventionsPlugin : Plugin<Project> {
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())
+
+            // Test Fixtures
+            add("testFixturesImplementation", versionCatalog.findLibrary("coroutines-core").get())
+            add("testFixturesImplementation", versionCatalog.findLibrary("coroutines-android").get())
         }
     }
 }

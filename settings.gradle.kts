@@ -48,7 +48,7 @@ include(":data:laboratoryTestResult")
 include(":component:results")
 
 include(":feature:organization:concern")
-include(":feature:organization:details")
+include(":feature:organization:organization")
 include(":feature:organization:medication")
 include(":feature:organization:laboratoryTestResult")
 include(":feature:organization:removeprovider")

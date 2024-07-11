@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.navigation.healthcareprovider
+package nl.rijksoverheid.mgo.navigation.organization
 
 import androidx.navigation.NavBackStackEntry
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -6,18 +6,18 @@ import nl.rijksoverheid.mgo.framework.test.jsonStringToObject
 import nl.rijksoverheid.mgo.framework.test.toJsonString
 import nl.rijksoverheid.mgo.navigation.NavigationScreen
 
-sealed class HealthCareProviderNavigationScreen(override val name: String, override val placeholders: List<String> = listOf()) :
+sealed class OrganizationNavigationScreen(override val name: String, override val placeholders: List<String> = listOf()) :
     NavigationScreen(
         name,
         placeholders,
     ) {
-    data object Overview : HealthCareProviderNavigationScreen(name = "healthcareprovider-start")
+    data object Overview : OrganizationNavigationScreen(name = "organization-start")
 
-    data object Details : HealthCareProviderNavigationScreen(
-        name = "healthcareprovider-details",
+    data object Organization : OrganizationNavigationScreen(
+        name = "organization-organization",
         placeholders = listOf("providerJson"),
     ) {
-        fun setProvider(provider: MgoOrganization): Details {
+        fun setProvider(provider: MgoOrganization): Organization {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
             return this
@@ -29,7 +29,7 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object RemoveProvider : HealthCareProviderNavigationScreen(
+    data object RemoveProvider : OrganizationNavigationScreen(
         name = "healthcareprovider-remove",
         placeholders = listOf("providerId", "providerName"),
     ) {
@@ -52,7 +52,7 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object Medication : HealthCareProviderNavigationScreen(name = "medication", placeholders = listOf("provider")) {
+    data object Medication : OrganizationNavigationScreen(name = "medication", placeholders = listOf("provider")) {
         fun setProvider(provider: MgoOrganization): Medication {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
@@ -65,7 +65,7 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object Concern : HealthCareProviderNavigationScreen(name = "concern", placeholders = listOf("provider")) {
+    data object Concern : OrganizationNavigationScreen(name = "concern", placeholders = listOf("provider")) {
         fun setProvider(provider: MgoOrganization): Concern {
             val providerJson = provider.toJsonString()
             builder.addArgument(placeholders[0], providerJson)
@@ -78,7 +78,7 @@ sealed class HealthCareProviderNavigationScreen(override val name: String, overr
         }
     }
 
-    data object LaboratoryTestResult : HealthCareProviderNavigationScreen(
+    data object LaboratoryTestResult : OrganizationNavigationScreen(
         name = "laboratory-test-result",
         placeholders = listOf("provider"),
     ) {

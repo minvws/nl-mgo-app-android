@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.navigation.healthcareprovider
+package nl.rijksoverheid.mgo.navigation.organization
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -7,33 +7,33 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.concern.ConcernScreen
-import nl.rijksoverheid.mgo.feature.healthcareprovider.details.HealthCareProviderDetailsScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.laboratoryTestResult.LaboratoryTestResultScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.medication.MedicationScreen
 import nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider.RemoveProviderScreen
+import nl.rijksoverheid.mgo.feature.organization.organization.OrganizationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
 @Composable
-fun HealthCareProviderNavigation(
+fun OrganizationNavigation(
     rootNavController: NavHostController,
     navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
-        startDestination = HealthCareProviderNavigationScreen.Overview.getRoute(),
+        startDestination = OrganizationNavigationScreen.Overview.getRoute(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
     ) {
-        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Overview.getRoute()) {
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.Overview.getRoute()) {
             OverviewScreen(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToHealthCareProvider = { provider ->
+                onNavigateToOrganization = { provider ->
                     navController.navigate(
-                        HealthCareProviderNavigationScreen.Details
+                        OrganizationNavigationScreen.Organization
                             .setProvider(provider)
                             .getNavigationRoute(),
                     )
@@ -41,29 +41,29 @@ fun HealthCareProviderNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(route = HealthCareProviderNavigationScreen.Details.getRoute()) { backStackEntry ->
-            val provider = HealthCareProviderNavigationScreen.Details.getProvider(backStackEntry)
-            HealthCareProviderDetailsScreen(
+        composableWithDefaultScreenTransitions(route = OrganizationNavigationScreen.Organization.getRoute()) { backStackEntry ->
+            val provider = OrganizationNavigationScreen.Organization.getProvider(backStackEntry)
+            OrganizationScreen(
                 provider = provider,
                 onNavigateBack = {
                     navController.popBackStack()
                 },
                 onNavigateToMedication = {
                     navController.navigate(
-                        HealthCareProviderNavigationScreen.Medication.setProvider(provider).getNavigationRoute(),
+                        OrganizationNavigationScreen.Medication.setProvider(provider).getNavigationRoute(),
                     )
                 },
                 onNavigateToConcern = {
-                    navController.navigate(HealthCareProviderNavigationScreen.Concern.setProvider(provider).getNavigationRoute())
+                    navController.navigate(OrganizationNavigationScreen.Concern.setProvider(provider).getNavigationRoute())
                 },
                 onNavigateToLaboratoryTestResult = {
                     navController.navigate(
-                        HealthCareProviderNavigationScreen.LaboratoryTestResult.setProvider(provider).getNavigationRoute(),
+                        OrganizationNavigationScreen.LaboratoryTestResult.setProvider(provider).getNavigationRoute(),
                     )
                 },
                 onNavigateToRemoveProvider = {
                     navController.navigate(
-                        HealthCareProviderNavigationScreen.RemoveProvider.setProviderId(provider.id).setProviderName
+                        OrganizationNavigationScreen.RemoveProvider.setProviderId(provider.id).setProviderName
                             (provider.name).getNavigationRoute(),
                     )
                 },
@@ -71,42 +71,42 @@ fun HealthCareProviderNavigation(
         }
 
         dialogWithDefaultScreenTransitions(
-            route = HealthCareProviderNavigationScreen.RemoveProvider.getRoute(),
+            route = OrganizationNavigationScreen.RemoveProvider.getRoute(),
         ) { backStackEntry ->
             RemoveProviderScreen(
-                providerId = HealthCareProviderNavigationScreen.RemoveProvider.getProviderId(backStackEntry),
-                providerName = HealthCareProviderNavigationScreen.RemoveProvider.getProviderName(backStackEntry),
+                providerId = OrganizationNavigationScreen.RemoveProvider.getProviderId(backStackEntry),
+                providerName = OrganizationNavigationScreen.RemoveProvider.getProviderName(backStackEntry),
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToDashboard = {
                     navController.popBackStack(
-                        route = HealthCareProviderNavigationScreen.Overview.getRoute(),
+                        route = OrganizationNavigationScreen.Overview.getRoute(),
                         inclusive = false,
                     )
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Medication.getRoute()) { backStackEntry ->
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.Medication.getRoute()) { backStackEntry ->
             MedicationScreen(
-                provider = HealthCareProviderNavigationScreen.Medication.getProvider(backStackEntry),
+                provider = OrganizationNavigationScreen.Medication.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.Concern.getRoute()) { backStackEntry ->
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.Concern.getRoute()) { backStackEntry ->
             ConcernScreen(
-                provider = HealthCareProviderNavigationScreen.Concern.getProvider(backStackEntry),
+                provider = OrganizationNavigationScreen.Concern.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(HealthCareProviderNavigationScreen.LaboratoryTestResult.getRoute()) { backStackEntry ->
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.LaboratoryTestResult.getRoute()) { backStackEntry ->
             LaboratoryTestResultScreen(
-                provider = HealthCareProviderNavigationScreen.LaboratoryTestResult.getProvider(backStackEntry),
+                provider = OrganizationNavigationScreen.LaboratoryTestResult.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

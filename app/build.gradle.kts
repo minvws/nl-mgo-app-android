@@ -86,7 +86,7 @@ dependencies {
     implementation(projects.feature.localisation.organizationList)
 
     // Overview
-    implementation(projects.feature.organization.details)
+    implementation(projects.feature.organization.organization)
     implementation(projects.feature.organization.removeprovider)
     implementation(projects.feature.organization.medication)
     implementation(projects.feature.organization.concern)

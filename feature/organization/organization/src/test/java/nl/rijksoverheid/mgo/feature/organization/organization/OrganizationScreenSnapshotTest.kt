@@ -1,17 +1,17 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.details
+package nl.rijksoverheid.mgo.feature.organization.organization
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class MgoOrganizationDetailsScreenSnapshotTest {
+internal class OrganizationScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
     fun preview() {
         snapshotTestRule.snapshots {
-            HealthCareProviderDetailsScreenPreview()
+            OrganizationScreenPreview()
         }
     }
 }

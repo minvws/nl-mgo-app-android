@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.details
+package nl.rijksoverheid.mgo.feature.organization.organization
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -44,7 +44,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun HealthCareProviderDetailsScreen(
+fun OrganizationScreen(
     provider: MgoOrganization,
     onNavigateBack: () -> Unit,
     onNavigateToMedication: (provider: MgoOrganization) -> Unit,
@@ -87,7 +87,7 @@ fun HealthCareProviderDetailsScreen(
                     style = MaterialTheme.typography.bodySmall,
                 )
 
-                DetailRow(
+                OrganizationRow(
                     modifier =
                         Modifier
                             .padding(top = 24.dp)
@@ -98,7 +98,7 @@ fun HealthCareProviderDetailsScreen(
                     subtitle = CopyR.string.organization_medicine_subheading,
                 )
 
-                DetailRow(
+                OrganizationRow(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
@@ -109,7 +109,7 @@ fun HealthCareProviderDetailsScreen(
                     subtitle = CopyR.string.organization_diagnosis_subheading,
                 )
 
-                DetailRow(
+                OrganizationRow(
                     modifier =
                         Modifier
                             .padding(top = 4.dp)
@@ -127,7 +127,7 @@ fun HealthCareProviderDetailsScreen(
                     color = MaterialTheme.colors.contentTertiary(),
                 )
 
-                DetailRow(
+                OrganizationRow(
                     modifier =
                         Modifier
                             .padding(top = 16.dp)
@@ -143,7 +143,7 @@ fun HealthCareProviderDetailsScreen(
 }
 
 @Composable
-private fun DetailRow(
+private fun OrganizationRow(
     @DrawableRes icon: Int,
     iconCircleColor: Color,
     @StringRes title: Int,
@@ -180,9 +180,9 @@ private fun DetailRow(
 
 @DefaultPreviews
 @Composable
-internal fun HealthCareProviderDetailsScreenPreview() {
+internal fun OrganizationScreenPreview() {
     MgoTheme {
-        HealthCareProviderDetailsScreen(
+        OrganizationScreen(
             provider = TEST_MGO_ORGANIZATION,
             onNavigateBack = {},
             onNavigateToMedication = {},

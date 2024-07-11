@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreen
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
-import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.OrganizationSearchScreen
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationListScreen
+import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.OrganizationSearchScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.getViewModel
 

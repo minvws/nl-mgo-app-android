@@ -15,7 +15,7 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.healthcareprovider.HealthCareProviderNavigation
+import nl.rijksoverheid.mgo.navigation.organization.OrganizationNavigation
 
 fun NavGraphBuilder.addDashboardNavGraph(
     rootNavController: NavHostController,
@@ -28,7 +28,7 @@ fun NavGraphBuilder.addDashboardNavGraph(
         composableWithDefaultScreenTransitions(route = DashboardNavigationScreen.BottomBar.getRoute()) {
             DashboardBottomBarScreen(
                 overviewTab = {
-                    HealthCareProviderNavigation(rootNavController = rootNavController, navController = healthCareProviderNavController)
+                    OrganizationNavigation(rootNavController = rootNavController, navController = healthCareProviderNavController)
                 },
                 aboutThisAppTab = {
                     val applicationContext = LocalContext.current.applicationContext

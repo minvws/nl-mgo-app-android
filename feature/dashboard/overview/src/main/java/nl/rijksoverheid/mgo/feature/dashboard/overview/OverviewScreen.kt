@@ -44,14 +44,14 @@ const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (provider: MgoOrganization) -> Unit,
+    onNavigateToOrganization: (provider: MgoOrganization) -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     OverviewScreenContent(
         viewState = viewState,
         onNavigateToLocalisation = onNavigateToLocalisation,
-        onNavigateToHealthCareProvider = onNavigateToHealthCareProvider,
+        onNavigateToOrganization = onNavigateToOrganization,
     )
 }
 
@@ -59,7 +59,7 @@ fun OverviewScreen(
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (provider: MgoOrganization) -> Unit,
+    onNavigateToOrganization: (provider: MgoOrganization) -> Unit,
 ) {
     Scaffold { innerPadding ->
         ColumnWithButtons(
@@ -84,7 +84,7 @@ private fun OverviewScreenContent(
                                 .fillMaxWidth()
                                 .padding(bottom = 4.dp)
                                 .clickable {
-                                    onNavigateToHealthCareProvider(provider)
+                                    onNavigateToOrganization(provider)
                                 },
                         provider = provider,
                     )
@@ -182,7 +182,7 @@ internal fun OverviewScreenWithProvidersPreview() {
                         ),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = {},
+            onNavigateToOrganization = {},
         )
     }
 }
@@ -198,7 +198,7 @@ internal fun OverviewScreenEmptyStatePreview() {
                     providers = listOf(),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = {},
+            onNavigateToOrganization = {},
         )
     }
 }

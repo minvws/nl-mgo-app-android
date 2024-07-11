@@ -1,8 +1,8 @@
-package nl.rijksoverheid.mgo.feature.localisation.search
+package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 
 import androidx.annotation.StringRes
 
-data class SearchScreenViewState(
+data class AddOrganizationScreenViewState(
     val name: String,
     @StringRes val nameError: Int?,
     val city: String,
@@ -10,7 +10,7 @@ data class SearchScreenViewState(
 ) {
     companion object {
         val initialState =
-            SearchScreenViewState(
+            AddOrganizationScreenViewState(
                 name = "",
                 nameError = null,
                 city = "",

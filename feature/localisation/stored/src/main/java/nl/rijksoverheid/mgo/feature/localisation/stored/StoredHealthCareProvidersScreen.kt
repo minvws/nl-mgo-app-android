@@ -36,7 +36,7 @@ import nl.rijksoverheid.mgo.framework.copy.R
 @Composable
 fun StoredHealthCareProvidersScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToSearch: () -> Unit,
+    onNavigateToAddOrganization: () -> Unit,
     onLocalisationFinished: () -> Unit,
 ) {
     val viewModel: StoredHealthCareProvidersScreenViewModel = hiltViewModel()
@@ -63,7 +63,7 @@ fun StoredHealthCareProvidersScreen(
         onRemoveProvider = { provider ->
             removeProvider = provider
         },
-        onNavigateToSearch = onNavigateToSearch,
+        onNavigateToSearch = onNavigateToAddOrganization,
         onLocalisationFinished = onLocalisationFinished,
     )
 }

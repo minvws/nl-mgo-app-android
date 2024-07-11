@@ -9,7 +9,7 @@ sealed class LocalisationNavigationScreen(override val name: String, override va
 ) {
     data object Start : LocalisationNavigationScreen("localisation-start")
 
-    data object Search : LocalisationNavigationScreen("localisation-search")
+    data object AddOrganization : LocalisationNavigationScreen("localisation-add-organization")
 
     data object SearchResults : LocalisationNavigationScreen(name = "getSearchResults", placeholders = listOf("name", "city")) {
         fun setName(name: String): SearchResults {

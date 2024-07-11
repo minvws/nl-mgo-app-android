@@ -76,7 +76,7 @@ dependencies {
     implementation(projects.feature.dashboard.overview)
 
     // Localisation
-    implementation(projects.feature.localisation.search)
+    implementation(projects.feature.localisation.addOrganization)
     implementation(projects.feature.localisation.searchresults)
     implementation(projects.feature.localisation.stored)
 

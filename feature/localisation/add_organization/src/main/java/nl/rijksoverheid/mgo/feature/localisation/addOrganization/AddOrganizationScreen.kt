@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.search
+package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,12 +32,12 @@ const val TEST_TAG_NAME_TEXT_FIELD = "NAME_TEXT_FIELD"
 const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
 
 @Composable
-fun SearchScreen(
+fun AddOrganizationScreen(
     onNavigateBack: () -> Unit,
     onNavigateToSearchResults: (name: String, city: String) -> Unit,
 ) {
-    val viewModel: SearchScreenViewModel = hiltViewModel()
-    val viewState: SearchScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+    val viewModel: AddOrganizationScreenViewModel = hiltViewModel()
+    val viewState: AddOrganizationScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.navigation.collectLatest { screen ->
@@ -45,7 +45,7 @@ fun SearchScreen(
         }
     }
 
-    SearchScreenContent(
+    AddOrganizationScreenContent(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
         onSetName = { name ->
@@ -61,8 +61,8 @@ fun SearchScreen(
 }
 
 @Composable
-private fun SearchScreenContent(
-    viewState: SearchScreenViewState,
+private fun AddOrganizationScreenContent(
+    viewState: AddOrganizationScreenViewState,
     onNavigateBack: () -> Unit,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
@@ -130,10 +130,16 @@ private fun SearchScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun SearchScreenPreview() {
+internal fun AddOrganizationScreenPreview() {
     MgoTheme {
-        SearchScreenContent(
-            viewState = SearchScreenViewState(name = "Tandarts Tandje Erbij", city = "Roermond", nameError = null, cityError = null),
+        AddOrganizationScreenContent(
+            viewState =
+                AddOrganizationScreenViewState(
+                    name = "Tandarts Tandje Erbij",
+                    city = "Roermond",
+                    nameError = null,
+                    cityError = null,
+                ),
             onNavigateBack = {},
             onSetName = {},
             onSetCity = {},

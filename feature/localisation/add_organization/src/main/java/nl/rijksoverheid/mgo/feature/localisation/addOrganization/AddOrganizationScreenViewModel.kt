@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.search
+package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,11 +14,11 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @HiltViewModel
-class SearchScreenViewModel
+class AddOrganizationScreenViewModel
     @Inject
     constructor() : ViewModel() {
-        private val _viewState = MutableStateFlow(SearchScreenViewState.initialState)
-        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, SearchScreenViewState.initialState)
+        private val _viewState = MutableStateFlow(AddOrganizationScreenViewState.initialState)
+        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, AddOrganizationScreenViewState.initialState)
 
         private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()

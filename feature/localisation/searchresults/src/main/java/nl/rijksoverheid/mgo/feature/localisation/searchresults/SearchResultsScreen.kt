@@ -50,7 +50,7 @@ fun SearchResultsScreen(
     name: String,
     city: String,
     onNavigateBack: () -> Unit,
-    onNavigateToSearch: () -> Unit,
+    onNavigateToAddOrganization: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
     val viewModel: SearchResultsScreenViewModel = hiltViewModel()
@@ -72,7 +72,7 @@ fun SearchResultsScreen(
                 viewModel.addHealthCareProvider(searchResult)
             }
         },
-        onNavigateToSearch = onNavigateToSearch,
+        onNavigateToSearch = onNavigateToAddOrganization,
     )
 }
 

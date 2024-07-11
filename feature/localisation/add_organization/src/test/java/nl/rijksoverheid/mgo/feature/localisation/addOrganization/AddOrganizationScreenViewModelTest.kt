@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.localisation.search
+package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 
 import app.cash.turbine.test
 import app.cash.turbine.turbineScope
@@ -9,7 +9,7 @@ import org.junit.Test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-internal class SearchScreenViewModelTest {
+internal class AddOrganizationScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -17,7 +17,7 @@ internal class SearchScreenViewModelTest {
     fun `Given no name and city have been entered, When calling validate, Then emit error`() =
         runTest {
             // Given
-            val viewModel = SearchScreenViewModel()
+            val viewModel = AddOrganizationScreenViewModel()
 
             // When
             viewModel.validate()
@@ -25,7 +25,7 @@ internal class SearchScreenViewModelTest {
             // Then
             viewModel.viewState.test {
                 val expectedViewState =
-                    SearchScreenViewState(
+                    AddOrganizationScreenViewState(
                         name = "",
                         nameError = CopyR.string.add_organization_error_missing_name,
                         city = "",
@@ -39,7 +39,7 @@ internal class SearchScreenViewModelTest {
     fun `Given no name has been entered, When calling validate, Then emit error`() =
         runTest {
             // Given
-            val viewModel = SearchScreenViewModel()
+            val viewModel = AddOrganizationScreenViewModel()
 
             // When
             viewModel.setCity("Roermond")
@@ -48,7 +48,7 @@ internal class SearchScreenViewModelTest {
             // Then
             viewModel.viewState.test {
                 val expectedViewState =
-                    SearchScreenViewState(
+                    AddOrganizationScreenViewState(
                         name = "",
                         nameError = CopyR.string.add_organization_error_missing_name,
                         city = "Roermond",
@@ -62,7 +62,7 @@ internal class SearchScreenViewModelTest {
     fun `Given no city has been entered, When calling validate, Then emit error`() =
         runTest {
             // Given
-            val viewModel = SearchScreenViewModel()
+            val viewModel = AddOrganizationScreenViewModel()
 
             // When
             viewModel.setName("Tandarts")
@@ -71,7 +71,7 @@ internal class SearchScreenViewModelTest {
             // Then
             viewModel.viewState.test {
                 val expectedViewState =
-                    SearchScreenViewState(
+                    AddOrganizationScreenViewState(
                         name = "Tandarts",
                         nameError = null,
                         city = "",
@@ -85,7 +85,7 @@ internal class SearchScreenViewModelTest {
     fun `Given name and city have been entered, When calling validate, Then navigate`() =
         runTest {
             // Given
-            val viewModel = SearchScreenViewModel()
+            val viewModel = AddOrganizationScreenViewModel()
 
             // When
             viewModel.setName("Tandarts")
@@ -98,7 +98,7 @@ internal class SearchScreenViewModelTest {
 
                 // Then
                 val expectedViewState =
-                    SearchScreenViewState(
+                    AddOrganizationScreenViewState(
                         name = "Tandarts",
                         nameError = null,
                         city = "Roermond",

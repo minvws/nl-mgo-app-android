@@ -86,11 +86,11 @@ dependencies {
     implementation(projects.feature.localisation.organizationList)
 
     // Overview
-    implementation(projects.feature.healthcareprovider.details)
-    implementation(projects.feature.healthcareprovider.removeprovider)
-    implementation(projects.feature.healthcareprovider.medication)
-    implementation(projects.feature.healthcareprovider.concern)
-    implementation(projects.feature.healthcareprovider.laboratoryTestResult)
+    implementation(projects.feature.organization.details)
+    implementation(projects.feature.organization.removeprovider)
+    implementation(projects.feature.organization.medication)
+    implementation(projects.feature.organization.concern)
+    implementation(projects.feature.organization.laboratoryTestResult)
 
     // Config
     implementation(projects.feature.config)

@@ -5,8 +5,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import nl.rijksoverheid.mgo.component.theme.TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON
-import nl.rijksoverheid.mgo.feature.localisation.search.TEST_TAG_CITY_TEXT_FIELD
-import nl.rijksoverheid.mgo.feature.localisation.search.TEST_TAG_NAME_TEXT_FIELD
+import nl.rijksoverheid.mgo.feature.localisation.addOrganization.TEST_TAG_CITY_TEXT_FIELD
+import nl.rijksoverheid.mgo.feature.localisation.addOrganization.TEST_TAG_NAME_TEXT_FIELD
 
 internal class SearchScreenRobot(
     private val composeTestRule: ComposeTestRule,

@@ -34,8 +34,8 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
-import nl.rijksoverheid.mgo.data.localisation.models.HealthCareProvider
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_HEALTH_CARE_PROVIDER
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.overview.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -44,14 +44,14 @@ const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (provider: HealthCareProvider) -> Unit,
+    onNavigateToOrganization: (provider: MgoOrganization) -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     OverviewScreenContent(
         viewState = viewState,
         onNavigateToLocalisation = onNavigateToLocalisation,
-        onNavigateToHealthCareProvider = onNavigateToHealthCareProvider,
+        onNavigateToOrganization = onNavigateToOrganization,
     )
 }
 
@@ -59,7 +59,7 @@ fun OverviewScreen(
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCareProvider: (provider: HealthCareProvider) -> Unit,
+    onNavigateToOrganization: (provider: MgoOrganization) -> Unit,
 ) {
     Scaffold { innerPadding ->
         ColumnWithButtons(
@@ -84,7 +84,7 @@ private fun OverviewScreenContent(
                                 .fillMaxWidth()
                                 .padding(bottom = 4.dp)
                                 .clickable {
-                                    onNavigateToHealthCareProvider(provider)
+                                    onNavigateToOrganization(provider)
                                 },
                         provider = provider,
                     )
@@ -124,7 +124,7 @@ private fun Header(
 @Composable
 private fun HealthCareProviderCard(
     modifier: Modifier = Modifier,
-    provider: HealthCareProvider,
+    provider: MgoOrganization,
 ) {
     MgoCard(modifier = modifier.testTag(TEST_TAG_HEALTH_PROVIDER_CARD)) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -176,13 +176,13 @@ internal fun OverviewScreenWithProvidersPreview() {
                     name = "mevrouw de Bruijn",
                     providers =
                         listOf(
-                            TEST_HEALTH_CARE_PROVIDER,
-                            TEST_HEALTH_CARE_PROVIDER,
-                            TEST_HEALTH_CARE_PROVIDER,
+                            TEST_MGO_ORGANIZATION,
+                            TEST_MGO_ORGANIZATION,
+                            TEST_MGO_ORGANIZATION,
                         ),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = {},
+            onNavigateToOrganization = {},
         )
     }
 }
@@ -198,7 +198,7 @@ internal fun OverviewScreenEmptyStatePreview() {
                     providers = listOf(),
                 ),
             onNavigateToLocalisation = {},
-            onNavigateToHealthCareProvider = {},
+            onNavigateToOrganization = {},
         )
     }
 }

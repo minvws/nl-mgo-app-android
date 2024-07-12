@@ -74,23 +74,23 @@ dependencies {
 
     // Onboarding
     implementation(projects.feature.onboarding.introduction)
-    implementation(projects.feature.onboarding.privacyoverview)
+    implementation(projects.feature.onboarding.proposition)
 
     // Dashboard
     implementation(projects.feature.dashboard.bottombar)
     implementation(projects.feature.dashboard.overview)
 
     // Localisation
-    implementation(projects.feature.localisation.search)
-    implementation(projects.feature.localisation.searchresults)
-    implementation(projects.feature.localisation.stored)
+    implementation(projects.feature.localisation.addOrganization)
+    implementation(projects.feature.localisation.organizationSearch)
+    implementation(projects.feature.localisation.organizationList)
 
     // Overview
-    implementation(projects.feature.healthcareprovider.details)
-    implementation(projects.feature.healthcareprovider.removeprovider)
-    implementation(projects.feature.healthcareprovider.medication)
-    implementation(projects.feature.healthcareprovider.concern)
-    implementation(projects.feature.healthcareprovider.laboratoryTestResult)
+    implementation(projects.feature.organization.organization)
+    implementation(projects.feature.organization.removeprovider)
+    implementation(projects.feature.organization.medicationUse)
+    implementation(projects.feature.organization.problems)
+    implementation(projects.feature.organization.labResults)
 
     // Config
     implementation(projects.feature.config)

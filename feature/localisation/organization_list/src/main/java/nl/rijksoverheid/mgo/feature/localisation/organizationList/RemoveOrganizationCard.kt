@@ -1,0 +1,70 @@
+package nl.rijksoverheid.mgo.feature.localisation.organizationList
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.iconsPrimary
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+@Composable
+internal fun RemoveHealthCareProviderCard(
+    provider: MgoOrganization,
+    onClick: (provider: MgoOrganization) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    MgoCard(modifier = modifier) {
+        Row(
+            modifier =
+                Modifier
+                    .clickable { onClick(provider) }
+                    .padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                val category = provider.category ?: stringResource(id = CopyR.string.common_unknown)
+                Text(text = category, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                Text(text = provider.name, style = MaterialTheme.typography.bodySmall)
+                val address = provider.address
+                if (address != null) {
+                    Text(text = address, style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
+                }
+            }
+            IconButton(onClick = { onClick(provider) }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_remove_healthcare_provider_card_remove),
+                    contentDescription = stringResource(id = CopyR.string.common_delete).uppercase(),
+                    tint = MaterialTheme.colors.iconsPrimary(),
+                )
+            }
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun RemoveHealthCareProviderCardPreview() {
+    MgoTheme {
+        RemoveHealthCareProviderCard(
+            provider = TEST_MGO_ORGANIZATION,
+            onClick = { },
+            modifier = Modifier.padding(all = 16.dp),
+        )
+    }
+}

@@ -23,7 +23,7 @@ import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun IntroductionScreen(onNavigateToPrivacyOverview: () -> Unit) {
+fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
@@ -32,7 +32,7 @@ fun IntroductionScreen(onNavigateToPrivacyOverview: () -> Unit) {
             ColumnWithButtons(
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.common_next),
-                onButtonClick = onNavigateToPrivacyOverview,
+                onButtonClick = onNavigateToProposition,
             ) {
                 Image(
                     modifier =
@@ -66,7 +66,7 @@ fun IntroductionScreen(onNavigateToPrivacyOverview: () -> Unit) {
 internal fun IntroductionScreenPreview() {
     MgoTheme {
         IntroductionScreen(
-            onNavigateToPrivacyOverview = {},
+            onNavigateToProposition = {},
         )
     }
 }

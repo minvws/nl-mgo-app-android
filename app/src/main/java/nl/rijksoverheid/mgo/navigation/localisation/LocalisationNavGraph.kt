@@ -3,44 +3,44 @@ package nl.rijksoverheid.mgo.navigation.localisation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import nl.rijksoverheid.mgo.feature.localisation.search.SearchScreen
-import nl.rijksoverheid.mgo.feature.localisation.search.SearchScreenViewModel
-import nl.rijksoverheid.mgo.feature.localisation.searchresults.SearchResultsScreen
-import nl.rijksoverheid.mgo.feature.localisation.stored.StoredHealthCareProvidersScreen
+import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreen
+import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationListScreen
+import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.OrganizationSearchScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.getViewModel
 
 fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
     navigation(
-        startDestination = LocalisationNavigationScreen.Search.getRoute(),
+        startDestination = LocalisationNavigationScreen.AddOrganization.getRoute(),
         route = LocalisationNavigationScreen.Start.getRoute(),
     ) {
-        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.Search.getRoute()) { backStackEntry ->
-            SearchScreen(
+        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.AddOrganization.getRoute()) {
+            AddOrganizationScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToSearchResults = { name, city ->
-                    navController.navigate(LocalisationNavigationScreen.SearchResults.setName(name).setCity(city).getNavigationRoute())
+                onNavigateToOrganizationSearch = { name, city ->
+                    navController.navigate(LocalisationNavigationScreen.OrganizationList.setName(name).setCity(city).getNavigationRoute())
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.SearchResults.getRoute()) { backStackEntry ->
-            val searchScreenViewModel =
-                navController.getViewModel<SearchScreenViewModel>(
-                    route = LocalisationNavigationScreen.Search.getRoute(),
+        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.OrganizationList.getRoute()) { backStackEntry ->
+            val addOrganizationScreenViewModel =
+                navController.getViewModel<AddOrganizationScreenViewModel>(
+                    route = LocalisationNavigationScreen.AddOrganization.getRoute(),
                 )
-            SearchResultsScreen(
-                name = LocalisationNavigationScreen.SearchResults.getName(backStackEntry),
-                city = LocalisationNavigationScreen.SearchResults.getCity(backStackEntry),
+            OrganizationSearchScreen(
+                name = LocalisationNavigationScreen.OrganizationList.getName(backStackEntry),
+                city = LocalisationNavigationScreen.OrganizationList.getCity(backStackEntry),
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToSearch = {
-                    searchScreenViewModel?.setName("")
-                    searchScreenViewModel?.setCity("")
-                    navController.popBackStack(route = LocalisationNavigationScreen.Search.getNavigationRoute(), inclusive = false)
+                onNavigateToAddOrganization = {
+                    addOrganizationScreenViewModel?.setName("")
+                    addOrganizationScreenViewModel?.setCity("")
+                    navController.popBackStack(route = LocalisationNavigationScreen.AddOrganization.getNavigationRoute(), inclusive = false)
                 },
                 onNavigateToDashboard = {
                     navController.popBackStack(
-                        route = LocalisationNavigationScreen.Search.getNavigationRoute(),
+                        route = LocalisationNavigationScreen.AddOrganization.getNavigationRoute(),
                         inclusive = true,
                     )
                 },
@@ -48,20 +48,20 @@ fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
         }
 
         composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.Stored.getRoute()) {
-            val searchScreenViewModel =
-                navController.getViewModel<SearchScreenViewModel>(
-                    route = LocalisationNavigationScreen.Search.getRoute(),
+            val addOrganizationScreenViewModel =
+                navController.getViewModel<AddOrganizationScreenViewModel>(
+                    route = LocalisationNavigationScreen.AddOrganization.getRoute(),
                 )
-            StoredHealthCareProvidersScreen(
+            OrganizationListScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToSearch = {
-                    searchScreenViewModel?.setName("")
-                    searchScreenViewModel?.setCity("")
-                    navController.popBackStack(route = LocalisationNavigationScreen.Search.getNavigationRoute(), inclusive = false)
+                onNavigateToAddOrganization = {
+                    addOrganizationScreenViewModel?.setName("")
+                    addOrganizationScreenViewModel?.setCity("")
+                    navController.popBackStack(route = LocalisationNavigationScreen.AddOrganization.getNavigationRoute(), inclusive = false)
                 },
                 onLocalisationFinished = {
                     navController.popBackStack(
-                        route = LocalisationNavigationScreen.Search.getNavigationRoute(),
+                        route = LocalisationNavigationScreen.AddOrganization.getNavigationRoute(),
                         inclusive = true,
                     )
                 },

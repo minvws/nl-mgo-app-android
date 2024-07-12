@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.overview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.localisation.HealthCareProviderRepository
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,17 +14,17 @@ import kotlinx.coroutines.runBlocking
 @HiltViewModel
 internal class OverviewScreenViewModel
     @Inject
-    constructor(healthCareProviderRepository: HealthCareProviderRepository) : ViewModel() {
+    constructor(organizationRepository: OrganizationRepository) : ViewModel() {
         private val initialViewState =
             OverviewScreenViewState.initialState(
                 providers =
                     runBlocking {
-                        healthCareProviderRepository.get()
+                        organizationRepository.get()
                     },
             )
         private val _viewState = MutableStateFlow(initialViewState)
         val viewState =
-            combine(_viewState, healthCareProviderRepository.storedHealthCareProvidersFlow) { viewState, providers ->
+            combine(_viewState, organizationRepository.storedHealthCareProvidersFlow) { viewState, providers ->
                 OverviewScreenViewState(name = viewState.name, providers = providers)
             }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
     }

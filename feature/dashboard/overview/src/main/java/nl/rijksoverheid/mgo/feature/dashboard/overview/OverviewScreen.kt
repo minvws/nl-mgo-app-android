@@ -39,7 +39,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.overview.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-const val TEST_TAG_HEALTH_PROVIDER_CARD = "HEALTH_PROVIDER_CARD"
+const val TEST_TAG_OVERVIEW_ORGANIZATION_CARD = "OVERVIEW_ORGANIZATION_CARD"
 
 @Composable
 fun OverviewScreen(
@@ -78,7 +78,7 @@ private fun OverviewScreenContent(
 
             if (hasProviders) {
                 viewState.providers.fastForEachIndexed { _, provider ->
-                    HealthCareProviderCard(
+                    OrganizationCard(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
@@ -122,11 +122,11 @@ private fun Header(
 }
 
 @Composable
-private fun HealthCareProviderCard(
+private fun OrganizationCard(
     modifier: Modifier = Modifier,
     provider: MgoOrganization,
 ) {
-    MgoCard(modifier = modifier.testTag(TEST_TAG_HEALTH_PROVIDER_CARD)) {
+    MgoCard(modifier = modifier.testTag(TEST_TAG_OVERVIEW_ORGANIZATION_CARD)) {
         Column(modifier = Modifier.padding(16.dp)) {
             val category = provider.category ?: stringResource(id = CopyR.string.common_unknown)
             Text(text = provider.name, style = MaterialTheme.typography.bodyDefault, fontWeight = FontWeight.Bold)

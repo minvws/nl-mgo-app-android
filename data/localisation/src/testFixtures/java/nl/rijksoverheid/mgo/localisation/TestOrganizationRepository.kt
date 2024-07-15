@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 
 class TestOrganizationRepository : OrganizationRepository {
-    override val storedHealthCareProvidersFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(listOf())
+    override val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(listOf())
 
     private var searchResults: List<MgoOrganization> = listOf()
     private var searchResultError: Throwable? = null
@@ -35,22 +35,22 @@ class TestOrganizationRepository : OrganizationRepository {
     }
 
     fun setStoredProviders(providers: List<MgoOrganization>) {
-        this.storedHealthCareProvidersFlow.value = providers
+        this.storedOrganizationsFlow.value = providers
     }
 
     override suspend fun get(): List<MgoOrganization> {
-        return storedHealthCareProvidersFlow.value
+        return storedOrganizationsFlow.value
     }
 
     override suspend fun save(provider: MgoOrganization) {
-        val newProviders = storedHealthCareProvidersFlow.value.toMutableList()
+        val newProviders = storedOrganizationsFlow.value.toMutableList()
         newProviders.add(provider)
-        storedHealthCareProvidersFlow.value = newProviders
+        storedOrganizationsFlow.value = newProviders
     }
 
     override suspend fun delete(providerId: String) {
-        val newProviders = storedHealthCareProvidersFlow.value.toMutableList()
+        val newProviders = storedOrganizationsFlow.value.toMutableList()
         newProviders.removeIf { provider -> provider.id == providerId }
-        storedHealthCareProvidersFlow.value = newProviders
+        storedOrganizationsFlow.value = newProviders
     }
 }

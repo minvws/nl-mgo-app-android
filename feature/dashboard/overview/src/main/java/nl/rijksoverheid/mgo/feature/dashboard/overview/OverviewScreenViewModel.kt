@@ -24,7 +24,7 @@ internal class OverviewScreenViewModel
             )
         private val _viewState = MutableStateFlow(initialViewState)
         val viewState =
-            combine(_viewState, organizationRepository.storedHealthCareProvidersFlow) { viewState, providers ->
+            combine(_viewState, organizationRepository.storedOrganizationsFlow) { viewState, providers ->
                 OverviewScreenViewState(name = viewState.name, providers = providers)
             }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
     }

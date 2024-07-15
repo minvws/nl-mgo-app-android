@@ -17,13 +17,13 @@ internal class OrganizationSearchScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val healthCareProviderRepository =
+    private val organizationRepository =
         TestOrganizationRepository()
     private val appInfo = AppInfo(versionCode = 1, appFlavor = AppFlavor.PROD)
 
     @After
     fun cleanUp() {
-        healthCareProviderRepository.resetSearchResults()
+        organizationRepository.resetSearchResults()
     }
 
     @Test
@@ -33,9 +33,9 @@ internal class OrganizationSearchScreenViewModelTest {
             val viewModel =
                 OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
-                    organizationRepository = healthCareProviderRepository,
+                    organizationRepository = organizationRepository,
                 )
-            healthCareProviderRepository.setSearchResults(listOf(TEST_MGO_ORGANIZATION))
+            organizationRepository.setSearchResults(listOf(TEST_MGO_ORGANIZATION))
 
             viewModel.viewState.test {
                 // When
@@ -63,9 +63,9 @@ internal class OrganizationSearchScreenViewModelTest {
             val viewModel =
                 OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
-                    organizationRepository = healthCareProviderRepository,
+                    organizationRepository = organizationRepository,
                 )
-            healthCareProviderRepository.setSearchResultsError(error)
+            organizationRepository.setSearchResultsError(error)
 
             viewModel.viewState.test {
                 // When
@@ -91,12 +91,12 @@ internal class OrganizationSearchScreenViewModelTest {
             val viewModel =
                 OrganizationSearchScreenViewModel(
                     appInfo = appInfo,
-                    organizationRepository = healthCareProviderRepository,
+                    organizationRepository = organizationRepository,
                 )
 
             viewModel.navigation.test {
                 // When
-                viewModel.addHealthCareProvider(TEST_MGO_ORGANIZATION)
+                viewModel.addOrganization(TEST_MGO_ORGANIZATION)
 
                 // Then
                 assertEquals(Unit, awaitItem())

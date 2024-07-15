@@ -70,7 +70,7 @@ internal class OrganizationSearchScreenViewModel
 
         private fun shouldGetSearchResults() = _viewState.value !is OrganizationSearchScreenViewState.Success
 
-        fun addHealthCareProvider(provider: MgoOrganization) {
+        fun addOrganization(provider: MgoOrganization) {
             viewModelScope.launch {
                 organizationRepository.save(provider)
                 _navigation.tryEmit(Unit)

@@ -12,7 +12,7 @@ internal class RemoveOrganizationCardSnapshotTest {
     @Test
     fun preview() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            RemoveHealthCareProviderCardPreview()
+            RemoveOrganizationCardPreview()
         }
     }
 }

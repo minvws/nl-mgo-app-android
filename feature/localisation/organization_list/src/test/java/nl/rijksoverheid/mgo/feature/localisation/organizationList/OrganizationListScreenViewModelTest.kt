@@ -13,17 +13,17 @@ internal class OrganizationListScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val healthCareProviderRepository =
+    private val organizationRepository =
         TestOrganizationRepository()
 
     @Test
     fun `Given a stored organization, When deleting that organization, view state is updated with no providers`() =
         runTest {
             // Given
-            healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_MGO_ORGANIZATION))
+            organizationRepository.setStoredProviders(providers = listOf(TEST_MGO_ORGANIZATION))
             val viewModel =
                 OrganizationListScreenViewModel(
-                    organizationRepository = healthCareProviderRepository,
+                    organizationRepository = organizationRepository,
                 )
 
             // When

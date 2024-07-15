@@ -21,7 +21,7 @@ internal class DefaultOrganizationRepository(
     OrganizationRepository {
     private val fileName = "organizations.json"
 
-    override val storedHealthCareProvidersFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(runBlocking { get() })
+    override val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(runBlocking { get() })
 
     override suspend fun search(
         name: String,
@@ -34,9 +34,9 @@ internal class DefaultOrganizationRepository(
                 val result = executeNetworkRequest { loadApi.search(requestBody) }
                 emit(result.getOrThrow())
             }
-        return combine(searchResponseFlow, storedHealthCareProvidersFlow) { searchResponse, storedHealthCareProviders ->
+        return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
             searchResponse.organizations.map { organization ->
-                organization.toMgoOrganization(added = storedHealthCareProviders.any { provider -> provider.id == organization.id })
+                organization.toMgoOrganization(added = storedOrganizations.any { provider -> provider.id == organization.id })
             }
         }
     }
@@ -53,13 +53,13 @@ internal class DefaultOrganizationRepository(
         // Add our provider we want to save
         val newProviders = storedMgoOrganizations.providers.toMutableList()
         newProviders.add(provider)
-        val newStoredHealthCareProviders = storedMgoOrganizations.copy(providers = newProviders)
+        val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(file = newStoredHealthCareProviders, name = fileName)
+        fileStore.saveFile(file = newStoredOrganizations, name = fileName)
 
         // Update flow
-        storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers
+        storedOrganizationsFlow.value = newStoredOrganizations.providers
     }
 
     override suspend fun delete(providerId: String) {
@@ -69,12 +69,12 @@ internal class DefaultOrganizationRepository(
         // Delete the provider from the file
         val newProviders = storedMgoOrganizations.providers.toMutableList()
         newProviders.removeIf { provider -> provider.id == providerId }
-        val newStoredHealthCareProviders = storedMgoOrganizations.copy(providers = newProviders)
+        val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(file = newStoredHealthCareProviders, name = fileName)
+        fileStore.saveFile(file = newStoredOrganizations, name = fileName)
 
         // Update flow
-        storedHealthCareProvidersFlow.value = newStoredHealthCareProviders.providers
+        storedOrganizationsFlow.value = newStoredOrganizations.providers
     }
 }

@@ -25,7 +25,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-internal fun RemoveHealthCareProviderCard(
+internal fun RemoveOrganizationCard(
     provider: MgoOrganization,
     onClick: (provider: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
@@ -48,7 +48,7 @@ internal fun RemoveHealthCareProviderCard(
             }
             IconButton(onClick = { onClick(provider) }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_remove_healthcare_provider_card_remove),
+                    painter = painterResource(id = R.drawable.ic_remove_organization_card_remove),
                     contentDescription = stringResource(id = CopyR.string.common_delete).uppercase(),
                     tint = MaterialTheme.colors.iconsPrimary(),
                 )
@@ -59,9 +59,9 @@ internal fun RemoveHealthCareProviderCard(
 
 @PreviewLightDark
 @Composable
-internal fun RemoveHealthCareProviderCardPreview() {
+internal fun RemoveOrganizationCardPreview() {
     MgoTheme {
-        RemoveHealthCareProviderCard(
+        RemoveOrganizationCard(
             provider = TEST_MGO_ORGANIZATION,
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),

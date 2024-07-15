@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.removeOrganization
+package nl.rijksoverheid.mgo.feature.organization.removeOrganization
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

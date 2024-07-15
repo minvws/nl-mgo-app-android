@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.removeOrganization
+package nl.rijksoverheid.mgo.feature.organization.removeOrganization
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -13,7 +13,7 @@ internal class RemoveOrganizationScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val healthCareProviderRepository =
+    private val organizationRepository =
         TestOrganizationRepository()
 
     @Test
@@ -21,11 +21,11 @@ internal class RemoveOrganizationScreenViewModelTest {
         runTest {
             val viewModel =
                 RemoveOrganizationScreenViewModel(
-                    organizationRepository = healthCareProviderRepository,
+                    organizationRepository = organizationRepository,
                 )
             viewModel.providerDeleted.test {
                 // Given
-                healthCareProviderRepository.setStoredProviders(providers = listOf(TEST_MGO_ORGANIZATION))
+                organizationRepository.setStoredProviders(providers = listOf(TEST_MGO_ORGANIZATION))
 
                 // When
                 viewModel.delete(TEST_MGO_ORGANIZATION.id)

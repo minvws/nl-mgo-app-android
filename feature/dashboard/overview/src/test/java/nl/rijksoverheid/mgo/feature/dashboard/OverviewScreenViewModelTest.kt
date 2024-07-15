@@ -14,16 +14,16 @@ internal class OverviewScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val healthCareProviderRepository = TestOrganizationRepository()
+    private val organizationRepository = TestOrganizationRepository()
 
     @Test
     fun `Given stored providers, When collecting on view state, Then emit view state with providers`() =
         runTest {
             // Given
-            healthCareProviderRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+            organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
 
             // When
-            val viewModel = OverviewScreenViewModel(organizationRepository = healthCareProviderRepository)
+            val viewModel = OverviewScreenViewModel(organizationRepository = organizationRepository)
             viewModel.viewState.test {
                 // Then
                 assertEquals(listOf(TEST_MGO_ORGANIZATION), awaitItem().providers)

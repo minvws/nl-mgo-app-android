@@ -4,7 +4,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.Flow
 
 interface OrganizationRepository {
-    val storedHealthCareProvidersFlow: Flow<List<MgoOrganization>>
+    val storedOrganizationsFlow: Flow<List<MgoOrganization>>
 
     suspend fun search(
         name: String,

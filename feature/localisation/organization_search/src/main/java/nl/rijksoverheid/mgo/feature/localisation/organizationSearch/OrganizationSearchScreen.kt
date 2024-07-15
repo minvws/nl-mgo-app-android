@@ -69,7 +69,7 @@ fun OrganizationSearchScreen(
             if (searchResult.added) {
                 onNavigateToDashboard()
             } else {
-                viewModel.addHealthCareProvider(searchResult)
+                viewModel.addOrganization(searchResult)
             }
         },
         onNavigateToSearch = onNavigateToAddOrganization,

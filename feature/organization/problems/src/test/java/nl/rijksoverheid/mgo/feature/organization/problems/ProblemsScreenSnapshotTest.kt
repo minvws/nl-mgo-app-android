@@ -1,8 +1,5 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.problems
+package nl.rijksoverheid.mgo.feature.organization.problems
 
-import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreenConcernsPreview
-import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreenErrorPreview
-import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreenLoadingPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test

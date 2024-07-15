@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
-import nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider.RemoveProviderScreen
 import nl.rijksoverheid.mgo.feature.organization.labResults.LabResultsScreen
 import nl.rijksoverheid.mgo.feature.organization.medicationUse.MedicationUseScreen
 import nl.rijksoverheid.mgo.feature.organization.organization.OrganizationScreen
 import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreen
+import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
@@ -61,9 +61,9 @@ fun OrganizationNavigation(
                         OrganizationNavigationScreen.LabResults.setProvider(provider).getNavigationRoute(),
                     )
                 },
-                onNavigateToRemoveProvider = {
+                onNavigateRemoveOrganization = {
                     navController.navigate(
-                        OrganizationNavigationScreen.RemoveProvider.setProviderId(provider.id).setProviderName
+                        OrganizationNavigationScreen.RemoveOrganization.setProviderId(provider.id).setProviderName
                             (provider.name).getNavigationRoute(),
                     )
                 },
@@ -71,11 +71,11 @@ fun OrganizationNavigation(
         }
 
         dialogWithDefaultScreenTransitions(
-            route = OrganizationNavigationScreen.RemoveProvider.getRoute(),
+            route = OrganizationNavigationScreen.RemoveOrganization.getRoute(),
         ) { backStackEntry ->
-            RemoveProviderScreen(
-                providerId = OrganizationNavigationScreen.RemoveProvider.getProviderId(backStackEntry),
-                providerName = OrganizationNavigationScreen.RemoveProvider.getProviderName(backStackEntry),
+            RemoveOrganizationScreen(
+                providerId = OrganizationNavigationScreen.RemoveOrganization.getProviderId(backStackEntry),
+                providerName = OrganizationNavigationScreen.RemoveOrganization.getProviderName(backStackEntry),
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToDashboard = {
                     navController.popBackStack(

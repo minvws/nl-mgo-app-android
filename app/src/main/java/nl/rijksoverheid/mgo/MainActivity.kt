@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     } else {
                         OnboardingNavigationScreen.Start.getNavigationRoute()
                     }
-                val healthCareProviderNavController = rememberNavController()
+                val organizationNavController = rememberNavController()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     addOnboardingNavGraph(navController = navController)
                     addDashboardNavGraph(
                         rootNavController = navController,
-                        healthCareProviderNavController = healthCareProviderNavController,
+                        organizationNavController = organizationNavController,
                     )
                     addLocalisationNavGraph(navController = navController)
                     composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {

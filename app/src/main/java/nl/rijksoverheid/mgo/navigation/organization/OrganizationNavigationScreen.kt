@@ -29,16 +29,16 @@ sealed class OrganizationNavigationScreen(override val name: String, override va
         }
     }
 
-    data object RemoveProvider : OrganizationNavigationScreen(
-        name = "healthcareprovider-remove",
+    data object RemoveOrganization : OrganizationNavigationScreen(
+        name = "organization-remove",
         placeholders = listOf("providerId", "providerName"),
     ) {
-        fun setProviderId(providerId: String): RemoveProvider {
+        fun setProviderId(providerId: String): RemoveOrganization {
             builder.addArgument(placeholders[0], providerId)
             return this
         }
 
-        fun setProviderName(providerName: String): RemoveProvider {
+        fun setProviderName(providerName: String): RemoveOrganization {
             builder.addArgument(placeholders[1], providerName)
             return this
         }

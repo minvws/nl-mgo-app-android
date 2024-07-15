@@ -119,7 +119,7 @@ private fun OrganizationListScreenContent(
                 )
 
                 viewState.providers.forEach { provider ->
-                    RemoveHealthCareProviderCard(
+                    RemoveOrganizationCard(
                         modifier = Modifier.padding(bottom = 8.dp),
                         provider = provider,
                         onClick =

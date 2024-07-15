@@ -87,7 +87,7 @@ dependencies {
 
     // Overview
     implementation(projects.feature.organization.organization)
-    implementation(projects.feature.organization.removeprovider)
+    implementation(projects.feature.organization.removeOrganization)
     implementation(projects.feature.organization.medicationUse)
     implementation(projects.feature.organization.problems)
     implementation(projects.feature.organization.labResults)

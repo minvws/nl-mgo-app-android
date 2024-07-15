@@ -50,7 +50,7 @@ fun OrganizationScreen(
     onNavigateToMedicationuse: (provider: MgoOrganization) -> Unit,
     onNavigateToProblems: () -> Unit,
     onNavigateToLabResults: () -> Unit,
-    onNavigateToRemoveProvider: () -> Unit,
+    onNavigateRemoveOrganization: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -131,7 +131,7 @@ fun OrganizationScreen(
                     modifier =
                         Modifier
                             .padding(top = 16.dp)
-                            .clickable { onNavigateToRemoveProvider() },
+                            .clickable { onNavigateRemoveOrganization() },
                     icon = R.drawable.ic_delete,
                     iconCircleColor = MaterialTheme.colors.notificationError(),
                     title = CopyR.string.organization_remove_organization_heading,
@@ -188,7 +188,7 @@ internal fun OrganizationScreenPreview() {
             onNavigateToMedicationuse = {},
             onNavigateToProblems = {},
             onNavigateToLabResults = {},
-            onNavigateToRemoveProvider = {},
+            onNavigateRemoveOrganization = {},
         )
     }
 }

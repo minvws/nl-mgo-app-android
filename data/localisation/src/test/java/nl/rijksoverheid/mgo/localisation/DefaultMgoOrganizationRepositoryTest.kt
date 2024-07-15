@@ -41,8 +41,8 @@ internal class DefaultMgoOrganizationRepositoryTest {
 
             // Then
             searchFlow.test {
-                val healthCareProviders = awaitItem()
-                assertEquals(45, healthCareProviders.size)
+                val providers = awaitItem()
+                assertEquals(45, providers.size)
 
                 val expectedFirstHealthProvider =
                     MgoOrganization(
@@ -53,7 +53,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
                         added = false,
                         resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
                     )
-                assertEquals(expectedFirstHealthProvider, healthCareProviders.firstOrNull())
+                assertEquals(expectedFirstHealthProvider, providers.firstOrNull())
             }
         }
 
@@ -81,10 +81,10 @@ internal class DefaultMgoOrganizationRepositoryTest {
 
             // When
             val repository = getRepository()
-            val healthCareProviders = repository.get()
+            repository.get()
 
             // Then
-            repository.storedHealthCareProvidersFlow.test {
+            repository.storedOrganizationsFlow.test {
                 assertEquals(listOf<MgoOrganization>(), awaitItem())
             }
         }
@@ -108,7 +108,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
             val repository = getRepository()
 
             // Then
-            repository.storedHealthCareProvidersFlow.test {
+            repository.storedOrganizationsFlow.test {
                 assertEquals(storedMgoOrganizations.providers, awaitItem())
             }
         }
@@ -124,7 +124,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
             repository.save(provider)
 
             // Then
-            repository.storedHealthCareProvidersFlow.test {
+            repository.storedOrganizationsFlow.test {
                 val storedProviders = awaitItem()
                 assertEquals(listOf(provider), storedProviders)
             }
@@ -150,7 +150,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
             repository.delete(storedMgoOrganizations.providers.first().id)
 
             // Then
-            repository.storedHealthCareProvidersFlow.test {
+            repository.storedOrganizationsFlow.test {
                 val expectedProviders = storedMgoOrganizations.providers.drop(1)
                 val storedProviders = awaitItem()
                 assertEquals(expectedProviders, storedProviders)

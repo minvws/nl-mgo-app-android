@@ -18,7 +18,7 @@ internal class OrganizationListScreenViewModel
         private val organizationRepository: OrganizationRepository,
     ) : ViewModel() {
         private val _viewState =
-            organizationRepository.storedHealthCareProvidersFlow.map { providers ->
+            organizationRepository.storedOrganizationsFlow.map { providers ->
                 OrganizationListScreenViewState(providers = providers)
             }
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, OrganizationListScreenViewState.initialState)

@@ -19,7 +19,7 @@ import nl.rijksoverheid.mgo.navigation.organization.OrganizationNavigation
 
 fun NavGraphBuilder.addDashboardNavGraph(
     rootNavController: NavHostController,
-    healthCareProviderNavController: NavHostController,
+    organizationNavController: NavHostController,
 ) {
     navigation(
         startDestination = DashboardNavigationScreen.BottomBar.getRoute(),
@@ -28,7 +28,7 @@ fun NavGraphBuilder.addDashboardNavGraph(
         composableWithDefaultScreenTransitions(route = DashboardNavigationScreen.BottomBar.getRoute()) {
             DashboardBottomBarScreen(
                 overviewTab = {
-                    OrganizationNavigation(rootNavController = rootNavController, navController = healthCareProviderNavController)
+                    OrganizationNavigation(rootNavController = rootNavController, navController = organizationNavController)
                 },
                 aboutThisAppTab = {
                     val applicationContext = LocalContext.current.applicationContext

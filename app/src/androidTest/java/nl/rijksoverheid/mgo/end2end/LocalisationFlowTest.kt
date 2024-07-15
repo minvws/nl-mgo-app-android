@@ -14,8 +14,8 @@ internal class LocalisationFlowTest : MainActivityTest() {
     @Test
     fun providerAddedAfterLocalisationFlow() {
         launchAppSkipOnboarding {
-            // On fresh app launch, no providers are shown.
-            assertNoProviders()
+            // On fresh app launch, no organizations are shown.
+            assertNoOrganizations()
 
             // Enter localisation flow.
             clickLocalisationButton {
@@ -23,7 +23,7 @@ internal class LocalisationFlowTest : MainActivityTest() {
                 inputCity("Breda")
                 pressSearchButton {
                     clickFirstSearchResult {
-                        assertOneProvider()
+                        assertOneOrganization()
                     }
                 }
             }

@@ -1,10 +1,9 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.problems
+package nl.rijksoverheid.mgo.feature.organization.problems
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.concern.models.TEST_MGO_CONCERN
 import nl.rijksoverheid.mgo.data.concern.models.TestConcernRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreenViewModel
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert
 import org.junit.Rule

@@ -7,16 +7,16 @@ import nl.rijksoverheid.mgo.component.theme.TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_
 import nl.rijksoverheid.mgo.feature.dashboard.overview.TEST_TAG_HEALTH_PROVIDER_CARD
 
 internal class DashboardScreenRobot(private val composeTestRule: ComposeTestRule) {
-    internal fun assertNoProviders() {
+    internal fun assertNoOrganizations() {
         assertNoListItems(composeTestRule = composeTestRule, testTag = TEST_TAG_HEALTH_PROVIDER_CARD)
     }
 
-    internal fun assertOneProvider() {
+    internal fun assertOneOrganization() {
         assertOneListItem(composeTestRule = composeTestRule, testTag = TEST_TAG_HEALTH_PROVIDER_CARD)
     }
 
-    internal fun clickLocalisationButton(block: SearchScreenRobot.() -> Unit) {
+    internal fun clickLocalisationButton(block: AddOrganizationScreenRobot.() -> Unit) {
         composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON).performClick()
-        block(SearchScreenRobot(composeTestRule))
+        block(AddOrganizationScreenRobot(composeTestRule))
     }
 }

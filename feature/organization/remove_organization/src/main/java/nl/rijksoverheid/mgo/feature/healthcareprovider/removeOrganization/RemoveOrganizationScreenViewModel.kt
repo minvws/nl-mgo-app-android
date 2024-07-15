@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider
+package nl.rijksoverheid.mgo.feature.healthcareprovider.removeOrganization
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class RemoveProviderScreenViewModel
+class RemoveOrganizationScreenViewModel
     @Inject
     constructor(
         private val organizationRepository: OrganizationRepository,

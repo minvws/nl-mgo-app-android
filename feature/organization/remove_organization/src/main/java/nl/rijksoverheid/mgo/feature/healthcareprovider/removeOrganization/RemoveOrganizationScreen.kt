@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider
+package nl.rijksoverheid.mgo.feature.healthcareprovider.removeOrganization
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,19 +34,19 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun RemoveProviderScreen(
+fun RemoveOrganizationScreen(
     providerId: String,
     providerName: String,
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
-    val viewModel: RemoveProviderScreenViewModel = hiltViewModel()
+    val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.providerDeleted.collectLatest {
             onNavigateToDashboard()
         }
     }
-    RemoveProviderScreenContent(
+    RemoveOrganizationScreenContent(
         providerName = providerName,
         onNavigateBack = onNavigateBack,
         onDeleteProvider = {
@@ -56,7 +56,7 @@ fun RemoveProviderScreen(
 }
 
 @Composable
-private fun RemoveProviderScreenContent(
+private fun RemoveOrganizationScreenContent(
     providerName: String,
     onNavigateBack: () -> Unit,
     onDeleteProvider: () -> Unit,
@@ -125,9 +125,9 @@ private fun RemoveProviderScreenContent(
 
 @PreviewLightDark
 @Composable
-fun RemoveProviderScreenPreview() {
+fun RemoveOrganizationScreenPreview() {
     MgoTheme {
-        RemoveProviderScreenContent(
+        RemoveOrganizationScreenContent(
             providerName = "UMC Groningen",
             onNavigateBack = {},
             onDeleteProvider = {},

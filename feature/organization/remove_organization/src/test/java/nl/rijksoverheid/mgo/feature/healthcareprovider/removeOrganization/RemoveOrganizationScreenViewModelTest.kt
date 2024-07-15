@@ -1,15 +1,15 @@
-package nl.rijksoverheid.mgo.feature.healthcareprovider.removeprovider
+package nl.rijksoverheid.mgo.feature.healthcareprovider.removeOrganization
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
-internal class RemoveProviderScreenViewModelTest {
+internal class RemoveOrganizationScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -20,7 +20,7 @@ internal class RemoveProviderScreenViewModelTest {
     fun `Given a stored health care provider, When deleting that health care provider, ui is notified that provider is deleted`() =
         runTest {
             val viewModel =
-                RemoveProviderScreenViewModel(
+                RemoveOrganizationScreenViewModel(
                     organizationRepository = healthCareProviderRepository,
                 )
             viewModel.providerDeleted.test {
@@ -31,7 +31,7 @@ internal class RemoveProviderScreenViewModelTest {
                 viewModel.delete(TEST_MGO_ORGANIZATION.id)
 
                 // Then
-                Assert.assertEquals(Unit, awaitItem())
+                assertEquals(Unit, awaitItem())
             }
         }
 }

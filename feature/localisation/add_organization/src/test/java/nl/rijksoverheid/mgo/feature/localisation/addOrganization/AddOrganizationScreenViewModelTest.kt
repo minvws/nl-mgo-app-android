@@ -41,7 +41,7 @@ internal class AddOrganizationScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                assertEquals("Breda", awaitItem().name)
+                assertEquals("Breda", awaitItem().city)
             }
         }
 

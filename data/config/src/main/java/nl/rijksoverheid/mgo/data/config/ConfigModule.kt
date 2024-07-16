@@ -59,10 +59,10 @@ internal object ConfigModule {
     @Named("configBaseUrl")
     fun provideConfigBaseUrl(environment: Environment): String {
         return when (environment) {
-            Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/"
-            Environment.Custom -> "https://app-api.test.mgo.irealisatie.nl/"
-            Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/"
-            Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/"
+            is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/"
+            is Environment.Custom -> environment.url
+            is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/"
+            is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/"
         }
     }
 

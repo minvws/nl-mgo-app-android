@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,8 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+const val TEST_TAG_UPDATE_REQUIRED_TITLE = "UPDATE_REQUIRED_TITLE"
 
 @Composable
 fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName) {
@@ -46,8 +49,8 @@ fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName)
                 )
 
                 Text(
-                    modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = CopyR.string.update_required_heading),
+                    modifier = Modifier.padding(top = 32.dp).testTag(TEST_TAG_UPDATE_REQUIRED_TITLE),
+                    text = "Je hebt een oude versie van de app",
                     style = MaterialTheme.typography.headingMedium,
                 )
 

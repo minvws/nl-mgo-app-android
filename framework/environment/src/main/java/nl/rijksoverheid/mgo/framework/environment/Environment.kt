@@ -7,5 +7,5 @@ sealed class Environment {
 
     data object Prod : Environment()
 
-    data object Custom : Environment()
+    data class Custom(val url: String) : Environment()
 }

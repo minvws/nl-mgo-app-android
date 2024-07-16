@@ -41,10 +41,10 @@ internal class DvaApiModule {
     @Named("dvaApiBaseUrl")
     fun provideBaseUrl(environment: Environment): String {
         return when (environment) {
-            Environment.Acc -> "https://dva.test.mgo.irealisatie.nl/"
-            Environment.Custom -> "https://dva.test.mgo.irealisatie.nl/"
-            Environment.Prod -> "https://dva.test.mgo.irealisatie.nl/"
-            Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Acc -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Prod -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Custom -> environment.url
         }
     }
 }

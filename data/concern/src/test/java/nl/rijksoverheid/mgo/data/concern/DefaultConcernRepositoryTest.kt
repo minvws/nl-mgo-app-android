@@ -3,8 +3,8 @@ package nl.rijksoverheid.mgo.data.concern
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
 import nl.rijksoverheid.mgo.data.concern.models.MgoConcern
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
-import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
+import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule

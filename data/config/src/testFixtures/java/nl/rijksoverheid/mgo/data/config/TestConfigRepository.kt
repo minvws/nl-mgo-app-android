@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.data.config
 
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class TestConfigRepository(private val initialConfigState: ConfigState = ConfigState.NoAction) : ConfigRepository {
+class TestConfigRepository(initialConfigState: ConfigState = ConfigState.NoAction) : ConfigRepository {
     private val flow = MutableStateFlow(initialConfigState)
     private var configState: ConfigState = initialConfigState
 

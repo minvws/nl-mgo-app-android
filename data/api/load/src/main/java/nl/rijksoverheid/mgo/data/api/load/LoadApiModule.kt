@@ -32,7 +32,7 @@ private fun createMoshi(): Moshi {
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal object LoadApiModule {
+object LoadApiModule {
     @Provides
     @Singleton
     fun provideApi(
@@ -48,10 +48,10 @@ internal object LoadApiModule {
     @Named("loadApiBaseUrl")
     fun provideBaseUrl(environment: Environment): String {
         return when (environment) {
-            Environment.Acc -> "https://lo-ad.test.mgo.irealisatie.nl/"
-            Environment.Custom -> "https://lo-ad.test.mgo.irealisatie.nl/"
-            Environment.Prod -> "https://lo-ad.test.mgo.irealisatie.nl/"
-            Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/"
+            is Environment.Acc -> "https://lo-ad.test.mgo.irealisatie.nl/"
+            is Environment.Prod -> "https://lo-ad.test.mgo.irealisatie.nl/"
+            is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/"
+            is Environment.Custom -> environment.url
         }
     }
 

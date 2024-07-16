@@ -25,22 +25,22 @@ class AddOrganizationScreenViewModel
 
         fun setName(name: String) {
             _viewState.update { viewState -> viewState.copy(name = name) }
-            validate()
+            validate(navigate = false)
         }
 
         fun setCity(city: String) {
             _viewState.update { viewState -> viewState.copy(city = city) }
-            validate()
+            validate(navigate = false)
         }
 
-        fun validate() {
+        fun validate(navigate: Boolean = true) {
             viewModelScope.launch {
                 val name = _viewState.value.name
                 val city = _viewState.value.city
                 val nameError = if (name.isEmpty()) CopyR.string.add_organization_error_missing_name else null
                 val cityError = if (city.isEmpty()) CopyR.string.add_organization_error_missing_city else null
                 _viewState.update { viewState -> viewState.copy(nameError = nameError, cityError = cityError) }
-                if (nameError == null && cityError == null) {
+                if (nameError == null && cityError == null && navigate) {
                     _navigation.tryEmit(Unit)
                 }
             }

@@ -25,10 +25,12 @@ class AddOrganizationScreenViewModel
 
         fun setName(name: String) {
             _viewState.update { viewState -> viewState.copy(name = name) }
+            validate()
         }
 
         fun setCity(city: String) {
             _viewState.update { viewState -> viewState.copy(city = city) }
+            validate()
         }
 
         fun validate() {

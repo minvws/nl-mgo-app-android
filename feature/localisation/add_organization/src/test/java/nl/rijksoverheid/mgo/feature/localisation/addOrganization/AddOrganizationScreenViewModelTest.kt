@@ -14,6 +14,38 @@ internal class AddOrganizationScreenViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
+    fun `Given name with whitespace, When calling setName, Then name is trimmed`() =
+        runTest {
+            // Given
+            val name = "   Tandarts   "
+
+            // When
+            val viewModel = AddOrganizationScreenViewModel()
+            viewModel.setName(name)
+
+            // Then
+            viewModel.viewState.test {
+                assertEquals("Tandarts", awaitItem().name)
+            }
+        }
+
+    @Test
+    fun `Given city with whitespace, When calling setCity, Then city is trimmed`() =
+        runTest {
+            // Given
+            val city = "   Breda   "
+
+            // When
+            val viewModel = AddOrganizationScreenViewModel()
+            viewModel.setCity(city)
+
+            // Then
+            viewModel.viewState.test {
+                assertEquals("Breda", awaitItem().name)
+            }
+        }
+
+    @Test
     fun `Given no name and city have been entered, When calling validate, Then emit error`() =
         runTest {
             // Given

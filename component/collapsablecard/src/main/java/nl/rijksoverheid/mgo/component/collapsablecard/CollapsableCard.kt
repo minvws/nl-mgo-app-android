@@ -27,6 +27,7 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
+import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -64,6 +65,7 @@ private fun CollapsableCardContent(
                     val iconRotation = if (isCollapsed) 0f else 180f
                     Icon(
                         modifier = Modifier.rotate(iconRotation),
+                        tint = MaterialTheme.colors.iconsPrimary(),
                         painter = painterResource(id = R.drawable.ic_arrow),
                         contentDescription =
                             if (isCollapsed) {

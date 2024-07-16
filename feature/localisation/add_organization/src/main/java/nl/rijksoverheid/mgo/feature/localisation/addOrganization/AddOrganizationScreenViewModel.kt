@@ -29,6 +29,7 @@ class AddOrganizationScreenViewModel
 
         fun setCity(city: String) {
             _viewState.update { viewState -> viewState.copy(city = city.trim()) }
+            validate()
         }
 
         fun validate() {

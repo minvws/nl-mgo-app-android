@@ -12,4 +12,5 @@ android {
 dependencies {
     implementation(projects.data.api.dva)
     implementation(projects.framework.fhirExtension)
+    testImplementation(testFixtures(projects.framework.test))
 }

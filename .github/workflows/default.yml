@@ -37,18 +37,18 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-      - name: Android Emulator Tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew connectedTstDebugAndroidTest
-          profile: pixel
       - name: Lint and format checks
         run: ./gradlew lintTstDebug ktlintCheck
       - name: Snapshot tests
         run: ./gradlew verifyPaparazziDebug
       - name: Unit Tests
         run: ./gradlew testTstDebug jacocoTestReport
+      - name: Android Emulator Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedTstDebugAndroidTest
+          profile: pixel
       - name: Run SonarCloud scanner
         run: ./gradlew sonar --info
         env:

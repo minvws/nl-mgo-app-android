@@ -8,8 +8,8 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.file.TestFileStore
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
+import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
-import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

@@ -1,6 +1,5 @@
-package nl.rijksoverheid.mgo.framework.test.rules
+package nl.rijksoverheid.mgo.framework.test
 
-import nl.rijksoverheid.mgo.framework.test.TestServer
 import org.junit.rules.ExternalResource
 
 class TestServerRule : ExternalResource() {

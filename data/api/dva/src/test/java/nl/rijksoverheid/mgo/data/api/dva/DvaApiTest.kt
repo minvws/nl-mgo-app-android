@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.data.api.dva
 
 import ca.uhn.fhir.context.FhirContext
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
-import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
+import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import org.hl7.fhir.dstu3.model.Bundle
 import org.hl7.fhir.dstu3.model.MedicationStatement
 import org.junit.Assert.assertEquals

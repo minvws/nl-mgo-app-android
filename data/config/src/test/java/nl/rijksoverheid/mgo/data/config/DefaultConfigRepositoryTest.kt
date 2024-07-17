@@ -3,8 +3,8 @@ package nl.rijksoverheid.mgo.data.config
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.TestEnvironmentRepository
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
+import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
-import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

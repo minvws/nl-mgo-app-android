@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.framework.environment.AppFlavor
-import nl.rijksoverheid.mgo.framework.environment.AppInfo
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 internal class OrganizationSearchScreenViewModel
     @Inject
     constructor(
-        private val appInfo: AppInfo,
+        private val environmentRepository: EnvironmentRepository,
         private val organizationRepository: OrganizationRepository,
     ) : ViewModel() {
         private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
@@ -50,7 +50,7 @@ internal class OrganizationSearchScreenViewModel
                         .catch { throwable ->
                             _viewState.update {
                                 OrganizationSearchScreenViewState.Error(
-                                    isProductionBuild = appInfo.appFlavor == AppFlavor.PROD,
+                                    isProductionBuild = environmentRepository.getEnvironment() is Environment.Prod,
                                     error = throwable,
                                 )
                             }

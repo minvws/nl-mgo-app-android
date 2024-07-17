@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo.framework.environment
 
-sealed class Environment {
-    data object Tst : Environment()
+sealed class Environment(open val versionCode: Int) {
+    data class Tst(override val versionCode: Int) : Environment(versionCode)
 
-    data object Acc : Environment()
+    data class Acc(override val versionCode: Int) : Environment(versionCode)
 
-    data object Prod : Environment()
+    data class Prod(override val versionCode: Int) : Environment(versionCode)
 
-    data class Custom(val url: String) : Environment()
+    data class Custom(override val versionCode: Int, val url: String) : Environment(versionCode)
 }

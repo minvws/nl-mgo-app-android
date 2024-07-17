@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Rule
 import javax.inject.Inject
 
-internal open class MainActivityTest {
+open class BaseTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 

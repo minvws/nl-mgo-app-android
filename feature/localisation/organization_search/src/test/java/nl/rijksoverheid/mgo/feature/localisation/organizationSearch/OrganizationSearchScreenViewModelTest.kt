@@ -2,8 +2,8 @@ package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.environment.AppFlavor
-import nl.rijksoverheid.mgo.framework.environment.AppInfo
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.TestEnvironmentRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.After
@@ -19,7 +19,7 @@ internal class OrganizationSearchScreenViewModelTest {
 
     private val organizationRepository =
         TestOrganizationRepository()
-    private val appInfo = AppInfo(versionCode = 1, appFlavor = AppFlavor.PROD)
+    private val environmentRepository = TestEnvironmentRepository().also { it.setEnvironment(Environment.Prod(1)) }
 
     @After
     fun cleanUp() {
@@ -32,7 +32,7 @@ internal class OrganizationSearchScreenViewModelTest {
             // Given
             val viewModel =
                 OrganizationSearchScreenViewModel(
-                    appInfo = appInfo,
+                    environmentRepository = environmentRepository,
                     organizationRepository = organizationRepository,
                 )
             organizationRepository.setSearchResults(listOf(TEST_MGO_ORGANIZATION))
@@ -62,7 +62,7 @@ internal class OrganizationSearchScreenViewModelTest {
             val error = IllegalStateException("Something went wrong")
             val viewModel =
                 OrganizationSearchScreenViewModel(
-                    appInfo = appInfo,
+                    environmentRepository = environmentRepository,
                     organizationRepository = organizationRepository,
                 )
             organizationRepository.setSearchResultsError(error)
@@ -90,7 +90,7 @@ internal class OrganizationSearchScreenViewModelTest {
             // Given
             val viewModel =
                 OrganizationSearchScreenViewModel(
-                    appInfo = appInfo,
+                    environmentRepository = environmentRepository,
                     organizationRepository = organizationRepository,
                 )
 

@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.BuildConfig
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import java.io.File
@@ -49,5 +50,17 @@ internal object MainModule {
     ): ShowDeviceRootedDialog {
         val rootBeer = RootBeer(context)
         return ShowDeviceRootedDialog(rootBeer = rootBeer, keyValueStore = keyValueStore)
+    }
+
+    @Named("appFlavor")
+    @Provides
+    fun provideAppFlavor(): String {
+        return BuildConfig.FLAVOR
+    }
+
+    @Named("versionCode")
+    @Provides
+    fun provideVersionCode(): Int {
+        return BuildConfig.VERSION_CODE
     }
 }

@@ -118,7 +118,5 @@ dependencies {
 
     testImplementation(testFixtures(projects.data.onboarding))
     testImplementation(testFixtures(projects.data.config))
-    androidTestImplementation(projects.data.api.load)
-    androidTestImplementation(libs.okhttp)
-    androidTestImplementation(libs.okhttp.mockwebserver)
+    androidTestImplementation(testFixtures(projects.framework.environment))
 }

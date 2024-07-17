@@ -28,10 +28,6 @@ internal fun createApi(
     return retrofit.create(ConfigApi::class.java)
 }
 
-internal fun createMoshi(): Moshi {
-    return Moshi.Builder().build()
-}
-
 @InstallIn(SingletonComponent::class)
 @Module
 internal object ConfigModule {
@@ -70,6 +66,6 @@ internal object ConfigModule {
     @Singleton
     @Named("configMoshi")
     fun provideMoshi(): Moshi {
-        return createMoshi()
+        return Moshi.Builder().build()
     }
 }

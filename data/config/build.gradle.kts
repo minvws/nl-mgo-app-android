@@ -10,5 +10,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":framework:environment"))
+    implementation(projects.framework.environment)
+    testImplementation(testFixtures(projects.framework.environment))
 }

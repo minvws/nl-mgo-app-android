@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.config
 
-import nl.rijksoverheid.mgo.framework.environment.AppFlavor
-import nl.rijksoverheid.mgo.framework.environment.AppInfo
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.TestEnvironmentRepository
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -51,6 +51,8 @@ internal class DefaultConfigRepositoryTest {
     private fun getRepository(appVersion: Int): DefaultConfigRepository {
         val okHttpClient = TEST_OKHTTP_CLIENT
         val configApi = createApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-        return DefaultConfigRepository(appInfo = AppInfo(versionCode = appVersion, appFlavor = AppFlavor.TEST), configApi = configApi)
+        val environmentRepository = TestEnvironmentRepository()
+        environmentRepository.setEnvironment(Environment.Tst(versionCode = appVersion))
+        return DefaultConfigRepository(environmentRepository = environmentRepository, configApi = configApi)
     }
 }

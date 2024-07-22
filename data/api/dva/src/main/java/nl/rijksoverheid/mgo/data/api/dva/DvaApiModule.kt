@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Named
@@ -39,12 +40,12 @@ internal class DvaApiModule {
     @Provides
     @Singleton
     @Named("dvaApiBaseUrl")
-    fun provideBaseUrl(environment: Environment): String {
-        return when (environment) {
-            Environment.Acc -> "https://dva.test.mgo.irealisatie.nl/"
-            Environment.Custom -> "https://dva.test.mgo.irealisatie.nl/"
-            Environment.Prod -> "https://dva.test.mgo.irealisatie.nl/"
-            Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
+    fun provideBaseUrl(environmentRepository: EnvironmentRepository): String {
+        return when (val environment = environmentRepository.getEnvironment()) {
+            is Environment.Acc -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Prod -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Custom -> environment.url
         }
     }
 }

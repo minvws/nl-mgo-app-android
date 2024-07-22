@@ -6,5 +6,6 @@ android {
     namespace = "nl.rijksoverheid.mgo.component.theme"
 }
 dependencies {
-    implementation(project(":framework:environment"))
+    implementation(projects.framework.environment)
+    testImplementation(testFixtures(projects.framework.environment))
 }

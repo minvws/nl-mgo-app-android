@@ -118,4 +118,5 @@ dependencies {
 
     testImplementation(testFixtures(projects.data.onboarding))
     testImplementation(testFixtures(projects.data.config))
+    androidTestImplementation(testFixtures(projects.framework.environment))
 }

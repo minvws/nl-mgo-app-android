@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.config.api.ConfigApi
-import nl.rijksoverheid.mgo.framework.environment.AppInfo
 import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -28,20 +28,16 @@ internal fun createApi(
     return retrofit.create(ConfigApi::class.java)
 }
 
-internal fun createMoshi(): Moshi {
-    return Moshi.Builder().build()
-}
-
 @InstallIn(SingletonComponent::class)
 @Module
 internal object ConfigModule {
     @Provides
     @Singleton
     fun provideConfigRepository(
-        appInfo: AppInfo,
+        environmentRepository: EnvironmentRepository,
         configApi: ConfigApi,
     ): ConfigRepository {
-        return DefaultConfigRepository(appInfo = appInfo, configApi = configApi)
+        return DefaultConfigRepository(environmentRepository = environmentRepository, configApi = configApi)
     }
 
     @Provides
@@ -57,12 +53,12 @@ internal object ConfigModule {
     @Provides
     @Singleton
     @Named("configBaseUrl")
-    fun provideConfigBaseUrl(environment: Environment): String {
-        return when (environment) {
-            Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/"
-            Environment.Custom -> "https://app-api.test.mgo.irealisatie.nl/"
-            Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/"
-            Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/"
+    fun provideConfigBaseUrl(environmentRepository: EnvironmentRepository): String {
+        return when (val environment = environmentRepository.getEnvironment()) {
+            is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/"
+            is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/"
+            is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/"
+            is Environment.Custom -> environment.url
         }
     }
 
@@ -70,6 +66,6 @@ internal object ConfigModule {
     @Singleton
     @Named("configMoshi")
     fun provideMoshi(): Moshi {
-        return createMoshi()
+        return Moshi.Builder().build()
     }
 }

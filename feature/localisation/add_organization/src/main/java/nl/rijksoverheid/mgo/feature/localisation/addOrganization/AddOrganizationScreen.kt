@@ -40,7 +40,7 @@ fun AddOrganizationScreen(
     val viewState: AddOrganizationScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.navigation.collectLatest { screen ->
+        viewModel.navigation.collectLatest {
             onNavigateToOrganizationSearch(viewState.name, viewState.city)
         }
     }

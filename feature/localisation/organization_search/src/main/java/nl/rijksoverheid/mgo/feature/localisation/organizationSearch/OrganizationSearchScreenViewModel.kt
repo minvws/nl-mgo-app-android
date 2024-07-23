@@ -2,12 +2,12 @@ package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.framework.environment.Environment
-import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,57 +18,41 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
+@HiltViewModel(assistedFactory = OrganizationSearchScreenViewModel.Factory::class)
 internal class OrganizationSearchScreenViewModel
-    @Inject
+    @AssistedInject
     constructor(
-        private val environmentRepository: EnvironmentRepository,
+        @Assisted("name") private val name: String,
+        @Assisted("city") private val city: String,
         private val organizationRepository: OrganizationRepository,
     ) : ViewModel() {
+        @AssistedFactory
+        interface Factory {
+            fun create(
+                @Assisted("name") name: String,
+                @Assisted("city") city: String,
+            ): OrganizationSearchScreenViewModel
+        }
+
         private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
 
-        private val _viewState: MutableStateFlow<OrganizationSearchScreenViewState> =
-            MutableStateFlow(OrganizationSearchScreenViewState.initialState)
-        val viewState =
-            _viewState.stateIn(
-                viewModelScope,
-                SharingStarted.Lazily,
-                OrganizationSearchScreenViewState
-                    .initialState,
-            )
+        private val initialState = OrganizationSearchScreenViewState.initialState(name = name, city = city)
+        private val _viewState: MutableStateFlow<OrganizationSearchScreenViewState> = MutableStateFlow(initialState)
+        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
-        fun getSearchResults(
-            name: String,
-            city: String,
-        ) {
-            viewModelScope.launch {
-                if (shouldGetSearchResults()) {
-                    _viewState.update { OrganizationSearchScreenViewState.Loading }
-                    organizationRepository
-                        .search(name = name, city = city)
-                        .catch { throwable ->
-                            _viewState.update {
-                                OrganizationSearchScreenViewState.Error(
-                                    isProductionBuild = environmentRepository.getEnvironment() is Environment.Prod,
-                                    error = throwable,
-                                )
-                            }
-                        }
-                        .collectLatest { results ->
-                            _viewState.update {
-                                OrganizationSearchScreenViewState.Success(
-                                    name = name,
-                                    city = city,
-                                    results = results,
-                                )
-                            }
-                        }
-                }
-            }
+        init {
+            getSearchResults()
         }
 
-        private fun shouldGetSearchResults() = _viewState.value !is OrganizationSearchScreenViewState.Success
+        fun getSearchResults() {
+            viewModelScope.launch {
+                organizationRepository
+                    .search(name = name, city = city)
+                    .catch { error -> _viewState.update { viewState -> viewState.copy(loading = false, error = error) } }
+                    .collectLatest { results -> _viewState.update { viewState -> viewState.copy(loading = false, results = results) } }
+            }
+        }
 
         fun addOrganization(provider: MgoOrganization) {
             viewModelScope.launch {

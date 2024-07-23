@@ -29,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
@@ -37,6 +36,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
+import nl.rijksoverheid.mgo.component.theme.composable.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -53,10 +53,12 @@ fun OrganizationSearchScreen(
     onNavigateToAddOrganization: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
-    val viewModel: OrganizationSearchScreenViewModel = hiltViewModel()
+    val viewModel =
+        hiltViewModel<OrganizationSearchScreenViewModel, OrganizationSearchScreenViewModel.Factory>(
+            creationCallback = { factory -> factory.create(name, city) },
+        )
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
-        viewModel.getSearchResults(name = name, city = city)
         viewModel.navigation.collectLatest {
             onNavigateToDashboard()
         }
@@ -64,7 +66,7 @@ fun OrganizationSearchScreen(
     OrganizationSearchScreenContent(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
-        onGetSearchResults = { viewModel.getSearchResults(name = name, city = city) },
+        onGetSearchResults = { viewModel.getSearchResults() },
         onAddSearchResult = { searchResult ->
             if (searchResult.added) {
                 onNavigateToDashboard()
@@ -101,34 +103,34 @@ private fun OrganizationSearchScreenContent(
             )
         },
         content = { innerPadding ->
-            when (viewState) {
-                OrganizationSearchScreenViewState.Loading -> {
+            when {
+                viewState.loading -> {
                     LoadingContent(modifier = Modifier.padding(innerPadding))
                 }
 
-                is OrganizationSearchScreenViewState.Success -> {
-                    if (viewState.results.isEmpty()) {
-                        EmptyContent(
-                            modifier = Modifier.padding(innerPadding),
-                            name = viewState.name,
-                            city = viewState.city,
-                            onButtonClick = onNavigateToSearch,
-                        )
-                    } else {
-                        OrganizationSearchScreenContent(
-                            modifier = Modifier.padding(innerPadding),
-                            searchResults = viewState.results,
-                            onAddSearchResult = onAddSearchResult,
-                        )
-                    }
-                }
-
-                is OrganizationSearchScreenViewState.Error ->
+                viewState.error != null -> {
                     ErrorContent(
-                        isProductionBuild = viewState.isProductionBuild,
                         error = viewState.error,
                         onButtonClick = onGetSearchResults,
                     )
+                }
+
+                viewState.results.isEmpty() -> {
+                    EmptyContent(
+                        modifier = Modifier.padding(innerPadding),
+                        name = viewState.name,
+                        city = viewState.city,
+                        onButtonClick = onNavigateToSearch,
+                    )
+                }
+
+                else -> {
+                    OrganizationSearchScreenContent(
+                        modifier = Modifier.padding(innerPadding),
+                        searchResults = viewState.results,
+                        onAddSearchResult = onAddSearchResult,
+                    )
+                }
             }
         },
     )
@@ -270,7 +272,6 @@ private fun EmptyListItem(
 
 @Composable
 private fun ErrorContent(
-    isProductionBuild: Boolean,
     error: Throwable,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -302,13 +303,7 @@ private fun ErrorContent(
             style = MaterialTheme.typography.bodySmall,
         )
 
-        if (!isProductionBuild) {
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text = error.toString(),
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
-            )
-        }
+        MgoDebugErrorButton(error = error)
     }
 }
 
@@ -317,7 +312,7 @@ private fun ErrorContent(
 internal fun OrganizationSearchScreenLoadingPreview() {
     MgoTheme {
         OrganizationSearchScreenContent(
-            viewState = OrganizationSearchScreenViewState.Loading,
+            viewState = OrganizationSearchScreenViewState.initialState(name = "Tandarts Tandje Erbij", city = "Roermond"),
             onNavigateBack = {},
             onGetSearchResults = {},
             onAddSearchResult = {},
@@ -332,10 +327,8 @@ internal fun OrganizationSearchScreenEmptyPreview() {
     MgoTheme {
         OrganizationSearchScreenContent(
             viewState =
-                OrganizationSearchScreenViewState.Success(
-                    name = "Tandarts Tandje Erbij",
-                    city = "Roermond",
-                    results = listOf(),
+                OrganizationSearchScreenViewState.initialState(name = "Tandarts Tandje Erbij", city = "Roermond").copy(
+                    loading = false,
                 ),
             onNavigateBack = {},
             onGetSearchResults = {},
@@ -351,15 +344,9 @@ internal fun OrganizationSearchScreenSearchResultsPreview() {
     MgoTheme {
         OrganizationSearchScreenContent(
             viewState =
-                OrganizationSearchScreenViewState.Success(
-                    name = "Tandarts Tandje Erbij",
-                    city = "Roermond",
-                    results =
-                        listOf(
-                            TEST_MGO_ORGANIZATION,
-                            TEST_MGO_ORGANIZATION,
-                            TEST_MGO_ORGANIZATION,
-                        ),
+                OrganizationSearchScreenViewState.initialState(name = "Tandarts Tandje Erbij", city = "Roermond").copy(
+                    loading = false,
+                    results = listOf(TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION),
                 ),
             onNavigateBack = {},
             onNavigateToSearch = {},
@@ -375,8 +362,8 @@ internal fun OrganizationSearchScreenErrorPreview() {
     MgoTheme {
         OrganizationSearchScreenContent(
             viewState =
-                OrganizationSearchScreenViewState.Error(
-                    isProductionBuild = false,
+                OrganizationSearchScreenViewState.initialState(name = "Tandarts Tandje Erbij", city = "Roermond").copy(
+                    loading = false,
                     error = IllegalStateException("Something went wrong"),
                 ),
             onNavigateBack = {},

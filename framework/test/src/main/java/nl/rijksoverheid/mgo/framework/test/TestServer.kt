@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.framework.test
 
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
 
 typealias TestServerBody = String
 
@@ -20,12 +21,20 @@ class TestServer {
         return requireNotNull(server?.url("/").toString())
     }
 
+    fun enqueue200() {
+        server?.enqueue(MockResponse().setResponseCode(200))
+    }
+
     fun enqueue500() {
         server?.enqueue(MockResponse().setResponseCode(500))
     }
 
     fun enqueueJson(json: TestServerBody) {
         server?.enqueue(MockResponse().setBody(json))
+    }
+
+    fun getRequest(): RecordedRequest? {
+        return server?.takeRequest()
     }
 
     fun stop() {

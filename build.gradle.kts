@@ -46,11 +46,16 @@ sonar {
             add("**/*Navigation*.kt") // Navigation classes
             add("**/*NavGraph*.kt") // NavGraph classes
             add("**/*Screen*.kt") // We exclude all composable screens since it messes with our code coverage
-            add("${project.projectDir}/framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
+            add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
         }.joinToString(",")
+        val excludeContentInFile = listOf(
+            "import androidx.compose.runtime.Composable", // Exclude composables
+            "data class", // Exclude data classes
+            "sealed class" // Exclude sealed classes
+        )
         val composeExclusion = fileTree("../")
             .apply { include("**/*.kt") }
-            .filter { file -> file.readText().contains("import androidx.compose.runtime.Composable") }
+            .filter { file -> excludeContentInFile.any { content -> file.readText().contains(content) } }
             .joinToString(",") { file -> "**/${file.name}" }
         property("sonar.exclusions", "$exclusions,$composeExclusion")
     }

@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import nl.nl.rijksoverheid.mgo.framework.network.BasicAuthInterceptor
+import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import okhttp3.OkHttpClient
@@ -31,9 +33,15 @@ internal class DvaApiModule {
     @Singleton
     fun provideDvaApi(
         okHttpClient: OkHttpClient,
+        mgoAuthentication: MgoAuthentication,
         @Named("dvaApiBaseUrl") baseUrl: String,
     ): DvaApi {
-        return createDvaApi(okHttpClient = okHttpClient, baseUrl = baseUrl)
+        val okHttpClientBuilder = okHttpClient.newBuilder()
+        if (mgoAuthentication is MgoAuthentication.Basic) {
+            okHttpClientBuilder.addInterceptor(BasicAuthInterceptor(user = mgoAuthentication.user, password = mgoAuthentication.password))
+        }
+        val okHttpClientWithAuth = okHttpClientBuilder.build()
+        return createDvaApi(okHttpClient = okHttpClientWithAuth, baseUrl = baseUrl)
     }
 
     // TODO Set urls for other environments when available.

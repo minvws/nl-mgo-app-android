@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.BuildConfig
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
@@ -62,5 +63,15 @@ internal object MainModule {
     @Provides
     fun provideVersionCode(): Int {
         return BuildConfig.VERSION_CODE
+    }
+
+    @Provides
+    fun provideMgoAuthentication(): MgoAuthentication {
+        val basicAuthUser = BuildConfig.BASIC_AUTH_USER
+        val basicAuthPassword = BuildConfig.BASIC_AUTH_PASSWORD
+        if (basicAuthUser.isNotEmpty() && basicAuthPassword.isNotEmpty()) {
+            return MgoAuthentication.Basic(user = basicAuthUser, password = basicAuthPassword)
+        }
+        return MgoAuthentication.None
     }
 }

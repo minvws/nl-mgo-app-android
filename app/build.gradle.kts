@@ -11,6 +11,8 @@ android {
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 999999999
         versionName = "1.0"
         testInstrumentationRunner = "nl.rijksoverheid.mgo.CustomTestRunner"
+        buildConfigField("String", "BASIC_AUTH_USER", "\"\"")
+        buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"\"")
     }
 
     flavorDimensions += listOf("environment")
@@ -20,12 +22,16 @@ android {
             applicationIdSuffix = ".tst"
             versionNameSuffix = "-tst"
             manifestPlaceholders["appLabel"] = "@string/app_name_tst"
+            buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
+            buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"")
         }
         create("acc") {
             dimension = "environment"
             applicationIdSuffix = ".acc"
             versionNameSuffix = "-acc"
             manifestPlaceholders["appLabel"] = "@string/app_name_acc"
+            buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
+            buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"")
         }
         create("prod") {
             dimension = "environment"
@@ -103,6 +109,7 @@ dependencies {
     implementation(projects.framework.environment)
     implementation(projects.framework.test)
     implementation(projects.framework.storage)
+    implementation(projects.framework.network)
 
     // ================================
     // DATA

@@ -82,8 +82,8 @@ private fun RemoveOrganizationScreenContent(
                 modifier =
                     Modifier
                         .padding(innerPadding),
-                buttonText = stringResource(id = CopyR.string.remove_organization_heading),
-                secondaryButtonText = stringResource(id = CopyR.string.remove_organization_subheading),
+                buttonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
+                secondaryButtonText = stringResource(id = CopyR.string.remove_organization_yes_delete),
                 onButtonClick = onNavigateBack,
                 onSecondaryButtonClick = onDeleteProvider,
             ) {
@@ -108,14 +108,14 @@ private fun RemoveOrganizationScreenContent(
 
                 Text(
                     modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = CopyR.string.remove_organization_yes_delete, providerName),
+                    text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
 
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.remove_organization_no_cancel, providerName),
+                    text = stringResource(id = CopyR.string.remove_organization_subheading, providerName),
                     style = MaterialTheme.typography.bodyDefault,
                 )
             }

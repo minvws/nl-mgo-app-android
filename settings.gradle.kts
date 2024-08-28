@@ -46,6 +46,7 @@ include(":data:concern")
 include(":framework:fhir_extension")
 include(":data:laboratoryTestResult")
 include(":component:results")
+include(":data:uiSchema")
 
 include(":feature:organization:problems")
 include(":feature:organization:organization")

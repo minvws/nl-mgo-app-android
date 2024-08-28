@@ -28,10 +28,12 @@ import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             MgoTheme(modifier = Modifier.fillMaxSize()) {

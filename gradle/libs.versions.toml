@@ -42,6 +42,8 @@ lokalise = "5.2.0"
 json = "20210307"
 rootbeer = "0.1.0"
 mockk = "1.13.11"
+j2v8 = "6.2.1"
+kotlinx-serialization = "1.6.2"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -89,6 +91,10 @@ lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "
 json = { group = "org.json", name = "json", version.ref = "json" }
 rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+j2v8 = { group = "com.eclipsesource.j2v8", name = "j2v8", version.ref = "j2v8" }
+kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -102,3 +108,4 @@ paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

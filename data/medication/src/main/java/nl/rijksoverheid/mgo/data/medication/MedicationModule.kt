@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
+import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 internal object MedicationModule {
     @Provides
     @Singleton
-    fun provideMedicationRepository(dvaApi: DvaApi): MedicationRepository {
-        return DefaultMedicationRepository(dvaApi = dvaApi)
+    fun provideMedicationRepository(dvaApi: DvaApi, uiSchemaMapper: UiSchemaMapper): MedicationRepository {
+        return DefaultMedicationRepository(dvaApi = dvaApi, uiSchemaMapper = uiSchemaMapper)
     }
 }

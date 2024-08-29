@@ -1,6 +1,5 @@
 plugins {
     id("AndroidDataPlugin")
-    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -8,6 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.j2v8) { artifact { type = "aar" } }
+    implementation(libs.jackson)
 }

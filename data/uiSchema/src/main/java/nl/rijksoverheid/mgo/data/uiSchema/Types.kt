@@ -1,46 +1,78 @@
-// To parse the JSON, install kotlin's serialization plugin and do:
+// To parse the JSON, install jackson-module-kotlin and do:
 //
-// val json                      = Json { allowStructuredMapKeys = true }
-// val mgoAnnotation             = json.parse(MgoAnnotation.serializer(), jsonString)
-// val mgoReference              = json.parse(MgoReference.serializer(), jsonString)
-// val mgoBoolean                = json.parse(MgoBoolean.serializer(), jsonString)
-// val mgoCode                   = json.parse(MgoCode.serializer(), jsonString)
-// val mgoCodeableConcept        = json.parse(MgoCodeableConcept.serializer(), jsonString)
-// val mgoCoding                 = json.parse(MgoCoding.serializer(), jsonString)
-// val mgoDate                   = json.parse(MgoDate.serializer(), jsonString)
-// val mgoDateTime               = json.parse(MgoDateTime.serializer(), jsonString)
-// val mgoDecimal                = json.parse(MgoDecimal.serializer(), jsonString)
-// val mgoDuration               = json.parse(MgoDuration.serializer(), jsonString)
-// val mgoQuantity               = json.parse(MgoQuantity.serializer(), jsonString)
-// val mgoIdentifier             = json.parse(MgoIdentifier.serializer(), jsonString)
-// val mgoInteger                = json.parse(MgoInteger.serializer(), jsonString)
-// val mgoInteger64              = json.parse(MgoInteger64.serializer(), jsonString)
-// val mgoPeriod                 = json.parse(MgoPeriod.serializer(), jsonString)
-// val mgoPositiveInt            = json.parse(MgoPositiveInt.serializer(), jsonString)
-// val mgoRange                  = json.parse(MgoRange.serializer(), jsonString)
-// val mgoRatio                  = json.parse(MgoRatio.serializer(), jsonString)
-// val mgoString                 = json.parse(MgoString.serializer(), jsonString)
-// val mgoUnsignedInt            = json.parse(MgoUnsignedInt.serializer(), jsonString)
-// val multipleGroupValue        = json.parse(MultipleGroupValue.serializer(), jsonString)
-// val valueOptions              = json.parse(ValueOptions.serializer(), jsonString)
-// val multipleValue             = json.parse(MultipleValue.serializer(), jsonString)
-// val reference                 = json.parse(Reference.serializer(), jsonString)
-// val singleValue               = json.parse(SingleValue.serializer(), jsonString)
-// val uISchema                  = json.parse(UISchema.serializer(), jsonString)
-// val uISchemaGroup             = json.parse(UISchemaGroup.serializer(), jsonString)
-// val valueDescription          = json.parse(ValueDescription.serializer(), jsonString)
-// val zibAdministrationSchedule = json.parse(ZibAdministrationSchedule.serializer(), jsonString)
-// val zibInstructionsForUse     = json.parse(ZibInstructionsForUse.serializer(), jsonString)
-// val zibMedicationUse          = json.parse(ZibMedicationUse.serializer(), jsonString)
-// val zibProductIngredient      = json.parse(ZibProductIngredient.serializer(), jsonString)
-// val zibProductPackage         = json.parse(ZibProductPackage.serializer(), jsonString)
+//   val mgoAnnotation = MgoAnnotation.fromJson(jsonString)
+//   val mgoReference = MgoReference.fromJson(jsonString)
+//   val mgoBoolean = MgoBoolean.fromJson(jsonString)
+//   val mgoCode = MgoCode.fromJson(jsonString)
+//   val mgoCodeableConcept = MgoCodeableConcept.fromJson(jsonString)
+//   val mgoCoding = MgoCoding.fromJson(jsonString)
+//   val mgoDate = MgoDate.fromJson(jsonString)
+//   val mgoDateTime = MgoDateTime.fromJson(jsonString)
+//   val mgoDecimal = MgoDecimal.fromJson(jsonString)
+//   val mgoDuration = MgoDuration.fromJson(jsonString)
+//   val mgoQuantity = MgoQuantity.fromJson(jsonString)
+//   val mgoIdentifier = MgoIdentifier.fromJson(jsonString)
+//   val mgoInteger = MgoInteger.fromJson(jsonString)
+//   val mgoInteger64 = MgoInteger64.fromJson(jsonString)
+//   val mgoPeriod = MgoPeriod.fromJson(jsonString)
+//   val mgoPositiveInt = MgoPositiveInt.fromJson(jsonString)
+//   val mgoRange = MgoRange.fromJson(jsonString)
+//   val mgoRatio = MgoRatio.fromJson(jsonString)
+//   val mgoString = MgoString.fromJson(jsonString)
+//   val mgoUnsignedInt = MgoUnsignedInt.fromJson(jsonString)
+//   val multipleGroupValue = MultipleGroupValue.fromJson(jsonString)
+//   val valueOptions = ValueOptions.fromJson(jsonString)
+//   val multipleValue = MultipleValue.fromJson(jsonString)
+//   val reference = Reference.fromJson(jsonString)
+//   val singleValue = SingleValue.fromJson(jsonString)
+//   val uISchema = UISchema.fromJson(jsonString)
+//   val uISchemaGroup = UISchemaGroup.fromJson(jsonString)
+//   val zibAdministrationSchedule = ZibAdministrationSchedule.fromJson(jsonString)
+//   val zibInstructionsForUse = ZibInstructionsForUse.fromJson(jsonString)
+//   val zibMedicationUse = ZibMedicationUse.fromJson(jsonString)
+//   val zibProduct = ZibProduct.fromJson(jsonString)
+//   val zibProductIngredient = ZibProductIngredient.fromJson(jsonString)
+//   val zibProductPackage = ZibProductPackage.fromJson(jsonString)
 
 package nl.rijksoverheid.mgo.data.uiSchema
 
-import kotlinx.serialization.*
+import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.core.*
+import com.fasterxml.jackson.databind.*
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.node.*
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import com.fasterxml.jackson.module.kotlin.*
+
+
+@Suppress("UNCHECKED_CAST")
+private fun <T> ObjectMapper.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonNode) -> T, toJson: (T) -> String, isUnion: Boolean = false) = registerModule(SimpleModule().apply {
+    addSerializer(k.java as Class<T>, object : StdSerializer<T>(k.java as Class<T>) {
+        override fun serialize(value: T, gen: JsonGenerator, provider: SerializerProvider) = gen.writeRawValue(toJson(value))
+    })
+    addDeserializer(k.java as Class<T>, object : StdDeserializer<T>(k.java as Class<T>) {
+        override fun deserialize(p: JsonParser, ctxt: DeserializationContext) = fromJson(p.readValueAsTree())
+    })
+})
+
+val mapper = jacksonObjectMapper().apply {
+    propertyNamingStrategy = PropertyNamingStrategy.LOWER_CAMEL_CASE
+    setSerializationInclusion(JsonInclude.Include.NON_NULL)
+    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    convert(ChildDisplay::class,   { ChildDisplay.fromJson(it) },   { it.toJson() }, true)
+    convert(DisplayElement::class, { DisplayElement.fromJson(it) }, { it.toJson() }, true)
+}
 
 typealias MgoBoolean = Boolean
 typealias MgoCode = String
+class MgoCodeableConcept(elements: Collection<MgoCoding>) : ArrayList<MgoCoding>(elements) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoCodeableConcept>(json)
+    }
+}
 typealias MgoDate = String
 typealias MgoDateTime = String
 typealias MgoDecimal = Double
@@ -50,78 +82,166 @@ typealias MgoPositiveInt = Double
 typealias MgoString = String
 typealias MgoUnsignedInt = Double
 
-@Serializable
 data class MultipleGroupValue (
     val display: List<List<String>>? = null,
-    val label: String,
-    val summary: Boolean? = null,
-    val type: String
-)
 
-@Serializable
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val label: String,
+
+    val summary: Boolean? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val type: String
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MultipleGroupValue>(json)
+    }
+}
+
 data class ValueOptions (
     val summary: Boolean? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ValueOptions>(json)
+    }
+}
+
 data class MultipleValue (
     val display: List<String>? = null,
-    val label: String,
-    val summary: Boolean? = null,
-    val type: String
-)
 
-@Serializable
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val label: String,
+
+    val summary: Boolean? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val type: String
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MultipleValue>(json)
+    }
+}
+
 data class Reference (
     val display: String? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val reference: String? = null,
     val summary: Boolean? = null,
-    val type: String
-)
 
-@Serializable
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val type: String
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<Reference>(json)
+    }
+}
+
 data class SingleValue (
     val display: String? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val summary: Boolean? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val type: String
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<SingleValue>(json)
+    }
+}
+
 data class UISchema (
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val children: List<UISchemaGroup>,
+
     val label: String? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<UISchema>(json)
+    }
+}
+
 data class UISchemaGroup (
-    val children: List<ValueDescription>,
-    val label: String
-)
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val children: List<ChildElement>,
 
-@Serializable
-data class ValueDescription (
-    val display: ValueDescriptionDisplay? = null,
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val label: String
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<UISchemaGroup>(json)
+    }
+}
+
+data class ChildElement (
+    val display: ChildDisplay? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val summary: Boolean? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val type: String,
+
     val reference: String? = null
 )
 
-@Serializable
-sealed class ValueDescriptionDisplay {
-    class StringValue(val value: String)                   : ValueDescriptionDisplay()
-    class UnionArrayValue(val value: List<DisplayElement>) : ValueDescriptionDisplay()
+sealed class ChildDisplay {
+    class StringValue(val value: String)                   : ChildDisplay()
+    class UnionArrayValue(val value: List<DisplayElement>) : ChildDisplay()
+
+    fun toJson(): String = mapper.writeValueAsString(when (this) {
+        is StringValue -> this.value
+        is UnionArrayValue -> this.value
+    })
+
+    companion object {
+        fun fromJson(jn: JsonNode): ChildDisplay = when (jn) {
+            is TextNode  -> StringValue(mapper.treeToValue(jn))
+            is ArrayNode -> UnionArrayValue(mapper.treeToValue(jn))
+            else         -> throw IllegalArgumentException()
+        }
+    }
 }
 
-@Serializable
 sealed class DisplayElement {
     class StringArrayValue(val value: List<String>) : DisplayElement()
     class StringValue(val value: String)            : DisplayElement()
+
+    fun toJson(): String = mapper.writeValueAsString(when (this) {
+        is StringArrayValue -> this.value
+        is StringValue -> this.value
+    })
+
+    companion object {
+        fun fromJson(jn: JsonNode): DisplayElement = when (jn) {
+            is ArrayNode -> StringArrayValue(mapper.treeToValue(jn))
+            is TextNode  -> StringValue(mapper.treeToValue(jn))
+            else         -> throw IllegalArgumentException()
+        }
+    }
 }
 
-@Serializable
 data class ZibMedicationUse (
     val asAgreedIndicator: Boolean? = null,
     val author: MgoReference? = null,
@@ -137,7 +257,10 @@ data class ZibMedicationUse (
     val medicationTreatment: MgoIdentifier? = null,
     val note: List<MgoAnnotation>? = null,
     val prescriber: MgoReference? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: String,
+
     val reasonCode: List<List<MgoCoding>>? = null,
     val reasonForChangeOrDiscontinuationOfUse: List<MgoCoding>? = null,
     val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
@@ -145,22 +268,37 @@ data class ZibMedicationUse (
     val status: String? = null,
     val subject: MgoReference? = null,
     val taken: String? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibMedicationUse>(json)
+    }
+}
+
 data class MgoReference (
     val display: String? = null,
     val reference: String? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoReference>(json)
+    }
+}
+
 data class MgoCoding (
     val code: String? = null,
     val display: String? = null,
     val system: String? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoCoding>(json)
+    }
+}
+
 data class ZibInstructionsForUse (
     val additionalInstruction: List<List<MgoCoding>>? = null,
     val asNeeded: List<MgoCoding>? = null,
@@ -170,30 +308,53 @@ data class ZibInstructionsForUse (
     val rateQuantity: MgoQuantity? = null,
     val rateRange: MgoRange? = null,
     val rateRatio: MgoRatio? = null,
-    val timing: ZibAdministrationSchedule
-)
 
-@Serializable
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val timing: ZibAdministrationSchedule
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibInstructionsForUse>(json)
+    }
+}
+
 data class MgoQuantity (
     val code: String? = null,
+    val comparator: String? = null,
     val system: String? = null,
     val unit: String? = null,
     val value: Double? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoQuantity>(json)
+    }
+}
+
 data class MgoRange (
     val high: MgoQuantity? = null,
     val low: MgoQuantity? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoRange>(json)
+    }
+}
+
 data class MgoRatio (
     val denominator: MgoQuantity? = null,
     val numerator: MgoQuantity? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoRatio>(json)
+    }
+}
+
 data class ZibAdministrationSchedule (
     val dayOfWeek: List<String>? = null,
     val duration: Double? = null,
@@ -204,44 +365,105 @@ data class ZibAdministrationSchedule (
     val periodUnit: String? = null,
     val timeOfDay: List<String>? = null,
 
-    @SerialName("when")
+    @get:JsonProperty("when")@field:JsonProperty("when")
     val zibAdministrationScheduleWhen: List<String>? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibAdministrationSchedule>(json)
+    }
+}
+
 data class MgoPeriod (
     val end: String? = null,
     val start: String? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoPeriod>(json)
+    }
+}
+
 data class MgoIdentifier (
     val system: String? = null,
     val type: List<MgoCoding>? = null,
     val use: String? = null,
     val value: String? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoIdentifier>(json)
+    }
+}
+
 data class MgoAnnotation (
     val author: MgoReference? = null,
     val text: String? = null,
     val time: String? = null
-)
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<MgoAnnotation>(json)
+    }
+}
+
+data class ZibProduct (
+    val code: List<MgoCoding>? = null,
+    val description: String? = null,
+    val form: List<MgoCoding>? = null,
+    val id: String? = null,
+    val ingredient: List<ZibProductIngredient>? = null,
+
+    @get:JsonProperty("package", required=true)@field:JsonProperty("package", required=true)
+    val zibProductPackage: Package,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val profile: String,
+
+    val resourceType: String? = null
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibProduct>(json)
+    }
+}
+
 data class ZibProductIngredient (
     val amount: MgoRatio? = null,
     val item: List<MgoCoding>? = null
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibProductIngredient>(json)
+    }
+}
+
+data class Package (
+    val content: List<PackageContent>? = null
 )
 
-@Serializable
+data class PackageContent (
+    val item: List<MgoCoding>? = null,
+    val reference: MgoReference? = null
+)
+
 data class ZibProductPackage (
-    val content: List<Content>? = null
-)
+    val content: List<ZibProductPackageContent>? = null
+) {
+    fun toJson() = mapper.writeValueAsString(this)
 
-@Serializable
-data class Content (
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibProductPackage>(json)
+    }
+}
+
+data class ZibProductPackageContent (
     val item: List<MgoCoding>? = null,
     val reference: MgoReference? = null
 )

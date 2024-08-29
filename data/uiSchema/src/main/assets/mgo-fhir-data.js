@@ -6249,7 +6249,7 @@ function valueX(value2, valueXType) {
   return parser(valueX2);
 }
 function getExtension(resource, url) {
-  return resource?.extension?.find((x) => x.url === url) || resource?.modifierExtension?.find((x) => x.url === url);
+  return resource?.extension?.find((x) => x.url === url) ?? resource?.modifierExtension?.find((x) => x.url === url);
 }
 function extension(resource, url, valueType) {
   const extension2 = getExtension(resource, url);
@@ -6329,8 +6329,8 @@ function multipleValue(label, value2, parse2, options) {
   const { type } = parse2("", null);
   let display = void 0;
   if (isNonNullish(value2)) {
-    const values = value2.map((x) => parse2("", x));
-    display = values.map((x) => x.display).filter(isNonNullish);
+    const entries = value2.map((x) => parse2("", x));
+    display = entries.map((x) => x.display).filter(isNonNullish);
   }
   return {
     label,
@@ -6412,32 +6412,32 @@ const format = {
   ...dateTime$2,
   ...code$1
 };
-function annotation(label, value2, options) {
+const annotation = (label, value2, options) => {
   return {
     label,
     display: value2?.text,
     type: "annotation",
     ...options
   };
-}
-function boolean(label, value2, options) {
+};
+const boolean = (label, value2, options) => {
   return {
     label,
     type: "boolean",
     display: toString(value2),
     ...options
   };
-}
-function code(label, value2, options) {
+};
+const code = (label, value2, options) => {
   return {
     label,
     type: "code",
     display: toString(value2),
     ...options
   };
-}
-function coding(label, value2, options) {
-  const { display, code: code2, system } = value2 || {};
+};
+const coding = (label, value2, options) => {
+  const { display, code: code2, system } = value2 ?? {};
   let displayString = display ?? "";
   const codeString = format.codeWithSystem(code2, system);
   if (codeString)
@@ -6448,24 +6448,24 @@ function coding(label, value2, options) {
     display: displayString === "" ? void 0 : displayString,
     ...options
   };
-}
-function codeableConcept(label, value2, options) {
+};
+const codeableConcept = (label, value2, options) => {
   return changeDescriptionType(
     multipleValue(label, value2, coding, options),
     "coding",
     "codable_concept"
   );
-}
-function dateTime(label, value2, options) {
+};
+const dateTime = (label, value2, options) => {
   return {
     label,
     type: "date_time",
     display: format.dateTime(value2),
     ...options
   };
-}
-function quantity(label, value2, options) {
-  const { value: quantityValue, unit, code: code2, system } = value2 || {};
+};
+const quantity = (label, value2, options) => {
+  const { value: quantityValue, unit, code: code2, system } = value2 ?? {};
   return [
     {
       label: `${label}.value`,
@@ -6480,22 +6480,22 @@ function quantity(label, value2, options) {
       ...options
     }
   ];
-}
-function duration(label, value2, options) {
+};
+const duration = (label, value2, options) => {
   const values = quantity(label, value2, options);
   return values.map(
     (valueDescription) => changeDescriptionType(valueDescription, "quantity", "duration")
   );
-}
-function identifier(label, value2, options) {
+};
+const identifier = (label, value2, options) => {
   return {
     label,
     type: "identifier",
     display: value2?.value,
     ...options
   };
-}
-function period(label, value2, options) {
+};
+const period = (label, value2, options) => {
   return [
     {
       label: `${label}.start`,
@@ -6510,8 +6510,8 @@ function period(label, value2, options) {
       ...options
     }
   ];
-}
-function range(label, value2, options) {
+};
+const range = (label, value2, options) => {
   return [
     ...quantity(`${label}.low`, value2?.low, options).map(
       (valueDescription) => changeDescriptionType(valueDescription, "quantity", "range.low")
@@ -6520,8 +6520,8 @@ function range(label, value2, options) {
       (valueDescription) => changeDescriptionType(valueDescription, "quantity", "range.high")
     )
   ];
-}
-function ratio(label, value2, options) {
+};
+const ratio = (label, value2, options) => {
   return [
     ...quantity(`${label}.numerator`, value2?.numerator, options).map(
       (valueDescription) => changeDescriptionType(valueDescription, "quantity", "ratio.numerator")
@@ -6530,8 +6530,8 @@ function ratio(label, value2, options) {
       (valueDescription) => changeDescriptionType(valueDescription, "quantity", "ratio.denominator")
     )
   ];
-}
-function reference(label, value2, options) {
+};
+const reference = (label, value2, options) => {
   return {
     label,
     type: "reference",
@@ -6539,8 +6539,8 @@ function reference(label, value2, options) {
     reference: value2?.reference,
     ...options
   };
-}
-function uiSchemaGroup$1(resource) {
+};
+function uiSchemaGroup$3(resource) {
   const i18n = "zib_administration_schedule";
   return {
     label: `${i18n}.group`,
@@ -6575,7 +6575,7 @@ function uiSchemaGroup$1(resource) {
   };
 }
 function parseZibAdministrationSchedule(value2) {
-  const { repeat } = value2 || {};
+  const { repeat } = value2 ?? {};
   return {
     duration: decimal(repeat?.duration),
     durationUnit: code$2(repeat?.durationUnit),
@@ -6590,11 +6590,11 @@ function parseZibAdministrationSchedule(value2) {
 }
 const zibAdministrationSchedule = {
   parse: parseZibAdministrationSchedule,
-  uiSchemaGroup: uiSchemaGroup$1
+  uiSchemaGroup: uiSchemaGroup$3
 };
-function uiSchemaGroup(resource) {
+function uiSchemaGroup$2(resource) {
   const i18n = "zib_instructions_for_use";
-  const administrationSchedule = uiSchemaGroup$1(resource.timing).children;
+  const administrationSchedule = uiSchemaGroup$3(resource.timing).children;
   return {
     label: `${i18n}.group`,
     children: [
@@ -6629,6 +6629,51 @@ function parseZibInstructionsForUse(value2) {
 }
 const zibInstructionsForUse = {
   parse: parseZibInstructionsForUse,
+  uiSchemaGroup: uiSchemaGroup$2
+};
+function uiSchemaGroup$1(resource) {
+  const i18n = "zib_product_ingredient";
+  return {
+    label: `${i18n}.group`,
+    children: [
+      codeableConcept(`${i18n}.item`, resource.item),
+      ...ratio(`${i18n}.amount`, resource.amount)
+    ]
+  };
+}
+function parseZibProductIngredient(value2) {
+  return {
+    item: codeableConcept$1(value2?.itemCodeableConcept),
+    amount: ratio$1(value2?.amount)
+  };
+}
+const zibProductIngredient = {
+  parse: parseZibProductIngredient,
+  uiSchemaGroup: uiSchemaGroup$1
+};
+function uiSchemaGroup(resource) {
+  const i18n = "zib_product_package";
+  const contents = map(resource.content, (content) => {
+    return [
+      codeableConcept(`${i18n}.content_item`, content.item),
+      reference(`${i18n}.content_reference`, content.reference)
+    ];
+  });
+  return {
+    label: `${i18n}.group`,
+    children: [...(contents ?? []).flat()]
+  };
+}
+function parseZibProductPackage(value2) {
+  return {
+    content: map(value2?.content, ({ itemCodeableConcept, itemReference }) => ({
+      item: codeableConcept$1(itemCodeableConcept),
+      reference: reference$1(itemReference)
+    }))
+  };
+}
+const zibProductPackage = {
+  parse: parseZibProductPackage,
   uiSchemaGroup
 };
 function parseResourceMeta(statement, profile2) {
@@ -6644,9 +6689,9 @@ function parseResourceMeta(statement, profile2) {
     profile: profile2
   };
 }
-function uiSchema(resource) {
+function uiSchema$1(resource) {
   const i18n = "zib_medication_use";
-  const instructionsForUse = map(resource.dosage, uiSchemaGroup) || [];
+  const instructionsForUse = map(resource.dosage, uiSchemaGroup$2) ?? [];
   return {
     label: resource.medication?.display,
     children: [
@@ -6699,10 +6744,10 @@ function uiSchema(resource) {
     ]
   };
 }
-const profile = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse";
+const profile$1 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse";
 function parseZibMedicationUse(resource) {
   return {
-    ...parseResourceMeta(resource, profile),
+    ...parseResourceMeta(resource, profile$1),
     asAgreedIndicator: extensionNictiz(resource, "zib-MedicationUse-AsAgreedIndicator"),
     prescriber: extensionNictiz(resource, "zib-MedicationUse-Prescriber"),
     author: extensionNictiz(resource, "zib-MedicationUse-Author"),
@@ -6731,30 +6776,58 @@ function parseZibMedicationUse(resource) {
   };
 }
 const zibMedicationUse = {
-  profile,
+  profile: profile$1,
   parse: parseZibMedicationUse,
+  uiSchema: uiSchema$1
+};
+function uiSchema(resource) {
+  const i18n = "zib_product";
+  const productPackage = zibProductPackage.uiSchemaGroup(resource.package);
+  const ingredients = map(resource.ingredient, zibProductIngredient.uiSchemaGroup);
+  return {
+    label: resource.description,
+    children: [
+      {
+        label: `${i18n}.group_general_information`,
+        children: [
+          codeableConcept(`${i18n}.code`, resource.code, { summary: true }),
+          codeableConcept(`${i18n}.form`, resource.form, { summary: true })
+        ]
+      },
+      {
+        label: `${i18n}.group_ingredients`,
+        children: (ingredients ?? []).map((x) => x.children).flat()
+      },
+      productPackage
+    ]
+  };
+}
+const profile = "http://nictiz.nl/fhir/StructureDefinition/zib-Product";
+function parseZibProduct(resource) {
+  return {
+    ...parseResourceMeta(resource, profile),
+    description: extensionNictiz(resource, "zib-Product-Description"),
+    code: codeableConcept$1(resource.code),
+    form: codeableConcept$1(resource.form),
+    ingredient: map(resource.ingredient, zibProductIngredient.parse),
+    package: zibProductPackage.parse(resource.package)
+  };
+}
+const zibProduct = {
+  profile,
+  parse: parseZibProduct,
   uiSchema
 };
 const resources = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  zibMedicationUse
+  zibMedicationUse,
+  zibProduct
 }, Symbol.toStringTag, { value: "Module" }));
 const resourcesMap = Object.fromEntries(
   Object.entries(resources).map(([_name, config]) => [config.profile, config])
 );
 function getResourceConfig$1(resource) {
-  const config = resourcesMap[resource.profile];
-  if (!config) {
-    throw new Error(`No config found for MGO Resource with profile: "${resource.profile}"`);
-  }
-  return config;
-}
-function getUiSchema(resource) {
-  const config = getResourceConfig$1(resource);
-  return config.uiSchema(resource);
-}
-function getResourceConfig(resource) {
-  const profiles = resource.meta?.profile || [];
+  const profiles = resource.meta?.profile ?? [];
   for (const profile2 of profiles) {
     const config = resourcesMap[profile2];
     if (config)
@@ -6764,8 +6837,8 @@ function getResourceConfig(resource) {
     `No config found for fhir resourceType: "${resource.resourceType}" with profile: "${resource.meta?.profile}"`
   );
 }
-function parseResource(resource) {
-  const config = getResourceConfig(resource);
+function getMgoResource(resource) {
+  const config = getResourceConfig$1(resource);
   return config.parse(resource);
 }
 function losslessParse(text) {
@@ -6790,6 +6863,27 @@ function getBundleResourcesJson(fhirBundleJson, formatResponse = false) {
   const resources2 = getBundleResources(fhirBundle);
   return losslessStringify(resources2, formatResponse);
 }
+function getMgoResourceJson(fhirResourceJson, formatResponse = false) {
+  const fhirResource = losslessParse(fhirResourceJson);
+  if (!isFhirResource(fhirResource)) {
+    throw new Error(
+      `input does not seem to be a valid Fhir Resource. Received resourceType: "${fhirResource?.resourceType}"`
+    );
+  }
+  const result = getMgoResource(fhirResource);
+  return losslessStringify(result, formatResponse);
+}
+function getResourceConfig(resource) {
+  const config = resourcesMap[resource.profile];
+  if (!config) {
+    throw new Error(`No config found for MGO Resource with profile: "${resource.profile}"`);
+  }
+  return config;
+}
+function getUiSchema(resource) {
+  const config = getResourceConfig(resource);
+  return config.uiSchema(resource);
+}
 function isMgoResource(value2) {
   const resourceTyped = value2;
   return !!resourceTyped?.id && !!resourceTyped?.resourceType && !!resourceTyped?.profile;
@@ -6803,14 +6897,4 @@ function getUiSchemaJson(mgoResourceJson, formatResponse = false) {
   }
   const uiSchema2 = getUiSchema(mgoResource);
   return losslessStringify(uiSchema2, formatResponse);
-}
-function parseResourceJson(fhirResourceJson, formatResponse = false) {
-  const fhirResource = losslessParse(fhirResourceJson);
-  if (!isFhirResource(fhirResource)) {
-    throw new Error(
-      `input does not seem to be a valid Fhir Resource. Received resourceType: "${fhirResource?.resourceType}"`
-    );
-  }
-  const result = parseResource(fhirResource);
-  return losslessStringify(result, formatResponse);
 }

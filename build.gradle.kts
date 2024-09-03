@@ -50,7 +50,7 @@ sonar {
 
             // Exclude uiSchema module. This module is experimental for now and is subject to heavy change. Should be tested
             // before going to production.
-            add("framework/test/src/main/java/nl/rijksoverheid/mgo/data/uiSchema/**")
+            add("data/uiSchema/src/main/**")
         }.joinToString(",")
         val excludeContentInFile = listOf(
             "import androidx.compose.runtime.Composable", // Exclude composables

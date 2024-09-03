@@ -34,6 +34,8 @@
 //   val zibProductIngredient = ZibProductIngredient.fromJson(jsonString)
 //   val zibProductPackage = ZibProductPackage.fromJson(jsonString)
 
+@file:Suppress("ktlint")
+
 package nl.rijksoverheid.mgo.data.uiSchema
 
 import com.fasterxml.jackson.annotation.*
@@ -45,27 +47,48 @@ import com.fasterxml.jackson.databind.node.*
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.fasterxml.jackson.module.kotlin.*
 
-
 @Suppress("UNCHECKED_CAST")
-private fun <T> ObjectMapper.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonNode) -> T, toJson: (T) -> String, isUnion: Boolean = false) = registerModule(SimpleModule().apply {
-    addSerializer(k.java as Class<T>, object : StdSerializer<T>(k.java as Class<T>) {
-        override fun serialize(value: T, gen: JsonGenerator, provider: SerializerProvider) = gen.writeRawValue(toJson(value))
-    })
-    addDeserializer(k.java as Class<T>, object : StdDeserializer<T>(k.java as Class<T>) {
-        override fun deserialize(p: JsonParser, ctxt: DeserializationContext) = fromJson(p.readValueAsTree())
-    })
-})
+private fun <T> ObjectMapper.convert(
+    k: kotlin.reflect.KClass<*>,
+    fromJson: (JsonNode) -> T,
+    toJson: (T) -> String,
+    isUnion: Boolean = false,
+) = registerModule(
+    SimpleModule().apply {
+        addSerializer(
+            k.java as Class<T>,
+            object : StdSerializer<T>(k.java as Class<T>) {
+                override fun serialize(
+                    value: T,
+                    gen: JsonGenerator,
+                    provider: SerializerProvider,
+                ) = gen.writeRawValue(toJson(value))
+            },
+        )
+        addDeserializer(
+            k.java as Class<T>,
+            object : StdDeserializer<T>(k.java as Class<T>) {
+                override fun deserialize(
+                    p: JsonParser,
+                    ctxt: DeserializationContext,
+                ) = fromJson(p.readValueAsTree())
+            },
+        )
+    },
+)
 
-val mapper = jacksonObjectMapper().apply {
-    propertyNamingStrategy = PropertyNamingStrategy.LOWER_CAMEL_CASE
-    setSerializationInclusion(JsonInclude.Include.NON_NULL)
-    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    convert(ChildDisplay::class,   { ChildDisplay.fromJson(it) },   { it.toJson() }, true)
-    convert(DisplayElement::class, { DisplayElement.fromJson(it) }, { it.toJson() }, true)
-}
+val mapper =
+    jacksonObjectMapper().apply {
+        propertyNamingStrategy = PropertyNamingStrategy.LOWER_CAMEL_CASE
+        setSerializationInclusion(JsonInclude.Include.NON_NULL)
+        configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        convert(ChildDisplay::class, { ChildDisplay.fromJson(it) }, { it.toJson() }, true)
+        convert(DisplayElement::class, { DisplayElement.fromJson(it) }, { it.toJson() }, true)
+    }
 
 typealias MgoBoolean = Boolean
 typealias MgoCode = String
+
 class MgoCodeableConcept(elements: Collection<MgoCoding>) : ArrayList<MgoCoding>(elements) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -82,16 +105,13 @@ typealias MgoPositiveInt = Double
 typealias MgoString = String
 typealias MgoUnsignedInt = Double
 
-data class MultipleGroupValue (
+data class MultipleGroupValue(
     val display: List<List<String>>? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val label: String,
-
     val summary: Boolean? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
-    val type: String
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+    val type: String,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -100,8 +120,8 @@ data class MultipleGroupValue (
     }
 }
 
-data class ValueOptions (
-    val summary: Boolean? = null
+data class ValueOptions(
+    val summary: Boolean? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -110,16 +130,13 @@ data class ValueOptions (
     }
 }
 
-data class MultipleValue (
+data class MultipleValue(
     val display: List<String>? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val label: String,
-
     val summary: Boolean? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
-    val type: String
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+    val type: String,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -128,17 +145,14 @@ data class MultipleValue (
     }
 }
 
-data class Reference (
+data class Reference(
     val display: String? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val label: String,
-
     val reference: String? = null,
     val summary: Boolean? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
-    val type: String
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+    val type: String,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -147,16 +161,13 @@ data class Reference (
     }
 }
 
-data class SingleValue (
+data class SingleValue(
     val display: String? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val label: String,
-
     val summary: Boolean? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
-    val type: String
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+    val type: String,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -165,11 +176,10 @@ data class SingleValue (
     }
 }
 
-data class UISchema (
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+data class UISchema(
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val children: List<UISchemaGroup>,
-
-    val label: String? = null
+    val label: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -178,12 +188,11 @@ data class UISchema (
     }
 }
 
-data class UISchemaGroup (
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+data class UISchemaGroup(
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val children: List<ChildElement>,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
-    val label: String
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+    val label: String,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -192,57 +201,63 @@ data class UISchemaGroup (
     }
 }
 
-data class ChildElement (
+data class ChildElement(
     val display: ChildDisplay? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val label: String,
-
     val summary: Boolean? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val type: String,
-
-    val reference: String? = null
+    val reference: String? = null,
 )
 
 sealed class ChildDisplay {
-    class StringValue(val value: String)                   : ChildDisplay()
+    class StringValue(val value: String) : ChildDisplay()
+
     class UnionArrayValue(val value: List<DisplayElement>) : ChildDisplay()
 
-    fun toJson(): String = mapper.writeValueAsString(when (this) {
-        is StringValue -> this.value
-        is UnionArrayValue -> this.value
-    })
+    fun toJson(): String =
+        mapper.writeValueAsString(
+            when (this) {
+                is StringValue -> this.value
+                is UnionArrayValue -> this.value
+            },
+        )
 
     companion object {
-        fun fromJson(jn: JsonNode): ChildDisplay = when (jn) {
-            is TextNode  -> StringValue(mapper.treeToValue(jn))
-            is ArrayNode -> UnionArrayValue(mapper.treeToValue(jn))
-            else         -> throw IllegalArgumentException()
-        }
+        fun fromJson(jn: JsonNode): ChildDisplay =
+            when (jn) {
+                is TextNode -> StringValue(mapper.treeToValue(jn))
+                is ArrayNode -> UnionArrayValue(mapper.treeToValue(jn))
+                else -> throw IllegalArgumentException()
+            }
     }
 }
 
 sealed class DisplayElement {
     class StringArrayValue(val value: List<String>) : DisplayElement()
-    class StringValue(val value: String)            : DisplayElement()
 
-    fun toJson(): String = mapper.writeValueAsString(when (this) {
-        is StringArrayValue -> this.value
-        is StringValue -> this.value
-    })
+    class StringValue(val value: String) : DisplayElement()
+
+    fun toJson(): String =
+        mapper.writeValueAsString(
+            when (this) {
+                is StringArrayValue -> this.value
+                is StringValue -> this.value
+            },
+        )
 
     companion object {
-        fun fromJson(jn: JsonNode): DisplayElement = when (jn) {
-            is ArrayNode -> StringArrayValue(mapper.treeToValue(jn))
-            is TextNode  -> StringValue(mapper.treeToValue(jn))
-            else         -> throw IllegalArgumentException()
-        }
+        fun fromJson(jn: JsonNode): DisplayElement =
+            when (jn) {
+                is ArrayNode -> StringArrayValue(mapper.treeToValue(jn))
+                is TextNode -> StringValue(mapper.treeToValue(jn))
+                else -> throw IllegalArgumentException()
+            }
     }
 }
 
-data class ZibMedicationUse (
+data class ZibMedicationUse(
     val asAgreedIndicator: Boolean? = null,
     val author: MgoReference? = null,
     val category: List<MgoCoding>? = null,
@@ -257,17 +272,15 @@ data class ZibMedicationUse (
     val medicationTreatment: MgoIdentifier? = null,
     val note: List<MgoAnnotation>? = null,
     val prescriber: MgoReference? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val profile: String,
-
     val reasonCode: List<List<MgoCoding>>? = null,
     val reasonForChangeOrDiscontinuationOfUse: List<MgoCoding>? = null,
     val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
-    val taken: String? = null
+    val taken: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -276,9 +289,9 @@ data class ZibMedicationUse (
     }
 }
 
-data class MgoReference (
+data class MgoReference(
     val display: String? = null,
-    val reference: String? = null
+    val reference: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -287,10 +300,10 @@ data class MgoReference (
     }
 }
 
-data class MgoCoding (
+data class MgoCoding(
     val code: String? = null,
     val display: String? = null,
-    val system: String? = null
+    val system: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -299,7 +312,7 @@ data class MgoCoding (
     }
 }
 
-data class ZibInstructionsForUse (
+data class ZibInstructionsForUse(
     val additionalInstruction: List<List<MgoCoding>>? = null,
     val asNeeded: List<MgoCoding>? = null,
     val doseQuantity: MgoQuantity? = null,
@@ -308,9 +321,8 @@ data class ZibInstructionsForUse (
     val rateQuantity: MgoQuantity? = null,
     val rateRange: MgoRange? = null,
     val rateRatio: MgoRatio? = null,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
-    val timing: ZibAdministrationSchedule
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+    val timing: ZibAdministrationSchedule,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -319,12 +331,12 @@ data class ZibInstructionsForUse (
     }
 }
 
-data class MgoQuantity (
+data class MgoQuantity(
     val code: String? = null,
     val comparator: String? = null,
     val system: String? = null,
     val unit: String? = null,
-    val value: Double? = null
+    val value: Double? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -333,9 +345,9 @@ data class MgoQuantity (
     }
 }
 
-data class MgoRange (
+data class MgoRange(
     val high: MgoQuantity? = null,
-    val low: MgoQuantity? = null
+    val low: MgoQuantity? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -344,9 +356,9 @@ data class MgoRange (
     }
 }
 
-data class MgoRatio (
+data class MgoRatio(
     val denominator: MgoQuantity? = null,
-    val numerator: MgoQuantity? = null
+    val numerator: MgoQuantity? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -355,7 +367,7 @@ data class MgoRatio (
     }
 }
 
-data class ZibAdministrationSchedule (
+data class ZibAdministrationSchedule(
     val dayOfWeek: List<String>? = null,
     val duration: Double? = null,
     val durationUnit: String? = null,
@@ -364,9 +376,8 @@ data class ZibAdministrationSchedule (
     val period: Double? = null,
     val periodUnit: String? = null,
     val timeOfDay: List<String>? = null,
-
     @get:JsonProperty("when")@field:JsonProperty("when")
-    val zibAdministrationScheduleWhen: List<String>? = null
+    val zibAdministrationScheduleWhen: List<String>? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -375,9 +386,9 @@ data class ZibAdministrationSchedule (
     }
 }
 
-data class MgoPeriod (
+data class MgoPeriod(
     val end: String? = null,
-    val start: String? = null
+    val start: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -386,11 +397,11 @@ data class MgoPeriod (
     }
 }
 
-data class MgoIdentifier (
+data class MgoIdentifier(
     val system: String? = null,
     val type: List<MgoCoding>? = null,
     val use: String? = null,
-    val value: String? = null
+    val value: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -399,10 +410,10 @@ data class MgoIdentifier (
     }
 }
 
-data class MgoAnnotation (
+data class MgoAnnotation(
     val author: MgoReference? = null,
     val text: String? = null,
-    val time: String? = null
+    val time: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -411,20 +422,17 @@ data class MgoAnnotation (
     }
 }
 
-data class ZibProduct (
+data class ZibProduct(
     val code: List<MgoCoding>? = null,
     val description: String? = null,
     val form: List<MgoCoding>? = null,
     val id: String? = null,
     val ingredient: List<ZibProductIngredient>? = null,
-
-    @get:JsonProperty("package", required=true)@field:JsonProperty("package", required=true)
+    @get:JsonProperty("package", required = true)@field:JsonProperty("package", required = true)
     val zibProductPackage: Package,
-
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
     val profile: String,
-
-    val resourceType: String? = null
+    val resourceType: String? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -433,9 +441,9 @@ data class ZibProduct (
     }
 }
 
-data class ZibProductIngredient (
+data class ZibProductIngredient(
     val amount: MgoRatio? = null,
-    val item: List<MgoCoding>? = null
+    val item: List<MgoCoding>? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -444,17 +452,17 @@ data class ZibProductIngredient (
     }
 }
 
-data class Package (
-    val content: List<PackageContent>? = null
+data class Package(
+    val content: List<PackageContent>? = null,
 )
 
-data class PackageContent (
+data class PackageContent(
     val item: List<MgoCoding>? = null,
-    val reference: MgoReference? = null
+    val reference: MgoReference? = null,
 )
 
-data class ZibProductPackage (
-    val content: List<ZibProductPackageContent>? = null
+data class ZibProductPackage(
+    val content: List<ZibProductPackageContent>? = null,
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -463,7 +471,7 @@ data class ZibProductPackage (
     }
 }
 
-data class ZibProductPackageContent (
+data class ZibProductPackageContent(
     val item: List<MgoCoding>? = null,
-    val reference: MgoReference? = null
+    val reference: MgoReference? = null,
 )

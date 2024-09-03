@@ -13,7 +13,6 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
-import nl.rijksoverheid.mgo.data.medication.models.TEST_MGO_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -65,7 +64,7 @@ internal fun MedicationUseScreenMedicationsPreview() {
                 MedicationUseScreenViewState(
                     providerName = "UMC Groningen",
                     loading = false,
-                    medications = listOf(TEST_MGO_MEDICATION, TEST_MGO_MEDICATION),
+                    uiSchemaList = listOf(),
                     error = null,
                 ),
             onNavigateBack = {},
@@ -82,7 +81,7 @@ internal fun MedicationUseScreenErrorPreview() {
                 MedicationUseScreenViewState(
                     providerName = "UMC Groningen",
                     loading = false,
-                    medications = listOf(),
+                    uiSchemaList = listOf(),
                     error = null,
                 ),
             onNavigateBack = {},
@@ -96,7 +95,7 @@ private fun MedicationUseScreenViewState.toResultsScreenViewState(): ResultsScre
         loading -> ResultsScreenViewState.Loading
         error != null -> ResultsScreenViewState.Loaded.Error(error = error)
         else -> {
-            val cardItems = medications.map { medication -> medication.toCollapsableCardItem() }
+            val cardItems = listOf<CollapsableCardItem>()
             ResultsScreenViewState.Loaded.Success(cardItems = cardItems)
         }
     }

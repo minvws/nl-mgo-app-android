@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
-import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 
 data class MedicationUseScreenViewState(
     val providerName: String,
     val loading: Boolean,
-    val medications: List<MgoMedication>,
+    val uiSchemaList: List<UISchema>,
     val error: Throwable?,
 ) {
     companion object {
@@ -13,7 +13,7 @@ data class MedicationUseScreenViewState(
             MedicationUseScreenViewState(
                 providerName = providerName,
                 loading = true,
-                medications = listOf(),
+                uiSchemaList = listOf(),
                 error = null,
             )
     }

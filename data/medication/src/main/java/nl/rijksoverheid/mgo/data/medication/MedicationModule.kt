@@ -13,7 +13,10 @@ import javax.inject.Singleton
 internal object MedicationModule {
     @Provides
     @Singleton
-    fun provideMedicationRepository(dvaApi: DvaApi, uiSchemaMapper: UiSchemaMapper): MedicationRepository {
+    fun provideMedicationRepository(
+        dvaApi: DvaApi,
+        uiSchemaMapper: UiSchemaMapper,
+    ): MedicationRepository {
         return DefaultMedicationRepository(dvaApi = dvaApi, uiSchemaMapper = uiSchemaMapper)
     }
 }

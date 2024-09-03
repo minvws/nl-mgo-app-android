@@ -12,5 +12,6 @@ dependencies {
     implementation(projects.framework.environment)
     implementation(projects.framework.navigation)
     implementation(projects.component.results)
+    implementation(projects.data.uiSchema)
     implementation(testFixtures(projects.data.medication))
 }

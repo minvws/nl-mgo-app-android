@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.medication
 
-import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 
 interface MedicationRepository {
-    suspend fun getMedications(resourceEndpoint: String): Result<List<MgoMedication>>
+    suspend fun getMedications(resourceEndpoint: String): Result<List<UISchema>>
 }

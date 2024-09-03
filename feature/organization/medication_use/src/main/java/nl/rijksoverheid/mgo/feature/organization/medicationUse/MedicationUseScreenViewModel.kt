@@ -34,8 +34,8 @@ class MedicationUseScreenViewModel
             viewModelScope.launch {
                 medicationRepository
                     .getMedications(provider.resourceEndpoint)
-                    .onSuccess { medications ->
-                        _viewState.update { viewState -> viewState.copy(loading = false, medications = medications) }
+                    .onSuccess { uiSchemaList ->
+                        _viewState.update { viewState -> viewState.copy(loading = false, uiSchemaList = uiSchemaList) }
                     }
                     .onFailure { error ->
                         _viewState.update { viewState -> viewState.copy(loading = false, error = error) }

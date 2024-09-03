@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.data.api.dva
 
 import okhttp3.ResponseBody
 import org.hl7.fhir.dstu3.model.Condition
-import org.hl7.fhir.dstu3.model.MedicationStatement
 import org.hl7.fhir.dstu3.model.Observation
 import retrofit2.http.GET
 import retrofit2.http.Header

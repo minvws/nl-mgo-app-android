@@ -13,7 +13,9 @@ import javax.inject.Singleton
 object UiSchemaModule {
     @Provides
     @Singleton
-    fun provideUiSchemaMapper(@ApplicationContext context: Context): UiSchemaMapper {
+    fun provideUiSchemaMapper(
+        @ApplicationContext context: Context,
+    ): UiSchemaMapper {
         return DefaultUiSchemaMapper(context)
     }
 }

@@ -9,23 +9,9 @@ internal class MedicationUseScreenSnapshotTest {
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
-    fun loading() {
+    fun preview() {
         snapshotTestRule.snapshots {
-            MedicationUseScreenLoadingPreview()
-        }
-    }
-
-    @Test
-    fun medications() {
-        snapshotTestRule.snapshots {
-            MedicationUseScreenMedicationsPreview()
-        }
-    }
-
-    @Test
-    fun error() {
-        snapshotTestRule.snapshots {
-            MedicationUseScreenErrorPreview()
+            MedicationUseScreenPreview()
         }
     }
 }

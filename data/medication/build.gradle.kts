@@ -15,4 +15,5 @@ dependencies {
     implementation(projects.data.uiSchema)
     testFixturesImplementation(projects.data.uiSchema)
     testImplementation(testFixtures(projects.framework.test))
+    testImplementation(testFixtures(projects.data.uiSchema))
 }

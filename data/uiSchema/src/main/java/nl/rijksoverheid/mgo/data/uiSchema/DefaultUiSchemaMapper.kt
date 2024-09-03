@@ -9,35 +9,37 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import javax.inject.Inject
 
-// TODO: Because the V8 library is written in C++, objects needs to be released properly.
 internal class DefaultUiSchemaMapper
     @Inject
     constructor(
         @ApplicationContext private val context: Context,
     ) : UiSchemaMapper {
-        // Create javascript runtime
-        private val runtime = V8.createV8Runtime()
-
-        override fun getUiSchema(fhirBundleJson: String): Result<List<UISchema>> {
+        override fun getUiSchema(
+            fhirBundleJson: String,
+            resourceType: ResourceType,
+        ): List<UISchema> {
             // Javascript code
             val reader1 = BufferedReader(InputStreamReader(context.assets.open("mgo-fhir-data.js")))
             val jsCode = reader1.use { it.readText() }
 
-            try {
-                // Parse javascript
-                runtime.executeVoidScript(jsCode)
+            // Create the javascript runtime
+            val runtime = V8.createV8Runtime()
 
-                // Get bundle resources json
-                val getBundleResourcesJsonParameters = V8Array(runtime)
-                getBundleResourcesJsonParameters.push(fhirBundleJson)
-                val bundleResourcesJsonString = runtime.executeStringFunction("getBundleResourcesJson", getBundleResourcesJsonParameters)
-                val bundleResourcesJsonArray = JSONArray(bundleResourcesJsonString)
+            // Parse javascript
+            runtime.executeVoidScript(jsCode)
 
-                // Get ui schemas
-                val uiSchemas = mutableListOf<UISchema>()
-                for (i in 0 until bundleResourcesJsonArray.length()) {
-                    // Get mgo resource json
-                    val bundleResourceJsonObject = bundleResourcesJsonArray.getJSONObject(i)
+            // Get bundle resources json
+            val getBundleResourcesJsonParameters = V8Array(runtime)
+            getBundleResourcesJsonParameters.push(fhirBundleJson)
+            val bundleResourcesJsonString = runtime.executeStringFunction("getBundleResourcesJson", getBundleResourcesJsonParameters)
+            val bundleResourcesJsonArray = JSONArray(bundleResourcesJsonString)
+
+            // Get ui schemas
+            val uiSchemas = mutableListOf<UISchema>()
+            for (i in 0 until bundleResourcesJsonArray.length()) {
+                // Get mgo resource json for requested resource type
+                val bundleResourceJsonObject = bundleResourcesJsonArray.getJSONObject(i)
+                if (bundleResourceJsonObject.getString("resourceType") == resourceType.toString()) {
                     val getMgoResourceJsonParameters = V8Array(runtime)
                     getMgoResourceJsonParameters.push(bundleResourceJsonObject.toString())
                     val mgoResourceJson = runtime.executeStringFunction("getMgoResourceJson", getMgoResourceJsonParameters)
@@ -51,10 +53,11 @@ internal class DefaultUiSchemaMapper
                     val uiSchema = UISchema.fromJson(uiSchemaJson)
                     uiSchemas.add(uiSchema)
                 }
-
-                return Result.success(uiSchemas)
-            } catch (e: Exception) {
-                return Result.failure(e)
             }
+
+            // Release javascript runtime
+            runtime.release(false)
+
+            return uiSchemas
         }
     }

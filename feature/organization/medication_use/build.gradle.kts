@@ -13,5 +13,7 @@ dependencies {
     implementation(projects.framework.navigation)
     implementation(projects.component.results)
     implementation(projects.data.uiSchema)
-    implementation(testFixtures(projects.data.medication))
+    implementation(testFixtures(projects.data.uiSchema))
+    testImplementation(testFixtures(projects.data.uiSchema))
+    testImplementation(testFixtures(projects.data.medication))
 }

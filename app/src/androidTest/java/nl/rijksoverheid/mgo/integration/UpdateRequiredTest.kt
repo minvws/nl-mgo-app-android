@@ -4,8 +4,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import nl.rijksoverheid.mgo.BaseTest
-import nl.rijksoverheid.mgo.data.config.api.ConfigResponse
-import org.junit.Test
 import org.junit.runner.RunWith
 
 @HiltAndroidTest

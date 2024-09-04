@@ -2,9 +2,9 @@ package nl.rijksoverheid.mgo.data.medication
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
-import nl.rijksoverheid.mgo.data.uiSchema.ResourceType
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationUseProfile
 import javax.inject.Inject
 
 internal class DefaultMedicationRepository
@@ -16,7 +16,7 @@ internal class DefaultMedicationRepository
             return result.mapCatching { responseBody ->
                 uiSchemaMapper.getUiSchema(
                     fhirBundleJson = responseBody.string(),
-                    resourceType = ResourceType.MedicationStatement,
+                    profile = ZibMedicationUseProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationUse.value,
                 )
             }
         }

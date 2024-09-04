@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.uiSchema.ChildElement
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
@@ -104,10 +103,11 @@ private fun UiSchemaLabelWithValue(
         )
         if (hasDivider) {
             Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(0.33.dp)
-                    .padding(start = 16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(0.33.dp)
+                        .padding(start = 16.dp),
                 color = MaterialTheme.colors.strokesPrimary(),
             )
         }

@@ -97,7 +97,7 @@ sealed class OrganizationNavigationScreen(override val name: String, override va
 
     data object UiSchemaDetail : OrganizationNavigationScreen(
         name = "organization-uiSchemaDetail",
-        placeholders = listOf("toolbarTitle", "uiSchema")
+        placeholders = listOf("toolbarTitle", "uiSchema"),
     ) {
         fun setToolbarTitle(toolbarTitle: String): UiSchemaDetail {
             builder.addArgument(placeholders[0], toolbarTitle)

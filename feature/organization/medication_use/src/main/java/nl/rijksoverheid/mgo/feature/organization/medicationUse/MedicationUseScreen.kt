@@ -45,10 +45,12 @@ fun MedicationUseScreen(
             creationCallback = { factory -> factory.create(provider) },
         )
     val viewState by viewModel.viewState.collectAsState()
+
+    val medicationDetailsToolbarTitle = stringResource(id = CopyR.string.medication_details_heading)
     MedicationUseScreenContent(
         viewState = viewState,
         onClickUiSchema = { uiSchema ->
-            onClickUiSchema("Alle medicijngegevens", uiSchema)
+            onClickUiSchema(medicationDetailsToolbarTitle, uiSchema)
         },
         onNavigateBack = onNavigateBack,
     )

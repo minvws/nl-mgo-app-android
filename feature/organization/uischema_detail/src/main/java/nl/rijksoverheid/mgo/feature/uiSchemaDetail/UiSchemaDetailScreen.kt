@@ -19,16 +19,22 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.data.uiSchema.ChildDisplay
 import nl.rijksoverheid.mgo.data.uiSchema.ChildElement
+import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
+import nl.rijksoverheid.mgo.data.uiSchema.models.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
@@ -73,7 +79,11 @@ private fun UiSchemaSection(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        Text(text = group.label, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+        Text(
+            text = group.label.getStringFromResourceWithFallback(),
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Bold,
+        )
         Card(modifier = Modifier.padding(top = 8.dp)) {
             Column {
                 group.children.forEachIndexed { index, childElement ->
@@ -92,13 +102,13 @@ private fun UiSchemaLabelWithValue(
     Column {
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            text = childElement.label,
+            text = childElement.label.getStringFromResourceWithFallback(),
             style = MaterialTheme.typography.bodySmallMini,
             color = MaterialTheme.colors.contentTertiary(),
         )
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
-            text = childElement.display.toString(),
+            text = childElement.display.getStringOrUnknown(),
             style = MaterialTheme.typography.bodySmall,
         )
         if (hasDivider) {
@@ -111,5 +121,53 @@ private fun UiSchemaLabelWithValue(
                 color = MaterialTheme.colors.strokesPrimary(),
             )
         }
+    }
+}
+
+/**
+ * Expects the string to be a resources key, and tries to grab the string resource.
+ * If it doesn't exist, it will try a fallback key.
+ * If that doesn't exist, returns the fallback key as string.
+ */
+@Composable
+private fun String.getStringFromResourceWithFallback(): String {
+    val context = LocalContext.current
+    val resId: Int = context.resources.getIdentifier(this, "string", context.packageName)
+    if (resId == 0) {
+        val fallbackLabel = "fhir." + this.substringAfter(".")
+        val fallbackResId = context.resources.getIdentifier(fallbackLabel, "string", context.packageName)
+        if (fallbackResId == 0) {
+            return fallbackLabel
+        }
+        return stringResource(id = fallbackResId)
+    }
+    return stringResource(id = resId)
+}
+
+@Composable
+private fun ChildDisplay?.getStringOrUnknown(): String {
+    if (this == null) return stringResource(id = R.string.fhir_unknown)
+    return when (this) {
+        is ChildDisplay.StringValue -> this.value
+        is ChildDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
+    }
+}
+
+private fun DisplayElement.getString(): String {
+    return when (this) {
+        is DisplayElement.StringValue -> this.value
+        is DisplayElement.StringArrayValue -> this.value.joinToString(", ")
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun UiSchemaDetailScreenPreview() {
+    MgoTheme {
+        UiSchemaDetailScreen(
+            toolbarTitle = stringResource(id = R.string.medication_details_heading),
+            uiSchema = TEST_UI_SCHEMA_MEDICATION,
+            onNavigateBack = {},
+        )
     }
 }

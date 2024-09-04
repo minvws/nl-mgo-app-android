@@ -11,6 +11,7 @@ import nl.rijksoverheid.mgo.feature.organization.medicationUse.MedicationUseScre
 import nl.rijksoverheid.mgo.feature.organization.organization.OrganizationScreen
 import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreen
 import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
+import nl.rijksoverheid.mgo.feature.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
@@ -89,6 +90,12 @@ fun OrganizationNavigation(
         composableWithDefaultScreenTransitions(OrganizationNavigationScreen.MedicationUse.getRoute()) { backStackEntry ->
             MedicationUseScreen(
                 provider = OrganizationNavigationScreen.MedicationUse.getProvider(backStackEntry),
+                onClickUiSchema = { toolbarTitle, uiSchema ->
+                    navController.navigate(
+                        OrganizationNavigationScreen.UiSchemaDetail.setToolbarTitle(toolbarTitle).setUiSchema(uiSchema)
+                            .getNavigationRoute(),
+                    )
+                },
                 onNavigateBack = {
                     navController.popBackStack()
                 },
@@ -107,6 +114,16 @@ fun OrganizationNavigation(
         composableWithDefaultScreenTransitions(OrganizationNavigationScreen.LabResults.getRoute()) { backStackEntry ->
             LabResultsScreen(
                 provider = OrganizationNavigationScreen.LabResults.getProvider(backStackEntry),
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.UiSchemaDetail.getRoute()) { backStackEntry ->
+            UiSchemaDetailScreen(
+                toolbarTitle = OrganizationNavigationScreen.UiSchemaDetail.getToolbarTitle(backStackEntry),
+                uiSchema = OrganizationNavigationScreen.UiSchemaDetail.getUiSchema(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

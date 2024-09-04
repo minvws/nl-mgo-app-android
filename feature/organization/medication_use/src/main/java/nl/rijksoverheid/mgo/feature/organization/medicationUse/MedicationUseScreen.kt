@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,11 +31,13 @@ import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun MedicationUseScreen(
     provider: MgoOrganization,
+    onClickUiSchema: (toolbarTitle: String, uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
@@ -44,6 +47,9 @@ fun MedicationUseScreen(
     val viewState by viewModel.viewState.collectAsState()
     MedicationUseScreenContent(
         viewState = viewState,
+        onClickUiSchema = { uiSchema ->
+            onClickUiSchema("Alle medicijngegevens", uiSchema)
+        },
         onNavigateBack = onNavigateBack,
     )
 }
@@ -51,6 +57,7 @@ fun MedicationUseScreen(
 @Composable
 private fun MedicationUseScreenContent(
     viewState: MedicationUseScreenViewState,
+    onClickUiSchema: (uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -88,6 +95,7 @@ private fun MedicationUseScreenContent(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
+                                .clickable { onClickUiSchema(uiSchema) }
                                 .padding(top = 16.dp),
                         title = uiSchema.label ?: "",
                         subtitle = "Ondertitel",
@@ -123,6 +131,7 @@ internal fun MedicationUseScreenPreview() {
     MgoTheme {
         MedicationUseScreenContent(
             viewState = MedicationUseScreenViewState.initialState.copy(uiSchemaList = listOf(TEST_UI_SCHEMA_MEDICATION)),
+            onClickUiSchema = {},
             onNavigateBack = {},
         )
     }

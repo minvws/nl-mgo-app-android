@@ -8,6 +8,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.medication.MedicationRepository
+import timber.log.Timber
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -26,7 +27,7 @@ class MedicationUseScreenViewModel
             fun create(provider: MgoOrganization): MedicationUseScreenViewModel
         }
 
-        private val initialState = MedicationUseScreenViewState.initialState(providerName = provider.name)
+        private val initialState = MedicationUseScreenViewState.initialState
         private val _viewState: MutableStateFlow<MedicationUseScreenViewState> = MutableStateFlow(initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
@@ -34,11 +35,12 @@ class MedicationUseScreenViewModel
             viewModelScope.launch {
                 medicationRepository
                     .getMedications(provider.resourceEndpoint)
-                    .onSuccess { medications ->
-                        _viewState.update { viewState -> viewState.copy(loading = false, medications = medications) }
+                    .onSuccess { uiSchemaList ->
+                        _viewState.update { viewState -> viewState.copy(uiSchemaList = uiSchemaList) }
                     }
                     .onFailure { error ->
-                        _viewState.update { viewState -> viewState.copy(loading = false, error = error) }
+                        // This flow will soon no longer exist.
+                        Timber.e(error, "Something went wrong")
                     }
             }
         }

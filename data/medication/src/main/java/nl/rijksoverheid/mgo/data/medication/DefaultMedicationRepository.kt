@@ -2,19 +2,22 @@ package nl.rijksoverheid.mgo.data.medication
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
-import nl.rijksoverheid.mgo.data.medication.models.MgoMedication
-import nl.rijksoverheid.mgo.data.medication.models.toMedication
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
+import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationUseProfile
 import javax.inject.Inject
 
 internal class DefaultMedicationRepository
     @Inject
-    constructor(private val dvaApi: DvaApi) : MedicationRepository {
-        override suspend fun getMedications(resourceEndpoint: String): Result<List<MgoMedication>> {
+    constructor(private val dvaApi: DvaApi, private val uiSchemaMapper: UiSchemaMapper) :
+    MedicationRepository {
+        override suspend fun getMedications(resourceEndpoint: String): Result<List<UISchema>> {
             val result = executeNetworkRequest { dvaApi.medicationStatement(resourceEndpoint) }
-            return result.mapCatching { statements ->
-                statements.map { statement ->
-                    statement.toMedication()
-                }
+            return result.mapCatching { responseBody ->
+                uiSchemaMapper.getUiSchema(
+                    fhirBundleJson = responseBody.string(),
+                    profile = ZibMedicationUseProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationUse.value,
+                )
             }
         }
     }

@@ -5,6 +5,7 @@ import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import org.hl7.fhir.dstu3.model.Bundle
 import org.hl7.fhir.dstu3.model.MedicationStatement
+import org.hl7.fhir.dstu3.model.Observation
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +19,7 @@ class DvaApiTest {
     private val testServer = testServerRule.testServer
 
     @Test
-    fun `Given response with empty bundle, when calling medicationStatement, return empty list`() =
+    fun `Given response with empty bundle, when calling medicationStatement, return response with empty bundle`() =
         runTest {
             // Given
             val bundle = Bundle()
@@ -28,14 +29,14 @@ class DvaApiTest {
 
             // When
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
-            val medicationStatements = dvaApi.medicationStatement("")
+            val responseBody = dvaApi.medicationStatement("")
 
             // Then
-            assertEquals(listOf<MedicationStatement>(), medicationStatements)
+            assertEquals(bundleJson, responseBody.string())
         }
 
     @Test
-    fun `Given response with empty bundle, when calling condition, return empty list`() =
+    fun `Given response with empty bundle, when calling condition, return response with empty bundle`() =
         runTest {
             // Given
             val bundle = Bundle()
@@ -49,5 +50,22 @@ class DvaApiTest {
 
             // Then
             assertEquals(listOf<MedicationStatement>(), medicationStatements)
+        }
+
+    @Test
+    fun `Given response with empty bundle, when calling observation, return response with empty bundle`() =
+        runTest {
+            // Given
+            val bundle = Bundle()
+            val jsonParser = context.newJsonParser()
+            val bundleJson = jsonParser.encodeResourceToString(bundle)
+            testServer.enqueueJson(bundleJson)
+
+            // When
+            val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
+            val medicationStatements = dvaApi.observation(resourceEndpoint = "", url = "")
+
+            // Then
+            assertEquals(listOf<Observation>(), medicationStatements)
         }
 }

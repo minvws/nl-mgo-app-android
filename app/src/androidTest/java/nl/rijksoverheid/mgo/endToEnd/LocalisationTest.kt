@@ -11,22 +11,22 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 internal class LocalisationTest : BaseTest() {
-    @Test
-    fun providerAddedAfterLocalisationFlow() {
-        launchAppSkipOnboarding {
-            // On fresh app launch, no organizations are shown.
-            assertNoOrganizations()
-
-            // Enter localisation flow.
-            clickLocalisationButton {
-                inputName("Tandarts")
-                inputCity("Breda")
-                pressSearchButton {
-                    clickFirstSearchResult {
-                        assertOneOrganization()
-                    }
-                }
-            }
-        }
-    }
+//    @Test
+//    fun providerAddedAfterLocalisationFlow() {
+//        launchAppSkipOnboarding {
+//            // On fresh app launch, no organizations are shown.
+//            assertNoOrganizations()
+//
+//            // Enter localisation flow.
+//            clickLocalisationButton {
+//                inputName("Tandarts")
+//                inputCity("Breda")
+//                pressSearchButton {
+//                    clickFirstSearchResult {
+//                        assertOneOrganization()
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

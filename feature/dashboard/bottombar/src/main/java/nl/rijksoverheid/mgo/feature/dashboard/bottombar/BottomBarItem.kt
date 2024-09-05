@@ -7,13 +7,24 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 internal sealed class BottomBarItem(
     @StringRes val titleId: Int,
-    @DrawableRes val iconId: Int,
+    @DrawableRes val deselectedIconId: Int,
+    @DrawableRes val selectedIconId: Int,
 ) {
-    data object Overview : BottomBarItem(CopyR.string.bottombar_overview, R.drawable.ic_bottombar_item_overview)
+    data object Overview : BottomBarItem(
+        CopyR.string.bottombar_overview,
+        R.drawable.ic_bottombar_item_overview_deselected,
+        R.drawable.ic_bottombar_item_overview_selected,
+    )
+
+    data object Providers : BottomBarItem(
+        CopyR.string.bottombar_healthcareproviders,
+        R.drawable.ic_bottombar_item_providers_deselected,
+        R.drawable.ic_bottombar_item_providers_selected,
+    )
 
     data object AboutThisApp : BottomBarItem(
         CopyR.string.bottombar_about_this_app,
-        R.drawable
-            .ic_bottombar_item_about_this_app,
+        R.drawable.ic_bottombar_item_about_this_app_deselected,
+        R.drawable.ic_bottombar_item_about_this_app_selected,
     )
 }

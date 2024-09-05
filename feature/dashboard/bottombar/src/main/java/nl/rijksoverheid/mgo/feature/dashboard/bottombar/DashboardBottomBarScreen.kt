@@ -44,14 +44,13 @@ fun DashboardBottomBarScreen(
             )
         },
     ) { paddingValues ->
-        Box(
-            modifier =
-                Modifier
-                    .padding(paddingValues),
-        ) {
+        Box(modifier = Modifier.padding(paddingValues)) {
             when (selectedBottomBarItem) {
                 BottomBarItem.Overview -> {
                     overviewTab()
+                }
+
+                BottomBarItem.Providers -> {
                 }
 
                 BottomBarItem.AboutThisApp -> {
@@ -67,7 +66,7 @@ private fun BottomNavigationBar(
     selectedItem: BottomBarItem,
     onSelectBottomBarItem: (item: BottomBarItem) -> Unit,
 ) {
-    val items = listOf(BottomBarItem.Overview, BottomBarItem.AboutThisApp)
+    val items = listOf(BottomBarItem.Overview, BottomBarItem.Providers, BottomBarItem.AboutThisApp)
     val bottomBarItemTextStyle =
         TextStyle(
             fontFamily = fonts,
@@ -84,12 +83,19 @@ private fun BottomNavigationBar(
     ) {
         items.forEach { item ->
             BottomNavigationItem(
-                icon = { Icon(painter = painterResource(id = item.iconId), contentDescription = null) },
+                icon = {
+                    val iconId =
+                        if (item == selectedItem) {
+                            item.selectedIconId
+                        } else {
+                            item.deselectedIconId
+                        }
+                    Icon(painter = painterResource(id = iconId), contentDescription = null)
+                },
                 label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
                 selected = item == selectedItem,
-                onClick = {
-                    onSelectBottomBarItem(item)
-                },
+                onClick = { onSelectBottomBarItem(item) },
+                selectedContentColor = MaterialTheme.colors.actionTertiaryDefault(),
                 unselectedContentColor = MaterialTheme.colors.iconsPrimary(),
             )
         }

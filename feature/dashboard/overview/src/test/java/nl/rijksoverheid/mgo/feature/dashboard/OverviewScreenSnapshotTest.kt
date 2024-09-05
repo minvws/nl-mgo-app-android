@@ -1,12 +1,12 @@
 package nl.rijksoverheid.mgo.feature.dashboard
 
-import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreenEmptyStatePreview
+import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreenNoProvidersPreview
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreenWithProvidersPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class OverviewScreenTest {
+internal class OverviewScreenSnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
@@ -18,9 +18,9 @@ internal class OverviewScreenTest {
     }
 
     @Test
-    fun emptyState() {
+    fun noProviders() {
         snapshotTestRule.snapshots {
-            OverviewScreenEmptyStatePreview()
+            OverviewScreenNoProvidersPreview()
         }
     }
 }

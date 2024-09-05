@@ -1,12 +1,9 @@
 package nl.rijksoverheid.mgo.feature.dashboard.overview
 
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -37,8 +32,15 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.component.theme.supportApotheek
+import nl.rijksoverheid.mgo.component.theme.supportFysiotherapeut
+import nl.rijksoverheid.mgo.component.theme.supportGgz
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
+import nl.rijksoverheid.mgo.component.theme.supportKliniek
+import nl.rijksoverheid.mgo.component.theme.supportTandarts
+import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
+import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
+import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.overview.R
@@ -49,17 +51,22 @@ const val TEST_TAG_OVERVIEW_ORGANIZATION_CARD = "OVERVIEW_ORGANIZATION_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToOrganization: (provider: MgoOrganization) -> Unit,
+    onNavigateToMedications: (provider: MgoOrganization) -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
-    OverviewScreenContent(viewState = viewState, onNavigateToLocalisation = onNavigateToLocalisation)
+    OverviewScreenContent(
+        viewState = viewState,
+        onClickAddProvider = onNavigateToLocalisation,
+        onClickMedications = onNavigateToMedications,
+    )
 }
 
 @Composable
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
-    onNavigateToLocalisation: () -> Unit,
+    onClickMedications: (provider: MgoOrganization) -> Unit,
+    onClickAddProvider: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -71,9 +78,7 @@ private fun OverviewScreenContent(
         },
         content = { innerPadding ->
             Column(
-                modifier =
-                    Modifier
-                        .padding(innerPadding),
+                modifier = Modifier.padding(innerPadding),
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -81,9 +86,13 @@ private fun OverviewScreenContent(
                     style = MaterialTheme.typography.headingLarge,
                 )
                 if (viewState.providers.isEmpty()) {
-                    NoProviders(onNavigateToLocalisation)
+                    NoProviders(onClickAddProvider)
                 } else {
-                    WithProviders(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp))
+                    WithProviders(
+                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                        providers = viewState.providers,
+                        onClickMedications = onClickMedications,
+                    )
                 }
             }
         },
@@ -92,14 +101,14 @@ private fun OverviewScreenContent(
 
 @Composable
 private fun NoProviders(
-    onNavigateToLocalisation: () -> Unit,
+    onClickAddProvider: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ColumnWithButtons(
         modifier = modifier,
         contentPadding = PaddingValues(horizontal = 16.dp),
         buttonText = stringResource(id = CopyR.string.overview_add_organization),
-        onButtonClick = onNavigateToLocalisation,
+        onButtonClick = onClickAddProvider,
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Image(
@@ -134,30 +143,39 @@ private fun NoProviders(
 }
 
 @Composable
-private fun WithProviders(modifier: Modifier = Modifier) {
+private fun WithProviders(
+    providers: List<MgoOrganization>,
+    onClickMedications: (provider: MgoOrganization) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         Card {
             Column {
                 OverviewListItem(
+                    modifier = Modifier.clickable { onClickMedications(providers[0]) },
                     icon = R.drawable.ic_medication,
                     title = CopyR.string.health_category_medication,
                     iconColor = MaterialTheme.colors.supportHuisarts(),
+                    state = OverviewListItemState.LOADED,
                 )
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
+                    icon = R.drawable.ic_allergies,
+                    iconColor = MaterialTheme.colors.supportKliniek(),
                     title = CopyR.string.health_category_allergies,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    state = OverviewListItemState.LOADED,
                 )
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
+                    icon = R.drawable.ic_measurements,
                     title = CopyR.string.health_category_measurements,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    iconColor = MaterialTheme.colors.supportApotheek(),
+                    state = OverviewListItemState.LOADED,
                 )
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    icon = R.drawable.ic_vaccinations,
+                    iconColor = MaterialTheme.colors.supportTandarts(),
                     title = CopyR.string.health_category_vaccinations,
                     hasDivider = false,
+                    state = OverviewListItemState.LOADED,
                 )
             }
         }
@@ -165,19 +183,22 @@ private fun WithProviders(modifier: Modifier = Modifier) {
         Card(modifier = Modifier.padding(top = 16.dp)) {
             Column {
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    icon = R.drawable.ic_complaints,
+                    iconColor = MaterialTheme.colors.supportVerpleeghuis(),
                     title = CopyR.string.health_category_complaints,
+                    state = OverviewListItemState.LOADED,
                 )
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    icon = R.drawable.ic_treatments,
+                    iconColor = MaterialTheme.colors.supportGgz(),
                     title = CopyR.string.health_category_treatments,
+                    state = OverviewListItemState.LOADED,
                 )
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    icon = R.drawable.ic_labresults,
+                    iconColor = MaterialTheme.colors.supportZiekenhuis(),
                     title = CopyR.string.health_category_labresults,
+                    state = OverviewListItemState.LOADED,
                     hasDivider = false,
                 )
             }
@@ -186,42 +207,18 @@ private fun WithProviders(modifier: Modifier = Modifier) {
         Card(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
             Column {
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    icon = R.drawable.ic_reports,
+                    iconColor = MaterialTheme.colors.supportFysiotherapeut(),
+                    state = OverviewListItemState.LOADED,
                     title = CopyR.string.health_category_reports,
                 )
                 OverviewListItem(
-                    icon = R.drawable.ic_medication,
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
+                    icon = R.drawable.ic_documents,
+                    iconColor = MaterialTheme.colors.supportThuiszorg(),
+                    state = OverviewListItemState.LOADED,
                     title = CopyR.string.health_category_documents,
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun OverviewListItem(
-    @DrawableRes icon: Int,
-    @ColorRes iconColor: Color,
-    @StringRes title: Int,
-    modifier: Modifier = Modifier,
-    hasDivider: Boolean = true,
-) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            Icon(painter = painterResource(id = icon), contentDescription = null, tint = iconColor)
-            Text(modifier = Modifier.padding(start = 16.dp), text = stringResource(id = title), style = MaterialTheme.typography.bodySmall)
-        }
-        if (hasDivider) {
-            Divider(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(0.33.dp)
-                        .padding(start = 16.dp),
-                color = MaterialTheme.colors.strokesPrimary(),
-            )
         }
     }
 }
@@ -232,7 +229,8 @@ internal fun OverviewScreenNoProvidersPreview() {
     MgoTheme {
         OverviewScreenContent(
             viewState = OverviewScreenViewState(name = "", providers = listOf()),
-            onNavigateToLocalisation = {},
+            onClickAddProvider = {},
+            onClickMedications = {},
         )
     }
 }
@@ -243,7 +241,8 @@ internal fun OverviewScreenWithProvidersPreview() {
     MgoTheme {
         OverviewScreenContent(
             viewState = OverviewScreenViewState(name = "", providers = listOf(TEST_MGO_ORGANIZATION)),
-            onNavigateToLocalisation = {},
+            onClickAddProvider = {},
+            onClickMedications = {},
         )
     }
 }

@@ -32,9 +32,9 @@ fun OrganizationNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToOrganization = { provider ->
+                onNavigateToMedications = { provider ->
                     navController.navigate(
-                        OrganizationNavigationScreen.Organization
+                        OrganizationNavigationScreen.MedicationUse
                             .setProvider(provider)
                             .getNavigationRoute(),
                     )

@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.data.medication
 
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.TestUiSchemaMapper
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
+import nl.rijksoverheid.mgo.data.uiSchema.models.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import org.junit.Assert.assertEquals

@@ -103,7 +103,9 @@
   <string name="organization_search.search_hint_3">Heeft deze zorgaanbieder meerdere vestigingen? Vul dan de plaatsnaam van de hoofdvestiging in.</string>
   <string name="organization_search.searching">Zorgaanbieders aan het zoeken...</string>
   <string name="overview.add_organization">Zorgaanbieder toevoegen </string>
-  <string name="overview.heading">Goedemorgen</string>
+  <string name="overview.heading">Overzicht</string>
+  <string name="overview.empty.heading">Je overzicht is nog leeg</string>
+  <string name="overview.empty.subheading">Voeg zorgaanbieders toe om hier gegevens over je gezondheid te zien.</string>
   <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
   <string name="overview.subheading">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
   <string name="problems.heading">Klachten en diagnoses</string>

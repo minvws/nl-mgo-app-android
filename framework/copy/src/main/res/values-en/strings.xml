@@ -121,4 +121,6 @@
   <string name="update_required.download">Nu downloaden</string>
   <string name="update_required.heading">Je hebt een oude versie van de app</string>
   <string name="update_required.subheading">Download de nieuwste versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>
+  <string name="overview.empty.heading">Je overzicht is nog leeg</string>
+  <string name="overview.empty.subheading">Voeg zorgaanbieders toe om hier gegevens over je gezondheid te zien.</string>
 </resources>

@@ -34,7 +34,7 @@ class MedicationUseScreenViewModel
         init {
             viewModelScope.launch {
                 medicationRepository
-                    .getMedications(provider.resourceEndpoint)
+                    .getMedications(provider.id, provider.resourceEndpoint)
                     .onSuccess { uiSchemaList ->
                         _viewState.update { viewState -> viewState.copy(uiSchemaList = uiSchemaList) }
                     }

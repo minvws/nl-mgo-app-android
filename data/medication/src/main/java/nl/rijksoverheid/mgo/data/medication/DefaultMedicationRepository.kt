@@ -5,19 +5,34 @@ import nl.rijksoverheid.mgo.data.api.dva.DvaApi
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationUseProfile
+import nl.rijksoverheid.mgo.data.uiSchema.store.UiSchemaCacheCategory
+import nl.rijksoverheid.mgo.data.uiSchema.store.UiSchemaCacheKey
+import nl.rijksoverheid.mgo.data.uiSchema.store.UiSchemaRepository
 import javax.inject.Inject
 
 internal class DefaultMedicationRepository
     @Inject
-    constructor(private val dvaApi: DvaApi, private val uiSchemaMapper: UiSchemaMapper) :
+    constructor(
+        private val dvaApi: DvaApi,
+        private val uiSchemaMapper: UiSchemaMapper,
+        private val uiSchemaRepository: UiSchemaRepository,
+    ) :
     MedicationRepository {
-        override suspend fun getMedications(resourceEndpoint: String): Result<List<UISchema>> {
+        override suspend fun getMedications(
+            providerId: String,
+            resourceEndpoint: String,
+        ): Result<List<UISchema>> {
             val result = executeNetworkRequest { dvaApi.medicationStatement(resourceEndpoint) }
-            return result.mapCatching { responseBody ->
-                uiSchemaMapper.getUiSchema(
-                    fhirBundleJson = responseBody.string(),
-                    profile = ZibMedicationUseProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationUse.value,
-                )
-            }
+            return result
+                .mapCatching { responseBody ->
+                    uiSchemaMapper.getUiSchema(
+                        fhirBundleJson = responseBody.string(),
+                        profile = ZibMedicationUseProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationUse.value,
+                    )
+                }
+                .onSuccess { uiSchemaList ->
+                    val cacheKey = UiSchemaCacheKey(providerId = providerId, category = UiSchemaCacheCategory.MEDICATION_USE)
+                    uiSchemaRepository.store(cacheKey, uiSchemaList)
+                }
         }
     }

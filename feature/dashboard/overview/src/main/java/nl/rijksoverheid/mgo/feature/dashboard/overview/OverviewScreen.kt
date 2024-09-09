@@ -41,7 +41,6 @@ import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
 import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.overview.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -51,7 +50,7 @@ const val TEST_TAG_OVERVIEW_ORGANIZATION_CARD = "OVERVIEW_ORGANIZATION_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToMedications: (provider: MgoOrganization) -> Unit,
+    onNavigateToMedications: () -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -65,7 +64,7 @@ fun OverviewScreen(
 @Composable
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
-    onClickMedications: (provider: MgoOrganization) -> Unit,
+    onClickMedications: () -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
     Scaffold(
@@ -90,7 +89,6 @@ private fun OverviewScreenContent(
                 } else {
                     WithProviders(
                         modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        providers = viewState.providers,
                         onClickMedications = onClickMedications,
                     )
                 }
@@ -144,15 +142,14 @@ private fun NoProviders(
 
 @Composable
 private fun WithProviders(
-    providers: List<MgoOrganization>,
-    onClickMedications: (provider: MgoOrganization) -> Unit,
+    onClickMedications: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         Card {
             Column {
                 OverviewListItem(
-                    modifier = Modifier.clickable { onClickMedications(providers[0]) },
+                    modifier = Modifier.clickable { onClickMedications() },
                     icon = R.drawable.ic_medication,
                     title = CopyR.string.health_category_medication,
                     iconColor = MaterialTheme.colors.supportHuisarts(),

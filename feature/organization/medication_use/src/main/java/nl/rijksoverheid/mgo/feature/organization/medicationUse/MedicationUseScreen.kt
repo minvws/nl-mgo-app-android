@@ -29,21 +29,16 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.models.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun MedicationUseScreen(
-    provider: MgoOrganization,
     onClickUiSchema: (toolbarTitle: String, uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    val viewModel =
-        hiltViewModel<MedicationUseScreenViewModel, MedicationUseScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(provider) },
-        )
+    val viewModel: MedicationUseScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
 
     val medicationDetailsToolbarTitle = stringResource(id = CopyR.string.medication_details_heading)

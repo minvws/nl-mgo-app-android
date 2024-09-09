@@ -32,10 +32,9 @@ fun OrganizationNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToMedications = { provider ->
+                onNavigateToMedications = {
                     navController.navigate(
                         OrganizationNavigationScreen.MedicationUse
-                            .setProvider(provider)
                             .getNavigationRoute(),
                     )
                 },
@@ -51,7 +50,7 @@ fun OrganizationNavigation(
                 },
                 onNavigateToMedicationuse = {
                     navController.navigate(
-                        OrganizationNavigationScreen.MedicationUse.setProvider(provider).getNavigationRoute(),
+                        OrganizationNavigationScreen.MedicationUse.getNavigationRoute(),
                     )
                 },
                 onNavigateToProblems = {
@@ -87,9 +86,8 @@ fun OrganizationNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.MedicationUse.getRoute()) { backStackEntry ->
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.MedicationUse.getRoute()) {
             MedicationUseScreen(
-                provider = OrganizationNavigationScreen.MedicationUse.getProvider(backStackEntry),
                 onClickUiSchema = { toolbarTitle, uiSchema ->
                     navController.navigate(
                         OrganizationNavigationScreen.UiSchemaDetail.setToolbarTitle(toolbarTitle).setUiSchema(uiSchema)

@@ -4,7 +4,7 @@ import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 
 interface MedicationRepository {
     suspend fun getMedications(
-        providerId: String,
+        organizationId: String,
         resourceEndpoint: String,
     ): Result<List<UISchema>>
 }

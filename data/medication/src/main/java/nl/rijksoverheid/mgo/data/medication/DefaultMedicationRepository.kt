@@ -19,7 +19,7 @@ internal class DefaultMedicationRepository
     ) :
     MedicationRepository {
         override suspend fun getMedications(
-            providerId: String,
+            organizationId: String,
             resourceEndpoint: String,
         ): Result<List<UISchema>> {
             val result = executeNetworkRequest { dvaApi.medicationStatement(resourceEndpoint) }
@@ -31,7 +31,7 @@ internal class DefaultMedicationRepository
                     )
                 }
                 .onSuccess { uiSchemaList ->
-                    val cacheKey = UiSchemaCacheKey(providerId = providerId, category = UiSchemaCacheCategory.MEDICATION_USE)
+                    val cacheKey = UiSchemaCacheKey(organizationId = organizationId, category = UiSchemaCacheCategory.MEDICATION_USE)
                     uiSchemaRepository.store(cacheKey, uiSchemaList)
                 }
         }

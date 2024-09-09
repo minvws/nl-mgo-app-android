@@ -53,18 +53,7 @@ sealed class OrganizationNavigationScreen(override val name: String, override va
         }
     }
 
-    data object MedicationUse : OrganizationNavigationScreen(name = "organization-medicationUse", placeholders = listOf("provider")) {
-        fun setProvider(provider: MgoOrganization): MedicationUse {
-            val providerJson = provider.toJsonString()
-            builder.addArgument(placeholders[0], providerJson)
-            return this
-        }
-
-        fun getProvider(backStackEntry: NavBackStackEntry): MgoOrganization {
-            val providerJson = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
-            return providerJson.jsonStringToObject()
-        }
-    }
+    data object MedicationUse : OrganizationNavigationScreen(name = "organization-medicationUse")
 
     data object Problems : OrganizationNavigationScreen(name = "organization-problems", placeholders = listOf("provider")) {
         fun setProvider(provider: MgoOrganization): Problems {

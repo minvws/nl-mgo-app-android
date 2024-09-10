@@ -1,10 +1,9 @@
-package nl.rijksoverheid.mgo.data.uiSchema.store
+package nl.rijksoverheid.mgo.data.uiSchema
 
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import javax.inject.Singleton
+import nl.rijksoverheid.mgo.data.uiSchema.repository.UiSchemaCacheKey
+import nl.rijksoverheid.mgo.data.uiSchema.repository.UiSchemaRepository
 
-@Singleton
-internal class DefaultUiSchemaRepository : UiSchemaRepository {
+class TestUiSchemaRepository : UiSchemaRepository {
     private val cache: MutableMap<UiSchemaCacheKey, List<UISchema>> = mutableMapOf()
 
     override fun store(

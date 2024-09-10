@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.uiSchema.store.UiSchemaCacheCategory
-import nl.rijksoverheid.mgo.data.uiSchema.store.UiSchemaCacheKey
-import nl.rijksoverheid.mgo.data.uiSchema.store.UiSchemaRepository
+import nl.rijksoverheid.mgo.data.uiSchema.repository.UiSchemaCacheCategory
+import nl.rijksoverheid.mgo.data.uiSchema.repository.UiSchemaCacheKey
+import nl.rijksoverheid.mgo.data.uiSchema.repository.UiSchemaRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,20 +28,26 @@ class MedicationUseScreenViewModel
         init {
             viewModelScope.launch {
                 val organizations = organizationRepository.get()
-                val organizationIds = organizations.map { organization -> organization.id }
-                val uiSchemaList =
-                    organizationIds
-                        .mapNotNull { providerId ->
+                val listItems =
+                    organizations
+                        .mapNotNull { organization ->
+                            // Get UI Schema
                             uiSchemaRepository.get(
                                 UiSchemaCacheKey(
-                                    organizationId = providerId,
-                                    category =
-                                        UiSchemaCacheCategory.MEDICATION_USE,
+                                    organizationId = organization.id,
+                                    category = UiSchemaCacheCategory.MEDICATION_USE,
                                 ),
-                            )
+                            )?.map { uiSchema ->
+                                // Map UI Schema to List Item
+                                MedicationUseScreenListItem(
+                                    title = uiSchema.label ?: "",
+                                    subtitle = organization.name,
+                                    uiSchema = uiSchema,
+                                )
+                            }
                         }
                         .flatten()
-                _viewState.update { viewState -> viewState.copy(uiSchemaList = uiSchemaList) }
+                _viewState.update { viewState -> viewState.copy(listItems = listItems) }
             }
         }
     }

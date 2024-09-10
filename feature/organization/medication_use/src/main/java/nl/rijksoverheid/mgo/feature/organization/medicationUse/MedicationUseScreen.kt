@@ -30,7 +30,6 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.data.uiSchema.models.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -86,16 +85,16 @@ private fun MedicationUseScreenContent(
                     )
                 }
 
-                items(viewState.uiSchemaList.size) { position ->
-                    val uiSchema = viewState.uiSchemaList[position]
+                items(viewState.listItems.size) { position ->
+                    val listItem = viewState.listItems[position]
                     MedicationUseCard(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .clickable { onClickUiSchema(uiSchema) }
+                                .clickable { onClickUiSchema(listItem.uiSchema) }
                                 .padding(top = 16.dp),
-                        title = uiSchema.label ?: "",
-                        subtitle = "Ondertitel",
+                        title = listItem.title,
+                        subtitle = listItem.subtitle,
                     )
                 }
             }
@@ -127,7 +126,10 @@ private fun MedicationUseCard(
 internal fun MedicationUseScreenPreview() {
     MgoTheme {
         MedicationUseScreenContent(
-            viewState = MedicationUseScreenViewState.initialState.copy(uiSchemaList = listOf(TEST_UI_SCHEMA_MEDICATION)),
+            viewState =
+                MedicationUseScreenViewState.initialState.copy(
+                    listItems = listOf(TEST_LIST_ITEM_1, TEST_LIST_ITEM_2, TEST_LIST_ITEM_3),
+                ),
             onClickUiSchema = {},
             onNavigateBack = {},
         )

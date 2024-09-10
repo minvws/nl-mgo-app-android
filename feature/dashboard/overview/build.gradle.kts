@@ -10,4 +10,6 @@ dependencies {
     implementation(projects.data.localisation)
     implementation(projects.data.medication)
     testImplementation(testFixtures((projects.data.localisation)))
+    testImplementation(testFixtures(projects.data.laboratoryTestResult))
+    testImplementation(testFixtures(projects.data.medication))
 }

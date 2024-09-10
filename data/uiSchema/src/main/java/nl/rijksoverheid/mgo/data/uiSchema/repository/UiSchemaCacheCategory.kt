@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.uiSchema.store
+package nl.rijksoverheid.mgo.data.uiSchema.repository
 
 enum class UiSchemaCacheCategory {
     MEDICATION_USE,

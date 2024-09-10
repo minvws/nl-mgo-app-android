@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.data.medication.models.TestMedicationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreenViewModel
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
@@ -23,7 +24,11 @@ internal class OverviewScreenViewModelTest {
             organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
 
             // When
-            val viewModel = OverviewScreenViewModel(organizationRepository = organizationRepository)
+            val viewModel =
+                OverviewScreenViewModel(
+                    organizationRepository = organizationRepository,
+                    medicationRepository = TestMedicationRepository(Result.success(listOf())),
+                )
             viewModel.viewState.test {
                 // Then
                 assertEquals(listOf(TEST_MGO_ORGANIZATION), awaitItem().providers)

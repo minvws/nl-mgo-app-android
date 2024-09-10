@@ -1,9 +1,10 @@
 package nl.rijksoverheid.mgo.data.medication
 
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
+import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.TestUiSchemaMapper
+import nl.rijksoverheid.mgo.data.uiSchema.TestUiSchemaRepository
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.data.uiSchema.models.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import org.junit.Assert.assertEquals
@@ -26,7 +27,7 @@ internal class DefaultMedicationRepositoryTest {
 
             // When
             val repository = getRepository(uiSchemaList = listOf(TEST_UI_SCHEMA_MEDICATION))
-            val result = repository.getMedications("")
+            val result = repository.getMedications(organizationId = "", resourceEndpoint = "")
 
             // Then
             assertEquals(listOf(TEST_UI_SCHEMA_MEDICATION), result.getOrNull())
@@ -40,7 +41,7 @@ internal class DefaultMedicationRepositoryTest {
 
             // When
             val repository = getRepository(uiSchemaList = listOf(TEST_UI_SCHEMA_MEDICATION))
-            val result = repository.getMedications("")
+            val result = repository.getMedications(organizationId = "", resourceEndpoint = "")
 
             // Then
             val exception = result.exceptionOrNull() as? HttpException
@@ -51,6 +52,6 @@ internal class DefaultMedicationRepositoryTest {
         val okHttpClient = TEST_OKHTTP_CLIENT
         val dvaApi = createDvaApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
         val uiSchemaMapper = TestUiSchemaMapper(uiSchemaList)
-        return DefaultMedicationRepository(dvaApi = dvaApi, uiSchemaMapper = uiSchemaMapper)
+        return DefaultMedicationRepository(dvaApi = dvaApi, uiSchemaMapper = uiSchemaMapper, uiSchemaRepository = TestUiSchemaRepository())
     }
 }

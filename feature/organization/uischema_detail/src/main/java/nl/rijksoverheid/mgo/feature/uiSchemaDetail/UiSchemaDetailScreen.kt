@@ -32,9 +32,9 @@ import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.uiSchema.ChildDisplay
 import nl.rijksoverheid.mgo.data.uiSchema.ChildElement
 import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
+import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
-import nl.rijksoverheid.mgo.data.uiSchema.models.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable

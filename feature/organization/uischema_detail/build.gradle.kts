@@ -8,5 +8,4 @@ android {
 
 dependencies {
     implementation(projects.data.uiSchema)
-    implementation(testFixtures(projects.data.uiSchema))
 }

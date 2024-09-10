@@ -1,9 +1,4 @@
-package nl.rijksoverheid.mgo.data.uiSchema.models
-
-import nl.rijksoverheid.mgo.data.uiSchema.ChildDisplay
-import nl.rijksoverheid.mgo.data.uiSchema.ChildElement
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
+package nl.rijksoverheid.mgo.data.uiSchema
 
 val TEST_UI_SCHEMA_MEDICATION =
     UISchema(

@@ -120,6 +120,7 @@ dependencies {
     implementation(projects.data.config)
     implementation(projects.data.localisation)
     implementation(projects.data.uiSchema)
+    implementation(projects.data.healthcare)
 
     // ================================
     // TESTING

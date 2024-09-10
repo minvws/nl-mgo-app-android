@@ -2,15 +2,37 @@ package nl.rijksoverheid.mgo
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRepository
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 @HiltAndroidApp
 class MainApplication : Application() {
+    @Inject
+    lateinit var healthCareRepository: HealthCareRepository
+
+    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
             plant(Timber.DebugTree())
         }
+        coroutineScope.launch {
+            launch(Dispatchers.IO) {
+                healthCareRepository.init()
+            }
+        }
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        coroutineScope.cancel()
     }
 }

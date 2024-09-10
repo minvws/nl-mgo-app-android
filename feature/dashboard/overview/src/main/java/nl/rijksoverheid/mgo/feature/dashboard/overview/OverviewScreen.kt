@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.overview
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -41,7 +40,9 @@ import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
 import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.feature.dashboard.overview.listItem.OverviewListItem
 import nl.rijksoverheid.mgo.feature.overview.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -149,30 +150,33 @@ private fun WithProviders(
         Card {
             Column {
                 OverviewListItem(
-                    modifier = Modifier.clickable { onClickMedications() },
                     icon = R.drawable.ic_medication,
                     title = CopyR.string.health_category_medication,
                     iconColor = MaterialTheme.colors.supportHuisarts(),
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.MEDICATIONS,
+                    onClickWhenLoaded = { onClickMedications() },
                 )
                 OverviewListItem(
                     icon = R.drawable.ic_allergies,
                     iconColor = MaterialTheme.colors.supportKliniek(),
                     title = CopyR.string.health_category_allergies,
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.ALLERGIES,
+                    onClickWhenLoaded = {},
                 )
                 OverviewListItem(
                     icon = R.drawable.ic_measurements,
                     title = CopyR.string.health_category_measurements,
                     iconColor = MaterialTheme.colors.supportApotheek(),
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.MEASUREMENTS,
+                    onClickWhenLoaded = {},
                 )
                 OverviewListItem(
                     icon = R.drawable.ic_vaccinations,
                     iconColor = MaterialTheme.colors.supportTandarts(),
                     title = CopyR.string.health_category_vaccinations,
                     hasDivider = false,
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.VACCINATIONS,
+                    onClickWhenLoaded = {},
                 )
             }
         }
@@ -183,20 +187,23 @@ private fun WithProviders(
                     icon = R.drawable.ic_complaints,
                     iconColor = MaterialTheme.colors.supportVerpleeghuis(),
                     title = CopyR.string.health_category_complaints,
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.COMPLAINTS,
+                    onClickWhenLoaded = {},
                 )
                 OverviewListItem(
                     icon = R.drawable.ic_treatments,
                     iconColor = MaterialTheme.colors.supportGgz(),
                     title = CopyR.string.health_category_treatments,
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.TREATMENTS,
+                    onClickWhenLoaded = {},
                 )
                 OverviewListItem(
                     icon = R.drawable.ic_labresults,
                     iconColor = MaterialTheme.colors.supportZiekenhuis(),
                     title = CopyR.string.health_category_labresults,
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.LABRESULTS,
                     hasDivider = false,
+                    onClickWhenLoaded = {},
                 )
             }
         }
@@ -206,14 +213,16 @@ private fun WithProviders(
                 OverviewListItem(
                     icon = R.drawable.ic_reports,
                     iconColor = MaterialTheme.colors.supportFysiotherapeut(),
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.REPORTS,
                     title = CopyR.string.health_category_reports,
+                    onClickWhenLoaded = {},
                 )
                 OverviewListItem(
                     icon = R.drawable.ic_documents,
                     iconColor = MaterialTheme.colors.supportThuiszorg(),
-                    state = OverviewListItemState.LOADED,
+                    category = HealthCareCategory.DOCUMENTS,
                     title = CopyR.string.health_category_documents,
+                    onClickWhenLoaded = {},
                 )
             }
         }

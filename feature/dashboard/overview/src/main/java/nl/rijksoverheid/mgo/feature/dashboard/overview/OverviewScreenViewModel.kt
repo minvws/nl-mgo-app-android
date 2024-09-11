@@ -14,13 +14,12 @@ import kotlinx.coroutines.runBlocking
 @HiltViewModel
 internal class OverviewScreenViewModel
     @Inject
-    constructor(organizationRepository: OrganizationRepository) : ViewModel() {
+    constructor(
+        organizationRepository: OrganizationRepository,
+    ) : ViewModel() {
         private val initialViewState =
             OverviewScreenViewState.initialState(
-                providers =
-                    runBlocking {
-                        organizationRepository.get()
-                    },
+                providers = runBlocking { organizationRepository.get() },
             )
         private val _viewState = MutableStateFlow(initialViewState)
         val viewState =

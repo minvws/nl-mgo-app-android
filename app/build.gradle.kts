@@ -97,6 +97,7 @@ dependencies {
     implementation(projects.feature.organization.medicationUse)
     implementation(projects.feature.organization.problems)
     implementation(projects.feature.organization.labResults)
+    implementation(projects.feature.organization.uischemaDetail)
 
     // Config
     implementation(projects.feature.config)
@@ -118,6 +119,8 @@ dependencies {
     implementation(projects.data.onboarding)
     implementation(projects.data.config)
     implementation(projects.data.localisation)
+    implementation(projects.data.uiSchema)
+    implementation(projects.data.healthcare)
 
     // ================================
     // TESTING

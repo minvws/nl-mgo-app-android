@@ -42,6 +42,20 @@ fun Colors.iconsPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 fun Colors.iconsSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF999999) else Color(0xFF999999)
 
+// Strokes
+
+@Composable
+fun Colors.strokesPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF4D4D4D) else Color(0xFFCCCCCC)
+
+@Composable
+fun Colors.strokesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF333333) else Color(0xFFE0E0E0)
+
+@Composable
+fun Colors.strokesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF2C2C2C) else Color(0xFFF7F7F7)
+
 // Lines
 
 @Composable

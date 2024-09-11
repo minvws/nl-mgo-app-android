@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.medication.models.TestMedicationRepository
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_LOADED_MEDICATION
+import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -15,21 +15,21 @@ internal class MedicationUseScreenViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `Given medications, When creating viewmodel, Ui schemas are fetched`() =
+    fun `Given medications, When creating viewmodel, List items are shown`() =
         runTest {
             // Given
-            val testLaboratoryResultRepository = TestMedicationRepository(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION)))
+            val healthCareRepository = TestHealthCareRepository()
+            healthCareRepository.addHealthCareData(
+                category = HealthCareCategory.MEDICATIONS,
+                data = listOf(TEST_HEALTH_CARE_DATA_LOADED_MEDICATION),
+            )
 
             // When
-            val viewModel =
-                MedicationUseScreenViewModel(
-                    provider = TEST_MGO_ORGANIZATION,
-                    medicationRepository = testLaboratoryResultRepository,
-                )
+            val viewModel = MedicationUseScreenViewModel(healthCareRepository = healthCareRepository)
 
             // Then
             viewModel.viewState.test {
-                assertEquals(listOf(TEST_UI_SCHEMA_MEDICATION), awaitItem().uiSchemaList)
+                assertEquals(listOf(TEST_LIST_ITEM_1), awaitItem().listItems)
             }
         }
 }

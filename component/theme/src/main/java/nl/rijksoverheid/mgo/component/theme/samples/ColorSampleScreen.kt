@@ -44,6 +44,8 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
 import nl.rijksoverheid.mgo.component.theme.notificationWarning
+import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.component.theme.strokesTertiary
 import nl.rijksoverheid.mgo.component.theme.supportApotheek
 import nl.rijksoverheid.mgo.component.theme.supportFysiotherapeut
 import nl.rijksoverheid.mgo.component.theme.supportGgz
@@ -87,6 +89,15 @@ private fun ColorSampleScreen() {
         }
         item {
             ColorSample(color = MaterialTheme.colors.iconsSecondary(), text = "Icons Secondary")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.strokesPrimary(), text = "Strokes Primary")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.strokesPrimary(), text = "Strokes Secondary")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.strokesTertiary(), text = "Strokes Tertiary")
         }
         item {
             ColorSample(color = MaterialTheme.colors.linesPrimary(), text = "Lines Primary")

@@ -2,46 +2,41 @@ package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.medication.MedicationRepository
-import timber.log.Timber
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareData
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = MedicationUseScreenViewModel.Factory::class)
+@HiltViewModel
 class MedicationUseScreenViewModel
-    @AssistedInject
-    constructor(
-        @Assisted val provider: MgoOrganization,
-        private val medicationRepository: MedicationRepository,
-    ) : ViewModel() {
-        @AssistedFactory
-        interface Factory {
-            fun create(provider: MgoOrganization): MedicationUseScreenViewModel
-        }
-
+    @Inject
+    constructor(private val healthCareRepository: HealthCareRepository) : ViewModel() {
         private val initialState = MedicationUseScreenViewState.initialState
         private val _viewState: MutableStateFlow<MedicationUseScreenViewState> = MutableStateFlow(initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {
             viewModelScope.launch {
-                medicationRepository
-                    .getMedications(provider.resourceEndpoint)
-                    .onSuccess { uiSchemaList ->
-                        _viewState.update { viewState -> viewState.copy(uiSchemaList = uiSchemaList) }
-                    }
-                    .onFailure { error ->
-                        // This flow will soon no longer exist.
-                        Timber.e(error, "Something went wrong")
-                    }
+                healthCareRepository.observeData(HealthCareCategory.MEDICATIONS).collectLatest { healthCareDataList ->
+                    val listItems =
+                        healthCareDataList.filterIsInstance<HealthCareData.Loaded>().map { healthCareData ->
+                            healthCareData.uiSchemaList.map { uiSchema ->
+                                MedicationUseScreenListItem(
+                                    title = uiSchema.label ?: "",
+                                    subtitle = healthCareData.organization.name,
+                                    uiSchema = uiSchema,
+                                )
+                            }
+                        }.flatten()
+                    _viewState.update { viewState -> viewState.copy(listItems = listItems) }
+                }
             }
         }
     }

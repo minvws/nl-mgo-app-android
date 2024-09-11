@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,22 +29,23 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun MedicationUseScreen(
-    provider: MgoOrganization,
+    onClickUiSchema: (toolbarTitle: String, uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    val viewModel =
-        hiltViewModel<MedicationUseScreenViewModel, MedicationUseScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(provider) },
-        )
+    val viewModel: MedicationUseScreenViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
+
+    val medicationDetailsToolbarTitle = stringResource(id = CopyR.string.medication_details_heading)
     MedicationUseScreenContent(
         viewState = viewState,
+        onClickUiSchema = { uiSchema ->
+            onClickUiSchema(medicationDetailsToolbarTitle, uiSchema)
+        },
         onNavigateBack = onNavigateBack,
     )
 }
@@ -51,6 +53,7 @@ fun MedicationUseScreen(
 @Composable
 private fun MedicationUseScreenContent(
     viewState: MedicationUseScreenViewState,
+    onClickUiSchema: (uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -82,15 +85,16 @@ private fun MedicationUseScreenContent(
                     )
                 }
 
-                items(viewState.uiSchemaList.size) { position ->
-                    val uiSchema = viewState.uiSchemaList[position]
+                items(viewState.listItems.size) { position ->
+                    val listItem = viewState.listItems[position]
                     MedicationUseCard(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
+                                .clickable { onClickUiSchema(listItem.uiSchema) }
                                 .padding(top = 16.dp),
-                        title = uiSchema.label ?: "",
-                        subtitle = "Ondertitel",
+                        title = listItem.title,
+                        subtitle = listItem.subtitle,
                     )
                 }
             }
@@ -122,7 +126,11 @@ private fun MedicationUseCard(
 internal fun MedicationUseScreenPreview() {
     MgoTheme {
         MedicationUseScreenContent(
-            viewState = MedicationUseScreenViewState.initialState.copy(uiSchemaList = listOf(TEST_UI_SCHEMA_MEDICATION)),
+            viewState =
+                MedicationUseScreenViewState.initialState.copy(
+                    listItems = listOf(TEST_LIST_ITEM_1, TEST_LIST_ITEM_2, TEST_LIST_ITEM_3),
+                ),
+            onClickUiSchema = {},
             onNavigateBack = {},
         )
     }

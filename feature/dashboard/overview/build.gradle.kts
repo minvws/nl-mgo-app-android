@@ -7,6 +7,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:localisation"))
+    implementation(projects.data.localisation)
+    implementation(projects.data.healthcare)
     testImplementation(testFixtures((projects.data.localisation)))
+    testImplementation(testFixtures(projects.data.laboratoryTestResult))
+    testImplementation(testFixtures(projects.data.healthcare))
+    testImplementation(testFixtures(projects.data.uiSchema))
 }

@@ -1,14 +1,9 @@
 package nl.rijksoverheid.mgo.feature.organization.medicationUse
 
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-
 data class MedicationUseScreenViewState(
-    val uiSchemaList: List<UISchema>,
+    val listItems: List<MedicationUseScreenListItem>,
 ) {
     companion object {
-        val initialState =
-            MedicationUseScreenViewState(
-                uiSchemaList = listOf(),
-            )
+        val initialState = MedicationUseScreenViewState(listItems = listOf())
     }
 }

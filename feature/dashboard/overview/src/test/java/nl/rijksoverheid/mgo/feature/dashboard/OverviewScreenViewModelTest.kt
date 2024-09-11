@@ -23,7 +23,10 @@ internal class OverviewScreenViewModelTest {
             organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
 
             // When
-            val viewModel = OverviewScreenViewModel(organizationRepository = organizationRepository)
+            val viewModel =
+                OverviewScreenViewModel(
+                    organizationRepository = organizationRepository,
+                )
             viewModel.viewState.test {
                 // Then
                 assertEquals(listOf(TEST_MGO_ORGANIZATION), awaitItem().providers)

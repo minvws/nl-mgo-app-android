@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.uiSchema"
+    namespace = "nl.rijksoverheid.mgo.data.uiSchema"
     testFixtures {
         enable = true
     }

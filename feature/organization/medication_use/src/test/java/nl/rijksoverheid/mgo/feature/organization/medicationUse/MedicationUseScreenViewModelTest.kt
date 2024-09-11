@@ -19,7 +19,10 @@ internal class MedicationUseScreenViewModelTest {
         runTest {
             // Given
             val healthCareRepository = TestHealthCareRepository()
-            healthCareRepository.addHealthCareData(category = HealthCareCategory.MEDICATIONS, data = listOf(TEST_HEALTH_CARE_DATA_LOADED_MEDICATION))
+            healthCareRepository.addHealthCareData(
+                category = HealthCareCategory.MEDICATIONS,
+                data = listOf(TEST_HEALTH_CARE_DATA_LOADED_MEDICATION),
+            )
 
             // When
             val viewModel = MedicationUseScreenViewModel(healthCareRepository = healthCareRepository)

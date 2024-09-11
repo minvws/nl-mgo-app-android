@@ -40,6 +40,7 @@ sonar {
             "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml",
         )
         val exclusions = buildList {
+            add("**/*Application*.kt") // Application
             add("**/*Activity*.kt") // Activities
             add("**/res/**/") // Resources folder
             add("**/*Module*.kt") // Dagger modules

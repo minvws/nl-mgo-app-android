@@ -7,6 +7,13 @@ import kotlinx.coroutines.flow.flow
 class TestHealthCareRepository : HealthCareRepository {
     private val data: MutableMap<HealthCareCategory, List<HealthCareData>> = mutableMapOf()
 
+    fun addHealthCareData(
+        category: HealthCareCategory,
+        data: List<HealthCareData>,
+    ) {
+        this.data[category] = data
+    }
+
     override suspend fun getMedications(organization: MgoOrganization) {
         this.data[HealthCareCategory.MEDICATIONS] = listOf(TEST_HEALTH_CARE_DATA_LOADED_MEDICATION)
     }

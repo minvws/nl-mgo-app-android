@@ -41,12 +41,12 @@ internal class OverviewListItemViewModel
                             .map { it.uiSchemaList }
                             .flatten()
                             .count()
-                    val noData = healthCareDataList.all { it is HealthCareData.Error }
+                    val error = healthCareDataList.all { it is HealthCareData.Error }
                     when {
                         loading -> _listItemState.update { OverviewListItemState.LOADING }
-                        amountOfItems == 0 -> _listItemState.update { OverviewListItemState.NO_DATA }
+                        error -> _listItemState.update { OverviewListItemState.NO_DATA }
                         amountOfItems > 0 -> _listItemState.update { OverviewListItemState.LOADED }
-                        noData -> _listItemState.update { OverviewListItemState.NO_DATA }
+                        else -> _listItemState.update { OverviewListItemState.NO_DATA }
                     }
                 }
             }

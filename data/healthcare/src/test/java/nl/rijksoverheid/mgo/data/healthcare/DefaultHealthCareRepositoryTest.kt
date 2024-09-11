@@ -98,12 +98,14 @@ internal class DefaultHealthCareRepositoryTest {
             }
         }
 
-    @Test(expected = NotImplementedError::class)
-    fun `Given only medications implemented, When calling observeData with other category, Then crash`() =
+    @Test
+    fun `Given only medications implemented, When calling observeData with other category, Then do not emit anything`() =
         runTest {
             val uiSchemaMapper = TestUiSchemaMapper(listOf(TEST_UI_SCHEMA_MEDICATION))
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
             val repository = DefaultHealthCareRepository(uiSchemaMapper = uiSchemaMapper, dvaApi = dvaApi)
-            repository.observeData(HealthCareCategory.ALLERGIES).test { }
+            repository.observeData(HealthCareCategory.ALLERGIES).test {
+                awaitComplete()
+            }
         }
 }

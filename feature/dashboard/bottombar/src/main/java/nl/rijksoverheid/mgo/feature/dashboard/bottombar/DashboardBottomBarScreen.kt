@@ -12,7 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,7 +34,7 @@ fun DashboardBottomBarScreen(
     organizationsTab: @Composable () -> Unit,
     aboutThisAppTab: @Composable () -> Unit,
 ) {
-    var selectedBottomBarItem by remember { mutableStateOf<BottomBarItem>(BottomBarItem.Overview) }
+    var selectedBottomBarItem by rememberSaveable { mutableStateOf<BottomBarItem>(BottomBarItem.OVERVIEW) }
     Scaffold(
         bottomBar = {
             BottomNavigationBar(
@@ -47,15 +47,15 @@ fun DashboardBottomBarScreen(
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             when (selectedBottomBarItem) {
-                BottomBarItem.Overview -> {
+                BottomBarItem.OVERVIEW -> {
                     overviewTab()
                 }
 
-                BottomBarItem.Organizations -> {
+                BottomBarItem.ORGANIZATIONS -> {
                     organizationsTab()
                 }
 
-                BottomBarItem.AboutThisApp -> {
+                BottomBarItem.ABOUT_THIS_APP -> {
                     aboutThisAppTab()
                 }
             }
@@ -68,7 +68,6 @@ private fun BottomNavigationBar(
     selectedItem: BottomBarItem,
     onSelectBottomBarItem: (item: BottomBarItem) -> Unit,
 ) {
-    val items = listOf(BottomBarItem.Overview, BottomBarItem.Organizations, BottomBarItem.AboutThisApp)
     val bottomBarItemTextStyle =
         TextStyle(
             fontFamily = fonts,
@@ -83,7 +82,7 @@ private fun BottomNavigationBar(
         contentColor = MaterialTheme.colors.actionTertiaryDefault(),
         elevation = elevation,
     ) {
-        items.forEach { item ->
+        BottomBarItem.entries.forEach { item ->
             BottomNavigationItem(
                 icon = {
                     val iconId =
@@ -108,6 +107,6 @@ private fun BottomNavigationBar(
 @Composable
 internal fun DashboardBottomBarScreenPreview() {
     MgoTheme {
-        BottomNavigationBar(selectedItem = BottomBarItem.Overview, onSelectBottomBarItem = {})
+        BottomNavigationBar(selectedItem = BottomBarItem.OVERVIEW, onSelectBottomBarItem = {})
     }
 }

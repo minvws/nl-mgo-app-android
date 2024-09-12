@@ -5,26 +5,24 @@ import androidx.annotation.StringRes
 import nl.rijksoverheid.mgo.feature.bottombar.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-internal sealed class BottomBarItem(
+enum class BottomBarItem(
     @StringRes val titleId: Int,
     @DrawableRes val deselectedIconId: Int,
     @DrawableRes val selectedIconId: Int,
 ) {
-    data object Overview : BottomBarItem(
+    OVERVIEW(
         CopyR.string.bottombar_overview,
         R.drawable.ic_bottombar_item_overview_deselected,
         R.drawable.ic_bottombar_item_overview_selected,
-    )
-
-    data object Organizations : BottomBarItem(
+    ),
+    ORGANIZATIONS(
         CopyR.string.bottombar_healthcareproviders,
         R.drawable.ic_bottombar_item_organizations_deselected,
         R.drawable.ic_bottombar_item_organizations_selected,
-    )
-
-    data object AboutThisApp : BottomBarItem(
+    ),
+    ABOUT_THIS_APP(
         CopyR.string.bottombar_about_this_app,
         R.drawable.ic_bottombar_item_about_this_app_deselected,
         R.drawable.ic_bottombar_item_about_this_app_selected,
-    )
+    ),
 }

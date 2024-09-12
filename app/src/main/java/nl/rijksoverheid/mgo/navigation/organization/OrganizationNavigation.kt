@@ -30,10 +30,7 @@ fun OrganizationNavigation(
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
                 onNavigateToHealthCategory = {
-                    navController.navigate(
-                        OrganizationNavigationScreen.HealthCategory
-                            .getNavigationRoute(),
-                    )
+                    navController.navigate(OrganizationNavigationScreen.HealthCategory.getNavigationRoute())
                 },
             )
         }

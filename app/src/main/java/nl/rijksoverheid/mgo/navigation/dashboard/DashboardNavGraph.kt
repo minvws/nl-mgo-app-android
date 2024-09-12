@@ -16,10 +16,12 @@ import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.organization.OrganizationNavigation
+import nl.rijksoverheid.mgo.navigation.organizations.OrganizationsNavigation
 
 fun NavGraphBuilder.addDashboardNavGraph(
     rootNavController: NavHostController,
     organizationNavController: NavHostController,
+    organizationsNavController: NavHostController,
 ) {
     navigation(
         startDestination = DashboardNavigationScreen.BottomBar.getRoute(),
@@ -30,9 +32,11 @@ fun NavGraphBuilder.addDashboardNavGraph(
                 overviewTab = {
                     OrganizationNavigation(rootNavController = rootNavController, navController = organizationNavController)
                 },
+                organizationsTab = {
+                    OrganizationsNavigation(rootNavController = rootNavController, navController = organizationsNavController)
+                },
                 aboutThisAppTab = {
                     val applicationContext = LocalContext.current.applicationContext
-
                     Scaffold { innerPadding ->
                         Column(modifier = Modifier.padding(innerPadding).padding(horizontal = 16.dp)) {
                             Text(

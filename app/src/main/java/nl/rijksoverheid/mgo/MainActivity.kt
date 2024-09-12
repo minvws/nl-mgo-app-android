@@ -44,6 +44,7 @@ class MainActivity : ComponentActivity() {
                         OnboardingNavigationScreen.Start.getNavigationRoute()
                     }
                 val organizationNavController = rememberNavController()
+                val organizationsNavController = rememberNavController()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
                     addDashboardNavGraph(
                         rootNavController = navController,
                         organizationNavController = organizationNavController,
+                        organizationsNavController = organizationsNavController,
                     )
                     addLocalisationNavGraph(navController = navController)
                     composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {

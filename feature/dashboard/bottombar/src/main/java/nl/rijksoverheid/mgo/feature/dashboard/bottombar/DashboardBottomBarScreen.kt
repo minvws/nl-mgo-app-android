@@ -31,6 +31,7 @@ import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 @Composable
 fun DashboardBottomBarScreen(
     overviewTab: @Composable () -> Unit,
+    organizationsTab: @Composable () -> Unit,
     aboutThisAppTab: @Composable () -> Unit,
 ) {
     var selectedBottomBarItem by remember { mutableStateOf<BottomBarItem>(BottomBarItem.Overview) }
@@ -50,7 +51,8 @@ fun DashboardBottomBarScreen(
                     overviewTab()
                 }
 
-                BottomBarItem.Providers -> {
+                BottomBarItem.Organizations -> {
+                    organizationsTab()
                 }
 
                 BottomBarItem.AboutThisApp -> {
@@ -66,7 +68,7 @@ private fun BottomNavigationBar(
     selectedItem: BottomBarItem,
     onSelectBottomBarItem: (item: BottomBarItem) -> Unit,
 ) {
-    val items = listOf(BottomBarItem.Overview, BottomBarItem.Providers, BottomBarItem.AboutThisApp)
+    val items = listOf(BottomBarItem.Overview, BottomBarItem.Organizations, BottomBarItem.AboutThisApp)
     val bottomBarItemTextStyle =
         TextStyle(
             fontFamily = fonts,

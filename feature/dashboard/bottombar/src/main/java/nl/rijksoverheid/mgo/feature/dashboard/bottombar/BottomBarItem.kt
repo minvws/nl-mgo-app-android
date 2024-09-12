@@ -16,10 +16,10 @@ internal sealed class BottomBarItem(
         R.drawable.ic_bottombar_item_overview_selected,
     )
 
-    data object Providers : BottomBarItem(
+    data object Organizations : BottomBarItem(
         CopyR.string.bottombar_healthcareproviders,
-        R.drawable.ic_bottombar_item_providers_deselected,
-        R.drawable.ic_bottombar_item_providers_selected,
+        R.drawable.ic_bottombar_item_organizations_deselected,
+        R.drawable.ic_bottombar_item_organizations_selected,
     )
 
     data object AboutThisApp : BottomBarItem(

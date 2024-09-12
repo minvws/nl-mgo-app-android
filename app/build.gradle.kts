@@ -86,6 +86,7 @@ dependencies {
     // Dashboard
     implementation(projects.feature.dashboard.bottombar)
     implementation(projects.feature.dashboard.overview)
+    implementation(projects.feature.dashboard.organizations)
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)

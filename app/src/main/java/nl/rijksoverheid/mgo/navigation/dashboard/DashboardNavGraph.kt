@@ -15,12 +15,12 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.organization.OrganizationNavigation
+import nl.rijksoverheid.mgo.navigation.organization.OverviewNavigation
 import nl.rijksoverheid.mgo.navigation.organizations.OrganizationsNavigation
 
 fun NavGraphBuilder.addDashboardNavGraph(
     rootNavController: NavHostController,
-    organizationNavController: NavHostController,
+    overviewNavController: NavHostController,
     organizationsNavController: NavHostController,
 ) {
     navigation(
@@ -30,7 +30,7 @@ fun NavGraphBuilder.addDashboardNavGraph(
         composableWithDefaultScreenTransitions(route = DashboardNavigationScreen.BottomBar.getRoute()) {
             DashboardBottomBarScreen(
                 overviewTab = {
-                    OrganizationNavigation(rootNavController = rootNavController, navController = organizationNavController)
+                    OverviewNavigation(rootNavController = rootNavController, navController = overviewNavController)
                 },
                 organizationsTab = {
                     OrganizationsNavigation(rootNavController = rootNavController, navController = organizationsNavController)

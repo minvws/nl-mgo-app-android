@@ -1,11 +1,7 @@
 package nl.rijksoverheid.mgo.data.api.dva
 
-import ca.uhn.fhir.context.FhirContext
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
-import org.hl7.fhir.dstu3.model.Bundle
-import org.hl7.fhir.dstu3.model.MedicationStatement
-import org.hl7.fhir.dstu3.model.Observation
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -15,57 +11,47 @@ class DvaApiTest {
     @get:Rule
     val testServerRule = TestServerRule()
 
-    private val context = FhirContext.forDstu3()
     private val testServer = testServerRule.testServer
 
     @Test
-    fun `Given response with empty bundle, when calling medicationStatement, return response with empty bundle`() =
+    fun `Given response with empty string, when calling medicationStatement, return response with empty string`() =
         runTest {
             // Given
-            val bundle = Bundle()
-            val jsonParser = context.newJsonParser()
-            val bundleJson = jsonParser.encodeResourceToString(bundle)
-            testServer.enqueueJson(bundleJson)
+            testServer.enqueue200()
 
             // When
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
             val responseBody = dvaApi.medicationStatement("")
 
             // Then
-            assertEquals(bundleJson, responseBody.string())
+            assertEquals("", responseBody.string())
         }
 
     @Test
-    fun `Given response with empty bundle, when calling condition, return response with empty bundle`() =
+    fun `Given response with empty string, when calling condition, return response with empty string`() =
         runTest {
             // Given
-            val bundle = Bundle()
-            val jsonParser = context.newJsonParser()
-            val bundleJson = jsonParser.encodeResourceToString(bundle)
-            testServer.enqueueJson(bundleJson)
+            testServer.enqueue200()
 
             // When
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
-            val medicationStatements = dvaApi.condition("")
+            val responseBody = dvaApi.condition("")
 
             // Then
-            assertEquals(listOf<MedicationStatement>(), medicationStatements)
+            assertEquals("", responseBody.string())
         }
 
     @Test
-    fun `Given response with empty bundle, when calling observation, return response with empty bundle`() =
+    fun `Given response with empty string, when calling observation, return response with empty string`() =
         runTest {
             // Given
-            val bundle = Bundle()
-            val jsonParser = context.newJsonParser()
-            val bundleJson = jsonParser.encodeResourceToString(bundle)
-            testServer.enqueueJson(bundleJson)
+            testServer.enqueue200()
 
             // When
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
-            val medicationStatements = dvaApi.observation(resourceEndpoint = "", url = "")
+            val responseBody = dvaApi.observation("", "")
 
             // Then
-            assertEquals(listOf<Observation>(), medicationStatements)
+            assertEquals("", responseBody.string())
         }
 }

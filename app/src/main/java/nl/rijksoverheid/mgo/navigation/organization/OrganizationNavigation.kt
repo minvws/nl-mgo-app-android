@@ -6,10 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
-import nl.rijksoverheid.mgo.feature.organization.labResults.LabResultsScreen
-import nl.rijksoverheid.mgo.feature.organization.medicationUse.MedicationUseScreen
-import nl.rijksoverheid.mgo.feature.organization.organization.OrganizationScreen
-import nl.rijksoverheid.mgo.feature.organization.problems.ProblemsScreen
+import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.feature.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
@@ -32,39 +29,10 @@ fun OrganizationNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToMedications = {
+                onNavigateToHealthCategory = {
                     navController.navigate(
-                        OrganizationNavigationScreen.MedicationUse
+                        OrganizationNavigationScreen.HealthCategory
                             .getNavigationRoute(),
-                    )
-                },
-            )
-        }
-
-        composableWithDefaultScreenTransitions(route = OrganizationNavigationScreen.Organization.getRoute()) { backStackEntry ->
-            val provider = OrganizationNavigationScreen.Organization.getProvider(backStackEntry)
-            OrganizationScreen(
-                provider = provider,
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onNavigateToMedicationuse = {
-                    navController.navigate(
-                        OrganizationNavigationScreen.MedicationUse.getNavigationRoute(),
-                    )
-                },
-                onNavigateToProblems = {
-                    navController.navigate(OrganizationNavigationScreen.Problems.setProvider(provider).getNavigationRoute())
-                },
-                onNavigateToLabResults = {
-                    navController.navigate(
-                        OrganizationNavigationScreen.LabResults.setProvider(provider).getNavigationRoute(),
-                    )
-                },
-                onNavigateRemoveOrganization = {
-                    navController.navigate(
-                        OrganizationNavigationScreen.RemoveOrganization.setProviderId(provider.id).setProviderName
-                            (provider.name).getNavigationRoute(),
                     )
                 },
             )
@@ -86,32 +54,14 @@ fun OrganizationNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.MedicationUse.getRoute()) {
-            MedicationUseScreen(
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.HealthCategory.getRoute()) {
+            HealthCategoryScreen(
                 onClickUiSchema = { toolbarTitle, uiSchema ->
                     navController.navigate(
                         OrganizationNavigationScreen.UiSchemaDetail.setToolbarTitle(toolbarTitle).setUiSchema(uiSchema)
                             .getNavigationRoute(),
                     )
                 },
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.Problems.getRoute()) { backStackEntry ->
-            ProblemsScreen(
-                provider = OrganizationNavigationScreen.Problems.getProvider(backStackEntry),
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.LabResults.getRoute()) { backStackEntry ->
-            LabResultsScreen(
-                provider = OrganizationNavigationScreen.LabResults.getProvider(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

@@ -21,7 +21,6 @@ fun createDvaApi(
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(FhirConverterFactory())
             .build()
     return retrofit.create(DvaApi::class.java)
 }

@@ -1,8 +1,6 @@
 package nl.rijksoverheid.mgo.data.api.dva
 
 import okhttp3.ResponseBody
-import org.hl7.fhir.dstu3.model.Condition
-import org.hl7.fhir.dstu3.model.Observation
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
@@ -22,7 +20,7 @@ interface DvaApi {
     suspend fun condition(
         @Header("x-mgo-dva-target") resourceEndpoint: String,
         @Query("_format") format: String = "json",
-    ): List<Condition>
+    ): ResponseBody
 
     // Doing it like needs to be done lik this it seems.
     // Retrofit does not seem to like a dollar sign in the path doing it like the other calls :(.
@@ -30,5 +28,5 @@ interface DvaApi {
     suspend fun observation(
         @Header("x-mgo-dva-target") resourceEndpoint: String,
         @Url url: String,
-    ): List<Observation>
+    ): ResponseBody
 }

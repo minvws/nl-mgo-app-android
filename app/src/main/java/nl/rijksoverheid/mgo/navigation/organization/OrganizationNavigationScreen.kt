@@ -14,22 +14,6 @@ sealed class OrganizationNavigationScreen(override val name: String, override va
     ) {
     data object Overview : OrganizationNavigationScreen(name = "organization-start")
 
-    data object Organization : OrganizationNavigationScreen(
-        name = "organization-organization",
-        placeholders = listOf("providerJson"),
-    ) {
-        fun setProvider(provider: MgoOrganization): Organization {
-            val providerJson = provider.toJsonString()
-            builder.addArgument(placeholders[0], providerJson)
-            return this
-        }
-
-        fun getProvider(backStackEntry: NavBackStackEntry): MgoOrganization {
-            val json = requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
-            return json.jsonStringToObject()
-        }
-    }
-
     data object RemoveOrganization : OrganizationNavigationScreen(
         name = "organization-remove",
         placeholders = listOf("providerId", "providerName"),

@@ -37,7 +37,6 @@ okio = "3.9.0"
 espresso-intents = "3.5.1"
 sonarqube = "5.0.0.4638"
 jacoco-tool = "0.8.12"
-fhir-stdu3 = "7.2.0"
 lokalise = "5.2.0"
 json = "20210307"
 rootbeer = "0.1.0"
@@ -86,7 +85,6 @@ androidx-test-runner = { group = "androidx.test", name = "runner", version.ref =
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp-mockwebserver" }
 okio = { group = "com.squareup.okio", name ="okio", version.ref = "okio" }
 espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso-intents" }
-fhir-stdu3 = { group = "ca.uhn.hapi.fhir", name = "hapi-fhir-structures-dstu3", version.ref = "fhir-stdu3" }
 lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "lokalise" }
 json = { group = "org.json", name = "json", version.ref = "json" }
 rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer" }

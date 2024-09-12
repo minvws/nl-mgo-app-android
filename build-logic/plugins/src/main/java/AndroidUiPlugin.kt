@@ -41,6 +41,7 @@ class AndroidUiPlugin : Plugin<Project> {
 
             // Compose
             add("implementation", versionCatalog.findLibrary("compose.material").get())
+            add("implementation", versionCatalog.findLibrary("compose.material.icons.core").get())
             add("implementation", versionCatalog.findLibrary("compose.ui.tooling.preview").get())
             add("implementation", versionCatalog.findLibrary("compose.ui.tooling").get())
             add("implementation", versionCatalog.findLibrary("compose.activity").get())

@@ -2,18 +2,18 @@
 android-sdk-min = "26"
 android-sdk-target = "34"
 android-sdk-compile = "34"
-agp = "8.5.0"
+agp = "8.5.2"
 kotlin = "2.0.0"
 core-ktx = "1.13.1"
 junit = "4.13.2"
 appcompat = "1.7.0"
 material = "1.12.0"
-compose-bom = "2024.06.00"
-compose-activity = "1.9.0"
-compose-compiler = "1.5.8"
-compose-navigation = "2.7.7"
-compose-lifecycle = "2.7.0"
-google-services = "4.4.1"
+compose-bom = "2024.09.01"
+compose-activity = "1.9.2"
+compose-compiler = "1.5.15"
+compose-navigation = "2.8.0"
+compose-lifecycle = "2.8.5"
+google-services = "4.4.2"
 firebase-appdistribution = "5.0.0"
 ktlint = "12.1.0"
 paparazzi = "1.3.1" # Cannot update due to https://github.com/cashapp/paparazzi/issues/1231
@@ -29,12 +29,12 @@ kotlinx-coroutines = "1.8.0"
 turbine = "1.1.0"
 androidx-browser = "1.8.0"
 datastore = "1.1.1"
-androidx-test-core = "1.5.0"
-androidx-junit = "1.1.5"
-androidx-test-runner = "1.5.2"
+androidx-test-core = "1.6.1"
+androidx-junit = "1.2.1"
+androidx-test-runner = "1.6.2"
 okhttp-mockwebserver = "4.12.0"
 okio = "3.9.0"
-espresso-intents = "3.5.1"
+espresso-intents = "3.6.1"
 sonarqube = "5.0.0.4638"
 jacoco-tool = "0.8.12"
 lokalise = "5.2.0"
@@ -52,6 +52,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-material = { group = "androidx.compose.material", name = "material" }
+compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }

@@ -51,14 +51,14 @@ const val TEST_TAG_OVERVIEW_ORGANIZATION_CARD = "OVERVIEW_ORGANIZATION_CARD"
 @Composable
 fun OverviewScreen(
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToMedications: () -> Unit,
+    onNavigateToHealthCategory: () -> Unit,
 ) {
     val viewModel: OverviewScreenViewModel = hiltViewModel()
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     OverviewScreenContent(
         viewState = viewState,
         onClickAddProvider = onNavigateToLocalisation,
-        onClickMedications = onNavigateToMedications,
+        onClickMedications = onNavigateToHealthCategory,
     )
 }
 

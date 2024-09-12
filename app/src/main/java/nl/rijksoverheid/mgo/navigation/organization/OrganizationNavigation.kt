@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
-import nl.rijksoverheid.mgo.feature.organization.medicationUse.MedicationUseScreen
+import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.feature.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
@@ -29,9 +29,9 @@ fun OrganizationNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToMedications = {
+                onNavigateToHealthCategory = {
                     navController.navigate(
-                        OrganizationNavigationScreen.MedicationUse
+                        OrganizationNavigationScreen.HealthCategory
                             .getNavigationRoute(),
                     )
                 },
@@ -54,8 +54,8 @@ fun OrganizationNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.MedicationUse.getRoute()) {
-            MedicationUseScreen(
+        composableWithDefaultScreenTransitions(OrganizationNavigationScreen.HealthCategory.getRoute()) {
+            HealthCategoryScreen(
                 onClickUiSchema = { toolbarTitle, uiSchema ->
                     navController.navigate(
                         OrganizationNavigationScreen.UiSchemaDetail.setToolbarTitle(toolbarTitle).setUiSchema(uiSchema)

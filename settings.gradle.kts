@@ -45,6 +45,6 @@ include(":component:results")
 include(":data:uiSchema")
 include(":data:healthcare")
 
-include(":feature:organization:medication_use")
+include(":feature:organization:health_category")
 include(":feature:organization:remove_organization")
 include(":feature:organization:uischema_detail")

@@ -94,7 +94,7 @@ dependencies {
 
     // Overview
     implementation(projects.feature.organization.removeOrganization)
-    implementation(projects.feature.organization.medicationUse)
+    implementation(projects.feature.organization.healthCategory)
     implementation(projects.feature.organization.uischemaDetail)
 
     // Config

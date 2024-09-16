@@ -34,7 +34,7 @@ fun DashboardBottomBarScreen(
     organizationsTab: @Composable () -> Unit,
     aboutThisAppTab: @Composable () -> Unit,
 ) {
-    var selectedBottomBarItem by rememberSaveable { mutableStateOf<BottomBarItem>(BottomBarItem.OVERVIEW) }
+    var selectedBottomBarItem by rememberSaveable { mutableStateOf(BottomBarItem.OVERVIEW) }
     Scaffold(
         bottomBar = {
             BottomNavigationBar(

@@ -94,6 +94,7 @@ private fun OverviewScreenContent(
                 } else {
                     WithProviders(
                         modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                        screenType = viewState.screenType,
                         onClickMedications = onClickMedications,
                     )
                 }
@@ -148,6 +149,7 @@ private fun NoProviders(
 @Composable
 private fun WithProviders(
     onClickMedications: () -> Unit,
+    screenType: HealthCategoriesScreenType,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
@@ -158,6 +160,7 @@ private fun WithProviders(
                     title = CopyR.string.health_category_medication,
                     iconColor = MaterialTheme.colors.supportHuisarts(),
                     category = HealthCareCategory.MEDICATIONS,
+                    screenType = screenType,
                     onClickWhenLoaded = { onClickMedications() },
                 )
                 OverviewListItem(
@@ -165,6 +168,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportKliniek(),
                     title = CopyR.string.health_category_allergies,
                     category = HealthCareCategory.ALLERGIES,
+                    screenType = screenType,
                     onClickWhenLoaded = {},
                 )
                 OverviewListItem(
@@ -172,6 +176,7 @@ private fun WithProviders(
                     title = CopyR.string.health_category_measurements,
                     iconColor = MaterialTheme.colors.supportApotheek(),
                     category = HealthCareCategory.MEASUREMENTS,
+                    screenType = screenType,
                     onClickWhenLoaded = {},
                 )
                 OverviewListItem(
@@ -180,6 +185,7 @@ private fun WithProviders(
                     title = CopyR.string.health_category_vaccinations,
                     hasDivider = false,
                     category = HealthCareCategory.VACCINATIONS,
+                    screenType = screenType,
                     onClickWhenLoaded = {},
                 )
             }
@@ -191,6 +197,7 @@ private fun WithProviders(
                     icon = R.drawable.ic_complaints,
                     iconColor = MaterialTheme.colors.supportVerpleeghuis(),
                     title = CopyR.string.health_category_complaints,
+                    screenType = screenType,
                     category = HealthCareCategory.COMPLAINTS,
                     onClickWhenLoaded = {},
                 )
@@ -199,6 +206,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportGgz(),
                     title = CopyR.string.health_category_treatments,
                     category = HealthCareCategory.TREATMENTS,
+                    screenType = screenType,
                     onClickWhenLoaded = {},
                 )
                 OverviewListItem(
@@ -206,6 +214,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportZiekenhuis(),
                     title = CopyR.string.health_category_labresults,
                     category = HealthCareCategory.LABRESULTS,
+                    screenType = screenType,
                     hasDivider = false,
                     onClickWhenLoaded = {},
                 )
@@ -219,6 +228,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportFysiotherapeut(),
                     category = HealthCareCategory.REPORTS,
                     title = CopyR.string.health_category_reports,
+                    screenType = screenType,
                     onClickWhenLoaded = {},
                 )
                 OverviewListItem(
@@ -226,6 +236,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportThuiszorg(),
                     category = HealthCareCategory.DOCUMENTS,
                     title = CopyR.string.health_category_documents,
+                    screenType = screenType,
                     onClickWhenLoaded = {},
                 )
             }

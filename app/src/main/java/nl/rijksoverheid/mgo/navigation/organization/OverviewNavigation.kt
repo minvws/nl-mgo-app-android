@@ -5,11 +5,13 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import nl.rijksoverheid.mgo.feature.dashboard.overview.HealthCategoriesScreenType
-import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenType
 import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
 @Composable
 fun OverviewNavigation(
@@ -18,16 +20,16 @@ fun OverviewNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = OverviewNavigationScreen.Start.setScreenType(HealthCategoriesScreenType.All()).getNavigationRoute(),
+        startDestination = DashboardNavigationScreen.HealthCategories.setScreenType(HealthCategoriesScreenType.All()).getNavigationRoute(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
     ) {
-        composableWithDefaultScreenTransitions(OverviewNavigationScreen.Start.getRoute()) { backStackEntry ->
-            OverviewScreen(
-                screenType = OverviewNavigationScreen.Start.getScreenType(backStackEntry),
+        composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategories.getRoute()) { backStackEntry ->
+            HealthCategoriesScreen(
+                screenType = HealthCategoriesScreenType.All(),
                 onNavigateBack = {},
                 onNavigateToLocalisation = {
-                    rootNavController.navigate(OverviewNavigationScreen.Start.getNavigationRoute())
+                    rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
                 onNavigateToHealthCategory = {
                     navController.navigate(OverviewNavigationScreen.HealthCategory.getNavigationRoute())

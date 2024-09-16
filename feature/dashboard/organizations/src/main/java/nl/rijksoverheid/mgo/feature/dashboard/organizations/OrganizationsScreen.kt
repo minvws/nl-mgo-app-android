@@ -43,11 +43,15 @@ import nl.rijksoverheid.mgo.feature.organizations.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun OrganizationsScreen(onNavigateToLocalisation: () -> Unit) {
+fun OrganizationsScreen(
+    onNavigateToHealthCategories: (organization: MgoOrganization) -> Unit,
+    onNavigateToLocalisation: () -> Unit,
+) {
     val viewModel: OrganizationsViewModel = hiltViewModel()
     val viewState: OrganizationsViewState by viewModel.viewState.collectAsStateWithLifecycle()
     OrganizationsScreenContent(
         viewState = viewState,
+        onClickOrganization = onNavigateToHealthCategories,
         onClickAddProvider = onNavigateToLocalisation,
     )
 }
@@ -55,6 +59,7 @@ fun OrganizationsScreen(onNavigateToLocalisation: () -> Unit) {
 @Composable
 private fun OrganizationsScreenContent(
     viewState: OrganizationsViewState,
+    onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
     Scaffold(
@@ -80,6 +85,7 @@ private fun OrganizationsScreenContent(
                     WithOrganizations(
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
                         organizations = viewState.organizations,
+                        onClickOrganization = onClickOrganization,
                         onClickAddProvider = onClickAddProvider,
                     )
                 }
@@ -134,6 +140,7 @@ private fun NoOrganizations(
 @Composable
 private fun WithOrganizations(
     organizations: List<MgoOrganization>,
+    onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -141,12 +148,21 @@ private fun WithOrganizations(
         Card {
             Column(modifier = Modifier.fillMaxWidth()) {
                 organizations.forEachIndexed { index, organization ->
-                    OrganizationCard(organization = organization, hasDivider = index != organizations.lastIndex)
+                    OrganizationCard(
+                        modifier = Modifier.fillMaxWidth().clickable { onClickOrganization(organization) },
+                        organization = organization,
+                        hasDivider = index != organizations.lastIndex,
+                    )
                 }
             }
         }
 
-        Card(modifier = Modifier.padding(vertical = 16.dp).clickable { onClickAddProvider() }) {
+        Card(
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .clickable { onClickAddProvider() },
+        ) {
             Row(
                 modifier =
                     Modifier
@@ -197,6 +213,7 @@ internal fun OrganizationsScreenNoOrganizationsPreview() {
     MgoTheme {
         OrganizationsScreenContent(
             viewState = OrganizationsViewState(organizations = listOf()),
+            onClickOrganization = {},
             onClickAddProvider = {},
         )
     }
@@ -218,6 +235,7 @@ internal fun OrganizationsScreenWithOrganizationsPreview() {
                             TEST_MGO_ORGANIZATION.copy(name = "Apotheek de Pillendoos"),
                         ),
                 ),
+            onClickOrganization = {},
             onClickAddProvider = {},
         )
     }

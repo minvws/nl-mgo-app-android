@@ -25,6 +25,7 @@ fun OverviewNavigation(
         composableWithDefaultScreenTransitions(OverviewNavigationScreen.Start.getRoute()) { backStackEntry ->
             OverviewScreen(
                 screenType = OverviewNavigationScreen.Start.getScreenType(backStackEntry),
+                onNavigateBack = {},
                 onNavigateToLocalisation = {
                     rootNavController.navigate(OverviewNavigationScreen.Start.getNavigationRoute())
                 },

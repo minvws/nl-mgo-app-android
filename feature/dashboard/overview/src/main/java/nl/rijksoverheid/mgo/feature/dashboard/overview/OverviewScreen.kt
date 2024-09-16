@@ -10,10 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -51,6 +55,7 @@ const val TEST_TAG_OVERVIEW_ORGANIZATION_CARD = "OVERVIEW_ORGANIZATION_CARD"
 @Composable
 fun OverviewScreen(
     screenType: HealthCategoriesScreenType,
+    onNavigateBack: () -> Unit,
     onNavigateToLocalisation: () -> Unit,
     onNavigateToHealthCategory: () -> Unit,
 ) {
@@ -61,6 +66,7 @@ fun OverviewScreen(
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     OverviewScreenContent(
         viewState = viewState,
+        onNavigateBack = onNavigateBack,
         onClickAddProvider = onNavigateToLocalisation,
         onClickMedications = onNavigateToHealthCategory,
     )
@@ -69,6 +75,7 @@ fun OverviewScreen(
 @Composable
 private fun OverviewScreenContent(
     viewState: OverviewScreenViewState,
+    onNavigateBack: () -> Unit,
     onClickMedications: () -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
@@ -78,6 +85,16 @@ private fun OverviewScreenContent(
                 title = { Text(text = "") },
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
+                navigationIcon = {
+                    if (viewState.screenType is HealthCategoriesScreenType.Single) {
+                        IconButton(onClick = { onNavigateBack() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                contentDescription = stringResource(id = CopyR.string.common_previous),
+                            )
+                        }
+                    }
+                },
             )
         },
         content = { innerPadding ->
@@ -250,6 +267,7 @@ internal fun OverviewScreenNoProvidersPreview() {
     MgoTheme {
         OverviewScreenContent(
             viewState = OverviewScreenViewState(name = "", screenType = HealthCategoriesScreenType.All(), providers = listOf()),
+            onNavigateBack = {},
             onClickAddProvider = {},
             onClickMedications = {},
         )
@@ -267,6 +285,7 @@ internal fun OverviewScreenWithProvidersPreview() {
                     screenType = HealthCategoriesScreenType.All(),
                     providers = listOf(TEST_MGO_ORGANIZATION),
                 ),
+            onNavigateBack = {},
             onClickAddProvider = {},
             onClickMedications = {},
         )

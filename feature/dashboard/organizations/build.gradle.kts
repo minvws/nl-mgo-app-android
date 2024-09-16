@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.feature.dashboard.overview)
     implementation(projects.data.localisation)
     testImplementation(testFixtures(projects.data.localisation))
 }

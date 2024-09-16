@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
+import nl.rijksoverheid.mgo.feature.dashboard.overview.HealthCategoriesScreenType
+import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
@@ -25,8 +27,30 @@ fun OrganizationsNavigation(
     ) {
         composableWithDefaultScreenTransitions(OrganizationsNavigationScreen.Start.getRoute()) {
             OrganizationsScreen(
+                onNavigateToHealthCategories = { organization ->
+                    navController.navigate(
+                        OverviewNavigationScreen.Start.setScreenType(
+                            HealthCategoriesScreenType.Single(organization),
+                        ).getNavigationRoute(),
+                    )
+                },
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
+                },
+            )
+        }
+
+        composableWithDefaultScreenTransitions(OverviewNavigationScreen.Start.getRoute()) { backStackEntry ->
+            OverviewScreen(
+                screenType = OverviewNavigationScreen.Start.getScreenType(backStackEntry),
+                onNavigateToLocalisation = {
+                    rootNavController.navigate(OverviewNavigationScreen.Start.getNavigationRoute())
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToHealthCategory = {
+                    navController.navigate(OverviewNavigationScreen.HealthCategory.getNavigationRoute())
                 },
             )
         }

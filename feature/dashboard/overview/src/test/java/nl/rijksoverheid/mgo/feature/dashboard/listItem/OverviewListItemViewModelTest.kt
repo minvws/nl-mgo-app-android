@@ -6,6 +6,7 @@ import nl.rijksoverheid.mgo.data.healthcare.HealthCareData
 import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.feature.dashboard.overview.HealthCategoriesScreenType
 import nl.rijksoverheid.mgo.feature.dashboard.overview.listItem.OverviewListItemState
 import nl.rijksoverheid.mgo.feature.dashboard.overview.listItem.OverviewListItemViewModel
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -28,7 +29,11 @@ internal class OverviewListItemViewModelTest {
 
             // When
             val viewModel =
-                OverviewListItemViewModel(category = HealthCareCategory.MEDICATIONS, healthCareRepository = healthCareRepository)
+                OverviewListItemViewModel(
+                    screenType = HealthCategoriesScreenType.All(),
+                    category = HealthCareCategory.MEDICATIONS,
+                    healthCareRepository = healthCareRepository,
+                )
 
             // Then
             viewModel.listItemState.test {
@@ -52,7 +57,11 @@ internal class OverviewListItemViewModelTest {
 
             // When
             val viewModel =
-                OverviewListItemViewModel(category = HealthCareCategory.MEDICATIONS, healthCareRepository = healthCareRepository)
+                OverviewListItemViewModel(
+                    screenType = HealthCategoriesScreenType.All(),
+                    category = HealthCareCategory.MEDICATIONS,
+                    healthCareRepository = healthCareRepository,
+                )
 
             // Then
             viewModel.listItemState.test {
@@ -69,8 +78,7 @@ internal class OverviewListItemViewModelTest {
                 data =
                     listOf(
                         HealthCareData.Loaded(
-                            organization =
-                            TEST_MGO_ORGANIZATION,
+                            organization = TEST_MGO_ORGANIZATION,
                             uiSchemaList = listOf(TEST_UI_SCHEMA_MEDICATION),
                         ),
                     ),
@@ -78,7 +86,11 @@ internal class OverviewListItemViewModelTest {
 
             // When
             val viewModel =
-                OverviewListItemViewModel(category = HealthCareCategory.MEDICATIONS, healthCareRepository = healthCareRepository)
+                OverviewListItemViewModel(
+                    screenType = HealthCategoriesScreenType.All(),
+                    category = HealthCareCategory.MEDICATIONS,
+                    healthCareRepository = healthCareRepository,
+                )
 
             // Then
             viewModel.listItemState.test {
@@ -95,8 +107,7 @@ internal class OverviewListItemViewModelTest {
                 data =
                     listOf(
                         HealthCareData.Loaded(
-                            organization =
-                            TEST_MGO_ORGANIZATION,
+                            organization = TEST_MGO_ORGANIZATION,
                             uiSchemaList = listOf(),
                         ),
                     ),
@@ -104,7 +115,11 @@ internal class OverviewListItemViewModelTest {
 
             // When
             val viewModel =
-                OverviewListItemViewModel(category = HealthCareCategory.MEDICATIONS, healthCareRepository = healthCareRepository)
+                OverviewListItemViewModel(
+                    screenType = HealthCategoriesScreenType.All(),
+                    category = HealthCareCategory.MEDICATIONS,
+                    healthCareRepository = healthCareRepository,
+                )
 
             // Then
             viewModel.listItemState.test {
@@ -127,7 +142,11 @@ internal class OverviewListItemViewModelTest {
 
             // When
             val viewModel =
-                OverviewListItemViewModel(category = HealthCareCategory.MEDICATIONS, healthCareRepository = healthCareRepository)
+                OverviewListItemViewModel(
+                    screenType = HealthCategoriesScreenType.All(),
+                    category = HealthCareCategory.MEDICATIONS,
+                    healthCareRepository = healthCareRepository,
+                )
 
             // Then
             viewModel.listItemState.test {

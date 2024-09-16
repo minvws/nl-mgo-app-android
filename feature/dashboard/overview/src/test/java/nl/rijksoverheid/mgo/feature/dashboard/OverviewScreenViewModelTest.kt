@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.feature.dashboard.overview.HealthCategoriesScreenType
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreenViewModel
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
@@ -25,6 +26,7 @@ internal class OverviewScreenViewModelTest {
             // When
             val viewModel =
                 OverviewScreenViewModel(
+                    screenType = HealthCategoriesScreenType.All(),
                     organizationRepository = organizationRepository,
                 )
             viewModel.viewState.test {

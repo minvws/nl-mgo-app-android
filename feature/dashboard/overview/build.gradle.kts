@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.moshi.sealed)
+    ksp(libs.moshi.sealed.codegen)
     implementation(projects.data.localisation)
     implementation(projects.data.healthcare)
     testImplementation(testFixtures((projects.data.localisation)))

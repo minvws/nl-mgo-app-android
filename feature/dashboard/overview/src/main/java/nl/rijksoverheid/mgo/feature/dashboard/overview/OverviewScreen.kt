@@ -50,10 +50,14 @@ const val TEST_TAG_OVERVIEW_ORGANIZATION_CARD = "OVERVIEW_ORGANIZATION_CARD"
 
 @Composable
 fun OverviewScreen(
+    screenType: HealthCategoriesScreenType,
     onNavigateToLocalisation: () -> Unit,
     onNavigateToHealthCategory: () -> Unit,
 ) {
-    val viewModel: OverviewScreenViewModel = hiltViewModel()
+    val viewModel =
+        hiltViewModel<OverviewScreenViewModel, OverviewScreenViewModel.Factory>(
+            creationCallback = { factory -> factory.create(screenType) },
+        )
     val viewState: OverviewScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     OverviewScreenContent(
         viewState = viewState,
@@ -82,7 +86,7 @@ private fun OverviewScreenContent(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(id = CopyR.string.overview_heading),
+                    text = viewState.screenType.getTitle(),
                     style = MaterialTheme.typography.headingLarge,
                 )
                 if (viewState.providers.isEmpty()) {
@@ -234,7 +238,7 @@ private fun WithProviders(
 internal fun OverviewScreenNoProvidersPreview() {
     MgoTheme {
         OverviewScreenContent(
-            viewState = OverviewScreenViewState(name = "", providers = listOf()),
+            viewState = OverviewScreenViewState(name = "", screenType = HealthCategoriesScreenType.All(), providers = listOf()),
             onClickAddProvider = {},
             onClickMedications = {},
         )
@@ -246,7 +250,12 @@ internal fun OverviewScreenNoProvidersPreview() {
 internal fun OverviewScreenWithProvidersPreview() {
     MgoTheme {
         OverviewScreenContent(
-            viewState = OverviewScreenViewState(name = "", providers = listOf(TEST_MGO_ORGANIZATION)),
+            viewState =
+                OverviewScreenViewState(
+                    name = "",
+                    screenType = HealthCategoriesScreenType.All(),
+                    providers = listOf(TEST_MGO_ORGANIZATION),
+                ),
             onClickAddProvider = {},
             onClickMedications = {},
         )

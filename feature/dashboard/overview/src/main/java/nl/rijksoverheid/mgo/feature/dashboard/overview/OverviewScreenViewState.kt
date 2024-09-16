@@ -4,13 +4,17 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 data class OverviewScreenViewState(
     val name: String,
+    val screenType: HealthCategoriesScreenType,
     val providers: List<MgoOrganization>,
 ) {
     companion object {
-        fun initialState(providers: List<MgoOrganization>) =
-            OverviewScreenViewState(
-                name = "Wendy de Bruijn",
-                providers = providers,
-            )
+        fun initialState(
+            screenType: HealthCategoriesScreenType,
+            providers: List<MgoOrganization>,
+        ) = OverviewScreenViewState(
+            name = "Wendy de Bruijn",
+            screenType = screenType,
+            providers = providers,
+        )
     }
 }

@@ -5,11 +5,11 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import nl.rijksoverheid.mgo.feature.dashboard.overview.HealthCategoriesScreenType
 import nl.rijksoverheid.mgo.feature.dashboard.overview.OverviewScreen
 import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
 @Composable
 fun OverviewNavigation(
@@ -18,14 +18,15 @@ fun OverviewNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = OverviewNavigationScreen.Start.getRoute(),
+        startDestination = OverviewNavigationScreen.Start.setScreenType(HealthCategoriesScreenType.All()).getNavigationRoute(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
     ) {
-        composableWithDefaultScreenTransitions(OverviewNavigationScreen.Start.getRoute()) {
+        composableWithDefaultScreenTransitions(OverviewNavigationScreen.Start.getRoute()) { backStackEntry ->
             OverviewScreen(
+                screenType = OverviewNavigationScreen.Start.getScreenType(backStackEntry),
                 onNavigateToLocalisation = {
-                    rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
+                    rootNavController.navigate(OverviewNavigationScreen.Start.getNavigationRoute())
                 },
                 onNavigateToHealthCategory = {
                     navController.navigate(OverviewNavigationScreen.HealthCategory.getNavigationRoute())

@@ -42,6 +42,7 @@ fun OverviewNavigation(
                         ).getNavigationRoute(),
                     )
                 },
+                onNavigateRemoveOrganization = { },
             )
         }
 

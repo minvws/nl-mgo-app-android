@@ -64,4 +64,27 @@ sealed class DashboardNavigationScreen(override val name: String, override val p
             return UISchema.fromJson(uiSchemaJson)
         }
     }
+
+    data object RemoveOrganization : DashboardNavigationScreen(
+        name = "dashboard-remove-orgranization",
+        placeholders = listOf("providerId", "providerName"),
+    ) {
+        fun setProviderId(providerId: String): RemoveOrganization {
+            builder.addArgument(placeholders[0], providerId)
+            return this
+        }
+
+        fun setProviderName(providerName: String): RemoveOrganization {
+            builder.addArgument(placeholders[1], providerName)
+            return this
+        }
+
+        fun getProviderId(backStackEntry: NavBackStackEntry): String {
+            return requireNotNull(backStackEntry.arguments?.getString(placeholders[0]))
+        }
+
+        fun getProviderName(backStackEntry: NavBackStackEntry): String {
+            return requireNotNull(backStackEntry.arguments?.getString(placeholders[1]))
+        }
+    }
 }

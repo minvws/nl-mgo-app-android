@@ -58,6 +58,13 @@ fun OrganizationsNavigation(
                             .getNavigationRoute(),
                     )
                 },
+                onNavigateRemoveOrganization = { organization ->
+                    navController.navigate(
+                        DashboardNavigationScreen.RemoveOrganization.setProviderId(
+                            organization.id,
+                        ).setProviderName(organization.name).getNavigationRoute(),
+                    )
+                },
             )
         }
 
@@ -87,11 +94,11 @@ fun OrganizationsNavigation(
         }
 
         dialogWithDefaultScreenTransitions(
-            route = OrganizationsNavigationScreen.RemoveOverview.getRoute(),
+            route = DashboardNavigationScreen.RemoveOrganization.getRoute(),
         ) { backStackEntry ->
             RemoveOrganizationScreen(
-                providerId = OrganizationsNavigationScreen.RemoveOverview.getProviderId(backStackEntry),
-                providerName = OrganizationsNavigationScreen.RemoveOverview.getProviderName(backStackEntry),
+                providerId = DashboardNavigationScreen.RemoveOrganization.getProviderId(backStackEntry),
+                providerName = DashboardNavigationScreen.RemoveOrganization.getProviderName(backStackEntry),
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToDashboard = {
                     navController.popBackStack(

@@ -15,15 +15,18 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegative
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
@@ -54,6 +58,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun HealthCategoriesScreen(
     arguments: HealthCategoriesScreenArguments,
     onNavigateBack: () -> Unit,
+    onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
     onNavigateToLocalisation: () -> Unit,
     onNavigateToHealthCategory: (organization: MgoOrganization?) -> Unit,
 ) {
@@ -67,6 +72,7 @@ fun HealthCategoriesScreen(
         onNavigateBack = onNavigateBack,
         onClickAddProvider = onNavigateToLocalisation,
         onClickMedications = { onNavigateToHealthCategory(arguments.filterOrganization) },
+        onClickRemoveOrganization = onNavigateRemoveOrganization,
     )
 }
 
@@ -76,6 +82,7 @@ private fun HealthCategoriesScreenContent(
     onNavigateBack: () -> Unit,
     onClickMedications: () -> Unit,
     onClickAddProvider: () -> Unit,
+    onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -111,6 +118,7 @@ private fun HealthCategoriesScreenContent(
                         modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                         filterOrganization = viewState.filterOrganization,
                         onClickMedications = onClickMedications,
+                        onClickRemoveOrganization = onClickRemoveOrganization,
                     )
                 }
             }
@@ -165,6 +173,7 @@ private fun NoProviders(
 private fun WithProviders(
     onClickMedications: () -> Unit,
     filterOrganization: MgoOrganization?,
+    onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
@@ -256,6 +265,21 @@ private fun WithProviders(
                 )
             }
         }
+
+        if (filterOrganization != null) {
+            TextButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = { onClickRemoveOrganization(filterOrganization) },
+                content = {
+                    Text(
+                        text = stringResource(id = CopyR.string.health_categories_remove_organization),
+                        color = MaterialTheme.colors.actionTertiaryNegative(),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                    )
+                },
+            )
+        }
     }
 }
 
@@ -268,6 +292,7 @@ internal fun OverviewScreenNoProvidersPreview() {
             onNavigateBack = {},
             onClickAddProvider = {},
             onClickMedications = {},
+            onClickRemoveOrganization = {},
         )
     }
 }
@@ -286,6 +311,7 @@ internal fun OverviewScreenWithProvidersPreview() {
             onNavigateBack = {},
             onClickAddProvider = {},
             onClickMedications = {},
+            onClickRemoveOrganization = {},
         )
     }
 }

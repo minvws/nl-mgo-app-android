@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.moshi.kotlin)
     implementation(projects.data.localisation)
     implementation(projects.framework.environment)
     implementation(projects.framework.navigation)

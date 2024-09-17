@@ -8,12 +8,14 @@ import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
+import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreen
+import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
+import nl.rijksoverheid.mgo.feature.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
-import nl.rijksoverheid.mgo.navigation.organization.OverviewNavigationScreen
 
 @Composable
 fun OrganizationsNavigation(
@@ -30,7 +32,7 @@ fun OrganizationsNavigation(
             OrganizationsScreen(
                 onNavigateToHealthCategories = { organization ->
                     navController.navigate(
-                        DashboardNavigationScreen.HealthCategories.setScreenType(
+                        DashboardNavigationScreen.HealthCategories.setArguments(
                             HealthCategoriesScreenArguments(filterOrganization = organization),
                         ).getNavigationRoute(),
                     )
@@ -50,8 +52,36 @@ fun OrganizationsNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToHealthCategory = {
-                    navController.navigate(OverviewNavigationScreen.HealthCategory.getNavigationRoute())
+                onNavigateToHealthCategory = { organization ->
+                    navController.navigate(
+                        DashboardNavigationScreen.HealthCategory.setArguments(HealthCategoryScreenArguments(organization))
+                            .getNavigationRoute(),
+                    )
+                },
+            )
+        }
+
+        composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategory.getRoute()) { backStackEntry ->
+            HealthCategoryScreen(
+                arguments = DashboardNavigationScreen.HealthCategory.getArguments(backStackEntry),
+                onClickUiSchema = { toolbarTitle, uiSchema ->
+                    navController.navigate(
+                        DashboardNavigationScreen.UiSchemaDetail.setToolbarTitle(toolbarTitle).setUiSchema(uiSchema)
+                            .getNavigationRoute(),
+                    )
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+
+        composableWithDefaultScreenTransitions(DashboardNavigationScreen.UiSchemaDetail.getRoute()) { backStackEntry ->
+            UiSchemaDetailScreen(
+                toolbarTitle = DashboardNavigationScreen.UiSchemaDetail.getToolbarTitle(backStackEntry),
+                uiSchema = DashboardNavigationScreen.UiSchemaDetail.getUiSchema(backStackEntry),
+                onNavigateBack = {
+                    navController.popBackStack()
                 },
             )
         }

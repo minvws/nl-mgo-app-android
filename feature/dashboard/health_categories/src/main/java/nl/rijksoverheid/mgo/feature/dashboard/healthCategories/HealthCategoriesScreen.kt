@@ -55,7 +55,7 @@ fun HealthCategoriesScreen(
     arguments: HealthCategoriesScreenArguments,
     onNavigateBack: () -> Unit,
     onNavigateToLocalisation: () -> Unit,
-    onNavigateToHealthCategory: () -> Unit,
+    onNavigateToHealthCategory: (organization: MgoOrganization?) -> Unit,
 ) {
     val viewModel =
         hiltViewModel<HealthCategoriesScreenViewModel, HealthCategoriesScreenViewModel.Factory>(
@@ -66,7 +66,7 @@ fun HealthCategoriesScreen(
         viewState = viewState,
         onNavigateBack = onNavigateBack,
         onClickAddProvider = onNavigateToLocalisation,
-        onClickMedications = onNavigateToHealthCategory,
+        onClickMedications = { onNavigateToHealthCategory(arguments.filterOrganization) },
     )
 }
 

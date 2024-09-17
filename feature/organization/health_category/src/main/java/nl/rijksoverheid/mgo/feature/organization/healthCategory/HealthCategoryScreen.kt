@@ -34,12 +34,15 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun HealthCategoryScreen(
+    arguments: HealthCategoryScreenArguments,
     onClickUiSchema: (toolbarTitle: String, uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    val viewModel: HealthCategoryScreenViewModel = hiltViewModel()
+    val viewModel =
+        hiltViewModel<HealthCategoryScreenViewModel, HealthCategoryScreenViewModel.Factory>(
+            creationCallback = { factory -> factory.create(arguments) },
+        )
     val viewState by viewModel.viewState.collectAsState()
-
     val medicationDetailsToolbarTitle = stringResource(id = CopyR.string.medication_details_heading)
     HealthCategoryScreenContent(
         viewState = viewState,

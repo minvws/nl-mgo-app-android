@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenArguments
 import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreen
+import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
@@ -21,7 +22,7 @@ fun OverviewNavigation(
     NavHost(
         navController = navController,
         startDestination =
-            DashboardNavigationScreen.HealthCategories.setScreenType(
+            DashboardNavigationScreen.HealthCategories.setArguments(
                 HealthCategoriesScreenArguments(filterOrganization = null),
             ).getNavigationRoute(),
         enterTransition = { EnterTransition.None },
@@ -35,16 +36,21 @@ fun OverviewNavigation(
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
                 onNavigateToHealthCategory = {
-                    navController.navigate(OverviewNavigationScreen.HealthCategory.getNavigationRoute())
+                    navController.navigate(
+                        DashboardNavigationScreen.HealthCategory.setArguments(
+                            HealthCategoryScreenArguments(filterOrganization = null),
+                        ).getNavigationRoute(),
+                    )
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(OverviewNavigationScreen.HealthCategory.getRoute()) {
+        composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategory.getRoute()) { backStackEntry ->
             HealthCategoryScreen(
+                arguments = DashboardNavigationScreen.HealthCategory.getArguments(backStackEntry),
                 onClickUiSchema = { toolbarTitle, uiSchema ->
                     navController.navigate(
-                        OverviewNavigationScreen.UiSchemaDetail.setToolbarTitle(toolbarTitle).setUiSchema(uiSchema)
+                        DashboardNavigationScreen.UiSchemaDetail.setToolbarTitle(toolbarTitle).setUiSchema(uiSchema)
                             .getNavigationRoute(),
                     )
                 },
@@ -54,10 +60,10 @@ fun OverviewNavigation(
             )
         }
 
-        composableWithDefaultScreenTransitions(OverviewNavigationScreen.UiSchemaDetail.getRoute()) { backStackEntry ->
+        composableWithDefaultScreenTransitions(DashboardNavigationScreen.UiSchemaDetail.getRoute()) { backStackEntry ->
             UiSchemaDetailScreen(
-                toolbarTitle = OverviewNavigationScreen.UiSchemaDetail.getToolbarTitle(backStackEntry),
-                uiSchema = OverviewNavigationScreen.UiSchemaDetail.getUiSchema(backStackEntry),
+                toolbarTitle = DashboardNavigationScreen.UiSchemaDetail.getToolbarTitle(backStackEntry),
+                uiSchema = DashboardNavigationScreen.UiSchemaDetail.getUiSchema(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

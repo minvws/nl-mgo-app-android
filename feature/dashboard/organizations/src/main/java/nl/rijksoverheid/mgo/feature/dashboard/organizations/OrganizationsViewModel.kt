@@ -23,7 +23,7 @@ internal class OrganizationsViewModel
             )
         private val _viewState = MutableStateFlow(initialViewState)
         val viewState =
-            combine(_viewState, organizationRepository.storedOrganizationsFlow) { viewState, organizations ->
+            combine(_viewState, organizationRepository.storedOrganizationsFlow) { _, organizations ->
                 OrganizationsViewState(organizations = organizations)
             }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
     }

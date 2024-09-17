@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.removeOrganization
+package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

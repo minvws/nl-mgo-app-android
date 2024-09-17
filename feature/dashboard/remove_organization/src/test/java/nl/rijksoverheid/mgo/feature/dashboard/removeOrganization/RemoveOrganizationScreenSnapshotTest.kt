@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.removeOrganization
+package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule

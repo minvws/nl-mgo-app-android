@@ -10,8 +10,8 @@ import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesS
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
+import nl.rijksoverheid.mgo.feature.dashboard.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.UiSchemaDetailScreen
-import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.removeOrganization
+package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION

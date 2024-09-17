@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.organization.removeOrganization"
+    namespace = "nl.rijksoverheid.mgo.feature.dashboard.removeOrganization"
 }
 
 dependencies {

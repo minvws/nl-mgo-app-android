@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareData
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareRepository
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenType
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -21,14 +21,14 @@ import kotlinx.coroutines.launch
 internal class HealthCategoriesListItemViewModel
     @AssistedInject
     constructor(
-        @Assisted private val screenType: HealthCategoriesScreenType,
+        @Assisted private val filterOrganization: MgoOrganization?,
         @Assisted private val category: HealthCareCategory,
         private val healthCareRepository: HealthCareRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
             fun create(
-                screenType: HealthCategoriesScreenType,
+                filterOrganization: MgoOrganization?,
                 category: HealthCareCategory,
             ): HealthCategoriesListItemViewModel
         }
@@ -41,11 +41,6 @@ internal class HealthCategoriesListItemViewModel
 
         init {
             viewModelScope.launch {
-                val filterOrganization =
-                    when (screenType) {
-                        is HealthCategoriesScreenType.All -> null
-                        is HealthCategoriesScreenType.Single -> screenType.organization
-                    }
                 healthCareRepository.observeData(category = category, filterOrganization = filterOrganization)
                     .collectLatest { healthCareDataList ->
                         val loading = healthCareDataList.any { it is HealthCareData.Loading }

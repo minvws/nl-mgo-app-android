@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenType
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
 import nl.rijksoverheid.mgo.feature.organization.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
@@ -31,7 +31,7 @@ fun OrganizationsNavigation(
                 onNavigateToHealthCategories = { organization ->
                     navController.navigate(
                         DashboardNavigationScreen.HealthCategories.setScreenType(
-                            HealthCategoriesScreenType.Single(organization),
+                            HealthCategoriesScreenArguments(filterOrganization = organization),
                         ).getNavigationRoute(),
                     )
                 },
@@ -43,7 +43,7 @@ fun OrganizationsNavigation(
 
         composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategories.getRoute()) { backStackEntry ->
             HealthCategoriesScreen(
-                screenType = DashboardNavigationScreen.HealthCategories.getScreenType(backStackEntry),
+                arguments = DashboardNavigationScreen.HealthCategories.getArguments(backStackEntry),
                 onNavigateBack = {
                     navController.popBackStack()
                 },

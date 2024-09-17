@@ -17,24 +17,28 @@ import kotlinx.coroutines.runBlocking
 internal class HealthCategoriesScreenViewModel
     @AssistedInject
     constructor(
-        @Assisted("screenType") private val screenType: HealthCategoriesScreenType,
+        @Assisted("arguments") private val arguments: HealthCategoriesScreenArguments,
         organizationRepository: OrganizationRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
             fun create(
-                @Assisted("screenType") screenType: HealthCategoriesScreenType,
+                @Assisted("arguments") arguments: HealthCategoriesScreenArguments,
             ): HealthCategoriesScreenViewModel
         }
 
         private val initialViewState =
             HealthCategoriesScreenViewState.initialState(
-                screenType = screenType,
+                filterOrganization = arguments.filterOrganization,
                 providers = runBlocking { organizationRepository.get() },
             )
         private val _viewState = MutableStateFlow(initialViewState)
         val viewState =
             combine(_viewState, organizationRepository.storedOrganizationsFlow) { viewState, providers ->
-                HealthCategoriesScreenViewState(name = viewState.name, screenType = screenType, providers = providers)
+                HealthCategoriesScreenViewState(
+                    name = viewState.name,
+                    filterOrganization = arguments.filterOrganization,
+                    providers = providers,
+                )
             }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
     }

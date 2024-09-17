@@ -45,22 +45,21 @@ import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
 import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-const val TEST_TAG_OVERVIEW_ORGANIZATION_CARD = "OVERVIEW_ORGANIZATION_CARD"
-
 @Composable
 fun HealthCategoriesScreen(
-    screenType: HealthCategoriesScreenType,
+    arguments: HealthCategoriesScreenArguments,
     onNavigateBack: () -> Unit,
     onNavigateToLocalisation: () -> Unit,
     onNavigateToHealthCategory: () -> Unit,
 ) {
     val viewModel =
         hiltViewModel<HealthCategoriesScreenViewModel, HealthCategoriesScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(screenType) },
+            creationCallback = { factory -> factory.create(arguments) },
         )
     val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     HealthCategoriesScreenContent(
@@ -85,7 +84,7 @@ private fun HealthCategoriesScreenContent(
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    if (viewState.screenType is HealthCategoriesScreenType.Single) {
+                    if (viewState.filterOrganization != null) {
                         IconButton(onClick = { onNavigateBack() }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
@@ -102,7 +101,7 @@ private fun HealthCategoriesScreenContent(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = viewState.screenType.getTitle(),
+                    text = viewState.getToolbarTitle(),
                     style = MaterialTheme.typography.headingLarge,
                 )
                 if (viewState.providers.isEmpty()) {
@@ -110,7 +109,7 @@ private fun HealthCategoriesScreenContent(
                 } else {
                     WithProviders(
                         modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        screenType = viewState.screenType,
+                        filterOrganization = viewState.filterOrganization,
                         onClickMedications = onClickMedications,
                     )
                 }
@@ -165,7 +164,7 @@ private fun NoProviders(
 @Composable
 private fun WithProviders(
     onClickMedications: () -> Unit,
-    screenType: HealthCategoriesScreenType,
+    filterOrganization: MgoOrganization?,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
@@ -176,7 +175,7 @@ private fun WithProviders(
                     title = CopyR.string.health_category_medication,
                     iconColor = MaterialTheme.colors.supportHuisarts(),
                     category = HealthCareCategory.MEDICATIONS,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     onClickWhenLoaded = { onClickMedications() },
                 )
                 HealthCategoriesListItem(
@@ -184,7 +183,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportKliniek(),
                     title = CopyR.string.health_category_allergies,
                     category = HealthCareCategory.ALLERGIES,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     onClickWhenLoaded = {},
                 )
                 HealthCategoriesListItem(
@@ -192,7 +191,7 @@ private fun WithProviders(
                     title = CopyR.string.health_category_measurements,
                     iconColor = MaterialTheme.colors.supportApotheek(),
                     category = HealthCareCategory.MEASUREMENTS,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     onClickWhenLoaded = {},
                 )
                 HealthCategoriesListItem(
@@ -201,7 +200,7 @@ private fun WithProviders(
                     title = CopyR.string.health_category_vaccinations,
                     hasDivider = false,
                     category = HealthCareCategory.VACCINATIONS,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     onClickWhenLoaded = {},
                 )
             }
@@ -213,7 +212,7 @@ private fun WithProviders(
                     icon = R.drawable.ic_complaints,
                     iconColor = MaterialTheme.colors.supportVerpleeghuis(),
                     title = CopyR.string.health_category_complaints,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     category = HealthCareCategory.COMPLAINTS,
                     onClickWhenLoaded = {},
                 )
@@ -222,7 +221,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportGgz(),
                     title = CopyR.string.health_category_treatments,
                     category = HealthCareCategory.TREATMENTS,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     onClickWhenLoaded = {},
                 )
                 HealthCategoriesListItem(
@@ -230,7 +229,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportZiekenhuis(),
                     title = CopyR.string.health_category_labresults,
                     category = HealthCareCategory.LABRESULTS,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     hasDivider = false,
                     onClickWhenLoaded = {},
                 )
@@ -244,7 +243,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportFysiotherapeut(),
                     category = HealthCareCategory.REPORTS,
                     title = CopyR.string.health_category_reports,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     onClickWhenLoaded = {},
                 )
                 HealthCategoriesListItem(
@@ -252,7 +251,7 @@ private fun WithProviders(
                     iconColor = MaterialTheme.colors.supportThuiszorg(),
                     category = HealthCareCategory.DOCUMENTS,
                     title = CopyR.string.health_category_documents,
-                    screenType = screenType,
+                    filterOrganization = filterOrganization,
                     onClickWhenLoaded = {},
                 )
             }
@@ -265,7 +264,7 @@ private fun WithProviders(
 internal fun OverviewScreenNoProvidersPreview() {
     MgoTheme {
         HealthCategoriesScreenContent(
-            viewState = HealthCategoriesScreenViewState(name = "", screenType = HealthCategoriesScreenType.All(), providers = listOf()),
+            viewState = HealthCategoriesScreenViewState(name = "", filterOrganization = null, providers = listOf()),
             onNavigateBack = {},
             onClickAddProvider = {},
             onClickMedications = {},
@@ -281,7 +280,7 @@ internal fun OverviewScreenWithProvidersPreview() {
             viewState =
                 HealthCategoriesScreenViewState(
                     name = "",
-                    screenType = HealthCategoriesScreenType.All(),
+                    filterOrganization = null,
                     providers = listOf(TEST_MGO_ORGANIZATION),
                 ),
             onNavigateBack = {},

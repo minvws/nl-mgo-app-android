@@ -34,7 +34,7 @@ import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenType
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -43,7 +43,7 @@ internal fun HealthCategoriesListItem(
     @DrawableRes icon: Int,
     @ColorRes iconColor: Color,
     @StringRes title: Int,
-    screenType: HealthCategoriesScreenType,
+    filterOrganization: MgoOrganization?,
     category: HealthCareCategory,
     onClickWhenLoaded: () -> Unit,
     modifier: Modifier = Modifier,
@@ -61,7 +61,7 @@ internal fun HealthCategoriesListItem(
     } else {
         val viewModel =
             hiltViewModel<HealthCategoriesListItemViewModel, HealthCategoriesListItemViewModel.Factory>(
-                creationCallback = { factory -> factory.create(screenType = screenType, category = category) },
+                creationCallback = { factory -> factory.create(filterOrganization = filterOrganization, category = category) },
                 key = category.toString(),
             )
         val listItemState by viewModel.listItemState.collectAsState()

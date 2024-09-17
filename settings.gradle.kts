@@ -45,7 +45,7 @@ include(":data:uiSchema")
 include(":data:healthcare")
 
 include(":feature:organization:remove_organization")
-include(":feature:organization:uischema_detail")
 include(":feature:dashboard:organizations")
 include(":feature:dashboard:health_categories")
 include(":feature:dashboard:health_category")
+include(":feature:dashboard:uischema_detail")

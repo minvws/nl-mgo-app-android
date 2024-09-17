@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.uiSchemaDetail"
+    namespace = "nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail"
 }
 
 dependencies {

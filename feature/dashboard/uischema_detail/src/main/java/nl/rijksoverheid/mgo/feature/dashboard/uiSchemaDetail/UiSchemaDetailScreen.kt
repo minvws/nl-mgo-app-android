@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.uiSchemaDetail
+package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

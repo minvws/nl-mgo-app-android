@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.uiSchemaDetail
+package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule

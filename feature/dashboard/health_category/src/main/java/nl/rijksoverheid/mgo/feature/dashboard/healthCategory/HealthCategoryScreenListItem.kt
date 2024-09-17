@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.healthCategory
+package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema

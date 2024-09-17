@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.navigation.dashboard
 import androidx.navigation.NavBackStackEntry
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenArguments
-import nl.rijksoverheid.mgo.feature.organization.healthCategory.HealthCategoryScreenArguments
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.framework.test.jsonStringToObject
 import nl.rijksoverheid.mgo.framework.test.toJsonString
 import nl.rijksoverheid.mgo.navigation.NavigationScreen

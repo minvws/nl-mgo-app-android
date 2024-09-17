@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.healthCategory
+package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

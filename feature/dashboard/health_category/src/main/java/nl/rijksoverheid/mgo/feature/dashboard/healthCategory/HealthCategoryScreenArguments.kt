@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.healthCategory
+package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization

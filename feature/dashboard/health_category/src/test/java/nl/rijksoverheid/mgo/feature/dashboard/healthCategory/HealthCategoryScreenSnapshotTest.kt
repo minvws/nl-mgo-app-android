@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.healthCategory
+package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule

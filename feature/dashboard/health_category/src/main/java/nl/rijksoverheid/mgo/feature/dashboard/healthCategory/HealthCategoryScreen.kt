@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.healthCategory
+package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

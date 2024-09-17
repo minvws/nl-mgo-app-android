@@ -87,6 +87,7 @@ dependencies {
     implementation(projects.feature.dashboard.bottombar)
     implementation(projects.feature.dashboard.organizations)
     implementation(projects.feature.dashboard.healthCategories)
+    implementation(projects.feature.dashboard.healthCategory)
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)
@@ -95,7 +96,6 @@ dependencies {
 
     // Overview
     implementation(projects.feature.organization.removeOrganization)
-    implementation(projects.feature.organization.healthCategory)
     implementation(projects.feature.organization.uischemaDetail)
 
     // Config

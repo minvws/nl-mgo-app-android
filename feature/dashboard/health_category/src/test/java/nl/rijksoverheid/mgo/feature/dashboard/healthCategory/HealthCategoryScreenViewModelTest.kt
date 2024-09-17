@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.organization.healthCategory
+package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
@@ -25,7 +25,11 @@ internal class HealthCategoryScreenViewModelTest {
             )
 
             // When
-            val viewModel = HealthCategoryScreenViewModel(healthCareRepository = healthCareRepository)
+            val viewModel =
+                HealthCategoryScreenViewModel(
+                    arguments = HealthCategoryScreenArguments(null),
+                    healthCareRepository = healthCareRepository,
+                )
 
             // Then
             viewModel.viewState.test {

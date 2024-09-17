@@ -7,8 +7,6 @@ import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenType
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItemState
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItemViewModel
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertTrue
 import org.junit.Rule

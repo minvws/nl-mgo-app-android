@@ -85,17 +85,16 @@ dependencies {
 
     // Dashboard
     implementation(projects.feature.dashboard.bottombar)
-    implementation(projects.feature.dashboard.overview)
+    implementation(projects.feature.dashboard.organizations)
+    implementation(projects.feature.dashboard.healthCategories)
+    implementation(projects.feature.dashboard.healthCategory)
+    implementation(projects.feature.dashboard.uischemaDetail)
+    implementation(projects.feature.dashboard.removeOrganization)
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)
     implementation(projects.feature.localisation.organizationSearch)
     implementation(projects.feature.localisation.organizationList)
-
-    // Overview
-    implementation(projects.feature.organization.removeOrganization)
-    implementation(projects.feature.organization.healthCategory)
-    implementation(projects.feature.organization.uischemaDetail)
 
     // Config
     implementation(projects.feature.config)
@@ -119,6 +118,7 @@ dependencies {
     implementation(projects.data.localisation)
     implementation(projects.data.uiSchema)
     implementation(projects.data.healthcare)
+    implementation(project(":feature:dashboard:remove_organization"))
 
     // ================================
     // TESTING

@@ -11,6 +11,7 @@ import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -71,9 +72,15 @@ internal class DefaultHealthCareRepository
             medications.update { newMedications }
         }
 
-        override fun observeData(category: HealthCareCategory): Flow<List<HealthCareData>> {
+        override fun observeData(
+            category: HealthCareCategory,
+            filterOrganization: MgoOrganization?,
+        ): Flow<List<HealthCareData>> {
             return if (category == HealthCareCategory.MEDICATIONS) {
-                medications.map { it.values.toList() }.filter { it.isNotEmpty() }
+                filterOrganization?.let { organization ->
+                    return medications.map { it[organization] }.filterNotNull().map { listOf(it) }
+                }
+                return medications.map { it.values.toList() }.filter { it.isNotEmpty() }
             } else {
                 flow { }
             }

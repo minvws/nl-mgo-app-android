@@ -95,6 +95,10 @@ fun Colors.actionTertiaryDefault(isSystemDarkTheme: Boolean = isSystemInDarkThem
     if (isSystemDarkTheme) Color(0xFF8FCAE7) else Color(0xFF01689B)
 
 @Composable
+fun Colors.actionTertiaryNegative(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFE67F78) else Color(0xFFD52B1E)
+
+@Composable
 fun Colors.notificationInformation(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF66AFDD) else Color(0xFF007BC7)
 

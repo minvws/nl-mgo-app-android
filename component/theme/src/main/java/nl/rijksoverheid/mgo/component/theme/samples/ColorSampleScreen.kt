@@ -27,6 +27,7 @@ import nl.rijksoverheid.mgo.component.theme.actionPrimaryText
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryBackground
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryText
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegative
 import nl.rijksoverheid.mgo.component.theme.backgroundPrimary
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
@@ -125,6 +126,9 @@ private fun ColorSampleScreen() {
         }
         item {
             ColorSample(color = MaterialTheme.colors.actionTertiaryDefault(), text = "Action Tertiary Default")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.actionTertiaryNegative(), text = "Action Tertiary Negative")
         }
         item {
             ColorSample(color = MaterialTheme.colors.notificationInformation(), text = "Notification Information")

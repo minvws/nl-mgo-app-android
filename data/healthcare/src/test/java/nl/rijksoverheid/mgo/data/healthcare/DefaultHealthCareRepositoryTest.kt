@@ -43,6 +43,48 @@ internal class DefaultHealthCareRepositoryTest {
         }
 
     @Test
+    fun `Given medication request is success, When calling getMedications and observing single organization, Then update state`() =
+        runTest {
+            // Given
+            val uiSchemaMapper = TestUiSchemaMapper(listOf(TEST_UI_SCHEMA_MEDICATION))
+            val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
+            testServer.enqueue200()
+            val repository =
+                DefaultHealthCareRepository(
+                    uiSchemaMapper = uiSchemaMapper,
+                    dvaApi = dvaApi,
+                )
+
+            repository.observeData(category = HealthCareCategory.MEDICATIONS, filterOrganization = TEST_MGO_ORGANIZATION).test {
+                // When
+                repository.getMedications(organization = TEST_MGO_ORGANIZATION)
+
+                // Then
+                assertTrue(awaitItem().first() is HealthCareData.Loading)
+                assertTrue(awaitItem().first() is HealthCareData.Loaded)
+            }
+        }
+
+    @Test
+    fun `Given medication request is success, When calling getMedications and observing single organization, Then don't update state`() =
+        runTest {
+            // Given
+            val uiSchemaMapper = TestUiSchemaMapper(listOf(TEST_UI_SCHEMA_MEDICATION))
+            val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
+            testServer.enqueue200()
+            val repository =
+                DefaultHealthCareRepository(
+                    uiSchemaMapper = uiSchemaMapper,
+                    dvaApi = dvaApi,
+                )
+
+            repository.observeData(category = HealthCareCategory.MEDICATIONS, filterOrganization = TEST_MGO_ORGANIZATION).test {
+                // When
+                repository.getMedications(organization = TEST_MGO_ORGANIZATION.copy(id = "2"))
+            }
+        }
+
+    @Test
     fun `Given medication request is success and medication already loaded, When calling getMedications, No state is updated`() =
         runTest {
             // Given

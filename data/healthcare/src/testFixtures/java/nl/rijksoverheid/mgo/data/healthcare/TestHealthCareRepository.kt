@@ -18,7 +18,10 @@ class TestHealthCareRepository : HealthCareRepository {
         this.data[HealthCareCategory.MEDICATIONS] = listOf(TEST_HEALTH_CARE_DATA_LOADED_MEDICATION)
     }
 
-    override fun observeData(category: HealthCareCategory): Flow<List<HealthCareData>> {
+    override fun observeData(
+        category: HealthCareCategory,
+        filterOrganization: MgoOrganization?,
+    ): Flow<List<HealthCareData>> {
         return flow { emit(data[category]!!) }
     }
 }

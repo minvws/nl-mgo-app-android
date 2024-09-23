@@ -35,7 +35,7 @@ internal class DefaultHealthCareRepository
             updateMedications(data = HealthCareData.Loading, organization = organization)
 
             // Fetch our medications
-            val requestResult = executeNetworkRequest { dvaApi.medicationStatement(organization.resourceEndpoint) }
+            val requestResult = executeNetworkRequest { dvaApi.medicationStatement(organization.dataServices.first().resourceEndpoint) }
 
             // Create ui schemas from request
             val uiSchemaListResult =

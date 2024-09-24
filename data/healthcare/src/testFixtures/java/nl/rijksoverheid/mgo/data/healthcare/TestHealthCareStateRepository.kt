@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.flow
 class TestHealthCareStateRepository : HealthCareStateRepository {
     private val dataList = mutableListOf<HealthCareDataState>()
 
-    fun setData(data: HealthCareDataState) {
+    fun setData(data: List<HealthCareDataState>) {
         this.dataList.clear()
-        this.dataList.add(data)
+        this.dataList.addAll(data)
     }
 
     override suspend fun init() {

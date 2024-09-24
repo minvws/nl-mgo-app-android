@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.api.load.createLoadApi
 import nl.rijksoverheid.mgo.data.localisation.DefaultOrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.file.TestFileStore
@@ -51,7 +52,11 @@ internal class DefaultMgoOrganizationRepositoryTest {
                         address = "Ginnekenweg 183\r\n4835NA BREDA",
                         category = "Tandartsen",
                         added = false,
-                        resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
+                        dataServices =
+                            listOf(
+                                MgoOrganizationDataService.Gp("https://dva-mock.test.mgo.prolocation.net/49"),
+                                MgoOrganizationDataService.Bgz("https://dva-mock.test.mgo.prolocation.net/48"),
+                            ),
                     )
                 assertEquals(expectedFirstHealthProvider, providers.firstOrNull())
             }

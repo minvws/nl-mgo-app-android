@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
+import androidx.annotation.VisibleForTesting
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
@@ -25,24 +26,29 @@ class DefaultHealthCareStateRepository
             coroutineScope {
                 // When something changes in the organizations (adding, changing, removing)
                 organizationRepository.storedOrganizationsFlow.collectLatest { organizations ->
-                    // Clear all states
-                    statesFlow.update { listOf() }
-
-                    // Set loading states
-                    for (organization in organizations) {
-                        for (category in HealthCareCategory.entries) {
-                            setLoading(organization = organization, category = category)
-                        }
-                    }
-
-                    // Load data
-                    for (organization in organizations) {
-                        for (category in HealthCareCategory.entries) {
-                            get(organization = organization, category = category)
-                        }
-                    }
+                    init(organizations)
                 }
             }
+
+        @VisibleForTesting
+        suspend fun init(organizations: List<MgoOrganization>) {
+            // Clear all states
+            statesFlow.update { listOf() }
+
+            // Set loading states
+            for (organization in organizations) {
+                for (category in HealthCareCategory.entries) {
+                    setLoading(organization = organization, category = category)
+                }
+            }
+
+            // Load data
+            for (organization in organizations) {
+                for (category in HealthCareCategory.entries) {
+                    get(organization = organization, category = category)
+                }
+            }
+        }
 
         override suspend fun observe(
             category: HealthCareCategory,

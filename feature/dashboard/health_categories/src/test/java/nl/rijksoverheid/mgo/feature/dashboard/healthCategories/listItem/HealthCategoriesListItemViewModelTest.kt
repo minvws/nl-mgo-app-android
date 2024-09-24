@@ -2,9 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareData
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
-import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareRepository
 import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareStateRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
@@ -30,9 +28,9 @@ internal class HealthCategoriesListItemViewModelTest {
                         loading = true,
                         organization = TEST_MGO_ORGANIZATION,
                         category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf()
-                    )
-                )
+                        uiSchemaListResults = listOf(),
+                    ),
+                ),
             )
 
             // When
@@ -40,7 +38,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository
+                    healthCareStateRepository = healthCareStateRepository,
                 )
 
             // Then
@@ -59,15 +57,15 @@ internal class HealthCategoriesListItemViewModelTest {
                         loading = true,
                         organization = TEST_MGO_ORGANIZATION,
                         category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf()
+                        uiSchemaListResults = listOf(),
                     ),
                     HealthCareDataState(
                         loading = false,
                         organization = TEST_MGO_ORGANIZATION,
                         category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf()
+                        uiSchemaListResults = listOf(),
                     ),
-                )
+                ),
             )
 
             // When
@@ -75,7 +73,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository
+                    healthCareStateRepository = healthCareStateRepository,
                 )
 
             // Then
@@ -94,9 +92,9 @@ internal class HealthCategoriesListItemViewModelTest {
                         loading = false,
                         organization = TEST_MGO_ORGANIZATION,
                         category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION)))
+                        uiSchemaListResults = listOf(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION))),
                     ),
-                )
+                ),
             )
 
             // When
@@ -104,7 +102,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository
+                    healthCareStateRepository = healthCareStateRepository,
                 )
 
             // Then
@@ -123,9 +121,9 @@ internal class HealthCategoriesListItemViewModelTest {
                         loading = false,
                         organization = TEST_MGO_ORGANIZATION,
                         category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf(Result.success(listOf()))
+                        uiSchemaListResults = listOf(Result.success(listOf())),
                     ),
-                )
+                ),
             )
 
             // When
@@ -133,7 +131,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository
+                    healthCareStateRepository = healthCareStateRepository,
                 )
 
             // Then

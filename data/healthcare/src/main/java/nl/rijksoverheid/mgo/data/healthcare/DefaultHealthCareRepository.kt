@@ -57,13 +57,6 @@ private fun MgoOrganizationDataService.getUrlPaths(category: HealthCareCategory)
                 }
             }
         }
-
-        HealthCareCategory.ALLERGIES -> listOf()
-        HealthCareCategory.MEASUREMENTS -> listOf()
-        HealthCareCategory.VACCINATIONS -> listOf()
-        HealthCareCategory.COMPLAINTS -> listOf()
-        HealthCareCategory.TREATMENTS -> listOf()
-        HealthCareCategory.REPORTS -> listOf()
-        HealthCareCategory.DOCUMENTS -> listOf()
+        else -> listOf()
     }
 }

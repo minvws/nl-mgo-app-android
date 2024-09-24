@@ -15,6 +15,8 @@ data class MgoOrganization(
     val dataServices: List<MgoOrganizationDataService>,
 )
 
+val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService.Bgz(resourceEndpoint = "")
+val TEST_GP_DATA_SERVICE = MgoOrganizationDataService.Gp(resourceEndpoint = "")
 val TEST_MGO_ORGANIZATION =
     MgoOrganization(
         id = "1",

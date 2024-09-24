@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface HealthCareStateRepository {
     suspend fun init()
 
-    suspend fun observe(
+    fun observe(
         category: HealthCareCategory,
         organization: MgoOrganization? = null,
     ): Flow<List<HealthCareDataState>>

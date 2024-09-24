@@ -29,4 +29,10 @@ interface DvaApi {
         @Header("x-mgo-dva-target") resourceEndpoint: String,
         @Url url: String,
     ): ResponseBody
+
+    @GET
+    suspend fun get(
+        @Header("x-mgo-dva-target") resourceEndpoint: String,
+        @Url url: String,
+    ): ResponseBody
 }

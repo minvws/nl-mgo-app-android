@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +44,6 @@ internal fun HealthCategoriesListItem(
     @StringRes title: Int,
     filterOrganization: MgoOrganization?,
     category: HealthCareCategory,
-    onClickWhenLoaded: () -> Unit,
     modifier: Modifier = Modifier,
     hasDivider: Boolean = true,
 ) {
@@ -66,7 +64,7 @@ internal fun HealthCategoriesListItem(
             )
         val listItemState by viewModel.listItemState.collectAsState()
         HealthCategoriesListItemContent(
-            modifier = modifier.clickable(enabled = listItemState == HealthCategoriesListItemState.LOADED) { onClickWhenLoaded() },
+            modifier = modifier,
             icon = icon,
             title = title,
             iconColor = iconColor,

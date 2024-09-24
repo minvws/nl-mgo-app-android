@@ -7,8 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareData
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareRepository
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareStateRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +22,7 @@ internal class HealthCategoriesListItemViewModel
     constructor(
         @Assisted private val filterOrganization: MgoOrganization?,
         @Assisted private val category: HealthCareCategory,
-        private val healthCareRepository: HealthCareRepository,
+        private val healthCareStateRepository: HealthCareStateRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -41,23 +40,15 @@ internal class HealthCategoriesListItemViewModel
 
         init {
             viewModelScope.launch {
-                healthCareRepository.observeData(category = category, filterOrganization = filterOrganization)
-                    .collectLatest { healthCareDataList ->
-                        val loading = healthCareDataList.any { it is HealthCareData.Loading }
-                        val amountOfItems =
-                            healthCareDataList
-                                .filterIsInstance<HealthCareData.Loaded>()
-                                .map { it.uiSchemaList }
-                                .flatten()
-                                .count()
-                        val error = healthCareDataList.all { it is HealthCareData.Error }
-                        when {
-                            loading -> _listItemState.update { HealthCategoriesListItemState.LOADING }
-                            error -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
-                            amountOfItems > 0 -> _listItemState.update { HealthCategoriesListItemState.LOADED }
-                            else -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
-                        }
+                healthCareStateRepository.observe(category = category, organization = filterOrganization).collectLatest { states ->
+                    val loading = states.any { state -> state.loading }
+                    val amountOfItems = states.sumOf { state -> state.uiSchemaListResults.sumOf { it.getOrNull()?.size ?: 0 } }
+                    when {
+                        loading -> _listItemState.update { HealthCategoriesListItemState.LOADING }
+                        amountOfItems == 0 -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
+                        amountOfItems > 0 -> _listItemState.update { HealthCategoriesListItemState.LOADED }
                     }
+                }
             }
         }
     }

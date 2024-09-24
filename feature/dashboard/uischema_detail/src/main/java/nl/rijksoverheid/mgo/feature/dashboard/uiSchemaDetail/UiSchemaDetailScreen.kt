@@ -30,11 +30,11 @@ import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.uiSchema.ChildDisplay
-import nl.rijksoverheid.mgo.data.uiSchema.ChildElement
 import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
+import nl.rijksoverheid.mgo.data.uiSchema.Value
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
@@ -87,7 +87,7 @@ private fun UiSchemaSection(
         Card(modifier = Modifier.padding(top = 8.dp)) {
             Column {
                 group.children.forEachIndexed { index, childElement ->
-                    UiSchemaLabelWithValue(childElement = childElement, hasDivider = index != group.children.lastIndex)
+                    UiSchemaLabelWithValue(value = childElement, hasDivider = index != group.children.lastIndex)
                 }
             }
         }
@@ -96,19 +96,19 @@ private fun UiSchemaSection(
 
 @Composable
 private fun UiSchemaLabelWithValue(
-    childElement: ChildElement,
+    value: Value,
     hasDivider: Boolean,
 ) {
     Column {
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            text = childElement.label.getStringFromResourceWithFallback(),
+            text = value.label.getStringFromResourceWithFallback(),
             style = MaterialTheme.typography.bodySmallMini,
             color = MaterialTheme.colors.contentTertiary(),
         )
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
-            text = childElement.display.getStringOrUnknown(),
+            text = value.display.getStringOrUnknown(),
             style = MaterialTheme.typography.bodySmall,
         )
         if (hasDivider) {

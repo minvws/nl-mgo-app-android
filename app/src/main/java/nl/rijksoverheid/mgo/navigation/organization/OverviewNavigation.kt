@@ -35,10 +35,10 @@ fun OverviewNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToHealthCategory = {
+                onNavigateToHealthCategory = { category, _ ->
                     navController.navigate(
                         DashboardNavigationScreen.HealthCategory.setArguments(
-                            HealthCategoryScreenArguments(filterOrganization = null),
+                            HealthCategoryScreenArguments(category = category, filterOrganization = null),
                         ).getNavigationRoute(),
                     )
                 },

@@ -29,6 +29,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -82,7 +83,7 @@ private fun HealthCategoryScreenContent(
             ) {
                 item {
                     Text(
-                        text = stringResource(id = CopyR.string.medication_use_heading),
+                        text = stringResource(id = viewState.title),
                         style = MaterialTheme.typography.headingLarge,
                         fontWeight = FontWeight.Bold,
                     )
@@ -130,7 +131,7 @@ internal fun HealthCategoryScreenPreview() {
     MgoTheme {
         HealthCategoryScreenContent(
             viewState =
-                HealthCategoryScreenViewState.initialState.copy(
+                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
                     listItems = listOf(TEST_LIST_ITEM_1, TEST_LIST_ITEM_2, TEST_LIST_ITEM_3),
                 ),
             onClickUiSchema = {},

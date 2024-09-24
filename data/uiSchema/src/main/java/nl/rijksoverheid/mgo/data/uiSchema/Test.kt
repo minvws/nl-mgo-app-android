@@ -9,7 +9,7 @@ val TEST_UI_SCHEMA_MEDICATION =
                     label = "Algemeen",
                     children =
                         listOf(
-                            ChildElement(
+                            Value(
                                 label = "Gebruiksaanwijzing",
                                 display =
                                     ChildDisplay.StringValue(
@@ -18,7 +18,7 @@ val TEST_UI_SCHEMA_MEDICATION =
                                     ),
                                 type = "",
                             ),
-                            ChildElement(
+                            Value(
                                 label = "Reden",
                                 display = ChildDisplay.StringValue("Boezemfibrilleren/-fladderen"),
                                 type = "",
@@ -29,12 +29,12 @@ val TEST_UI_SCHEMA_MEDICATION =
                     label = "Periode van gebruik",
                     children =
                         listOf(
-                            ChildElement(
+                            Value(
                                 label = "Startdatum",
                                 display = ChildDisplay.StringValue("9 maart 2022"),
                                 type = "",
                             ),
-                            ChildElement(
+                            Value(
                                 label = "Einddatum",
                                 display = ChildDisplay.StringValue("Niet bekend"),
                                 type = "",

@@ -52,9 +52,9 @@ fun OrganizationsNavigation(
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },
-                onNavigateToHealthCategory = { organization ->
+                onNavigateToHealthCategory = { category, organization ->
                     navController.navigate(
-                        DashboardNavigationScreen.HealthCategory.setArguments(HealthCategoryScreenArguments(organization))
+                        DashboardNavigationScreen.HealthCategory.setArguments(HealthCategoryScreenArguments(category, organization))
                             .getNavigationRoute(),
                     )
                 },

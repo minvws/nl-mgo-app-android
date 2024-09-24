@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import timber.log.Timber
 import javax.inject.Inject
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -79,7 +78,6 @@ class DefaultHealthCareStateRepository
             category: HealthCareCategory,
         ) {
             val uiSchemaListResults = healthCareRepository.getUiSchema(organization = organization, category = category)
-            Timber.v("Ik kom hier: " + uiSchemaListResults.map { it.getOrNull() }.count())
             val newState =
                 HealthCareDataState(
                     loading = false,

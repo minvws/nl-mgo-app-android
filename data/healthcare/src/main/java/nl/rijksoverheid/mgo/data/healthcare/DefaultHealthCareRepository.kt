@@ -63,7 +63,6 @@ private fun MgoOrganizationDataService.getUrlPaths(category: HealthCareCategory)
         HealthCareCategory.VACCINATIONS -> listOf()
         HealthCareCategory.COMPLAINTS -> listOf()
         HealthCareCategory.TREATMENTS -> listOf()
-        HealthCareCategory.LABRESULTS -> listOf()
         HealthCareCategory.REPORTS -> listOf()
         HealthCareCategory.DOCUMENTS -> listOf()
     }

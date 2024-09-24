@@ -48,7 +48,6 @@ import nl.rijksoverheid.mgo.component.theme.supportKliniek
 import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
-import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.getTitle
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -234,15 +233,6 @@ private fun WithProviders(
                     title = HealthCareCategory.TREATMENTS.getTitle(),
                     category = HealthCareCategory.TREATMENTS,
                     filterOrganization = filterOrganization,
-                )
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.LABRESULTS) },
-                    icon = R.drawable.ic_labresults,
-                    iconColor = MaterialTheme.colors.supportZiekenhuis(),
-                    title = HealthCareCategory.LABRESULTS.getTitle(),
-                    category = HealthCareCategory.LABRESULTS,
-                    filterOrganization = filterOrganization,
-                    hasDivider = false,
                 )
             }
         }

@@ -8,6 +8,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.getTitle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -40,8 +41,17 @@ class HealthCategoryScreenViewModel
                     organization = arguments.filterOrganization,
                 )
                     .collectLatest { states ->
+                        val loading = states.any { state -> state.loading }
                         val listItems = states.map { state -> state.toListItems() }.flatten()
-                        _viewState.update { viewState -> viewState.copy(listItems = listItems) }
+                        _viewState.update {
+                            val listItemState =
+                                when {
+                                    loading -> HealthCategoryScreenViewState.ListItemsState.Loading
+                                    listItems.isEmpty() -> HealthCategoryScreenViewState.ListItemsState.NoData
+                                    else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
+                                }
+                            HealthCategoryScreenViewState(title = arguments.category.getTitle(), listItemsState = listItemState)
+                        }
                     }
             }
         }

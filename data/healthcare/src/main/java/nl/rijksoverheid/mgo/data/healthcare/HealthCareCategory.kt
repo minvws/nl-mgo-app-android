@@ -10,7 +10,6 @@ enum class HealthCareCategory {
     VACCINATIONS,
     COMPLAINTS,
     TREATMENTS,
-    LABRESULTS,
     REPORTS,
     DOCUMENTS,
 }
@@ -24,7 +23,6 @@ fun HealthCareCategory.getTitle(): Int {
         HealthCareCategory.VACCINATIONS -> CopyR.string.health_category_vaccinations
         HealthCareCategory.COMPLAINTS -> CopyR.string.health_category_complaints
         HealthCareCategory.TREATMENTS -> CopyR.string.health_category_treatments
-        HealthCareCategory.LABRESULTS -> CopyR.string.health_category_labresults
         HealthCareCategory.REPORTS -> CopyR.string.health_category_reports
         HealthCareCategory.DOCUMENTS -> CopyR.string.health_category_documents
     }

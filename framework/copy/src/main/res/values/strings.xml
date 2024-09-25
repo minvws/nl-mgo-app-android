@@ -179,4 +179,5 @@
   <string name="zib_medication_use.status">Status</string>
   <string name="zib_medication_use.subject">Patiënt</string>
   <string name="zib_medication_use.taken">Gebruik indicator</string>
+  <string name="common_close">Sluiten</string>
 </resources>

@@ -43,6 +43,7 @@ include(":component:collapsablecard")
 include(":component:results")
 include(":data:uiSchema")
 include(":data:healthcare")
+include(":component:banner")
 
 include(":feature:dashboard:remove_organization")
 include(":feature:dashboard:organizations")

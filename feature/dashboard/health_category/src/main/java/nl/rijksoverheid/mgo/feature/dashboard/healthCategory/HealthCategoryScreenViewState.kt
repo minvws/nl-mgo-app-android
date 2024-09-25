@@ -6,6 +6,7 @@ import nl.rijksoverheid.mgo.data.healthcare.getTitle
 
 data class HealthCategoryScreenViewState(
     @StringRes val title: Int,
+    val showErrorBanner: Boolean,
     val listItemsState: ListItemsState,
 ) {
     sealed class ListItemsState {
@@ -18,7 +19,11 @@ data class HealthCategoryScreenViewState(
 
     companion object {
         fun initialState(category: HealthCareCategory): HealthCategoryScreenViewState {
-            return HealthCategoryScreenViewState(title = category.getTitle(), listItemsState = ListItemsState.Loading)
+            return HealthCategoryScreenViewState(
+                title = category.getTitle(),
+                showErrorBanner = false,
+                listItemsState = ListItemsState.Loading,
+            )
         }
     }
 }

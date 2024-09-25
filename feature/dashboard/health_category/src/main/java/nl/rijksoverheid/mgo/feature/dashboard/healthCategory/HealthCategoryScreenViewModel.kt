@@ -43,6 +43,7 @@ class HealthCategoryScreenViewModel
                     .collectLatest { states ->
                         val loading = states.any { state -> state.loading }
                         val listItems = states.map { state -> state.toListItems() }.flatten()
+                        val error = states.any { state -> state.uiSchemaListResults.any { it.isFailure } }
                         _viewState.update {
                             val listItemState =
                                 when {
@@ -50,9 +51,19 @@ class HealthCategoryScreenViewModel
                                     listItems.isEmpty() -> HealthCategoryScreenViewState.ListItemsState.NoData
                                     else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
                                 }
-                            HealthCategoryScreenViewState(title = arguments.category.getTitle(), listItemsState = listItemState)
+                            HealthCategoryScreenViewState(
+                                title = arguments.category.getTitle(),
+                                showErrorBanner = error,
+                                listItemsState = listItemState,
+                            )
                         }
                     }
+            }
+        }
+
+        fun retry() {
+            viewModelScope.launch {
+                healthCareStateRepository.refresh(category = arguments.category, filterOrganization = arguments.filterOrganization)
             }
         }
 

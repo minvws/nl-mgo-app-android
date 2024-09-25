@@ -25,12 +25,20 @@ class TestServer {
         server?.enqueue(MockResponse().setResponseCode(200))
     }
 
-    fun enqueue500() {
-        server?.enqueue(MockResponse().setResponseCode(500))
+    fun enqueue500(amount: Int = 1) {
+        for (i in 0 until amount) {
+            server?.enqueue(MockResponse().setResponseCode(500))
+        }
     }
 
     fun enqueueJson(json: TestServerBody) {
         server?.enqueue(MockResponse().setBody(json))
+    }
+
+    fun enqueueJsons(vararg jsons: TestServerBody) {
+        for (json in jsons) {
+            enqueueJson(json)
+        }
     }
 
     fun getRequest(): RecordedRequest? {

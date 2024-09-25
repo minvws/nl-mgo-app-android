@@ -26,6 +26,9 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.banner.MgoBanner
+import nl.rijksoverheid.mgo.component.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
@@ -64,6 +69,7 @@ fun HealthCategoryScreen(
         onClickUiSchema = { uiSchema ->
             onClickUiSchema(medicationDetailsToolbarTitle, uiSchema)
         },
+        onRetry = { viewModel.retry() },
         onNavigateBack = onNavigateBack,
     )
 }
@@ -71,9 +77,11 @@ fun HealthCategoryScreen(
 @Composable
 private fun HealthCategoryScreenContent(
     viewState: HealthCategoryScreenViewState,
+    onRetry: () -> Unit,
     onClickUiSchema: (uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
+    var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -98,6 +106,9 @@ private fun HealthCategoryScreenContent(
                         title = viewState.title,
                         listItems = viewState.listItemsState.listItems,
                         onClickUiSchema = onClickUiSchema,
+                        showErrorBanner = showErrorBanner,
+                        onRetryClick = onRetry,
+                        onDismissErrorBanner = { showErrorBanner = false },
                     )
 
                 HealthCategoryScreenViewState.ListItemsState.Loading ->
@@ -106,10 +117,13 @@ private fun HealthCategoryScreenContent(
                         title = viewState.title,
                     )
 
-                HealthCategoryScreenViewState.ListItemsState.NoData ->
+                is HealthCategoryScreenViewState.ListItemsState.NoData ->
                     NoDataContent(
                         modifier = Modifier.padding(innerPadding),
                         title = viewState.title,
+                        showErrorBanner = showErrorBanner,
+                        onRetryClick = onRetry,
+                        onDismissErrorBanner = { showErrorBanner = false },
                     )
             }
         },
@@ -134,7 +148,10 @@ private fun LoadingContent(
         )
 
         Box(
-            modifier = Modifier.fillMaxSize().weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .weight(1f),
             contentAlignment = Alignment.Center,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -156,8 +173,10 @@ private fun LoadingContent(
 private fun ListItemsContent(
     @StringRes title: Int,
     listItems: List<HealthCategoryScreenListItem>,
-    onClickUiSchema: (uiSchema: UISchema)
-    -> Unit,
+    onClickUiSchema: (uiSchema: UISchema) -> Unit,
+    showErrorBanner: Boolean,
+    onRetryClick: () -> Unit,
+    onDismissErrorBanner: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -170,6 +189,23 @@ private fun ListItemsContent(
                 style = MaterialTheme.typography.headingLarge,
                 fontWeight = FontWeight.Bold,
             )
+        }
+
+        if (showErrorBanner) {
+            item {
+                MgoBanner(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                    type = MgoBannerType.WARNING,
+                    heading = stringResource(id = CopyR.string.health_category_error_banner_heading),
+                    subHeading = stringResource(id = CopyR.string.health_category_error_banner_subheading),
+                    buttonText = stringResource(id = CopyR.string.health_category_error_banner_try_again),
+                    onButtonClick = onRetryClick,
+                    onDismiss = onDismissErrorBanner,
+                )
+            }
         }
 
         items(listItems.size) { position ->
@@ -190,6 +226,9 @@ private fun ListItemsContent(
 @Composable
 private fun NoDataContent(
     @StringRes title: Int,
+    showErrorBanner: Boolean,
+    onRetryClick: () -> Unit,
+    onDismissErrorBanner: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -204,8 +243,26 @@ private fun NoDataContent(
             fontWeight = FontWeight.Bold,
         )
 
+        if (showErrorBanner) {
+            MgoBanner(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                type = MgoBannerType.WARNING,
+                heading = stringResource(id = CopyR.string.health_category_error_banner_heading),
+                subHeading = stringResource(id = CopyR.string.health_category_error_banner_subheading),
+                buttonText = stringResource(id = CopyR.string.health_category_error_banner_try_again),
+                onButtonClick = onRetryClick,
+                onDismiss = onDismissErrorBanner,
+            )
+        }
+
         Column(
-            modifier = Modifier.fillMaxSize().weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .weight(1f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -270,6 +327,7 @@ internal fun HealthCategoryScreenLoadingPreview() {
                     listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
                 ),
             onClickUiSchema = {},
+            onRetry = {},
             onNavigateBack = {},
         )
     }
@@ -294,6 +352,33 @@ internal fun HealthCategoryScreenListItemsPreview() {
                         ),
                 ),
             onClickUiSchema = {},
+            onRetry = {},
+            onNavigateBack = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoryScreenListItemsWithErrorPreview() {
+    MgoTheme {
+        HealthCategoryScreenContent(
+            viewState =
+                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+                    title = HealthCareCategory.MEDICATIONS.getTitle(),
+                    listItemsState =
+                        HealthCategoryScreenViewState.ListItemsState.Loaded(
+                            listItems =
+                                listOf(
+                                    TEST_LIST_ITEM_1,
+                                    TEST_LIST_ITEM_2,
+                                    TEST_LIST_ITEM_3,
+                                ),
+                        ),
+                    showErrorBanner = true,
+                ),
+            onClickUiSchema = {},
+            onRetry = {},
             onNavigateBack = {},
         )
     }
@@ -310,6 +395,25 @@ internal fun HealthCategoryScreenNoDataPreview() {
                     listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
                 ),
             onClickUiSchema = {},
+            onRetry = {},
+            onNavigateBack = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoryScreenNoDataWithErrorPreview() {
+    MgoTheme {
+        HealthCategoryScreenContent(
+            viewState =
+                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+                    title = HealthCareCategory.MEDICATIONS.getTitle(),
+                    listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
+                    showErrorBanner = true,
+                ),
+            onClickUiSchema = {},
+            onRetry = {},
             onNavigateBack = {},
         )
     }

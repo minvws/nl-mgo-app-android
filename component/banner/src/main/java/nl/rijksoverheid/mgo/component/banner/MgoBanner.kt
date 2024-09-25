@@ -23,14 +23,14 @@ import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun HealthDataErrorBanner(
+fun MgoBanner(
     type: MgoBannerType,
     heading: String,
     subHeading: String,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     buttonText: String? = null,
-    buttonCallback: (() -> Unit)? = null,
+    onButtonClick: (() -> Unit)? = null,
 ) {
     Card(modifier = modifier) {
         Row(modifier = Modifier.padding(12.dp)) {
@@ -53,7 +53,7 @@ fun HealthDataErrorBanner(
                 )
                 if (buttonText != null) {
                     Text(
-                        modifier = Modifier.padding(top = 4.dp).clickable { buttonCallback?.invoke() },
+                        modifier = Modifier.padding(top = 4.dp).clickable { onButtonClick?.invoke() },
                         text = buttonText,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
@@ -75,7 +75,7 @@ fun HealthDataErrorBanner(
 @Composable
 internal fun InfoBannerPreview() {
     MgoTheme {
-        HealthDataErrorBanner(
+        MgoBanner(
             modifier = Modifier.fillMaxWidth(),
             heading = "This is a heading",
             subHeading = "This is a subheading",
@@ -89,7 +89,7 @@ internal fun InfoBannerPreview() {
 @Composable
 internal fun InfoBannerWithButtonPreview() {
     MgoTheme {
-        HealthDataErrorBanner(
+        MgoBanner(
             modifier = Modifier.fillMaxWidth(),
             heading = "This is a heading",
             subHeading = "This is a subheading",
@@ -104,7 +104,7 @@ internal fun InfoBannerWithButtonPreview() {
 @Composable
 internal fun SuccessBannerPreview() {
     MgoTheme {
-        HealthDataErrorBanner(
+        MgoBanner(
             modifier = Modifier.fillMaxWidth(),
             heading = "This is a heading",
             subHeading = "This is a subheading",
@@ -118,7 +118,7 @@ internal fun SuccessBannerPreview() {
 @Composable
 internal fun WarningBannerPreview() {
     MgoTheme {
-        HealthDataErrorBanner(
+        MgoBanner(
             modifier = Modifier.fillMaxWidth(),
             heading = "This is a heading",
             subHeading = "This is a subheading",
@@ -132,7 +132,7 @@ internal fun WarningBannerPreview() {
 @Composable
 internal fun ErrorBannerPreview() {
     MgoTheme {
-        HealthDataErrorBanner(
+        MgoBanner(
             modifier = Modifier.fillMaxWidth(),
             heading = "This is a heading",
             subHeading = "This is a subheading",

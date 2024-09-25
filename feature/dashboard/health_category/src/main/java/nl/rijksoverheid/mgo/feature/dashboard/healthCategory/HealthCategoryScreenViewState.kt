@@ -13,7 +13,7 @@ data class HealthCategoryScreenViewState(
 
         data class Loaded(val listItems: List<HealthCategoryScreenListItem>) : ListItemsState()
 
-        data object NoData : ListItemsState()
+        data class NoData(val error: Boolean) : ListItemsState()
     }
 
     companion object {

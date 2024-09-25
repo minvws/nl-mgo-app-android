@@ -84,7 +84,7 @@
     <string name="health_category.documents">Documenten</string>
     <string name="health_category.empty.heading">Geen gegevens gevonden </string>
     <string name="health_category.empty.subheading">Er is hier niets opgeslagen.</string>
-    <string name="health_category.error.banner.heading">Gegevens deels opgehaald</string>
+    <string name="health_category.error.banner.heading">Gegevens ophalen mislukt</string>
     <string name="health_category.error.banner.subheading">Er ging iets mis in ons systeem.</string>
     <string name="health_category.error.banner.try_again">Probeer opnieuw</string>
     <string name="health_category.lab_results">Uitslagen</string>

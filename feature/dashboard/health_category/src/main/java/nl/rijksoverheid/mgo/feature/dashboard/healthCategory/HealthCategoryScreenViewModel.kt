@@ -43,11 +43,12 @@ class HealthCategoryScreenViewModel
                     .collectLatest { states ->
                         val loading = states.any { state -> state.loading }
                         val listItems = states.map { state -> state.toListItems() }.flatten()
+                        val error = states.any { state -> state.uiSchemaListResults.any { it.isFailure } }
                         _viewState.update {
                             val listItemState =
                                 when {
                                     loading -> HealthCategoryScreenViewState.ListItemsState.Loading
-                                    listItems.isEmpty() -> HealthCategoryScreenViewState.ListItemsState.NoData
+                                    listItems.isEmpty() -> HealthCategoryScreenViewState.ListItemsState.NoData(error)
                                     else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
                                 }
                             HealthCategoryScreenViewState(title = arguments.category.getTitle(), listItemsState = listItemState)

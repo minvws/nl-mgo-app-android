@@ -28,4 +28,11 @@ internal class HealthCategoryScreenSnapshotTest {
             HealthCategoryScreenNoDataPreview()
         }
     }
+
+    @Test
+    fun noDataWithError() {
+        snapshotTestRule.snapshots {
+            HealthCategoryScreenNoDataWithErrorPreview()
+        }
+    }
 }

@@ -35,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.banner.MgoBanner
+import nl.rijksoverheid.mgo.component.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
@@ -106,10 +108,11 @@ private fun HealthCategoryScreenContent(
                         title = viewState.title,
                     )
 
-                HealthCategoryScreenViewState.ListItemsState.NoData ->
+                is HealthCategoryScreenViewState.ListItemsState.NoData ->
                     NoDataContent(
                         modifier = Modifier.padding(innerPadding),
                         title = viewState.title,
+                        error = viewState.listItemsState.error,
                     )
             }
         },
@@ -134,7 +137,10 @@ private fun LoadingContent(
         )
 
         Box(
-            modifier = Modifier.fillMaxSize().weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .weight(1f),
             contentAlignment = Alignment.Center,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -190,6 +196,7 @@ private fun ListItemsContent(
 @Composable
 private fun NoDataContent(
     @StringRes title: Int,
+    error: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -204,8 +211,26 @@ private fun NoDataContent(
             fontWeight = FontWeight.Bold,
         )
 
+        if (error) {
+            MgoBanner(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                type = MgoBannerType.WARNING,
+                heading = stringResource(id = CopyR.string.health_category_error_banner_heading),
+                subHeading = stringResource(id = CopyR.string.health_category_error_banner_subheading),
+                buttonText = stringResource(id = CopyR.string.health_category_error_banner_try_again),
+                onButtonClick = {},
+                onDismiss = {},
+            )
+        }
+
         Column(
-            modifier = Modifier.fillMaxSize().weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .weight(1f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -307,7 +332,23 @@ internal fun HealthCategoryScreenNoDataPreview() {
             viewState =
                 HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
                     title = HealthCareCategory.MEDICATIONS.getTitle(),
-                    listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
+                    listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData(false),
+                ),
+            onClickUiSchema = {},
+            onNavigateBack = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoryScreenNoDataWithErrorPreview() {
+    MgoTheme {
+        HealthCategoryScreenContent(
+            viewState =
+                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+                    title = HealthCareCategory.MEDICATIONS.getTitle(),
+                    listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData(true),
                 ),
             onClickUiSchema = {},
             onNavigateBack = {},

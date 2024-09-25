@@ -106,6 +106,9 @@ private fun HealthCategoryScreenContent(
                         title = viewState.title,
                         listItems = viewState.listItemsState.listItems,
                         onClickUiSchema = onClickUiSchema,
+                        showErrorBanner = showErrorBanner,
+                        onRetryClick = onRetry,
+                        onDismissErrorBanner = { showErrorBanner = false },
                     )
 
                 HealthCategoryScreenViewState.ListItemsState.Loading ->
@@ -170,8 +173,10 @@ private fun LoadingContent(
 private fun ListItemsContent(
     @StringRes title: Int,
     listItems: List<HealthCategoryScreenListItem>,
-    onClickUiSchema: (uiSchema: UISchema)
-    -> Unit,
+    onClickUiSchema: (uiSchema: UISchema) -> Unit,
+    showErrorBanner: Boolean,
+    onRetryClick: () -> Unit,
+    onDismissErrorBanner: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -184,6 +189,23 @@ private fun ListItemsContent(
                 style = MaterialTheme.typography.headingLarge,
                 fontWeight = FontWeight.Bold,
             )
+        }
+
+        if (showErrorBanner) {
+            item {
+                MgoBanner(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                    type = MgoBannerType.WARNING,
+                    heading = stringResource(id = CopyR.string.health_category_error_banner_heading),
+                    subHeading = stringResource(id = CopyR.string.health_category_error_banner_subheading),
+                    buttonText = stringResource(id = CopyR.string.health_category_error_banner_try_again),
+                    onButtonClick = onRetryClick,
+                    onDismiss = onDismissErrorBanner,
+                )
+            }
         }
 
         items(listItems.size) { position ->
@@ -328,6 +350,32 @@ internal fun HealthCategoryScreenListItemsPreview() {
                                     TEST_LIST_ITEM_3,
                                 ),
                         ),
+                ),
+            onClickUiSchema = {},
+            onRetry = {},
+            onNavigateBack = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoryScreenListItemsWithErrorPreview() {
+    MgoTheme {
+        HealthCategoryScreenContent(
+            viewState =
+                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+                    title = HealthCareCategory.MEDICATIONS.getTitle(),
+                    listItemsState =
+                        HealthCategoryScreenViewState.ListItemsState.Loaded(
+                            listItems =
+                                listOf(
+                                    TEST_LIST_ITEM_1,
+                                    TEST_LIST_ITEM_2,
+                                    TEST_LIST_ITEM_3,
+                                ),
+                        ),
+                    showErrorBanner = true,
                 ),
             onClickUiSchema = {},
             onRetry = {},

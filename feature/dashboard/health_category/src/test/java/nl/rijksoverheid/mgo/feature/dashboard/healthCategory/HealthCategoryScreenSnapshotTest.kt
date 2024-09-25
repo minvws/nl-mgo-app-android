@@ -23,6 +23,13 @@ internal class HealthCategoryScreenSnapshotTest {
     }
 
     @Test
+    fun listItemsWithError() {
+        snapshotTestRule.snapshots {
+            HealthCategoryScreenListItemsWithErrorPreview()
+        }
+    }
+
+    @Test
     fun noData() {
         snapshotTestRule.snapshots {
             HealthCategoryScreenNoDataPreview()

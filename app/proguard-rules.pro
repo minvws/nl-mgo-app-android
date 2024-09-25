@@ -33,3 +33,8 @@
 -keep class * extends com.fasterxml.jackson.core.type.TypeReference { *; }
 -keep class com.fasterxml.jackson.core.type.TypeReference
 -keep class nl.rijksoverheid.mgo.data.uiSchema.** {  *; }
+
+# TODO Figure out why the moshi sealed library does not do this?
+-keep class nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService {
+    public <init>(com.squareup.moshi.Moshi);
+}

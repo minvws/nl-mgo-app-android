@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -40,14 +41,22 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
+import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.supportApotheek
-import nl.rijksoverheid.mgo.component.theme.supportFysiotherapeut
+import nl.rijksoverheid.mgo.component.theme.supportGegevens
+import nl.rijksoverheid.mgo.component.theme.supportGgd
 import nl.rijksoverheid.mgo.component.theme.supportGgz
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.component.theme.supportKliniek
+import nl.rijksoverheid.mgo.component.theme.supportOverige
+import nl.rijksoverheid.mgo.component.theme.supportRevalidatie
+import nl.rijksoverheid.mgo.component.theme.supportRijkslint
+import nl.rijksoverheid.mgo.component.theme.supportRivm
 import nl.rijksoverheid.mgo.component.theme.supportTandarts
 import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
+import nl.rijksoverheid.mgo.component.theme.supportVerloskundige
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
+import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.getTitle
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -178,89 +187,24 @@ private fun WithProviders(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Card {
+        Card(modifier = Modifier.padding(bottom = 16.dp)) {
             Column {
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.MEDICATIONS) },
-                    icon = R.drawable.ic_medication,
-                    title = HealthCareCategory.MEDICATIONS.getTitle(),
-                    iconColor = MaterialTheme.colors.supportHuisarts(),
-                    category = HealthCareCategory.MEDICATIONS,
-                    filterOrganization = filterOrganization,
-                )
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.ALLERGIES) },
-                    icon = R.drawable.ic_allergies,
-                    iconColor = MaterialTheme.colors.supportKliniek(),
-                    title = HealthCareCategory.ALLERGIES.getTitle(),
-                    category = HealthCareCategory.ALLERGIES,
-                    filterOrganization = filterOrganization,
-                )
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.MEASUREMENTS) },
-                    icon = R.drawable.ic_measurements,
-                    title = HealthCareCategory.MEASUREMENTS.getTitle(),
-                    iconColor = MaterialTheme.colors.supportApotheek(),
-                    category = HealthCareCategory.MEASUREMENTS,
-                    filterOrganization = filterOrganization,
-                )
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.VACCINATIONS) },
-                    icon = R.drawable.ic_vaccinations,
-                    iconColor = MaterialTheme.colors.supportTandarts(),
-                    title = HealthCareCategory.VACCINATIONS.getTitle(),
-                    hasDivider = false,
-                    category = HealthCareCategory.VACCINATIONS,
-                    filterOrganization = filterOrganization,
-                )
-            }
-        }
-
-        Card(modifier = Modifier.padding(top = 16.dp)) {
-            Column {
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.COMPLAINTS) },
-                    icon = R.drawable.ic_complaints,
-                    iconColor = MaterialTheme.colors.supportVerpleeghuis(),
-                    title = HealthCareCategory.COMPLAINTS.getTitle(),
-                    filterOrganization = filterOrganization,
-                    category = HealthCareCategory.COMPLAINTS,
-                )
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.TREATMENTS) },
-                    icon = R.drawable.ic_treatments,
-                    iconColor = MaterialTheme.colors.supportGgz(),
-                    title = HealthCareCategory.TREATMENTS.getTitle(),
-                    category = HealthCareCategory.TREATMENTS,
-                    filterOrganization = filterOrganization,
-                )
-            }
-        }
-
-        Card(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-            Column {
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.REPORTS) },
-                    icon = R.drawable.ic_reports,
-                    iconColor = MaterialTheme.colors.supportFysiotherapeut(),
-                    category = HealthCareCategory.REPORTS,
-                    title = HealthCareCategory.REPORTS.getTitle(),
-                    filterOrganization = filterOrganization,
-                )
-                HealthCategoriesListItem(
-                    modifier = Modifier.clickable { onClickListItem(HealthCareCategory.DOCUMENTS) },
-                    icon = R.drawable.ic_documents,
-                    iconColor = MaterialTheme.colors.supportThuiszorg(),
-                    category = HealthCareCategory.DOCUMENTS,
-                    title = HealthCareCategory.DOCUMENTS.getTitle(),
-                    filterOrganization = filterOrganization,
-                )
+                HealthCareCategory.entries.forEach { category ->
+                    HealthCategoriesListItem(
+                        modifier = Modifier.clickable { onClickListItem(category) },
+                        icon = category.getIcon(),
+                        title = category.getTitle(),
+                        iconColor = category.getIconColor(),
+                        category = category,
+                        filterOrganization = filterOrganization,
+                    )
+                }
             }
         }
 
         if (filterOrganization != null) {
             TextButton(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier.padding(top = 16.dp).align(Alignment.CenterHorizontally),
                 onClick = { onClickRemoveOrganization(filterOrganization) },
                 content = {
                     Text(
@@ -272,6 +216,50 @@ private fun WithProviders(
                 },
             )
         }
+    }
+}
+
+@DrawableRes
+fun HealthCareCategory.getIcon(): Int {
+    return when (this) {
+        HealthCareCategory.MEDICATIONS -> R.drawable.ic_medication
+        HealthCareCategory.MEASUREMENTS -> R.drawable.ic_measurements
+        HealthCareCategory.LAB_RESULTS -> R.drawable.ic_labresults
+        HealthCareCategory.ALLERGIES -> R.drawable.ic_allergies
+        HealthCareCategory.TREATMENTS -> R.drawable.ic_treatments
+        HealthCareCategory.APPOINTMENTS -> R.drawable.ic_appointments
+        HealthCareCategory.VACCINATIONS -> R.drawable.ic_vaccinations
+        HealthCareCategory.DOCUMENTS -> R.drawable.ic_documents
+        HealthCareCategory.COMPLAINTS -> R.drawable.ic_complaints
+        HealthCareCategory.PATIENT -> R.drawable.ic_patient
+        HealthCareCategory.ALERTS -> R.drawable.ic_alerts
+        HealthCareCategory.PAYMENT -> R.drawable.ic_payment
+        HealthCareCategory.PLANS -> R.drawable.ic_plans
+        HealthCareCategory.DEVICES -> R.drawable.ic_devices
+        HealthCareCategory.MENTAL -> R.drawable.ic_mental
+        HealthCareCategory.LIFESTYLE -> R.drawable.ic_lifestyle
+    }
+}
+
+@Composable
+fun HealthCareCategory.getIconColor(): Color {
+    return when (this) {
+        HealthCareCategory.MEDICATIONS -> MaterialTheme.colors.supportHuisarts()
+        HealthCareCategory.MEASUREMENTS -> MaterialTheme.colors.supportApotheek()
+        HealthCareCategory.LAB_RESULTS -> MaterialTheme.colors.supportZiekenhuis()
+        HealthCareCategory.ALLERGIES -> MaterialTheme.colors.supportKliniek()
+        HealthCareCategory.TREATMENTS -> MaterialTheme.colors.supportGgz()
+        HealthCareCategory.APPOINTMENTS -> MaterialTheme.colors.supportGgd()
+        HealthCareCategory.VACCINATIONS -> MaterialTheme.colors.supportTandarts()
+        HealthCareCategory.DOCUMENTS -> MaterialTheme.colors.supportThuiszorg()
+        HealthCareCategory.COMPLAINTS -> MaterialTheme.colors.supportVerpleeghuis()
+        HealthCareCategory.PATIENT -> MaterialTheme.colors.supportOverige()
+        HealthCareCategory.ALERTS -> MaterialTheme.colors.supportRivm()
+        HealthCareCategory.PAYMENT -> MaterialTheme.colors.supportVerloskundige()
+        HealthCareCategory.PLANS -> MaterialTheme.colors.supportRevalidatie()
+        HealthCareCategory.DEVICES -> MaterialTheme.colors.supportRijkslint()
+        HealthCareCategory.MENTAL -> MaterialTheme.colors.notificationInformation()
+        HealthCareCategory.LIFESTYLE -> MaterialTheme.colors.supportGegevens()
     }
 }
 

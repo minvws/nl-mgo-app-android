@@ -156,3 +156,21 @@ fun Colors.supportOverige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 @Composable
 fun Colors.supportRijkslint(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF154273) else Color(0xFF154273)
+
+@Composable
+fun Colors.supportGgd(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFA3847D) else Color(0xFF673327)
+
+@Composable
+fun Colors.supportRivm(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFFBED78) else Color(0xFFF9E11E)
+
+@Composable
+fun Colors.supportVerloskundige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFCB66A0) else Color(0xFFA90061)
+
+@Composable
+fun Colors.supportRevalidatie(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFACE4D3) else Color(0xFF76D2B6)
+
+@Composable
+fun Colors.supportGegevens(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF34C759) else Color(0xFF34C759)

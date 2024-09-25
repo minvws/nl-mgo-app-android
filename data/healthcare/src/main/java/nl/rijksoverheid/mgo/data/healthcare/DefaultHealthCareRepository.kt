@@ -53,10 +53,54 @@ private fun MgoOrganizationDataService.getUrlPaths(category: HealthCareCategory)
                 }
 
                 is MgoOrganizationDataService.Gp -> {
-                    listOf(GP_MEDICATION_AGREEMENT)
+                    listOf()
                 }
             }
         }
-        else -> listOf()
+        HealthCareCategory.MEASUREMENTS -> {
+            when (this) {
+                is MgoOrganizationDataService.Bgz -> listOf()
+                is MgoOrganizationDataService.Gp -> listOf()
+            }
+        }
+        HealthCareCategory.LAB_RESULTS -> {
+            when (this) {
+                is MgoOrganizationDataService.Bgz -> listOf()
+                is MgoOrganizationDataService.Gp -> listOf()
+            }
+        }
+        HealthCareCategory.ALLERGIES -> {
+            when (this) {
+                is MgoOrganizationDataService.Bgz -> listOf(BGZ_ALLERGIES)
+                is MgoOrganizationDataService.Gp -> listOf()
+            }
+        }
+        HealthCareCategory.TREATMENTS -> listOf()
+        HealthCareCategory.APPOINTMENTS -> listOf()
+        HealthCareCategory.VACCINATIONS -> listOf()
+        HealthCareCategory.DOCUMENTS -> listOf()
+        HealthCareCategory.COMPLAINTS ->
+            when (this) {
+                is MgoOrganizationDataService.Bgz -> listOf(BGZ_PROBLEM)
+                is MgoOrganizationDataService.Gp -> listOf()
+            }
+        HealthCareCategory.PATIENT -> listOf()
+        HealthCareCategory.ALERTS -> listOf()
+        HealthCareCategory.PAYMENT -> listOf()
+        HealthCareCategory.PLANS -> listOf()
+        HealthCareCategory.DEVICES -> listOf()
+        HealthCareCategory.MENTAL -> listOf()
+        HealthCareCategory.LIFESTYLE ->
+            when (this) {
+                is MgoOrganizationDataService.Bgz ->
+                    listOf(
+                        BGZ_LIVING_SITUATION,
+                        BGZ_DRUGS_USE,
+                        BGZ_ALCOHOL_USE,
+                        BGZ_TABACCO_USE,
+                        BGZ_NUTRITION_USE,
+                    )
+                is MgoOrganizationDataService.Gp -> listOf()
+            }
     }
 }

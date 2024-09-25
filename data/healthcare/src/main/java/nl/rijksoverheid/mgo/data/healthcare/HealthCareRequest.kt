@@ -1,8 +1,15 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.rijksoverheid.mgo.data.uiSchema.ZibAdministrationAgreementProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibAlcoholUseProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibAllergyIntoleranceProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibDrugUseProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibLivingSituationProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationAgreementProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationUseProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibNutritionAdviceProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibProblemProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibTobaccoUseProfile
 
 data class HealthCareRequest(
     val urlPath: String,
@@ -32,6 +39,48 @@ internal val BGZ_ADMINISTRATION_AGREEMENT =
             "MedicationDispense?category=http://snomed" +
                 ".info/sct|422037009&_include=MedicationDispense:medication",
         profile = ZibAdministrationAgreementProfile.HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement.value,
+    )
+
+internal val BGZ_ALLERGIES =
+    HealthCareRequest(
+        urlPath = "AllergyIntolerance",
+        profile = ZibAllergyIntoleranceProfile.HTTPNictizNlFhirStructureDefinitionZibAllergyIntolerance.value,
+    )
+
+internal val BGZ_PROBLEM =
+    HealthCareRequest(
+        urlPath = "Condition",
+        profile = ZibProblemProfile.HTTPNictizNlFhirStructureDefinitionZibProblem.value,
+    )
+
+internal val BGZ_LIVING_SITUATION =
+    HealthCareRequest(
+        urlPath = "Observation/${'$'}lastn?code=http://snomed.info/sct|365508006",
+        profile = ZibLivingSituationProfile.HTTPNictizNlFhirStructureDefinitionZibLivingSituation.value,
+    )
+
+internal val BGZ_DRUGS_USE =
+    HealthCareRequest(
+        urlPath = "Observation?code=http://snomed.info/sct|228366006",
+        profile = ZibDrugUseProfile.HTTPNictizNlFhirStructureDefinitionZibDrugUse.value,
+    )
+
+internal val BGZ_ALCOHOL_USE =
+    HealthCareRequest(
+        urlPath = "Observation?code=http://snomed.info/sct|228273003",
+        profile = ZibAlcoholUseProfile.HTTPNictizNlFhirStructureDefinitionZibAlcoholUse.value,
+    )
+
+internal val BGZ_TABACCO_USE =
+    HealthCareRequest(
+        urlPath = "Observation?code=http://snomed.info/sct|365980008",
+        profile = ZibTobaccoUseProfile.HTTPNictizNlFhirStructureDefinitionZibTobaccoUse.value,
+    )
+
+internal val BGZ_NUTRITION_USE =
+    HealthCareRequest(
+        urlPath = "NutritionOrder",
+        profile = ZibNutritionAdviceProfile.HTTPNictizNlFhirStructureDefinitionZibNutritionAdvice.value,
     )
 
 // ================

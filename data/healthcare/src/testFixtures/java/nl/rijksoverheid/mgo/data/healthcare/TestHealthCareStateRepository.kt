@@ -15,7 +15,7 @@ class TestHealthCareStateRepository : HealthCareStateRepository {
     override suspend fun init() {
     }
 
-    override suspend fun observe(
+    override fun observe(
         category: HealthCareCategory,
         organization: MgoOrganization?,
     ): Flow<List<HealthCareDataState>> {

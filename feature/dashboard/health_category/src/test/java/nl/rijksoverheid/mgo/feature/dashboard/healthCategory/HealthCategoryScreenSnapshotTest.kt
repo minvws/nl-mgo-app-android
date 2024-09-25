@@ -9,9 +9,23 @@ internal class HealthCategoryScreenSnapshotTest {
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
-    fun preview() {
+    fun loading() {
         snapshotTestRule.snapshots {
-            HealthCategoryScreenPreview()
+            HealthCategoryScreenLoadingPreview()
+        }
+    }
+
+    @Test
+    fun listItems() {
+        snapshotTestRule.snapshots {
+            HealthCategoryScreenListItemsPreview()
+        }
+    }
+
+    @Test
+    fun noData() {
+        snapshotTestRule.snapshots {
+            HealthCategoryScreenNoDataPreview()
         }
     }
 }

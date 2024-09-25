@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -143,7 +144,6 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(id = CopyR.string.organization_search_heading),
@@ -152,7 +152,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
         )
 
         Box(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.fillMaxSize().weight(1f),
             contentAlignment = Alignment.Center,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {

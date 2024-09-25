@@ -1,6 +1,8 @@
 package nl.rijksoverheid.mgo.data.localisation.models
 
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_BGZ
+import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_GP
 import nl.rijksoverheid.mgo.data.api.load.SearchResponse
 
 @JsonClass(generateAdapter = true)
@@ -10,9 +12,11 @@ data class MgoOrganization(
     val address: String?,
     val category: String?,
     val added: Boolean,
-    val resourceEndpoint: String,
+    val dataServices: List<MgoOrganizationDataService>,
 )
 
+val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService.Bgz(resourceEndpoint = "")
+val TEST_GP_DATA_SERVICE = MgoOrganizationDataService.Gp(resourceEndpoint = "")
 val TEST_MGO_ORGANIZATION =
     MgoOrganization(
         id = "1",
@@ -20,7 +24,7 @@ val TEST_MGO_ORGANIZATION =
         address = "Boorplatform 5\r\n1234AB Roermond",
         category = "Tandarts",
         added = false,
-        resourceEndpoint = "https://www.google.nl",
+        dataServices = listOf(),
     )
 
 internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoOrganization {
@@ -30,6 +34,13 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
         address = addresses.firstOrNull()?.address,
         category = types.firstOrNull()?.displayName,
         added = added,
-        resourceEndpoint = dataServices.first { dataService -> dataService.id == 48 }.roles.first().resourceEndpoint,
+        dataServices =
+            dataServices.mapNotNull { dataService ->
+                when (dataService.id) {
+                    DATA_SERVICE_BGZ -> MgoOrganizationDataService.Bgz(dataService.roles.first().resourceEndpoint)
+                    DATA_SERVICE_GP -> MgoOrganizationDataService.Gp(dataService.roles.first().resourceEndpoint)
+                    else -> null
+                }
+            },
     )
 }

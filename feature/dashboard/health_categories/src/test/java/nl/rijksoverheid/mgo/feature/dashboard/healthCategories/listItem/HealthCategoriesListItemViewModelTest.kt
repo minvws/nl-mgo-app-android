@@ -2,10 +2,9 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
+import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_STATE_LOADED
+import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_STATE_LOADING
 import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareStateRepository
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -16,22 +15,14 @@ internal class HealthCategoriesListItemViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val healthCareStateRepository = TestHealthCareStateRepository()
-
     @Test
     fun `Given health care data emits one loading, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            healthCareStateRepository.setData(
-                listOf(
-                    HealthCareDataState(
-                        loading = true,
-                        organization = TEST_MGO_ORGANIZATION,
-                        category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf(),
-                    ),
-                ),
-            )
+            val healthCareStateRepository =
+                TestHealthCareStateRepository(
+                    initialData = listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING),
+                )
 
             // When
             val viewModel =
@@ -51,22 +42,10 @@ internal class HealthCategoriesListItemViewModelTest {
     fun `Given health care data emits multiple with one loading, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            healthCareStateRepository.setData(
-                listOf(
-                    HealthCareDataState(
-                        loading = true,
-                        organization = TEST_MGO_ORGANIZATION,
-                        category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf(),
-                    ),
-                    HealthCareDataState(
-                        loading = false,
-                        organization = TEST_MGO_ORGANIZATION,
-                        category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf(),
-                    ),
-                ),
-            )
+            val healthCareStateRepository =
+                TestHealthCareStateRepository(
+                    initialData = listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING, TEST_HEALTH_CARE_DATA_STATE_LOADED),
+                )
 
             // When
             val viewModel =
@@ -86,16 +65,10 @@ internal class HealthCategoriesListItemViewModelTest {
     fun `Given health care data emits one loaded, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            healthCareStateRepository.setData(
-                listOf(
-                    HealthCareDataState(
-                        loading = false,
-                        organization = TEST_MGO_ORGANIZATION,
-                        category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION))),
-                    ),
-                ),
-            )
+            val healthCareStateRepository =
+                TestHealthCareStateRepository(
+                    initialData = listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED),
+                )
 
             // When
             val viewModel =
@@ -115,16 +88,15 @@ internal class HealthCategoriesListItemViewModelTest {
     fun `Given health care data emits one loaded with no data, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            healthCareStateRepository.setData(
-                listOf(
-                    HealthCareDataState(
-                        loading = false,
-                        organization = TEST_MGO_ORGANIZATION,
-                        category = HealthCareCategory.MEDICATIONS,
-                        uiSchemaListResults = listOf(Result.success(listOf())),
-                    ),
-                ),
-            )
+            val healthCareStateRepository =
+                TestHealthCareStateRepository(
+                    initialData =
+                        listOf(
+                            TEST_HEALTH_CARE_DATA_STATE_LOADED.copy(
+                                uiSchemaListResults = listOf(),
+                            ),
+                        ),
+                )
 
             // When
             val viewModel =

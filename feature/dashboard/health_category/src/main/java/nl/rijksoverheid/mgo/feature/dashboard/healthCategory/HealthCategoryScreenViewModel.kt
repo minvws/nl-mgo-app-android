@@ -48,12 +48,22 @@ class HealthCategoryScreenViewModel
                             val listItemState =
                                 when {
                                     loading -> HealthCategoryScreenViewState.ListItemsState.Loading
-                                    listItems.isEmpty() -> HealthCategoryScreenViewState.ListItemsState.NoData(error)
+                                    listItems.isEmpty() -> HealthCategoryScreenViewState.ListItemsState.NoData
                                     else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
                                 }
-                            HealthCategoryScreenViewState(title = arguments.category.getTitle(), listItemsState = listItemState)
+                            HealthCategoryScreenViewState(
+                                title = arguments.category.getTitle(),
+                                showErrorBanner = error,
+                                listItemsState = listItemState,
+                            )
                         }
                     }
+            }
+        }
+
+        fun retry() {
+            viewModelScope.launch {
+                healthCareStateRepository.refresh(category = arguments.category, filterOrganization = arguments.filterOrganization)
             }
         }
 

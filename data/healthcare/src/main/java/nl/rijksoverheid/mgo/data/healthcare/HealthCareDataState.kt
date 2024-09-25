@@ -12,10 +12,26 @@ data class HealthCareDataState(
     val uiSchemaListResults: List<Result<List<UISchema>>>,
 )
 
+val TEST_HEALTH_CARE_DATA_STATE_LOADING =
+    HealthCareDataState(
+        loading = true,
+        organization = TEST_MGO_ORGANIZATION,
+        category = HealthCareCategory.MEDICATIONS,
+        uiSchemaListResults = listOf(),
+    )
+
 val TEST_HEALTH_CARE_DATA_STATE_LOADED =
     HealthCareDataState(
         loading = false,
         organization = TEST_MGO_ORGANIZATION,
         category = HealthCareCategory.MEDICATIONS,
         uiSchemaListResults = listOf(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION))),
+    )
+
+val TEST_HEALTH_CARE_DATA_STATE_ERROR =
+    HealthCareDataState(
+        loading = false,
+        organization = TEST_MGO_ORGANIZATION,
+        category = HealthCareCategory.MEDICATIONS,
+        uiSchemaListResults = listOf(Result.failure(IllegalStateException())),
     )

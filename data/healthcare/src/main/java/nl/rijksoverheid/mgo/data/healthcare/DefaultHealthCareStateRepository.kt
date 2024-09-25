@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
 
 class DefaultHealthCareStateRepository
     @Inject
@@ -50,6 +51,31 @@ class DefaultHealthCareStateRepository
             }
         }
 
+        override suspend fun refresh(
+            category: HealthCareCategory,
+            filterOrganization: MgoOrganization?,
+        ) {
+            val organizations =
+                buildList {
+                    if (filterOrganization == null) {
+                        // If no specific organization is given to refresh, we refresh them all
+                        runBlocking { addAll(organizationRepository.get()) }
+                    } else {
+                        add(filterOrganization)
+                    }
+                }
+
+            // Set loading states
+            for (organization in organizations) {
+                updateLoading(organization = organization, category = category)
+            }
+
+            // Load data
+            for (organization in organizations) {
+                get(organization = organization, category = category)
+            }
+        }
+
         override fun observe(
             category: HealthCareCategory,
             organization: MgoOrganization?,
@@ -77,6 +103,28 @@ class DefaultHealthCareStateRepository
                     uiSchemaListResults = listOf(),
                 )
             statesFlow.update { states -> states.toMutableList().also { it.add(state) } }
+        }
+
+        private fun updateLoading(
+            organization: MgoOrganization,
+            category: HealthCareCategory,
+        ) {
+            val newState =
+                HealthCareDataState(
+                    loading = true,
+                    organization = organization,
+                    category = category,
+                    uiSchemaListResults = listOf(),
+                )
+            statesFlow.update { states ->
+                states.map { state ->
+                    if (state.organization == organization && state.category == category) {
+                        newState
+                    } else {
+                        state
+                    }
+                }
+            }
         }
 
         private suspend fun get(

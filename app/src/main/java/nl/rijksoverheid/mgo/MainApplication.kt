@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @HiltAndroidApp
@@ -25,7 +26,7 @@ class MainApplication : Application() {
             plant(Timber.DebugTree())
         }
         coroutineScope.launch {
-            observeHealthCareDataStates.invoke()
+            observeHealthCareDataStates.invoke().collect()
         }
     }
 

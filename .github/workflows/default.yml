@@ -39,8 +39,12 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-      - name: Gradle commands
-        run: ./gradlew lintTstDebug ktlintCheck verifyPaparazziDebug testTstDebug jacocoTestReport
+      - name: Lint and format checks
+        run: ./gradlew lintTstDebug ktlintCheck
+      - name: Snapshot tests
+        run: ./gradlew verifyPaparazziDebug
+      - name: Unit Tests
+        run: ./gradlew testTstDebug jacocoTestReport
 #      - name: Android Emulator Tests
 #        uses: reactivecircus/android-emulator-runner@v2
 #        with:

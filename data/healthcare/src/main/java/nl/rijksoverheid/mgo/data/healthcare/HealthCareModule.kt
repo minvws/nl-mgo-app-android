@@ -5,7 +5,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
 import javax.inject.Named
 import javax.inject.Singleton
@@ -15,12 +14,12 @@ import javax.inject.Singleton
 object HealthCareModule {
     @Provides
     @Singleton
-    fun provideHealthCareRepository(
+    fun provideUiSchemaRepository(
         uiSchemaMapper: UiSchemaMapper,
         dvaApi: DvaApi,
         @Named("dvaApiBaseUrl") dvaApiBaseUrl: String,
-    ): HealthCareRepository {
-        return DefaultHealthCareRepository(
+    ): UiSchemaRepository {
+        return DefaultUiSchemaRepository(
             uiSchemaMapper = uiSchemaMapper,
             dvaApi = dvaApi,
             dvaApiBaseUrl = dvaApiBaseUrl,
@@ -29,13 +28,19 @@ object HealthCareModule {
 
     @Provides
     @Singleton
-    fun provideHealthCareStateRepository(
-        healthCareRepository: HealthCareRepository,
-        organizationRepository: OrganizationRepository,
-    ): HealthCareStateRepository {
-        return DefaultHealthCareStateRepository(
-            healthCareRepository = healthCareRepository,
-            organizationRepository = organizationRepository,
+    fun provideHealthCareDataStateRepository(uiSchemaRepository: UiSchemaRepository): HealthCareDataStateRepository {
+        return DefaultHealthCareDataStateRepository(
+            uiSchemaRepository = uiSchemaRepository,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideHealthCareDataStatesRepository(
+        healthCareDataStateRepository: HealthCareDataStateRepository,
+    ): HealthCareDataStatesRepository {
+        return DefaultHealthCareDataStatesRepository(
+            healthCareDataStateRepository = healthCareDataStateRepository,
         )
     }
 }

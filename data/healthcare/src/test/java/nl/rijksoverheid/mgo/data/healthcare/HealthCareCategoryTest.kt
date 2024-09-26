@@ -73,14 +73,14 @@ class HealthCareCategoryTest {
         val mentalRequests = HealthCareCategory.MENTAL.getRequests()
         assertEquals(
             listOf(BGZ_FUNCTIONAL_OR_MENTAL_STATUS),
-            mentalRequests
+            mentalRequests,
         )
 
         // Other
         val otherRequests = HealthCareCategory.PAYMENT.getRequests()
         assertEquals(
             listOf<HealthCareRequest>(),
-            otherRequests
+            otherRequests,
         )
     }
 }

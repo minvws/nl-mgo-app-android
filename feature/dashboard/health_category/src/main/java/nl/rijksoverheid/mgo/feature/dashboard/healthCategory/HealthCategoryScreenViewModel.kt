@@ -7,8 +7,9 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.healthcare.getTitle
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -17,11 +18,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel(assistedFactory = HealthCategoryScreenViewModel.Factory::class)
-class HealthCategoryScreenViewModel
+internal class HealthCategoryScreenViewModel
     @AssistedInject
     constructor(
         @Assisted("arguments") private val arguments: HealthCategoryScreenArguments,
-        private val healthCareStateRepository: HealthCareStateRepository,
+        private val organizationRepository: OrganizationRepository,
+        private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -36,9 +38,9 @@ class HealthCategoryScreenViewModel
 
         init {
             viewModelScope.launch {
-                healthCareStateRepository.observe(
+                healthCareDataStatesRepository.observe(
                     category = arguments.category,
-                    organization = arguments.filterOrganization,
+                    filterOrganization = arguments.filterOrganization,
                 )
                     .collectLatest { states ->
                         val loading = states.any { state -> state.loading }
@@ -63,7 +65,15 @@ class HealthCategoryScreenViewModel
 
         fun retry() {
             viewModelScope.launch {
-                healthCareStateRepository.refresh(category = arguments.category, filterOrganization = arguments.filterOrganization)
+                val filterOrganization = arguments.filterOrganization
+                if (filterOrganization == null) {
+                    val organizations = organizationRepository.get()
+                    for (organization in organizations) {
+                        healthCareDataStatesRepository.refresh(category = arguments.category, organization = organization)
+                    }
+                } else {
+                    healthCareDataStatesRepository.refresh(category = arguments.category, organization = filterOrganization)
+                }
             }
         }
 

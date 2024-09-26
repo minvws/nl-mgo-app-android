@@ -7,7 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,7 +22,7 @@ internal class HealthCategoriesListItemViewModel
     constructor(
         @Assisted private val filterOrganization: MgoOrganization?,
         @Assisted private val category: HealthCareCategory,
-        private val healthCareStateRepository: HealthCareStateRepository,
+        private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -40,7 +40,8 @@ internal class HealthCategoriesListItemViewModel
 
         init {
             viewModelScope.launch {
-                healthCareStateRepository.observe(category = category, organization = filterOrganization).collectLatest { states ->
+                healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).collectLatest {
+                        states ->
                     val loading = states.any { state -> state.loading }
                     val amountOfItems = states.sumOf { state -> state.uiSchemaListResults.sumOf { it.getOrNull()?.size ?: 0 } }
                     when {

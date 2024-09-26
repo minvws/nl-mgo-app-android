@@ -15,6 +15,7 @@
   <string name="bottombar.overview">Overzicht</string>
   <string name="common.add">toevoegen</string>
   <string name="common.cancel">Annuleren</string>
+  <string name="common.close">Sluiten</string>
   <string name="common.delete">verwijderen</string>
   <string name="common.error_heading">Er ging iets mis</string>
   <string name="common.error_subheading">Controleer of je telefoon verbonden is met het internet en probeer het opnieuw.</string>
@@ -179,5 +180,4 @@
   <string name="zib_medication_use.status">Status</string>
   <string name="zib_medication_use.subject">Patiënt</string>
   <string name="zib_medication_use.taken">Gebruik indicator</string>
-  <string name="common_close">Sluiten</string>
 </resources>

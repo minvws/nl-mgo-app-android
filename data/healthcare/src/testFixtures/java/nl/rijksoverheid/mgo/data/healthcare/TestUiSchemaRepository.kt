@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.data.healthcare
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 
-class TestHealthCareRepository : HealthCareRepository {
+class TestUiSchemaRepository : UiSchemaRepository {
     private val uiSchemaResult = mutableListOf<Result<List<UISchema>>>()
 
     fun setUiSchemaResult(result: List<Result<List<UISchema>>>) {

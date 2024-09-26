@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_STATE_LOADED
 import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_STATE_LOADING
-import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -19,8 +19,8 @@ internal class HealthCategoriesListItemViewModelTest {
     fun `Given health care data emits one loading, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            val healthCareStateRepository =
-                TestHealthCareStateRepository(
+            val healthCareDataStatesRepository =
+                TestHealthCareDataStatesRepository(
                     initialData = listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING),
                 )
 
@@ -29,7 +29,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository,
+                    healthCareDataStatesRepository = healthCareDataStatesRepository,
                 )
 
             // Then
@@ -42,8 +42,8 @@ internal class HealthCategoriesListItemViewModelTest {
     fun `Given health care data emits multiple with one loading, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            val healthCareStateRepository =
-                TestHealthCareStateRepository(
+            val healthCareDataStatesRepository =
+                TestHealthCareDataStatesRepository(
                     initialData = listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING, TEST_HEALTH_CARE_DATA_STATE_LOADED),
                 )
 
@@ -52,7 +52,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository,
+                    healthCareDataStatesRepository = healthCareDataStatesRepository,
                 )
 
             // Then
@@ -65,8 +65,8 @@ internal class HealthCategoriesListItemViewModelTest {
     fun `Given health care data emits one loaded, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            val healthCareStateRepository =
-                TestHealthCareStateRepository(
+            val healthCareDataStatesRepository =
+                TestHealthCareDataStatesRepository(
                     initialData = listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED),
                 )
 
@@ -75,7 +75,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository,
+                    healthCareDataStatesRepository = healthCareDataStatesRepository,
                 )
 
             // Then
@@ -88,8 +88,8 @@ internal class HealthCategoriesListItemViewModelTest {
     fun `Given health care data emits one loaded with no data, When creating viewmodel, Then list item state is updated`() =
         runTest {
             // Given
-            val healthCareStateRepository =
-                TestHealthCareStateRepository(
+            val healthCareDataStatesRepository =
+                TestHealthCareDataStatesRepository(
                     initialData =
                         listOf(
                             TEST_HEALTH_CARE_DATA_STATE_LOADED.copy(
@@ -103,7 +103,7 @@ internal class HealthCategoriesListItemViewModelTest {
                 HealthCategoriesListItemViewModel(
                     filterOrganization = null,
                     category = HealthCareCategory.MEDICATIONS,
-                    healthCareStateRepository = healthCareStateRepository,
+                    healthCareDataStatesRepository = healthCareDataStatesRepository,
                 )
 
             // Then

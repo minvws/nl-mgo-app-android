@@ -5,6 +5,7 @@ import nl.rijksoverheid.mgo.data.api.load.createLoadApi
 import nl.rijksoverheid.mgo.data.localisation.DefaultOrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.file.TestFileStore
@@ -54,8 +55,14 @@ internal class DefaultMgoOrganizationRepositoryTest {
                         added = false,
                         dataServices =
                             listOf(
-                                MgoOrganizationDataService.Gp("https://dva-mock.test.mgo.prolocation.net/49"),
-                                MgoOrganizationDataService.Bgz("https://dva-mock.test.mgo.prolocation.net/48"),
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/49",
+                                    type = MgoOrganizationDataServiceType.GP,
+                                ),
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
+                                    type = MgoOrganizationDataServiceType.BGZ,
+                                ),
                             ),
                     )
                 assertEquals(expectedFirstHealthProvider, providers.firstOrNull())

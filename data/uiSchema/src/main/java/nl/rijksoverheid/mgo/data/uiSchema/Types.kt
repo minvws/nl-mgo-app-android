@@ -43,6 +43,8 @@
 //   val zibDrugUse = ZibDrugUse.fromJson(jsonString)
 //   val zibFunctionalOrMentalStatus = ZibFunctionalOrMentalStatus.fromJson(jsonString)
 //   val zibLivingSituation = ZibLivingSituation.fromJson(jsonString)
+//   val zibMedicalDevice = ZibMedicalDevice.fromJson(jsonString)
+//   val zibMedicalDeviceProduct = ZibMedicalDeviceProduct.fromJson(jsonString)
 //   val zibMedicationAgreement = ZibMedicationAgreement.fromJson(jsonString)
 //   val zibMedicationUse = ZibMedicationUse.fromJson(jsonString)
 //   val zibNutritionAdvice = ZibNutritionAdvice.fromJson(jsonString)
@@ -65,72 +67,45 @@ import com.fasterxml.jackson.databind.node.*
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.fasterxml.jackson.module.kotlin.*
 
-@Suppress("UNCHECKED_CAST")
-private fun <T> ObjectMapper.convert(
-    k: kotlin.reflect.KClass<*>,
-    fromJson: (JsonNode) -> T,
-    toJson: (T) -> String,
-    isUnion: Boolean = false,
-) = registerModule(
-    SimpleModule().apply {
-        addSerializer(
-            k.java as Class<T>,
-            object : StdSerializer<T>(k.java as Class<T>) {
-                override fun serialize(
-                    value: T,
-                    gen: JsonGenerator,
-                    provider: SerializerProvider,
-                ) = gen.writeRawValue(toJson(value))
-            },
-        )
-        addDeserializer(
-            k.java as Class<T>,
-            object : StdDeserializer<T>(k.java as Class<T>) {
-                override fun deserialize(
-                    p: JsonParser,
-                    ctxt: DeserializationContext,
-                ) = fromJson(p.readValueAsTree())
-            },
-        )
-    },
-)
 
-val mapper =
-    jacksonObjectMapper().apply {
-        propertyNamingStrategy = PropertyNamingStrategy.LOWER_CAMEL_CASE
-        setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        convert(NlCoreObservationProfile::class, { NlCoreObservationProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(NlCorePatientProfile::class, { NlCorePatientProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(
-            ZibAdministrationAgreementProfile::class,
-            { ZibAdministrationAgreementProfile.fromValue(it.asText()) },
-            { "\"${it.value}\"" },
-        )
-        convert(ZibAlcoholUseProfile::class, { ZibAlcoholUseProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibAlertProfile::class, { ZibAlertProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibAllergyIntoleranceProfile::class, { ZibAllergyIntoleranceProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibDrugUseProfile::class, { ZibDrugUseProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(
-            ZibFunctionalOrMentalStatusProfile::class,
-            { ZibFunctionalOrMentalStatusProfile.fromValue(it.asText()) },
-            { "\"${it.value}\"" },
-        )
-        convert(ZibLivingSituationProfile::class, { ZibLivingSituationProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibMedicationAgreementProfile::class, { ZibMedicationAgreementProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibMedicationUseProfile::class, { ZibMedicationUseProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibNutritionAdviceProfile::class, { ZibNutritionAdviceProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibPayerProfile::class, { ZibPayerProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibProblemProfile::class, { ZibProblemProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibProductProfile::class, { ZibProductProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibTobaccoUseProfile::class, { ZibTobaccoUseProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ZibTreatmentDirectiveProfile::class, { ZibTreatmentDirectiveProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
-        convert(ChildDisplay::class, { ChildDisplay.fromJson(it) }, { it.toJson() }, true)
-        convert(DisplayElement::class, { DisplayElement.fromJson(it) }, { it.toJson() }, true)
-    }
+@Suppress("UNCHECKED_CAST")
+private fun <T> ObjectMapper.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonNode) -> T, toJson: (T) -> String, isUnion: Boolean = false) = registerModule(SimpleModule().apply {
+    addSerializer(k.java as Class<T>, object : StdSerializer<T>(k.java as Class<T>) {
+        override fun serialize(value: T, gen: JsonGenerator, provider: SerializerProvider) = gen.writeRawValue(toJson(value))
+    })
+    addDeserializer(k.java as Class<T>, object : StdDeserializer<T>(k.java as Class<T>) {
+        override fun deserialize(p: JsonParser, ctxt: DeserializationContext) = fromJson(p.readValueAsTree())
+    })
+})
+
+val mapper = jacksonObjectMapper().apply {
+    propertyNamingStrategy = PropertyNamingStrategy.LOWER_CAMEL_CASE
+    setSerializationInclusion(JsonInclude.Include.NON_NULL)
+    convert(NlCoreObservationProfile::class,           { NlCoreObservationProfile.fromValue(it.asText()) },           { "\"${it.value}\"" })
+    convert(NlCorePatientProfile::class,               { NlCorePatientProfile.fromValue(it.asText()) },               { "\"${it.value}\"" })
+    convert(ZibAdministrationAgreementProfile::class,  { ZibAdministrationAgreementProfile.fromValue(it.asText()) },  { "\"${it.value}\"" })
+    convert(ZibAlcoholUseProfile::class,               { ZibAlcoholUseProfile.fromValue(it.asText()) },               { "\"${it.value}\"" })
+    convert(ZibAlertProfile::class,                    { ZibAlertProfile.fromValue(it.asText()) },                    { "\"${it.value}\"" })
+    convert(ZibAllergyIntoleranceProfile::class,       { ZibAllergyIntoleranceProfile.fromValue(it.asText()) },       { "\"${it.value}\"" })
+    convert(ZibDrugUseProfile::class,                  { ZibDrugUseProfile.fromValue(it.asText()) },                  { "\"${it.value}\"" })
+    convert(ZibFunctionalOrMentalStatusProfile::class, { ZibFunctionalOrMentalStatusProfile.fromValue(it.asText()) }, { "\"${it.value}\"" })
+    convert(ZibLivingSituationProfile::class,          { ZibLivingSituationProfile.fromValue(it.asText()) },          { "\"${it.value}\"" })
+    convert(ZibMedicalDeviceProfile::class,            { ZibMedicalDeviceProfile.fromValue(it.asText()) },            { "\"${it.value}\"" })
+    convert(ZibMedicalDeviceProductProfile::class,     { ZibMedicalDeviceProductProfile.fromValue(it.asText()) },     { "\"${it.value}\"" })
+    convert(ZibMedicationAgreementProfile::class,      { ZibMedicationAgreementProfile.fromValue(it.asText()) },      { "\"${it.value}\"" })
+    convert(ZibMedicationUseProfile::class,            { ZibMedicationUseProfile.fromValue(it.asText()) },            { "\"${it.value}\"" })
+    convert(ZibNutritionAdviceProfile::class,          { ZibNutritionAdviceProfile.fromValue(it.asText()) },          { "\"${it.value}\"" })
+    convert(ZibPayerProfile::class,                    { ZibPayerProfile.fromValue(it.asText()) },                    { "\"${it.value}\"" })
+    convert(ZibProblemProfile::class,                  { ZibProblemProfile.fromValue(it.asText()) },                  { "\"${it.value}\"" })
+    convert(ZibProductProfile::class,                  { ZibProductProfile.fromValue(it.asText()) },                  { "\"${it.value}\"" })
+    convert(ZibTobaccoUseProfile::class,               { ZibTobaccoUseProfile.fromValue(it.asText()) },               { "\"${it.value}\"" })
+    convert(ZibTreatmentDirectiveProfile::class,       { ZibTreatmentDirectiveProfile.fromValue(it.asText()) },       { "\"${it.value}\"" })
+    convert(ChildDisplay::class,                       { ChildDisplay.fromJson(it) },                                 { it.toJson() }, true)
+    convert(DisplayElement::class,                     { DisplayElement.fromJson(it) },                               { it.toJson() }, true)
+}
 
 typealias MgoBoolean = Boolean
 typealias MgoCode = String
-
 class MgoCodeableConcept(elements: Collection<MgoCoding>) : ArrayList<MgoCoding>(elements) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -147,13 +122,16 @@ typealias MgoPositiveInt = Double
 typealias MgoString = String
 typealias MgoUnsignedInt = Double
 
-data class MultipleGroupValue(
+data class MultipleGroupValue (
     val display: List<List<String>>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val summary: Boolean? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
-    val type: String,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val type: String
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -162,8 +140,8 @@ data class MultipleGroupValue(
     }
 }
 
-data class ValueOptions(
-    val summary: Boolean? = null,
+data class ValueOptions (
+    val summary: Boolean? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -172,13 +150,16 @@ data class ValueOptions(
     }
 }
 
-data class MultipleValue(
+data class MultipleValue (
     val display: List<String>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val summary: Boolean? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
-    val type: String,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val type: String
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -187,7 +168,7 @@ data class MultipleValue(
     }
 }
 
-data class NlCoreObservation(
+data class NlCoreObservation (
     val bodySite: List<MgoCoding>? = null,
     val category: List<List<MgoCoding>>? = null,
     val comment: String? = null,
@@ -197,13 +178,16 @@ data class NlCoreObservation(
     val effectivePeriod: MgoPeriod? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: NlCoreObservationProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
+    val subject: MgoReference? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -212,10 +196,10 @@ data class NlCoreObservation(
     }
 }
 
-data class MgoCoding(
+data class MgoCoding (
     val code: String? = null,
     val display: String? = null,
-    val system: String? = null,
+    val system: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -224,9 +208,9 @@ data class MgoCoding(
     }
 }
 
-data class MgoReference(
+data class MgoReference (
     val display: String? = null,
-    val reference: String? = null,
+    val reference: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -235,9 +219,9 @@ data class MgoReference(
     }
 }
 
-data class MgoPeriod(
+data class MgoPeriod (
     val end: String? = null,
-    val start: String? = null,
+    val start: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -246,11 +230,11 @@ data class MgoPeriod(
     }
 }
 
-data class MgoIdentifier(
+data class MgoIdentifier (
     val system: String? = null,
     val type: List<MgoCoding>? = null,
     val use: String? = null,
-    val value: String? = null,
+    val value: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -260,19 +244,17 @@ data class MgoIdentifier(
 }
 
 enum class NlCoreObservationProfile(val value: String) {
-    HTTPFhirNlFhirStructureDefinitionNlCoreObservation("http://fhir.nl/fhir/StructureDefinition/nl-core-observation"),
-    ;
+    HTTPFhirNlFhirStructureDefinitionNlCoreObservation("http://fhir.nl/fhir/StructureDefinition/nl-core-observation");
 
     companion object {
-        fun fromValue(value: String): NlCoreObservationProfile =
-            when (value) {
-                "http://fhir.nl/fhir/StructureDefinition/nl-core-observation" -> HTTPFhirNlFhirStructureDefinitionNlCoreObservation
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): NlCoreObservationProfile = when (value) {
+            "http://fhir.nl/fhir/StructureDefinition/nl-core-observation" -> HTTPFhirNlFhirStructureDefinitionNlCoreObservation
+            else                                                          -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class NlCorePatient(
+data class NlCorePatient (
     val active: Boolean? = null,
     val address: List<NlCoreAddress>? = null,
     val birthDate: String? = null,
@@ -291,12 +273,15 @@ data class NlCorePatient(
     val multipleBirthInteger: Double? = null,
     val name: List<NlCoreHumanname>? = null,
     val photo: List<Photo>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: NlCorePatientProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
-    val telecom: List<NlCoreContactpoint>? = null,
+    val telecom: List<NlCoreContactpoint>? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -305,7 +290,7 @@ data class NlCorePatient(
     }
 }
 
-data class NlCoreAddress(
+data class NlCoreAddress (
     val city: String? = null,
     val country: String? = null,
     val district: String? = null,
@@ -315,7 +300,7 @@ data class NlCoreAddress(
     val state: String? = null,
     val text: String? = null,
     val type: String? = null,
-    val use: String? = null,
+    val use: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -324,29 +309,29 @@ data class NlCoreAddress(
     }
 }
 
-data class Communication(
+data class Communication (
     val language: List<MgoCoding>? = null,
-    val preferred: Boolean? = null,
+    val preferred: Boolean? = null
 )
 
-data class Contact(
+data class Contact (
     val address: NlCoreAddress? = null,
     val gender: String? = null,
     val name: NlCoreHumanname? = null,
     val organization: MgoReference? = null,
     val period: MgoPeriod? = null,
     val relationship: List<List<MgoCoding>>? = null,
-    val telecom: List<NlCoreContactpoint>? = null,
+    val telecom: List<NlCoreContactpoint>? = null
 )
 
-data class NlCoreHumanname(
+data class NlCoreHumanname (
     val family: String? = null,
     val given: List<String>? = null,
     val period: MgoPeriod? = null,
     val prefix: List<String>? = null,
     val suffix: List<String>? = null,
     val text: String? = null,
-    val use: String? = null,
+    val use: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -355,12 +340,12 @@ data class NlCoreHumanname(
     }
 }
 
-data class NlCoreContactpoint(
+data class NlCoreContactpoint (
     val period: MgoPeriod? = null,
     val rank: Double? = null,
     val system: String? = null,
     val use: String? = null,
-    val value: String? = null,
+    val value: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -369,12 +354,12 @@ data class NlCoreContactpoint(
     }
 }
 
-data class Link(
+data class Link (
     val other: MgoReference? = null,
-    val type: String? = null,
+    val type: String? = null
 )
 
-data class Photo(
+data class Photo (
     val contentType: String? = null,
     val creation: String? = null,
     val data: String? = null,
@@ -382,30 +367,31 @@ data class Photo(
     val language: String? = null,
     val size: Double? = null,
     val title: String? = null,
-    val url: String? = null,
+    val url: String? = null
 )
 
 enum class NlCorePatientProfile(val value: String) {
-    HTTPFhirNlFhirStructureDefinitionNlCorePatient("http://fhir.nl/fhir/StructureDefinition/nl-core-patient"),
-    ;
+    HTTPFhirNlFhirStructureDefinitionNlCorePatient("http://fhir.nl/fhir/StructureDefinition/nl-core-patient");
 
     companion object {
-        fun fromValue(value: String): NlCorePatientProfile =
-            when (value) {
-                "http://fhir.nl/fhir/StructureDefinition/nl-core-patient" -> HTTPFhirNlFhirStructureDefinitionNlCorePatient
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): NlCorePatientProfile = when (value) {
+            "http://fhir.nl/fhir/StructureDefinition/nl-core-patient" -> HTTPFhirNlFhirStructureDefinitionNlCorePatient
+            else                                                      -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ReferenceValue(
+data class ReferenceValue (
     val display: String? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val reference: String? = null,
     val summary: Boolean? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
-    val type: String,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val type: String
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -414,13 +400,16 @@ data class ReferenceValue(
     }
 }
 
-data class SingleValue(
+data class SingleValue (
     val display: String? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val summary: Boolean? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
-    val type: String,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val type: String
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -429,10 +418,11 @@ data class SingleValue(
     }
 }
 
-data class UISchema(
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+data class UISchema (
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val children: List<UISchemaGroup>,
-    val label: String? = null,
+
+    val label: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -441,11 +431,12 @@ data class UISchema(
     }
 }
 
-data class UISchemaGroup(
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+data class UISchemaGroup (
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val children: List<Value>,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
-    val label: String,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val label: String
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -454,63 +445,57 @@ data class UISchemaGroup(
     }
 }
 
-data class Value(
+data class Value (
     val display: ChildDisplay? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val label: String,
+
     val summary: Boolean? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val type: String,
-    val reference: String? = null,
+
+    val reference: String? = null
 )
 
 sealed class ChildDisplay {
-    class StringValue(val value: String) : ChildDisplay()
-
+    class StringValue(val value: String)                   : ChildDisplay()
     class UnionArrayValue(val value: List<DisplayElement>) : ChildDisplay()
 
-    fun toJson(): String =
-        mapper.writeValueAsString(
-            when (this) {
-                is StringValue -> this.value
-                is UnionArrayValue -> this.value
-            },
-        )
+    fun toJson(): String = mapper.writeValueAsString(when (this) {
+        is StringValue -> this.value
+        is UnionArrayValue -> this.value
+    })
 
     companion object {
-        fun fromJson(jn: JsonNode): ChildDisplay =
-            when (jn) {
-                is TextNode -> StringValue(mapper.treeToValue(jn))
-                is ArrayNode -> UnionArrayValue(mapper.treeToValue(jn))
-                else -> throw IllegalArgumentException()
-            }
+        fun fromJson(jn: JsonNode): ChildDisplay = when (jn) {
+            is TextNode  -> StringValue(mapper.treeToValue(jn))
+            is ArrayNode -> UnionArrayValue(mapper.treeToValue(jn))
+            else         -> throw IllegalArgumentException()
+        }
     }
 }
 
 sealed class DisplayElement {
     class StringArrayValue(val value: List<String>) : DisplayElement()
+    class StringValue(val value: String)            : DisplayElement()
 
-    class StringValue(val value: String) : DisplayElement()
-
-    fun toJson(): String =
-        mapper.writeValueAsString(
-            when (this) {
-                is StringArrayValue -> this.value
-                is StringValue -> this.value
-            },
-        )
+    fun toJson(): String = mapper.writeValueAsString(when (this) {
+        is StringArrayValue -> this.value
+        is StringValue -> this.value
+    })
 
     companion object {
-        fun fromJson(jn: JsonNode): DisplayElement =
-            when (jn) {
-                is ArrayNode -> StringArrayValue(mapper.treeToValue(jn))
-                is TextNode -> StringValue(mapper.treeToValue(jn))
-                else -> throw IllegalArgumentException()
-            }
+        fun fromJson(jn: JsonNode): DisplayElement = when (jn) {
+            is ArrayNode -> StringArrayValue(mapper.treeToValue(jn))
+            is TextNode  -> StringValue(mapper.treeToValue(jn))
+            else         -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibAdministrationAgreement(
+data class ZibAdministrationAgreement (
     val additionalInformation: List<MgoCoding>? = null,
     val agreementReason: String? = null,
     val authoredOn: String? = null,
@@ -522,16 +507,20 @@ data class ZibAdministrationAgreement(
     val medicationReference: MgoReference? = null,
     val medicationTreatment: MgoIdentifier? = null,
     val note: List<MgoAnnotation>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibAdministrationAgreementProfile,
+
     val quantity: MgoQuantity? = null,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
     val resourceType: String? = null,
     val status: String? = null,
     val stopType: List<MgoCoding>? = null,
-    val usageDuration: MgoQuantity? = null,
+    val usageDuration: MgoQuantity? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -540,12 +529,12 @@ data class ZibAdministrationAgreement(
     }
 }
 
-data class MgoQuantity(
+data class MgoQuantity (
     val code: String? = null,
     val comparator: String? = null,
     val system: String? = null,
     val unit: String? = null,
-    val value: Double? = null,
+    val value: Double? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -554,7 +543,7 @@ data class MgoQuantity(
     }
 }
 
-data class ZibInstructionsForUse(
+data class ZibInstructionsForUse (
     val additionalInstruction: List<List<MgoCoding>>? = null,
     val asNeeded: List<MgoCoding>? = null,
     val doseQuantity: MgoQuantity? = null,
@@ -563,8 +552,9 @@ data class ZibInstructionsForUse(
     val rateQuantity: MgoQuantity? = null,
     val rateRange: MgoRange? = null,
     val rateRatio: MgoRatio? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
-    val timing: ZibAdministrationSchedule,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val timing: ZibAdministrationSchedule
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -573,9 +563,9 @@ data class ZibInstructionsForUse(
     }
 }
 
-data class MgoRange(
+data class MgoRange (
     val high: MgoQuantity? = null,
-    val low: MgoQuantity? = null,
+    val low: MgoQuantity? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -584,9 +574,9 @@ data class MgoRange(
     }
 }
 
-data class MgoRatio(
+data class MgoRatio (
     val denominator: MgoQuantity? = null,
-    val numerator: MgoQuantity? = null,
+    val numerator: MgoQuantity? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -595,7 +585,7 @@ data class MgoRatio(
     }
 }
 
-data class ZibAdministrationSchedule(
+data class ZibAdministrationSchedule (
     val dayOfWeek: List<String>? = null,
     val duration: Double? = null,
     val durationUnit: String? = null,
@@ -604,8 +594,9 @@ data class ZibAdministrationSchedule(
     val period: Double? = null,
     val periodUnit: String? = null,
     val timeOfDay: List<String>? = null,
+
     @get:JsonProperty("when")@field:JsonProperty("when")
-    val zibAdministrationScheduleWhen: List<String>? = null,
+    val zibAdministrationScheduleWhen: List<String>? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -614,10 +605,10 @@ data class ZibAdministrationSchedule(
     }
 }
 
-data class MgoAnnotation(
+data class MgoAnnotation (
     val author: MgoReference? = null,
     val text: String? = null,
-    val time: String? = null,
+    val time: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -627,19 +618,17 @@ data class MgoAnnotation(
 }
 
 enum class ZibAdministrationAgreementProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement("http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement("http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement");
 
     companion object {
-        fun fromValue(value: String): ZibAdministrationAgreementProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement" -> HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibAdministrationAgreementProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement" -> HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement
+            else                                                                    -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibAlcoholUse(
+data class ZibAlcoholUse (
     val bodySite: List<MgoCoding>? = null,
     val category: List<List<MgoCoding>>? = null,
     val comment: String? = null,
@@ -648,13 +637,16 @@ data class ZibAlcoholUse(
     val effectivePeriod: MgoPeriod? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibAlcoholUseProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
+    val subject: MgoReference? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -664,19 +656,17 @@ data class ZibAlcoholUse(
 }
 
 enum class ZibAlcoholUseProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibAlcoholUse("http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibAlcoholUse("http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse");
 
     companion object {
-        fun fromValue(value: String): ZibAlcoholUseProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse" -> HTTPNictizNlFhirStructureDefinitionZibAlcoholUse
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibAlcoholUseProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse" -> HTTPNictizNlFhirStructureDefinitionZibAlcoholUse
+            else                                                       -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibAlert(
+data class ZibAlert (
     val author: MgoReference? = null,
     val category: List<MgoCoding>? = null,
     val code: List<MgoCoding>? = null,
@@ -684,13 +674,16 @@ data class ZibAlert(
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val period: MgoPeriod? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibAlertProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
+    val subject: MgoReference? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -700,19 +693,17 @@ data class ZibAlert(
 }
 
 enum class ZibAlertProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibAlert("http://nictiz.nl/fhir/StructureDefinition/zib-Alert"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibAlert("http://nictiz.nl/fhir/StructureDefinition/zib-Alert");
 
     companion object {
-        fun fromValue(value: String): ZibAlertProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-Alert" -> HTTPNictizNlFhirStructureDefinitionZibAlert
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibAlertProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-Alert" -> HTTPNictizNlFhirStructureDefinitionZibAlert
+            else                                                  -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibAllergyIntolerance(
+data class ZibAllergyIntolerance (
     val category: List<String>? = null,
     val clinicalStatus: String? = null,
     val code: List<MgoCoding>? = null,
@@ -720,13 +711,16 @@ data class ZibAllergyIntolerance(
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val patient: MgoReference? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibAllergyIntoleranceProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val type: String? = null,
-    val verificationStatus: String? = null,
+    val verificationStatus: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -736,19 +730,17 @@ data class ZibAllergyIntolerance(
 }
 
 enum class ZibAllergyIntoleranceProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibAllergyIntolerance("http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibAllergyIntolerance("http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance");
 
     companion object {
-        fun fromValue(value: String): ZibAllergyIntoleranceProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance" -> HTTPNictizNlFhirStructureDefinitionZibAllergyIntolerance
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibAllergyIntoleranceProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance" -> HTTPNictizNlFhirStructureDefinitionZibAllergyIntolerance
+            else                                                               -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibDrugUse(
+data class ZibDrugUse (
     val bodySite: List<MgoCoding>? = null,
     val category: List<List<MgoCoding>>? = null,
     val comment: String? = null,
@@ -757,13 +749,16 @@ data class ZibDrugUse(
     val effectivePeriod: MgoPeriod? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibDrugUseProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
+    val subject: MgoReference? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -773,19 +768,17 @@ data class ZibDrugUse(
 }
 
 enum class ZibDrugUseProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibDrugUse("http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibDrugUse("http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse");
 
     companion object {
-        fun fromValue(value: String): ZibDrugUseProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse" -> HTTPNictizNlFhirStructureDefinitionZibDrugUse
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibDrugUseProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse" -> HTTPNictizNlFhirStructureDefinitionZibDrugUse
+            else                                                    -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibFunctionalOrMentalStatus(
+data class ZibFunctionalOrMentalStatus (
     val bodySite: List<MgoCoding>? = null,
     val category: List<List<MgoCoding>>? = null,
     val comment: String? = null,
@@ -794,13 +787,16 @@ data class ZibFunctionalOrMentalStatus(
     val effectivePeriod: MgoPeriod? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibFunctionalOrMentalStatusProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
+    val subject: MgoReference? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -810,21 +806,17 @@ data class ZibFunctionalOrMentalStatus(
 }
 
 enum class ZibFunctionalOrMentalStatusProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibFunctionalOrMentalStatus(
-        "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus",
-    ),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibFunctionalOrMentalStatus("http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus");
 
     companion object {
-        fun fromValue(value: String): ZibFunctionalOrMentalStatusProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus" -> HTTPNictizNlFhirStructureDefinitionZibFunctionalOrMentalStatus
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibFunctionalOrMentalStatusProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus" -> HTTPNictizNlFhirStructureDefinitionZibFunctionalOrMentalStatus
+            else                                                                     -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibLivingSituation(
+data class ZibLivingSituation (
     val bodySite: List<MgoCoding>? = null,
     val category: List<List<MgoCoding>>? = null,
     val comment: String? = null,
@@ -834,13 +826,16 @@ data class ZibLivingSituation(
     val effectivePeriod: MgoPeriod? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibLivingSituationProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
+    val subject: MgoReference? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -850,19 +845,92 @@ data class ZibLivingSituation(
 }
 
 enum class ZibLivingSituationProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibLivingSituation("http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibLivingSituation("http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation");
 
     companion object {
-        fun fromValue(value: String): ZibLivingSituationProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation" -> HTTPNictizNlFhirStructureDefinitionZibLivingSituation
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibLivingSituationProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation" -> HTTPNictizNlFhirStructureDefinitionZibLivingSituation
+            else                                                            -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibMedicationAgreement(
+data class ZibMedicalDevice (
+    val bodySite: List<MgoCoding>? = null,
+    val device: MgoReference? = null,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val laterality: List<MgoCoding>? = null,
+    val note: List<MgoAnnotation>? = null,
+    val organization: MgoReference? = null,
+    val patient: MgoReference? = null,
+    val practitioner: MgoReference? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val profile: ZibMedicalDeviceProfile,
+
+    val reason: MgoReference? = null,
+    val recordedOn: String? = null,
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
+    val referenceID: String,
+
+    val resourceType: String? = null,
+    val source: MgoReference? = null,
+    val status: String? = null,
+    val whenUsed: MgoPeriod? = null
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibMedicalDevice>(json)
+    }
+}
+
+enum class ZibMedicalDeviceProfile(val value: String) {
+    HTTPNictizNlFhirStructureDefinitionZibMedicalDevice("http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice");
+
+    companion object {
+        fun fromValue(value: String): ZibMedicalDeviceProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice" -> HTTPNictizNlFhirStructureDefinitionZibMedicalDevice
+            else                                                          -> throw IllegalArgumentException()
+        }
+    }
+}
+
+data class ZibMedicalDeviceProduct (
+    val expirationDate: String? = null,
+    val id: String? = null,
+    val note: List<MgoAnnotation>? = null,
+    val patient: MgoReference? = null,
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
+    val profile: ZibMedicalDeviceProductProfile,
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
+    val referenceID: String,
+
+    val resourceType: String? = null
+) {
+    fun toJson() = mapper.writeValueAsString(this)
+
+    companion object {
+        fun fromJson(json: String) = mapper.readValue<ZibMedicalDeviceProduct>(json)
+    }
+}
+
+enum class ZibMedicalDeviceProductProfile(val value: String) {
+    HTTPNictizNlFhirStructureDefinitionZibMedicalDeviceProduct("http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct");
+
+    companion object {
+        fun fromValue(value: String): ZibMedicalDeviceProductProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct" -> HTTPNictizNlFhirStructureDefinitionZibMedicalDeviceProduct
+            else                                                                 -> throw IllegalArgumentException()
+        }
+    }
+}
+
+data class ZibMedicationAgreement (
     val basedOn: List<MgoReference>? = null,
     val category: List<MgoCoding>? = null,
     val definition: List<MgoReference>? = null,
@@ -876,15 +944,18 @@ data class ZibMedicationAgreement(
     val note: List<MgoAnnotation>? = null,
     val periodOfUse: MgoPeriod? = null,
     val priority: String? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibMedicationAgreementProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
     val resourceType: String? = null,
     val status: String? = null,
     val stopType: List<MgoCoding>? = null,
-    val usageDuration: MgoQuantity? = null,
+    val usageDuration: MgoQuantity? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -894,19 +965,17 @@ data class ZibMedicationAgreement(
 }
 
 enum class ZibMedicationAgreementProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibMedicationAgreement("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibMedicationAgreement("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement");
 
     companion object {
-        fun fromValue(value: String): ZibMedicationAgreementProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement" -> HTTPNictizNlFhirStructureDefinitionZibMedicationAgreement
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibMedicationAgreementProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement" -> HTTPNictizNlFhirStructureDefinitionZibMedicationAgreement
+            else                                                                -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibMedicationUse(
+data class ZibMedicationUse (
     val asAgreedIndicator: Boolean? = null,
     val author: MgoReference? = null,
     val category: List<MgoCoding>? = null,
@@ -921,17 +990,21 @@ data class ZibMedicationUse(
     val medicationTreatment: MgoIdentifier? = null,
     val note: List<MgoAnnotation>? = null,
     val prescriber: MgoReference? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibMedicationUseProfile,
+
     val reasonCode: List<List<MgoCoding>>? = null,
     val reasonForChangeOrDiscontinuationOfUse: List<MgoCoding>? = null,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
-    val taken: String? = null,
+    val taken: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -941,31 +1014,32 @@ data class ZibMedicationUse(
 }
 
 enum class ZibMedicationUseProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibMedicationUse("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibMedicationUse("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse");
 
     companion object {
-        fun fromValue(value: String): ZibMedicationUseProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse" -> HTTPNictizNlFhirStructureDefinitionZibMedicationUse
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibMedicationUseProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse" -> HTTPNictizNlFhirStructureDefinitionZibMedicationUse
+            else                                                          -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibNutritionAdvice(
+data class ZibNutritionAdvice (
     val comment: String? = null,
     val dateTime: String? = null,
     val foodPreferenceModifier: List<List<MgoCoding>>? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val patient: MgoReference? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibNutritionAdviceProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
-    val status: String? = null,
+    val status: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -975,24 +1049,24 @@ data class ZibNutritionAdvice(
 }
 
 enum class ZibNutritionAdviceProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibNutritionAdvice("http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibNutritionAdvice("http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice");
 
     companion object {
-        fun fromValue(value: String): ZibNutritionAdviceProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice" -> HTTPNictizNlFhirStructureDefinitionZibNutritionAdvice
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibNutritionAdviceProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice" -> HTTPNictizNlFhirStructureDefinitionZibNutritionAdvice
+            else                                                            -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibPayer(
+data class ZibPayer (
     val beneficiary: MgoReference? = null,
     val contract: List<MgoReference>? = null,
     val dependent: String? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val grouping: Grouping,
+
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val network: String? = null,
@@ -1000,18 +1074,23 @@ data class ZibPayer(
     val payor: List<MgoReference>? = null,
     val period: MgoPeriod? = null,
     val policyHolder: MgoReference? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibPayerProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val relationship: List<MgoCoding>? = null,
     val resourceType: String? = null,
     val sequence: String? = null,
     val status: String? = null,
     val subscriber: MgoReference? = null,
+
     @get:JsonProperty("subscriberId")@field:JsonProperty("subscriberId")
     val subscriberID: String? = null,
-    val type: List<MgoCoding>? = null,
+
+    val type: List<MgoCoding>? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -1020,9 +1099,10 @@ data class ZibPayer(
     }
 }
 
-data class Grouping(
+data class Grouping (
     @get:JsonProperty("class")@field:JsonProperty("class")
     val groupingClass: String? = null,
+
     val classDisplay: String? = null,
     val group: String? = null,
     val groupDisplay: String? = null,
@@ -1033,23 +1113,21 @@ data class Grouping(
     val subGroup: String? = null,
     val subGroupDisplay: String? = null,
     val subPlan: String? = null,
-    val subPlanDisplay: String? = null,
+    val subPlanDisplay: String? = null
 )
 
 enum class ZibPayerProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibPayer("http://nictiz.nl/fhir/StructureDefinition/zib-Payer"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibPayer("http://nictiz.nl/fhir/StructureDefinition/zib-Payer");
 
     companion object {
-        fun fromValue(value: String): ZibPayerProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-Payer" -> HTTPNictizNlFhirStructureDefinitionZibPayer
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibPayerProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-Payer" -> HTTPNictizNlFhirStructureDefinitionZibPayer
+            else                                                  -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibProblem(
+data class ZibProblem (
     val abatementDateTime: String? = null,
     val assertedDate: String? = null,
     val asserter: MgoReference? = null,
@@ -1063,16 +1141,21 @@ data class ZibProblem(
     val identifier: List<MgoIdentifier>? = null,
     val note: List<MgoAnnotation>? = null,
     val onsetDateTime: String? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibProblemProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val severity: List<MgoCoding>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val stage: Stage,
+
     val subject: MgoReference? = null,
-    val verificationStatus: String? = null,
+    val verificationStatus: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -1081,42 +1164,44 @@ data class ZibProblem(
     }
 }
 
-data class Evidence(
+data class Evidence (
     val code: List<List<MgoCoding>>? = null,
-    val detail: List<MgoReference>? = null,
+    val detail: List<MgoReference>? = null
 )
 
 enum class ZibProblemProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibProblem("http://nictiz.nl/fhir/StructureDefinition/zib-Problem"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibProblem("http://nictiz.nl/fhir/StructureDefinition/zib-Problem");
 
     companion object {
-        fun fromValue(value: String): ZibProblemProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-Problem" -> HTTPNictizNlFhirStructureDefinitionZibProblem
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibProblemProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-Problem" -> HTTPNictizNlFhirStructureDefinitionZibProblem
+            else                                                    -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class Stage(
+data class Stage (
     val assessment: List<MgoReference>? = null,
-    val summary: List<MgoCoding>? = null,
+    val summary: List<MgoCoding>? = null
 )
 
-data class ZibProduct(
+data class ZibProduct (
     val code: List<MgoCoding>? = null,
     val description: String? = null,
     val form: List<MgoCoding>? = null,
     val id: String? = null,
     val ingredient: List<ZibProductIngredient>? = null,
-    @get:JsonProperty("package", required = true)@field:JsonProperty("package", required = true)
+
+    @get:JsonProperty("package", required=true)@field:JsonProperty("package", required=true)
     val zibProductPackage: Package,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibProductProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
-    val resourceType: String? = null,
+
+    val resourceType: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -1125,9 +1210,9 @@ data class ZibProduct(
     }
 }
 
-data class ZibProductIngredient(
+data class ZibProductIngredient (
     val amount: MgoRatio? = null,
-    val item: List<MgoCoding>? = null,
+    val item: List<MgoCoding>? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -1137,29 +1222,27 @@ data class ZibProductIngredient(
 }
 
 enum class ZibProductProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibProduct("http://nictiz.nl/fhir/StructureDefinition/zib-Product"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibProduct("http://nictiz.nl/fhir/StructureDefinition/zib-Product");
 
     companion object {
-        fun fromValue(value: String): ZibProductProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-Product" -> HTTPNictizNlFhirStructureDefinitionZibProduct
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibProductProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-Product" -> HTTPNictizNlFhirStructureDefinitionZibProduct
+            else                                                    -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class Package(
-    val content: List<PackageContent>? = null,
+data class Package (
+    val content: List<PackageContent>? = null
 )
 
-data class PackageContent(
+data class PackageContent (
     val item: List<MgoCoding>? = null,
-    val reference: MgoReference? = null,
+    val reference: MgoReference? = null
 )
 
-data class ZibProductPackage(
-    val content: List<ZibProductPackageContent>? = null,
+data class ZibProductPackage (
+    val content: List<ZibProductPackageContent>? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -1168,12 +1251,12 @@ data class ZibProductPackage(
     }
 }
 
-data class ZibProductPackageContent(
+data class ZibProductPackageContent (
     val item: List<MgoCoding>? = null,
-    val reference: MgoReference? = null,
+    val reference: MgoReference? = null
 )
 
-data class ZibTobaccoUse(
+data class ZibTobaccoUse (
     val bodySite: List<MgoCoding>? = null,
     val category: List<List<MgoCoding>>? = null,
     val comment: String? = null,
@@ -1182,13 +1265,16 @@ data class ZibTobaccoUse(
     val effectivePeriod: MgoPeriod? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibTobaccoUseProfile,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
+    val subject: MgoReference? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -1198,19 +1284,17 @@ data class ZibTobaccoUse(
 }
 
 enum class ZibTobaccoUseProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibTobaccoUse("http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibTobaccoUse("http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse");
 
     companion object {
-        fun fromValue(value: String): ZibTobaccoUseProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse" -> HTTPNictizNlFhirStructureDefinitionZibTobaccoUse
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibTobaccoUseProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse" -> HTTPNictizNlFhirStructureDefinitionZibTobaccoUse
+            else                                                       -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class ZibTreatmentDirective(
+data class ZibTreatmentDirective (
     val action: List<List<MgoCoding>>? = null,
     val actor: List<ZibTreatmentDirectiveActor>? = null,
     val category: List<List<MgoCoding>>? = null,
@@ -1226,18 +1310,24 @@ data class ZibTreatmentDirective(
     val period: MgoPeriod? = null,
     val policy: List<Policy>? = null,
     val policyRule: String? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val profile: ZibTreatmentDirectiveProfile,
+
     val purpose: List<MgoCoding>? = null,
-    @get:JsonProperty("referenceId", required = true)@field:JsonProperty("referenceId", required = true)
+
+    @get:JsonProperty("referenceId", required=true)@field:JsonProperty("referenceId", required=true)
     val referenceID: String,
+
     val resourceType: String? = null,
     val securityLabel: List<MgoCoding>? = null,
-    @get:JsonProperty(required = true)@field:JsonProperty(required = true)
+
+    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val sourceAttachment: SourceAttachment,
+
     val sourceIdentifier: MgoIdentifier? = null,
     val sourceReference: MgoReference? = null,
-    val status: String? = null,
+    val status: String? = null
 ) {
     fun toJson() = mapper.writeValueAsString(this)
 
@@ -1246,60 +1336,60 @@ data class ZibTreatmentDirective(
     }
 }
 
-data class ZibTreatmentDirectiveActor(
+data class ZibTreatmentDirectiveActor (
     val reference: MgoReference? = null,
-    val role: List<MgoCoding>? = null,
+    val role: List<MgoCoding>? = null
 )
 
-data class ZibTreatmentDirectiveDatum(
+data class ZibTreatmentDirectiveDatum (
     val meaning: String? = null,
-    val reference: MgoReference? = null,
+    val reference: MgoReference? = null
 )
 
-data class Except(
+data class Except (
     val action: List<List<MgoCoding>>? = null,
     val actor: List<ExceptActor>? = null,
+
     @get:JsonProperty("class")@field:JsonProperty("class")
     val exceptClass: List<MgoCoding>? = null,
+
     val code: List<MgoCoding>? = null,
     val data: List<ExceptDatum>? = null,
     val dataPeriod: MgoPeriod? = null,
     val period: MgoPeriod? = null,
     val purpose: List<MgoCoding>? = null,
     val securityLabel: List<MgoCoding>? = null,
-    val type: String? = null,
+    val type: String? = null
 )
 
-data class ExceptActor(
+data class ExceptActor (
     val reference: MgoReference? = null,
-    val role: List<MgoCoding>? = null,
+    val role: List<MgoCoding>? = null
 )
 
-data class ExceptDatum(
+data class ExceptDatum (
     val meaning: String? = null,
-    val reference: MgoReference? = null,
+    val reference: MgoReference? = null
 )
 
-data class Policy(
+data class Policy (
     val authority: String? = null,
     val id: String? = null,
-    val uri: String? = null,
+    val uri: String? = null
 )
 
 enum class ZibTreatmentDirectiveProfile(val value: String) {
-    HTTPNictizNlFhirStructureDefinitionZibTreatmentDirective("http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"),
-    ;
+    HTTPNictizNlFhirStructureDefinitionZibTreatmentDirective("http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective");
 
     companion object {
-        fun fromValue(value: String): ZibTreatmentDirectiveProfile =
-            when (value) {
-                "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective" -> HTTPNictizNlFhirStructureDefinitionZibTreatmentDirective
-                else -> throw IllegalArgumentException()
-            }
+        fun fromValue(value: String): ZibTreatmentDirectiveProfile = when (value) {
+            "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective" -> HTTPNictizNlFhirStructureDefinitionZibTreatmentDirective
+            else                                                               -> throw IllegalArgumentException()
+        }
     }
 }
 
-data class SourceAttachment(
+data class SourceAttachment (
     val contentType: String? = null,
     val creation: String? = null,
     val data: String? = null,
@@ -1307,5 +1397,5 @@ data class SourceAttachment(
     val language: String? = null,
     val size: Double? = null,
     val title: String? = null,
-    val url: String? = null,
+    val url: String? = null
 )

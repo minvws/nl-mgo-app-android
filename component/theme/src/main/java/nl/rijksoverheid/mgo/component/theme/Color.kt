@@ -120,7 +120,7 @@ fun Colors.supportApotheek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 
 @Composable
 fun Colors.supportZiekenhuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFCA005D) else Color(0xFFDF669D)
+    if (isSystemDarkTheme) Color(0xFFDF669D) else Color(0xFFCA005D)
 
 @Composable
 fun Colors.supportHuisarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
@@ -128,10 +128,10 @@ fun Colors.supportHuisarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 
 @Composable
 fun Colors.supportTandarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF8FCAE7) else Color(0xFF66A4C3)
+    if (isSystemDarkTheme) Color(0xFF66A4C3) else Color(0xFF8FCAE7)
 
 @Composable
-fun Colors.supportGgz(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFF42145F) else Color(0xFF8D729F)
+fun Colors.supportGgz(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFF8D729F) else Color(0xFF42145F)
 
 @Composable
 fun Colors.supportFysiotherapeut(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
@@ -147,7 +147,7 @@ fun Colors.supportThuiszorg(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) 
 
 @Composable
 fun Colors.supportKliniek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFE17000) else Color(0xFFEDA966)
+    if (isSystemDarkTheme) Color(0xFFEDA966) else Color(0xFFE17000)
 
 @Composable
 fun Colors.supportOverige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
@@ -155,7 +155,7 @@ fun Colors.supportOverige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
 
 @Composable
 fun Colors.supportRijkslint(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF154273) else Color(0xFF154273)
+    if (isSystemDarkTheme) Color(0xFF738EAB) else Color(0xFF154273)
 
 @Composable
 fun Colors.supportGgd(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFA3847D) else Color(0xFF673327)

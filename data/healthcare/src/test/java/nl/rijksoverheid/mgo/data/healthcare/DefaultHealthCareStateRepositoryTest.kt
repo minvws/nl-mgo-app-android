@@ -35,13 +35,12 @@ class DefaultHealthCareStateRepositoryTest {
                 "gpMedicationRequestResponse.json",
             )
 
+            // When
+            val organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_BGZ_DATA_SERVICE, TEST_GP_DATA_SERVICE))
+            repository.init(organizations = listOf(organization))
+
+            // Then
             repository.observe(category = HealthCareCategory.MEDICATIONS, organization = null).distinctUntilChanged().test {
-                // When
-                val organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_BGZ_DATA_SERVICE, TEST_GP_DATA_SERVICE))
-                repository.init(organizations = listOf(organization))
-
-                // Then
-
                 // Skip first item since it's an empty list
                 skipItems(1)
 

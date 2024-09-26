@@ -21,8 +21,10 @@ class TestServer {
         return requireNotNull(server?.url("/").toString())
     }
 
-    fun enqueue200() {
-        server?.enqueue(MockResponse().setResponseCode(200))
+    fun enqueue200(amount: Int = 1) {
+        for (i in 0 until amount) {
+            server?.enqueue(MockResponse().setResponseCode(200))
+        }
     }
 
     fun enqueue500(amount: Int = 1) {

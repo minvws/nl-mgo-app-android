@@ -8,6 +8,7 @@ data class MgoOrganizationDataService(
     val type: MgoOrganizationDataServiceType,
 )
 
+@JsonClass(generateAdapter = false)
 enum class MgoOrganizationDataServiceType {
     BGZ,
     GP,

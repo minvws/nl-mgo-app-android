@@ -1,8 +1,10 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import androidx.annotation.StringRes
+import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+@JsonClass(generateAdapter = false)
 enum class HealthCareCategory {
     MEDICATIONS,
     MEASUREMENTS,

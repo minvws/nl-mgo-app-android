@@ -153,6 +153,8 @@
   <string name="remove_organization.no_cancel">Nee, annuleren</string>
   <string name="remove_organization.subheading">Daarmee verwijder je deze gegevens uit de app. Je gegevens blijven altijd bewaard bij de zorgaanbieder zelf. Je kunt %1$s later altijd weer toevoegen aan de app.</string>
   <string name="remove_organization.yes_delete">Ja, verwijderen</string>
+  <string name="toast.organization_removed.heading">Zorgaanbieder verwijderd</string>
+  <string name="toast.organization_removed.subheading">Herstel</string>
   <string name="update_required.download">Nu downloaden</string>
   <string name="update_required.heading">Je hebt een oude versie van de app</string>
   <string name="update_required.subheading">Download de nieuwste versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>

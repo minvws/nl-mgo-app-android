@@ -121,6 +121,12 @@ dependencies {
     implementation(project(":feature:dashboard:remove_organization"))
 
     // ================================
+    // COMPONENTS
+    // ================================
+
+    implementation(projects.component.snackbar)
+
+    // ================================
     // TESTING
     // ================================
 

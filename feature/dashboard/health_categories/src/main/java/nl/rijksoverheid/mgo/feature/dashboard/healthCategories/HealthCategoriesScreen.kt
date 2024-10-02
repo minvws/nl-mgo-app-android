@@ -204,7 +204,10 @@ private fun WithProviders(
 
         if (filterOrganization != null) {
             TextButton(
-                modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally),
+                modifier =
+                    Modifier
+                        .padding(bottom = 16.dp)
+                        .align(Alignment.CenterHorizontally),
                 onClick = { onClickRemoveOrganization(filterOrganization) },
                 content = {
                     Text(

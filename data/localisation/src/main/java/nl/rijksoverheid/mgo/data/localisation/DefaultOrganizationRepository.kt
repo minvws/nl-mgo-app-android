@@ -15,8 +15,7 @@ import kotlinx.coroutines.runBlocking
 
 internal class DefaultOrganizationRepository(
     private val loadApi: LoadApi,
-    private val
-    fileStore: FileStore,
+    private val fileStore: FileStore,
 ) :
     OrganizationRepository {
     private val fileName = "organizations.json"

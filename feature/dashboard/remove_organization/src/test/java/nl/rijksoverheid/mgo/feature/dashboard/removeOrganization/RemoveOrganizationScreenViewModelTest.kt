@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import app.cash.turbine.test
+import nl.rijksoverheid.mgo.component.snackbar.DefaultSnackBarRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
@@ -22,6 +23,7 @@ internal class RemoveOrganizationScreenViewModelTest {
             val viewModel =
                 RemoveOrganizationScreenViewModel(
                     organizationRepository = organizationRepository,
+                    snackBarRepository = DefaultSnackBarRepository(),
                 )
             viewModel.providerDeleted.test {
                 // Given

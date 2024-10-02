@@ -12,5 +12,5 @@ android {
 dependencies {
     implementation(projects.component.theme)
     implementation(projects.framework.copy)
-    api("androidx.compose.material3:material3:1.3.0")
+    api(libs.compose.material3)
 }

@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                 val overviewNavController = rememberNavController()
                 val organizationsNavController = rememberNavController()
                 val navController = rememberNavController()
+
                 NavHost(
                     navController = navController,
                     startDestination = startDestination,

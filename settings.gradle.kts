@@ -44,6 +44,7 @@ include(":component:results")
 include(":data:uiSchema")
 include(":data:healthcare")
 include(":component:banner")
+include(":component:snackbar")
 
 include(":feature:dashboard:remove_organization")
 include(":feature:dashboard:organizations")

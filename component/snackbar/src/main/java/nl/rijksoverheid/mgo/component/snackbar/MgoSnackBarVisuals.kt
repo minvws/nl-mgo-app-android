@@ -10,7 +10,7 @@ data class MgoSnackBarVisuals(
     val type: MgoSnackBarType,
     @StringRes val title: Int,
     @StringRes val action: Int? = null,
-    val actionCallback: (() -> Unit)? = null,
+    val actionCallback: (suspend () -> Unit)? = null,
     override val actionLabel: String? = null, // Not used
     override val duration: SnackbarDuration = SnackbarDuration.Short, // Not used
     override val message: String = "", // Not used

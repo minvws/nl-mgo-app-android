@@ -33,7 +33,7 @@ fun MgoSnackBarScaffold(
         Scaffold(
             snackbarHost = {
                 SnackbarHost(hostState = snackBarHostState) {
-                    MgoSnackBar(visuals = it.visuals as MgoSnackBarVisuals)
+                    MgoSnackBar(visuals = it.visuals as MgoSnackBarVisuals, dismiss = { snackBarHostState.currentSnackbarData?.dismiss() })
                 }
             },
             topBar = topBar,

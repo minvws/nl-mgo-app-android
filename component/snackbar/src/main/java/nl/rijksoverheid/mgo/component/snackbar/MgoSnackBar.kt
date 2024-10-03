@@ -9,6 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,13 +21,16 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 internal fun MgoSnackBar(
     visuals: MgoSnackBarVisuals,
+    dismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     Card(
         modifier = modifier.padding(16.dp),
     ) {
@@ -58,7 +62,10 @@ internal fun MgoSnackBar(
                 Text(
                     modifier =
                         Modifier
-                            .clickable(visuals.actionCallback != null) { visuals.actionCallback?.invoke() }
+                            .clickable(visuals.actionCallback != null) {
+                                dismiss()
+                                coroutineScope.launch { visuals.actionCallback?.invoke() }
+                            }
                             .padding(start = 16.dp),
                     text = stringResource(visuals.action),
                     style = MaterialTheme.typography.bodySmall,
@@ -74,7 +81,10 @@ internal fun MgoSnackBar(
 @Composable
 internal fun MgoSnackBarSuccess() {
     MgoTheme {
-        MgoSnackBar(visuals = MgoSnackBarVisuals(type = MgoSnackBarType.SUCCESS, title = CopyR.string.app_name))
+        MgoSnackBar(
+            visuals = MgoSnackBarVisuals(type = MgoSnackBarType.SUCCESS, title = CopyR.string.app_name),
+            dismiss = {},
+        )
     }
 }
 
@@ -89,6 +99,7 @@ internal fun MgoSnackBarSuccessWithAction() {
                     title = CopyR.string.app_name,
                     action = CopyR.string.app_name,
                 ),
+            dismiss = {},
         )
     }
 }
@@ -104,6 +115,7 @@ internal fun MgoSnackBarSuccessOverflow() {
                     title = CopyR.string.dialog_remove_organization_subheading,
                     action = CopyR.string.app_name,
                 ),
+            dismiss = {},
         )
     }
 }
@@ -112,7 +124,7 @@ internal fun MgoSnackBarSuccessOverflow() {
 @Composable
 internal fun MgoSnackBarWarning() {
     MgoTheme {
-        MgoSnackBar(visuals = MgoSnackBarVisuals(type = MgoSnackBarType.WARNING, title = CopyR.string.app_name))
+        MgoSnackBar(visuals = MgoSnackBarVisuals(type = MgoSnackBarType.WARNING, title = CopyR.string.app_name), dismiss = {})
     }
 }
 
@@ -127,6 +139,7 @@ internal fun MgoSnackBarWarningWithAction() {
                     title = CopyR.string.app_name,
                     action = CopyR.string.app_name,
                 ),
+            dismiss = {},
         )
     }
 }
@@ -135,7 +148,7 @@ internal fun MgoSnackBarWarningWithAction() {
 @Composable
 internal fun MgoSnackBarError() {
     MgoTheme {
-        MgoSnackBar(visuals = MgoSnackBarVisuals(type = MgoSnackBarType.ERROR, title = CopyR.string.app_name))
+        MgoSnackBar(visuals = MgoSnackBarVisuals(type = MgoSnackBarType.ERROR, title = CopyR.string.app_name), dismiss = {})
     }
 }
 
@@ -143,6 +156,6 @@ internal fun MgoSnackBarError() {
 @Composable
 internal fun MgoSnackBarInfo() {
     MgoTheme {
-        MgoSnackBar(visuals = MgoSnackBarVisuals(type = MgoSnackBarType.INFO, title = CopyR.string.app_name))
+        MgoSnackBar(visuals = MgoSnackBarVisuals(type = MgoSnackBarType.INFO, title = CopyR.string.app_name), dismiss = {})
     }
 }

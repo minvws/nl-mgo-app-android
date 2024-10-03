@@ -23,17 +23,21 @@ class RemoveOrganizationScreenViewModel
         private val _providerDeleted = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val providerDeleted = _providerDeleted.asSharedFlow()
 
-        fun delete(providerId: String) {
+        fun delete(organizationId: String) {
             viewModelScope.launch {
+                val organizationToDelete = organizationRepository.get().first { organization -> organization.id == organizationId }
                 snackBarRepository.show(
                     visuals =
                         MgoSnackBarVisuals(
                             type = MgoSnackBarType.SUCCESS,
                             title = CopyR.string.toast_organization_removed_heading,
                             action = CopyR.string.toast_organization_removed_subheading,
+                            actionCallback = {
+                                organizationRepository.save(organizationToDelete)
+                            },
                         ),
                 )
-                organizationRepository.delete(providerId)
+                organizationRepository.delete(organizationId)
                 _providerDeleted.tryEmit(Unit)
             }
         }

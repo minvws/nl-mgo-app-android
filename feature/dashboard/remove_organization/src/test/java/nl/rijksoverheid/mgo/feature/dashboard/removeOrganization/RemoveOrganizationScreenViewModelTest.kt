@@ -2,8 +2,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import app.cash.turbine.turbineScope
 import nl.rijksoverheid.mgo.component.snackbar.DefaultSnackBarRepository
-import nl.rijksoverheid.mgo.component.snackbar.MgoSnackBarType
-import nl.rijksoverheid.mgo.component.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -40,13 +38,7 @@ internal class RemoveOrganizationScreenViewModelTest {
 
                 // Then
                 assertEquals(Unit, turbine1.awaitItem())
-                val expectedSnackBarVisuals =
-                    MgoSnackBarVisuals(
-                        type = MgoSnackBarType.SUCCESS,
-                        title = R.string.toast_organization_removed_heading,
-                        action = R.string.toast_organization_removed_subheading,
-                    )
-                assertEquals(expectedSnackBarVisuals, turbine2.awaitItem())
+                assertEquals(R.string.toast_organization_removed_heading, turbine2.awaitItem().title)
             }
         }
 }

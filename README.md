@@ -52,6 +52,12 @@ This project uses [Jetpack Compose](https://developer.android.com/develop/ui/com
 
 Each screen or component in the app has [Previews](https://developer.android.com/develop/ui/compose/tooling/previews) included. These previews reflect important states that can be quickly viewed from Android Studio without compiling the app. Usually, these previews also act as snapshot tests.
 
+#### Snackbars
+
+Custom Snackbars have been implemented to match with the design. To use Snackbars, use the 
+`MgoSnackbarScaffold` (instead of the normal `Scaffold`) where you want to Snackbar to show. To 
+display it, call the `show` method from the `SnackBarRepository`.
+
 ### Dependency Injection
 
 This project uses [Dagger Hilt](https://developer.android.com/training/dependency-injection/hilt-android) as Dependency Injection.

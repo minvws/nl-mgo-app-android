@@ -16,3 +16,5 @@ data class MgoSnackBarVisuals(
     override val message: String = "", // Not used
     override val withDismissAction: Boolean = false, // Not used
 ) : SnackbarVisuals
+
+val TEST_MGO_SNACK_BAR_VISUALS = MgoSnackBarVisuals(type = MgoSnackBarType.SUCCESS, title = -1)

@@ -27,7 +27,7 @@ internal class DefaultSnackBarRepositoryTest {
         runTest {
             // Given
             val repository = DefaultSnackBarRepository()
-            val visuals = MgoSnackBarVisuals(type = MgoSnackBarType.SUCCESS, title = -1)
+            val visuals = TEST_MGO_SNACK_BAR_VISUALS
 
             // When
             repository.show(visuals)

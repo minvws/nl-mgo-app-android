@@ -102,7 +102,7 @@ internal fun ColumnWithButtonsContent(
                             .padding(bottom = 16.dp),
                     buttonText = secondaryButtonText,
                     onClick = onSecondaryButtonClick,
-                    buttonTheme = MgoButtonTheme.Secondary,
+                    buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
                 )
             }
             MgoButton(

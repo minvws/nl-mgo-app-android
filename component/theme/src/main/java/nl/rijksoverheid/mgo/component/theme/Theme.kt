@@ -48,12 +48,12 @@ fun MgoTheme(
 @Composable
 private fun getDarkColorScheme() =
     darkColors(
-        primary = MaterialTheme.colors.actionPrimaryBackground(true),
-        secondary = MaterialTheme.colors.actionSecondaryBackground(true),
+        primary = MaterialTheme.colors.actionPrimaryDefaultBackground(true),
+        secondary = MaterialTheme.colors.actionSecondaryDefaultBackground(true),
         background = MaterialTheme.colors.backgroundPrimary(true),
         surface = MaterialTheme.colors.backgroundSecondary(true),
         onPrimary = MaterialTheme.colors.backgroundSecondary(false),
-        onSecondary = MaterialTheme.colors.actionSecondaryText(true),
+        onSecondary = MaterialTheme.colors.actionSecondaryDefaultText(true),
         onBackground = MaterialTheme.colors.contentPrimary(true),
         onSurface = MaterialTheme.colors.contentPrimary(true),
         error = MaterialTheme.colors.notificationError(true),
@@ -62,12 +62,12 @@ private fun getDarkColorScheme() =
 @Composable
 private fun getLightColorScheme() =
     lightColors(
-        primary = MaterialTheme.colors.actionPrimaryBackground(false),
-        secondary = MaterialTheme.colors.actionSecondaryBackground(false),
+        primary = MaterialTheme.colors.actionPrimaryDefaultBackground(false),
+        secondary = MaterialTheme.colors.actionSecondaryDefaultBackground(false),
         background = MaterialTheme.colors.backgroundPrimary(false),
         surface = MaterialTheme.colors.backgroundSecondary(false),
         onPrimary = MaterialTheme.colors.backgroundSecondary(false),
-        onSecondary = MaterialTheme.colors.actionSecondaryText(false),
+        onSecondary = MaterialTheme.colors.actionSecondaryDefaultText(false),
         onBackground = MaterialTheme.colors.contentPrimary(false),
         onSurface = MaterialTheme.colors.contentPrimary(false),
         error = MaterialTheme.colors.notificationError(false),

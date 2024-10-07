@@ -101,6 +101,14 @@ internal fun MgoButtonPrimaryDefaultPreview() {
 
 @PreviewLightDark
 @Composable
+internal fun MgoButtonPrimaryNegativePreview() {
+    MgoTheme {
+        MgoButton(modifier = Modifier.padding(16.dp), buttonText = "Click me", onClick = { }, buttonTheme = MgoButtonTheme.PRIMARY_NEGATIVE)
+    }
+}
+
+@PreviewLightDark
+@Composable
 internal fun MgoButtonSecondaryDefaultPreview() {
     MgoTheme {
         MgoButton(
@@ -114,6 +122,19 @@ internal fun MgoButtonSecondaryDefaultPreview() {
 
 @PreviewLightDark
 @Composable
+internal fun MgoButtonSecondaryNegativePreview() {
+    MgoTheme {
+        MgoButton(
+            modifier = Modifier.padding(16.dp),
+            buttonText = "Click me",
+            onClick = { },
+            buttonTheme = MgoButtonTheme.SECONDARY_NEGATIVE,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
 internal fun MgoButtonTertiaryDefaultPreview() {
     MgoTheme {
         MgoButton(
@@ -121,6 +142,19 @@ internal fun MgoButtonTertiaryDefaultPreview() {
             buttonText = "Click me",
             onClick = { },
             buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoButtonTertiaryNegativePreview() {
+    MgoTheme {
+        MgoButton(
+            modifier = Modifier.padding(16.dp),
+            buttonText = "Click me",
+            onClick = { },
+            buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
         )
     }
 }

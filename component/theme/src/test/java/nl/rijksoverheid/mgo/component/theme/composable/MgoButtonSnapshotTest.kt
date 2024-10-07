@@ -17,9 +17,37 @@ internal class MgoButtonSnapshotTest {
     }
 
     @Test
+    fun primaryNegative() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            MgoButtonPrimaryNegativePreview()
+        }
+    }
+
+    @Test
     fun secondaryDefault() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
             MgoButtonSecondaryDefaultPreview()
+        }
+    }
+
+    @Test
+    fun secondaryNegative() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            MgoButtonSecondaryNegativePreview()
+        }
+    }
+
+    @Test
+    fun tertiaryDefault() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            MgoButtonTertiaryDefaultPreview()
+        }
+    }
+
+    @Test
+    fun tertiaryNegative() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            MgoButtonTertiaryNegativePreview()
         }
     }
 }

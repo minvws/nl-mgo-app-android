@@ -106,7 +106,12 @@ fun Colors.actionSecondaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDar
 
 @Composable
 fun Colors.actionSecondaryNegativeBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0x0D000000) else Color(0xFF000000)
+    if (isSystemDarkTheme) {
+        Color(0xFFFFFFFF).copy(alpha = 0.10f).compositeOver(Color.Black)
+    } else {
+        Color(0xFF000000).copy(alpha = 0.05f)
+            .compositeOver(Color.White)
+    }
 
 @Composable
 fun Colors.actionSecondaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =

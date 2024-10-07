@@ -48,7 +48,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
 
                 val expectedFirstHealthProvider =
                     MgoOrganization(
-                        id = "12001468",
+                        id = "agb-z:12001468",
                         name = "Tandartspraktijk Van Dijck",
                         address = "Ginnekenweg 183\r\n4835NA BREDA",
                         category = "Tandartsen",

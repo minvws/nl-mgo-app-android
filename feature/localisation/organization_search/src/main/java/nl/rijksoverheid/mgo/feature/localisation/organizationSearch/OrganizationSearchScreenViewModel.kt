@@ -47,10 +47,15 @@ internal class OrganizationSearchScreenViewModel
 
         fun getSearchResults() {
             viewModelScope.launch {
+                _viewState.update { viewState -> viewState.copy(loading = true, results = listOf(), error = null) }
                 organizationRepository
                     .search(name = name, city = city)
-                    .catch { error -> _viewState.update { viewState -> viewState.copy(loading = false, error = error) } }
-                    .collectLatest { results -> _viewState.update { viewState -> viewState.copy(loading = false, results = results) } }
+                    .catch { error ->
+                        _viewState.update { viewState -> viewState.copy(loading = false, error = error) }
+                    }
+                    .collectLatest { results ->
+                        _viewState.update { viewState -> viewState.copy(loading = false, results = results, error = null) }
+                    }
             }
         }
 

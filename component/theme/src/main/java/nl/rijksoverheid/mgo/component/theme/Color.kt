@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 
 // Base
 
@@ -92,7 +93,12 @@ fun Colors.actionPrimaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDark
 
 @Composable
 fun Colors.actionSecondaryDefaultBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0x1F007BC7) else Color(0x3D007BC7)
+    if (isSystemDarkTheme) {
+        Color(0xFF007BC7).copy(alpha = 0.24f).compositeOver(Color.Black)
+    } else {
+        Color(0xFF007BC7).copy(alpha = 0.12f)
+            .compositeOver(Color.White)
+    }
 
 @Composable
 fun Colors.actionSecondaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =

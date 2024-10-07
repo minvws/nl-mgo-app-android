@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
@@ -39,6 +40,7 @@ fun MgoButton(
             contentColor = buttonTheme.getContentColor(),
         )
     Button(
+        elevation = ButtonDefaults.elevation(buttonTheme.getElevation()),
         modifier = modifier.heightIn(min = 48.dp),
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
         content = { Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
@@ -57,7 +59,7 @@ enum class MgoButtonTheme {
 }
 
 @Composable
-fun MgoButtonTheme.getBackgroundColor(): Color {
+private fun MgoButtonTheme.getBackgroundColor(): Color {
     return when (this) {
         MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colors.actionPrimaryDefaultBackground()
         MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colors.actionPrimaryNegativeBackground()
@@ -69,7 +71,7 @@ fun MgoButtonTheme.getBackgroundColor(): Color {
 }
 
 @Composable
-fun MgoButtonTheme.getContentColor(): Color {
+private fun MgoButtonTheme.getContentColor(): Color {
     return when (this) {
         MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colors.actionPrimaryDefaultText()
         MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colors.actionPrimaryNegativeText()
@@ -80,9 +82,18 @@ fun MgoButtonTheme.getContentColor(): Color {
     }
 }
 
+@Composable
+private fun MgoButtonTheme.getElevation(): Dp {
+    return if (getBackgroundColor() == Color.Transparent) {
+        0.dp
+    } else {
+        2.dp
+    }
+}
+
 @PreviewLightDark
 @Composable
-internal fun MgoButtonPrimaryPreview() {
+internal fun MgoButtonPrimaryDefaultPreview() {
     MgoTheme {
         MgoButton(modifier = Modifier.padding(16.dp), buttonText = "Click me", onClick = { }, buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT)
     }
@@ -90,13 +101,26 @@ internal fun MgoButtonPrimaryPreview() {
 
 @PreviewLightDark
 @Composable
-internal fun MgoButtonSecondaryPreview() {
+internal fun MgoButtonSecondaryDefaultPreview() {
     MgoTheme {
         MgoButton(
             modifier = Modifier.padding(16.dp),
             buttonText = "Click me",
             onClick = { },
             buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoButtonTertiaryDefaultPreview() {
+    MgoTheme {
+        MgoButton(
+            modifier = Modifier.padding(16.dp),
+            buttonText = "Click me",
+            onClick = { },
+            buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
         )
     }
 }

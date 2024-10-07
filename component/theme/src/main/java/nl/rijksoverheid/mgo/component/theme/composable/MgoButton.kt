@@ -7,6 +7,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,19 +35,29 @@ fun MgoButton(
     modifier: Modifier = Modifier,
     buttonTheme: MgoButtonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
 ) {
+    val backgroundColor = buttonTheme.getBackgroundColor()
     val buttonColors =
         ButtonDefaults.buttonColors(
-            backgroundColor = buttonTheme.getBackgroundColor(),
+            backgroundColor = backgroundColor,
             contentColor = buttonTheme.getContentColor(),
         )
-    Button(
-        elevation = ButtonDefaults.elevation(buttonTheme.getElevation()),
-        modifier = modifier.heightIn(min = 48.dp),
-        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
-        content = { Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
-        onClick = onClick,
-        colors = buttonColors,
-    )
+    if (backgroundColor == Color.Transparent) {
+        TextButton(
+            modifier = modifier.heightIn(min = 48.dp),
+            contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
+            content = { Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
+            onClick = onClick,
+            colors = buttonColors,
+        )
+    } else {
+        Button(
+            modifier = modifier.heightIn(min = 48.dp),
+            contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
+            content = { Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
+            onClick = onClick,
+            colors = buttonColors,
+        )
+    }
 }
 
 enum class MgoButtonTheme {
@@ -84,10 +95,13 @@ private fun MgoButtonTheme.getContentColor(): Color {
 
 @Composable
 private fun MgoButtonTheme.getElevation(): Dp {
-    return if (getBackgroundColor() == Color.Transparent) {
-        0.dp
-    } else {
-        2.dp
+    return when (this) {
+        MgoButtonTheme.PRIMARY_DEFAULT -> 2.dp
+        MgoButtonTheme.PRIMARY_NEGATIVE -> 2.dp
+        MgoButtonTheme.SECONDARY_DEFAULT -> 2.dp
+        MgoButtonTheme.SECONDARY_NEGATIVE -> 2.dp
+        MgoButtonTheme.TERTIARY_DEFAULT -> 0.dp
+        MgoButtonTheme.TERTIARY_NEGATIVE -> 0.dp
     }
 }
 

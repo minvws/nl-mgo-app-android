@@ -17,7 +17,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -28,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,8 +34,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
+import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
@@ -203,20 +202,16 @@ private fun WithProviders(
         }
 
         if (filterOrganization != null) {
-            TextButton(
+            MgoButton(
                 modifier =
                     Modifier
                         .padding(bottom = 16.dp)
                         .align(Alignment.CenterHorizontally),
-                onClick = { onClickRemoveOrganization(filterOrganization) },
-                content = {
-                    Text(
-                        text = stringResource(id = CopyR.string.health_categories_remove_organization),
-                        color = MaterialTheme.colors.actionTertiaryNegativeText(),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Bold,
-                    )
+                buttonText = stringResource(id = CopyR.string.health_categories_remove_organization),
+                onClick = {
+                    onClickRemoveOrganization(filterOrganization)
                 },
+                buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
             )
         }
     }

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 
 /**
@@ -30,7 +30,7 @@ fun MgoHtmlText(
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodySmall,
     onLinkClicked: (url: String) -> Unit = {},
-    linkColor: Color = MaterialTheme.colors.actionTertiaryDefault(),
+    linkColor: Color = MaterialTheme.colors.actionTertiaryDefaultText(),
 ) {
     val annotatedString =
         buildAnnotatedString {

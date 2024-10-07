@@ -22,12 +22,16 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryBackground
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryText
-import nl.rijksoverheid.mgo.component.theme.actionSecondaryBackground
-import nl.rijksoverheid.mgo.component.theme.actionSecondaryText
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegative
+import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.actionPrimaryNegativeBackground
+import nl.rijksoverheid.mgo.component.theme.actionPrimaryNegativeText
+import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeBackground
+import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeText
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.backgroundPrimary
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
@@ -113,22 +117,34 @@ private fun ColorSampleScreen() {
             ColorSample(color = MaterialTheme.colors.linesInput(), text = "Lines Input")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionPrimaryBackground(), text = "Action Primary Background")
+            ColorSample(color = MaterialTheme.colors.actionPrimaryDefaultBackground(), text = "Action Primary Default Background")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionPrimaryText(), text = "Action Primary Text")
+            ColorSample(color = MaterialTheme.colors.actionPrimaryDefaultText(), text = "Action Primary Default Text")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionSecondaryBackground(), text = "Action Secondary Background")
+            ColorSample(color = MaterialTheme.colors.actionPrimaryNegativeBackground(), text = "Action Primary Negative Background")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionSecondaryText(), text = "Action Secondary Text")
+            ColorSample(color = MaterialTheme.colors.actionPrimaryNegativeText(), text = "Action Primary Negative Text")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionTertiaryDefault(), text = "Action Tertiary Default")
+            ColorSample(color = MaterialTheme.colors.actionSecondaryDefaultBackground(), text = "Action Secondary Default Background")
         }
         item {
-            ColorSample(color = MaterialTheme.colors.actionTertiaryNegative(), text = "Action Tertiary Negative")
+            ColorSample(color = MaterialTheme.colors.actionSecondaryDefaultText(), text = "Action Secondary Default Text")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.actionSecondaryNegativeBackground(), text = "Action Secondary Negative Background")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.actionSecondaryNegativeText(), text = "Action Secondary Negative Text")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.actionTertiaryDefaultText(), text = "Action Tertiary Default Text")
+        }
+        item {
+            ColorSample(color = MaterialTheme.colors.actionTertiaryNegativeText(), text = "Action Tertiary Negative Text")
         }
         item {
             ColorSample(color = MaterialTheme.colors.notificationInformation(), text = "Notification Information")

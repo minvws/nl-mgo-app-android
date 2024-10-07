@@ -75,27 +75,43 @@ fun Colors.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (
 
 // Support
 @Composable
-fun Colors.actionPrimaryBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun Colors.actionPrimaryDefaultBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF007BC7) else Color(0xFF007BC7)
 
 @Composable
-fun Colors.actionPrimaryText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun Colors.actionPrimaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFFFFFFF) else Color(0xFFFFFFFF)
 
 @Composable
-fun Colors.actionSecondaryBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFFD9EBF7) else Color(0xFFD9EBF7)
+fun Colors.actionPrimaryNegativeBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFD52B1E) else Color(0xFFD52B1E)
 
 @Composable
-fun Colors.actionSecondaryText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF01689B) else Color(0xFF01689B)
+fun Colors.actionPrimaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color.White else Color.White
 
 @Composable
-fun Colors.actionTertiaryDefault(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun Colors.actionSecondaryDefaultBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0x1F007BC7) else Color(0x3D007BC7)
+
+@Composable
+fun Colors.actionSecondaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF8FCAE7) else Color(0xFF01689B)
 
 @Composable
-fun Colors.actionTertiaryNegative(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun Colors.actionSecondaryNegativeBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0x0D000000) else Color(0xFF000000)
+
+@Composable
+fun Colors.actionSecondaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFE67F78) else Color(0xFFD52B1E)
+
+@Composable
+fun Colors.actionTertiaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF8FCAE7) else Color(0xFF01689B)
+
+@Composable
+fun Colors.actionTertiaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFE67F78) else Color(0xFFD52B1E)
 
 @Composable

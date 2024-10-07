@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
@@ -79,7 +79,7 @@ private fun BottomNavigationBar(
     val elevation = if (isSystemInDarkTheme()) 0.dp else 1.dp
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.backgroundSecondary(),
-        contentColor = MaterialTheme.colors.actionTertiaryDefault(),
+        contentColor = MaterialTheme.colors.actionTertiaryDefaultText(),
         elevation = elevation,
     ) {
         BottomBarItem.entries.forEach { item ->
@@ -96,7 +96,7 @@ private fun BottomNavigationBar(
                 label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
                 selected = item == selectedItem,
                 onClick = { onSelectBottomBarItem(item) },
-                selectedContentColor = MaterialTheme.colors.actionTertiaryDefault(),
+                selectedContentColor = MaterialTheme.colors.actionTertiaryDefaultText(),
                 unselectedContentColor = MaterialTheme.colors.iconsPrimary(),
             )
         }

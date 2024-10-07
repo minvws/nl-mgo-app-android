@@ -24,7 +24,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefault
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.headingLarge
@@ -87,7 +86,6 @@ internal fun PropositionOverviewScreenContent(
                             .padding(top = 16.dp),
                     html = stringResource(id = CopyR.string.proposition_subheading, url),
                     style = MaterialTheme.typography.bodySmall,
-                    linkColor = MaterialTheme.colors.actionTertiaryDefault(),
                     onLinkClicked = { url -> url.launchBrowser(context) },
                 )
                 ListItem(

@@ -3,10 +3,10 @@ package nl.rijksoverheid.mgo.data.api.load
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-typealias DataServiceId = Int
+typealias DataServiceId = String
 
-const val DATA_SERVICE_BGZ: DataServiceId = 48
-const val DATA_SERVICE_GP: DataServiceId = 49
+const val DATA_SERVICE_BGZ: DataServiceId = "48"
+const val DATA_SERVICE_GP: DataServiceId = "49"
 
 @JsonClass(generateAdapter = true)
 class SearchResponse(
@@ -14,7 +14,7 @@ class SearchResponse(
 ) {
     @JsonClass(generateAdapter = true)
     data class Organization(
-        @Json(name = "identification_value") val id: String,
+        @Json(name = "identification") val id: String,
         @Json(name = "display_name") val displayName: String?,
         val addresses: List<Address>,
         val types: List<Types>,

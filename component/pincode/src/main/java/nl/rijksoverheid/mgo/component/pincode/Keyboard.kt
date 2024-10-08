@@ -69,7 +69,7 @@ private fun RowScope.KeyboardItemIcon(
 
 @PreviewLightDark
 @Composable
-internal fun PinCodeWithKeyboardPreview() {
+internal fun KeyboardPreview() {
     MgoTheme {
         Keyboard(onPressNumber = {})
     }

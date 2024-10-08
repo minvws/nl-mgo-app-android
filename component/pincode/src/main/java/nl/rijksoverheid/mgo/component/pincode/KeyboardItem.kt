@@ -1,16 +1,20 @@
 package nl.rijksoverheid.mgo.component.pincode
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -23,11 +27,17 @@ internal fun KeyboardItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier, shape = RoundedCornerShape(25.dp), onClick = onClick) {
-        Box(contentAlignment = Alignment.Center) {
-            when (type) {
-                is KeyboardItemType.Icon -> {}
-                is KeyboardItemType.Number -> KeyboardItemNumber(number = type.number)
+    when (type) {
+        is KeyboardItemType.Icon -> {
+            Box(modifier = modifier.clickable { onClick() }, contentAlignment = Alignment.Center) {
+                KeyboardItemIcon(icon = type.icon)
+            }
+        }
+        is KeyboardItemType.Number -> {
+            Card(modifier = modifier, shape = RoundedCornerShape(25.dp), onClick = onClick) {
+                Box(contentAlignment = Alignment.Center) {
+                    KeyboardItemNumber(number = type.number)
+                }
             }
         }
     }
@@ -45,13 +55,43 @@ private fun KeyboardItemNumber(
     )
 }
 
+@Composable
+private fun KeyboardItemIcon(
+    @DrawableRes icon: Int,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        painter = painterResource(icon),
+        modifier = modifier,
+        contentDescription = null,
+    )
+}
+
 @PreviewLightDark
 @Composable
-internal fun KeyboardItemPreview() {
+internal fun KeyboardItemNumberPreview() {
     MgoTheme {
         KeyboardItem(
-            modifier = Modifier.size(100.dp).padding(16.dp),
+            modifier =
+                Modifier
+                    .size(100.dp)
+                    .padding(16.dp),
             type = KeyboardItemType.Number(1),
+            onClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun KeyboardItemIconPreview() {
+    MgoTheme {
+        KeyboardItem(
+            modifier =
+                Modifier
+                    .size(100.dp)
+                    .padding(16.dp),
+            type = KeyboardItemType.Icon(R.drawable.ic_keyboard_backspace),
             onClick = {},
         )
     }

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.component.pincode
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,11 @@ fun Keyboard(
                 KeyboardItemNumber(number = 8)
                 KeyboardItemNumber(number = 9)
             }
+            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                KeyboardItemIcon(icon = R.drawable.ic_keyboard_fingerprint)
+                KeyboardItemNumber(number = 0)
+                KeyboardItemIcon(icon = R.drawable.ic_keyboard_backspace)
+            }
         }
     }
 }
@@ -47,6 +53,17 @@ private fun RowScope.KeyboardItemNumber(number: Int) {
         modifier = Modifier.weight(1f).aspectRatio(2.25f),
         onClick = {},
         type = KeyboardItemType.Number(number),
+    )
+}
+
+@Composable
+private fun RowScope.KeyboardItemIcon(
+    @DrawableRes icon: Int,
+) {
+    KeyboardItem(
+        modifier = Modifier.weight(1f).aspectRatio(2.25f),
+        onClick = {},
+        type = KeyboardItemType.Icon(icon),
     )
 }
 

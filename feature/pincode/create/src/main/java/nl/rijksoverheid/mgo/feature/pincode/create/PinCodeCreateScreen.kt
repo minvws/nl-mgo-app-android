@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.pincode.create
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -16,6 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.pincode.Keyboard
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
@@ -58,7 +62,22 @@ private fun PinCodeCreateScreenContent(onNavigateBack: () -> Unit) {
                     text = stringResource(id = R.string.pincode_create_subheading),
                     style = MaterialTheme.typography.bodySmall,
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                Keyboard(
+                    onPressNumber = {
+                    },
+                )
             }
         },
     )
+}
+
+@DefaultPreviews
+@Composable
+internal fun PinCodeCreateScreenPreview() {
+    MgoTheme {
+        PinCodeCreateScreenContent(
+            onNavigateBack = {},
+        )
+    }
 }

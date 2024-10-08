@@ -5,8 +5,12 @@ import io.mockk.mockk
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.config.TestConfigRepository
 import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
+import nl.rijksoverheid.mgo.data.pincode.TestHasSeenPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigationScreen
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -17,23 +21,69 @@ internal class MainViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `Given onboarding seen, When calling hasSeenOnboarding, Then return true`() {
+    fun `Given onboarding and pin code seen, When calling getStartDestination, Then return correct navigation`() {
         // Given
         val configRepository = TestConfigRepository()
         val hasSeenOnboarding = TestHasSeenOnboarding()
+        val hasSeenPinCode = TestHasSeenPinCode()
         hasSeenOnboarding.set(true)
+        hasSeenPinCode.set(true)
         val viewModel =
             MainViewModel(
                 hasSeenOnboarding = hasSeenOnboarding,
+                hasSeenPinCode = hasSeenPinCode,
                 configRepository = configRepository,
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
             )
 
         // When
-        val hasSeen = viewModel.hasSeenOnboarding()
+        val startDestination = viewModel.getStartDestination()
 
         // Then
-        assertEquals(true, hasSeen)
+        assertEquals(DashboardNavigationScreen.Start.getNavigationRoute(), startDestination)
+    }
+
+    @Test
+    fun `Given onboarding seen, When calling getStartDestination, Then return correct navigation`() {
+        // Given
+        val configRepository = TestConfigRepository()
+        val hasSeenOnboarding = TestHasSeenOnboarding()
+        val hasSeenPinCode = TestHasSeenPinCode()
+        hasSeenOnboarding.set(true)
+        val viewModel =
+            MainViewModel(
+                hasSeenOnboarding = hasSeenOnboarding,
+                hasSeenPinCode = hasSeenPinCode,
+                configRepository = configRepository,
+                showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
+            )
+
+        // When
+        val startDestination = viewModel.getStartDestination()
+
+        // Then
+        assertEquals(PinCodeNavigationScreen.Start.getNavigationRoute(), startDestination)
+    }
+
+    @Test
+    fun `Given nothing seen, When calling getStartDestination, Then return correct navigation`() {
+        // Given
+        val configRepository = TestConfigRepository()
+        val hasSeenOnboarding = TestHasSeenOnboarding()
+        val hasSeenPinCode = TestHasSeenPinCode()
+        val viewModel =
+            MainViewModel(
+                hasSeenOnboarding = hasSeenOnboarding,
+                hasSeenPinCode = hasSeenPinCode,
+                configRepository = configRepository,
+                showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
+            )
+
+        // When
+        val startDestination = viewModel.getStartDestination()
+
+        // Then
+        assertEquals(OnboardingNavigationScreen.Start.getNavigationRoute(), startDestination)
     }
 
     @Test
@@ -42,9 +92,11 @@ internal class MainViewModelTest {
             // Given
             val configRepository = TestConfigRepository()
             val hasSeenOnboarding = TestHasSeenOnboarding()
+            val hasSeenPinCode = TestHasSeenPinCode()
             val viewModel =
                 MainViewModel(
                     hasSeenOnboarding = hasSeenOnboarding,
+                    hasSeenPinCode = hasSeenPinCode,
                     configRepository = configRepository,
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 )

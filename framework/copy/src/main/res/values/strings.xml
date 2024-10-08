@@ -141,6 +141,8 @@
   <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
   <string name="overview.no_results_action">Voeg zorgaanbieders toe</string>
   <string name="overview.subheading">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
+  <string name="pincode.create.heading">Kies je toegangscode</string>
+  <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig. Gebruik geen simpele codes zoals 00000 of 12345.</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>
   <string name="proposition.heading">Zo gebruikt de app jouw gegevens</string>

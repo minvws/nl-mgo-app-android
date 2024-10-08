@@ -22,6 +22,9 @@ fun NavGraphBuilder.addPinCodeNavGraph(
                 onPinEntered = {
                     navController.navigate(PinCodeNavigationScreen.Confirm.getNavigationRoute())
                 },
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
             )
         }
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Login.getRoute()) {

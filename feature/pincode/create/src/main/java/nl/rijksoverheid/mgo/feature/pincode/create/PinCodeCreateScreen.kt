@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.pincode.Keyboard
+import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
@@ -63,7 +63,8 @@ private fun PinCodeCreateScreenContent(onNavigateBack: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Keyboard(
+                PinCodeWithKeyboard(
+                    pinCode = listOf(),
                     onPressNumber = {
                     },
                 )

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.pincode
+package nl.rijksoverheid.mgo.component.pincode.keyboard
 
 import androidx.annotation.DrawableRes
 

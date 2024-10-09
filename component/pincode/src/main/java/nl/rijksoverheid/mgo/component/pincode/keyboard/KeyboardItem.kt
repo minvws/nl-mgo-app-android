@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.pincode
+package nl.rijksoverheid.mgo.component.pincode.keyboard
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.pincode.R
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
 

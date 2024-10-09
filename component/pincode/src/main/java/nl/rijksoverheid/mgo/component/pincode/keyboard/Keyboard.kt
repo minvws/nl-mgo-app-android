@@ -25,23 +25,23 @@ fun Keyboard(
     Box(modifier = modifier) {
         Column(modifier = modifier.wrapContentWidth().height(IntrinsicSize.Min), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemNumber(number = 1)
-                KeyboardItemNumber(number = 2)
-                KeyboardItemNumber(number = 3)
+                KeyboardItemNumber(number = 1, onPressNumber = onPressNumber)
+                KeyboardItemNumber(number = 2, onPressNumber = onPressNumber)
+                KeyboardItemNumber(number = 3, onPressNumber = onPressNumber)
             }
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemNumber(number = 4)
-                KeyboardItemNumber(number = 5)
-                KeyboardItemNumber(number = 6)
+                KeyboardItemNumber(number = 4, onPressNumber = onPressNumber)
+                KeyboardItemNumber(number = 5, onPressNumber = onPressNumber)
+                KeyboardItemNumber(number = 6, onPressNumber = onPressNumber)
             }
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemNumber(number = 7)
-                KeyboardItemNumber(number = 8)
-                KeyboardItemNumber(number = 9)
+                KeyboardItemNumber(number = 7, onPressNumber = onPressNumber)
+                KeyboardItemNumber(number = 8, onPressNumber = onPressNumber)
+                KeyboardItemNumber(number = 9, onPressNumber = onPressNumber)
             }
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 KeyboardItemIcon(icon = R.drawable.ic_keyboard_fingerprint)
-                KeyboardItemNumber(number = 0)
+                KeyboardItemNumber(number = 0, onPressNumber = onPressNumber)
                 KeyboardItemIcon(icon = R.drawable.ic_keyboard_backspace)
             }
         }
@@ -49,10 +49,13 @@ fun Keyboard(
 }
 
 @Composable
-private fun RowScope.KeyboardItemNumber(number: Int) {
+private fun RowScope.KeyboardItemNumber(
+    number: Int,
+    onPressNumber: (number: Int) -> Unit,
+) {
     KeyboardItem(
         modifier = Modifier.weight(1f).aspectRatio(2.25f),
-        onClick = {},
+        onClick = { onPressNumber(number) },
         type = KeyboardItemType.Number(number),
     )
 }

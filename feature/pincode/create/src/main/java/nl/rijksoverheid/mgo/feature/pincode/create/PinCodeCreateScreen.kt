@@ -12,11 +12,14 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -29,11 +32,23 @@ fun PinCodeCreateScreen(
     onPinEntered: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    PinCodeCreateScreenContent(onNavigateBack)
+    val viewModel: PinCodeCreateScreenViewModel = hiltViewModel()
+    val viewState by viewModel.viewState.collectAsState()
+    PinCodeCreateScreenContent(
+        pinCode = viewState.pinCode,
+        onAddPinCodeNumber = { number ->
+            viewModel.addPinCodeNumber(number)
+        },
+        onNavigateBack = onNavigateBack,
+    )
 }
 
 @Composable
-private fun PinCodeCreateScreenContent(onNavigateBack: () -> Unit) {
+private fun PinCodeCreateScreenContent(
+    pinCode: List<Int>,
+    onAddPinCodeNumber: (number: Int) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,7 +66,12 @@ private fun PinCodeCreateScreenContent(onNavigateBack: () -> Unit) {
             )
         },
         content = { innerPadding ->
-            Column(modifier = Modifier.padding(16.dp).padding(innerPadding)) {
+            Column(
+                modifier =
+                    Modifier
+                        .padding(16.dp)
+                        .padding(innerPadding),
+            ) {
                 Text(
                     text = stringResource(id = R.string.pincode_create_heading),
                     style = MaterialTheme.typography.headingLarge,
@@ -64,9 +84,8 @@ private fun PinCodeCreateScreenContent(onNavigateBack: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 PinCodeWithKeyboard(
-                    pinCode = listOf(),
-                    onPressNumber = {
-                    },
+                    pinCode = pinCode,
+                    onPressNumber = onAddPinCodeNumber,
                 )
             }
         },
@@ -78,6 +97,8 @@ private fun PinCodeCreateScreenContent(onNavigateBack: () -> Unit) {
 internal fun PinCodeCreateScreenPreview() {
     MgoTheme {
         PinCodeCreateScreenContent(
+            pinCode = listOf(1, 2, 3),
+            onAddPinCodeNumber = {},
             onNavigateBack = {},
         )
     }

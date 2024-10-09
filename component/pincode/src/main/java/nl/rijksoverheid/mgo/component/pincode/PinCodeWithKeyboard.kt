@@ -21,9 +21,7 @@ fun PinCodeWithKeyboard(
         Spacer(modifier = Modifier.weight(1f))
         PinCode(pinCode = pinCode)
         Spacer(modifier = Modifier.weight(1f))
-        Keyboard(
-            onPressNumber = {},
-        )
+        Keyboard(onPressNumber = onPressNumber)
     }
 }
 

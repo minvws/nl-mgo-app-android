@@ -19,8 +19,23 @@ fun NavGraphBuilder.addPinCodeNavGraph(
     ) {
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Create.getRoute()) {
             PinCodeCreateScreen(
-                onPinEntered = {
-                    navController.navigate(PinCodeNavigationScreen.Confirm.getNavigationRoute())
+                onPinEntered = { pinCode ->
+                    navController.navigate(PinCodeNavigationScreen.Confirm.setPinCodeToMatch(pinCode).getNavigationRoute())
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+        composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Confirm.getRoute()) { backStackEntry ->
+            PinCodeConfirmScreen(
+                pinCodeToMatch = PinCodeNavigationScreen.Confirm.getPinCodeToMatch(backStackEntry),
+                onPinConfirmed = {
+                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onNavigateBack = {
                     navController.popBackStack()
@@ -30,17 +45,6 @@ fun NavGraphBuilder.addPinCodeNavGraph(
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Login.getRoute()) {
             PinCodeLoginScreen(
                 onPinEntered = {
-                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                },
-            )
-        }
-        composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Confirm.getRoute()) {
-            PinCodeConfirmScreen(
-                onPinConfirmed = {
                     navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
                         popUpTo(navController.graph.id) {
                             inclusive = true

@@ -20,7 +20,7 @@ internal class PinCodeCreateScreenViewModel
         private val _viewState = MutableStateFlow(PinCodeCreateScreenViewState.initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, PinCodeCreateScreenViewState.initialState)
 
-        private val _navigateToConfirm = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+        private val _navigateToConfirm = MutableSharedFlow<List<Int>>(extraBufferCapacity = 1)
         val navigateToConfirm = _navigateToConfirm.asSharedFlow()
 
         fun resetPinCode() {
@@ -34,8 +34,9 @@ internal class PinCodeCreateScreenViewModel
                         val newPinCode = viewState.pinCode.toMutableList().also { it.add(number) }
                         viewState.copy(pinCode = newPinCode)
                     }
-                    if (_viewState.value.pinCode.size == 5) {
-                        _navigateToConfirm.tryEmit(Unit)
+                    val pinCode = _viewState.value.pinCode
+                    if (pinCode.size == 5) {
+                        _navigateToConfirm.tryEmit(pinCode)
                     }
                 }
             }

@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -31,17 +31,17 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun PinCodeCreateScreen(
-    onPinEntered: () -> Unit,
+    onPinEntered: (pinCode: List<Int>) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel: PinCodeCreateScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.resetPinCode()
-        viewModel.navigateToConfirm.collectLatest {
-            onPinEntered()
+        viewModel.navigateToConfirm.collectLatest { pinCode ->
+            onPinEntered(pinCode)
         }
     }
-    val viewState by viewModel.viewState.collectAsState()
+    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     PinCodeCreateScreenContent(
         pinCode = viewState.pinCode,
         onAddPinCodeNumber = { number ->

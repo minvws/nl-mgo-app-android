@@ -9,6 +9,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -17,22 +19,24 @@ import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
 @Composable
 fun PinCodeItem(
     modifier: Modifier = Modifier,
+    color: Color,
+    scale: Float,
     fill: Boolean = false,
 ) {
-    Box {
+    Box(modifier = modifier.scale(scale)) {
         Box(
             modifier =
                 modifier
-                    .border(2.dp, MaterialTheme.colors.actionPrimaryDefaultBackground(), CircleShape)
+                    .border(2.dp, color, CircleShape)
                     .clip(CircleShape),
         )
         if (fill) {
             Box(
                 modifier =
                     modifier
-                        .border(2.dp, MaterialTheme.colors.actionPrimaryDefaultBackground(), CircleShape)
+                        .border(2.dp, color, CircleShape)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colors.actionPrimaryDefaultBackground()),
+                        .background(color),
             )
         }
     }
@@ -42,7 +46,7 @@ fun PinCodeItem(
 @Composable
 internal fun PinCodeItemNotFilledPreview() {
     MgoTheme {
-        PinCodeItem(modifier = Modifier.size(32.dp))
+        PinCodeItem(modifier = Modifier.size(32.dp), color = MaterialTheme.colors.actionPrimaryDefaultBackground(), scale = 1f)
     }
 }
 
@@ -50,6 +54,6 @@ internal fun PinCodeItemNotFilledPreview() {
 @Composable
 internal fun PinCodeItemFilledPreview() {
     MgoTheme {
-        PinCodeItem(modifier = Modifier.size(32.dp), fill = true)
+        PinCodeItem(modifier = Modifier.size(32.dp), color = MaterialTheme.colors.actionPrimaryDefaultBackground(), scale = 1f, fill = true)
     }
 }

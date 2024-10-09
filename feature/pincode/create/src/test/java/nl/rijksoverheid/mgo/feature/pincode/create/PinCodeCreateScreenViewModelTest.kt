@@ -31,7 +31,7 @@ internal class PinCodeCreateScreenViewModelTest {
         }
 
     @Test
-    fun `Given no pin code, When calling addPinCodeNumber, Change the pin code`() =
+    fun `Given no pin code, When calling addPinCodeNumber, Then change the pin code`() =
         runTest {
             // Given
             val viewModel = PinCodeCreateScreenViewModel()
@@ -48,7 +48,7 @@ internal class PinCodeCreateScreenViewModelTest {
         }
 
     @Test
-    fun `Given 4 pin code numbers, When calling addPinCodeNumber, Navigate to confirm screen`() =
+    fun `Given 4 pin code numbers, When calling addPinCodeNumber, Then navigate to confirm screen`() =
         runTest {
             // Given
             val viewModel = PinCodeCreateScreenViewModel()
@@ -59,7 +59,7 @@ internal class PinCodeCreateScreenViewModelTest {
                 viewModel.addPinCodeNumber(5)
 
                 // Then
-                assertEquals(listOf(1,2,3,4,5), awaitItem())
+                assertEquals(listOf(1, 2, 3, 4, 5), awaitItem())
             }
         }
 }

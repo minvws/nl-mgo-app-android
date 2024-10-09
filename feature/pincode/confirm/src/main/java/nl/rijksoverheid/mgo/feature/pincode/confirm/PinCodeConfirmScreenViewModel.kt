@@ -7,20 +7,19 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.pincode.SetHasSeenPinCode
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @HiltViewModel(assistedFactory = PinCodeConfirmScreenViewModel.Factory::class)
 internal class PinCodeConfirmScreenViewModel
     @AssistedInject
     constructor(
         @Assisted("pinCodeToMatch") private val pinCodeToMatch: List<Int>,
-        private val setHasSeenPinCode: SetHasSeenPinCode,
     ) :
     ViewModel() {
         @AssistedFactory
@@ -37,7 +36,9 @@ internal class PinCodeConfirmScreenViewModel
         val navigateToDashboard = _navigateToDashboard.asSharedFlow()
 
         fun resetPinCode() {
-            _viewState.value = PinCodeConfirmScreenViewState.initialState
+            _viewState.update { viewState ->
+                viewState.copy(pinCode = listOf(), error = false)
+            }
         }
 
         fun addPinCodeNumber(number: Int) {
@@ -49,11 +50,10 @@ internal class PinCodeConfirmScreenViewModel
                     }
                     if (_viewState.value.pinCode.size == 5) {
                         if (_viewState.value.pinCode == pinCodeToMatch) {
-                            setHasSeenPinCode.invoke(true)
                             _navigateToDashboard.tryEmit(Unit)
                         } else {
                             _viewState.update { viewState ->
-                                viewState.copy(error = true)
+                                viewState.copy(error = true, subHeading = CopyR.string.pincode_confirm_mismatch)
                             }
                         }
                     }

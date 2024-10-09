@@ -26,8 +26,8 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun PinCodeConfirmScreen(
@@ -51,6 +51,9 @@ fun PinCodeConfirmScreen(
         onAddPinCodeNumber = { number ->
             viewModel.addPinCodeNumber(number)
         },
+        onPinErrorAnimationFinished = {
+            viewModel.resetPinCode()
+        },
         onNavigateBack = onNavigateBack,
     )
 }
@@ -59,6 +62,7 @@ fun PinCodeConfirmScreen(
 private fun PinCodeConfirmScreenContent(
     viewState: PinCodeConfirmScreenViewState,
     onAddPinCodeNumber: (number: Int) -> Unit,
+    onPinErrorAnimationFinished: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -71,7 +75,7 @@ private fun PinCodeConfirmScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = stringResource(id = R.string.common_previous),
+                            contentDescription = stringResource(id = CopyR.string.common_previous),
                         )
                     }
                 },
@@ -85,15 +89,15 @@ private fun PinCodeConfirmScreenContent(
                         .padding(innerPadding),
             ) {
                 Text(
-                    text = stringResource(id = R.string.pincode_confirm_heading),
+                    text = stringResource(id = CopyR.string.pincode_confirm_heading),
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
                 val subHeadingText =
                     if (viewState.error) {
-                        R.string.pincode_confirm_mismatch
+                        CopyR.string.pincode_confirm_mismatch
                     } else {
-                        R.string.pincode_confirm_subheading
+                        CopyR.string.pincode_confirm_subheading
                     }
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
@@ -103,7 +107,9 @@ private fun PinCodeConfirmScreenContent(
                 PinCodeWithKeyboard(
                     modifier = Modifier.fillMaxSize(),
                     pinCode = viewState.pinCode,
+                    error = viewState.error,
                     onPressNumber = onAddPinCodeNumber,
+                    onErrorAnimationFinished = onPinErrorAnimationFinished,
                 )
             }
         },
@@ -115,8 +121,32 @@ private fun PinCodeConfirmScreenContent(
 internal fun PinCodeConfirmScreenPreview() {
     MgoTheme {
         PinCodeConfirmScreenContent(
-            viewState = PinCodeConfirmScreenViewState(pinCode = listOf(1, 2, 3), error = false),
+            viewState =
+                PinCodeConfirmScreenViewState(
+                    pinCode = listOf(1, 2, 3),
+                    subHeading = CopyR.string.pincode_confirm_heading,
+                    error = false,
+                ),
             onAddPinCodeNumber = {},
+            onPinErrorAnimationFinished = {},
+            onNavigateBack = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun PinCodeConfirmScreenErrorPreview() {
+    MgoTheme {
+        PinCodeConfirmScreenContent(
+            viewState =
+                PinCodeConfirmScreenViewState(
+                    pinCode = listOf(1, 2, 3),
+                    subHeading = CopyR.string.pincode_confirm_mismatch,
+                    error = true,
+                ),
+            onAddPinCodeNumber = {},
+            onPinErrorAnimationFinished = {},
             onNavigateBack = {},
         )
     }

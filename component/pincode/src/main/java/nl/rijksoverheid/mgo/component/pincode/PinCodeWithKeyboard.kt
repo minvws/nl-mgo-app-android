@@ -19,16 +19,24 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 fun PinCodeWithKeyboard(
     pinCode: List<Int>,
     onPressNumber: (number: Int) -> Unit,
+    onErrorAnimationFinished: () -> Unit,
     modifier: Modifier = Modifier,
+    error: Boolean = false,
 ) {
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()).padding(bottom = 4.dp),
-        horizontalAlignment =
-            Alignment
-                .CenterHorizontally,
+        modifier =
+            modifier
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        PinCode(modifier = Modifier.padding(vertical = 64.dp), pinCode = pinCode)
+        PinCode(
+            modifier = Modifier.padding(vertical = 64.dp),
+            pinCode = pinCode,
+            error = error,
+            onErrorAnimationFinished = onErrorAnimationFinished,
+        )
         Spacer(modifier = Modifier.weight(1f))
         Keyboard(onPressNumber = onPressNumber)
     }
@@ -39,9 +47,13 @@ fun PinCodeWithKeyboard(
 internal fun PinCodeWithKeyboardPreview() {
     MgoTheme {
         PinCodeWithKeyboard(
-            modifier = Modifier.fillMaxSize().padding(32.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
             pinCode = listOf(1, 2, 3),
             onPressNumber = {},
+            onErrorAnimationFinished = {},
         )
     }
 }

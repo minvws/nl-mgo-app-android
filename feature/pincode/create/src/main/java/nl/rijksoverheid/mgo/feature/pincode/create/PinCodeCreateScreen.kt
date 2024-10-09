@@ -93,6 +93,7 @@ private fun PinCodeCreateScreenContent(
                 PinCodeWithKeyboard(
                     modifier = Modifier.fillMaxSize(),
                     pinCode = pinCode,
+                    onErrorAnimationFinished = {},
                     onPressNumber = onAddPinCodeNumber,
                 )
             }

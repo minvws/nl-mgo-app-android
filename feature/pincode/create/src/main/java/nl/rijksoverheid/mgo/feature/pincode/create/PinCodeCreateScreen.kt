@@ -12,6 +12,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun PinCodeCreateScreen(
@@ -33,6 +35,12 @@ fun PinCodeCreateScreen(
     onNavigateBack: () -> Unit,
 ) {
     val viewModel: PinCodeCreateScreenViewModel = hiltViewModel()
+    LaunchedEffect(Unit) {
+        viewModel.resetPinCode()
+        viewModel.navigateToConfirm.collectLatest {
+            onPinEntered()
+        }
+    }
     val viewState by viewModel.viewState.collectAsState()
     PinCodeCreateScreenContent(
         pinCode = viewState.pinCode,

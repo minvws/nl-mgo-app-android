@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.pincode.confirm
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -100,8 +100,8 @@ private fun PinCodeConfirmScreenContent(
                     text = stringResource(id = subHeadingText),
                     style = MaterialTheme.typography.bodySmall,
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 PinCodeWithKeyboard(
+                    modifier = Modifier.fillMaxSize(),
                     pinCode = viewState.pinCode,
                     onPressNumber = onAddPinCodeNumber,
                 )

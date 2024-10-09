@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.pincode.create
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -90,8 +90,8 @@ private fun PinCodeCreateScreenContent(
                     text = stringResource(id = R.string.pincode_create_subheading),
                     style = MaterialTheme.typography.bodySmall,
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 PinCodeWithKeyboard(
+                    modifier = Modifier.fillMaxSize(),
                     pinCode = pinCode,
                     onPressNumber = onAddPinCodeNumber,
                 )

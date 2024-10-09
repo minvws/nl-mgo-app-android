@@ -59,7 +59,7 @@ internal class PinCodeCreateScreenViewModelTest {
                 viewModel.addPinCodeNumber(5)
 
                 // Then
-                assertEquals(Unit, awaitItem())
+                assertEquals(listOf(1,2,3,4,5), awaitItem())
             }
         }
 }

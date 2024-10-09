@@ -21,7 +21,12 @@ fun PinCodeWithKeyboard(
     onPressNumber: (number: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()).padding(bottom = 4.dp),
+        horizontalAlignment =
+            Alignment
+                .CenterHorizontally,
+    ) {
         Spacer(modifier = Modifier.weight(1f))
         PinCode(modifier = Modifier.padding(vertical = 64.dp), pinCode = pinCode)
         Spacer(modifier = Modifier.weight(1f))
@@ -34,7 +39,7 @@ fun PinCodeWithKeyboard(
 internal fun PinCodeWithKeyboardPreview() {
     MgoTheme {
         PinCodeWithKeyboard(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(32.dp),
             pinCode = listOf(1, 2, 3),
             onPressNumber = {},
         )

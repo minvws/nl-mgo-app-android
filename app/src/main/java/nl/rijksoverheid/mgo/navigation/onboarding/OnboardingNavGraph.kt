@@ -6,7 +6,7 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.onboarding.introduction.IntroductionScreen
 import nl.rijksoverheid.mgo.feature.onboarding.proposition.PropositionOverviewScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigationScreen
 
 fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
     navigation(
@@ -27,11 +27,12 @@ fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
                     navController.popBackStack()
                 },
                 onOnboardingFinished = {
-                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(PinCodeNavigationScreen.Start.getNavigationRoute())
+//                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
+//                        popUpTo(navController.graph.id) {
+//                            inclusive = true
+//                        }
+//                    }
                 },
             )
         }

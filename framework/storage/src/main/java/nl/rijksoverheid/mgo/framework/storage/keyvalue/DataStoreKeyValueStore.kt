@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
@@ -24,6 +25,23 @@ internal class DataStoreKeyValueStore(
             dataStore.data.map { preferences ->
                 preferences[key]
             }.first() ?: false
+        }
+    }
+
+    override suspend fun setString(
+        key: Preferences.Key<String>,
+        value: String,
+    ) {
+        dataStore.edit { preferences ->
+            preferences[key] = value
+        }
+    }
+
+    override suspend fun getString(key: Preferences.Key<String>): String? {
+        return runBlocking {
+            dataStore.data.map { preferences ->
+                preferences[key]
+            }.firstOrNull()
         }
     }
 }

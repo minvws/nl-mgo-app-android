@@ -1,0 +1,11 @@
+plugins {
+    id("AndroidFeaturePlugin")
+}
+
+android {
+    namespace = "nl.rijksoverheid.mgo.feature.pincode.create"
+}
+
+dependencies {
+    implementation(projects.component.pincode)
+}

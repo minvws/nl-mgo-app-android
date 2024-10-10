@@ -72,6 +72,8 @@
   <string name="fhir.startDate">Startdatum</string>
   <string name="fhir.status">Test status</string>
   <string name="fhir.unknown">Niet bekend</string>
+  <string name="forgot_pincode.dialog.heading">Nieuw account maken?</string>
+  <string name="forgot_pincode.dialog.subheading">Je kunt je gegevens straks opnieuw ophalen. Het andere account wordt verwijderd.</string>
   <string name="health_categories.heading">Overzicht</string>
   <string name="health_categories.remove_organization">Verwijder zorgaanbieder</string>
   <string name="health_category.alerts">Waarschuwingen</string>
@@ -141,6 +143,11 @@
   <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
   <string name="overview.no_results_action">Voeg zorgaanbieders toe</string>
   <string name="overview.subheading">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
+  <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
+  <string name="pincode.confirm.mismatch">Deze persoonlijke toegangscode is <b>niet dezelfde als de vorige</b>. Voer de juiste code in om door te gaan.</string>
+  <string name="pincode.confirm.subheading">Voer ter controle nog een keer je 5-cijferige toegangscode in.</string>
+  <string name="pincode.create.heading">Kies je toegangscode</string>
+  <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig. Gebruik geen simpele codes zoals 00000 of 12345.</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>
   <string name="proposition.heading">Zo gebruikt de app jouw gegevens</string>

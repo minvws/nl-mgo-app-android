@@ -9,6 +9,6 @@ internal class DefaultSetHasSeenOnboarding
     @Inject
     constructor(private val keyValueStore: KeyValueStore) : SetHasSeenOnboarding {
         override operator fun invoke(hasSeen: Boolean) {
-            return runBlocking { keyValueStore.setBoolean(KEY_HAS_SEEN_ONBOARDING, hasSeen) }
+            runBlocking { keyValueStore.setBoolean(KEY_HAS_SEEN_ONBOARDING, hasSeen) }
         }
     }

@@ -10,5 +10,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":framework:storage"))
+    implementation(projects.framework.storage)
+    testImplementation(testFixtures(projects.framework.storage))
 }

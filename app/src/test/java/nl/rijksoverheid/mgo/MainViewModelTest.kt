@@ -5,8 +5,11 @@ import io.mockk.mockk
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.config.TestConfigRepository
 import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
+import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigationScreen
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -17,23 +20,47 @@ internal class MainViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `Given onboarding seen, When calling hasSeenOnboarding, Then return true`() {
+    fun `Given onboarding seen, When calling getStartDestination, Then return correct navigation`() {
         // Given
         val configRepository = TestConfigRepository()
         val hasSeenOnboarding = TestHasSeenOnboarding()
+        val hasPinCode = TestHasPinCode()
         hasSeenOnboarding.set(true)
         val viewModel =
             MainViewModel(
                 hasSeenOnboarding = hasSeenOnboarding,
+                hasPinCode = hasPinCode,
                 configRepository = configRepository,
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
             )
 
         // When
-        val hasSeen = viewModel.hasSeenOnboarding()
+        val startDestination = viewModel.getStartDestination()
 
         // Then
-        assertEquals(true, hasSeen)
+        assertEquals(PinCodeNavigationScreen.Start.getNavigationRoute(), startDestination)
+    }
+
+    @Test
+    fun `Given onboarding not seen, When calling getStartDestination, Then return correct navigation`() {
+        // Given
+        val configRepository = TestConfigRepository()
+        val hasSeenOnboarding = TestHasSeenOnboarding()
+        val hasPinCode = TestHasPinCode()
+        hasSeenOnboarding.set(false)
+        val viewModel =
+            MainViewModel(
+                hasSeenOnboarding = hasSeenOnboarding,
+                hasPinCode = hasPinCode,
+                configRepository = configRepository,
+                showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
+            )
+
+        // When
+        val startDestination = viewModel.getStartDestination()
+
+        // Then
+        assertEquals(OnboardingNavigationScreen.Start.getNavigationRoute(), startDestination)
     }
 
     @Test
@@ -42,9 +69,11 @@ internal class MainViewModelTest {
             // Given
             val configRepository = TestConfigRepository()
             val hasSeenOnboarding = TestHasSeenOnboarding()
+            val hasPinCode = TestHasPinCode()
             val viewModel =
                 MainViewModel(
                     hasSeenOnboarding = hasSeenOnboarding,
+                    hasPinCode = hasPinCode,
                     configRepository = configRepository,
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 )

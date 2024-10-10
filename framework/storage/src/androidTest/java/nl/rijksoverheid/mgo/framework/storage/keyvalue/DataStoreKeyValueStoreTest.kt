@@ -5,8 +5,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.test.core.app.ApplicationProvider
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlinx.coroutines.test.TestScope
@@ -29,6 +31,22 @@ internal class DataStoreKeyValueStoreTest {
 
             // Then
             assertTrue(keyValueStore.getBoolean(preferenceKey))
+        }
+
+    @Test
+    fun validateString() =
+        runTest {
+            // Given
+            val context = ApplicationProvider.getApplicationContext<Context>()
+            val preferenceKey = stringPreferencesKey("test")
+            val dataStore = createDataStore(context = context, scope = this)
+            val keyValueStore = DataStoreKeyValueStore(dataStore = dataStore)
+
+            // When
+            keyValueStore.setString(preferenceKey, "123")
+
+            // Then
+            assertEquals("123", keyValueStore.getString(preferenceKey))
         }
 }
 

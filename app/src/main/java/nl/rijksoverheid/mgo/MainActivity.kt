@@ -22,11 +22,10 @@ import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
-import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
-import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
+import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeNavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -37,12 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MgoTheme(modifier = Modifier.fillMaxSize()) {
                 val viewModel: MainViewModel = hiltViewModel()
-                val startDestination =
-                    if (viewModel.hasSeenOnboarding()) {
-                        DashboardNavigationScreen.Start.getNavigationRoute()
-                    } else {
-                        OnboardingNavigationScreen.Start.getNavigationRoute()
-                    }
+                val startDestination = viewModel.getStartDestination()
                 val overviewNavController = rememberNavController()
                 val organizationsNavController = rememberNavController()
                 val navController = rememberNavController()
@@ -54,6 +48,7 @@ class MainActivity : ComponentActivity() {
                     exitTransition = { ExitTransition.None },
                 ) {
                     addOnboardingNavGraph(navController = navController)
+                    addPinCodeNavGraph(navController = navController, hasPinCode = viewModel.hasPinCode())
                     addDashboardNavGraph(
                         rootNavController = navController,
                         overviewNavController = overviewNavController,

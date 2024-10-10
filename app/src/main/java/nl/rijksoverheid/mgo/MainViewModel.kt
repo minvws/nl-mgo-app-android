@@ -6,7 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.config.ConfigRepository
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
+import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
+import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigationScreen
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -17,6 +20,7 @@ internal class MainViewModel
     @Inject
     constructor(
         val showDeviceRootedDialog: ShowDeviceRootedDialog,
+        val hasPinCode: HasPinCode,
         private val hasSeenOnboarding: HasSeenOnboarding,
         private val configRepository: ConfigRepository,
     ) : ViewModel() {
@@ -27,8 +31,16 @@ internal class MainViewModel
                 initialValue = ConfigState.NoAction,
             )
 
-        fun hasSeenOnboarding(): Boolean {
-            return hasSeenOnboarding.invoke()
+        fun getStartDestination(): String {
+            return when {
+                hasSeenOnboarding.invoke() -> {
+                    PinCodeNavigationScreen.Start.getNavigationRoute()
+                }
+
+                else -> {
+                    OnboardingNavigationScreen.Start.getNavigationRoute()
+                }
+            }
         }
 
         fun refreshConfig() {

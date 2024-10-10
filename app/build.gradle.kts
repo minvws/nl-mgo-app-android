@@ -83,6 +83,11 @@ dependencies {
     implementation(projects.feature.onboarding.introduction)
     implementation(projects.feature.onboarding.proposition)
 
+    // Pin code
+    implementation(projects.feature.pincode.create)
+    implementation(projects.feature.pincode.confirm)
+    implementation(projects.feature.pincode.login)
+
     // Dashboard
     implementation(projects.feature.dashboard.bottombar)
     implementation(projects.feature.dashboard.organizations)
@@ -118,7 +123,7 @@ dependencies {
     implementation(projects.data.localisation)
     implementation(projects.data.uiSchema)
     implementation(projects.data.healthcare)
-    implementation(project(":feature:dashboard:remove_organization"))
+    implementation(projects.data.pincode)
 
     // ================================
     // COMPONENTS
@@ -131,6 +136,8 @@ dependencies {
     // ================================
 
     testImplementation(testFixtures(projects.data.onboarding))
+    testImplementation(testFixtures(projects.data.pincode))
     testImplementation(testFixtures(projects.data.config))
+    testImplementation(testFixtures(projects.framework.storage))
     androidTestImplementation(testFixtures(projects.framework.environment))
 }

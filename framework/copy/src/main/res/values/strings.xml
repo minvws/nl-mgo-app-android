@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="account_removed.action">Oké, begrepen</string>
+  <string name="account_removed.heading">Je account is verwijderd</string>
+  <string name="account_removed.subheading">Je gegevens zijn verwijderd van je telefoon. Ze blijven wel veilig bewaard bij je zorgaanbieders. Als je een nieuw account maakt, kun je je gegevens opnieuw ophalen.</string>
   <string name="add_organization.already_added">Deze zorgaanbieder heb je al toegevoegd</string>
   <string name="add_organization.city">Plaats (verplicht)</string>
   <string name="add_organization.error_missing_city">Vul een plaats in</string>
   <string name="add_organization.error_missing_name">Vul een naam in</string>
   <string name="add_organization.heading">Welke zorgaanbieder wil je toevoegen?</string>
   <string name="add_organization.name">Naam (verplicht)</string>
+  <string name="add_organization.not_implemented">Deze zorgaanbieder ondersteunen we nog niet</string>
   <string name="add_organization.not_participating">Deze zorgaanbieder doet niet mee</string>
   <string name="app_name">MGO</string>
   <string name="app_name_acc">MGO (Acc)</string>
@@ -148,6 +152,9 @@
   <string name="pincode.confirm.subheading">Voer ter controle nog een keer je 5-cijferige toegangscode in.</string>
   <string name="pincode.create.heading">Kies je toegangscode</string>
   <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig. Gebruik geen simpele codes zoals 00000 of 12345.</string>
+  <string name="pincode.validation.heading">Welkom terug</string>
+  <string name="pincode.validation.subheading">Vul je persoonlijke toegangscode in om in te loggen.</string>
+  <string name="pincode.validation.wrong">De ingevoerde toegangscode is <b>onjuist</b>.\nProbeer het opnieuw.</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>
   <string name="proposition.heading">Zo gebruikt de app jouw gegevens</string>
@@ -189,4 +196,5 @@
   <string name="zib_medication_use.status">Status</string>
   <string name="zib_medication_use.subject">Patiënt</string>
   <string name="zib_medication_use.taken">Gebruik indicator</string>
+  <string name="pincode.forgot">Toegangscode vergeten?</string>
 </resources>

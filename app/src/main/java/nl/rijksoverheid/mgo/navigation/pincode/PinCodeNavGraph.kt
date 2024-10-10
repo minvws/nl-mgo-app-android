@@ -44,7 +44,7 @@ fun NavGraphBuilder.addPinCodeNavGraph(
         }
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Login.getRoute()) {
             PinCodeLoginScreen(
-                onPinEntered = {
+                onPinValidated = {
                     navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
                         popUpTo(navController.graph.id) {
                             inclusive = true

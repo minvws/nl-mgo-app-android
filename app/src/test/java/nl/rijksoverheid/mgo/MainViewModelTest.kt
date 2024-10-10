@@ -5,7 +5,6 @@ import io.mockk.mockk
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.config.TestConfigRepository
 import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
-import nl.rijksoverheid.mgo.data.pincode.TestHasSeenPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen

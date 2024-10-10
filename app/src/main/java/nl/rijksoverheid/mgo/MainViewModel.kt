@@ -6,9 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.config.ConfigRepository
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
-import nl.rijksoverheid.mgo.data.pincode.HasSeenPinCode
+import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
-import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigationScreen
 import javax.inject.Inject
@@ -21,8 +20,8 @@ internal class MainViewModel
     @Inject
     constructor(
         val showDeviceRootedDialog: ShowDeviceRootedDialog,
+        val hasPinCode: HasPinCode,
         private val hasSeenOnboarding: HasSeenOnboarding,
-        private val hasSeenPinCode: HasSeenPinCode,
         private val configRepository: ConfigRepository,
     ) : ViewModel() {
         val configStateFlow =
@@ -34,10 +33,6 @@ internal class MainViewModel
 
         fun getStartDestination(): String {
             return when {
-                hasPinCode() -> {
-                    DashboardNavigationScreen.Start.getRoute()
-                }
-
                 hasSeenOnboarding.invoke() -> {
                     PinCodeNavigationScreen.Start.getNavigationRoute()
                 }
@@ -46,10 +41,6 @@ internal class MainViewModel
                     OnboardingNavigationScreen.Start.getNavigationRoute()
                 }
             }
-        }
-
-        fun hasPinCode(): Boolean {
-            return hasSeenPinCode.invoke()
         }
 
         fun refreshConfig() {

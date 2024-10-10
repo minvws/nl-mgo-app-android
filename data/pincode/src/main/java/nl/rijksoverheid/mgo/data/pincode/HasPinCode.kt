@@ -1,5 +1,5 @@
 package nl.rijksoverheid.mgo.data.pincode
 
-interface HasSeenPinCode {
+interface HasPinCode {
     operator fun invoke(): Boolean
 }

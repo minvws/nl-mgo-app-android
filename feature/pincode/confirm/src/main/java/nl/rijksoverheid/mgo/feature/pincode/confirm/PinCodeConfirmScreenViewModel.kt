@@ -7,6 +7,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.pincode.StorePinCode
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -20,6 +21,7 @@ internal class PinCodeConfirmScreenViewModel
     @AssistedInject
     constructor(
         @Assisted("pinCodeToMatch") private val pinCodeToMatch: List<Int>,
+        private val storePinCode: StorePinCode,
     ) :
     ViewModel() {
         @AssistedFactory
@@ -50,6 +52,7 @@ internal class PinCodeConfirmScreenViewModel
                     }
                     if (_viewState.value.pinCode.size == 5) {
                         if (_viewState.value.pinCode == pinCodeToMatch) {
+                            storePinCode.invoke(pinCodeToMatch)
                             _navigateToDashboard.tryEmit(Unit)
                         } else {
                             _viewState.update { viewState ->

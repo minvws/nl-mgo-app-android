@@ -7,4 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.data.pincode)
+    implementation(projects.component.pincode)
+    testImplementation(testFixtures(projects.data.pincode))
 }

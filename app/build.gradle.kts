@@ -138,5 +138,6 @@ dependencies {
     testImplementation(testFixtures(projects.data.onboarding))
     testImplementation(testFixtures(projects.data.pincode))
     testImplementation(testFixtures(projects.data.config))
+    testImplementation(testFixtures(projects.framework.storage))
     androidTestImplementation(testFixtures(projects.framework.environment))
 }

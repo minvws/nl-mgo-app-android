@@ -4,6 +4,9 @@ plugins {
 
 android {
     namespace = "nl.rijksoverheid.mgo.framework.storage"
+    testFixtures {
+        enable = true
+    }
 
     defaultConfig {
         testInstrumentationRunner = "nl.rijksoverheid.mgo.framework.test.HiltTestRunner"

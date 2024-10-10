@@ -12,4 +12,5 @@ android {
 dependencies {
     implementation(projects.framework.storage)
     implementation(libs.bcrypt)
+    testImplementation(testFixtures(projects.framework.storage))
 }

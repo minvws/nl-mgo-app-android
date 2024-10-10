@@ -34,19 +34,20 @@ internal class DataStoreKeyValueStoreTest {
         }
 
     @Test
-    fun validateString() = runTest {
-        // Given
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val preferenceKey = stringPreferencesKey("test")
-        val dataStore = createDataStore(context = context, scope = this)
-        val keyValueStore = DataStoreKeyValueStore(dataStore = dataStore)
+    fun validateString() =
+        runTest {
+            // Given
+            val context = ApplicationProvider.getApplicationContext<Context>()
+            val preferenceKey = stringPreferencesKey("test")
+            val dataStore = createDataStore(context = context, scope = this)
+            val keyValueStore = DataStoreKeyValueStore(dataStore = dataStore)
 
-        // When
-        keyValueStore.setString(preferenceKey, "123")
+            // When
+            keyValueStore.setString(preferenceKey, "123")
 
-        // Then
-        assertEquals("123", keyValueStore.getString(preferenceKey))
-    }
+            // Then
+            assertEquals("123", keyValueStore.getString(preferenceKey))
+        }
 }
 
 private fun createDataStore(

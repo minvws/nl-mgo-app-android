@@ -14,4 +14,11 @@ internal class PinCodeCreateScreenSnapshotTest {
             PinCodeCreateScreenPreview()
         }
     }
+
+    @Test
+    fun error() {
+        snapshotTestRule.snapshots {
+            PinCodeCreateScreenErrorPreview()
+        }
+    }
 }

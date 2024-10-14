@@ -24,5 +24,7 @@ sealed class PinCodeNavigationScreen(override val name: String, override val pla
         }
     }
 
+    data object BioMetricSetup : PinCodeNavigationScreen("pin-code-biometric-setup")
+
     data object Login : PinCodeNavigationScreen("pin-code-login")
 }

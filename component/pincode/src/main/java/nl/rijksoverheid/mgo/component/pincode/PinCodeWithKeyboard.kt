@@ -27,6 +27,7 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 fun PinCodeWithKeyboard(
     pinCode: List<Int>,
     onPressNumber: (number: Int) -> Unit,
+    onPressBackspace: () -> Unit,
     onErrorAnimationFinished: () -> Unit,
     modifier: Modifier = Modifier,
     hint: String? = null,
@@ -62,7 +63,7 @@ fun PinCodeWithKeyboard(
                 color = MaterialTheme.colors.actionTertiaryDefaultText(),
             )
         }
-        Keyboard(onPressNumber = onPressNumber)
+        Keyboard(onPressNumber = onPressNumber, onPressBackspace = onPressBackspace)
     }
 }
 
@@ -77,6 +78,7 @@ internal fun PinCodeWithKeyboardPreview() {
                     .padding(32.dp),
             pinCode = listOf(1, 2, 3),
             onPressNumber = {},
+            onPressBackspace = {},
             onErrorAnimationFinished = {},
         )
     }
@@ -93,6 +95,7 @@ internal fun PinCodeWithKeyboardAndHintPreview() {
                     .padding(32.dp),
             pinCode = listOf(1, 2, 3),
             onPressNumber = {},
+            onPressBackspace = {},
             onErrorAnimationFinished = {},
             hint = "Klik hier",
         )

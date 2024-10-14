@@ -102,9 +102,10 @@ private fun AddOrganizationScreenContent(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                     value = viewState.name,
-                    header = "${stringResource(
-                        id = CopyR.string.add_organization_name,
-                    )} ${stringResource(id = CopyR.string.common_required)}",
+                    header =
+                        stringResource(
+                            id = CopyR.string.add_organization_name,
+                        ),
                     onValueChange = onSetName,
                     error = viewState.nameError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
@@ -116,9 +117,10 @@ private fun AddOrganizationScreenContent(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                     value = viewState.city,
-                    header = "${stringResource(
-                        id = CopyR.string.add_organization_city,
-                    )} ${stringResource(id = CopyR.string.common_required)}",
+                    header =
+                        stringResource(
+                            id = CopyR.string.add_organization_city,
+                        ),
                     onValueChange = onSetCity,
                     error = viewState.cityError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,

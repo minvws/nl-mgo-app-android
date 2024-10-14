@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.pincode.confirm
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -8,6 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.pincode.StorePinCode
+import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -22,6 +22,7 @@ internal class PinCodeConfirmScreenViewModel
     constructor(
         @Assisted("pinCodeToMatch") private val pinCodeToMatch: List<Int>,
         private val storePinCode: StorePinCode,
+        private val deviceHasBiometric: DeviceHasBiometric,
     ) :
     ViewModel() {
         @AssistedFactory
@@ -34,8 +35,8 @@ internal class PinCodeConfirmScreenViewModel
         private val _viewState = MutableStateFlow(PinCodeConfirmScreenViewState.initialState)
         val viewState = _viewState.asStateFlow()
 
-        private val _navigateToDashboard = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
-        val navigateToDashboard = _navigateToDashboard.asSharedFlow()
+        private val _navigate = MutableSharedFlow<PinCodeConfirmScreenNextNavigation>(extraBufferCapacity = 1)
+        val navigate = _navigate.asSharedFlow()
 
         fun resetPinCode() {
             _viewState.update { viewState ->
@@ -53,7 +54,11 @@ internal class PinCodeConfirmScreenViewModel
                     if (_viewState.value.pinCode.size == 5) {
                         if (_viewState.value.pinCode == pinCodeToMatch) {
                             storePinCode.invoke(pinCodeToMatch)
-                            _navigateToDashboard.tryEmit(Unit)
+                            if (deviceHasBiometric()) {
+                                _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.BIOMETRIC)
+                            } else {
+                                _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.DASHBOARD)
+                            }
                         } else {
                             _viewState.update { viewState ->
                                 viewState.copy(error = true, subHeading = CopyR.string.pincode_confirm_mismatch)
@@ -64,7 +69,6 @@ internal class PinCodeConfirmScreenViewModel
             }
         }
 
-        @VisibleForTesting
         fun setPinCode(numbers: List<Int>) {
             _viewState.value = viewState.value.copy(pinCode = numbers)
         }

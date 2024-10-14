@@ -1,9 +1,14 @@
 package nl.rijksoverheid.mgo.data.pincode
 
+import android.content.Context
+import androidx.biometric.BiometricManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.data.pincode.biometric.DefaultDeviceHasBiometric
+import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
 import nl.rijksoverheid.mgo.data.pincode.hash.BcryptPinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.hash.PinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.strength.DefaultPinCodeStrengthStrengthValidator
@@ -48,5 +53,14 @@ object PinCodeDataModule {
     @Singleton
     fun providePinCodeStrengthValidator(): PinCodeStrengthValidator {
         return DefaultPinCodeStrengthStrengthValidator()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeviceHasBiometric(
+        @ApplicationContext context: Context,
+    ): DeviceHasBiometric {
+        val bioMetricManager = BiometricManager.from(context)
+        return DefaultDeviceHasBiometric(bioMetricManager)
     }
 }

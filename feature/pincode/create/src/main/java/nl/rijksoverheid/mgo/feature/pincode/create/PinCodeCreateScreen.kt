@@ -50,6 +50,13 @@ fun PinCodeCreateScreen(
         onPinErrorAnimationFinished = {
             viewModel.resetPinCode()
         },
+        onRemoveLastPinCodeNumber = {
+            val currentPinCode = viewState.pinCode.toMutableList()
+            if (currentPinCode.size != 0) {
+                currentPinCode.removeAt(currentPinCode.size - 1)
+                viewModel.setPinCode(currentPinCode)
+            }
+        },
         onNavigateBack = onNavigateBack,
     )
 }
@@ -58,6 +65,7 @@ fun PinCodeCreateScreen(
 private fun PinCodeCreateScreenContent(
     viewState: PinCodeCreateScreenViewState,
     onAddPinCodeNumber: (number: Int) -> Unit,
+    onRemoveLastPinCodeNumber: () -> Unit,
     onPinErrorAnimationFinished: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -99,6 +107,7 @@ private fun PinCodeCreateScreenContent(
                     pinCode = viewState.pinCode,
                     error = viewState.error,
                     onErrorAnimationFinished = onPinErrorAnimationFinished,
+                    onPressBackspace = onRemoveLastPinCodeNumber,
                     onPressNumber = onAddPinCodeNumber,
                 )
             }
@@ -118,6 +127,7 @@ internal fun PinCodeCreateScreenPreview() {
                     error = false,
                 ),
             onAddPinCodeNumber = {},
+            onRemoveLastPinCodeNumber = {},
             onPinErrorAnimationFinished = {},
             onNavigateBack = {},
         )
@@ -136,6 +146,7 @@ internal fun PinCodeCreateScreenErrorPreview() {
                     error = true,
                 ),
             onAddPinCodeNumber = {},
+            onRemoveLastPinCodeNumber = {},
             onPinErrorAnimationFinished = {},
             onNavigateBack = {},
         )

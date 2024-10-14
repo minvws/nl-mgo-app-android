@@ -47,6 +47,7 @@ sonar {
             add("**/*Navigation*.kt") // Navigation classes
             add("**/*NavGraph*.kt") // NavGraph classes
             add("**/*Screen*.kt") // We exclude all composable screens since it messes with our code coverage
+            add("**/*Prompt*.kt") // We exclude all prompts
             add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
 
             // Exclude uiSchema module. This module is experimental for now and is subject to heavy change. Should be tested

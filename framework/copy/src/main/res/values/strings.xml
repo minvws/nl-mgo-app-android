@@ -152,6 +152,8 @@
   <string name="pincode.confirm.subheading">Voer ter controle nog een keer je 5-cijferige toegangscode in.</string>
   <string name="pincode.create.heading">Kies je toegangscode</string>
   <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig. Gebruik geen simpele codes zoals 00000 of 12345.</string>
+  <string name="pincode.create.tooweak">Deze persoonlijke toegangscode is niet veilig genoeg. Gebruik geen cijfers die na elkaar komen.</string>
+  <string name="pincode.forgot">Toegangscode vergeten?</string>
   <string name="pincode.validation.heading">Welkom terug</string>
   <string name="pincode.validation.subheading">Vul je persoonlijke toegangscode in om in te loggen.</string>
   <string name="pincode.validation.wrong">De ingevoerde toegangscode is <b>onjuist</b>.\nProbeer het opnieuw.</string>
@@ -196,5 +198,4 @@
   <string name="zib_medication_use.status">Status</string>
   <string name="zib_medication_use.subject">Patiënt</string>
   <string name="zib_medication_use.taken">Gebruik indicator</string>
-  <string name="pincode.forgot">Toegangscode vergeten?</string>
 </resources>

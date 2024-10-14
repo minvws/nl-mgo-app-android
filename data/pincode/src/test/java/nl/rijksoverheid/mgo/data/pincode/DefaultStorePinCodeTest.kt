@@ -5,6 +5,7 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.data.pincode.hash.TestPinCodeHasher
 
 internal class DefaultStorePinCodeTest {
     @Test

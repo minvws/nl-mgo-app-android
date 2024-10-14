@@ -6,6 +6,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.data.pincode.hash.TestPinCodeHasher
 
 internal class DefaultValidatePinCodeTest {
     @Test

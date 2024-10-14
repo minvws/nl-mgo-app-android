@@ -1,6 +1,6 @@
-package nl.rijksoverheid.mgo.data.pincode.validator
+package nl.rijksoverheid.mgo.data.pincode.strength
 
-internal class DefaultPinCodeValidator : PinCodeValidator {
+internal class DefaultPinCodeStrengthStrengthValidator : PinCodeStrengthValidator {
     override fun invoke(pinCode: List<Int>): Boolean {
         val pinCodeString = pinCode.joinToString("")
 

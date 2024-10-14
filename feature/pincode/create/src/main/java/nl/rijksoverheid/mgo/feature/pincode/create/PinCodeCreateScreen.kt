@@ -43,9 +43,12 @@ fun PinCodeCreateScreen(
     }
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     PinCodeCreateScreenContent(
-        pinCode = viewState.pinCode,
+        viewState = viewState,
         onAddPinCodeNumber = { number ->
             viewModel.addPinCodeNumber(number)
+        },
+        onPinErrorAnimationFinished = {
+            viewModel.resetPinCode()
         },
         onNavigateBack = onNavigateBack,
     )
@@ -53,8 +56,9 @@ fun PinCodeCreateScreen(
 
 @Composable
 private fun PinCodeCreateScreenContent(
-    pinCode: List<Int>,
+    viewState: PinCodeCreateScreenViewState,
     onAddPinCodeNumber: (number: Int) -> Unit,
+    onPinErrorAnimationFinished: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -87,13 +91,14 @@ private fun PinCodeCreateScreenContent(
                 )
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = R.string.pincode_create_subheading),
+                    text = stringResource(id = viewState.subHeading),
                     style = MaterialTheme.typography.bodySmall,
                 )
                 PinCodeWithKeyboard(
                     modifier = Modifier.fillMaxSize(),
-                    pinCode = pinCode,
-                    onErrorAnimationFinished = {},
+                    pinCode = viewState.pinCode,
+                    error = viewState.error,
+                    onErrorAnimationFinished = onPinErrorAnimationFinished,
                     onPressNumber = onAddPinCodeNumber,
                 )
             }
@@ -106,8 +111,32 @@ private fun PinCodeCreateScreenContent(
 internal fun PinCodeCreateScreenPreview() {
     MgoTheme {
         PinCodeCreateScreenContent(
-            pinCode = listOf(1, 2, 3),
+            viewState =
+                PinCodeCreateScreenViewState(
+                    pinCode = listOf(1, 2, 3),
+                    subHeading = R.string.pincode_create_subheading,
+                    error = false,
+                ),
             onAddPinCodeNumber = {},
+            onPinErrorAnimationFinished = {},
+            onNavigateBack = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun PinCodeCreateScreenErrorPreview() {
+    MgoTheme {
+        PinCodeCreateScreenContent(
+            viewState =
+                PinCodeCreateScreenViewState(
+                    pinCode = listOf(1, 2, 3),
+                    subHeading = R.string.pincode_confirm_mismatch,
+                    error = true,
+                ),
+            onAddPinCodeNumber = {},
+            onPinErrorAnimationFinished = {},
             onNavigateBack = {},
         )
     }

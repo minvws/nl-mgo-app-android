@@ -1,6 +1,4 @@
-package nl.rijksoverheid.mgo.data.pincode
-
-import nl.rijksoverheid.mgo.data.pincode.hash.PinCodeHasher
+package nl.rijksoverheid.mgo.data.pincode.hash
 
 class TestPinCodeHasher : PinCodeHasher {
     override fun hash(pinCode: String): String {

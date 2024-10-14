@@ -93,15 +93,9 @@ private fun PinCodeConfirmScreenContent(
                     style = MaterialTheme.typography.headingLarge,
                     fontWeight = FontWeight.Bold,
                 )
-                val subHeadingText =
-                    if (viewState.error) {
-                        CopyR.string.pincode_confirm_mismatch
-                    } else {
-                        CopyR.string.pincode_confirm_subheading
-                    }
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = subHeadingText),
+                    text = stringResource(id = viewState.subHeading),
                     style = MaterialTheme.typography.bodySmall,
                 )
                 PinCodeWithKeyboard(

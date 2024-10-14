@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.pincode
 
+import nl.rijksoverheid.mgo.data.pincode.hash.TestPinCodeHasher
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import org.junit.Assert.assertEquals

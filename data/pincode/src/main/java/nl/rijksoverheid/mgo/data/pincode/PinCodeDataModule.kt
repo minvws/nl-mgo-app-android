@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.pincode.hash.BcryptPinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.hash.PinCodeHasher
+import nl.rijksoverheid.mgo.data.pincode.strength.DefaultPinCodeStrengthStrengthValidator
+import nl.rijksoverheid.mgo.data.pincode.strength.PinCodeStrengthValidator
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Singleton
 
@@ -40,5 +42,11 @@ object PinCodeDataModule {
     @Singleton
     fun providePinCodeHasher(): PinCodeHasher {
         return BcryptPinCodeHasher()
+    }
+
+    @Provides
+    @Singleton
+    fun providePinCodeStrengthValidator(): PinCodeStrengthValidator {
+        return DefaultPinCodeStrengthStrengthValidator()
     }
 }

@@ -8,28 +8,38 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingMedium
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun PinCodeBioMetricSetupScreen(onNavigateToDashboard: () -> Unit) {
     PinCodeBioMetricSetupScreenContent(
+        onBiometricLoginSuccess = onNavigateToDashboard,
         onNavigateToDashboard = onNavigateToDashboard,
     )
 }
 
 @Composable
-private fun PinCodeBioMetricSetupScreenContent(onNavigateToDashboard: () -> Unit) {
+private fun PinCodeBioMetricSetupScreenContent(
+    onBiometricLoginSuccess: () -> Unit,
+    onNavigateToDashboard: () -> Unit,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val fragmentActivity = LocalContext.current as FragmentActivity
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
@@ -39,7 +49,14 @@ private fun PinCodeBioMetricSetupScreenContent(onNavigateToDashboard: () -> Unit
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.biometric_setup_enable),
                 secondaryButtonText = stringResource(id = CopyR.string.common_skip),
-                onButtonClick = { onNavigateToDashboard() },
+                onButtonClick = {
+                    coroutineScope.launch {
+                        val success = BioMetricPrompt(fragmentActivity)
+                        if (success) {
+                            onBiometricLoginSuccess()
+                        }
+                    }
+                },
                 onSecondaryButtonClick = { onNavigateToDashboard() },
             ) {
                 Image(
@@ -72,6 +89,7 @@ private fun PinCodeBioMetricSetupScreenContent(onNavigateToDashboard: () -> Unit
 private fun PinCodeBiometricSetupScreenPreview() {
     MgoTheme {
         PinCodeBioMetricSetupScreenContent(
+            onBiometricLoginSuccess = {},
             onNavigateToDashboard = {},
         )
     }

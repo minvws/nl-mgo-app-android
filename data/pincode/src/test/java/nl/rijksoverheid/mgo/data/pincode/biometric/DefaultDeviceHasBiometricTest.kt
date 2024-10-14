@@ -1,24 +1,23 @@
-package nl.rijksoverheid.mgo.data.pincode.repository
+package nl.rijksoverheid.mgo.data.pincode.biometric
 
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.mgo.data.pincode.biometric.DefaultBioMetricRepository
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-internal class DefaultBioMetricRepositoryTest {
+internal class DefaultDeviceHasBiometricTest {
     @Test
-    fun `Given device has biometric support, When calling deviceHasSupport, Then return true`() {
+    fun `Given device has biometric support, When calling use case, Then return true`() {
         // Given
         val bioMetricManager = mockk<BiometricManager>()
         every { bioMetricManager.canAuthenticate(BIOMETRIC_STRONG) } answers { BiometricManager.BIOMETRIC_SUCCESS }
-        val repository = DefaultBioMetricRepository(bioMetricManager)
+        val deviceHasBiometric = DefaultDeviceHasBiometric(bioMetricManager)
 
         // When
-        val deviceHasSupport = repository.deviceHasSupport()
+        val deviceHasSupport = deviceHasBiometric.invoke()
 
         // Then
         assertTrue(deviceHasSupport)
@@ -29,10 +28,10 @@ internal class DefaultBioMetricRepositoryTest {
         // Given
         val bioMetricManager = mockk<BiometricManager>()
         every { bioMetricManager.canAuthenticate(BIOMETRIC_STRONG) } answers { BiometricManager.BIOMETRIC_STATUS_UNKNOWN }
-        val repository = DefaultBioMetricRepository(bioMetricManager)
+        val deviceHasBiometric = DefaultDeviceHasBiometric(bioMetricManager)
 
         // When
-        val deviceHasSupport = repository.deviceHasSupport()
+        val deviceHasSupport = deviceHasBiometric.invoke()
 
         // Then
         assertFalse(deviceHasSupport)

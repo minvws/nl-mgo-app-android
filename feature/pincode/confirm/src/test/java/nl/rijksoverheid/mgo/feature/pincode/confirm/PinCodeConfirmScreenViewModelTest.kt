@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.pincode.confirm
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.pincode.TestStorePinCode
-import nl.rijksoverheid.mgo.data.pincode.biometric.TestBioMetricRepository
+import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -21,12 +21,12 @@ internal class PinCodeConfirmScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val storePinCode = TestStorePinCode()
-            val biometricRepository = TestBioMetricRepository(deviceHasSupport = false)
+            val deviceHasBiometric = TestDeviceHasBiometric(false)
             val viewModel =
                 PinCodeConfirmScreenViewModel(
                     storePinCode = storePinCode,
                     pinCodeToMatch = listOf(),
-                    bioMetricRepository = biometricRepository,
+                    deviceHasBiometric = deviceHasBiometric,
                 )
 
             // When
@@ -42,17 +42,17 @@ internal class PinCodeConfirmScreenViewModelTest {
         }
 
     @Test
-    fun `Given pin code matches and phone has biometric support , When calling addPinCodeNumber, Then navigate to biometric`() =
+    fun `Given pin code matches and phone has biometric support, When calling addPinCodeNumber, Then navigate to biometric`() =
         runTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val storePinCode = TestStorePinCode()
-            val biometricRepository = TestBioMetricRepository(deviceHasSupport = true)
+            val deviceHasBiometric = TestDeviceHasBiometric(true)
             val viewModel =
                 PinCodeConfirmScreenViewModel(
                     storePinCode = storePinCode,
                     pinCodeToMatch = pinCode,
-                    bioMetricRepository = biometricRepository,
+                    deviceHasBiometric = deviceHasBiometric,
                 )
             viewModel.setPinCode(listOf(1, 2, 3, 4))
 
@@ -66,17 +66,17 @@ internal class PinCodeConfirmScreenViewModelTest {
         }
 
     @Test
-    fun `Given pin code matches and phone has no biometric support , When calling addPinCodeNumber, Then navigate to biometric`() =
+    fun `Given pin code matches and phone has no biometric support, When calling addPinCodeNumber, Then navigate to biometric`() =
         runTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val storePinCode = TestStorePinCode()
-            val biometricRepository = TestBioMetricRepository(deviceHasSupport = false)
+            val deviceHasBiometric = TestDeviceHasBiometric(false)
             val viewModel =
                 PinCodeConfirmScreenViewModel(
                     storePinCode = storePinCode,
                     pinCodeToMatch = pinCode,
-                    bioMetricRepository = biometricRepository,
+                    deviceHasBiometric = deviceHasBiometric,
                 )
             viewModel.setPinCode(listOf(1, 2, 3, 4))
 
@@ -95,12 +95,12 @@ internal class PinCodeConfirmScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val storePinCode = TestStorePinCode()
-            val biometricRepository = TestBioMetricRepository(deviceHasSupport = false)
+            val deviceHasBiometric = TestDeviceHasBiometric(false)
             val viewModel =
                 PinCodeConfirmScreenViewModel(
                     storePinCode = storePinCode,
                     pinCodeToMatch = pinCode,
-                    bioMetricRepository = biometricRepository,
+                    deviceHasBiometric = deviceHasBiometric,
                 )
             viewModel.setPinCode(listOf(1, 2, 3, 4))
 
@@ -125,12 +125,13 @@ internal class PinCodeConfirmScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val storePinCode = TestStorePinCode()
-            val biometricRepository = TestBioMetricRepository(deviceHasSupport = false)
+            val deviceHasBiometric = TestDeviceHasBiometric(false)
+            val biometricRepository = TestDeviceHasBiometric(deviceHasSupport = false)
             val viewModel =
                 PinCodeConfirmScreenViewModel(
                     storePinCode = storePinCode,
                     pinCodeToMatch = pinCode,
-                    bioMetricRepository = biometricRepository,
+                    deviceHasBiometric = deviceHasBiometric,
                 )
 
             // When

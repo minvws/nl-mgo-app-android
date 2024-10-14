@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 
 val KEY_HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
 val KEY_PIN_CODE = stringPreferencesKey("pin_code")
+val KEY_BIOMETRIC_LOGIN_ENABLED = booleanPreferencesKey("biometric_")
 val KEY_IS_ROOT_CHECKED = booleanPreferencesKey("is_root_checked")
 
 interface KeyValueStore {

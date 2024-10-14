@@ -7,8 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import nl.rijksoverheid.mgo.data.pincode.biometric.BioMetricRepository
-import nl.rijksoverheid.mgo.data.pincode.biometric.DefaultBioMetricRepository
+import nl.rijksoverheid.mgo.data.pincode.biometric.DefaultDeviceHasBiometric
+import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
 import nl.rijksoverheid.mgo.data.pincode.hash.BcryptPinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.hash.PinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.strength.DefaultPinCodeStrengthStrengthValidator
@@ -57,10 +57,10 @@ object PinCodeDataModule {
 
     @Provides
     @Singleton
-    fun provideBioMetricRepository(
+    fun provideDeviceHasBiometric(
         @ApplicationContext context: Context,
-    ): BioMetricRepository {
+    ): DeviceHasBiometric {
         val bioMetricManager = BiometricManager.from(context)
-        return DefaultBioMetricRepository(bioMetricManager)
+        return DefaultDeviceHasBiometric(bioMetricManager)
     }
 }

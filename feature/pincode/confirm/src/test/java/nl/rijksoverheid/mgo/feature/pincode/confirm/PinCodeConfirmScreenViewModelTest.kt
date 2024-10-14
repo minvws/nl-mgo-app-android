@@ -126,7 +126,6 @@ internal class PinCodeConfirmScreenViewModelTest {
             val pinCode = listOf(1, 2, 3, 4, 5)
             val storePinCode = TestStorePinCode()
             val deviceHasBiometric = TestDeviceHasBiometric(false)
-            val biometricRepository = TestDeviceHasBiometric(deviceHasSupport = false)
             val viewModel =
                 PinCodeConfirmScreenViewModel(
                     storePinCode = storePinCode,

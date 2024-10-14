@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.pincode.login
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,7 +51,6 @@ internal class PinCodeLoginScreenViewModel
             }
         }
 
-        @VisibleForTesting
         fun setPinCode(numbers: List<Int>) {
             _viewState.value = viewState.value.copy(pinCode = numbers)
         }

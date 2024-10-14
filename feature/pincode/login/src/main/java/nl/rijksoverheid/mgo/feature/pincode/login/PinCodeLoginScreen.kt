@@ -45,6 +45,13 @@ fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
         onPinErrorAnimationFinished = {
             viewModel.resetPinCode()
         },
+        onRemoveLastPinCodeNumber = {
+            val currentPinCode = viewState.pinCode.toMutableList()
+            if (currentPinCode.size != 0) {
+                currentPinCode.removeAt(currentPinCode.size - 1)
+                viewModel.setPinCode(currentPinCode)
+            }
+        },
     )
 }
 
@@ -52,6 +59,7 @@ fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
 private fun PinCodeLoginScreenContent(
     viewState: PinCodeLoginScreenViewState,
     onAddPinCodeNumber: (number: Int) -> Unit,
+    onRemoveLastPinCodeNumber: () -> Unit,
     onPinErrorAnimationFinished: () -> Unit,
 ) {
     Scaffold(
@@ -89,6 +97,7 @@ private fun PinCodeLoginScreenContent(
                     hint = stringResource(id = R.string.pincode_forgot),
                     onErrorAnimationFinished = onPinErrorAnimationFinished,
                     onPressNumber = onAddPinCodeNumber,
+                    onPressBackspace = onRemoveLastPinCodeNumber,
                 )
             }
         },
@@ -107,6 +116,7 @@ internal fun PinCodeLoginScreenPreview() {
                     error = false,
                 ),
             onAddPinCodeNumber = {},
+            onRemoveLastPinCodeNumber = {},
             onPinErrorAnimationFinished = {},
         )
     }
@@ -124,6 +134,7 @@ internal fun PinCodeLoginScreenErrorPreview() {
                     error = true,
                 ),
             onAddPinCodeNumber = {},
+            onRemoveLastPinCodeNumber = {},
             onPinErrorAnimationFinished = {},
         )
     }

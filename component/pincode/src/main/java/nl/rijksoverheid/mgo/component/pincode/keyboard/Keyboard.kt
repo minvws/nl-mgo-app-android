@@ -20,6 +20,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 @Composable
 fun Keyboard(
     onPressNumber: (number: Int) -> Unit,
+    onPressBackspace: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -40,9 +41,9 @@ fun Keyboard(
                 KeyboardItemNumber(number = 9, onPressNumber = onPressNumber)
             }
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemIcon(icon = R.drawable.ic_keyboard_fingerprint)
+                KeyboardItemIcon(icon = R.drawable.ic_keyboard_fingerprint, onPressIcon = {})
                 KeyboardItemNumber(number = 0, onPressNumber = onPressNumber)
-                KeyboardItemIcon(icon = R.drawable.ic_keyboard_backspace)
+                KeyboardItemIcon(icon = R.drawable.ic_keyboard_backspace, onPressIcon = onPressBackspace)
             }
         }
     }
@@ -63,10 +64,11 @@ private fun RowScope.KeyboardItemNumber(
 @Composable
 private fun RowScope.KeyboardItemIcon(
     @DrawableRes icon: Int,
+    onPressIcon: () -> Unit,
 ) {
     KeyboardItem(
         modifier = Modifier.weight(1f).aspectRatio(2.25f),
-        onClick = {},
+        onClick = onPressIcon,
         type = KeyboardItemType.Icon(icon),
     )
 }
@@ -75,6 +77,6 @@ private fun RowScope.KeyboardItemIcon(
 @Composable
 internal fun KeyboardPreview() {
     MgoTheme {
-        Keyboard(onPressNumber = {})
+        Keyboard(onPressNumber = {}, onPressBackspace = {})
     }
 }

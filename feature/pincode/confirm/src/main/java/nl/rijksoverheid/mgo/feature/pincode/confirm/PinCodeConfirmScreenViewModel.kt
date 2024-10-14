@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.pincode.confirm
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -70,7 +69,6 @@ internal class PinCodeConfirmScreenViewModel
             }
         }
 
-        @VisibleForTesting
         fun setPinCode(numbers: List<Int>) {
             _viewState.value = viewState.value.copy(pinCode = numbers)
         }

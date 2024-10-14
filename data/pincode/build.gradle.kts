@@ -12,5 +12,6 @@ android {
 dependencies {
     implementation(projects.framework.storage)
     implementation(libs.bcrypt)
+    implementation(libs.biometric)
     testImplementation(testFixtures(projects.framework.storage))
 }

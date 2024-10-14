@@ -87,6 +87,7 @@ dependencies {
     implementation(projects.feature.pincode.create)
     implementation(projects.feature.pincode.confirm)
     implementation(projects.feature.pincode.login)
+    implementation(projects.feature.pincode.biometric)
 
     // Dashboard
     implementation(projects.feature.dashboard.bottombar)

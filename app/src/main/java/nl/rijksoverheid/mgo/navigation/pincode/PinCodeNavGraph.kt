@@ -3,7 +3,9 @@ package nl.rijksoverheid.mgo.navigation.pincode
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import nl.rijksoverheid.mgo.feature.pincode.biometric.PinCodeBioMetricSetupScreen
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreen
+import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavigation
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
 import nl.rijksoverheid.mgo.feature.pincode.login.PinCodeLoginScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
@@ -30,15 +32,37 @@ fun NavGraphBuilder.addPinCodeNavGraph(
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Confirm.getRoute()) { backStackEntry ->
             PinCodeConfirmScreen(
                 pinCodeToMatch = PinCodeNavigationScreen.Confirm.getPinCodeToMatch(backStackEntry),
-                onPinConfirmed = {
-                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
+                onNavigate = { navigation ->
+                    when (navigation) {
+                        PinCodeConfirmScreenNextNavigation.BIOMETRIC -> {
+                            navController.navigate(PinCodeNavigationScreen.BioMetricSetup.getNavigationRoute()) {
+                                popUpTo(navController.graph.id) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                        PinCodeConfirmScreenNextNavigation.DASHBOARD -> {
+                            navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
+                                popUpTo(navController.graph.id) {
+                                    inclusive = true
+                                }
+                            }
                         }
                     }
                 },
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+            )
+        }
+        composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.BioMetricSetup.getRoute()) { backStackEntry ->
+            PinCodeBioMetricSetupScreen(
+                onNavigateToDashboard = {
+                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 },
             )
         }

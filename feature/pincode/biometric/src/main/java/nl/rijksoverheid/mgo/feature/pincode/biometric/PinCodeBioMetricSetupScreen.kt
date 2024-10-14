@@ -22,11 +22,14 @@ import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun PinCodeBioMetricSetupScreen() {
+fun PinCodeBioMetricSetupScreen(onNavigateToDashboard: () -> Unit) {
+    PinCodeBioMetricSetupScreenContent(
+        onNavigateToDashboard = onNavigateToDashboard,
+    )
 }
 
 @Composable
-private fun PinCodeBioMetricSetupScreenContent() {
+private fun PinCodeBioMetricSetupScreenContent(onNavigateToDashboard: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
@@ -36,8 +39,8 @@ private fun PinCodeBioMetricSetupScreenContent() {
                 modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.biometric_setup_enable),
                 secondaryButtonText = stringResource(id = CopyR.string.common_skip),
-                onButtonClick = { },
-                onSecondaryButtonClick = {},
+                onButtonClick = { onNavigateToDashboard() },
+                onSecondaryButtonClick = { onNavigateToDashboard() },
             ) {
                 Image(
                     modifier =
@@ -68,6 +71,8 @@ private fun PinCodeBioMetricSetupScreenContent() {
 @Composable
 private fun PinCodeBiometricSetupScreenPreview() {
     MgoTheme {
-        PinCodeBioMetricSetupScreenContent()
+        PinCodeBioMetricSetupScreenContent(
+            onNavigateToDashboard = {},
+        )
     }
 }

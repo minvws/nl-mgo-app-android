@@ -32,7 +32,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun PinCodeConfirmScreen(
     pinCodeToMatch: List<Int>,
-    onPinConfirmed: () -> Unit,
+    onNavigate: (navigation: PinCodeConfirmScreenNextNavigation) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
@@ -41,8 +41,8 @@ fun PinCodeConfirmScreen(
         )
     LaunchedEffect(Unit) {
         viewModel.resetPinCode()
-        viewModel.navigateToDashboard.collectLatest {
-            onPinConfirmed()
+        viewModel.navigate.collectLatest { navigation ->
+            onNavigate(navigation)
         }
     }
     val viewState by viewModel.viewState.collectAsState()

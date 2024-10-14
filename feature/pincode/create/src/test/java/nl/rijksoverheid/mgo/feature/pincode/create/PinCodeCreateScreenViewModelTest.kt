@@ -79,7 +79,6 @@ internal class PinCodeCreateScreenViewModelTest {
             // When
             viewModel.addPinCodeNumber(6)
             viewModel.viewState.test {
-
                 // Then
                 val expectedViewState =
                     PinCodeCreateScreenViewState(

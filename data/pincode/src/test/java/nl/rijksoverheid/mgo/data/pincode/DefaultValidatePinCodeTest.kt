@@ -1,12 +1,12 @@
 package nl.rijksoverheid.mgo.data.pincode
 
+import nl.rijksoverheid.mgo.data.pincode.hash.TestPinCodeHasher
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.pincode.hash.TestPinCodeHasher
 
 internal class DefaultValidatePinCodeTest {
     @Test

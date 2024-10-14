@@ -14,6 +14,9 @@
   <string name="app_name">MGO</string>
   <string name="app_name_acc">MGO (Acc)</string>
   <string name="app_name_tst">MGO (Test)</string>
+  <string name="biometric_setup.enable">Vingerafdruk aanzetten</string>
+  <string name="biometric_setup.heading">Inloggen met je vingerafdruk?</string>
+  <string name="biometric_setup.subheading">Beveilig de app met je vingerafdruk. Zo log je de volgende keer sneller in. Je kunt ook je toegangscode blijven gebruiken.</string>
   <string name="bottombar.about_this_app">Over de app</string>
   <string name="bottombar.healthcareproviders">Zorgaanbieders</string>
   <string name="bottombar.overview">Overzicht</string>
@@ -40,6 +43,7 @@
   <string name="common.search">Zoeken</string>
   <string name="common.search_again">Opnieuw zoeken</string>
   <string name="common.settings">Instellingen</string>
+  <string name="common.skip">Overslaan</string>
   <string name="common.try_again">Probeer opnieuw</string>
   <string name="common.unknown">Niet bekend</string>
   <string name="common.voice_over_collapsed">Uitklapbaar component gesloten</string>

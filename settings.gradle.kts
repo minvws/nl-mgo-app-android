@@ -50,6 +50,7 @@ include(":feature:pincode:confirm")
 include(":feature:pincode:login")
 include(":data:pincode")
 include(":component:pincode")
+include(":feature:pincode:biometric")
 
 include(":feature:dashboard:remove_organization")
 include(":feature:dashboard:organizations")

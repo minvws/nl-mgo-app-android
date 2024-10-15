@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class PinCodeCreateScreenViewModel
@@ -26,35 +25,20 @@ internal class PinCodeCreateScreenViewModel
         private val _navigateToConfirm = MutableSharedFlow<List<Int>>(extraBufferCapacity = 1)
         val navigateToConfirm = _navigateToConfirm.asSharedFlow()
 
-        fun resetPinCode() {
-            _viewState.update { viewState ->
-                viewState.copy(pinCode = listOf(), error = false)
-            }
-        }
-
-        fun addPinCodeNumber(number: Int) {
-            viewModelScope.launch {
-                if (_viewState.value.pinCode.size != 5) {
-                    _viewState.update { viewState ->
-                        val newPinCode = viewState.pinCode.toMutableList().also { it.add(number) }
-                        viewState.copy(pinCode = newPinCode)
-                    }
-                    val pinCode = _viewState.value.pinCode
-                    if (pinCode.size == 5) {
-                        val valid = validator.invoke(pinCode)
-                        if (valid) {
-                            _navigateToConfirm.tryEmit(pinCode)
-                        } else {
-                            _viewState.update { viewState ->
-                                viewState.copy(error = true, subHeading = R.string.pincode_create_tooweak)
-                            }
-                        }
-                    }
+        fun validatePinCode(pinCode: List<Int>) {
+            val valid = validator.invoke(pinCode)
+            if (valid) {
+                _navigateToConfirm.tryEmit(pinCode)
+            } else {
+                _viewState.update { viewState ->
+                    viewState.copy(error = true, subHeading = R.string.pincode_create_tooweak)
                 }
             }
         }
 
-        fun setPinCode(numbers: List<Int>) {
-            _viewState.value = viewState.value.copy(pinCode = numbers)
+        fun resetError() {
+            _viewState.update { viewState ->
+                viewState.copy(error = false)
+            }
         }
     }

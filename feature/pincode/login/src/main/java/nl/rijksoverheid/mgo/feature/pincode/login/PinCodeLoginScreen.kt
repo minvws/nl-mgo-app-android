@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.collectLatest
 fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
     val viewModel: PinCodeLoginScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
-        viewModel.resetPinCode()
         viewModel.navigateToDashboard.collectLatest {
             onPinValidated()
         }
@@ -39,18 +38,11 @@ fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     PinCodeLoginScreenContent(
         viewState = viewState,
-        onAddPinCodeNumber = { number ->
-            viewModel.addPinCodeNumber(number)
+        onPinCodeEntered = { pinCode ->
+            viewModel.validatePinCode(pinCode)
         },
-        onPinErrorAnimationFinished = {
-            viewModel.resetPinCode()
-        },
-        onRemoveLastPinCodeNumber = {
-            val currentPinCode = viewState.pinCode.toMutableList()
-            if (currentPinCode.size != 0) {
-                currentPinCode.removeAt(currentPinCode.size - 1)
-                viewModel.setPinCode(currentPinCode)
-            }
+        onResetError = {
+            viewModel.resetError()
         },
     )
 }
@@ -58,9 +50,8 @@ fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
 @Composable
 private fun PinCodeLoginScreenContent(
     viewState: PinCodeLoginScreenViewState,
-    onAddPinCodeNumber: (number: Int) -> Unit,
-    onRemoveLastPinCodeNumber: () -> Unit,
-    onPinErrorAnimationFinished: () -> Unit,
+    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+    onResetError: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -92,12 +83,10 @@ private fun PinCodeLoginScreenContent(
                 )
                 PinCodeWithKeyboard(
                     modifier = Modifier.fillMaxSize(),
-                    pinCode = viewState.pinCode,
+                    onPinCodeEntered = onPinCodeEntered,
+                    onResetError = onResetError,
                     error = viewState.error,
                     hint = stringResource(id = R.string.pincode_forgot),
-                    onErrorAnimationFinished = onPinErrorAnimationFinished,
-                    onPressNumber = onAddPinCodeNumber,
-                    onPressBackspace = onRemoveLastPinCodeNumber,
                 )
             }
         },
@@ -111,13 +100,11 @@ internal fun PinCodeLoginScreenPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    pinCode = listOf(1, 2, 3),
                     subHeading = R.string.pincode_confirm_heading,
                     error = false,
                 ),
-            onAddPinCodeNumber = {},
-            onRemoveLastPinCodeNumber = {},
-            onPinErrorAnimationFinished = {},
+            onPinCodeEntered = {},
+            onResetError = {},
         )
     }
 }
@@ -129,13 +116,11 @@ internal fun PinCodeLoginScreenErrorPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    pinCode = listOf(1, 2, 3),
                     subHeading = R.string.pincode_validation_wrong,
                     error = true,
                 ),
-            onAddPinCodeNumber = {},
-            onRemoveLastPinCodeNumber = {},
-            onPinErrorAnimationFinished = {},
+            onPinCodeEntered = {},
+            onResetError = {},
         )
     }
 }

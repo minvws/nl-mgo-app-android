@@ -23,35 +23,22 @@ internal class PinCodeLoginScreenViewModel
         private val _navigateToDashboard = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigateToDashboard = _navigateToDashboard.asSharedFlow()
 
-        fun resetPinCode() {
-            _viewState.update { viewState ->
-                viewState.copy(pinCode = listOf(), error = false)
-            }
-        }
-
-        fun addPinCodeNumber(number: Int) {
+        fun validatePinCode(pinCode: List<Int>) {
             viewModelScope.launch {
-                if (_viewState.value.pinCode.size != 5) {
+                val validated = validatePinCode.invoke(pinCode)
+                if (validated) {
+                    _navigateToDashboard.tryEmit(Unit)
+                } else {
                     _viewState.update { viewState ->
-                        val newPinCode = viewState.pinCode.toMutableList().also { it.add(number) }
-                        viewState.copy(pinCode = newPinCode)
-                    }
-                    val pinCode = _viewState.value.pinCode
-                    if (_viewState.value.pinCode.size == 5) {
-                        val validated = validatePinCode.invoke(pinCode)
-                        if (validated) {
-                            _navigateToDashboard.tryEmit(Unit)
-                        } else {
-                            _viewState.update { viewState ->
-                                viewState.copy(error = true, subHeading = R.string.pincode_validation_wrong)
-                            }
-                        }
+                        viewState.copy(error = true, subHeading = R.string.pincode_validation_wrong)
                     }
                 }
             }
         }
 
-        fun setPinCode(numbers: List<Int>) {
-            _viewState.value = viewState.value.copy(pinCode = numbers)
+        fun resetError() {
+            _viewState.update { viewState ->
+                viewState.copy(error = false)
+            }
         }
     }

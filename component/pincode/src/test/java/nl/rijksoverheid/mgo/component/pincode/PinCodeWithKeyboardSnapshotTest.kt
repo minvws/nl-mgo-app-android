@@ -15,4 +15,11 @@ internal class PinCodeWithKeyboardSnapshotTest {
             PinCodeWithKeyboardPreview()
         }
     }
+
+    @Test
+    fun hint() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            PinCodeWithKeyboardAndHintPreview()
+        }
+    }
 }

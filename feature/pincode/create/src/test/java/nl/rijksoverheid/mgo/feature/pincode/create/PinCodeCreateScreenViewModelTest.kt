@@ -14,78 +14,55 @@ internal class PinCodeCreateScreenViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `Given pin code exists, When calling resetPinCode, Then reset the view state`() =
+    fun `Given valid pin code, When calling validatePinCode, Then navigate to confirm`() =
         runTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val validator = TestPinCodeStrengthValidator(true)
             val viewModel = PinCodeCreateScreenViewModel(validator)
 
-            // When
-            viewModel.setPinCode(pinCode)
-
-            viewModel.viewState.test {
-                viewModel.resetPinCode()
+            viewModel.navigateToConfirm.test {
+                // When
+                viewModel.validatePinCode(pinCode)
 
                 // Then
-                assertEquals(pinCode, awaitItem().pinCode)
-                assertEquals(listOf<Int>(), awaitItem().pinCode)
+                assertEquals(pinCode, awaitItem())
             }
         }
 
     @Test
-    fun `Given no pin code, When calling addPinCodeNumber, Then change the pin code`() =
+    fun `Given invalid pin code, When calling validatePinCode, Then update view state`() =
         runTest {
             // Given
-            val validator = TestPinCodeStrengthValidator(true)
+            val pinCode = listOf(1, 2, 3, 4, 5)
+            val validator = TestPinCodeStrengthValidator(false)
             val viewModel = PinCodeCreateScreenViewModel(validator)
 
             // When
-            viewModel.addPinCodeNumber(1)
-            viewModel.addPinCodeNumber(2)
-            viewModel.addPinCodeNumber(3)
+            viewModel.validatePinCode(pinCode)
 
             // Then
             viewModel.viewState.test {
-                assertEquals(listOf(1, 2, 3), awaitItem().pinCode)
+                val expectedViewState = PinCodeCreateScreenViewState(subHeading = R.string.pincode_create_tooweak, error = true)
+                assertEquals(expectedViewState, awaitItem())
             }
         }
 
     @Test
-    fun `Given valid pin code, When calling addPinCodeNumber, Then navigate to confirm screen`() =
+    fun `Given invalid pin code, When calling resetError, Then update view state`() =
         runTest {
             // Given
-            val validator = TestPinCodeStrengthValidator(true)
-            val viewModel = PinCodeCreateScreenViewModel(validator)
-            viewModel.setPinCode(listOf(1, 2, 3, 4))
-
-            // When
-            viewModel.navigateToConfirm.test {
-                viewModel.addPinCodeNumber(5)
-
-                // Then
-                assertEquals(listOf(1, 2, 3, 4, 5), awaitItem())
-            }
-        }
-
-    @Test
-    fun `Given invalid pin code, When calling addPinCodeNumber, Then navigate update view state`() =
-        runTest {
-            // Given
+            val pinCode = listOf(1, 2, 3, 4, 5)
             val validator = TestPinCodeStrengthValidator(false)
             val viewModel = PinCodeCreateScreenViewModel(validator)
-            viewModel.setPinCode(listOf(1, 2, 3, 4))
 
             // When
-            viewModel.addPinCodeNumber(6)
+            viewModel.validatePinCode(pinCode)
+            viewModel.resetError()
+
+            // Then
             viewModel.viewState.test {
-                // Then
-                val expectedViewState =
-                    PinCodeCreateScreenViewState(
-                        pinCode = listOf(1, 2, 3, 4, 6),
-                        subHeading = R.string.pincode_create_tooweak,
-                        error = true,
-                    )
+                val expectedViewState = PinCodeCreateScreenViewState(subHeading = R.string.pincode_create_tooweak, error = false)
                 assertEquals(expectedViewState, awaitItem())
             }
         }

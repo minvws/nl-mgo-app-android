@@ -7,5 +7,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.biometric)
+    implementation(projects.component.pincode)
+    implementation(projects.data.pincode)
+    testImplementation(testFixtures(projects.data.pincode))
 }

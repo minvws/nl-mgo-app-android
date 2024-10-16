@@ -40,7 +40,6 @@ fun PinCodeConfirmScreen(
             creationCallback = { factory -> factory.create(pinCodeToMatch) },
         )
     LaunchedEffect(Unit) {
-        viewModel.resetPinCode()
         viewModel.navigate.collectLatest { navigation ->
             onNavigate(navigation)
         }
@@ -48,18 +47,11 @@ fun PinCodeConfirmScreen(
     val viewState by viewModel.viewState.collectAsState()
     PinCodeConfirmScreenContent(
         viewState = viewState,
-        onAddPinCodeNumber = { number ->
-            viewModel.addPinCodeNumber(number)
+        onPinCodeEntered = { pinCode ->
+            viewModel.validatePinCode(pinCode)
         },
-        onPinErrorAnimationFinished = {
-            viewModel.resetPinCode()
-        },
-        onRemoveLastPinCodeNumber = {
-            val currentPinCode = viewState.pinCode.toMutableList()
-            if (currentPinCode.size != 0) {
-                currentPinCode.removeAt(currentPinCode.size - 1)
-                viewModel.setPinCode(currentPinCode)
-            }
+        onResetError = {
+            viewModel.resetError()
         },
         onNavigateBack = onNavigateBack,
     )
@@ -68,9 +60,8 @@ fun PinCodeConfirmScreen(
 @Composable
 private fun PinCodeConfirmScreenContent(
     viewState: PinCodeConfirmScreenViewState,
-    onAddPinCodeNumber: (number: Int) -> Unit,
-    onRemoveLastPinCodeNumber: () -> Unit,
-    onPinErrorAnimationFinished: () -> Unit,
+    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+    onResetError: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -108,11 +99,9 @@ private fun PinCodeConfirmScreenContent(
                 )
                 PinCodeWithKeyboard(
                     modifier = Modifier.fillMaxSize(),
-                    pinCode = viewState.pinCode,
+                    onPinCodeEntered = onPinCodeEntered,
+                    onResetError = onResetError,
                     error = viewState.error,
-                    onPressNumber = onAddPinCodeNumber,
-                    onPressBackspace = onRemoveLastPinCodeNumber,
-                    onErrorAnimationFinished = onPinErrorAnimationFinished,
                 )
             }
         },
@@ -126,13 +115,11 @@ internal fun PinCodeConfirmScreenPreview() {
         PinCodeConfirmScreenContent(
             viewState =
                 PinCodeConfirmScreenViewState(
-                    pinCode = listOf(1, 2, 3),
                     subHeading = CopyR.string.pincode_confirm_heading,
                     error = false,
                 ),
-            onAddPinCodeNumber = {},
-            onRemoveLastPinCodeNumber = {},
-            onPinErrorAnimationFinished = {},
+            onPinCodeEntered = {},
+            onResetError = {},
             onNavigateBack = {},
         )
     }
@@ -145,13 +132,11 @@ internal fun PinCodeConfirmScreenErrorPreview() {
         PinCodeConfirmScreenContent(
             viewState =
                 PinCodeConfirmScreenViewState(
-                    pinCode = listOf(1, 2, 3),
                     subHeading = CopyR.string.pincode_confirm_mismatch,
                     error = true,
                 ),
-            onAddPinCodeNumber = {},
-            onRemoveLastPinCodeNumber = {},
-            onPinErrorAnimationFinished = {},
+            onPinCodeEntered = {},
+            onResetError = {},
             onNavigateBack = {},
         )
     }

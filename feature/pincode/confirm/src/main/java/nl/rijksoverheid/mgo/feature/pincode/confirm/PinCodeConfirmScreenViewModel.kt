@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.confirm
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @HiltViewModel(assistedFactory = PinCodeConfirmScreenViewModel.Factory::class)
@@ -38,38 +36,24 @@ internal class PinCodeConfirmScreenViewModel
         private val _navigate = MutableSharedFlow<PinCodeConfirmScreenNextNavigation>(extraBufferCapacity = 1)
         val navigate = _navigate.asSharedFlow()
 
-        fun resetPinCode() {
-            _viewState.update { viewState ->
-                viewState.copy(pinCode = listOf(), error = false)
-            }
-        }
-
-        fun addPinCodeNumber(number: Int) {
-            viewModelScope.launch {
-                if (_viewState.value.pinCode.size != 5) {
-                    _viewState.update { viewState ->
-                        val newPinCode = viewState.pinCode.toMutableList().also { it.add(number) }
-                        viewState.copy(pinCode = newPinCode)
-                    }
-                    if (_viewState.value.pinCode.size == 5) {
-                        if (_viewState.value.pinCode == pinCodeToMatch) {
-                            storePinCode.invoke(pinCodeToMatch)
-                            if (deviceHasBiometric()) {
-                                _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.BIOMETRIC)
-                            } else {
-                                _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.DASHBOARD)
-                            }
-                        } else {
-                            _viewState.update { viewState ->
-                                viewState.copy(error = true, subHeading = CopyR.string.pincode_confirm_mismatch)
-                            }
-                        }
-                    }
+        fun validatePinCode(pinCode: List<Int>) {
+            if (pinCode == pinCodeToMatch) {
+                storePinCode.invoke(pinCodeToMatch)
+                if (deviceHasBiometric()) {
+                    _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.BIOMETRIC)
+                } else {
+                    _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.DASHBOARD)
+                }
+            } else {
+                _viewState.update { viewState ->
+                    viewState.copy(error = true, subHeading = CopyR.string.pincode_confirm_mismatch)
                 }
             }
         }
 
-        fun setPinCode(numbers: List<Int>) {
-            _viewState.value = viewState.value.copy(pinCode = numbers)
+        fun resetError() {
+            _viewState.update { viewState ->
+                viewState.copy(error = false)
+            }
         }
     }

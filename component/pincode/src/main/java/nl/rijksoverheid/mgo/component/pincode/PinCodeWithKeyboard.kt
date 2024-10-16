@@ -11,6 +11,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -25,13 +29,43 @@ import nl.rijksoverheid.mgo.component.theme.bodySmall
 
 @Composable
 fun PinCodeWithKeyboard(
-    pinCode: List<Int>,
-    onPressNumber: (number: Int) -> Unit,
-    onPressBackspace: () -> Unit,
-    onErrorAnimationFinished: () -> Unit,
+    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+    onResetError: () -> Unit,
     modifier: Modifier = Modifier,
     hint: String? = null,
     onClickHint: (() -> Unit)? = null,
+    hasBiometric: Boolean = false,
+    onPressBiometric: (() -> Unit)? = null,
+    error: Boolean = false,
+) {
+    var pinCode by remember { mutableStateOf(listOf<Int>()) }
+    PinCodeWithKeyboardContent(
+        modifier = modifier,
+        pinCode = pinCode,
+        onSetPinCode = { newPinCode ->
+            pinCode = newPinCode
+        },
+        onPinCodeEntered = onPinCodeEntered,
+        onResetError = onResetError,
+        hint = hint,
+        onClickHint = onClickHint,
+        hasBiometric = hasBiometric,
+        onPressBiometric = onPressBiometric,
+        error = error,
+    )
+}
+
+@Composable
+private fun PinCodeWithKeyboardContent(
+    pinCode: List<Int>,
+    onSetPinCode: (pinCode: List<Int>) -> Unit,
+    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+    onResetError: () -> Unit,
+    modifier: Modifier = Modifier,
+    hint: String? = null,
+    onClickHint: (() -> Unit)? = null,
+    hasBiometric: Boolean = false,
+    onPressBiometric: (() -> Unit)? = null,
     error: Boolean = false,
 ) {
     Column(
@@ -46,7 +80,10 @@ fun PinCodeWithKeyboard(
             modifier = Modifier.padding(vertical = 64.dp),
             pinCode = pinCode,
             error = error,
-            onErrorAnimationFinished = onErrorAnimationFinished,
+            onErrorAnimationFinished = {
+                onSetPinCode(listOf())
+                onResetError()
+            },
         )
         Spacer(modifier = Modifier.weight(1f))
         if (hint != null) {
@@ -63,7 +100,25 @@ fun PinCodeWithKeyboard(
                 color = MaterialTheme.colors.actionTertiaryDefaultText(),
             )
         }
-        Keyboard(onPressNumber = onPressNumber, onPressBackspace = onPressBackspace)
+        Keyboard(
+            onPressNumber = { number ->
+                onSetPinCode(
+                    pinCode.toMutableList().also { list -> list.add(number) },
+                )
+                if (pinCode.size == 4) {
+                    onPinCodeEntered(pinCode)
+                }
+            },
+            onPressBackspace = {
+                if (pinCode.isNotEmpty()) {
+                    onSetPinCode(
+                        pinCode.toMutableList().also { list -> list.removeAt(list.size - 1) },
+                    )
+                }
+            },
+            hasBiometric = hasBiometric,
+            onPressBiometric = onPressBiometric,
+        )
     }
 }
 
@@ -71,15 +126,15 @@ fun PinCodeWithKeyboard(
 @Composable
 internal fun PinCodeWithKeyboardPreview() {
     MgoTheme {
-        PinCodeWithKeyboard(
+        PinCodeWithKeyboardContent(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .padding(32.dp),
             pinCode = listOf(1, 2, 3),
-            onPressNumber = {},
-            onPressBackspace = {},
-            onErrorAnimationFinished = {},
+            onSetPinCode = {},
+            onPinCodeEntered = {},
+            onResetError = {},
         )
     }
 }
@@ -88,15 +143,15 @@ internal fun PinCodeWithKeyboardPreview() {
 @Composable
 internal fun PinCodeWithKeyboardAndHintPreview() {
     MgoTheme {
-        PinCodeWithKeyboard(
+        PinCodeWithKeyboardContent(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .padding(32.dp),
             pinCode = listOf(1, 2, 3),
-            onPressNumber = {},
-            onPressBackspace = {},
-            onErrorAnimationFinished = {},
+            onSetPinCode = {},
+            onPinCodeEntered = {},
+            onResetError = {},
             hint = "Klik hier",
         )
     }

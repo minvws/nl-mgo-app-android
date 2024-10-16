@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.pincode.biometric
 
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_LOGIN_WITH_BIOMETRIC_ENABLED
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.LOGIN_WITH_BIOMETRIC_ENABLED
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 
@@ -11,6 +11,6 @@ internal class DefaultSetLoginWithBiometricEnabled
         private val keyValueStore: KeyValueStore,
     ) : SetLoginWithBiometricEnabled {
         override fun invoke() {
-            return runBlocking { keyValueStore.setBoolean(LOGIN_WITH_BIOMETRIC_ENABLED, true) }
+            return runBlocking { keyValueStore.setBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED, true) }
         }
     }

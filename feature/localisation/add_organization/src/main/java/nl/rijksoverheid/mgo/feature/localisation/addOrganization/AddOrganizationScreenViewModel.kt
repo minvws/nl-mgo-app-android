@@ -24,12 +24,12 @@ class AddOrganizationScreenViewModel
         val navigation = _navigation.asSharedFlow()
 
         fun setName(name: String) {
-            _viewState.update { viewState -> viewState.copy(name = name.trim()) }
+            _viewState.update { viewState -> viewState.copy(name = name) }
             validate(navigate = false)
         }
 
         fun setCity(city: String) {
-            _viewState.update { viewState -> viewState.copy(city = city.trim()) }
+            _viewState.update { viewState -> viewState.copy(city = city) }
             validate(navigate = false)
         }
 

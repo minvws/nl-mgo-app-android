@@ -34,6 +34,7 @@ fun PinCodeWithKeyboard(
     modifier: Modifier = Modifier,
     hint: String? = null,
     onClickHint: (() -> Unit)? = null,
+    onPressBiometric: (() -> Unit)? = null,
     error: Boolean = false,
 ) {
     var pinCode by remember { mutableStateOf(listOf<Int>()) }
@@ -47,6 +48,7 @@ fun PinCodeWithKeyboard(
         onResetError = onResetError,
         hint = hint,
         onClickHint = onClickHint,
+        onPressBiometric = onPressBiometric,
         error = error,
     )
 }
@@ -60,6 +62,7 @@ private fun PinCodeWithKeyboardContent(
     modifier: Modifier = Modifier,
     hint: String? = null,
     onClickHint: (() -> Unit)? = null,
+    onPressBiometric: (() -> Unit)? = null,
     error: Boolean = false,
 ) {
     Column(
@@ -99,7 +102,7 @@ private fun PinCodeWithKeyboardContent(
                 onSetPinCode(
                     pinCode.toMutableList().also { list -> list.add(number) },
                 )
-                if (pinCode.size == 5) {
+                if (pinCode.size == 4) {
                     onPinCodeEntered(pinCode)
                 }
             },
@@ -110,6 +113,7 @@ private fun PinCodeWithKeyboardContent(
                     )
                 }
             },
+            onPressBiometric = onPressBiometric,
         )
     }
 }

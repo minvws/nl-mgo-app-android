@@ -12,4 +12,5 @@ android {
 dependencies {
     implementation(projects.component.theme)
     implementation(projects.framework.copy)
+    implementation(libs.biometric)
 }

@@ -11,21 +11,26 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
+import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
@@ -38,6 +43,9 @@ fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     PinCodeLoginScreenContent(
         viewState = viewState,
+        onBiometricLoginSuccess = {
+            onPinValidated()
+        },
         onPinCodeEntered = { pinCode ->
             viewModel.validatePinCode(pinCode)
         },
@@ -50,9 +58,12 @@ fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
 @Composable
 private fun PinCodeLoginScreenContent(
     viewState: PinCodeLoginScreenViewState,
+    onBiometricLoginSuccess: () -> Unit,
     onPinCodeEntered: (pinCode: List<Int>) -> Unit,
     onResetError: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -76,7 +87,10 @@ private fun PinCodeLoginScreenContent(
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
                     text = stringResource(id = viewState.subHeading),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodySmall,
@@ -87,6 +101,15 @@ private fun PinCodeLoginScreenContent(
                     onResetError = onResetError,
                     error = viewState.error,
                     hint = stringResource(id = R.string.pincode_forgot),
+                    onPressBiometric = {
+                        coroutineScope.launch {
+                            val fragmentActivity = context as FragmentActivity
+                            val success = fragmentActivity.showBiometricPrompt()
+                            if (success) {
+                                onBiometricLoginSuccess()
+                            }
+                        }
+                    },
                 )
             }
         },
@@ -103,6 +126,7 @@ internal fun PinCodeLoginScreenPreview() {
                     subHeading = R.string.pincode_confirm_heading,
                     error = false,
                 ),
+            onBiometricLoginSuccess = {},
             onPinCodeEntered = {},
             onResetError = {},
         )
@@ -119,6 +143,7 @@ internal fun PinCodeLoginScreenErrorPreview() {
                     subHeading = R.string.pincode_validation_wrong,
                     error = true,
                 ),
+            onBiometricLoginSuccess = {},
             onPinCodeEntered = {},
             onResetError = {},
         )

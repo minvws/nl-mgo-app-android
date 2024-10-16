@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.R
@@ -22,9 +23,16 @@ fun Keyboard(
     onPressNumber: (number: Int) -> Unit,
     onPressBackspace: () -> Unit,
     modifier: Modifier = Modifier,
+    onPressBiometric: (() -> Unit)? = null,
 ) {
     Box(modifier = modifier) {
-        Column(modifier = modifier.wrapContentWidth().height(IntrinsicSize.Min), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            modifier =
+                modifier
+                    .wrapContentWidth()
+                    .height(IntrinsicSize.Min),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 KeyboardItemNumber(number = 1, onPressNumber = onPressNumber)
                 KeyboardItemNumber(number = 2, onPressNumber = onPressNumber)
@@ -41,7 +49,14 @@ fun Keyboard(
                 KeyboardItemNumber(number = 9, onPressNumber = onPressNumber)
             }
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemIcon(icon = R.drawable.ic_keyboard_fingerprint, onPressIcon = {})
+                val biometricIconAlpha = if (onPressBiometric == null) 0f else 1f
+                KeyboardItemIcon(
+                    modifier = Modifier.alpha(biometricIconAlpha),
+                    icon = R.drawable.ic_keyboard_fingerprint,
+                    onPressIcon = {
+                        onPressBiometric?.invoke()
+                    },
+                )
                 KeyboardItemNumber(number = 0, onPressNumber = onPressNumber)
                 KeyboardItemIcon(icon = R.drawable.ic_keyboard_backspace, onPressIcon = onPressBackspace)
             }
@@ -55,7 +70,10 @@ private fun RowScope.KeyboardItemNumber(
     onPressNumber: (number: Int) -> Unit,
 ) {
     KeyboardItem(
-        modifier = Modifier.weight(1f).aspectRatio(2.25f),
+        modifier =
+            Modifier
+                .weight(1f)
+                .aspectRatio(2.25f),
         onClick = { onPressNumber(number) },
         type = KeyboardItemType.Number(number),
     )
@@ -65,9 +83,13 @@ private fun RowScope.KeyboardItemNumber(
 private fun RowScope.KeyboardItemIcon(
     @DrawableRes icon: Int,
     onPressIcon: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     KeyboardItem(
-        modifier = Modifier.weight(1f).aspectRatio(2.25f),
+        modifier =
+            modifier
+                .weight(1f)
+                .aspectRatio(2.25f),
         onClick = onPressIcon,
         type = KeyboardItemType.Icon(icon),
     )

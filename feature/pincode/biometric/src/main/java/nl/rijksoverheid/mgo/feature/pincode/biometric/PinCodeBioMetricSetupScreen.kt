@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
+import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -38,8 +39,8 @@ private fun PinCodeBioMetricSetupScreenContent(
     onBiometricLoginSuccess: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val fragmentActivity = LocalContext.current as FragmentActivity
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "") }, backgroundColor = Color.Transparent, elevation = 0.dp)
@@ -51,7 +52,8 @@ private fun PinCodeBioMetricSetupScreenContent(
                 secondaryButtonText = stringResource(id = CopyR.string.common_skip),
                 onButtonClick = {
                     coroutineScope.launch {
-                        val success = BioMetricPrompt(fragmentActivity)
+                        val fragmentActivity = context as FragmentActivity
+                        val success = fragmentActivity.showBiometricPrompt()
                         if (success) {
                             onBiometricLoginSuccess()
                         }

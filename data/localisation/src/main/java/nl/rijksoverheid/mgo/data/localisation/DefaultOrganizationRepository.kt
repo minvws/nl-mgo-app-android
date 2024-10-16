@@ -27,7 +27,7 @@ internal class DefaultOrganizationRepository(
         city: String,
     ): Flow<List<MgoOrganization>> {
         val requestBody =
-            SearchRequestBody(name = name, city = city)
+            SearchRequestBody(name = name.trim(), city = city.trim())
         val searchResponseFlow =
             flow {
                 val result = executeNetworkRequest { loadApi.search(requestBody) }

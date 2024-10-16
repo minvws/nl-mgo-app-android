@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.pincode.login
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.pincode.TestValidatePinCode
-import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
+import nl.rijksoverheid.mgo.data.pincode.biometric.TestLoginWithBiometricEnabled
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
@@ -20,9 +20,10 @@ internal class PinCodeLoginScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val validatePinCode = TestValidatePinCode()
-            val deviceHasBiometric = TestDeviceHasBiometric(true)
+            val loginWithBiometricEnabled = TestLoginWithBiometricEnabled(true)
             validatePinCode.setStoredPinCode(listOf(1, 2, 3, 4, 5))
-            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, deviceHasBiometric = deviceHasBiometric)
+            val viewModel =
+                PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, loginWithBiometricEnabled = loginWithBiometricEnabled)
 
             viewModel.navigateToDashboard.test {
                 // When
@@ -39,20 +40,22 @@ internal class PinCodeLoginScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val validatePinCode = TestValidatePinCode()
-            val deviceHasBiometric = TestDeviceHasBiometric(true)
+            val loginWithBiometricEnabled = TestLoginWithBiometricEnabled(true)
             validatePinCode.setStoredPinCode(listOf(1, 2, 3, 4, 6))
-            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, deviceHasBiometric = deviceHasBiometric)
+            val viewModel =
+                PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, loginWithBiometricEnabled = loginWithBiometricEnabled)
 
             // When
             viewModel.validatePinCode(pinCode)
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeLoginScreenViewState(
-                    hasBiometric = true,
-                    subHeading = R.string.pincode_validation_wrong,
-                    error = true,
-                )
+                val expectedViewState =
+                    PinCodeLoginScreenViewState(
+                        hasBiometric = true,
+                        subHeading = R.string.pincode_validation_wrong,
+                        error = true,
+                    )
                 assertEquals(expectedViewState, awaitItem())
             }
         }
@@ -63,9 +66,10 @@ internal class PinCodeLoginScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val validatePinCode = TestValidatePinCode()
-            val deviceHasBiometric = TestDeviceHasBiometric(true)
+            val loginWithBiometricEnabled = TestLoginWithBiometricEnabled(true)
             validatePinCode.setStoredPinCode(listOf(1, 2, 3, 4, 6))
-            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, deviceHasBiometric = deviceHasBiometric)
+            val viewModel =
+                PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, loginWithBiometricEnabled = loginWithBiometricEnabled)
 
             // When
             viewModel.validatePinCode(pinCode)
@@ -73,11 +77,12 @@ internal class PinCodeLoginScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeLoginScreenViewState(
-                    hasBiometric = true,
-                    subHeading = R.string.pincode_validation_wrong,
-                    error = false,
-                )
+                val expectedViewState =
+                    PinCodeLoginScreenViewState(
+                        hasBiometric = true,
+                        subHeading = R.string.pincode_validation_wrong,
+                        error = false,
+                    )
                 assertEquals(expectedViewState, awaitItem())
             }
         }

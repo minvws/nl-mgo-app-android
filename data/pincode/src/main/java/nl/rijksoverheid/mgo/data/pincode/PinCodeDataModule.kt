@@ -8,7 +8,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.pincode.biometric.DefaultDeviceHasBiometric
+import nl.rijksoverheid.mgo.data.pincode.biometric.DefaultLoginWithBiometricEnabled
+import nl.rijksoverheid.mgo.data.pincode.biometric.DefaultSetLoginWithBiometricEnabled
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
+import nl.rijksoverheid.mgo.data.pincode.biometric.LoginWithBiometricEnabled
+import nl.rijksoverheid.mgo.data.pincode.biometric.SetLoginWithBiometricEnabled
 import nl.rijksoverheid.mgo.data.pincode.hash.BcryptPinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.hash.PinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.strength.DefaultPinCodeStrengthStrengthValidator
@@ -62,5 +66,17 @@ object PinCodeDataModule {
     ): DeviceHasBiometric {
         val bioMetricManager = BiometricManager.from(context)
         return DefaultDeviceHasBiometric(bioMetricManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginWithBiometricEnabled(keyValueStore: KeyValueStore): LoginWithBiometricEnabled {
+        return DefaultLoginWithBiometricEnabled(keyValueStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetLoginWithBiometricEnabled(keyValueStore: KeyValueStore): SetLoginWithBiometricEnabled {
+        return DefaultSetLoginWithBiometricEnabled(keyValueStore)
     }
 }

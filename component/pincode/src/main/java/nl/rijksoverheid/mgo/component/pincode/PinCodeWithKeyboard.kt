@@ -116,6 +116,7 @@ private fun PinCodeWithKeyboardContent(
                     )
                 }
             },
+            hasBiometric = hasBiometric,
             onPressBiometric = onPressBiometric,
         )
     }

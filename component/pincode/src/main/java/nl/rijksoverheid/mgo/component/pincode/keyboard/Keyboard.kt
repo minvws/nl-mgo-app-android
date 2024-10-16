@@ -23,6 +23,7 @@ fun Keyboard(
     onPressNumber: (number: Int) -> Unit,
     onPressBackspace: () -> Unit,
     modifier: Modifier = Modifier,
+    hasBiometric: Boolean = false,
     onPressBiometric: (() -> Unit)? = null,
 ) {
     Box(modifier = modifier) {
@@ -49,7 +50,7 @@ fun Keyboard(
                 KeyboardItemNumber(number = 9, onPressNumber = onPressNumber)
             }
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                val biometricIconAlpha = if (onPressBiometric == null) 0f else 1f
+                val biometricIconAlpha = if (hasBiometric) 1f else 0f
                 KeyboardItemIcon(
                     modifier = Modifier.alpha(biometricIconAlpha),
                     icon = R.drawable.ic_keyboard_fingerprint,
@@ -100,5 +101,13 @@ private fun RowScope.KeyboardItemIcon(
 internal fun KeyboardPreview() {
     MgoTheme {
         Keyboard(onPressNumber = {}, onPressBackspace = {})
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun KeyboardWithBiometricPreview() {
+    MgoTheme {
+        Keyboard(onPressNumber = {}, onPressBackspace = {}, hasBiometric = true)
     }
 }

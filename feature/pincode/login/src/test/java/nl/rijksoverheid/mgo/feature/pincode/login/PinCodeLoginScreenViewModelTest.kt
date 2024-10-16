@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.pincode.login
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.pincode.TestValidatePinCode
+import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
@@ -19,8 +20,9 @@ internal class PinCodeLoginScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val validatePinCode = TestValidatePinCode()
+            val deviceHasBiometric = TestDeviceHasBiometric(true)
             validatePinCode.setStoredPinCode(listOf(1, 2, 3, 4, 5))
-            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode)
+            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, deviceHasBiometric = deviceHasBiometric)
 
             viewModel.navigateToDashboard.test {
                 // When
@@ -37,15 +39,20 @@ internal class PinCodeLoginScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val validatePinCode = TestValidatePinCode()
+            val deviceHasBiometric = TestDeviceHasBiometric(true)
             validatePinCode.setStoredPinCode(listOf(1, 2, 3, 4, 6))
-            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode)
+            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, deviceHasBiometric = deviceHasBiometric)
 
             // When
             viewModel.validatePinCode(pinCode)
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeLoginScreenViewState(subHeading = R.string.pincode_validation_wrong, error = true)
+                val expectedViewState = PinCodeLoginScreenViewState(
+                    hasBiometric = true,
+                    subHeading = R.string.pincode_validation_wrong,
+                    error = true,
+                )
                 assertEquals(expectedViewState, awaitItem())
             }
         }
@@ -56,8 +63,9 @@ internal class PinCodeLoginScreenViewModelTest {
             // Given
             val pinCode = listOf(1, 2, 3, 4, 5)
             val validatePinCode = TestValidatePinCode()
+            val deviceHasBiometric = TestDeviceHasBiometric(true)
             validatePinCode.setStoredPinCode(listOf(1, 2, 3, 4, 6))
-            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode)
+            val viewModel = PinCodeLoginScreenViewModel(validatePinCode = validatePinCode, deviceHasBiometric = deviceHasBiometric)
 
             // When
             viewModel.validatePinCode(pinCode)
@@ -65,7 +73,11 @@ internal class PinCodeLoginScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeLoginScreenViewState(subHeading = R.string.pincode_validation_wrong, error = false)
+                val expectedViewState = PinCodeLoginScreenViewState(
+                    hasBiometric = true,
+                    subHeading = R.string.pincode_validation_wrong,
+                    error = false,
+                )
                 assertEquals(expectedViewState, awaitItem())
             }
         }

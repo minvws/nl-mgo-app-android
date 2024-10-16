@@ -15,4 +15,11 @@ internal class KeyboardSnapshotTest {
             KeyboardPreview()
         }
     }
+
+    @Test
+    fun withBiometric() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            KeyboardWithBiometricPreview()
+        }
+    }
 }

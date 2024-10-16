@@ -16,6 +16,13 @@ internal class PinCodeLoginScreenSnapshotTest {
     }
 
     @Test
+    fun withoutBiometric() {
+        snapshotTestRule.snapshots {
+            PinCodeLoginWithoutBiometricScreenPreview()
+        }
+    }
+
+    @Test
     fun error() {
         snapshotTestRule.snapshots {
             PinCodeLoginScreenErrorPreview()

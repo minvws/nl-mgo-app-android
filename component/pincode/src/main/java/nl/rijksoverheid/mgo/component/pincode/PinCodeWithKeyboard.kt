@@ -34,6 +34,7 @@ fun PinCodeWithKeyboard(
     modifier: Modifier = Modifier,
     hint: String? = null,
     onClickHint: (() -> Unit)? = null,
+    hasBiometric: Boolean = false,
     onPressBiometric: (() -> Unit)? = null,
     error: Boolean = false,
 ) {
@@ -48,6 +49,7 @@ fun PinCodeWithKeyboard(
         onResetError = onResetError,
         hint = hint,
         onClickHint = onClickHint,
+        hasBiometric = hasBiometric,
         onPressBiometric = onPressBiometric,
         error = error,
     )
@@ -62,6 +64,7 @@ private fun PinCodeWithKeyboardContent(
     modifier: Modifier = Modifier,
     hint: String? = null,
     onClickHint: (() -> Unit)? = null,
+    hasBiometric: Boolean = false,
     onPressBiometric: (() -> Unit)? = null,
     error: Boolean = false,
 ) {
@@ -123,7 +126,10 @@ private fun PinCodeWithKeyboardContent(
 internal fun PinCodeWithKeyboardPreview() {
     MgoTheme {
         PinCodeWithKeyboardContent(
-            modifier = Modifier.fillMaxSize().padding(32.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
             pinCode = listOf(1, 2, 3),
             onSetPinCode = {},
             onPinCodeEntered = {},
@@ -137,7 +143,10 @@ internal fun PinCodeWithKeyboardPreview() {
 internal fun PinCodeWithKeyboardAndHintPreview() {
     MgoTheme {
         PinCodeWithKeyboardContent(
-            modifier = Modifier.fillMaxSize().padding(32.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
             pinCode = listOf(1, 2, 3),
             onSetPinCode = {},
             onPinCodeEntered = {},

@@ -101,6 +101,7 @@ private fun PinCodeLoginScreenContent(
                     onResetError = onResetError,
                     error = viewState.error,
                     hint = stringResource(id = R.string.pincode_forgot),
+                    hasBiometric = viewState.hasBiometric,
                     onPressBiometric = {
                         coroutineScope.launch {
                             val fragmentActivity = context as FragmentActivity
@@ -124,6 +125,7 @@ internal fun PinCodeLoginScreenPreview() {
             viewState =
                 PinCodeLoginScreenViewState(
                     subHeading = R.string.pincode_confirm_heading,
+                    hasBiometric = true,
                     error = false,
                 ),
             onBiometricLoginSuccess = {},
@@ -141,7 +143,26 @@ internal fun PinCodeLoginScreenErrorPreview() {
             viewState =
                 PinCodeLoginScreenViewState(
                     subHeading = R.string.pincode_validation_wrong,
+                    hasBiometric = true,
                     error = true,
+                ),
+            onBiometricLoginSuccess = {},
+            onPinCodeEntered = {},
+            onResetError = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun PinCodeLoginWithoutBiometricScreenPreview() {
+    MgoTheme {
+        PinCodeLoginScreenContent(
+            viewState =
+                PinCodeLoginScreenViewState(
+                    subHeading = R.string.pincode_confirm_heading,
+                    hasBiometric = false,
+                    error = false,
                 ),
             onBiometricLoginSuccess = {},
             onPinCodeEntered = {},

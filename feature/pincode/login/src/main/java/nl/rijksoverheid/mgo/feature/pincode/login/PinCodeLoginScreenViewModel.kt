@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.pincode.ValidatePinCode
+import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.copy.R
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,8 +17,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class PinCodeLoginScreenViewModel
     @Inject
-    constructor(private val validatePinCode: ValidatePinCode) : ViewModel() {
-        private val _viewState = MutableStateFlow(PinCodeLoginScreenViewState.initialState)
+    constructor(
+        private val validatePinCode: ValidatePinCode,
+        private val deviceHasBiometric: DeviceHasBiometric,
+    ) : ViewModel() {
+        private val _viewState = MutableStateFlow(PinCodeLoginScreenViewState.initialState(deviceHasBiometric.invoke()))
         val viewState = _viewState.asStateFlow()
 
         private val _navigateToDashboard = MutableSharedFlow<Unit>(extraBufferCapacity = 1)

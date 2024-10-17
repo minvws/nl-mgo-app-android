@@ -204,4 +204,7 @@
     <string name="zib_medication_use.taken">Gebruik indicator</string>
     <string name="pincode.erase.voiceover">Leeg</string>
     <string name="pincode.biometric.voiceover">Biometrisch inloggen</string>
+    <string name="pincode.voiceover">Veld %1$s van %2$s, %3$s</string>
+    <string name="pincode.empty.voiceover">Leeg</string>
+    <string name="pincode.filled.voiceover">Gevuld</string>
 </resources>

@@ -95,6 +95,7 @@ private fun PinCodeWithKeyboardContent(
             }
         }
         Keyboard(
+            pinCode = pinCode,
             onPressNumber = { number ->
                 onSetPinCode(
                     pinCode.toMutableList().also { list -> list.add(number) },

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.login
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +12,11 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -64,18 +68,20 @@ private fun PinCodeLoginScreenContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val subHeadingFocusRequester = remember { FocusRequester() }
     // Immediately show the biometric prompt if it has been enabled in the onboarding before
-//    LaunchedEffect(Unit) {
-//        if (viewState.hasBiometric) {
-//            coroutineScope.launch {
-//                val fragmentActivity = context as FragmentActivity
-//                val success = fragmentActivity.showBiometricPrompt()
-//                if (success) {
-//                    onBiometricLoginSuccess()
-//                }
-//            }
-//        }
-//    }
+    LaunchedEffect(Unit) {
+        if (viewState.hasBiometric) {
+            coroutineScope.launch {
+                val fragmentActivity = context as FragmentActivity
+                val success = fragmentActivity.showBiometricPrompt()
+                if (success) {
+                    onBiometricLoginSuccess()
+                }
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -102,7 +108,9 @@ private fun PinCodeLoginScreenContent(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp),
+                            .padding(top = 16.dp)
+                            .focusRequester(subHeadingFocusRequester)
+                            .focusable(),
                     text = stringResource(id = viewState.subHeading),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodySmall,
@@ -110,7 +118,10 @@ private fun PinCodeLoginScreenContent(
                 PinCodeWithKeyboard(
                     modifier = Modifier.fillMaxSize(),
                     onPinCodeEntered = onPinCodeEntered,
-                    onResetError = onResetError,
+                    onResetError = {
+                        subHeadingFocusRequester.requestFocus()
+                        onResetError()
+                    },
                     error = viewState.error,
                     hint = stringResource(id = R.string.pincode_forgot),
                     hasBiometric = viewState.hasBiometric,

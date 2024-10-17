@@ -11,19 +11,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun PinCodeItem(
     modifier: Modifier = Modifier,
+    position: Int,
     color: Color,
     scale: Float,
     fill: Boolean = false,
 ) {
-    Box(modifier = modifier.scale(scale)) {
+    val stateString =
+        if (fill) stringResource(CopyR.string.pincode_filled_voiceover) else stringResource(CopyR.string.pincode_empty_voiceover)
+    val talkBackString = stringResource(id = CopyR.string.pincode_voiceover, position.toString(), "5", stateString)
+    Box(
+        modifier =
+            modifier
+                .semantics { contentDescription = talkBackString }
+                .scale(scale),
+    ) {
         Box(
             modifier =
                 modifier
@@ -46,7 +59,12 @@ fun PinCodeItem(
 @Composable
 internal fun PinCodeItemNotFilledPreview() {
     MgoTheme {
-        PinCodeItem(modifier = Modifier.size(32.dp), color = MaterialTheme.colors.actionPrimaryDefaultBackground(), scale = 1f)
+        PinCodeItem(
+            modifier = Modifier.size(32.dp),
+            color = MaterialTheme.colors.actionPrimaryDefaultBackground(),
+            position = 1,
+            scale = 1f,
+        )
     }
 }
 
@@ -54,6 +72,12 @@ internal fun PinCodeItemNotFilledPreview() {
 @Composable
 internal fun PinCodeItemFilledPreview() {
     MgoTheme {
-        PinCodeItem(modifier = Modifier.size(32.dp), color = MaterialTheme.colors.actionPrimaryDefaultBackground(), scale = 1f, fill = true)
+        PinCodeItem(
+            modifier = Modifier.size(32.dp),
+            color = MaterialTheme.colors.actionPrimaryDefaultBackground(),
+            position = 1,
+            scale = 1f,
+            fill = true,
+        )
     }
 }

@@ -48,11 +48,11 @@ fun PinCode(
     }
 
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        PinCodeItemInstance(color = color, scale = animatedScale.value, fill = pinCode.isNotEmpty())
-        PinCodeItemInstance(color = color, scale = animatedScale.value, fill = pinCode.size > 1)
-        PinCodeItemInstance(color = color, scale = animatedScale.value, fill = pinCode.size > 2)
-        PinCodeItemInstance(color = color, scale = animatedScale.value, fill = pinCode.size > 3)
-        PinCodeItemInstance(color = color, scale = animatedScale.value, fill = pinCode.size > 4)
+        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 1, fill = pinCode.isNotEmpty())
+        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 2, fill = pinCode.size > 1)
+        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 3, fill = pinCode.size > 2)
+        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 4, fill = pinCode.size > 3)
+        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 5, fill = pinCode.size > 4)
     }
 }
 
@@ -61,9 +61,10 @@ private fun PinCodeItemInstance(
     color: Color,
     scale: Float,
     fill: Boolean,
+    position: Int,
     modifier: Modifier = Modifier,
 ) {
-    PinCodeItem(modifier = modifier.size(32.dp), color = color, scale = scale, fill = fill)
+    PinCodeItem(modifier = modifier.size(32.dp), color = color, scale = scale, position = position, fill = fill)
 }
 
 @PreviewLightDark

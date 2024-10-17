@@ -16,14 +16,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.accessibilityAnnounce
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
 fun PinCodeWithKeyboard(
@@ -66,6 +70,7 @@ private fun PinCodeWithKeyboardContent(
     onPressBiometric: (() -> Unit)? = null,
     error: Boolean = false,
 ) {
+    val context = LocalContext.current
     Column(
         modifier =
             modifier
@@ -94,9 +99,28 @@ private fun PinCodeWithKeyboardContent(
                 )
             }
         }
+
+        val accessibilityAnnouncePinCodeAdded =
+            stringResource(
+                R.string.pincode_voiceover,
+                (pinCode.size + 1).toString(),
+                "5",
+                stringResource(id = R.string.pincode_filled_voiceover),
+            )
+
+        val accessibilityAnnouncePinCodeRemoved =
+            stringResource(
+                R.string.pincode_voiceover,
+                (pinCode.size).toString(),
+                "5",
+                stringResource(id = R.string.pincode_empty_voiceover),
+            )
+
         Keyboard(
-            pinCode = pinCode,
             onPressNumber = { number ->
+                // Announce that pin code has changed
+                context.accessibilityAnnounce(accessibilityAnnouncePinCodeAdded)
+
                 val newPinCode = pinCode.toMutableList().also { list -> list.add(number) }
                 onSetPinCode(newPinCode)
                 if (newPinCode.size == 5) {
@@ -104,6 +128,9 @@ private fun PinCodeWithKeyboardContent(
                 }
             },
             onPressBackspace = {
+                // Announce that the pin code has changed
+                context.accessibilityAnnounce(accessibilityAnnouncePinCodeRemoved)
+
                 if (pinCode.isNotEmpty()) {
                     onSetPinCode(
                         pinCode.toMutableList().also { list -> list.removeAt(list.size - 1) },

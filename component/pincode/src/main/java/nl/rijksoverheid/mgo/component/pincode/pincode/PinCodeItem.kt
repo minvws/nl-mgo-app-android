@@ -30,11 +30,11 @@ fun PinCodeItem(
 ) {
     val stateString =
         if (fill) stringResource(CopyR.string.pincode_filled_voiceover) else stringResource(CopyR.string.pincode_empty_voiceover)
-    val talkBackString = stringResource(id = CopyR.string.pincode_voiceover, position.toString(), "5", stateString)
+    val contentDescriptionLabel = stringResource(id = CopyR.string.pincode_voiceover, position.toString(), "5", stateString)
     Box(
         modifier =
             modifier
-                .semantics { contentDescription = talkBackString }
+                .semantics { contentDescription = contentDescriptionLabel }
                 .scale(scale),
     ) {
         Box(

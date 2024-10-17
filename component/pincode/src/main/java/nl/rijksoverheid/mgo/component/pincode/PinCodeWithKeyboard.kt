@@ -1,15 +1,14 @@
 package nl.rijksoverheid.mgo.component.pincode
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
@@ -87,18 +85,14 @@ private fun PinCodeWithKeyboardContent(
         )
         Spacer(modifier = Modifier.weight(1f))
         if (hint != null) {
-            Text(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onClickHint?.invoke() }
-                        .padding(16.dp),
-                text = hint,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.actionTertiaryDefaultText(),
-            )
+            TextButton(onClick = { onClickHint?.invoke() }) {
+                Text(
+                    text = hint,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.actionTertiaryDefaultText(),
+                )
+            }
         }
         Keyboard(
             onPressNumber = { number ->

@@ -65,17 +65,17 @@ private fun PinCodeLoginScreenContent(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     // Immediately show the biometric prompt if it has been enabled in the onboarding before
-    LaunchedEffect(Unit) {
-        if (viewState.hasBiometric) {
-            coroutineScope.launch {
-                val fragmentActivity = context as FragmentActivity
-                val success = fragmentActivity.showBiometricPrompt()
-                if (success) {
-                    onBiometricLoginSuccess()
-                }
-            }
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        if (viewState.hasBiometric) {
+//            coroutineScope.launch {
+//                val fragmentActivity = context as FragmentActivity
+//                val success = fragmentActivity.showBiometricPrompt()
+//                if (success) {
+//                    onBiometricLoginSuccess()
+//                }
+//            }
+//        }
+//    }
     Scaffold(
         topBar = {
             TopAppBar(

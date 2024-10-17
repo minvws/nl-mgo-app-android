@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.component.pincode.keyboard
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.R
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun Keyboard(
@@ -54,12 +56,17 @@ fun Keyboard(
                 KeyboardItemIcon(
                     modifier = Modifier.alpha(biometricIconAlpha),
                     icon = R.drawable.ic_keyboard_fingerprint,
+                    talkBack = CopyR.string.pincode_biometric_voiceover,
                     onPressIcon = {
                         onPressBiometric?.invoke()
                     },
                 )
                 KeyboardItemNumber(number = 0, onPressNumber = onPressNumber)
-                KeyboardItemIcon(icon = R.drawable.ic_keyboard_backspace, onPressIcon = onPressBackspace)
+                KeyboardItemIcon(
+                    icon = R.drawable.ic_keyboard_backspace,
+                    talkBack = CopyR.string.pincode_erase_voiceover,
+                    onPressIcon = onPressBackspace,
+                )
             }
         }
     }
@@ -83,6 +90,7 @@ private fun RowScope.KeyboardItemNumber(
 @Composable
 private fun RowScope.KeyboardItemIcon(
     @DrawableRes icon: Int,
+    @StringRes talkBack: Int,
     onPressIcon: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -92,7 +100,7 @@ private fun RowScope.KeyboardItemIcon(
                 .weight(1f)
                 .aspectRatio(2.25f),
         onClick = onPressIcon,
-        type = KeyboardItemType.Icon(icon),
+        type = KeyboardItemType.Icon(icon = icon, talkBack = talkBack),
     )
 }
 

@@ -94,7 +94,7 @@ private fun RowScope.KeyboardItemNumber(
     val accessibilityAnnounceAfterClick =
         stringResource(
             CopyR.string.pincode_voiceover,
-            pinCode.size.toString(),
+            (pinCode.size + 1).toString(),
             "5",
             stringResource(id = CopyR.string.pincode_filled_voiceover),
         )

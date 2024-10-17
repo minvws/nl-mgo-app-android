@@ -19,6 +19,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +34,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -68,7 +70,9 @@ private fun PinCodeLoginScreenContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     val subHeadingFocusRequester = remember { FocusRequester() }
+
     // Immediately show the biometric prompt if it has been enabled in the onboarding before
     LaunchedEffect(Unit) {
         if (viewState.hasBiometric) {
@@ -119,8 +123,14 @@ private fun PinCodeLoginScreenContent(
                     modifier = Modifier.fillMaxSize(),
                     onPinCodeEntered = onPinCodeEntered,
                     onResetError = {
-                        subHeadingFocusRequester.requestFocus()
                         onResetError()
+                        coroutineScope.launch {
+                            // Seems to be a bug where if you request focus it only works once.
+                            // Doing it like this fixes that.
+                            focusManager.clearFocus()
+                            delay(100)
+                            subHeadingFocusRequester.requestFocus()
+                        }
                     },
                     error = viewState.error,
                     hint = stringResource(id = R.string.pincode_forgot),

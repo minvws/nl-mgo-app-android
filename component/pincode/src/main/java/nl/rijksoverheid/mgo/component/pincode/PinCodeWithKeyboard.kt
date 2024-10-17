@@ -97,11 +97,10 @@ private fun PinCodeWithKeyboardContent(
         Keyboard(
             pinCode = pinCode,
             onPressNumber = { number ->
-                onSetPinCode(
-                    pinCode.toMutableList().also { list -> list.add(number) },
-                )
-                if (pinCode.size == 4) {
-                    onPinCodeEntered(pinCode)
+                val newPinCode = pinCode.toMutableList().also { list -> list.add(number) }
+                onSetPinCode(newPinCode)
+                if (newPinCode.size == 5) {
+                    onPinCodeEntered(newPinCode)
                 }
             },
             onPressBackspace = {

@@ -4,28 +4,30 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.security.crypto.MasterKeys
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import nl.rijksoverheid.mgo.framework.storage.file.DefaultFileStore
+import nl.rijksoverheid.mgo.framework.storage.file.EncryptedFileStore
 import nl.rijksoverheid.mgo.framework.storage.file.FileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.DataStoreKeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.EncryptedSharedPreferencesSecureKeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.SecureKeyValueStore
 import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 internal object StorageModule {
+    private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
     @Provides
     @Singleton
+    @Named("keyValueStore")
     fun provideKeyValueStore(
         @ApplicationContext context: Context,
     ): KeyValueStore {
@@ -36,11 +38,13 @@ internal object StorageModule {
 
     @Provides
     @Singleton
+    @Named("secureKeyValueStore")
     fun provideSecureKeyValueStore(
         @ApplicationContext context: Context,
-    ): SecureKeyValueStore {
+    ): KeyValueStore {
         return EncryptedSharedPreferencesSecureKeyValueStore(
             context = context,
+            masterKeyAlias = masterKeyAlias,
         )
     }
 
@@ -50,9 +54,10 @@ internal object StorageModule {
         @ApplicationContext context: Context,
         @Named("storageMoshi") moshi: Moshi,
     ): FileStore {
-        return DefaultFileStore(
+        return EncryptedFileStore(
             context = context,
             moshi = moshi,
+            masterKeyAlias = masterKeyAlias,
         )
     }
 

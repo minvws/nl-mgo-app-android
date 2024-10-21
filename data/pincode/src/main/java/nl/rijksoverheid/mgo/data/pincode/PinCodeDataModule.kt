@@ -18,6 +18,7 @@ import nl.rijksoverheid.mgo.data.pincode.hash.PinCodeHasher
 import nl.rijksoverheid.mgo.data.pincode.strength.DefaultPinCodeStrengthStrengthValidator
 import nl.rijksoverheid.mgo.data.pincode.strength.PinCodeStrengthValidator
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -26,7 +27,7 @@ object PinCodeDataModule {
     @Provides
     @Singleton
     fun provideStorePinCode(
-        keyValueStore: KeyValueStore,
+        @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
         pinCodeHasher: PinCodeHasher,
     ): StorePinCode {
         return DefaultStorePinCode(keyValueStore, pinCodeHasher)
@@ -35,7 +36,7 @@ object PinCodeDataModule {
     @Provides
     @Singleton
     fun provideValidatePinCode(
-        keyValueStore: KeyValueStore,
+        @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
         pinCodeHasher: PinCodeHasher,
     ): ValidatePinCode {
         return DefaultValidatePinCode(keyValueStore, pinCodeHasher)
@@ -43,7 +44,9 @@ object PinCodeDataModule {
 
     @Provides
     @Singleton
-    fun provideHasPinCode(keyValueStore: KeyValueStore): HasPinCode {
+    fun provideHasPinCode(
+        @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
+    ): HasPinCode {
         return DefaultHasPinCode(keyValueStore)
     }
 
@@ -70,13 +73,17 @@ object PinCodeDataModule {
 
     @Provides
     @Singleton
-    fun provideLoginWithBiometricEnabled(keyValueStore: KeyValueStore): LoginWithBiometricEnabled {
+    fun provideLoginWithBiometricEnabled(
+        @Named("keyValueStore") keyValueStore: KeyValueStore,
+    ): LoginWithBiometricEnabled {
         return DefaultLoginWithBiometricEnabled(keyValueStore)
     }
 
     @Provides
     @Singleton
-    fun provideSetLoginWithBiometricEnabled(keyValueStore: KeyValueStore): SetLoginWithBiometricEnabled {
+    fun provideSetLoginWithBiometricEnabled(
+        @Named("keyValueStore") keyValueStore: KeyValueStore,
+    ): SetLoginWithBiometricEnabled {
         return DefaultSetLoginWithBiometricEnabled(keyValueStore)
     }
 }

@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 import android.content.Context
 import androidx.datastore.preferences.core.Preferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -11,8 +10,8 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
     @Inject
     constructor(
         @ApplicationContext private val context: Context,
-    ) : SecureKeyValueStore {
-        private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        masterKeyAlias: String,
+    ) : KeyValueStore {
         private val encryptedSharedPreferences =
             EncryptedSharedPreferences.create(
                 "app_secure",

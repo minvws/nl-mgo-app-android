@@ -14,7 +14,7 @@ internal class DefaultStorePinCodeTest {
             // Given
             val keyValueStore = TestKeyValueStore()
             val hasher = TestPinCodeHasher()
-            val storePinCode = DefaultStorePinCode(keyValueStore = keyValueStore, pinCodeHasher = hasher)
+            val storePinCode = DefaultStorePinCode(secureKeyValueStore = keyValueStore, pinCodeHasher = hasher)
 
             // When
             storePinCode.invoke(listOf(1, 2, 3, 4, 5))

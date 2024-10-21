@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.create
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,8 +15,13 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,7 +33,9 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun PinCodeCreateScreen(
@@ -60,6 +68,9 @@ private fun PinCodeCreateScreenContent(
     onResetError: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val subHeadingFocusRequester = remember { FocusRequester() }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -89,14 +100,23 @@ private fun PinCodeCreateScreenContent(
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    modifier = Modifier.padding(top = 16.dp),
+                    modifier = Modifier.padding(top = 16.dp).focusRequester(subHeadingFocusRequester).focusable(),
                     text = stringResource(id = viewState.subHeading),
                     style = MaterialTheme.typography.bodySmall,
                 )
                 PinCodeWithKeyboard(
                     modifier = Modifier.fillMaxSize(),
                     onPinCodeEntered = onPinCodeEntered,
-                    onResetError = onResetError,
+                    onResetError = {
+                        onResetError()
+                        coroutineScope.launch {
+                            // Seems to be a bug where if you request focus it only works once.
+                            // Doing it like this fixes that.
+                            focusManager.clearFocus()
+                            delay(100)
+                            subHeadingFocusRequester.requestFocus()
+                        }
+                    },
                     error = viewState.error,
                 )
             }

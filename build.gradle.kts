@@ -49,6 +49,7 @@ sonar {
             add("**/*Screen*.kt") // We exclude all composable screens since it messes with our code coverage
             add("**/*Prompt*.kt") // We exclude all prompts
             add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
+            add("component/theme/src/main/java/nl/rijksoverheid/mgo/component/theme/**") // Exclude theme module
 
             // Exclude uiSchema module. This module is experimental for now and is subject to heavy change. Should be tested
             // before going to production.

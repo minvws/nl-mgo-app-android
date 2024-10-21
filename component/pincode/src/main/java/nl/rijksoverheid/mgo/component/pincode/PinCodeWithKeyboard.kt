@@ -1,15 +1,14 @@
 package nl.rijksoverheid.mgo.component.pincode
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,15 +16,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.accessibilityAnnounce
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
 fun PinCodeWithKeyboard(
@@ -68,6 +70,7 @@ private fun PinCodeWithKeyboardContent(
     onPressBiometric: (() -> Unit)? = null,
     error: Boolean = false,
 ) {
+    val context = LocalContext.current
     Column(
         modifier =
             modifier
@@ -87,29 +90,47 @@ private fun PinCodeWithKeyboardContent(
         )
         Spacer(modifier = Modifier.weight(1f))
         if (hint != null) {
-            Text(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onClickHint?.invoke() }
-                        .padding(16.dp),
-                text = hint,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.actionTertiaryDefaultText(),
-            )
+            TextButton(onClick = { onClickHint?.invoke() }) {
+                Text(
+                    text = hint,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.actionTertiaryDefaultText(),
+                )
+            }
         }
+
+        val accessibilityAnnouncePinCodeAdded =
+            stringResource(
+                R.string.pincode_voiceover,
+                (pinCode.size + 1).toString(),
+                "5",
+                stringResource(id = R.string.pincode_filled_voiceover),
+            )
+
+        val accessibilityAnnouncePinCodeRemoved =
+            stringResource(
+                R.string.pincode_voiceover,
+                (pinCode.size).toString(),
+                "5",
+                stringResource(id = R.string.pincode_empty_voiceover),
+            )
+
         Keyboard(
             onPressNumber = { number ->
-                onSetPinCode(
-                    pinCode.toMutableList().also { list -> list.add(number) },
-                )
-                if (pinCode.size == 4) {
-                    onPinCodeEntered(pinCode)
+                // Announce that pin code has changed
+                context.accessibilityAnnounce(accessibilityAnnouncePinCodeAdded)
+
+                val newPinCode = pinCode.toMutableList().also { list -> list.add(number) }
+                onSetPinCode(newPinCode)
+                if (newPinCode.size == 5) {
+                    onPinCodeEntered(newPinCode)
                 }
             },
             onPressBackspace = {
+                // Announce that the pin code has changed
+                context.accessibilityAnnounce(accessibilityAnnouncePinCodeRemoved)
+
                 if (pinCode.isNotEmpty()) {
                     onSetPinCode(
                         pinCode.toMutableList().also { list -> list.removeAt(list.size - 1) },

@@ -1,83 +1,84 @@
 package nl.rijksoverheid.mgo.component.pincode.keyboard
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.R
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
+import nl.rijksoverheid.mgo.component.theme.contentPrimary
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun KeyboardItem(
-    type: KeyboardItemType,
+internal fun KeyboardItemNumber(
+    number: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    when (type) {
-        is KeyboardItemType.Icon -> {
-            Box(modifier = modifier.clickable { onClick() }, contentAlignment = Alignment.Center) {
-                KeyboardItemIcon(icon = type.icon)
-            }
-        }
-        is KeyboardItemType.Number -> {
-            Card(modifier = modifier, shape = RoundedCornerShape(25.dp), onClick = onClick) {
-                Box(contentAlignment = Alignment.Center) {
-                    KeyboardItemNumber(number = type.number)
-                }
-            }
-        }
+    Button(
+        modifier = modifier,
+        colors =
+            ButtonDefaults.buttonColors(
+                backgroundColor = MaterialTheme.colors.surface,
+                contentColor =
+                    MaterialTheme
+                        .colors.onSurface,
+            ),
+        shape = RoundedCornerShape(25.dp),
+        onClick = onClick,
+    ) {
+        Text(
+            text = number.toString(),
+            style = MaterialTheme.typography.bodyDefault,
+        )
     }
 }
 
 @Composable
-private fun KeyboardItemNumber(
-    number: Int,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        modifier = modifier,
-        text = number.toString(),
-        style = MaterialTheme.typography.bodyDefault,
-    )
-}
-
-@Composable
-private fun KeyboardItemIcon(
+internal fun KeyboardItemIcon(
     @DrawableRes icon: Int,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Icon(
-        painter = painterResource(icon),
+    Button(
         modifier = modifier,
-        contentDescription = null,
-    )
+        colors =
+            ButtonDefaults.buttonColors(
+                backgroundColor = Color.Transparent,
+                contentColor = MaterialTheme.colors.contentPrimary(),
+            ),
+        elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp),
+        shape = RoundedCornerShape(25.dp),
+        onClick = onClick,
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+        )
+    }
 }
 
 @PreviewLightDark
 @Composable
 internal fun KeyboardItemNumberPreview() {
     MgoTheme {
-        KeyboardItem(
+        KeyboardItemNumber(
             modifier =
                 Modifier
                     .size(100.dp)
                     .padding(16.dp),
-            type = KeyboardItemType.Number(1),
+            number = 1,
             onClick = {},
         )
     }
@@ -87,13 +88,13 @@ internal fun KeyboardItemNumberPreview() {
 @Composable
 internal fun KeyboardItemIconPreview() {
     MgoTheme {
-        KeyboardItem(
+        KeyboardItemIcon(
             modifier =
                 Modifier
                     .size(100.dp)
                     .padding(16.dp),
-            type = KeyboardItemType.Icon(R.drawable.ic_keyboard_backspace),
             onClick = {},
+            icon = R.drawable.ic_keyboard_backspace,
         )
     }
 }

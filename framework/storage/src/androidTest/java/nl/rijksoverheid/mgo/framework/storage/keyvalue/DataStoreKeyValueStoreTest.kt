@@ -11,7 +11,7 @@ import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 
 private const val TEST_DATASTORE_NAME = "test_datastore"
@@ -23,7 +23,7 @@ internal class DataStoreKeyValueStoreTest {
             // Given
             val context = ApplicationProvider.getApplicationContext<Context>()
             val preferenceKey = booleanPreferencesKey("test")
-            val dataStore = createDataStore(context = context, scope = this)
+            val dataStore = createDataStore(context = context)
             val keyValueStore = DataStoreKeyValueStore(dataStore = dataStore)
 
             // When
@@ -39,23 +39,19 @@ internal class DataStoreKeyValueStoreTest {
             // Given
             val context = ApplicationProvider.getApplicationContext<Context>()
             val preferenceKey = stringPreferencesKey("test")
-            val dataStore = createDataStore(context = context, scope = this)
+            val dataStore = createDataStore(context = context)
             val keyValueStore = DataStoreKeyValueStore(dataStore = dataStore)
 
             // When
-            keyValueStore.setString(preferenceKey, "123")
+            runBlocking { keyValueStore.setString(preferenceKey, "123") }
 
             // Then
-            assertEquals("123", keyValueStore.getString(preferenceKey))
+            assertEquals("123", runBlocking { keyValueStore.getString(preferenceKey) })
         }
 }
 
-private fun createDataStore(
-    context: Context,
-    scope: TestScope,
-): DataStore<Preferences> {
+private fun createDataStore(context: Context): DataStore<Preferences> {
     return PreferenceDataStoreFactory.create(
-        scope = scope,
         produceFile = { context.preferencesDataStoreFile(TEST_DATASTORE_NAME) },
     )
 }

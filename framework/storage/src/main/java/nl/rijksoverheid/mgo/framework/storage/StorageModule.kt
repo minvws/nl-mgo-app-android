@@ -13,7 +13,9 @@ import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.framework.storage.file.DefaultFileStore
 import nl.rijksoverheid.mgo.framework.storage.file.FileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.DataStoreKeyValueStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.EncryptedSharedPreferencesSecureKeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.SecureKeyValueStore
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -29,6 +31,16 @@ internal object StorageModule {
     ): KeyValueStore {
         return DataStoreKeyValueStore(
             dataStore = context.dataStore,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideSecureKeyValueStore(
+        @ApplicationContext context: Context,
+    ): SecureKeyValueStore {
+        return EncryptedSharedPreferencesSecureKeyValueStore(
+            context = context,
         )
     }
 

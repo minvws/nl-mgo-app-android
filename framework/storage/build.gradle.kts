@@ -9,16 +9,22 @@ android {
     }
 
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "nl.rijksoverheid.mgo.framework.test.HiltTestRunner"
     }
 
     buildFeatures {
         buildConfig = true
     }
+
+    buildTypes {
+        getByName("debug") {
+            enableAndroidTestCoverage = true
+        }
+    }
 }
 
 dependencies {
-    implementation(project(":framework:test")) // Needed because we need a reference to the HiltTestRunner inside this gradle
+    implementation(projects.framework.test) // Needed because we need a reference to the HiltTestRunner inside this gradle
     implementation(libs.moshi.kotlin)
     implementation(libs.androidx.security.crypto)
     ksp(libs.moshi.kotlin.codegen)

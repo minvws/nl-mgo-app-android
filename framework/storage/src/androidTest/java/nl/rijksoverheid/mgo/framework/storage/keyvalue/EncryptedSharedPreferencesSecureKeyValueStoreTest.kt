@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.security.crypto.MasterKeys
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -41,5 +42,6 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
 
 private fun createKeyValueStore(): EncryptedSharedPreferencesSecureKeyValueStore {
     val context = ApplicationProvider.getApplicationContext<Context>()
-    return EncryptedSharedPreferencesSecureKeyValueStore(context)
+    val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+    return EncryptedSharedPreferencesSecureKeyValueStore(context = context, masterKeyAlias = masterKeyAlias)
 }

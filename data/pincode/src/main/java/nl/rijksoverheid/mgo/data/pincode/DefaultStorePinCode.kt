@@ -8,10 +8,10 @@ import kotlinx.coroutines.runBlocking
 
 internal class DefaultStorePinCode
     @Inject
-    constructor(private val keyValueStore: KeyValueStore, private val pinCodeHasher: PinCodeHasher) : StorePinCode {
+    constructor(private val secureKeyValueStore: KeyValueStore, private val pinCodeHasher: PinCodeHasher) : StorePinCode {
         override operator fun invoke(pinCode: List<Int>) {
             val pinCodeString = pinCode.joinToString(",")
             val hashedPinCode = pinCodeHasher.hash(pinCodeString)
-            runBlocking { keyValueStore.setString(KEY_PIN_CODE, hashedPinCode) }
+            runBlocking { secureKeyValueStore.setString(KEY_PIN_CODE, hashedPinCode) }
         }
     }

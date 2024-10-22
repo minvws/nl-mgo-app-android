@@ -37,7 +37,7 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "${project.projectDir}/**/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml",
+            "${project.projectDir}/**/build/reports/jacoco/runTests/runTests.xml",
         )
         val exclusions = buildList {
             add("**/*Application*.kt") // Application

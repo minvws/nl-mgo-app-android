@@ -5,8 +5,12 @@ plugins {
 
 android {
     namespace = "nl.rijksoverheid.mgo.framework.snapshots"
+    testFixtures {
+        enable = true
+    }
 }
 
 dependencies {
-    implementation(libs.paparazzi)
+    testFixturesImplementation(libs.paparazzi)
+    testFixturesImplementation(libs.compose.material)
 }

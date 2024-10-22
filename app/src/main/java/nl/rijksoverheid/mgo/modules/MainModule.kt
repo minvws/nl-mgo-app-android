@@ -47,7 +47,7 @@ internal object MainModule {
     @Singleton
     fun provideShowDeviceRootedDialog(
         @ApplicationContext context: Context,
-        keyValueStore: KeyValueStore,
+        @Named("keyValueStore") keyValueStore: KeyValueStore,
     ): ShowDeviceRootedDialog {
         val rootBeer = RootBeer(context)
         return ShowDeviceRootedDialog(rootBeer = rootBeer, keyValueStore = keyValueStore)

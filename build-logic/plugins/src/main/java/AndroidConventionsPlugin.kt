@@ -1,3 +1,4 @@
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -5,7 +6,9 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.configurationcache.extensions.capitalized
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.fileTree
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.register
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
@@ -49,40 +52,86 @@ class AndroidConventionsPlugin : Plugin<Project> {
                         )
                 }
             }
-            tasks.register("jacocoTestReport", JacocoReport::class.java) {
-                val isAndroidLibrary = project.plugins.hasPlugin("com.android.library")
+            tasks.register("runTests", JacocoReport::class.java) {
+                description = "Run unit tests, instrumented tests, code coverage and jacoco test report"
+                val androidExtension = project.extensions.findByType(AppExtension::class.java)
+                val flavorName =
+                    androidExtension?.productFlavors?.map { flavor -> flavor.name }?.firstOrNull { flavorName -> flavorName == "tst" }
+                        ?.capitalized()
+                val sourceName = buildString {
+                    if (flavorName == null) {
+                        append("debug")
+                    } else {
+                        append("${flavorName}Debug")
+                    }
+                }
 
-                // Our app has different flavors and we force the "tst" flavor to run the code coverage on for the main module.
-                // All other modules do not have flavors so just use debug.
-                val sourceName = if (isAndroidLibrary) "debug" else "tstDebug"
-
-                // Code coverage requires tests to be ran, so depend on that.
+                // Execute unit tests
                 dependsOn("test${sourceName.capitalized()}UnitTest")
 
-                // Required for SonarCloud
+                // Execute instrumented test (only if the folder exists to save time)
+                val androidTestModules = listOf("storage")
+                if (androidTestModules.contains(project.name)) {
+                    dependsOn("connected${sourceName.capitalized()}AndroidTest")
+                }
+
+                // Generate xml and html code coverage reports
                 reports {
                     xml.required.set(true)
                     html.required.set(true)
                 }
 
-                // Config stuff
-                val fileFilters = listOf(
+                // Some default excludes grabbed from a blog post
+                val excludes = listOf(
                     "**/R.class",
                     "**/R$*.class",
                     "**/BuildConfig.*",
                     "**/Manifest*.*",
                     "**/*Test*.*",
-                    "**/androidTest/**",
+                    "android/**/*.*",
+                    // dagger
+                    "**/*_MembersInjector.class",
+                    "**/Dagger*Component.class",
+                    "**/*Module_*Factory.class",
+                    "**/di/module/*",
+                    "**/*_Factory*.*",
+                    "**/*Module*.*",
+                    "**/*Dagger*.*",
+                    "**/*Hilt*.*",
+                    // kotlin
+                    "**/*MapperImpl*.*",
+                    "**/BuildConfig.*",
+                    "**/*Component*.*",
+                    "**/*BR*.*",
+                    "**/Manifest*.*",
+                    "**/*Companion*.*",
+                    "**/*Module*.*",
+                    "**/*Dagger*.*",
+                    "**/*Hilt*.*",
+                    "**/*MembersInjector*.*",
+                    "**/*_MembersInjector.class",
+                    "**/*_Factory*.*",
+                    "**/*_Provide*Factory*.*",
+                    "**/*Extensions*.*",
                 )
+
                 val buildDir = project.layout.buildDirectory.asFile.get()
-                val javaTree = fileTree("$buildDir/intermediates/javac/${sourceName}/classes") { setExcludes(fileFilters) }
-                val kotlinTree = fileTree("$buildDir/tmp/kotlin-classes/${sourceName}") { setExcludes(fileFilters) }
-                val execSrc = fileTree(buildDir) { setIncludes(listOf("**/*.exec")) }
-                val coverageSrcDirs = arrayOf("src/main/java")
-                sourceDirectories.setFrom(files(coverageSrcDirs))
-                additionalSourceDirs.setFrom(files(coverageSrcDirs))
-                classDirectories.setFrom(files(javaTree, kotlinTree))
-                executionData.setFrom(execSrc)
+                val javaClasses = fileTree("$buildDir/intermediates/javac/${sourceName}/classes") { setExcludes(excludes) }
+                val kotlinClasses = fileTree("$buildDir/tmp/kotlin-classes/${sourceName}") { setExcludes(excludes) }
+                classDirectories.setFrom(files(listOf(
+                    javaClasses,
+                    kotlinClasses
+                )))
+                sourceDirectories.setFrom(files(listOf("src/main/java")))
+
+                val androidTestData = fileTree("${buildDir}/outputs/code_coverage/${sourceName}AndroidTest/connected/") {
+                    setIncludes(listOf("**/*.ec"))
+                }
+
+                executionData.setFrom(files(listOf(
+                    fileTree(buildDir) { setIncludes(listOf("**/*.exec")) },
+                    androidTestData
+                )))
             }
         }
     }
@@ -118,6 +167,11 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 testOptions.apply {
                     unitTests.apply {
                         isIncludeAndroidResources = true
+                    }
+                }
+                buildTypes.apply {
+                    getByName("debug") {
+                        enableAndroidTestCoverage = true
                     }
                 }
             }

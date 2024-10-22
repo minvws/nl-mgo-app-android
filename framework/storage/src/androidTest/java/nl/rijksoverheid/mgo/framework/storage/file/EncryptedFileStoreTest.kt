@@ -63,17 +63,31 @@ internal class EncryptedFileStoreTest {
         }
 
     @Test
-    fun given_saved_file_When_getting_file_Then_return_file_content() =
+    fun given_saved_file_when_getting_file_then_return_file_content() =
         runTest {
             // Given
             val testData = TestData(id = 5, name = "Hello World")
-            fileStore.saveFile(myObject = testData, name = "testdata.json")
+            fileStore.saveFile(clazz = testData, name = "testdata.json")
 
             // When
             val fileContent = fileStore.getFile(clazz = TestData::class.java, name = "testdata.json")
 
             // Then
             assertEquals(testData, fileContent)
+        }
+
+    @Test
+    fun given_saved_file_when_saving_file_then_no_error() =
+        runTest {
+            // Given
+            val testData = TestData(id = 5, name = "Hello World")
+            fileStore.saveFile(clazz = testData, name = "testdata.json")
+
+            // When
+            val testData2 = TestData(id = 6, name = "Hello World 2")
+            fileStore.saveFile(clazz = testData2, name = "testdata.json")
+
+            // Then no errors are thrown
         }
 
     @Test

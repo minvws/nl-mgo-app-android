@@ -55,7 +55,7 @@ internal class DefaultOrganizationRepository(
         val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(file = newStoredOrganizations, name = fileName)
+        fileStore.saveFile(clazz = newStoredOrganizations, name = fileName)
 
         // Update flow
         storedOrganizationsFlow.value = newStoredOrganizations.providers
@@ -71,7 +71,7 @@ internal class DefaultOrganizationRepository(
         val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(file = newStoredOrganizations, name = fileName)
+        fileStore.saveFile(clazz = newStoredOrganizations, name = fileName)
 
         // Update flow
         storedOrganizationsFlow.value = newStoredOrganizations.providers

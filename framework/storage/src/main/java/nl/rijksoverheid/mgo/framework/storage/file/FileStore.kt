@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.framework.storage.file
 
 interface FileStore {
     suspend fun <O : Any> saveFile(
-        file: O,
+        clazz: O,
         name: String,
     )
 

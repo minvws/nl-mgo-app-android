@@ -169,6 +169,11 @@ class AndroidConventionsPlugin : Plugin<Project> {
                         isIncludeAndroidResources = true
                     }
                 }
+                buildTypes.apply {
+                    getByName("debug") {
+                        enableAndroidTestCoverage = true
+                    }
+                }
             }
         }
     }

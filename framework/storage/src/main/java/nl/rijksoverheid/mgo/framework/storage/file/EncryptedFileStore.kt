@@ -11,12 +11,19 @@ internal class EncryptedFileStore(
     private val masterKeyAlias: String,
 ) : FileStore {
     override suspend fun <O : Any> saveFile(
-        myObject: O,
+        clazz: O,
         name: String,
     ) {
         // Create file
         val file = File(context.cacheDir, name)
-        file.delete()
+
+        // Encrypted file needs to be deleted first if it already exists
+        if (file.exists()) {
+            val fileDeleted = file.delete()
+            if (!fileDeleted) {
+                throw IllegalStateException("Could not delete file")
+            }
+        }
 
         // Encrypt file
         val encryptedFile =
@@ -28,7 +35,7 @@ internal class EncryptedFileStore(
             ).build()
 
         // Write json string to file
-        val json = moshi.adapter<O>(myObject::class.java).toJson(myObject)
+        val json = moshi.adapter<O>(clazz::class.java).toJson(clazz)
         encryptedFile.openFileOutput().use { outputStream ->
             outputStream.write(json.toByteArray())
         }

@@ -15,12 +15,6 @@ android {
     buildFeatures {
         buildConfig = true
     }
-
-    buildTypes {
-        getByName("debug") {
-            enableAndroidTestCoverage = true
-        }
-    }
 }
 
 dependencies {

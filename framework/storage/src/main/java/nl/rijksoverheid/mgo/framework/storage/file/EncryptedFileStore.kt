@@ -19,10 +19,7 @@ internal class EncryptedFileStore(
 
         // Encrypted file needs to be deleted first if it already exists
         if (file.exists()) {
-            val fileDeleted = file.delete()
-            if (!fileDeleted) {
-                throw IllegalStateException("Could not delete file")
-            }
+            check(file.delete()) { "Could not delete file" }
         }
 
         // Encrypt file

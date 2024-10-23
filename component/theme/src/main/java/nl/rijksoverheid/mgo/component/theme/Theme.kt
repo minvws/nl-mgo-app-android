@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.component.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
@@ -37,7 +36,7 @@ fun MgoTheme(
         typography = MgoTypography,
     ) {
         Surface(
-            modifier = modifier.safeDrawingPadding(),
+            modifier = modifier,
             color = MaterialTheme.colorScheme.background,
             content = content,
         )

@@ -4,9 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,18 +15,15 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text(text = "") })
-        },
-        content = { innerPadding ->
+    MgoScaffold(
+        content = {
             ColumnWithButtons(
-                modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.common_next),
                 onButtonClick = onNavigateToProposition,
             ) {
@@ -38,8 +33,7 @@ fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
                             .fillMaxWidth()
                             .align(Alignment.CenterHorizontally),
                     painter = painterResource(id = R.drawable.illustration_introduction),
-                    contentDescription =
-                    null,
+                    contentDescription = null,
                 )
 
                 Text(

@@ -24,6 +24,20 @@ val MgoTypography =
                 fontSize = 17.sp,
                 lineHeight = 22.sp,
             ),
+        titleLarge =
+            TextStyle(
+                fontFamily = fonts,
+                fontWeight = FontWeight.Bold,
+                fontSize = 17.sp,
+                lineHeight = 22.sp,
+            ),
+        headlineSmall =
+            TextStyle(
+                fontFamily = fonts,
+                fontWeight = FontWeight.Bold,
+                fontSize = 34.sp,
+                lineHeight = 41.sp,
+            ),
     )
 
 val Typography.headingExtraLarge: TextStyle

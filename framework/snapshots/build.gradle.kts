@@ -12,5 +12,5 @@ android {
 
 dependencies {
     testFixturesImplementation(libs.paparazzi)
-    testFixturesImplementation(libs.compose.material)
+    testFixturesImplementation(libs.compose.material3)
 }

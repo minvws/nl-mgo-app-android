@@ -5,7 +5,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -84,10 +84,15 @@ internal fun HealthCategoriesListItemContent(
     hasDivider: Boolean = true,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(painter = painterResource(id = icon), contentDescription = null, tint = iconColor)
-            Text(modifier = Modifier.padding(start = 16.dp), text = stringResource(id = title), style = MaterialTheme.typography.bodySmall)
-            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
+                text = stringResource(id = title),
+                style =
+                    MaterialTheme.typography
+                        .bodySmall,
+            )
             when (listItemState) {
                 HealthCategoriesListItemState.LOADING -> {
                     Text(

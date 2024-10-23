@@ -4,10 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -50,7 +49,7 @@ internal fun RemoveOrganizationCard(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_remove_organization_card_remove),
                     contentDescription = stringResource(id = CopyR.string.common_delete).uppercase(),
-                    tint = MaterialTheme.colors.iconsPrimary(),
+                    tint = MaterialTheme.colorScheme.iconsPrimary(),
                 )
             }
         }

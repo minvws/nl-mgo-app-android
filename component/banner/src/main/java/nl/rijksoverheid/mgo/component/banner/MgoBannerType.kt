@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.component.banner
 
 import androidx.annotation.DrawableRes
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import nl.rijksoverheid.mgo.component.theme.notificationError
@@ -29,9 +29,9 @@ fun MgoBannerType.getIcon(): Int {
 @Composable
 fun MgoBannerType.getIconColor(): Color {
     return when (this) {
-        MgoBannerType.INFO -> MaterialTheme.colors.notificationInformation()
-        MgoBannerType.SUCCESS -> MaterialTheme.colors.notificationSuccess()
-        MgoBannerType.WARNING -> MaterialTheme.colors.notificationWarning()
-        MgoBannerType.ERROR -> MaterialTheme.colors.notificationError()
+        MgoBannerType.INFO -> MaterialTheme.colorScheme.notificationInformation()
+        MgoBannerType.SUCCESS -> MaterialTheme.colorScheme.notificationSuccess()
+        MgoBannerType.WARNING -> MaterialTheme.colorScheme.notificationWarning()
+        MgoBannerType.ERROR -> MaterialTheme.colorScheme.notificationError()
     }
 }

@@ -11,16 +11,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +30,6 @@ import nl.rijksoverheid.mgo.component.snackbar.MgoSnackBarScaffold
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
@@ -66,8 +64,6 @@ private fun OrganizationsScreenContent(
         topBar = {
             TopAppBar(
                 title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
             )
         },
         content = { innerPadding ->
@@ -130,7 +126,7 @@ private fun NoOrganizations(
                     .padding(top = 8.dp),
             text = stringResource(id = CopyR.string.overview_empty_subheading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colors.contentTertiary(),
+            color = MaterialTheme.colorScheme.contentTertiary(),
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -174,7 +170,7 @@ private fun WithOrganizations(
                 Icon(
                     modifier = Modifier.padding(start = 8.dp),
                     painter = painterResource(id = R.drawable.ic_add_organization),
-                    tint = MaterialTheme.colors.iconsSecondary(),
+                    tint = MaterialTheme.colorScheme.iconsSecondary(),
                     contentDescription = null,
                 )
             }
@@ -201,7 +197,7 @@ private fun OrganizationCard(
                         .fillMaxWidth()
                         .height(0.33.dp)
                         .padding(start = 16.dp),
-                color = MaterialTheme.colors.strokesPrimary(),
+                color = MaterialTheme.colorScheme.strokesPrimary(),
             )
         }
     }

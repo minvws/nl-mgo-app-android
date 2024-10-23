@@ -1,9 +1,7 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +14,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 
 /**
  * Composable that displays HTML Text.
@@ -30,7 +27,7 @@ fun MgoHtmlText(
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodySmall,
     onLinkClicked: (url: String) -> Unit = {},
-    linkColor: Color = MaterialTheme.colors.actionTertiaryDefaultText(),
+    linkColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
 ) {
     val annotatedString =
         buildAnnotatedString {
@@ -68,7 +65,6 @@ fun MgoHtmlText(
     ClickableText(
         modifier = modifier,
         text = annotatedString,
-        style = style.copy(color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)),
         onClick = { offset ->
             annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
                 .firstOrNull()?.let { annotation ->

@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.component.snackbar
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
@@ -31,19 +31,19 @@ fun MgoSnackBarType.getIcon(): MgoSnackBarDataIcon {
 @Composable
 fun MgoSnackBarType.getBackgroundColor(): Color {
     return when (this) {
-        MgoSnackBarType.SUCCESS -> MaterialTheme.colors.notificationSuccess()
-        MgoSnackBarType.ERROR -> MaterialTheme.colors.notificationError()
-        MgoSnackBarType.WARNING -> MaterialTheme.colors.notificationWarning()
-        MgoSnackBarType.INFO -> MaterialTheme.colors.notificationInformation()
+        MgoSnackBarType.SUCCESS -> MaterialTheme.colorScheme.notificationSuccess()
+        MgoSnackBarType.ERROR -> MaterialTheme.colorScheme.notificationError()
+        MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.notificationWarning()
+        MgoSnackBarType.INFO -> MaterialTheme.colorScheme.notificationInformation()
     }
 }
 
 @Composable
 fun MgoSnackBarType.getContentColor(): Color {
     return when (this) {
-        MgoSnackBarType.SUCCESS -> MaterialTheme.colors.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
-        MgoSnackBarType.ERROR -> MaterialTheme.colors.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
-        MgoSnackBarType.WARNING -> MaterialTheme.colors.contentPrimary(isSystemDarkTheme = false)
-        MgoSnackBarType.INFO -> MaterialTheme.colors.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
+        MgoSnackBarType.SUCCESS -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
+        MgoSnackBarType.ERROR -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
+        MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = false)
+        MgoSnackBarType.INFO -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
     }
 }

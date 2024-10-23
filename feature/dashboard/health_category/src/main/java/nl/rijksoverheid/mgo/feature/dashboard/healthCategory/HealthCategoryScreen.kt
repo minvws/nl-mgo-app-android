@@ -13,16 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +41,6 @@ import nl.rijksoverheid.mgo.component.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingLarge
@@ -86,8 +84,6 @@ private fun HealthCategoryScreenContent(
         topBar = {
             TopAppBar(
                 title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -290,7 +286,7 @@ private fun NoDataContent(
                         .padding(top = 8.dp),
                 text = stringResource(id = CopyR.string.health_category_empty_subheading),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colors.contentTertiary(),
+                color = MaterialTheme.colorScheme.contentTertiary(),
                 textAlign = TextAlign.Center,
             )
         }
@@ -310,7 +306,7 @@ private fun HealthCategoryCard(
                 modifier = Modifier.padding(top = 8.dp),
                 text = subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colors.contentSecondary(),
+                color = MaterialTheme.colorScheme.contentSecondary(),
             )
         }
     }

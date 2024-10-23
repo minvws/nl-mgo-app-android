@@ -3,11 +3,11 @@ package nl.rijksoverheid.mgo.component.theme.composable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +26,6 @@ import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeBackground
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 
 @Composable
 fun MgoButton(
@@ -38,7 +37,7 @@ fun MgoButton(
     val backgroundColor = buttonTheme.getBackgroundColor()
     val buttonColors =
         ButtonDefaults.buttonColors(
-            backgroundColor = backgroundColor,
+            containerColor = backgroundColor,
             contentColor = buttonTheme.getContentColor(),
         )
     if (backgroundColor == Color.Transparent) {
@@ -72,10 +71,10 @@ enum class MgoButtonTheme {
 @Composable
 private fun MgoButtonTheme.getBackgroundColor(): Color {
     return when (this) {
-        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colors.actionPrimaryDefaultBackground()
-        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colors.actionPrimaryNegativeBackground()
-        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colors.actionSecondaryDefaultBackground()
-        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colors.actionSecondaryNegativeBackground()
+        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.actionPrimaryDefaultBackground()
+        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.actionPrimaryNegativeBackground()
+        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.actionSecondaryDefaultBackground()
+        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.actionSecondaryNegativeBackground()
         MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
         MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
     }
@@ -84,12 +83,12 @@ private fun MgoButtonTheme.getBackgroundColor(): Color {
 @Composable
 private fun MgoButtonTheme.getContentColor(): Color {
     return when (this) {
-        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colors.actionPrimaryDefaultText()
-        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colors.actionPrimaryNegativeText()
-        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colors.actionSecondaryDefaultText()
-        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colors.actionSecondaryNegativeText()
-        MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colors.actionTertiaryDefaultText()
-        MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colors.actionTertiaryNegativeText()
+        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.actionPrimaryDefaultText()
+        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.actionPrimaryNegativeText()
+        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.actionSecondaryDefaultText()
+        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.actionSecondaryNegativeText()
+        MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.actionTertiaryDefaultText()
+        MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.actionTertiaryNegativeText()
     }
 }
 

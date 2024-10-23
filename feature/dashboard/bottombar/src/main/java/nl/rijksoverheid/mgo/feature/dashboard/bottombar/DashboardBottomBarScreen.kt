@@ -3,12 +3,13 @@ package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -77,13 +78,12 @@ private fun BottomNavigationBar(
         )
     // See [MgoCard] why this is done.
     val elevation = if (isSystemInDarkTheme()) 0.dp else 1.dp
-    BottomNavigation(
-        backgroundColor = MaterialTheme.colors.backgroundSecondary(),
-        contentColor = MaterialTheme.colors.actionTertiaryDefaultText(),
-        elevation = elevation,
+    BottomAppBar(
+        containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
+        contentColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
     ) {
         BottomBarItem.entries.forEach { item ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 icon = {
                     val iconId =
                         if (item == selectedItem) {
@@ -96,8 +96,13 @@ private fun BottomNavigationBar(
                 label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
                 selected = item == selectedItem,
                 onClick = { onSelectBottomBarItem(item) },
-                selectedContentColor = MaterialTheme.colors.actionTertiaryDefaultText(),
-                unselectedContentColor = MaterialTheme.colors.iconsPrimary(),
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                        selectedTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                        unselectedIconColor = MaterialTheme.colorScheme.iconsPrimary(),
+                        unselectedTextColor = MaterialTheme.colorScheme.iconsPrimary(),
+                    ),
             )
         }
     }

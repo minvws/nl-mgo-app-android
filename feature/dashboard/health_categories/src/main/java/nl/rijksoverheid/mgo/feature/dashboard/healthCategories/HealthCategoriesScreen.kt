@@ -11,15 +11,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,7 +34,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
@@ -97,8 +96,6 @@ private fun HealthCategoriesScreenContent(
         topBar = {
             TopAppBar(
                 title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
                 navigationIcon = {
                     if (viewState.filterOrganization != null) {
                         IconButton(onClick = { onNavigateBack() }) {
@@ -171,7 +168,7 @@ private fun NoProviders(
                     .padding(top = 8.dp),
             text = stringResource(id = CopyR.string.overview_empty_subheading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colors.contentTertiary(),
+            color = MaterialTheme.colorScheme.contentTertiary(),
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -242,22 +239,22 @@ fun HealthCareCategory.getIcon(): Int {
 @Composable
 fun HealthCareCategory.getIconColor(): Color {
     return when (this) {
-        HealthCareCategory.MEDICATIONS -> MaterialTheme.colors.supportHuisarts()
-        HealthCareCategory.MEASUREMENTS -> MaterialTheme.colors.supportApotheek()
-        HealthCareCategory.LAB_RESULTS -> MaterialTheme.colors.supportZiekenhuis()
-        HealthCareCategory.ALLERGIES -> MaterialTheme.colors.supportKliniek()
-        HealthCareCategory.TREATMENTS -> MaterialTheme.colors.supportGgz()
-        HealthCareCategory.APPOINTMENTS -> MaterialTheme.colors.supportGgd()
-        HealthCareCategory.VACCINATIONS -> MaterialTheme.colors.supportTandarts()
-        HealthCareCategory.DOCUMENTS -> MaterialTheme.colors.supportThuiszorg()
-        HealthCareCategory.COMPLAINTS -> MaterialTheme.colors.supportVerpleeghuis()
-        HealthCareCategory.PATIENT -> MaterialTheme.colors.supportOverige()
-        HealthCareCategory.ALERTS -> MaterialTheme.colors.supportRivm()
-        HealthCareCategory.PAYMENT -> MaterialTheme.colors.supportVerloskundige()
-        HealthCareCategory.PLANS -> MaterialTheme.colors.supportRevalidatie()
-        HealthCareCategory.DEVICES -> MaterialTheme.colors.supportRijkslint()
-        HealthCareCategory.MENTAL -> MaterialTheme.colors.notificationInformation()
-        HealthCareCategory.LIFESTYLE -> MaterialTheme.colors.supportGegevens()
+        HealthCareCategory.MEDICATIONS -> MaterialTheme.colorScheme.supportHuisarts()
+        HealthCareCategory.MEASUREMENTS -> MaterialTheme.colorScheme.supportApotheek()
+        HealthCareCategory.LAB_RESULTS -> MaterialTheme.colorScheme.supportZiekenhuis()
+        HealthCareCategory.ALLERGIES -> MaterialTheme.colorScheme.supportKliniek()
+        HealthCareCategory.TREATMENTS -> MaterialTheme.colorScheme.supportGgz()
+        HealthCareCategory.APPOINTMENTS -> MaterialTheme.colorScheme.supportGgd()
+        HealthCareCategory.VACCINATIONS -> MaterialTheme.colorScheme.supportTandarts()
+        HealthCareCategory.DOCUMENTS -> MaterialTheme.colorScheme.supportThuiszorg()
+        HealthCareCategory.COMPLAINTS -> MaterialTheme.colorScheme.supportVerpleeghuis()
+        HealthCareCategory.PATIENT -> MaterialTheme.colorScheme.supportOverige()
+        HealthCareCategory.ALERTS -> MaterialTheme.colorScheme.supportRivm()
+        HealthCareCategory.PAYMENT -> MaterialTheme.colorScheme.supportVerloskundige()
+        HealthCareCategory.PLANS -> MaterialTheme.colorScheme.supportRevalidatie()
+        HealthCareCategory.DEVICES -> MaterialTheme.colorScheme.supportRijkslint()
+        HealthCareCategory.MENTAL -> MaterialTheme.colorScheme.notificationInformation()
+        HealthCareCategory.LIFESTYLE -> MaterialTheme.colorScheme.supportGegevens()
     }
 }
 

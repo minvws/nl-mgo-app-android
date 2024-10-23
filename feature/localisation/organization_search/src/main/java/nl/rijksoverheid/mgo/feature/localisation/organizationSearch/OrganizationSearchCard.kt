@@ -4,11 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -58,7 +57,7 @@ fun OrganizationSearchCard(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_search_result_card_add),
                         contentDescription = stringResource(id = CopyR.string.common_add).uppercase(),
-                        tint = MaterialTheme.colors.primary,
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 }
             }
@@ -68,7 +67,7 @@ fun OrganizationSearchCard(
 
 @Composable
 private fun AddedText(modifier: Modifier = Modifier) {
-    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colors.primary) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
         Row(modifier = modifier) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search_result_card_added),

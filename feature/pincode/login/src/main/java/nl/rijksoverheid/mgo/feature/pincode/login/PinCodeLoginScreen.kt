@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,7 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -31,7 +30,6 @@ import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.delay
@@ -90,8 +88,6 @@ private fun PinCodeLoginScreenContent(
         topBar = {
             TopAppBar(
                 title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
             )
         },
         content = { innerPadding ->

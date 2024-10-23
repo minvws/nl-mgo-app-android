@@ -33,7 +33,8 @@ fun MgoTheme(
     }
 
     MaterialTheme(
-        colorScheme = if (darkTheme) getDarkColorScheme() else getLightColorScheme()
+        colorScheme = if (darkTheme) getDarkColorScheme() else getLightColorScheme(),
+        typography = MgoTypography,
     ) {
         Surface(
             modifier = modifier.safeDrawingPadding(),

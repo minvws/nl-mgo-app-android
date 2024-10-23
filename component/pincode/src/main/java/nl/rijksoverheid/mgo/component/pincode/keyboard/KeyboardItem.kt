@@ -4,11 +4,11 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,10 +30,8 @@ internal fun KeyboardItemNumber(
         modifier = modifier,
         colors =
             ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colors.surface,
-                contentColor =
-                    MaterialTheme
-                        .colors.onSurface,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
             ),
         shape = RoundedCornerShape(25.dp),
         onClick = onClick,
@@ -55,10 +53,10 @@ internal fun KeyboardItemIcon(
         modifier = modifier,
         colors =
             ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                contentColor = MaterialTheme.colors.contentPrimary(),
+                containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.contentPrimary(),
             ),
-        elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp),
+        elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp),
         shape = RoundedCornerShape(25.dp),
         onClick = onClick,
     ) {

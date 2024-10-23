@@ -4,17 +4,16 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,7 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
@@ -57,8 +55,6 @@ internal fun PropositionOverviewScreenContent(
         topBar = {
             TopAppBar(
                 title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(

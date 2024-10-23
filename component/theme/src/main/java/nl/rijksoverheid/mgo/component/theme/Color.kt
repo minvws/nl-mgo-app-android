@@ -71,7 +71,8 @@ fun ColorScheme.linesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()
     if (isSystemDarkTheme) Color(0xFF2C2C2C) else Color(0xFFF3F3F3)
 
 @Composable
-fun ColorScheme.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
+fun ColorScheme.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
 
 // Support
 @Composable
@@ -157,7 +158,8 @@ fun ColorScheme.supportTandarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme
     if (isSystemDarkTheme) Color(0xFF66A4C3) else Color(0xFF8FCAE7)
 
 @Composable
-fun ColorScheme.supportGgz(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFF8D729F) else Color(0xFF42145F)
+fun ColorScheme.supportGgz(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF8D729F) else Color(0xFF42145F)
 
 @Composable
 fun ColorScheme.supportFysiotherapeut(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
@@ -184,10 +186,12 @@ fun ColorScheme.supportRijkslint(isSystemDarkTheme: Boolean = isSystemInDarkThem
     if (isSystemDarkTheme) Color(0xFF738EAB) else Color(0xFF154273)
 
 @Composable
-fun ColorScheme.supportGgd(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFA3847D) else Color(0xFF673327)
+fun ColorScheme.supportGgd(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFA3847D) else Color(0xFF673327)
 
 @Composable
-fun ColorScheme.supportRivm(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFFBED78) else Color(0xFFF9E11E)
+fun ColorScheme.supportRivm(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFFBED78) else Color(0xFFF9E11E)
 
 @Composable
 fun ColorScheme.supportVerloskundige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =

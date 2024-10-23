@@ -20,17 +20,6 @@ fun MgoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    // Make sure the status bar is the same color as the background
-    val view = LocalView.current
-    val backgroundColor = MaterialTheme.colorScheme.backgroundPrimary().toArgb()
-    if (!view.isInEditMode && !LocalInspectionMode.current) {
-        SideEffect {
-            val activity = view.context as Activity
-            activity.window.statusBarColor = backgroundColor
-            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = !darkTheme
-        }
-    }
-
     MaterialTheme(
         colorScheme = if (darkTheme) getDarkColorScheme() else getLightColorScheme(),
         typography = MgoTypography,

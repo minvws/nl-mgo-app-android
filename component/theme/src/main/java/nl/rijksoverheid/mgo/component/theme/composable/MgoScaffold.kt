@@ -1,9 +1,11 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -23,7 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 
 @Composable
 fun MgoScaffold(
@@ -57,13 +62,14 @@ fun MgoScaffold(
                     title = {
                         Text(
                             modifier =
-                                Modifier.onGloballyPositioned {
+                                Modifier.fillMaxWidth().onGloballyPositioned {
                                     val heightDp = with(localDensity) { it.size.height.toDp() }
                                     if (heightDp != 0.dp) {
                                         expandedAppBarHeight = heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
                                     }
                                 },
                             text = appBarTitle,
+                            textAlign = TextAlign.Center,
                         )
                     },
                     expandedHeight = expandedAppBarHeight, // Add 16dp for some bottom padding
@@ -99,4 +105,46 @@ fun MgoScaffold(
             }
         },
     )
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithAppBarAndBackButton() {
+    MgoTheme {
+        MgoScaffold(
+            appBarTitle = "App Bar Title",
+            onNavigateBack = {},
+            contentPadding = PaddingValues(16.dp),
+            content = {
+                Text("Hello World")
+            },
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithAppBar() {
+    MgoTheme {
+        MgoScaffold(
+            appBarTitle = "App Bar Title",
+            contentPadding = PaddingValues(16.dp),
+            content = {
+                Text("Hello World")
+            },
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithoutAppBar() {
+    MgoTheme {
+        MgoScaffold(
+            contentPadding = PaddingValues(16.dp),
+            content = {
+                Text("Hello World")
+            },
+        )
+    }
 }

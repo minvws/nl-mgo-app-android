@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,10 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun MgoScaffold(
@@ -78,7 +79,7 @@ fun MgoScaffold(
                             IconButton(onClick = it) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                    contentDescription = "Vorige",
+                                    contentDescription = stringResource(CopyR.string.common_previous)
                                 )
                             }
                         }

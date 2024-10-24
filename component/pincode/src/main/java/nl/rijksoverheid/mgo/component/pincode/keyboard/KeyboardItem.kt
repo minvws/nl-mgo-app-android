@@ -34,6 +34,7 @@ internal fun KeyboardItemNumber(
                 contentColor = MaterialTheme.colorScheme.onSurface,
             ),
         shape = RoundedCornerShape(25.dp),
+        elevation = ButtonDefaults.buttonElevation(1.dp),
         onClick = onClick,
     ) {
         Text(

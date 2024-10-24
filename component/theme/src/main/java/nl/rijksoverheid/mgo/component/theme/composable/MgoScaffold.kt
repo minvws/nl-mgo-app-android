@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
@@ -28,13 +29,28 @@ import androidx.compose.ui.unit.dp
 fun MgoScaffold(
     appBarTitle: String? = null,
     onNavigateBack: (() -> Unit)? = null,
-    content: @Composable () -> Unit,
+    contentPadding: PaddingValues =
+        PaddingValues(
+            0.dp,
+            0.dp,
+            0.dp,
+            0.dp,
+        ),
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val localDensity = LocalDensity.current
     var expandedAppBarHeight by remember { mutableStateOf(Int.MAX_VALUE.dp) }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scaffoldModifier =
+        if (expandedAppBarHeight == Int.MAX_VALUE.dp) {
+            Modifier
+        } else {
+            Modifier.nestedScroll(
+                scrollBehavior.nestedScrollConnection,
+            )
+        }
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = scaffoldModifier,
         topBar = {
             appBarTitle?.let {
                 MediumTopAppBar(
@@ -50,7 +66,7 @@ fun MgoScaffold(
                             text = appBarTitle,
                         )
                     },
-                    expandedHeight = expandedAppBarHeight + 16.dp, // Add 16dp for some bottom padding
+                    expandedHeight = expandedAppBarHeight, // Add 16dp for some bottom padding
                     navigationIcon = {
                         onNavigateBack?.let {
                             IconButton(onClick = it) {
@@ -71,10 +87,14 @@ fun MgoScaffold(
             }
         },
         content = { paddingValues ->
-            // If no AppBar is present, we still want to content to appear under a AppBar (so that the content is aligned with screens
-            // that do have a AppBar). In order to do that, we top padding to the content that matches the height of a TopAppBar.
-            val bottomPadding = if (appBarTitle == null) TopAppBarDefaults.TopAppBarExpandedHeight else 0.dp
-            Box(modifier = Modifier.consumeWindowInsets(paddingValues).padding(paddingValues).padding(PaddingValues(top = bottomPadding))) {
+            Column(
+                modifier =
+                    Modifier
+                        .consumeWindowInsets(paddingValues)
+                        .padding(paddingValues)
+                        .padding(top = if (appBarTitle == null) TopAppBarDefaults.MediumAppBarCollapsedHeight else 0.dp)
+                        .padding(contentPadding),
+            ) {
                 content()
             }
         },

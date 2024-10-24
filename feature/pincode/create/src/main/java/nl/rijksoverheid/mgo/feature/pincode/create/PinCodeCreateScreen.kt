@@ -67,7 +67,7 @@ private fun PinCodeCreateScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(id = R.string.pincode_create_heading),
         onNavigateBack = if (hasBackButton) onNavigateBack else null,
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
         content = {
             Text(
                 modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),

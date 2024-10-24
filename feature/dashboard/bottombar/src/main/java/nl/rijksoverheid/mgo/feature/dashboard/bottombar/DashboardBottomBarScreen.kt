@@ -1,21 +1,17 @@
 package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -26,6 +22,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 
@@ -36,7 +33,8 @@ fun DashboardBottomBarScreen(
     aboutThisAppTab: @Composable () -> Unit,
 ) {
     var selectedBottomBarItem by rememberSaveable { mutableStateOf(BottomBarItem.OVERVIEW) }
-    Scaffold(
+    MgoScaffold(
+        appBarTitle = stringResource(selectedBottomBarItem.titleId),
         bottomBar = {
             BottomNavigationBar(
                 selectedItem = selectedBottomBarItem,
@@ -45,8 +43,7 @@ fun DashboardBottomBarScreen(
                 },
             )
         },
-    ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        content = {
             when (selectedBottomBarItem) {
                 BottomBarItem.OVERVIEW -> {
                     overviewTab()
@@ -60,8 +57,8 @@ fun DashboardBottomBarScreen(
                     aboutThisAppTab()
                 }
             }
-        }
-    }
+        },
+    )
 }
 
 @Composable

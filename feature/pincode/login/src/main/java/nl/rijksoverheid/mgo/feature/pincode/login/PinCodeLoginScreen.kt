@@ -82,6 +82,7 @@ private fun PinCodeLoginScreenContent(
 
     MgoScaffold(
         appBarTitle = stringResource(id = R.string.pincode_validation_heading),
+        appBarTitleAlign = TextAlign.Center,
         contentPadding = PaddingValues(16.dp),
         content = {
             Text(

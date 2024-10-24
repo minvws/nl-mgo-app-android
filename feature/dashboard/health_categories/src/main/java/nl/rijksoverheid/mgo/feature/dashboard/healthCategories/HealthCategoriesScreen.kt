@@ -11,15 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,7 +31,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.supportApotheek
@@ -92,44 +85,20 @@ private fun HealthCategoriesScreenContent(
     onClickAddProvider: () -> Unit,
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-                navigationIcon = {
-                    if (viewState.filterOrganization != null) {
-                        IconButton(onClick = { onNavigateBack() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                contentDescription = stringResource(id = CopyR.string.common_previous),
-                            )
-                        }
-                    }
-                },
+    if (viewState.filterOrganization == null) {
+        if (viewState.providers.isEmpty()) {
+            NoProviders(onClickAddProvider)
+        } else {
+            WithProviders(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                filterOrganization = viewState.filterOrganization,
+                onClickListItem = onClickListItem,
+                onClickRemoveOrganization = onClickRemoveOrganization,
             )
-        },
-        content = { innerPadding ->
-            Column(
-                modifier = Modifier.padding(innerPadding),
-            ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = viewState.getToolbarTitle(),
-                    style = MaterialTheme.typography.headingLarge,
-                )
-                if (viewState.providers.isEmpty()) {
-                    NoProviders(onClickAddProvider)
-                } else {
-                    WithProviders(
-                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        filterOrganization = viewState.filterOrganization,
-                        onClickListItem = onClickListItem,
-                        onClickRemoveOrganization = onClickRemoveOrganization,
-                    )
-                }
-            }
-        },
-    )
+        }
+    } else {
+        // Wrap in scaffold
+    }
 }
 
 @Composable

@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.data.pincode.ValidatePinCode
 import nl.rijksoverheid.mgo.data.pincode.biometric.LoginWithBiometricEnabled
 import nl.rijksoverheid.mgo.framework.copy.R
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,6 +27,13 @@ internal class PinCodeLoginScreenViewModel
 
         private val _navigateToDashboard = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigateToDashboard = _navigateToDashboard.asSharedFlow()
+
+        init {
+            viewModelScope.launch {
+                delay(250)
+                validatePinCode(listOf(1, 2, 3, 4, 9))
+            }
+        }
 
         fun validatePinCode(pinCode: List<Int>) {
             viewModelScope.launch {

@@ -68,7 +68,7 @@ private fun PinCodeConfirmScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.pincode_confirm_heading),
         onNavigateBack = onNavigateBack,
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
         content = {
             Text(
                 modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),

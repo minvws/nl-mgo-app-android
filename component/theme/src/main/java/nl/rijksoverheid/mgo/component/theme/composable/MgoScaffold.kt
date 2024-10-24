@@ -34,6 +34,8 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun MgoScaffold(
     appBarTitle: String? = null,
+    appBarTitleAlign: TextAlign = TextAlign.Start,
+    bottomBar: @Composable () -> Unit = {},
     onNavigateBack: (() -> Unit)? = null,
     contentPadding: PaddingValues =
         PaddingValues(
@@ -59,6 +61,7 @@ fun MgoScaffold(
         modifier = scaffoldModifier,
         topBar = {
             appBarTitle?.let {
+                Text(appBarTitle)
                 MediumTopAppBar(
                     title = {
                         Text(
@@ -70,16 +73,16 @@ fun MgoScaffold(
                                     }
                                 },
                             text = appBarTitle,
-                            textAlign = TextAlign.Center,
+                            textAlign = appBarTitleAlign,
                         )
                     },
-                    expandedHeight = expandedAppBarHeight, // Add 16dp for some bottom padding
+                    expandedHeight = expandedAppBarHeight + 16.dp, // Add 16dp for some bottom padding
                     navigationIcon = {
                         onNavigateBack?.let {
                             IconButton(onClick = it) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                    contentDescription = stringResource(CopyR.string.common_previous)
+                                    contentDescription = stringResource(CopyR.string.common_previous),
                                 )
                             }
                         }
@@ -93,6 +96,7 @@ fun MgoScaffold(
                 )
             }
         },
+        bottomBar = bottomBar,
         content = { paddingValues ->
             Column(
                 modifier =

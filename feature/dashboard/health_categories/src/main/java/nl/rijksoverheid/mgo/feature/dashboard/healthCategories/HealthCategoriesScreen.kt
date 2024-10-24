@@ -4,14 +4,12 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +28,8 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
@@ -57,48 +57,52 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun HealthCategoriesScreen(
-    arguments: HealthCategoriesScreenArguments,
-    onNavigateBack: () -> Unit,
+    appBarTitle: String,
     onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
     onNavigateToLocalisation: () -> Unit,
     onNavigateToHealthCategory: (category: HealthCareCategory, organization: MgoOrganization?) -> Unit,
+    organization: MgoOrganization? = null,
+    onNavigateBack: (() -> Unit)? = null,
 ) {
-    val viewModel =
-        hiltViewModel<HealthCategoriesScreenViewModel, HealthCategoriesScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(arguments) },
-        )
+    val viewModel = hiltViewModel<HealthCategoriesScreenViewModel>()
     val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     HealthCategoriesScreenContent(
+        appBarTitle = appBarTitle,
         viewState = viewState,
         onNavigateBack = onNavigateBack,
         onClickAddProvider = onNavigateToLocalisation,
-        onClickListItem = { category -> onNavigateToHealthCategory(category, arguments.filterOrganization) },
+        onClickListItem = { category -> onNavigateToHealthCategory(category, organization) },
         onClickRemoveOrganization = onNavigateRemoveOrganization,
+        organization = organization,
     )
 }
 
 @Composable
 private fun HealthCategoriesScreenContent(
+    appBarTitle: String,
     viewState: HealthCategoriesScreenViewState,
-    onNavigateBack: () -> Unit,
     onClickListItem: (category: HealthCareCategory) -> Unit,
     onClickAddProvider: () -> Unit,
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
+    organization: MgoOrganization? = null,
+    onNavigateBack: (() -> Unit)? = null,
 ) {
-    if (viewState.filterOrganization == null) {
-        if (viewState.providers.isEmpty()) {
-            NoProviders(onClickAddProvider)
-        } else {
-            WithProviders(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                filterOrganization = viewState.filterOrganization,
-                onClickListItem = onClickListItem,
-                onClickRemoveOrganization = onClickRemoveOrganization,
-            )
-        }
-    } else {
-        // Wrap in scaffold
-    }
+    MgoScaffold(
+        appBarTitle = appBarTitle,
+        scrollable = viewState.providers.isNotEmpty(),
+        onNavigateBack = onNavigateBack,
+        content = {
+            if (viewState.providers.isEmpty()) {
+                NoProviders(onClickAddProvider)
+            } else {
+                WithProviders(
+                    filterOrganization = organization,
+                    onClickListItem = onClickListItem,
+                    onClickRemoveOrganization = onClickRemoveOrganization,
+                )
+            }
+        },
+    )
 }
 
 @Composable
@@ -145,41 +149,38 @@ private fun NoProviders(
 }
 
 @Composable
-private fun WithProviders(
+private fun ColumnScope.WithProviders(
     onClickListItem: (category: HealthCareCategory) -> Unit,
     filterOrganization: MgoOrganization?,
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Card(modifier = Modifier.padding(bottom = 16.dp)) {
-            Column {
-                HealthCareCategory.entries.forEach { category ->
-                    HealthCategoriesListItem(
-                        modifier = Modifier.clickable { onClickListItem(category) },
-                        icon = category.getIcon(),
-                        title = category.getTitle(),
-                        iconColor = category.getIconColor(),
-                        category = category,
-                        filterOrganization = filterOrganization,
-                    )
-                }
+    MgoCard(modifier = Modifier.padding(bottom = 16.dp)) {
+        Column {
+            HealthCareCategory.entries.forEach { category ->
+                HealthCategoriesListItem(
+                    modifier = Modifier.clickable { onClickListItem(category) },
+                    icon = category.getIcon(),
+                    title = category.getTitle(),
+                    iconColor = category.getIconColor(),
+                    category = category,
+                    filterOrganization = filterOrganization,
+                )
             }
         }
+    }
 
-        if (filterOrganization != null) {
-            MgoButton(
-                modifier =
-                    Modifier
-                        .padding(bottom = 16.dp)
-                        .align(Alignment.CenterHorizontally),
-                buttonText = stringResource(id = CopyR.string.health_categories_remove_organization),
-                onClick = {
-                    onClickRemoveOrganization(filterOrganization)
-                },
-                buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
-            )
-        }
+    if (filterOrganization != null) {
+        MgoButton(
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally),
+            buttonText = stringResource(id = CopyR.string.health_categories_remove_organization),
+            onClick = {
+                onClickRemoveOrganization(filterOrganization)
+            },
+            buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+        )
     }
 }
 
@@ -232,7 +233,8 @@ fun HealthCareCategory.getIconColor(): Color {
 internal fun OverviewScreenNoProvidersPreview() {
     MgoTheme {
         HealthCategoriesScreenContent(
-            viewState = HealthCategoriesScreenViewState(name = "", filterOrganization = null, providers = listOf()),
+            appBarTitle = stringResource(CopyR.string.overview_heading),
+            viewState = HealthCategoriesScreenViewState(name = "", providers = listOf()),
             onNavigateBack = {},
             onClickAddProvider = {},
             onClickListItem = {},
@@ -246,10 +248,10 @@ internal fun OverviewScreenNoProvidersPreview() {
 internal fun OverviewScreenWithProvidersPreview() {
     MgoTheme {
         HealthCategoriesScreenContent(
+            stringResource(CopyR.string.overview_heading),
             viewState =
                 HealthCategoriesScreenViewState(
                     name = "",
-                    filterOrganization = null,
                     providers = listOf(TEST_MGO_ORGANIZATION),
                 ),
             onNavigateBack = {},

@@ -9,14 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,12 +22,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.snackbar.MgoSnackBarScaffold
+import nl.rijksoverheid.mgo.component.snackbar.MgoSnackbarScaffold
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
@@ -60,31 +56,18 @@ private fun OrganizationsScreenContent(
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
-    MgoSnackBarScaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-            )
-        },
-        content = { innerPadding ->
-            Column(
-                modifier = Modifier.padding(innerPadding),
-            ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(id = CopyR.string.healthcare_organizations_heading),
-                    style = MaterialTheme.typography.headingLarge,
+    MgoSnackbarScaffold(
+        appBarTitle = stringResource(CopyR.string.healthcare_organizations_heading),
+        scrollable = viewState.organizations.isNotEmpty(),
+        content = {
+            if (viewState.organizations.isEmpty()) {
+                NoOrganizations(onClickAddProvider)
+            } else {
+                WithOrganizations(
+                    organizations = viewState.organizations,
+                    onClickOrganization = onClickOrganization,
+                    onClickAddProvider = onClickAddProvider,
                 )
-                if (viewState.organizations.isEmpty()) {
-                    NoOrganizations(onClickAddProvider)
-                } else {
-                    WithOrganizations(
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
-                        organizations = viewState.organizations,
-                        onClickOrganization = onClickOrganization,
-                        onClickAddProvider = onClickAddProvider,
-                    )
-                }
             }
         },
     )
@@ -140,40 +123,38 @@ private fun WithOrganizations(
     onClickAddProvider: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Card {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                organizations.forEachIndexed { index, organization ->
-                    OrganizationCard(
-                        modifier = Modifier.fillMaxWidth().clickable { onClickOrganization(organization) },
-                        organization = organization,
-                        hasDivider = index != organizations.lastIndex,
-                    )
-                }
-            }
-        }
-
-        Card(
-            modifier =
-                Modifier
-                    .padding(vertical = 16.dp)
-                    .clickable { onClickAddProvider() },
-        ) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-            ) {
-                Text(text = stringResource(id = CopyR.string.overview_add_organization), style = MaterialTheme.typography.bodySmall)
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    modifier = Modifier.padding(start = 8.dp),
-                    painter = painterResource(id = R.drawable.ic_add_organization),
-                    tint = MaterialTheme.colorScheme.iconsSecondary(),
-                    contentDescription = null,
+    MgoCard {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            organizations.forEachIndexed { index, organization ->
+                OrganizationCard(
+                    modifier = Modifier.fillMaxWidth().clickable { onClickOrganization(organization) },
+                    organization = organization,
+                    hasDivider = index != organizations.lastIndex,
                 )
             }
+        }
+    }
+
+    MgoCard(
+        modifier =
+            Modifier
+                .padding(top = 16.dp)
+                .clickable { onClickAddProvider() },
+    ) {
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+        ) {
+            Text(text = stringResource(id = CopyR.string.overview_add_organization), style = MaterialTheme.typography.bodySmall)
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                modifier = Modifier.padding(start = 8.dp),
+                painter = painterResource(id = R.drawable.ic_add_organization),
+                tint = MaterialTheme.colorScheme.iconsSecondary(),
+                contentDescription = null,
+            )
         }
     }
 }

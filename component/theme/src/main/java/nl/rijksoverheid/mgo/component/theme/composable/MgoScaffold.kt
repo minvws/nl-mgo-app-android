@@ -3,9 +3,13 @@ package nl.rijksoverheid.mgo.component.theme.composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Icon
@@ -28,7 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.LocalBottomBarSize
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import timber.log.Timber
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -36,14 +42,16 @@ fun MgoScaffold(
     appBarTitle: String? = null,
     appBarTitleAlign: TextAlign = TextAlign.Start,
     bottomBar: @Composable () -> Unit = {},
+    snackbarHost: @Composable () -> Unit = {},
     onNavigateBack: (() -> Unit)? = null,
     contentPadding: PaddingValues =
         PaddingValues(
+            16.dp,
             0.dp,
-            0.dp,
-            0.dp,
+            16.dp,
             0.dp,
         ),
+    scrollable: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val localDensity = LocalDensity.current
@@ -97,6 +105,7 @@ fun MgoScaffold(
             }
         },
         bottomBar = bottomBar,
+        snackbarHost = snackbarHost,
         content = { paddingValues ->
             Column(
                 modifier =
@@ -104,9 +113,24 @@ fun MgoScaffold(
                         .consumeWindowInsets(paddingValues)
                         .padding(paddingValues)
                         .padding(top = if (appBarTitle == null) TopAppBarDefaults.MediumAppBarCollapsedHeight else 0.dp)
-                        .padding(contentPadding),
+                        .padding(contentPadding)
+                        .then(
+                            if (scrollable) {
+                                Modifier.verticalScroll(rememberScrollState())
+                            } else {
+                                Modifier
+                            },
+                        ),
             ) {
-                content()
+                Timber.v("Check this: " + LocalBottomBarSize.current.size)
+                if (scrollable) {
+                    content()
+                    Spacer(modifier = Modifier.height(LocalBottomBarSize.current.size))
+                } else {
+                    Column(modifier = Modifier.padding(bottom = LocalBottomBarSize.current.size)) {
+                        content()
+                    }
+                }
             }
         },
     )

@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
@@ -32,9 +31,7 @@ fun OrganizationsNavigation(
             OrganizationsScreen(
                 onNavigateToHealthCategories = { organization ->
                     navController.navigate(
-                        DashboardNavigationScreen.HealthCategories.setArguments(
-                            HealthCategoriesScreenArguments(filterOrganization = organization),
-                        ).getNavigationRoute(),
+                        DashboardNavigationScreen.HealthCategories.setOrganization(organization).getNavigationRoute(),
                     )
                 },
                 onNavigateToLocalisation = {
@@ -44,8 +41,10 @@ fun OrganizationsNavigation(
         }
 
         composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategories.getRoute()) { backStackEntry ->
+            val organization = DashboardNavigationScreen.HealthCategories.getOrganization(backStackEntry)
             HealthCategoriesScreen(
-                arguments = DashboardNavigationScreen.HealthCategories.getArguments(backStackEntry),
+                appBarTitle = organization.name,
+                organization = organization,
                 onNavigateBack = {
                     navController.popBackStack()
                 },

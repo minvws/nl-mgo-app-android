@@ -1,13 +1,14 @@
 package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,13 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nl.rijksoverheid.mgo.component.theme.BottomBarSize
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LocalBottomBarSize
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 
@@ -33,8 +34,24 @@ fun DashboardBottomBarScreen(
     aboutThisAppTab: @Composable () -> Unit,
 ) {
     var selectedBottomBarItem by rememberSaveable { mutableStateOf(BottomBarItem.OVERVIEW) }
-    MgoScaffold(
-        appBarTitle = stringResource(selectedBottomBarItem.titleId),
+    Scaffold(
+        content = { paddingValues ->
+            CompositionLocalProvider(LocalBottomBarSize provides BottomBarSize(paddingValues.calculateBottomPadding())) {
+                when (selectedBottomBarItem) {
+                    BottomBarItem.OVERVIEW -> {
+                        overviewTab()
+                    }
+
+                    BottomBarItem.ORGANIZATIONS -> {
+                        organizationsTab()
+                    }
+
+                    BottomBarItem.ABOUT_THIS_APP -> {
+                        aboutThisAppTab()
+                    }
+                }
+            }
+        },
         bottomBar = {
             BottomNavigationBar(
                 selectedItem = selectedBottomBarItem,
@@ -42,21 +59,6 @@ fun DashboardBottomBarScreen(
                     selectedBottomBarItem = selectedItem
                 },
             )
-        },
-        content = {
-            when (selectedBottomBarItem) {
-                BottomBarItem.OVERVIEW -> {
-                    overviewTab()
-                }
-
-                BottomBarItem.ORGANIZATIONS -> {
-                    organizationsTab()
-                }
-
-                BottomBarItem.ABOUT_THIS_APP -> {
-                    aboutThisAppTab()
-                }
-            }
         },
     )
 }
@@ -73,8 +75,6 @@ private fun BottomNavigationBar(
             fontSize = 12.sp,
             lineHeight = 16.sp,
         )
-    // See [MgoCard] why this is done.
-    val elevation = if (isSystemInDarkTheme()) 0.dp else 1.dp
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
         contentColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),

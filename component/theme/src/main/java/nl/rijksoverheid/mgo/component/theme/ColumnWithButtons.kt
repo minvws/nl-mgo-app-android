@@ -40,8 +40,8 @@ fun ColumnWithButtons(
     modifier: Modifier = Modifier,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
-    contentPadding: PaddingValues = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
-    buttonPadding: PaddingValues = PaddingValues(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+    contentPadding: PaddingValues = PaddingValues(),
+    buttonPadding: PaddingValues = PaddingValues(),
     columnContent: @Composable ColumnScope.() -> Unit,
 ) {
     val scrollState = rememberScrollState()

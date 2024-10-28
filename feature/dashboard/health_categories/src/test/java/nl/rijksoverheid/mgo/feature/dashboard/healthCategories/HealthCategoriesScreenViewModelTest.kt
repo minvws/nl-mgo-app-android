@@ -24,7 +24,6 @@ internal class HealthCategoriesScreenViewModelTest {
             // When
             val viewModel =
                 HealthCategoriesScreenViewModel(
-                    arguments = HealthCategoriesScreenArguments(null),
                     organizationRepository = organizationRepository,
                 )
             viewModel.viewState.test {

@@ -3,16 +3,17 @@ package nl.rijksoverheid.mgo.navigation.organization
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun OverviewNavigation(
@@ -22,16 +23,13 @@ fun OverviewNavigation(
     NavHost(
         navController = navController,
         startDestination =
-            DashboardNavigationScreen.HealthCategories.setArguments(
-                HealthCategoriesScreenArguments(filterOrganization = null),
-            ).getNavigationRoute(),
+            DashboardNavigationScreen.HealthCategories.getNavigationRoute(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
     ) {
-        composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategories.getRoute()) { backStackEntry ->
+        composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategories.getRoute()) {
             HealthCategoriesScreen(
-                arguments = DashboardNavigationScreen.HealthCategories.getArguments(backStackEntry),
-                onNavigateBack = {},
+                appBarTitle = stringResource(CopyR.string.overview_heading),
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                 },

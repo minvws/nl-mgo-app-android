@@ -6,27 +6,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.uiSchema.ChildDisplay
@@ -43,30 +36,14 @@ fun UiSchemaDetailScreen(
     uiSchema: UISchema,
     onNavigateBack: () -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = toolbarTitle, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = stringResource(id = R.string.common_previous),
-                        )
-                    }
-                },
-            )
-        },
-        content = { innerPadding ->
-            LazyColumn(
-                modifier = Modifier.padding(innerPadding),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
-            ) {
+    MgoScaffold(
+        appBarTitle = toolbarTitle,
+        onNavigateBack = onNavigateBack,
+        content = {
+            LazyColumn(contentPadding = PaddingValues(top = 8.dp)) {
                 items(uiSchema.children.size) { position ->
                     val uiSchemaGroup = uiSchema.children[position]
-                    UiSchemaSection(group = uiSchemaGroup, modifier = Modifier.padding(top = 24.dp))
+                    UiSchemaSection(group = uiSchemaGroup, modifier = Modifier.padding(bottom = 24.dp))
                 }
             }
         },
@@ -84,7 +61,7 @@ private fun UiSchemaSection(
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
         )
-        Card(modifier = Modifier.padding(top = 8.dp)) {
+        MgoCard(modifier = Modifier.padding(top = 8.dp)) {
             Column {
                 group.children.forEachIndexed { index, childElement ->
                     UiSchemaLabelWithValue(value = childElement, hasDivider = index != group.children.lastIndex)
@@ -104,7 +81,7 @@ private fun UiSchemaLabelWithValue(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
             text = value.label.getStringFromResourceWithFallback(),
             style = MaterialTheme.typography.bodySmallMini,
-            color = MaterialTheme.colors.contentTertiary(),
+            color = MaterialTheme.colorScheme.contentTertiary(),
         )
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
@@ -118,7 +95,7 @@ private fun UiSchemaLabelWithValue(
                         .fillMaxWidth()
                         .height(0.33.dp)
                         .padding(start = 16.dp),
-                color = MaterialTheme.colors.strokesPrimary(),
+                color = MaterialTheme.colorScheme.strokesPrimary(),
             )
         }
     }

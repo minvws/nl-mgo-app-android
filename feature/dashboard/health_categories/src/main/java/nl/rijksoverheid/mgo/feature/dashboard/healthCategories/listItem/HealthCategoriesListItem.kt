@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
@@ -98,14 +97,14 @@ internal fun HealthCategoriesListItemContent(
                     Text(
                         text = stringResource(id = CopyR.string.common_loading_data),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colors.contentTertiary(),
+                        color = MaterialTheme.colorScheme.contentTertiary(),
                     )
                     CircularProgressIndicator(
                         modifier =
                             Modifier
                                 .size(24.dp)
                                 .padding(start = 8.dp),
-                        color = MaterialTheme.colors.iconsSecondary(),
+                        color = MaterialTheme.colorScheme.iconsSecondary(),
                         strokeWidth = 2.dp,
                     )
                 }
@@ -114,7 +113,7 @@ internal fun HealthCategoriesListItemContent(
                     Text(
                         text = stringResource(id = CopyR.string.common_no_data),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colors.contentTertiary(),
+                        color = MaterialTheme.colorScheme.contentTertiary(),
                     )
                 }
 
@@ -128,7 +127,7 @@ internal fun HealthCategoriesListItemContent(
                         .fillMaxWidth()
                         .height(0.33.dp)
                         .padding(start = 16.dp),
-                color = MaterialTheme.colors.strokesPrimary(),
+                color = MaterialTheme.colorScheme.strokesPrimary(),
             )
         }
     }
@@ -141,7 +140,7 @@ internal fun HealthCategoriesListItemLoadingPreview() {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
             title = CopyR.string.health_category_medication,
-            iconColor = MaterialTheme.colors.supportHuisarts(),
+            iconColor = MaterialTheme.colorScheme.supportHuisarts(),
             listItemState = HealthCategoriesListItemState.LOADING,
         )
     }
@@ -154,7 +153,7 @@ internal fun HealthCategoriesListItemNoDataPreview() {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
             title = CopyR.string.health_category_medication,
-            iconColor = MaterialTheme.colors.supportHuisarts(),
+            iconColor = MaterialTheme.colorScheme.supportHuisarts(),
             listItemState = HealthCategoriesListItemState.NO_DATA,
         )
     }
@@ -167,7 +166,7 @@ internal fun HealthCategoriesListItemLoadedPreview() {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
             title = CopyR.string.health_category_medication,
-            iconColor = MaterialTheme.colors.supportHuisarts(),
+            iconColor = MaterialTheme.colorScheme.supportHuisarts(),
             listItemState = HealthCategoriesListItemState.LOADED,
         )
     }

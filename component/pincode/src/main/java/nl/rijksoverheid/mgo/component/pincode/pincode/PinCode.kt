@@ -6,7 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -25,7 +25,7 @@ fun PinCode(
     modifier: Modifier = Modifier,
     error: Boolean = false,
 ) {
-    val color = if (error) MaterialTheme.colors.notificationError() else MaterialTheme.colors.actionPrimaryDefaultBackground()
+    val color = if (error) MaterialTheme.colorScheme.notificationError() else MaterialTheme.colorScheme.actionPrimaryDefaultBackground()
     val animatedScale = remember { Animatable(1f) }
     LaunchedEffect(error) {
         if (error) {

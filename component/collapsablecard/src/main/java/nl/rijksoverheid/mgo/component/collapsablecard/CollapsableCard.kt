@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
@@ -65,7 +64,7 @@ private fun CollapsableCardContent(
                     val iconRotation = if (isCollapsed) 0f else 180f
                     Icon(
                         modifier = Modifier.rotate(iconRotation),
-                        tint = MaterialTheme.colors.iconsPrimary(),
+                        tint = MaterialTheme.colorScheme.iconsPrimary(),
                         painter = painterResource(id = R.drawable.ic_arrow),
                         contentDescription =
                             if (isCollapsed) {
@@ -89,7 +88,7 @@ private fun CollapsableCardContent(
                     Text(
                         modifier = Modifier.padding(top = 16.dp),
                         text = property.heading.uppercase(),
-                        color = MaterialTheme.colors.contentTertiary(),
+                        color = MaterialTheme.colorScheme.contentTertiary(),
                         style = MaterialTheme.typography.bodySmallMini,
                     )
                     Text(

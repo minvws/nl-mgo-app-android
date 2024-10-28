@@ -1,22 +1,22 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 
 /**
  * Composable that displays HTML Text.
@@ -30,7 +30,7 @@ fun MgoHtmlText(
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodySmall,
     onLinkClicked: (url: String) -> Unit = {},
-    linkColor: Color = MaterialTheme.colors.actionTertiaryDefaultText(),
+    linkColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
 ) {
     val annotatedString =
         buildAnnotatedString {
@@ -48,11 +48,14 @@ fun MgoHtmlText(
                 }
 
                 if (tag?.startsWith("a href") == true && url != null) {
-                    pushStringAnnotation(tag = "URL", annotation = url)
-                    withStyle(style = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline)) {
+                    withLink(
+                        LinkAnnotation.Url(
+                            url = url,
+                            styles = TextLinkStyles(style = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline)),
+                        ),
+                    ) {
                         append(content)
                     }
-                    pop()
                 } else if (tag == "b") {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(content)
@@ -65,16 +68,10 @@ fun MgoHtmlText(
                 append(html.substring(currentIndex, html.length))
             }
         }
-    ClickableText(
+    Text(
         modifier = modifier,
         text = annotatedString,
-        style = style.copy(color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)),
-        onClick = { offset ->
-            annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
-                .firstOrNull()?.let { annotation ->
-                    onLinkClicked(annotation.item)
-                }
-        },
+        style = style,
     )
 }
 

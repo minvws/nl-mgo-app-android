@@ -4,22 +4,14 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,11 +26,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.supportApotheek
@@ -65,71 +57,50 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun HealthCategoriesScreen(
-    arguments: HealthCategoriesScreenArguments,
-    onNavigateBack: () -> Unit,
+    appBarTitle: String,
     onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
     onNavigateToLocalisation: () -> Unit,
     onNavigateToHealthCategory: (category: HealthCareCategory, organization: MgoOrganization?) -> Unit,
+    organization: MgoOrganization? = null,
+    onNavigateBack: (() -> Unit)? = null,
 ) {
-    val viewModel =
-        hiltViewModel<HealthCategoriesScreenViewModel, HealthCategoriesScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(arguments) },
-        )
+    val viewModel = hiltViewModel<HealthCategoriesScreenViewModel>()
     val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     HealthCategoriesScreenContent(
+        appBarTitle = appBarTitle,
         viewState = viewState,
         onNavigateBack = onNavigateBack,
         onClickAddProvider = onNavigateToLocalisation,
-        onClickListItem = { category -> onNavigateToHealthCategory(category, arguments.filterOrganization) },
+        onClickListItem = { category -> onNavigateToHealthCategory(category, organization) },
         onClickRemoveOrganization = onNavigateRemoveOrganization,
+        organization = organization,
     )
 }
 
 @Composable
 private fun HealthCategoriesScreenContent(
+    appBarTitle: String,
     viewState: HealthCategoriesScreenViewState,
-    onNavigateBack: () -> Unit,
     onClickListItem: (category: HealthCareCategory) -> Unit,
     onClickAddProvider: () -> Unit,
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
+    organization: MgoOrganization? = null,
+    onNavigateBack: (() -> Unit)? = null,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-                navigationIcon = {
-                    if (viewState.filterOrganization != null) {
-                        IconButton(onClick = { onNavigateBack() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                contentDescription = stringResource(id = CopyR.string.common_previous),
-                            )
-                        }
-                    }
-                },
-            )
-        },
-        content = { innerPadding ->
-            Column(
-                modifier = Modifier.padding(innerPadding),
-            ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = viewState.getToolbarTitle(),
-                    style = MaterialTheme.typography.headingLarge,
+    MgoScaffold(
+        appBarTitle = appBarTitle,
+        scrollable = viewState.providers.isNotEmpty(),
+        isRootScaffold = false,
+        onNavigateBack = onNavigateBack,
+        content = {
+            if (viewState.providers.isEmpty()) {
+                NoProviders(onClickAddProvider)
+            } else {
+                WithProviders(
+                    filterOrganization = organization,
+                    onClickListItem = onClickListItem,
+                    onClickRemoveOrganization = onClickRemoveOrganization,
                 )
-                if (viewState.providers.isEmpty()) {
-                    NoProviders(onClickAddProvider)
-                } else {
-                    WithProviders(
-                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        filterOrganization = viewState.filterOrganization,
-                        onClickListItem = onClickListItem,
-                        onClickRemoveOrganization = onClickRemoveOrganization,
-                    )
-                }
             }
         },
     )
@@ -171,7 +142,7 @@ private fun NoProviders(
                     .padding(top = 8.dp),
             text = stringResource(id = CopyR.string.overview_empty_subheading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colors.contentTertiary(),
+            color = MaterialTheme.colorScheme.contentTertiary(),
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -179,41 +150,36 @@ private fun NoProviders(
 }
 
 @Composable
-private fun WithProviders(
+private fun ColumnScope.WithProviders(
     onClickListItem: (category: HealthCareCategory) -> Unit,
     filterOrganization: MgoOrganization?,
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Card(modifier = Modifier.padding(bottom = 16.dp)) {
-            Column {
-                HealthCareCategory.entries.forEach { category ->
-                    HealthCategoriesListItem(
-                        modifier = Modifier.clickable { onClickListItem(category) },
-                        icon = category.getIcon(),
-                        title = category.getTitle(),
-                        iconColor = category.getIconColor(),
-                        category = category,
-                        filterOrganization = filterOrganization,
-                    )
-                }
+    MgoCard(modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)) {
+        Column {
+            HealthCareCategory.entries.forEach { category ->
+                HealthCategoriesListItem(
+                    modifier = Modifier.clickable { onClickListItem(category) },
+                    icon = category.getIcon(),
+                    title = category.getTitle(),
+                    iconColor = category.getIconColor(),
+                    category = category,
+                    filterOrganization = filterOrganization,
+                )
             }
         }
+    }
 
-        if (filterOrganization != null) {
-            MgoButton(
-                modifier =
-                    Modifier
-                        .padding(bottom = 16.dp)
-                        .align(Alignment.CenterHorizontally),
-                buttonText = stringResource(id = CopyR.string.health_categories_remove_organization),
-                onClick = {
-                    onClickRemoveOrganization(filterOrganization)
-                },
-                buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
-            )
-        }
+    if (filterOrganization != null) {
+        MgoButton(
+            modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally),
+            buttonText = stringResource(id = CopyR.string.health_categories_remove_organization),
+            onClick = {
+                onClickRemoveOrganization(filterOrganization)
+            },
+            buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+        )
     }
 }
 
@@ -242,22 +208,22 @@ fun HealthCareCategory.getIcon(): Int {
 @Composable
 fun HealthCareCategory.getIconColor(): Color {
     return when (this) {
-        HealthCareCategory.MEDICATIONS -> MaterialTheme.colors.supportHuisarts()
-        HealthCareCategory.MEASUREMENTS -> MaterialTheme.colors.supportApotheek()
-        HealthCareCategory.LAB_RESULTS -> MaterialTheme.colors.supportZiekenhuis()
-        HealthCareCategory.ALLERGIES -> MaterialTheme.colors.supportKliniek()
-        HealthCareCategory.TREATMENTS -> MaterialTheme.colors.supportGgz()
-        HealthCareCategory.APPOINTMENTS -> MaterialTheme.colors.supportGgd()
-        HealthCareCategory.VACCINATIONS -> MaterialTheme.colors.supportTandarts()
-        HealthCareCategory.DOCUMENTS -> MaterialTheme.colors.supportThuiszorg()
-        HealthCareCategory.COMPLAINTS -> MaterialTheme.colors.supportVerpleeghuis()
-        HealthCareCategory.PATIENT -> MaterialTheme.colors.supportOverige()
-        HealthCareCategory.ALERTS -> MaterialTheme.colors.supportRivm()
-        HealthCareCategory.PAYMENT -> MaterialTheme.colors.supportVerloskundige()
-        HealthCareCategory.PLANS -> MaterialTheme.colors.supportRevalidatie()
-        HealthCareCategory.DEVICES -> MaterialTheme.colors.supportRijkslint()
-        HealthCareCategory.MENTAL -> MaterialTheme.colors.notificationInformation()
-        HealthCareCategory.LIFESTYLE -> MaterialTheme.colors.supportGegevens()
+        HealthCareCategory.MEDICATIONS -> MaterialTheme.colorScheme.supportHuisarts()
+        HealthCareCategory.MEASUREMENTS -> MaterialTheme.colorScheme.supportApotheek()
+        HealthCareCategory.LAB_RESULTS -> MaterialTheme.colorScheme.supportZiekenhuis()
+        HealthCareCategory.ALLERGIES -> MaterialTheme.colorScheme.supportKliniek()
+        HealthCareCategory.TREATMENTS -> MaterialTheme.colorScheme.supportGgz()
+        HealthCareCategory.APPOINTMENTS -> MaterialTheme.colorScheme.supportGgd()
+        HealthCareCategory.VACCINATIONS -> MaterialTheme.colorScheme.supportTandarts()
+        HealthCareCategory.DOCUMENTS -> MaterialTheme.colorScheme.supportThuiszorg()
+        HealthCareCategory.COMPLAINTS -> MaterialTheme.colorScheme.supportVerpleeghuis()
+        HealthCareCategory.PATIENT -> MaterialTheme.colorScheme.supportOverige()
+        HealthCareCategory.ALERTS -> MaterialTheme.colorScheme.supportRivm()
+        HealthCareCategory.PAYMENT -> MaterialTheme.colorScheme.supportVerloskundige()
+        HealthCareCategory.PLANS -> MaterialTheme.colorScheme.supportRevalidatie()
+        HealthCareCategory.DEVICES -> MaterialTheme.colorScheme.supportRijkslint()
+        HealthCareCategory.MENTAL -> MaterialTheme.colorScheme.notificationInformation()
+        HealthCareCategory.LIFESTYLE -> MaterialTheme.colorScheme.supportGegevens()
     }
 }
 
@@ -266,7 +232,8 @@ fun HealthCareCategory.getIconColor(): Color {
 internal fun OverviewScreenNoProvidersPreview() {
     MgoTheme {
         HealthCategoriesScreenContent(
-            viewState = HealthCategoriesScreenViewState(name = "", filterOrganization = null, providers = listOf()),
+            appBarTitle = stringResource(CopyR.string.overview_heading),
+            viewState = HealthCategoriesScreenViewState(name = "", providers = listOf()),
             onNavigateBack = {},
             onClickAddProvider = {},
             onClickListItem = {},
@@ -280,10 +247,10 @@ internal fun OverviewScreenNoProvidersPreview() {
 internal fun OverviewScreenWithProvidersPreview() {
     MgoTheme {
         HealthCategoriesScreenContent(
+            stringResource(CopyR.string.overview_heading),
             viewState =
                 HealthCategoriesScreenViewState(
                     name = "",
-                    filterOrganization = null,
                     providers = listOf(TEST_MGO_ORGANIZATION),
                 ),
             onNavigateBack = {},

@@ -1,98 +1,98 @@
 package nl.rijksoverheid.mgo.component.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Colors
+import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 
 // Base
-
 @Composable
-fun Colors.backgroundPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.backgroundPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF050505) else Color(0xFFFAFAFA)
 
 @Composable
-fun Colors.backgroundSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.backgroundSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF1D1D1D) else Color(0xFFFFFFFF)
 
 @Composable
-fun Colors.backgroundTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.backgroundTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF404040) else Color(0xFFF3F3F3)
 
 // Content
 @Composable
-fun Colors.contentPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.contentPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFFFFFFF) else Color(0xFF000000)
 
 @Composable
-fun Colors.contentSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.contentSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFE6E6E6) else Color(0xFF404040)
 
 @Composable
-fun Colors.contentTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.contentTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFCCCCCC) else Color(0xFF535353)
 
 // Icons
 
 @Composable
-fun Colors.iconsPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.iconsPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
 
 @Composable
-fun Colors.iconsSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.iconsSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF999999) else Color(0xFF999999)
 
 // Strokes
 
 @Composable
-fun Colors.strokesPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.strokesPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF4D4D4D) else Color(0xFFCCCCCC)
 
 @Composable
-fun Colors.strokesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.strokesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF333333) else Color(0xFFE0E0E0)
 
 @Composable
-fun Colors.strokesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.strokesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF2C2C2C) else Color(0xFFF7F7F7)
 
 // Lines
 
 @Composable
-fun Colors.linesPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.linesPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF696969) else Color(0xFFCCCCCC)
 
 @Composable
-fun Colors.linesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.linesSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF535353) else Color(0xFFE6E6E6)
 
 @Composable
-fun Colors.linesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.linesTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF2C2C2C) else Color(0xFFF3F3F3)
 
 @Composable
-fun Colors.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
+fun ColorScheme.linesInput(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFB4B4B4) else Color(0xFF696969)
 
 // Support
 @Composable
-fun Colors.actionPrimaryDefaultBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionPrimaryDefaultBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF007BC7) else Color(0xFF007BC7)
 
 @Composable
-fun Colors.actionPrimaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionPrimaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFFFFFFF) else Color(0xFFFFFFFF)
 
 @Composable
-fun Colors.actionPrimaryNegativeBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionPrimaryNegativeBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFD52B1E) else Color(0xFFD52B1E)
 
 @Composable
-fun Colors.actionPrimaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionPrimaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color.White else Color.White
 
 @Composable
-fun Colors.actionSecondaryDefaultBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionSecondaryDefaultBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) {
         Color(0xFF007BC7).copy(alpha = 0.24f).compositeOver(Color.Black)
     } else {
@@ -101,11 +101,11 @@ fun Colors.actionSecondaryDefaultBackground(isSystemDarkTheme: Boolean = isSyste
     }
 
 @Composable
-fun Colors.actionSecondaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionSecondaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF8FCAE7) else Color(0xFF01689B)
 
 @Composable
-fun Colors.actionSecondaryNegativeBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionSecondaryNegativeBackground(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) {
         Color(0xFFFFFFFF).copy(alpha = 0.10f).compositeOver(Color.Black)
     } else {
@@ -114,90 +114,93 @@ fun Colors.actionSecondaryNegativeBackground(isSystemDarkTheme: Boolean = isSyst
     }
 
 @Composable
-fun Colors.actionSecondaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionSecondaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFE67F78) else Color(0xFFD52B1E)
 
 @Composable
-fun Colors.actionTertiaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionTertiaryDefaultText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF8FCAE7) else Color(0xFF01689B)
 
 @Composable
-fun Colors.actionTertiaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.actionTertiaryNegativeText(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFE67F78) else Color(0xFFD52B1E)
 
 @Composable
-fun Colors.notificationInformation(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.notificationInformation(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF66AFDD) else Color(0xFF007BC7)
 
 @Composable
-fun Colors.notificationSuccess(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.notificationSuccess(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF88B76D) else Color(0xFF39870C)
 
 @Composable
-fun Colors.notificationWarning(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.notificationWarning(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFFDD370) else Color(0xFFFFB612)
 
 @Composable
-fun Colors.notificationError(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.notificationError(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFE67F78) else Color(0xFFD52B1E)
 
 @Composable
-fun Colors.supportApotheek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportApotheek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF7D9B87) else Color(0xFF275937)
 
 @Composable
-fun Colors.supportZiekenhuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportZiekenhuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFDF669D) else Color(0xFFCA005D)
 
 @Composable
-fun Colors.supportHuisarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportHuisarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF66A4C3) else Color(0xFF01689B)
 
 @Composable
-fun Colors.supportTandarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportTandarts(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF66A4C3) else Color(0xFF8FCAE7)
 
 @Composable
-fun Colors.supportGgz(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFF8D729F) else Color(0xFF42145F)
+fun ColorScheme.supportGgz(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFF8D729F) else Color(0xFF42145F)
 
 @Composable
-fun Colors.supportFysiotherapeut(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportFysiotherapeut(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF777C00) else Color(0xFFADAF66)
 
 @Composable
-fun Colors.supportVerpleeghuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportVerpleeghuis(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFF6BDE1) else Color(0xFFF092CD)
 
 @Composable
-fun Colors.supportThuiszorg(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportThuiszorg(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFBFA96C) else Color(0xFF94710A)
 
 @Composable
-fun Colors.supportKliniek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportKliniek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFEDA966) else Color(0xFFE17000)
 
 @Composable
-fun Colors.supportOverige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportOverige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF999999) else Color(0xFF999999)
 
 @Composable
-fun Colors.supportRijkslint(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportRijkslint(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF738EAB) else Color(0xFF154273)
 
 @Composable
-fun Colors.supportGgd(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFA3847D) else Color(0xFF673327)
+fun ColorScheme.supportGgd(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFA3847D) else Color(0xFF673327)
 
 @Composable
-fun Colors.supportRivm(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) = if (isSystemDarkTheme) Color(0xFFFBED78) else Color(0xFFF9E11E)
+fun ColorScheme.supportRivm(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+    if (isSystemDarkTheme) Color(0xFFFBED78) else Color(0xFFF9E11E)
 
 @Composable
-fun Colors.supportVerloskundige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportVerloskundige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFCB66A0) else Color(0xFFA90061)
 
 @Composable
-fun Colors.supportRevalidatie(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportRevalidatie(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFACE4D3) else Color(0xFF76D2B6)
 
 @Composable
-fun Colors.supportGegevens(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
+fun ColorScheme.supportGegevens(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF34C759) else Color(0xFF34C759)

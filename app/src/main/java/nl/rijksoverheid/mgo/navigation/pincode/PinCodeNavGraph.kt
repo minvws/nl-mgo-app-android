@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.navigation.pincode
 
+import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
@@ -21,6 +22,7 @@ fun NavGraphBuilder.addPinCodeNavGraph(
     ) {
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Create.getRoute()) {
             PinCodeCreateScreen(
+                hasBackButton = remember { navController.previousBackStackEntry != null },
                 onPinEntered = { pinCode ->
                     navController.navigate(PinCodeNavigationScreen.Confirm.setPinCodeToMatch(pinCode).getNavigationRoute())
                 },

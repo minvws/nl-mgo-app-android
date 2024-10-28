@@ -43,13 +43,12 @@ class AndroidConventionsPlugin : Plugin<Project> {
             tasks.withType(Test::class.java) {
                 configure<JacocoTaskExtension> {
                     isIncludeNoLocationClasses = true
-                    excludes =
-                        listOf(
-                            "jdk.internal.*",
-                            "androidx.core.*",
-                            "com.android.*",
-                            "android.*",
-                        )
+                    excludes = listOf(
+                        "jdk.internal.*",
+                        "androidx.core.*",
+                        "com.android.*",
+                        "android.*",
+                    )
                 }
             }
             tasks.register("runTests", JacocoReport::class.java) {
@@ -118,20 +117,28 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 val buildDir = project.layout.buildDirectory.asFile.get()
                 val javaClasses = fileTree("$buildDir/intermediates/javac/${sourceName}/classes") { setExcludes(excludes) }
                 val kotlinClasses = fileTree("$buildDir/tmp/kotlin-classes/${sourceName}") { setExcludes(excludes) }
-                classDirectories.setFrom(files(listOf(
-                    javaClasses,
-                    kotlinClasses
-                )))
+                classDirectories.setFrom(
+                    files(
+                        listOf(
+                            javaClasses,
+                            kotlinClasses,
+                        ),
+                    ),
+                )
                 sourceDirectories.setFrom(files(listOf("src/main/java")))
 
                 val androidTestData = fileTree("${buildDir}/outputs/code_coverage/${sourceName}AndroidTest/connected/") {
                     setIncludes(listOf("**/*.ec"))
                 }
 
-                executionData.setFrom(files(listOf(
-                    fileTree(buildDir) { setIncludes(listOf("**/*.exec")) },
-                    androidTestData
-                )))
+                executionData.setFrom(
+                    files(
+                        listOf(
+                            fileTree(buildDir) { setIncludes(listOf("**/*.exec")) },
+                            androidTestData,
+                        ),
+                    ),
+                )
             }
         }
     }
@@ -143,6 +150,15 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 // This is different than setting the jvm in java
                 // See https://youtrack.jetbrains.com/issue/KT-66995/JvmTarget-and-JavaVersion-compatibility-for-easier-JVM-version-setup
                 jvmTarget.set(JvmTarget.JVM_17)
+
+                // TODO: This warning is suppressed for all modules since Material 3 does have a lot of experimental api's.
+                //  By the time this app will go to production it needs to be checked again,
+                //  but for development purposes it is suppressed globally
+                freeCompilerArgs.set(
+                    listOf(
+                        "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                    ),
+                )
             }
         }
     }

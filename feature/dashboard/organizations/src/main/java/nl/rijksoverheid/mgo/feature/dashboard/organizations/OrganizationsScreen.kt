@@ -9,31 +9,25 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.snackbar.MgoSnackBarScaffold
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
@@ -62,33 +56,18 @@ private fun OrganizationsScreenContent(
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
-    MgoSnackBarScaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-            )
-        },
-        content = { innerPadding ->
-            Column(
-                modifier = Modifier.padding(innerPadding),
-            ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(id = CopyR.string.healthcare_organizations_heading),
-                    style = MaterialTheme.typography.headingLarge,
+    MgoScaffold(
+        appBarTitle = stringResource(CopyR.string.healthcare_organizations_heading),
+        scrollable = viewState.organizations.isNotEmpty(),
+        content = {
+            if (viewState.organizations.isEmpty()) {
+                NoOrganizations(onClickAddProvider)
+            } else {
+                WithOrganizations(
+                    organizations = viewState.organizations,
+                    onClickOrganization = onClickOrganization,
+                    onClickAddProvider = onClickAddProvider,
                 )
-                if (viewState.organizations.isEmpty()) {
-                    NoOrganizations(onClickAddProvider)
-                } else {
-                    WithOrganizations(
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
-                        organizations = viewState.organizations,
-                        onClickOrganization = onClickOrganization,
-                        onClickAddProvider = onClickAddProvider,
-                    )
-                }
             }
         },
     )
@@ -130,7 +109,7 @@ private fun NoOrganizations(
                     .padding(top = 8.dp),
             text = stringResource(id = CopyR.string.overview_empty_subheading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colors.contentTertiary(),
+            color = MaterialTheme.colorScheme.contentTertiary(),
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -144,40 +123,38 @@ private fun WithOrganizations(
     onClickAddProvider: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Card {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                organizations.forEachIndexed { index, organization ->
-                    OrganizationCard(
-                        modifier = Modifier.fillMaxWidth().clickable { onClickOrganization(organization) },
-                        organization = organization,
-                        hasDivider = index != organizations.lastIndex,
-                    )
-                }
-            }
-        }
-
-        Card(
-            modifier =
-                Modifier
-                    .padding(vertical = 16.dp)
-                    .clickable { onClickAddProvider() },
-        ) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-            ) {
-                Text(text = stringResource(id = CopyR.string.overview_add_organization), style = MaterialTheme.typography.bodySmall)
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    modifier = Modifier.padding(start = 8.dp),
-                    painter = painterResource(id = R.drawable.ic_add_organization),
-                    tint = MaterialTheme.colors.iconsSecondary(),
-                    contentDescription = null,
+    MgoCard(modifier = Modifier.padding(top = 2.dp)) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            organizations.forEachIndexed { index, organization ->
+                OrganizationCard(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onClickOrganization(organization) },
+                    organization = organization,
+                    hasDivider = index != organizations.lastIndex,
                 )
             }
+        }
+    }
+
+    MgoCard(
+        modifier = Modifier.padding(top = 16.dp, bottom = 2.dp).clickable { onClickAddProvider() },
+    ) {
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+        ) {
+            Text(text = stringResource(id = CopyR.string.overview_add_organization), style = MaterialTheme.typography.bodySmall)
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                modifier = Modifier.padding(start = 8.dp),
+                painter = painterResource(id = R.drawable.ic_add_organization),
+                tint = MaterialTheme.colorScheme.iconsSecondary(),
+                contentDescription = null,
+            )
         }
     }
 }
@@ -201,7 +178,7 @@ private fun OrganizationCard(
                         .fillMaxWidth()
                         .height(0.33.dp)
                         .padding(start = 16.dp),
-                color = MaterialTheme.colors.strokesPrimary(),
+                color = MaterialTheme.colorScheme.strokesPrimary(),
             )
         }
     }

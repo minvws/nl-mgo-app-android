@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,35 +11,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.composable.debugerror.MgoDebugErrorButton
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -87,26 +80,13 @@ private fun OrganizationSearchScreenContent(
     onAddSearchResult: (provider: MgoOrganization) -> Unit,
     onNavigateToSearch: () -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-                navigationIcon = {
-                    IconButton(onClick = { onNavigateBack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.common_previous),
-                        )
-                    }
-                },
-            )
-        },
-        content = { innerPadding ->
+    MgoScaffold(
+        appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
+        onNavigateBack = onNavigateBack,
+        content = {
             when {
                 viewState.loading -> {
-                    LoadingContent(modifier = Modifier.padding(innerPadding))
+                    LoadingContent()
                 }
 
                 viewState.error != null -> {
@@ -118,7 +98,6 @@ private fun OrganizationSearchScreenContent(
 
                 viewState.results.isEmpty() -> {
                     EmptyContent(
-                        modifier = Modifier.padding(innerPadding),
                         name = viewState.name,
                         city = viewState.city,
                         onButtonClick = onNavigateToSearch,
@@ -127,7 +106,6 @@ private fun OrganizationSearchScreenContent(
 
                 else -> {
                     OrganizationSearchScreenContent(
-                        modifier = Modifier.padding(innerPadding),
                         searchResults = viewState.results,
                         onAddSearchResult = onAddSearchResult,
                     )
@@ -138,34 +116,24 @@ private fun OrganizationSearchScreenContent(
 }
 
 @Composable
-private fun LoadingContent(modifier: Modifier = Modifier) {
-    Column(
+private fun ColumnScope.LoadingContent(modifier: Modifier = Modifier) {
+    Box(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+            Modifier
+                .fillMaxSize()
+                .weight(1f),
+        contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = stringResource(id = CopyR.string.organization_search_heading),
-            style = MaterialTheme.typography.headingLarge,
-            fontWeight = FontWeight.Bold,
-        )
-
-        Box(
-            modifier = Modifier.fillMaxSize().weight(1f),
-            contentAlignment = Alignment.Center,
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    strokeWidth = 6.dp,
-                )
-                Text(
-                    modifier = Modifier.padding(top = 20.dp),
-                    text = stringResource(id = CopyR.string.organization_search_searching),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(48.dp),
+                strokeWidth = 6.dp,
+            )
+            Text(
+                modifier = Modifier.padding(top = 20.dp),
+                text = stringResource(id = CopyR.string.organization_search_searching),
+                style = MaterialTheme.typography.bodySmall,
+            )
         }
     }
 }
@@ -176,15 +144,7 @@ private fun OrganizationSearchScreenContent(
     onAddSearchResult: (provider: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
-        item {
-            Text(
-                modifier = Modifier.padding(bottom = 24.dp),
-                text = stringResource(id = CopyR.string.organization_search_heading),
-                style = MaterialTheme.typography.headingLarge,
-                fontWeight = FontWeight.Bold,
-            )
-        }
+    LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp)) {
         items(searchResults.size) { position ->
             OrganizationSearchCard(
                 modifier =
@@ -210,18 +170,11 @@ private fun EmptyContent(
         buttonText = stringResource(id = CopyR.string.common_search_again),
         onButtonClick = onButtonClick,
     ) {
-        Text(
-            text = stringResource(id = CopyR.string.organization_search_no_results_found_heading),
-            style = MaterialTheme.typography.headingLarge,
-            fontWeight = FontWeight.Bold,
-        )
-
         Image(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 24.dp),
+                    .align(Alignment.CenterHorizontally),
             painter = painterResource(id = ThemeR.drawable.illustration_alert),
             contentDescription = null,
         )
@@ -264,7 +217,7 @@ private fun EmptyListItem(
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_right),
             contentDescription = null,
-            tint = MaterialTheme.colors.supportHuisarts(),
+            tint = MaterialTheme.colorScheme.supportHuisarts(),
         )
         Text(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodySmall)
     }
@@ -281,18 +234,11 @@ private fun ErrorContent(
         buttonText = stringResource(id = CopyR.string.common_try_again),
         onButtonClick = onButtonClick,
     ) {
-        Text(
-            text = stringResource(id = CopyR.string.common_error_heading),
-            style = MaterialTheme.typography.headingLarge,
-            fontWeight = FontWeight.Bold,
-        )
-
         Image(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 24.dp),
+                    .align(Alignment.CenterHorizontally),
             painter = painterResource(id = ThemeR.drawable.illustration_alert),
             contentDescription = null,
         )

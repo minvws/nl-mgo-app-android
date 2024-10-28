@@ -4,29 +4,19 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodySmall
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
-import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -53,37 +43,15 @@ internal fun PropositionOverviewScreenContent(
     onClickNext: () -> Unit,
 ) {
     val context = LocalContext.current
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = stringResource(id = CopyR.string.common_previous),
-                        )
-                    }
-                },
-            )
-        },
-        content = { innerPadding ->
+    MgoScaffold(
+        appBarTitle = stringResource(id = CopyR.string.proposition_heading),
+        onNavigateBack = onNavigateBack,
+        content = {
             ColumnWithButtons(
-                modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.common_next),
                 onButtonClick = { onClickNext.invoke() },
             ) {
-                Text(
-                    text = stringResource(id = CopyR.string.proposition_heading),
-                    style = MaterialTheme.typography.headingLarge,
-                    fontWeight = FontWeight.Bold,
-                )
                 MgoHtmlText(
-                    modifier =
-                        Modifier
-                            .padding(top = 16.dp),
                     html = stringResource(id = CopyR.string.proposition_subheading, url),
                     style = MaterialTheme.typography.bodySmall,
                     onLinkClicked = { url -> url.launchBrowser(context) },

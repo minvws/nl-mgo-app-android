@@ -1,0 +1,163 @@
+package nl.rijksoverheid.mgo.component.theme.composable
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+@Composable
+fun MgoScaffold(
+    appBarTitle: String? = null,
+    appBarTitleAlign: TextAlign = TextAlign.Start,
+    bottomBar: @Composable () -> Unit = {},
+    snackbarHost: @Composable () -> Unit = {},
+    onNavigateBack: (() -> Unit)? = null,
+    scrollable: Boolean = false,
+    isRootScaffold: Boolean = true,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    val localDensity = LocalDensity.current
+    var expandedAppBarHeight by remember { mutableStateOf(Int.MAX_VALUE.dp) }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scaffoldModifier =
+        if (expandedAppBarHeight == Int.MAX_VALUE.dp) {
+            Modifier
+        } else {
+            Modifier.nestedScroll(
+                scrollBehavior.nestedScrollConnection,
+            )
+        }
+    Scaffold(
+        modifier = scaffoldModifier,
+        topBar = {
+            appBarTitle?.let {
+                MediumTopAppBar(
+                    title = {
+                        Text(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .onGloballyPositioned {
+                                        val heightDp = with(localDensity) { it.size.height.toDp() }
+                                        if (heightDp != 0.dp) {
+                                            expandedAppBarHeight = heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
+                                        }
+                                    },
+                            text = appBarTitle,
+                            textAlign = appBarTitleAlign,
+                        )
+                    },
+                    expandedHeight = expandedAppBarHeight + 16.dp, // Add 16dp for some bottom padding
+                    navigationIcon = {
+                        onNavigateBack?.let {
+                            IconButton(onClick = it) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                    contentDescription = stringResource(CopyR.string.common_previous),
+                                )
+                            }
+                        }
+                    },
+                    colors =
+                        TopAppBarDefaults.mediumTopAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.background,
+                            scrolledContainerColor = MaterialTheme.colorScheme.background,
+                        ),
+                    scrollBehavior = scrollBehavior,
+                )
+            }
+        },
+        bottomBar = bottomBar,
+        snackbarHost = snackbarHost,
+        content = { innerPadding ->
+            Column(
+                modifier =
+                    Modifier
+                        .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
+                        .padding(innerPadding)
+                        .padding(contentPadding)
+                        .then(
+                            if (scrollable) {
+                                Modifier.verticalScroll(rememberScrollState())
+                            } else {
+                                Modifier
+                            },
+                        ),
+            ) {
+                content()
+            }
+        },
+    )
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithAppBarAndBackButton() {
+    MgoTheme {
+        MgoScaffold(
+            appBarTitle = "App Bar Title",
+            onNavigateBack = {},
+            contentPadding = PaddingValues(16.dp),
+            content = {
+                Text("Hello World")
+            },
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithAppBar() {
+    MgoTheme {
+        MgoScaffold(
+            appBarTitle = "App Bar Title",
+            contentPadding = PaddingValues(16.dp),
+            content = {
+                Text("Hello World")
+            },
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithoutAppBar() {
+    MgoTheme {
+        MgoScaffold(
+            contentPadding = PaddingValues(16.dp),
+            content = {
+                Text("Hello World")
+            },
+        )
+    }
+}

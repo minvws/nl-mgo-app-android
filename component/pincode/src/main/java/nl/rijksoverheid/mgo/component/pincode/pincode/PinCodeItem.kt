@@ -5,7 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,7 +61,7 @@ internal fun PinCodeItemNotFilledPreview() {
     MgoTheme {
         PinCodeItem(
             modifier = Modifier.size(32.dp),
-            color = MaterialTheme.colors.actionPrimaryDefaultBackground(),
+            color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(),
             position = 1,
             scale = 1f,
         )
@@ -74,7 +74,7 @@ internal fun PinCodeItemFilledPreview() {
     MgoTheme {
         PinCodeItem(
             modifier = Modifier.size(32.dp),
-            color = MaterialTheme.colors.actionPrimaryDefaultBackground(),
+            color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(),
             position = 1,
             scale = 1f,
             fill = true,

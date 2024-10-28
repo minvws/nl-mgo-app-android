@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
 import androidx.navigation.NavBackStackEntry
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.framework.test.jsonStringToObject
 import nl.rijksoverheid.mgo.framework.test.toJsonString
@@ -16,14 +16,14 @@ sealed class DashboardNavigationScreen(override val name: String, override val p
 
     data object BottomBar : DashboardNavigationScreen("dashboard-bottombar")
 
-    data object HealthCategories : DashboardNavigationScreen(name = "dashboard-health-categories", placeholders = listOf("arguments")) {
-        fun setArguments(arguments: HealthCategoriesScreenArguments): DashboardNavigationScreen {
-            val json = arguments.toJsonString()
+    data object HealthCategories : DashboardNavigationScreen(name = "dashboard-health-categories", placeholders = listOf("organization")) {
+        fun setOrganization(organization: MgoOrganization): DashboardNavigationScreen {
+            val json = organization.toJsonString()
             builder.addArgument(placeholders[0], json)
             return this
         }
 
-        fun getArguments(backStackEntry: NavBackStackEntry): HealthCategoriesScreenArguments {
+        fun getOrganization(backStackEntry: NavBackStackEntry): MgoOrganization {
             return requireNotNull(backStackEntry.arguments?.getString(placeholders[0])?.jsonStringToObject())
         }
     }

@@ -65,15 +65,13 @@ This project uses [Dagger Hilt](https://developer.android.com/training/dependenc
 ### Testing
 
 #### End-to-end testing
-End to end tests use a combination of [AndroidJUnit4](https://developer.android.
-com/reference/androidx/test/ext/junit/runners/AndroidJUnit4), [jUnit4](https://github.com/junit-team/junit4) and [Compose Testing](https://developer.android.com/develop/ui/compose/testing). These tests are located in: `app/src/androidTest/java/nl/rijksoverheid/mgo/endToEnd`.
+End to end tests use a combination of [AndroidJUnit4](https://developer.android.com/reference/androidx/test/ext/junit/runners/AndroidJUnit4),
+[jUnit4](https://github.com/junit-team/junit4) and [Compose Testing](https://developer.android.com/develop/ui/compose/testing).
+These tests are located in: `app/src/androidTest/java/nl/rijksoverheid/mgo/endToEnd`.
 
 #### Integration testing
-Integration tests use a combination of [AndroidJUnit4](https://developer.android.
-com/reference/androidx/test/ext/junit/runners/AndroidJUnit4), [jUnit4](https://github.
-com/junit-team/junit4) and [Compose Testing](https://developer.android.
-com/develop/ui/compose/testing). These tests are located in: 
-`app/src/androidTest/java/nl/rijksoverheid/mgo/integration`.
+Integration tests use a combination of [AndroidJUnit4](https://developer.android.com/reference/androidx/test/ext/junit/runners/AndroidJUnit4), [jUnit4](https://github.com/junit-team/junit4) and [Compose Testing](https://developer.android.com/develop/ui/compose/testing).
+These tests are located in: `app/src/androidTest/java/nl/rijksoverheid/mgo/integration`.
 
 #### Unit testing
 Unit testing is performed using [jUnit4](https://github.com/junit-team/junit4).

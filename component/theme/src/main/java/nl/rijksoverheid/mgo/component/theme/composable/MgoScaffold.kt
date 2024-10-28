@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -47,7 +48,9 @@ fun MgoScaffold(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val localDensity = LocalDensity.current
-    var expandedAppBarHeight by remember { mutableStateOf(Int.MAX_VALUE.dp) }
+    var expandedAppBarHeight by remember {
+        mutableStateOf(Int.MAX_VALUE.dp)
+    }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val scaffoldModifier =
         if (expandedAppBarHeight == Int.MAX_VALUE.dp) {
@@ -65,19 +68,21 @@ fun MgoScaffold(
                     title = {
                         Text(
                             modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .onGloballyPositioned {
-                                        val heightDp = with(localDensity) { it.size.height.toDp() }
-                                        if (heightDp != 0.dp) {
-                                            expandedAppBarHeight = heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
-                                        }
-                                    },
+                            Modifier
+                                .fillMaxWidth()
+                                .onGloballyPositioned {
+                                    val heightDp = with(localDensity) { it.size.height.toDp() }
+                                    if (heightDp != 0.dp) {
+                                        expandedAppBarHeight =
+                                            heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
+                                    }
+                                },
                             text = appBarTitle,
                             textAlign = appBarTitleAlign,
                         )
                     },
-                    expandedHeight = expandedAppBarHeight + 16.dp, // Add 16dp for some bottom padding
+                    expandedHeight = if (LocalInspectionMode.current) TopAppBarDefaults.MediumAppBarExpandedHeight
+                    else expandedAppBarHeight + 16.dp, // Add 16dp for some bottom padding
                     navigationIcon = {
                         onNavigateBack?.let {
                             IconButton(onClick = it) {
@@ -89,10 +94,10 @@ fun MgoScaffold(
                         }
                     },
                     colors =
-                        TopAppBarDefaults.mediumTopAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.background,
-                            scrolledContainerColor = MaterialTheme.colorScheme.background,
-                        ),
+                    TopAppBarDefaults.mediumTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        scrolledContainerColor = MaterialTheme.colorScheme.background,
+                    ),
                     scrollBehavior = scrollBehavior,
                 )
             }
@@ -102,17 +107,17 @@ fun MgoScaffold(
         content = { innerPadding ->
             Column(
                 modifier =
-                    Modifier
-                        .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
-                        .padding(innerPadding)
-                        .padding(contentPadding)
-                        .then(
-                            if (scrollable) {
-                                Modifier.verticalScroll(rememberScrollState())
-                            } else {
-                                Modifier
-                            },
-                        ),
+                Modifier
+                    .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
+                    .padding(innerPadding)
+                    .padding(contentPadding)
+                    .then(
+                        if (scrollable) {
+                            Modifier.verticalScroll(rememberScrollState())
+                        } else {
+                            Modifier
+                        },
+                    ),
             ) {
                 content()
             }

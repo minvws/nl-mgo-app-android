@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -31,7 +31,7 @@ fun MgoBanner(
     buttonText: String? = null,
     onButtonClick: (() -> Unit)? = null,
 ) {
-    Card(modifier = modifier) {
+    MgoCard(modifier = modifier) {
         Row(modifier = Modifier.padding(12.dp)) {
             Icon(
                 painterResource(id = type.getIcon()),

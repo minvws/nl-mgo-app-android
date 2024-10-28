@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
@@ -32,6 +34,7 @@ fun DashboardBottomBarScreen(
 ) {
     var selectedBottomBarItem by rememberSaveable { mutableStateOf(BottomBarItem.OVERVIEW) }
     MgoScaffold(
+        contentPadding = PaddingValues(),
         content = {
             when (selectedBottomBarItem) {
                 BottomBarItem.OVERVIEW -> {
@@ -94,6 +97,7 @@ private fun BottomNavigationBar(
                         selectedTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
                         unselectedIconColor = MaterialTheme.colorScheme.iconsPrimary(),
                         unselectedTextColor = MaterialTheme.colorScheme.iconsPrimary(),
+                        indicatorColor = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(),
                     ),
             )
         }

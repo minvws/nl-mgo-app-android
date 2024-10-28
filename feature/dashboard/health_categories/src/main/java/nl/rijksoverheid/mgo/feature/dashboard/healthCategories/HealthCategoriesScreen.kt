@@ -156,7 +156,7 @@ private fun ColumnScope.WithProviders(
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = Modifier.padding(bottom = 16.dp)) {
+    MgoCard(modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)) {
         Column {
             HealthCareCategory.entries.forEach { category ->
                 HealthCategoriesListItem(

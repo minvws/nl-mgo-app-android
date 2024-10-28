@@ -43,7 +43,7 @@ fun MgoScaffold(
     onNavigateBack: (() -> Unit)? = null,
     scrollable: Boolean = false,
     isRootScaffold: Boolean = true,
-    contentPadding: PaddingValues = if (isRootScaffold) PaddingValues() else PaddingValues(horizontal = 16.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val localDensity = LocalDensity.current
@@ -61,7 +61,6 @@ fun MgoScaffold(
         modifier = scaffoldModifier,
         topBar = {
             appBarTitle?.let {
-                Text(appBarTitle)
                 MediumTopAppBar(
                     title = {
                         Text(

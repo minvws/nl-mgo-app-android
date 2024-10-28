@@ -5,10 +5,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -18,12 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import nl.rijksoverheid.mgo.component.theme.BottomBarSize
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
-import nl.rijksoverheid.mgo.component.theme.LocalBottomBarSize
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 
@@ -34,21 +31,19 @@ fun DashboardBottomBarScreen(
     aboutThisAppTab: @Composable () -> Unit,
 ) {
     var selectedBottomBarItem by rememberSaveable { mutableStateOf(BottomBarItem.OVERVIEW) }
-    Scaffold(
-        content = { paddingValues ->
-            CompositionLocalProvider(LocalBottomBarSize provides BottomBarSize(paddingValues.calculateBottomPadding())) {
-                when (selectedBottomBarItem) {
-                    BottomBarItem.OVERVIEW -> {
-                        overviewTab()
-                    }
+    MgoScaffold(
+        content = {
+            when (selectedBottomBarItem) {
+                BottomBarItem.OVERVIEW -> {
+                    overviewTab()
+                }
 
-                    BottomBarItem.ORGANIZATIONS -> {
-                        organizationsTab()
-                    }
+                BottomBarItem.ORGANIZATIONS -> {
+                    organizationsTab()
+                }
 
-                    BottomBarItem.ABOUT_THIS_APP -> {
-                        aboutThisAppTab()
-                    }
+                BottomBarItem.ABOUT_THIS_APP -> {
+                    aboutThisAppTab()
                 }
             }
         },

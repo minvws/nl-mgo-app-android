@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.component.theme.composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,9 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.theme.LocalBottomBarSize
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import timber.log.Timber
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -44,14 +41,9 @@ fun MgoScaffold(
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
     onNavigateBack: (() -> Unit)? = null,
-    contentPadding: PaddingValues =
-        PaddingValues(
-            16.dp,
-            0.dp,
-            16.dp,
-            0.dp,
-        ),
     scrollable: Boolean = false,
+    isRootScaffold: Boolean = true,
+    contentPadding: PaddingValues = if (isRootScaffold) PaddingValues() else PaddingValues(horizontal = 16.dp),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val localDensity = LocalDensity.current
@@ -74,12 +66,14 @@ fun MgoScaffold(
                     title = {
                         Text(
                             modifier =
-                                Modifier.fillMaxWidth().onGloballyPositioned {
-                                    val heightDp = with(localDensity) { it.size.height.toDp() }
-                                    if (heightDp != 0.dp) {
-                                        expandedAppBarHeight = heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
-                                    }
-                                },
+                                Modifier
+                                    .fillMaxWidth()
+                                    .onGloballyPositioned {
+                                        val heightDp = with(localDensity) { it.size.height.toDp() }
+                                        if (heightDp != 0.dp) {
+                                            expandedAppBarHeight = heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
+                                        }
+                                    },
                             text = appBarTitle,
                             textAlign = appBarTitleAlign,
                         )
@@ -106,13 +100,12 @@ fun MgoScaffold(
         },
         bottomBar = bottomBar,
         snackbarHost = snackbarHost,
-        content = { paddingValues ->
+        content = { innerPadding ->
             Column(
                 modifier =
                     Modifier
-                        .consumeWindowInsets(paddingValues)
-                        .padding(paddingValues)
-                        .padding(top = if (appBarTitle == null) TopAppBarDefaults.MediumAppBarCollapsedHeight else 0.dp)
+                        .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
+                        .padding(innerPadding)
                         .padding(contentPadding)
                         .then(
                             if (scrollable) {
@@ -122,15 +115,7 @@ fun MgoScaffold(
                             },
                         ),
             ) {
-                Timber.v("Check this: " + LocalBottomBarSize.current.size)
-                if (scrollable) {
-                    content()
-                    Spacer(modifier = Modifier.height(LocalBottomBarSize.current.size))
-                } else {
-                    Column(modifier = Modifier.padding(bottom = LocalBottomBarSize.current.size)) {
-                        content()
-                    }
-                }
+                content()
             }
         },
     )

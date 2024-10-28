@@ -90,6 +90,7 @@ private fun HealthCategoriesScreenContent(
     MgoScaffold(
         appBarTitle = appBarTitle,
         scrollable = viewState.providers.isNotEmpty(),
+        isRootScaffold = false,
         onNavigateBack = onNavigateBack,
         content = {
             if (viewState.providers.isEmpty()) {

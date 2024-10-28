@@ -54,9 +54,7 @@ fun ColumnWithButtons(
         onButtonClick = { onButtonClick() },
         secondaryButtonText = secondaryButtonText,
         onSecondaryButtonClick = onSecondaryButtonClick,
-        contentPadding = contentPadding,
         columnContent = columnContent,
-        buttonPadding = buttonPadding,
     )
 }
 
@@ -66,8 +64,6 @@ internal fun ColumnWithButtonsContent(
     canScrollForward: Boolean,
     buttonText: String,
     onButtonClick: () -> Unit,
-    contentPadding: PaddingValues,
-    buttonPadding: PaddingValues,
     modifier: Modifier = Modifier,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
@@ -79,8 +75,7 @@ internal fun ColumnWithButtonsContent(
                 Modifier
                     .weight(1f)
                     .verticalScroll(scrollState)
-                    .testTag(TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN)
-                    .padding(contentPadding),
+                    .testTag(TEST_TAG_COLUMN_WITH_BUTTON_SCROLLABLE_COLUMN),
             content = columnContent,
         )
         if (canScrollForward) {
@@ -92,7 +87,7 @@ internal fun ColumnWithButtonsContent(
         }
         val background = if (canScrollForward) MaterialTheme.colorScheme.surface else Color.Transparent
 
-        Column(modifier = Modifier.fillMaxWidth().background(background).padding(buttonPadding)) {
+        Column(modifier = Modifier.fillMaxWidth().background(background)) {
             if (secondaryButtonText != null && onSecondaryButtonClick != null) {
                 MgoButton(
                     modifier =
@@ -109,7 +104,8 @@ internal fun ColumnWithButtonsContent(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .testTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON),
+                        .testTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON)
+                        .padding(bottom = 16.dp),
                 buttonText = buttonText,
                 onClick = onButtonClick,
             )
@@ -125,8 +121,6 @@ internal fun NotScrollingPreview() {
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = false,
-            contentPadding = PaddingValues(16.dp),
-            buttonPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextNotScrolling()
@@ -142,8 +136,6 @@ internal fun ScrollingPreview() {
             buttonText = "Lorem ipsum",
             onButtonClick = {},
             canScrollForward = true,
-            contentPadding = PaddingValues(16.dp),
-            buttonPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextScrolling()
@@ -161,8 +153,6 @@ internal fun TwoButtonsPreview() {
             secondaryButtonText = "Lorem ipsum 2",
             onSecondaryButtonClick = {},
             canScrollForward = true,
-            contentPadding = PaddingValues(16.dp),
-            buttonPadding = PaddingValues(16.dp),
             scrollState = rememberScrollState(),
         ) {
             PreviewTextScrolling()

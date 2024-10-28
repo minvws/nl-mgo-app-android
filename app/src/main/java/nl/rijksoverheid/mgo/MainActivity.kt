@@ -69,7 +69,12 @@ class MainActivity : FragmentActivity() {
                 val configState by viewModel.configStateFlow.collectAsStateWithLifecycle()
                 when (configState) {
                     ConfigState.NoAction -> {}
-                    ConfigState.UpdateRequired -> navController.navigate(ConfigNavigationScreen.UpdateRequired.getNavigationRoute())
+                    ConfigState.UpdateRequired ->
+                        navController.navigate(ConfigNavigationScreen.UpdateRequired.getNavigationRoute()) {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
                 }
 
                 // Device rooted dialog

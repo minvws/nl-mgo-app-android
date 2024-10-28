@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.login
 
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -83,7 +81,6 @@ private fun PinCodeLoginScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(id = R.string.pincode_validation_heading),
         appBarTitleAlign = TextAlign.Center,
-        contentPadding = PaddingValues(16.dp),
         content = {
             Text(
                 modifier =

@@ -22,11 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.snackbar.MgoSnackbarScaffold
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
@@ -56,7 +56,7 @@ private fun OrganizationsScreenContent(
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
-    MgoSnackbarScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(CopyR.string.healthcare_organizations_heading),
         scrollable = viewState.organizations.isNotEmpty(),
         content = {
@@ -123,11 +123,14 @@ private fun WithOrganizations(
     onClickAddProvider: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MgoCard {
+    MgoCard(modifier = Modifier.padding(top = 2.dp)) {
         Column(modifier = Modifier.fillMaxWidth()) {
             organizations.forEachIndexed { index, organization ->
                 OrganizationCard(
-                    modifier = Modifier.fillMaxWidth().clickable { onClickOrganization(organization) },
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onClickOrganization(organization) },
                     organization = organization,
                     hasDivider = index != organizations.lastIndex,
                 )
@@ -136,10 +139,7 @@ private fun WithOrganizations(
     }
 
     MgoCard(
-        modifier =
-            Modifier
-                .padding(top = 16.dp)
-                .clickable { onClickAddProvider() },
+        modifier = Modifier.padding(top = 16.dp, bottom = 2.dp).clickable { onClickAddProvider() },
     ) {
         Row(
             modifier =

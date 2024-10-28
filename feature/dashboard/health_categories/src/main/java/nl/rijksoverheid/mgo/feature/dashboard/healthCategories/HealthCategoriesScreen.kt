@@ -156,7 +156,7 @@ private fun ColumnScope.WithProviders(
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)) {
+    MgoCard(modifier = Modifier.padding(top = 2.dp)) {
         Column {
             HealthCareCategory.entries.forEach { category ->
                 HealthCategoriesListItem(
@@ -173,9 +173,7 @@ private fun ColumnScope.WithProviders(
 
     if (filterOrganization != null) {
         MgoButton(
-            modifier =
-                Modifier
-                    .align(Alignment.CenterHorizontally),
+            modifier = Modifier.padding(vertical = 16.dp).align(Alignment.CenterHorizontally),
             buttonText = stringResource(id = CopyR.string.health_categories_remove_organization),
             onClick = {
                 onClickRemoveOrganization(filterOrganization)

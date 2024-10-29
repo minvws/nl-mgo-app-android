@@ -37,8 +37,8 @@ suspend fun FragmentActivity.showBiometricPrompt(): Boolean =
 
         val info =
             BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Title")
-                .setSubtitle("Subtitle")
+                .setTitle(getString(CopyR.string.biometric_prompt_heading))
+                .setSubtitle(getString(CopyR.string.biometric_prompt_subheading))
                 .setNegativeButtonText(getString(CopyR.string.common_cancel))
                 .build()
 

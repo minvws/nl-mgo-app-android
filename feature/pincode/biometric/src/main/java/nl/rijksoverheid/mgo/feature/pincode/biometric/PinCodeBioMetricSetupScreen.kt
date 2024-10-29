@@ -4,9 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -21,6 +19,7 @@ import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -44,13 +43,9 @@ private fun PinCodeBioMetricSetupScreenContent(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text(text = "") })
-        },
-        content = { innerPadding ->
+    MgoScaffold(
+        content = {
             ColumnWithButtons(
-                modifier = Modifier.padding(innerPadding),
                 buttonText = stringResource(id = CopyR.string.biometric_setup_enable),
                 secondaryButtonText = stringResource(id = CopyR.string.common_skip),
                 onButtonClick = {

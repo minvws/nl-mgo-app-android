@@ -207,4 +207,6 @@
     <string name="pincode.voiceover">Veld %1$s van %2$s, %3$s</string>
     <string name="pincode.empty.voiceover">Leeg</string>
     <string name="pincode.filled.voiceover">Gevuld</string>
+    <string name="biometric_prompt.heading">Log in met je vingerafdruk</string>
+    <string name="biometric_prompt.subheading">Houd je vinger tegen de scanner op je scherm</string>
 </resources>

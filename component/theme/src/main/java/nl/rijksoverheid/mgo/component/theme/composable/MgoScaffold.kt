@@ -68,21 +68,26 @@ fun MgoScaffold(
                     title = {
                         Text(
                             modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .onGloballyPositioned {
-                                    val heightDp = with(localDensity) { it.size.height.toDp() }
-                                    if (heightDp != 0.dp) {
-                                        expandedAppBarHeight =
-                                            heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
-                                    }
-                                },
+                                Modifier
+                                    .fillMaxWidth()
+                                    .onGloballyPositioned {
+                                        val heightDp = with(localDensity) { it.size.height.toDp() }
+                                        if (heightDp != 0.dp) {
+                                            expandedAppBarHeight =
+                                                heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
+                                        }
+                                    },
                             text = appBarTitle,
                             textAlign = appBarTitleAlign,
                         )
                     },
-                    expandedHeight = if (LocalInspectionMode.current) TopAppBarDefaults.MediumAppBarExpandedHeight
-                    else expandedAppBarHeight + 16.dp, // Add 16dp for some bottom padding
+                    expandedHeight =
+                        if (LocalInspectionMode.current) {
+                            TopAppBarDefaults.MediumAppBarExpandedHeight
+                        } else {
+                            expandedAppBarHeight + 16.dp
+                        },
+                    // Add 16dp for some bottom padding
                     navigationIcon = {
                         onNavigateBack?.let {
                             IconButton(onClick = it) {
@@ -94,10 +99,10 @@ fun MgoScaffold(
                         }
                     },
                     colors =
-                    TopAppBarDefaults.mediumTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        scrolledContainerColor = MaterialTheme.colorScheme.background,
-                    ),
+                        TopAppBarDefaults.mediumTopAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.background,
+                            scrolledContainerColor = MaterialTheme.colorScheme.background,
+                        ),
                     scrollBehavior = scrollBehavior,
                 )
             }
@@ -107,17 +112,17 @@ fun MgoScaffold(
         content = { innerPadding ->
             Column(
                 modifier =
-                Modifier
-                    .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
-                    .padding(innerPadding)
-                    .padding(contentPadding)
-                    .then(
-                        if (scrollable) {
-                            Modifier.verticalScroll(rememberScrollState())
-                        } else {
-                            Modifier
-                        },
-                    ),
+                    Modifier
+                        .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
+                        .padding(innerPadding)
+                        .padding(contentPadding)
+                        .then(
+                            if (scrollable) {
+                                Modifier.verticalScroll(rememberScrollState())
+                            } else {
+                                Modifier
+                            },
+                        ),
             ) {
                 content()
             }

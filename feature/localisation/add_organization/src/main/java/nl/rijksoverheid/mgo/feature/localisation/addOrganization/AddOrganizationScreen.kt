@@ -1,12 +1,19 @@
 package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -58,23 +65,31 @@ private fun AddOrganizationScreenContent(
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,
 ) {
+    val (nameFocusRequester, cityFocusRequester) = FocusRequester.createRefs()
+    LaunchedEffect(Unit) {
+        nameFocusRequester.requestFocus()
+    }
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.add_organization_heading),
         onNavigateBack = onNavigateBack,
         content = {
             ColumnWithButtons(
+                modifier = Modifier.imePadding(),
                 buttonText = stringResource(id = CopyR.string.common_search),
                 onButtonClick = onSearch,
             ) {
                 MgoBasicTextField(
                     modifier =
                         Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .focusRequester(nameFocusRequester),
                     value = viewState.name,
                     header =
                         stringResource(
                             id = CopyR.string.add_organization_name,
                         ),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, capitalization = KeyboardCapitalization.Words),
+                    keyboardActions = KeyboardActions(onNext = { cityFocusRequester.requestFocus() }),
                     onValueChange = onSetName,
                     error = viewState.nameError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
@@ -84,12 +99,15 @@ private fun AddOrganizationScreenContent(
                     modifier =
                         Modifier
                             .fillMaxWidth()
+                            .focusRequester(cityFocusRequester)
                             .padding(top = 16.dp),
                     value = viewState.city,
                     header =
                         stringResource(
                             id = CopyR.string.add_organization_city,
                         ),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, capitalization = KeyboardCapitalization.Words),
+                    keyboardActions = KeyboardActions(onSearch = { onSearch() }),
                     onValueChange = onSetCity,
                     error = viewState.cityError?.let { resource -> stringResource(id = resource) },
                     textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,

@@ -12,8 +12,8 @@ import android.os.VibratorManager
 import androidx.core.content.ContextCompat
 
 enum class MgoVibrateDuration(val millis: Long) {
-    SHORT(150L),
-    LONG(300L),
+    SHORT(100L),
+    LONG(350L),
 }
 
 @SuppressLint("MissingPermission")

@@ -74,8 +74,8 @@ fun MgoScaffold(
         LaunchedEffect(Unit) {
             val visuals = snackbarPresenter.consume()
             if (visuals != null) {
-                snackBarHostState.showSnackbar(visuals = visuals)
                 context.vibrate(MgoVibrateDuration.SHORT)
+                snackBarHostState.showSnackbar(visuals = visuals)
             }
         }
     }

@@ -47,7 +47,7 @@ fun PinCodeItem(
     val animatedScale = remember { Animatable(1f) }
     LaunchedEffect(fill, error) {
         if (fill || error) {
-            val vibrationDuration = if (fill) MgoVibrateDuration.SHORT else MgoVibrateDuration.LONG
+            val vibrationDuration = if (error) MgoVibrateDuration.LONG else MgoVibrateDuration.SHORT
             context.vibrate(vibrationDuration)
 
             animatedScale.animateTo(

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,9 +15,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -33,6 +36,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.MgoVibrateDuration
+import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBar
+import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBarVisuals
+import nl.rijksoverheid.mgo.component.theme.vibrate
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -40,13 +48,13 @@ fun MgoScaffold(
     appBarTitle: String? = null,
     appBarTitleAlign: TextAlign = TextAlign.Start,
     bottomBar: @Composable () -> Unit = {},
-    snackbarHost: @Composable () -> Unit = {},
     onNavigateBack: (() -> Unit)? = null,
     scrollable: Boolean = false,
     isRootScaffold: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val context = LocalContext.current
     val localDensity = LocalDensity.current
     var expandedAppBarHeight by remember {
         mutableStateOf(Int.MAX_VALUE.dp)
@@ -60,6 +68,17 @@ fun MgoScaffold(
                 scrollBehavior.nestedScrollConnection,
             )
         }
+    val snackBarHostState = remember { SnackbarHostState() }
+    if (!LocalInspectionMode.current) {
+        val snackbarPresenter = LocalSnackbarPresenter.current
+        LaunchedEffect(Unit) {
+            val visuals = snackbarPresenter.consume()
+            if (visuals != null) {
+                snackBarHostState.showSnackbar(visuals = visuals)
+                context.vibrate(MgoVibrateDuration.SHORT)
+            }
+        }
+    }
     Scaffold(
         modifier = scaffoldModifier,
         topBar = {
@@ -108,7 +127,11 @@ fun MgoScaffold(
             }
         },
         bottomBar = bottomBar,
-        snackbarHost = snackbarHost,
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState) {
+                MgoSnackBar(visuals = it.visuals as MgoSnackBarVisuals, dismiss = { snackBarHostState.currentSnackbarData?.dismiss() })
+            }
+        },
         content = { innerPadding ->
             Column(
                 modifier =

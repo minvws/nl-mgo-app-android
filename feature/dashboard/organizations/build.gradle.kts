@@ -8,6 +8,5 @@ android {
 
 dependencies {
     implementation(projects.data.localisation)
-    implementation(projects.component.snackbar)
     testImplementation(testFixtures(projects.data.localisation))
 }

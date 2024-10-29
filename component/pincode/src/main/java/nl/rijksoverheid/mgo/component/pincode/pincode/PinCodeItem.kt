@@ -1,15 +1,6 @@
 package nl.rijksoverheid.mgo.component.pincode.pincode
 
-import android.Manifest
-import android.content.Context
-import android.content.Context.VIBRATOR_SERVICE
-import android.content.pm.PackageManager
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
 import android.view.animation.OvershootInterpolator
-import androidx.annotation.RequiresPermission
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -33,12 +24,12 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.MgoVibrateDuration
 import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.vibrate
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-@RequiresPermission(Manifest.permission.VIBRATE)
 @Composable
 fun PinCodeItem(
     position: Int,
@@ -56,21 +47,8 @@ fun PinCodeItem(
     val animatedScale = remember { Animatable(1f) }
     LaunchedEffect(fill, error) {
         if (fill || error) {
-            val hasVibrationPermission =
-                ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.VIBRATE,
-                ) == PackageManager.PERMISSION_GRANTED
-            if (hasVibrationPermission) {
-                val vibrator = context.getVibrator()
-                val vibrationMillis = if (fill) 150L else 300L
-                vibrator.vibrate(
-                    VibrationEffect.createOneShot(
-                        vibrationMillis,
-                        VibrationEffect.DEFAULT_AMPLITUDE,
-                    ),
-                )
-            }
+            val vibrationDuration = if (fill) MgoVibrateDuration.SHORT else MgoVibrateDuration.LONG
+            context.vibrate(vibrationDuration)
 
             animatedScale.animateTo(
                 targetValue = 1.25f,
@@ -114,17 +92,6 @@ fun PinCodeItem(
                     .clip(CircleShape)
                     .background(fillColor),
         )
-    }
-}
-
-private fun Context.getVibrator(): Vibrator {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val vibratorManager =
-            getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-        vibratorManager.defaultVibrator
-    } else {
-        @Suppress("DEPRECATION")
-        getSystemService(VIBRATOR_SERVICE) as Vibrator
     }
 }
 

@@ -1,10 +1,11 @@
-package nl.rijksoverheid.mgo.component.snackbar
+package nl.rijksoverheid.mgo.component.theme.snackbar
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import nl.rijksoverheid.mgo.component.theme.R
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation

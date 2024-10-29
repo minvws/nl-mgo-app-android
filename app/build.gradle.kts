@@ -127,12 +127,6 @@ dependencies {
     implementation(projects.data.pincode)
 
     // ================================
-    // COMPONENTS
-    // ================================
-
-    implementation(projects.component.snackbar)
-
-    // ================================
     // TESTING
     // ================================
 

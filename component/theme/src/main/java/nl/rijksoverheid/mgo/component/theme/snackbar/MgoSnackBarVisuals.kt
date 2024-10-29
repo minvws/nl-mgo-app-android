@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.snackbar
+package nl.rijksoverheid.mgo.component.theme.snackbar
 
 import androidx.annotation.StringRes
 import androidx.compose.material3.SnackbarDuration

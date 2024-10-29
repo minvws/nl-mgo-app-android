@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
@@ -17,6 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.snackbar.DefaultLocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
@@ -41,22 +44,24 @@ class MainActivity : FragmentActivity() {
                 val organizationsNavController = rememberNavController()
                 val navController = rememberNavController()
 
-                NavHost(
-                    navController = navController,
-                    startDestination = startDestination,
-                    enterTransition = { EnterTransition.None },
-                    exitTransition = { ExitTransition.None },
-                ) {
-                    addOnboardingNavGraph(navController = navController)
-                    addPinCodeNavGraph(navController = navController, hasPinCode = viewModel.hasPinCode())
-                    addDashboardNavGraph(
-                        rootNavController = navController,
-                        overviewNavController = overviewNavController,
-                        organizationsNavController = organizationsNavController,
-                    )
-                    addLocalisationNavGraph(navController = navController)
-                    composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
-                        UpdateRequiredScreen()
+                CompositionLocalProvider(LocalSnackbarPresenter provides DefaultLocalSnackbarPresenter()) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = startDestination,
+                        enterTransition = { EnterTransition.None },
+                        exitTransition = { ExitTransition.None },
+                    ) {
+                        addOnboardingNavGraph(navController = navController)
+                        addPinCodeNavGraph(navController = navController, hasPinCode = viewModel.hasPinCode())
+                        addDashboardNavGraph(
+                            rootNavController = navController,
+                            overviewNavController = overviewNavController,
+                            organizationsNavController = organizationsNavController,
+                        )
+                        addLocalisationNavGraph(navController = navController)
+                        composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
+                            UpdateRequiredScreen()
+                        }
                     }
                 }
 

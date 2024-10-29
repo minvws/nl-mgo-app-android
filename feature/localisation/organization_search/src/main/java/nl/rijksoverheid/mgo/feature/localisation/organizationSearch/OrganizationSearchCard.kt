@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -46,7 +45,7 @@ fun OrganizationSearchCard(
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 val address = searchResult.address
                 if (address != null) {
-                    Text(text = address, style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic)
+                    Text(text = address, style = MaterialTheme.typography.bodySmall)
                 }
                 if (searchResult.added) {
                     AddedText(modifier = Modifier.padding(top = 8.dp))

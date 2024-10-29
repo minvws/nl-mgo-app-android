@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -40,6 +42,8 @@ fun MgoBasicTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     header: String? = null,
     error: String? = null,
     textFieldTestTag: String? = null,
@@ -47,6 +51,8 @@ fun MgoBasicTextField(
     var isFocused by remember { mutableStateOf(false) }
     MgoBasicTextFieldContent(
         modifier = modifier,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
         value = value,
         onValueChange = onValueChange,
         onFocusChange = { focus ->
@@ -66,6 +72,8 @@ fun MgoBasicTextFieldContent(
     onFocusChange: (Boolean) -> Unit,
     hasFocus: Boolean,
     modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     header: String? = null,
     error: String? = null,
     textFieldTestTag: String? = null,
@@ -93,6 +101,9 @@ fun MgoBasicTextFieldContent(
                 value = value,
                 onValueChange = onValueChange,
                 textStyle = mergedStyle,
+                singleLine = true,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
                 cursorBrush = SolidColor(LocalContentColor.current),
                 decorationBox = { innerTextField ->
                     Row(

@@ -26,6 +26,7 @@ import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -36,6 +37,7 @@ fun RemoveOrganizationScreen(
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
+    val snackbarPresenter = LocalSnackbarPresenter.current
     val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.providerDeleted.collectLatest {
@@ -46,7 +48,7 @@ fun RemoveOrganizationScreen(
         providerName = providerName,
         onNavigateBack = onNavigateBack,
         onDeleteProvider = {
-            viewModel.delete(providerId)
+            viewModel.delete(snackbarPresenter, providerId)
         },
     )
 }

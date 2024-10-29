@@ -30,29 +30,71 @@ fun PinCode(
     LaunchedEffect(error) {
         if (error) {
             animatedScale.animateTo(
-                targetValue = 1.2f,
+                targetValue = 1.25f,
                 animationSpec =
-                    tween(durationMillis = 250, easing = {
-                        OvershootInterpolator().getInterpolation(it)
-                    }),
+                    tween(
+                        durationMillis = 175,
+                        easing = {
+                            OvershootInterpolator().getInterpolation(it)
+                        },
+                    ),
             )
             animatedScale.animateTo(
                 targetValue = 1f,
                 animationSpec =
-                    tween(durationMillis = 250, easing = {
-                        OvershootInterpolator().getInterpolation(it)
-                    }),
+                    tween(
+                        durationMillis = 175,
+                        easing = {
+                            OvershootInterpolator().getInterpolation(it)
+                        },
+                    ),
             )
             onErrorAnimationFinished()
         }
     }
 
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 1, fill = pinCode.isNotEmpty())
-        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 2, fill = pinCode.size > 1)
-        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 3, fill = pinCode.size > 2)
-        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 4, fill = pinCode.size > 3)
-        PinCodeItemInstance(color = color, scale = animatedScale.value, position = 5, fill = pinCode.size > 4)
+        PinCodeItemInstance(
+            color = color,
+            scale = animatedScale.value,
+            position = 1,
+            error = error,
+            onErrorAnimationFinished = onErrorAnimationFinished,
+            fill = pinCode.isNotEmpty(),
+        )
+        PinCodeItemInstance(
+            color = color,
+            scale = animatedScale.value,
+            position = 2,
+            error = error,
+            onErrorAnimationFinished = onErrorAnimationFinished,
+            fill = pinCode.size > 1,
+        )
+        PinCodeItemInstance(
+            color = color,
+            scale = animatedScale.value,
+            position = 3,
+            error = error,
+            onErrorAnimationFinished = onErrorAnimationFinished,
+            fill = pinCode.size > 2,
+        )
+        PinCodeItemInstance(
+            color = color,
+            scale = animatedScale.value,
+            position = 4,
+            error = error,
+            onErrorAnimationFinished = onErrorAnimationFinished,
+            fill = pinCode.size > 3,
+        )
+        PinCodeItemInstance(
+            color = color,
+            scale = animatedScale.value,
+            position = 5,
+            error = error,
+            onErrorAnimationFinished =
+            onErrorAnimationFinished,
+            fill = pinCode.size > 4,
+        )
     }
 }
 
@@ -60,11 +102,20 @@ fun PinCode(
 private fun PinCodeItemInstance(
     color: Color,
     scale: Float,
+    error: Boolean,
     fill: Boolean,
     position: Int,
+    onErrorAnimationFinished: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    PinCodeItem(modifier = modifier.size(32.dp), color = color, scale = scale, position = position, fill = fill)
+    PinCodeItem(
+        modifier = modifier.size(32.dp),
+        color = color,
+        error = error,
+        onErrorAnimationFinished = onErrorAnimationFinished,
+        position = position,
+        fill = fill,
+    )
 }
 
 @PreviewLightDark

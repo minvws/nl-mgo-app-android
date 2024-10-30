@@ -42,4 +42,8 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
         override suspend fun getString(key: Preferences.Key<String>): String? {
             return encryptedSharedPreferences.getString(key.name, null)
         }
+
+        override fun clear() {
+            this.encryptedSharedPreferences.edit().clear().apply()
+        }
     }

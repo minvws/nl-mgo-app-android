@@ -31,7 +31,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
+fun PinCodeLoginScreen(
+    onNavigateForgotPin: () -> Unit,
+    onPinValidated: () -> Unit,
+) {
     val viewModel: PinCodeLoginScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.navigateToDashboard.collectLatest {
@@ -50,6 +53,7 @@ fun PinCodeLoginScreen(onPinValidated: () -> Unit) {
         onResetError = {
             viewModel.resetError()
         },
+        onNavigateForgotPin = onNavigateForgotPin,
     )
 }
 
@@ -59,6 +63,7 @@ private fun PinCodeLoginScreenContent(
     onBiometricLoginSuccess: () -> Unit,
     onPinCodeEntered: (pinCode: List<Int>) -> Unit,
     onResetError: () -> Unit,
+    onNavigateForgotPin: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -107,6 +112,7 @@ private fun PinCodeLoginScreenContent(
                 },
                 error = viewState.error,
                 hint = stringResource(id = R.string.pincode_forgot),
+                onClickHint = onNavigateForgotPin,
                 hasBiometric = viewState.hasBiometric,
                 onPressBiometric = {
                     coroutineScope.launch {
@@ -136,6 +142,7 @@ internal fun PinCodeLoginScreenPreview() {
             onBiometricLoginSuccess = {},
             onPinCodeEntered = {},
             onResetError = {},
+            onNavigateForgotPin = {},
         )
     }
 }
@@ -154,6 +161,7 @@ internal fun PinCodeLoginScreenErrorPreview() {
             onBiometricLoginSuccess = {},
             onPinCodeEntered = {},
             onResetError = {},
+            onNavigateForgotPin = {},
         )
     }
 }
@@ -172,6 +180,7 @@ internal fun PinCodeLoginWithoutBiometricScreenPreview() {
             onBiometricLoginSuccess = {},
             onPinCodeEntered = {},
             onResetError = {},
+            onNavigateForgotPin = {},
         )
     }
 }

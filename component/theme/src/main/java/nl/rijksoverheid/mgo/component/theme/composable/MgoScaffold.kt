@@ -32,11 +32,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.MgoTypography
 import nl.rijksoverheid.mgo.component.theme.MgoVibrateDuration
+import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBarVisuals
@@ -79,51 +82,64 @@ fun MgoScaffold(
             }
         }
     }
+
     Scaffold(
         modifier = scaffoldModifier,
         topBar = {
             appBarTitle?.let {
-                MediumTopAppBar(
-                    title = {
-                        Text(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .onGloballyPositioned {
-                                        val heightDp = with(localDensity) { it.size.height.toDp() }
-                                        if (heightDp != 0.dp) {
-                                            expandedAppBarHeight =
-                                                heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
-                                        }
-                                    },
-                            text = appBarTitle,
-                            textAlign = appBarTitleAlign,
-                        )
-                    },
-                    expandedHeight =
-                        if (LocalInspectionMode.current) {
-                            TopAppBarDefaults.MediumAppBarExpandedHeight
-                        } else {
-                            expandedAppBarHeight + 16.dp
+                val adjustedTypography =
+                    MgoTypography.copy(
+                        titleLarge =
+                            MaterialTheme.typography.bodySmall.copy(
+                                fontWeight =
+                                    FontWeight
+                                        .Bold,
+                            ),
+                        headlineSmall = MaterialTheme.typography.headingLarge,
+                    )
+                MgoTheme(typography = adjustedTypography) {
+                    MediumTopAppBar(
+                        title = {
+                            Text(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .onGloballyPositioned {
+                                            val heightDp = with(localDensity) { it.size.height.toDp() }
+                                            if (heightDp != 0.dp) {
+                                                expandedAppBarHeight =
+                                                    heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
+                                            }
+                                        },
+                                text = appBarTitle,
+                                textAlign = appBarTitleAlign,
+                            )
                         },
-                    // Add 16dp for some bottom padding
-                    navigationIcon = {
-                        onNavigateBack?.let {
-                            IconButton(onClick = it) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                    contentDescription = stringResource(CopyR.string.common_previous),
-                                )
+                        expandedHeight =
+                            if (LocalInspectionMode.current) {
+                                TopAppBarDefaults.MediumAppBarExpandedHeight
+                            } else {
+                                expandedAppBarHeight + 16.dp
+                            },
+                        // Add 16dp for some bottom padding
+                        navigationIcon = {
+                            onNavigateBack?.let {
+                                IconButton(onClick = it) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                        contentDescription = stringResource(CopyR.string.common_previous),
+                                    )
+                                }
                             }
-                        }
-                    },
-                    colors =
-                        TopAppBarDefaults.mediumTopAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.background,
-                            scrolledContainerColor = MaterialTheme.colorScheme.background,
-                        ),
-                    scrollBehavior = scrollBehavior,
-                )
+                        },
+                        colors =
+                            TopAppBarDefaults.mediumTopAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.background,
+                                scrolledContainerColor = MaterialTheme.colorScheme.background,
+                            ),
+                        scrollBehavior = scrollBehavior,
+                    )
+                }
             }
         },
         bottomBar = bottomBar,

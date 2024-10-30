@@ -44,4 +44,12 @@ internal class DataStoreKeyValueStore(
             }.firstOrNull()
         }
     }
+
+    override fun clear() {
+        runBlocking {
+            dataStore.edit {
+                it.clear()
+            }
+        }
+    }
 }

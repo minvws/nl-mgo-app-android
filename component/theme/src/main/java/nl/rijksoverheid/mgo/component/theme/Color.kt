@@ -9,15 +9,15 @@ import androidx.compose.ui.graphics.compositeOver
 // Base
 @Composable
 fun ColorScheme.backgroundPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF050505) else Color(0xFFFAFAFA)
+    if (isSystemDarkTheme) Color(0xFF0C0C0C) else Color(0xFFF3F3F3)
 
 @Composable
 fun ColorScheme.backgroundSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF1D1D1D) else Color(0xFFFFFFFF)
+    if (isSystemDarkTheme) Color(0xFF222222) else Color(0xFFFFFFFF)
 
 @Composable
 fun ColorScheme.backgroundTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF404040) else Color(0xFFF3F3F3)
+    if (isSystemDarkTheme) Color(0xFF444444) else Color(0xFFE6E6E6)
 
 // Content
 @Composable

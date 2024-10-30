@@ -23,4 +23,6 @@ interface KeyValueStore {
     )
 
     suspend fun getString(key: Preferences.Key<String>): String?
+
+    fun clear()
 }

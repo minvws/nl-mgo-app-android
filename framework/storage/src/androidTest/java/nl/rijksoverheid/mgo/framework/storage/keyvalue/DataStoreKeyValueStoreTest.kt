@@ -47,4 +47,19 @@ internal class DataStoreKeyValueStoreTest {
             // Then
             assertEquals("123", runBlocking { keyValueStore.getString(preferenceKey) })
         }
+
+    @Test
+    fun validateClear() =
+        runTest {
+            // Given
+            val preferenceKey = booleanPreferencesKey("test")
+            val keyValueStore = DataStoreKeyValueStore(dataStore = context.dataStore)
+            keyValueStore.setBoolean(preferenceKey, true)
+
+            // When
+            keyValueStore.clear()
+
+            // Then
+            assertEquals(false, keyValueStore.getBoolean(preferenceKey))
+        }
 }

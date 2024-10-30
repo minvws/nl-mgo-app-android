@@ -86,7 +86,7 @@ private fun PinCodeBioMetricSetupScreenContent(
 
 @DefaultPreviews
 @Composable
-private fun PinCodeBiometricSetupScreenPreview() {
+internal fun PinCodeBiometricSetupScreenPreview() {
     MgoTheme {
         PinCodeBioMetricSetupScreenContent(
             onBiometricLoginSuccess = {},

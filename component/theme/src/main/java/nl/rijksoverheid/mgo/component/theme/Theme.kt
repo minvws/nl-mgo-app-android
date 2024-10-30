@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.component.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -12,11 +13,12 @@ import androidx.compose.ui.Modifier
 fun MgoTheme(
     modifier: Modifier = Modifier,
     darkTheme: Boolean = isSystemInDarkTheme(),
+    typography: Typography = MgoTypography,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colorScheme = if (darkTheme) getDarkColorScheme() else getLightColorScheme(),
-        typography = MgoTypography,
+        typography = typography,
     ) {
         Surface(
             modifier = modifier,
@@ -39,6 +41,7 @@ private fun getDarkColorScheme() =
         onBackground = MaterialTheme.colorScheme.contentPrimary(true),
         onSurface = MaterialTheme.colorScheme.contentPrimary(true),
         error = MaterialTheme.colorScheme.notificationError(true),
+        surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(true),
     )
 
 @Composable
@@ -54,4 +57,5 @@ private fun getLightColorScheme() =
         onBackground = MaterialTheme.colorScheme.contentPrimary(false),
         onSurface = MaterialTheme.colorScheme.contentPrimary(false),
         error = MaterialTheme.colorScheme.notificationError(false),
+        surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(false),
     )

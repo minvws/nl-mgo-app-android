@@ -209,4 +209,7 @@
     <string name="pincode.filled.voiceover">Gevuld</string>
     <string name="biometric_prompt.heading">Log in met je vingerafdruk</string>
     <string name="biometric_prompt.subheading">Houd je vinger tegen de scanner op je scherm</string>
+    <string name="forgot_pincode.button">Maak een nieuw account</string>
+    <string name="forgot_pincode.heading">Je kunt je toegangscode niet aanpassen</string>
+    <string name="forgot_pincode.subheading">Je kunt wel een nieuwe toegangscode instellen als je een nieuw account aanmaakt.</string>
 </resources>

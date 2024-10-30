@@ -38,6 +38,21 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
             // Then
             assertEquals("123", keyValueStore.getString(preferenceKey))
         }
+
+    @Test
+    fun validateClear() =
+        runTest {
+            // Given
+            val preferenceKey = booleanPreferencesKey("test")
+            val keyValueStore = createKeyValueStore()
+            keyValueStore.setBoolean(preferenceKey, true)
+
+            // When
+            keyValueStore.clear()
+
+            // Then
+            assertEquals(false, keyValueStore.getBoolean(preferenceKey))
+        }
 }
 
 private fun createKeyValueStore(): EncryptedSharedPreferencesSecureKeyValueStore {

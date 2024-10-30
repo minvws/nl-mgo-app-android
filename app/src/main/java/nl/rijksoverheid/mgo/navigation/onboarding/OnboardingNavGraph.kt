@@ -28,11 +28,6 @@ fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
                 },
                 onOnboardingFinished = {
                     navController.navigate(PinCodeNavigationScreen.Start.getNavigationRoute())
-//                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
-//                        popUpTo(navController.graph.id) {
-//                            inclusive = true
-//                        }
-//                    }
                 },
             )
         }

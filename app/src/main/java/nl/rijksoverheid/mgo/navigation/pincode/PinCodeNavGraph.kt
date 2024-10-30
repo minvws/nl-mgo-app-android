@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.feature.pincode.biometric.PinCodeBioMetricSetupScree
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreen
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavigation
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
+import nl.rijksoverheid.mgo.feature.pincode.forgot.PinCodeForgotScreen
 import nl.rijksoverheid.mgo.feature.pincode.login.PinCodeLoginScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigationScreen
@@ -70,12 +71,22 @@ fun NavGraphBuilder.addPinCodeNavGraph(
         }
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Login.getRoute()) {
             PinCodeLoginScreen(
+                onNavigateForgotPin = {
+                    navController.navigate(PinCodeNavigationScreen.Forgot.getNavigationRoute())
+                },
                 onPinValidated = {
                     navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
                     }
+                },
+            )
+        }
+        composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Forgot.getRoute()) {
+            PinCodeForgotScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 },
             )
         }

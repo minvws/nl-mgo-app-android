@@ -85,6 +85,13 @@ fun NavGraphBuilder.addPinCodeNavGraph(
         }
         composableWithDefaultScreenTransitions(route = PinCodeNavigationScreen.Forgot.getRoute()) {
             PinCodeForgotScreen(
+                onNavigateToPinCodeCreate = {
+                    navController.navigate(PinCodeNavigationScreen.Create.getNavigationRoute()) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                },
                 onNavigateBack = {
                     navController.popBackStack()
                 },

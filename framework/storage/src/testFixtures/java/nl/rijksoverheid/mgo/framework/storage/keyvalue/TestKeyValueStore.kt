@@ -27,4 +27,9 @@ class TestKeyValueStore : KeyValueStore {
     override suspend fun getString(key: Preferences.Key<String>): String? {
         return strings[key]
     }
+
+    override fun clear() {
+        strings.clear()
+        booleans.clear()
+    }
 }

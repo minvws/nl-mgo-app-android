@@ -57,7 +57,7 @@ private fun OrganizationsScreenContent(
     onClickAddProvider: () -> Unit,
 ) {
     MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.healthcare_organizations_heading),
+        appBarTitle = stringResource(CopyR.string.organizations_heading),
         scrollable = viewState.organizations.isNotEmpty(),
         content = {
             if (viewState.organizations.isEmpty()) {
@@ -81,7 +81,7 @@ private fun NoOrganizations(
     ColumnWithButtons(
         modifier = modifier,
         contentPadding = PaddingValues(horizontal = 16.dp),
-        buttonText = stringResource(id = CopyR.string.overview_add_organization),
+        buttonText = stringResource(id = CopyR.string.common_add_organizations),
         onButtonClick = onClickAddProvider,
     ) {
         Spacer(modifier = Modifier.weight(1f))
@@ -98,7 +98,7 @@ private fun NoOrganizations(
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.overview_empty_heading),
+            text = stringResource(id = CopyR.string.common_no_organizations_heading),
             style = MaterialTheme.typography.headingSmall,
             textAlign = TextAlign.Center,
         )
@@ -107,7 +107,7 @@ private fun NoOrganizations(
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),
-            text = stringResource(id = CopyR.string.overview_empty_subheading),
+            text = stringResource(id = CopyR.string.common_no_organizations_subheading),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.contentTertiary(),
             textAlign = TextAlign.Center,
@@ -147,7 +147,7 @@ private fun WithOrganizations(
                     .fillMaxWidth()
                     .padding(16.dp),
         ) {
-            Text(text = stringResource(id = CopyR.string.overview_add_organization), style = MaterialTheme.typography.bodySmall)
+            Text(text = stringResource(id = CopyR.string.common_add_organizations), style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 modifier = Modifier.padding(start = 8.dp),

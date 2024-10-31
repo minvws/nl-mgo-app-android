@@ -37,6 +37,4 @@ sealed class LocalisationNavigationScreen(override val name: String, override va
             return requireNotNull(backStackEntry.arguments?.getString(placeholders[1]))
         }
     }
-
-    data object Stored : LocalisationNavigationScreen("localisation-stored")
 }

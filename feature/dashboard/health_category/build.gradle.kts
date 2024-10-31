@@ -14,7 +14,6 @@ dependencies {
     implementation(projects.data.localisation)
     implementation(projects.framework.environment)
     implementation(projects.framework.navigation)
-    implementation(projects.component.results)
     implementation(projects.data.uiSchema)
     implementation(projects.data.healthcare)
     implementation(projects.component.banner)

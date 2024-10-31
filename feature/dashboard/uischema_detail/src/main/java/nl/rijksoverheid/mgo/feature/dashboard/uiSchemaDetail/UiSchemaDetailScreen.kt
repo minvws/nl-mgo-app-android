@@ -123,7 +123,7 @@ private fun String.getStringFromResourceWithFallback(): String {
 
 @Composable
 private fun ChildDisplay?.getStringOrUnknown(): String {
-    if (this == null) return stringResource(id = R.string.fhir_unknown)
+    if (this == null) return stringResource(id = R.string.common_unknown)
     return when (this) {
         is ChildDisplay.StringValue -> this.value
         is ChildDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
@@ -142,7 +142,7 @@ private fun DisplayElement.getString(): String {
 internal fun UiSchemaDetailScreenPreview() {
     MgoTheme {
         UiSchemaDetailScreen(
-            toolbarTitle = stringResource(id = R.string.medication_details_heading),
+            toolbarTitle = stringResource(id = R.string.hc_medication_heading_detail),
             uiSchema = TEST_UI_SCHEMA_MEDICATION,
             onNavigateBack = {},
         )

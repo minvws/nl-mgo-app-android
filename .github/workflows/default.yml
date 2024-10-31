@@ -45,7 +45,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew runTests
+          script: ./gradlew runTests verifyPaparazziDebug
           profile: pixel
       - name: Run SonarCloud scanner
         run: ./gradlew sonar --info

@@ -8,7 +8,6 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.getTitle
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -54,7 +53,7 @@ internal class HealthCategoryScreenViewModel
                                     else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
                                 }
                             HealthCategoryScreenViewState(
-                                title = arguments.category.getTitle(),
+                                category = arguments.category,
                                 showErrorBanner = error,
                                 listItemsState = listItemState,
                             )

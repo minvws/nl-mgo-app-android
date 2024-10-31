@@ -51,7 +51,7 @@ private fun PinCodeForgotScreenContent(
     if (showDialog) {
         AlertDialog(
             title = { Text(text = stringResource(id = R.string.forgot_pincode_dialog_heading)) },
-            text = { Text(text = stringResource(id = R.string.forgot_pincode_subheading)) },
+            text = { Text(text = stringResource(id = R.string.forgot_pincode_dialog_subheading)) },
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 TextButton(

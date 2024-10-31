@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +33,7 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
+import nl.rijksoverheid.mgo.component.theme.getStringResourceByName
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.supportApotheek
@@ -49,7 +52,6 @@ import nl.rijksoverheid.mgo.component.theme.supportVerloskundige
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
 import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.getTitle
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
@@ -114,7 +116,7 @@ private fun NoProviders(
     ColumnWithButtons(
         modifier = modifier,
         contentPadding = PaddingValues(horizontal = 16.dp),
-        buttonText = stringResource(id = CopyR.string.overview_add_organization),
+        buttonText = stringResource(id = CopyR.string.common_add_organizations),
         onButtonClick = onClickAddProvider,
     ) {
         Spacer(modifier = Modifier.weight(1f))
@@ -131,7 +133,7 @@ private fun NoProviders(
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.overview_empty_heading),
+            text = stringResource(id = CopyR.string.common_no_organizations_heading),
             style = MaterialTheme.typography.headingSmall,
             textAlign = TextAlign.Center,
         )
@@ -140,7 +142,7 @@ private fun NoProviders(
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),
-            text = stringResource(id = CopyR.string.overview_empty_subheading),
+            text = stringResource(id = CopyR.string.common_no_organizations_subheading),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.contentTertiary(),
             textAlign = TextAlign.Center,
@@ -174,7 +176,7 @@ private fun ColumnScope.WithProviders(
     if (filterOrganization != null) {
         MgoButton(
             modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally),
-            buttonText = stringResource(id = CopyR.string.health_categories_remove_organization),
+            buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
             onClick = {
                 onClickRemoveOrganization(filterOrganization)
             },
@@ -183,8 +185,18 @@ private fun ColumnScope.WithProviders(
     }
 }
 
+@Composable
+@StringRes
+private fun HealthCareCategory.getTitle(): Int {
+    val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading")
+    if (stringResource == 0) {
+        return CopyR.string.common_unknown
+    }
+    return stringResource
+}
+
 @DrawableRes
-fun HealthCareCategory.getIcon(): Int {
+private fun HealthCareCategory.getIcon(): Int {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> R.drawable.ic_medication
         HealthCareCategory.MEASUREMENTS -> R.drawable.ic_measurements
@@ -206,7 +218,7 @@ fun HealthCareCategory.getIcon(): Int {
 }
 
 @Composable
-fun HealthCareCategory.getIconColor(): Color {
+private fun HealthCareCategory.getIconColor(): Color {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> MaterialTheme.colorScheme.supportHuisarts()
         HealthCareCategory.MEASUREMENTS -> MaterialTheme.colorScheme.supportApotheek()

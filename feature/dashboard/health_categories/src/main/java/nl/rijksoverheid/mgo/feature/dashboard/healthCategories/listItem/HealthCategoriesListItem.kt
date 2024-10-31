@@ -139,7 +139,7 @@ internal fun HealthCategoriesListItemLoadingPreview() {
     MgoTheme {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
-            title = CopyR.string.health_category_medication,
+            title = CopyR.string.hc_medication_heading,
             iconColor = MaterialTheme.colorScheme.supportHuisarts(),
             listItemState = HealthCategoriesListItemState.LOADING,
         )
@@ -152,7 +152,7 @@ internal fun HealthCategoriesListItemNoDataPreview() {
     MgoTheme {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
-            title = CopyR.string.health_category_medication,
+            title = CopyR.string.hc_medication_heading,
             iconColor = MaterialTheme.colorScheme.supportHuisarts(),
             listItemState = HealthCategoriesListItemState.NO_DATA,
         )
@@ -165,7 +165,7 @@ internal fun HealthCategoriesListItemLoadedPreview() {
     MgoTheme {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
-            title = CopyR.string.health_category_medication,
+            title = CopyR.string.hc_medication_heading,
             iconColor = MaterialTheme.colorScheme.supportHuisarts(),
             listItemState = HealthCategoriesListItemState.LOADED,
         )

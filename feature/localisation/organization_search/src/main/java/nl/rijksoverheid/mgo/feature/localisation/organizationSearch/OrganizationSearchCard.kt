@@ -1,5 +1,8 @@
 package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -33,11 +37,20 @@ fun OrganizationSearchCard(
     onClick: (searchResult: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val cardState = searchResult.getCardState()
+    val cardBackgroundColor =
+        when (cardState) {
+            OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
+            else -> MaterialTheme.colorScheme.backgroundTertiary()
+        }
     MgoCard(modifier = modifier) {
         Row(
             modifier =
                 Modifier
-                    .clickable { onClick(searchResult) }
+                    .background(cardBackgroundColor)
+                    .clickable(enabled = cardState == OrganizationSearchCardState.ADD) {
+                        onClick(searchResult)
+                    }
                     .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
                     .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
         ) {
@@ -47,11 +60,34 @@ fun OrganizationSearchCard(
                 if (address != null) {
                     Text(text = address, style = MaterialTheme.typography.bodySmall)
                 }
-                if (searchResult.added) {
-                    AddedText(modifier = Modifier.padding(top = 8.dp))
+                when (cardState) {
+                    OrganizationSearchCardState.ADD -> {}
+                    OrganizationSearchCardState.ADDED -> {
+                        AdditionalText(
+                            text = CopyR.string.add_organization_already_added,
+                            icon = R.drawable.ic_search_result_card_added,
+                            modifier = Modifier.padding(top = 8.dp),
+                        )
+                    }
+
+                    OrganizationSearchCardState.NOT_SUPPORTED -> {
+                        AdditionalText(
+                            text = CopyR.string.add_organization_not_participating,
+                            icon = R.drawable.ic_search_result_card_added,
+                            modifier = Modifier.padding(top = 8.dp),
+                        )
+                    }
+
+                    OrganizationSearchCardState.NOT_IMPLEMENTED -> {
+                        AdditionalText(
+                            text = CopyR.string.add_organization_not_implemented,
+                            icon = R.drawable.ic_search_result_card_added,
+                            modifier = Modifier.padding(top = 8.dp),
+                        )
+                    }
                 }
             }
-            if (!searchResult.added) {
+            if (cardState == OrganizationSearchCardState.ADD) {
                 IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick(searchResult) }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_search_result_card_add),
@@ -65,16 +101,20 @@ fun OrganizationSearchCard(
 }
 
 @Composable
-private fun AddedText(modifier: Modifier = Modifier) {
+private fun AdditionalText(
+    @StringRes text: Int,
+    @DrawableRes icon: Int,
+    modifier: Modifier = Modifier,
+) {
     CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
         Row(modifier = modifier) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_search_result_card_added),
+                painter = painterResource(id = icon),
                 contentDescription = null,
             )
             Text(
                 modifier = Modifier.padding(start = 4.dp),
-                text = stringResource(id = CopyR.string.add_organization_already_added),
+                text = stringResource(text),
                 style = MaterialTheme.typography.bodySmall,
             )
         }

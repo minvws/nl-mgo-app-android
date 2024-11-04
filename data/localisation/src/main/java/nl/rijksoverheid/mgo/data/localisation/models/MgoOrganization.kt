@@ -35,7 +35,7 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
         category = types.firstOrNull()?.displayName,
         added = added,
         dataServices =
-            dataServices.mapNotNull { dataService ->
+            dataServices.map { dataService ->
                 when (dataService.id) {
                     DATA_SERVICE_BGZ ->
                         MgoOrganizationDataService(
@@ -48,7 +48,12 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
                             resourceEndpoint = dataService.roles.first().resourceEndpoint,
                             MgoOrganizationDataServiceType.GP,
                         )
-                    else -> null
+
+                    else ->
+                        MgoOrganizationDataService(
+                            resourceEndpoint = dataService.roles.first().resourceEndpoint,
+                            MgoOrganizationDataServiceType.NOT_SUPPORTED,
+                        )
                 }
             },
     )

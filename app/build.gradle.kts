@@ -1,6 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("AndroidApplicationPlugin")
+    alias(libs.plugins.serializable)
 }
 
 android {
@@ -74,6 +75,7 @@ dependencies {
     // ================================
     implementation(libs.rootbeer)
     implementation(libs.jackson)
+    implementation(libs.kotlinx.serialization.json)
 
     // ================================
     // FEATURES

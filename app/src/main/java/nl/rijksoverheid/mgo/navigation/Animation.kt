@@ -59,6 +59,17 @@ fun NavGraphBuilder.composableWithDefaultScreenTransitions(
     content = content,
 )
 
+inline fun <reified T : Any> NavGraphBuilder.newComposableWithDefaultScreenTransitions(
+    deepLinks: List<NavDeepLink> = emptyList(),
+    noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
+) = composable<T>(
+    deepLinks = deepLinks,
+    enterTransition = { defaultScreenEnterTransition() },
+    exitTransition = { defaultScreenExitTransition() },
+    popEnterTransition = { defaultScreenPopEnterTransition() },
+    content = content,
+)
+
 fun AnimatedContentTransitionScope<NavBackStackEntry>.defaultScreenEnterTransition() =
     slideIntoContainer(
         AnimatedContentTransitionScope.SlideDirection.Start,

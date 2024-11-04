@@ -5,23 +5,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.onboarding.introduction.IntroductionScreen
 import nl.rijksoverheid.mgo.feature.onboarding.proposition.PropositionOverviewScreen
-import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigationScreen
 
 fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
-    navigation(
-        startDestination = OnboardingNavigationScreen.Introduction.getRoute(),
-        route = OnboardingNavigationScreen.Start.getRoute(),
-    ) {
-        composableWithDefaultScreenTransitions(route = OnboardingNavigationScreen.Introduction.getRoute()) {
+    navigation<OnboardingNavigation.Root>(OnboardingNavigation.Introduction) {
+        newComposableWithDefaultScreenTransitions<OnboardingNavigation.Introduction> {
             IntroductionScreen(
                 onNavigateToProposition = {
-                    navController.navigate(OnboardingNavigationScreen.Proposition.getNavigationRoute())
+                    navController.navigate(OnboardingNavigation.Proposition)
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(route = OnboardingNavigationScreen.Proposition.getRoute()) {
+        newComposableWithDefaultScreenTransitions<OnboardingNavigation.Proposition> {
             PropositionOverviewScreen(
                 onNavigateBack = {
                     navController.popBackStack()

@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,8 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
+import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.component.theme.notificationInformation
+import nl.rijksoverheid.mgo.component.theme.notificationSuccess
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -34,14 +38,14 @@ const val TEST_TAG_ORGANIZATION_SEARCH_CARD = "ORGANIZATION_SEARCH_CARD"
 @Composable
 fun OrganizationSearchCard(
     searchResult: MgoOrganization,
+    cardState: OrganizationSearchCardState,
     onClick: (searchResult: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val cardState = searchResult.getCardState()
     val cardBackgroundColor =
         when (cardState) {
             OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
-            else -> MaterialTheme.colorScheme.backgroundTertiary()
+            else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
         }
     MgoCard(modifier = modifier) {
         Row(
@@ -66,6 +70,7 @@ fun OrganizationSearchCard(
                         AdditionalText(
                             text = CopyR.string.add_organization_already_added,
                             icon = R.drawable.ic_search_result_card_added,
+                            contentColor = MaterialTheme.colorScheme.notificationSuccess(),
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
@@ -73,7 +78,8 @@ fun OrganizationSearchCard(
                     OrganizationSearchCardState.NOT_SUPPORTED -> {
                         AdditionalText(
                             text = CopyR.string.add_organization_not_participating,
-                            icon = R.drawable.ic_search_result_card_added,
+                            icon = R.drawable.ic_search_result_card_not_supported,
+                            contentColor = MaterialTheme.colorScheme.notificationError(),
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
@@ -81,7 +87,8 @@ fun OrganizationSearchCard(
                     OrganizationSearchCardState.NOT_IMPLEMENTED -> {
                         AdditionalText(
                             text = CopyR.string.add_organization_not_implemented,
-                            icon = R.drawable.ic_search_result_card_added,
+                            icon = R.drawable.ic_search_result_card_not_implemented,
+                            contentColor = MaterialTheme.colorScheme.notificationInformation(),
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
@@ -104,18 +111,20 @@ fun OrganizationSearchCard(
 private fun AdditionalText(
     @StringRes text: Int,
     @DrawableRes icon: Int,
+    contentColor: Color,
     modifier: Modifier = Modifier,
 ) {
-    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
+    CompositionLocalProvider(LocalContentColor provides contentColor) {
         Row(modifier = modifier) {
             Icon(
                 painter = painterResource(id = icon),
                 contentDescription = null,
             )
             Text(
-                modifier = Modifier.padding(start = 4.dp),
+                modifier = Modifier.padding(start = 6.dp),
                 text = stringResource(text),
                 style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
             )
         }
     }
@@ -123,12 +132,13 @@ private fun AdditionalText(
 
 @PreviewLightDark
 @Composable
-internal fun OrganizationSearchCardNotAddedPreview() {
+internal fun OrganizationSearchCardAddPreview() {
     MgoTheme {
         OrganizationSearchCard(
             searchResult = TEST_MGO_ORGANIZATION,
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
+            cardState = OrganizationSearchCardState.ADD,
         )
     }
 }
@@ -141,6 +151,33 @@ internal fun OrganizationSearchCardAddedPreview() {
             searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
+            cardState = OrganizationSearchCardState.ADDED,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun OrganizationSearchCardNotSupportedPreview() {
+    MgoTheme {
+        OrganizationSearchCard(
+            searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+            onClick = { },
+            modifier = Modifier.padding(all = 16.dp),
+            cardState = OrganizationSearchCardState.NOT_SUPPORTED,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun OrganizationSearchCardNotImplementedPreview() {
+    MgoTheme {
+        OrganizationSearchCard(
+            searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+            onClick = { },
+            modifier = Modifier.padding(all = 16.dp),
+            cardState = OrganizationSearchCardState.NOT_IMPLEMENTED,
         )
     }
 }

@@ -56,6 +56,10 @@ internal class DefaultMgoOrganizationRepositoryTest {
                         dataServices =
                             listOf(
                                 MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/51",
+                                    type = MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
+                                ),
+                                MgoOrganizationDataService(
                                     resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/49",
                                     type = MgoOrganizationDataServiceType.GP,
                                 ),

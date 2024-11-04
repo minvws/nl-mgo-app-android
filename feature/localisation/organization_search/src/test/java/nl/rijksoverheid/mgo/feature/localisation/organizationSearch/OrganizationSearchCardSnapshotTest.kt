@@ -10,6 +10,13 @@ internal class OrganizationSearchCardSnapshotTest {
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
+    fun add() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            OrganizationSearchCardAddPreview()
+        }
+    }
+
+    @Test
     fun added() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
             OrganizationSearchCardAddedPreview()
@@ -17,9 +24,16 @@ internal class OrganizationSearchCardSnapshotTest {
     }
 
     @Test
-    fun notAdded() {
+    fun notSupported() {
         snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            OrganizationSearchCardNotAddedPreview()
+            OrganizationSearchCardNotSupportedPreview()
+        }
+    }
+
+    @Test
+    fun notImplemented() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            OrganizationSearchCardNotImplementedPreview()
         }
     }
 }

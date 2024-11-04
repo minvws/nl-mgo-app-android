@@ -3,14 +3,14 @@
   <string name="account_removed.action">Oké, begrepen</string>
   <string name="account_removed.heading">Je account is verwijderd</string>
   <string name="account_removed.subheading">Je gegevens zijn verwijderd van je telefoon. Ze blijven wel veilig bewaard bij je zorgaanbieders. Als je een nieuw account maakt, kun je je gegevens opnieuw ophalen.</string>
-  <string name="add_organization.already_added">Deze zorgaanbieder heb je al toegevoegd</string>
+  <string name="add_organization.already_added">Zorgaanbieder al toevoegd</string>
   <string name="add_organization.city">Plaats (verplicht)</string>
   <string name="add_organization.error_missing_city">Vul een plaats in</string>
   <string name="add_organization.error_missing_name">Vul een naam in</string>
   <string name="add_organization.heading">Welke zorgaanbieder wil je toevoegen?</string>
   <string name="add_organization.name">Naam (verplicht)</string>
-  <string name="add_organization.not_implemented">Deze zorgaanbieder ondersteunen we nog niet</string>
-  <string name="add_organization.not_participating">Deze zorgaanbieder doet niet mee</string>
+  <string name="add_organization.not_implemented">Zorgaanbieder nog niet beschikbaar</string>
+  <string name="add_organization.not_participating">Zorgaanbieder doet niet mee</string>
   <string name="add_organization_list.add_organization">Voeg een zorgaanbieder toe</string>
   <string name="add_organization_list.heading">Welke zorgaanbieders wil je in je overzicht tonen?</string>
   <string name="add_organization_list.no_results_subheading">Je hebt nog geen zorgaanbieders toegevoegd aan deze lijst. Je kunt dit nu doen, of later via je profiel.</string>
@@ -81,7 +81,7 @@
   <string name="hc_medication.heading">Medicijnen</string>
   <string name="hc_medication.heading_detail">Alle medicijngegevens</string>
   <string name="hc_mental.heading">Mentaal welzijn</string>
-  <string name="hc_mental.heading_details">All mentaal welzijngegevens</string>
+  <string name="hc_mental.heading_detail">All mentaal welzijngegevens</string>
   <string name="hc_patient.heading">Persoonlijke gegevens</string>
   <string name="hc_patient.heading_detail">Alle persoonlijke gegevens</string>
   <string name="hc_payment.heading">Betaalgegevens</string>

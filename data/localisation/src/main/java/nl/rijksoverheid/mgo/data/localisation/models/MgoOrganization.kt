@@ -17,6 +17,12 @@ data class MgoOrganization(
 
 val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
 val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)
+val TEST_NOT_IMPLEMENTED_DATA_SERVICE =
+    MgoOrganizationDataService(
+        resourceEndpoint = "",
+        type = MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
+    )
+
 val TEST_MGO_ORGANIZATION =
     MgoOrganization(
         id = "1",
@@ -35,7 +41,7 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
         category = types.firstOrNull()?.displayName,
         added = added,
         dataServices =
-            dataServices.mapNotNull { dataService ->
+            dataServices.map { dataService ->
                 when (dataService.id) {
                     DATA_SERVICE_BGZ ->
                         MgoOrganizationDataService(
@@ -48,7 +54,12 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
                             resourceEndpoint = dataService.roles.first().resourceEndpoint,
                             MgoOrganizationDataServiceType.GP,
                         )
-                    else -> null
+
+                    else ->
+                        MgoOrganizationDataService(
+                            resourceEndpoint = dataService.roles.first().resourceEndpoint,
+                            MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
+                        )
                 }
             },
     )

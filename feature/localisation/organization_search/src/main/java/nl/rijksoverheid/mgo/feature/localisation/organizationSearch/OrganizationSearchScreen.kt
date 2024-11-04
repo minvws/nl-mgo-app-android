@@ -146,13 +146,15 @@ private fun OrganizationSearchScreenContent(
 ) {
     LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp)) {
         items(searchResults.size) { position ->
+            val searchResult = searchResults[position]
             OrganizationSearchCard(
                 modifier =
                     Modifier
                         .padding(bottom = 8.dp)
                         .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
-                searchResult = searchResults[position],
+                searchResult = searchResult,
                 onClick = onAddSearchResult,
+                cardState = searchResult.getCardState(),
             )
         }
     }

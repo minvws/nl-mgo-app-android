@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.config.api
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ConfigResponse(
     val androidMinimumVersion: Int,
 )

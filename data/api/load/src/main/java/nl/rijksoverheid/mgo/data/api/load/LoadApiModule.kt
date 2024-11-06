@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.data.api.load
 
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,11 +8,13 @@ import nl.nl.rijksoverheid.mgo.framework.network.BasicAuthInterceptor
 import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.serialization.json.Json
 
 fun createLoadApi(
     okHttpClient: OkHttpClient,
@@ -23,13 +24,13 @@ fun createLoadApi(
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(createMoshi()).asLenient())
+            .addConverterFactory(
+                Json.asConverterFactory(
+                    "application/json; charset=UTF8".toMediaType(),
+                ),
+            )
             .build()
     return retrofit.create(LoadApi::class.java)
-}
-
-private fun createMoshi(): Moshi {
-    return Moshi.Builder().build()
 }
 
 @InstallIn(SingletonComponent::class)

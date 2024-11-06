@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit.kotlinx.serialization.converter)
     implementation(projects.framework.environment)
 }

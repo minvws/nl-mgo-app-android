@@ -2,16 +2,22 @@ package nl.rijksoverheid.mgo.framework.storage.file
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
-import com.squareup.moshi.Moshi
 import java.io.File
+import kotlin.reflect.KClass
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 internal class EncryptedFileStore(
     val context: Context,
-    private val moshi: Moshi,
     private val masterKeyAlias: String,
 ) : FileStore {
+    private val json = Json
+
+    @OptIn(InternalSerializationApi::class)
     override suspend fun <O : Any> saveFile(
-        clazz: O,
+        value: O,
+        clazz: KClass<O>,
         name: String,
     ) {
         // Create file
@@ -32,14 +38,15 @@ internal class EncryptedFileStore(
             ).build()
 
         // Write json string to file
-        val json = moshi.adapter<O>(clazz::class.java).toJson(clazz)
+        val jsonString = json.encodeToString(clazz.serializer(), value)
         encryptedFile.openFileOutput().use { outputStream ->
-            outputStream.write(json.toByteArray())
+            outputStream.write(jsonString.toByteArray())
         }
     }
 
+    @OptIn(InternalSerializationApi::class)
     override suspend fun <O : Any> getFile(
-        clazz: Class<O>,
+        clazz: KClass<O>,
         name: String,
     ): O? {
         // Get file
@@ -64,6 +71,6 @@ internal class EncryptedFileStore(
             }
 
         // Return object
-        return moshi.adapter(clazz).fromJson(jsonString)
+        return json.decodeFromString(clazz.serializer(), jsonString)
     }
 }

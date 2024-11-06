@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.api.load
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class SearchRequestBody(
     val name: String,
     val city: String,

@@ -1,13 +1,16 @@
 package nl.rijksoverheid.mgo.framework.storage.file
 
+import kotlin.reflect.KClass
+
 interface FileStore {
     suspend fun <O : Any> saveFile(
-        clazz: O,
+        value: O,
+        clazz: KClass<O>,
         name: String,
     )
 
     suspend fun <O : Any> getFile(
-        clazz: Class<O>,
+        clazz: KClass<O>,
         name: String,
     ): O?
 }

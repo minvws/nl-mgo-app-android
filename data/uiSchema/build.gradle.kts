@@ -12,6 +12,4 @@ android {
 
 dependencies {
     implementation(libs.j2v8) { artifact { type = "aar" } }
-    implementation(libs.jackson)
-    implementation(libs.kotlinx.serialization.json)
 }

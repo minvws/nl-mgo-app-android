@@ -15,7 +15,4 @@ dependencies {
     testImplementation(testFixtures(projects.framework.test))
     implementation(projects.data.api.load)
     implementation(projects.framework.storage)
-    implementation(libs.moshi.sealed)
-    implementation(libs.kotlinx.serialization.json)
-    ksp(libs.moshi.sealed.codegen)
 }

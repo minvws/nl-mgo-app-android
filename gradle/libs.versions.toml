@@ -44,7 +44,6 @@ json = "20210307"
 rootbeer = "0.1.0"
 mockk = "1.13.11"
 j2v8 = "6.2.1"
-jackson = "2.17.2"
 bcrypt = "0.4"
 biometric = "1.4.0-alpha02"
 security-crypto = "1.0.0"
@@ -69,18 +68,14 @@ compose-navigation = { group = "androidx.navigation", name = "navigation-compose
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger-hilt" }
-dagger-hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref ="dagger-hilt-compose-navigation" }
+dagger-hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "dagger-hilt-compose-navigation" }
 dagger-hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "dagger-hilt" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "dagger" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 chucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-no-op = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
-moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
-moshi-sealed = { group = "dev.zacsweers.moshix", name = "moshi-sealed-runtime", version.ref = "moshi-sealed" }
-moshi-sealed-codegen = { group = "dev.zacsweers.moshix", name = "moshi-sealed-codegen", version.ref = "moshi-sealed" }
+retrofit-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref ="retrofit" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }
 coroutines-bom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinx-coroutines" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
@@ -92,14 +87,13 @@ androidx-test-core = { group = "androidx.test", name = "core", version.ref = "an
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp-mockwebserver" }
-okio = { group = "com.squareup.okio", name ="okio", version.ref = "okio" }
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso-intents" }
 lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "lokalise" }
 json = { group = "org.json", name = "json", version.ref = "json" }
 rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 j2v8 = { group = "com.eclipsesource.j2v8", name = "j2v8", version.ref = "j2v8" }
-jackson = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
 bcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "bcrypt" }
 biometric = { group = "androidx.biometric", name = "biometric-ktx", version.ref = "biometric" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }

@@ -11,8 +11,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.moshi.kotlin)
-    implementation(libs.kotlinx.serialization.json)
     implementation(projects.data.localisation)
     implementation(projects.framework.environment)
     implementation(projects.framework.navigation)

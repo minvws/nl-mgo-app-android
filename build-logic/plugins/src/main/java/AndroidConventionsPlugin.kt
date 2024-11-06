@@ -202,6 +202,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
             addBillOfMaterials("compose.bom")
             addBillOfMaterials("coroutines.bom")
 
+            // Json serialization
             add("implementation", versionCatalog.findLibrary("kotlinx.serialization.json").get())
 
             // Coroutines
@@ -228,9 +229,6 @@ class AndroidConventionsPlugin : Plugin<Project> {
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())
-
-            // Moshi
-            add("ksp", versionCatalog.findLibrary("moshi.kotlin.codegen").get())
 
             // Test Fixtures
             add("testFixturesImplementation", versionCatalog.findLibrary("coroutines-core").get())

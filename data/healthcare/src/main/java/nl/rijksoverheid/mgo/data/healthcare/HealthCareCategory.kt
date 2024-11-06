@@ -1,8 +1,5 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
-import com.squareup.moshi.JsonClass
-
-@JsonClass(generateAdapter = false)
 enum class HealthCareCategory(val id: String) {
     MEDICATIONS("medication"),
     MEASUREMENTS("measurements"),

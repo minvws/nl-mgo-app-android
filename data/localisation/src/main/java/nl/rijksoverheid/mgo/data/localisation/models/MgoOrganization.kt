@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.data.localisation.models
 
 import android.os.Parcelable
-import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_BGZ
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_GP
 import nl.rijksoverheid.mgo.data.api.load.SearchResponse
@@ -10,7 +9,6 @@ import kotlinx.serialization.Serializable
 
 @Parcelize
 @Serializable
-@JsonClass(generateAdapter = true)
 data class MgoOrganization(
     val id: String,
     val name: String,

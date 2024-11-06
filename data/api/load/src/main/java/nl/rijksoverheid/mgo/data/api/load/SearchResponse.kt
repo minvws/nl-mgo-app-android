@@ -1,46 +1,46 @@
 package nl.rijksoverheid.mgo.data.api.load
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 typealias DataServiceId = String
 
 const val DATA_SERVICE_BGZ: DataServiceId = "48"
 const val DATA_SERVICE_GP: DataServiceId = "49"
 
-@JsonClass(generateAdapter = true)
+@Serializable
 class SearchResponse(
     val organizations: List<Organization>,
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Organization(
-        @Json(name = "identification") val id: String,
-        @Json(name = "display_name") val displayName: String?,
+        @SerialName("identification") val id: String,
+        @SerialName("display_name") val displayName: String?,
         val addresses: List<Address>,
         val types: List<Types>,
-        @Json(name = "data_services") val dataServices: List<DataService>,
+        @SerialName("data_services") val dataServices: List<DataService>,
     )
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Address(
         val address: String?,
         val city: String?,
-        @Json(name = "postalcode") val postalCode: String?,
+        @SerialName("postalcode") val postalCode: String?,
     )
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Types(
-        @Json(name = "display_name") val displayName: String?,
+        @SerialName("display_name") val displayName: String?,
     )
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class DataService(
         val id: DataServiceId,
         val roles: List<Role>,
     ) {
-        @JsonClass(generateAdapter = true)
+        @Serializable
         data class Role(
-            @Json(name = "resource_endpoint") val resourceEndpoint: String,
+            @SerialName("resource_endpoint") val resourceEndpoint: String,
         )
     }
 }

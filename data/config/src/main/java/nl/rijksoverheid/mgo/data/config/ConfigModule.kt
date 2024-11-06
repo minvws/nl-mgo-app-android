@@ -19,12 +19,13 @@ internal fun createApi(
     okHttpClient: OkHttpClient,
     baseUrl: String,
 ): ConfigApi {
+    val json = Json { ignoreUnknownKeys = true }
     val retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(
-                Json.asConverterFactory(
+                json.asConverterFactory(
                     "application/json; charset=UTF8".toMediaType(),
                 ),
             )

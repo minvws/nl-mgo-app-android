@@ -12,9 +12,11 @@ import javax.inject.Inject
 import kotlinx.serialization.json.Json
 
 internal class DefaultUiSchemaMapper
-    @Inject constructor(@ApplicationContext private val context: Context) : UiSchemaMapper {
-
-        val json = Json { prettyPrint = false }
+    @Inject
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) : UiSchemaMapper {
+        private val json = Json
 
         override fun getUiSchema(
             fhirBundleJson: String,

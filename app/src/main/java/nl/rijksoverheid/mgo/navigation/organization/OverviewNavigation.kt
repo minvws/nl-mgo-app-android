@@ -7,17 +7,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.toRoute
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.UiSchemaDetailScreen
-import nl.rijksoverheid.mgo.navigation.CustomNavType
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
-import kotlin.reflect.typeOf
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -39,7 +35,7 @@ fun OverviewNavigation(
                 },
                 onNavigateToHealthCategory = { category, _ ->
                     navController.navigate(
-                        DashboardNavigation.HealthCategory(HealthCategoryScreenArguments(category = category, filterOrganization = null))
+                        DashboardNavigation.HealthCategory(HealthCategoryScreenArguments(category = category, filterOrganization = null)),
                     )
                 },
                 onNavigateRemoveOrganization = { },
@@ -61,13 +57,13 @@ fun OverviewNavigation(
 
         newComposableWithDefaultScreenTransitions<DashboardNavigation.UiSchemaDetail> { backStackEntry ->
             val route = backStackEntry.toRoute<DashboardNavigation.UiSchemaDetail>()
-//            UiSchemaDetailScreen(
-//                toolbarTitle = route.toolbarTitle,
-//                uiSchema = route.uiSchema,
-//                onNavigateBack = {
-//                    navController.popBackStack()
-//                },
-//            )
+            UiSchemaDetailScreen(
+                toolbarTitle = route.toolbarTitle,
+                uiSchema = route.uiSchema,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
         }
     }
 }

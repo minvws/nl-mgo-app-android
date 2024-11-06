@@ -14,7 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
-import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.organization.OverviewNavigation
 import nl.rijksoverheid.mgo.navigation.organizations.OrganizationsNavigation

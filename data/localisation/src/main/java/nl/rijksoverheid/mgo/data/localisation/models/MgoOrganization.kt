@@ -18,7 +18,7 @@ data class MgoOrganization(
     val category: String?,
     val added: Boolean,
     val dataServices: List<MgoOrganizationDataService>,
-): Parcelable
+) : Parcelable
 
 val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
 val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)

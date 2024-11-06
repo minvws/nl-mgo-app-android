@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 data class MgoOrganizationDataService(
     val resourceEndpoint: String,
     val type: MgoOrganizationDataServiceType,
-): Parcelable
+) : Parcelable
 
 @JsonClass(generateAdapter = false)
 enum class MgoOrganizationDataServiceType {

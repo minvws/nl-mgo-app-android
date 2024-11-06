@@ -28,7 +28,10 @@ object ChildDisplaySerializer : KSerializer<ChildDisplay> {
         }
     }
 
-    override fun serialize(encoder: Encoder, value: ChildDisplay) {
+    override fun serialize(
+        encoder: Encoder,
+        value: ChildDisplay,
+    ) {
         val output = encoder as? JsonEncoder ?: error("This serializer only works with JSON format")
         when (value) {
             is ChildDisplay.StringValue -> output.encodeString(value.value)

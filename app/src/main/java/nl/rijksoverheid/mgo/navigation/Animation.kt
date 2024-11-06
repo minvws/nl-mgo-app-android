@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.navigation
 
-import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -71,13 +70,16 @@ inline fun <reified T : Any> NavGraphBuilder.newComposableWithDefaultScreenTrans
     typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
     noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) = composable<T>(
-    typeMap = mapOf(
-        typeOf<MgoOrganization?>() to CustomNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-        typeOf<HealthCategoryScreenArguments>() to CustomNavType(HealthCategoryScreenArguments::class.java, HealthCategoryScreenArguments
-            .serializer()),
-        typeOf<UISchema>() to CustomNavType2(UISchema::class.java, UISchema
-            .serializer())
-    ),
+    typeMap =
+        mapOf(
+            typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
+            typeOf<HealthCategoryScreenArguments>() to
+                JsonNavType(
+                    HealthCategoryScreenArguments::class.java,
+                    HealthCategoryScreenArguments.serializer(),
+                ),
+            typeOf<UISchema>() to JsonNavType(UISchema::class.java, UISchema.serializer()),
+        ),
     deepLinks = deepLinks,
     enterTransition = { defaultScreenEnterTransition() },
     exitTransition = { defaultScreenExitTransition() },

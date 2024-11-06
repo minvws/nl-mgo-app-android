@@ -11,4 +11,4 @@ import kotlinx.serialization.Serializable
 data class HealthCategoryScreenArguments(
     val category: HealthCareCategory,
     val filterOrganization: MgoOrganization? = null,
-): Parcelable
+) : Parcelable

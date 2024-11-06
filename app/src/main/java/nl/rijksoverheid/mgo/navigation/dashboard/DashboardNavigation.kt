@@ -1,11 +1,8 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
-import android.os.Parcelable
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 sealed class DashboardNavigation {

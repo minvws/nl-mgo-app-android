@@ -5,15 +5,6 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
-import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
-import nl.rijksoverheid.mgo.feature.dashboard.removeOrganization.RemoveOrganizationScreen
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.UiSchemaDetailScreen
-import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.dialogWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 
 @Composable
 fun OrganizationsNavigation(

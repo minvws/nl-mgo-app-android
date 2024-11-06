@@ -30,6 +30,8 @@ class AndroidConventionsPlugin : Plugin<Project> {
             apply(versionCatalog.findPlugin("kotlinAndroid").get().get().pluginId)
             apply(versionCatalog.findPlugin("ksp").get().get().pluginId)
             apply(versionCatalog.findPlugin("daggerHilt").get().get().pluginId)
+            apply(versionCatalog.findPlugin("serializable").get().get().pluginId)
+            apply("kotlin-parcelize")
             apply("jacoco")
         }
     }
@@ -199,6 +201,8 @@ class AndroidConventionsPlugin : Plugin<Project> {
             // Add BOMs
             addBillOfMaterials("compose.bom")
             addBillOfMaterials("coroutines.bom")
+
+            add("implementation", versionCatalog.findLibrary("kotlinx.serialization.json").get())
 
             // Coroutines
             add("implementation", versionCatalog.findLibrary("coroutines.core").get())

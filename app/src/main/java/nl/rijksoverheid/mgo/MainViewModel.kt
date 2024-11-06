@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,7 +34,7 @@ internal class MainViewModel
         fun getStartDestination(): Any {
             return when {
                 hasSeenOnboarding.invoke() -> {
-                    OnboardingNavigation.Root
+                    DashboardNavigation.Root
                 }
                 else -> {
                     OnboardingNavigation.Root

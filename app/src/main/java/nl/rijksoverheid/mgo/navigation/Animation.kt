@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.navigation
 
+import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -15,8 +16,14 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
+import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
 const val SCREEN_TRANSITION_DURATION_MILLIS = 250
 
@@ -61,8 +68,16 @@ fun NavGraphBuilder.composableWithDefaultScreenTransitions(
 
 inline fun <reified T : Any> NavGraphBuilder.newComposableWithDefaultScreenTransitions(
     deepLinks: List<NavDeepLink> = emptyList(),
+    typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
     noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) = composable<T>(
+    typeMap = mapOf(
+        typeOf<MgoOrganization?>() to CustomNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
+        typeOf<HealthCategoryScreenArguments>() to CustomNavType(HealthCategoryScreenArguments::class.java, HealthCategoryScreenArguments
+            .serializer()),
+        typeOf<UISchema>() to CustomNavType2(UISchema::class.java, UISchema
+            .serializer())
+    ),
     deepLinks = deepLinks,
     enterTransition = { defaultScreenEnterTransition() },
     exitTransition = { defaultScreenExitTransition() },

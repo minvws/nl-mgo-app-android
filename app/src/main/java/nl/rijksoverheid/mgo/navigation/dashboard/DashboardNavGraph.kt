@@ -15,6 +15,7 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.organization.OverviewNavigation
 import nl.rijksoverheid.mgo.navigation.organizations.OrganizationsNavigation
 
@@ -23,11 +24,8 @@ fun NavGraphBuilder.addDashboardNavGraph(
     overviewNavController: NavHostController,
     organizationsNavController: NavHostController,
 ) {
-    navigation(
-        startDestination = DashboardNavigationScreen.BottomBar.getRoute(),
-        route = DashboardNavigationScreen.Start.getRoute(),
-    ) {
-        composableWithDefaultScreenTransitions(route = DashboardNavigationScreen.BottomBar.getRoute()) {
+    navigation<DashboardNavigation.Root>(DashboardNavigation.BottomBar) {
+        newComposableWithDefaultScreenTransitions<DashboardNavigation.BottomBar> {
             DashboardBottomBarScreen(
                 overviewTab = {
                     OverviewNavigation(rootNavController = rootNavController, navController = overviewNavController)

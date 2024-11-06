@@ -11,6 +11,7 @@ import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavi
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
 import nl.rijksoverheid.mgo.feature.pincode.forgot.PinCodeForgotScreen
 import nl.rijksoverheid.mgo.feature.pincode.login.PinCodeLoginScreen
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
 
 fun NavGraphBuilder.addPinCodeNavGraph(
@@ -45,11 +46,11 @@ fun NavGraphBuilder.addPinCodeNavGraph(
                         }
 
                         PinCodeConfirmScreenNextNavigation.DASHBOARD -> {
-//                            navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
-//                                popUpTo(navController.graph.id) {
-//                                    inclusive = true
-//                                }
-//                            }
+                            navController.navigate(DashboardNavigation.Root) {
+                                popUpTo(navController.graph.id) {
+                                    inclusive = true
+                                }
+                            }
                         }
                     }
                 },
@@ -62,11 +63,11 @@ fun NavGraphBuilder.addPinCodeNavGraph(
         newComposableWithDefaultScreenTransitions<PinCodeNavigation.BiometricSetup> {
             PinCodeBioMetricSetupScreen(
                 onNavigateToDashboard = {
-//                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
-//                        popUpTo(navController.graph.id) {
-//                            inclusive = true
-//                        }
-//                    }
+                    navController.navigate(DashboardNavigation.Root) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 },
             )
         }
@@ -77,11 +78,11 @@ fun NavGraphBuilder.addPinCodeNavGraph(
                     navController.navigate(PinCodeNavigation.Forgot)
                 },
                 onPinValidated = {
-//                    navController.navigate(DashboardNavigationScreen.Start.getNavigationRoute()) {
-//                        popUpTo(navController.graph.id) {
-//                            inclusive = true
-//                        }
-//                    }
+                    navController.navigate(DashboardNavigation.Root) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 },
             )
         }

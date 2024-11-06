@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.composeCompiler) apply false
+    alias(libs.plugins.serializable) apply false
     alias(libs.plugins.sonarqube)
 }
 true // Needed to make the Suppress annotation work for the plugins block

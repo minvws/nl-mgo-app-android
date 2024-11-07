@@ -21,6 +21,7 @@ import androidx.navigation.compose.dialog
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
+import timber.log.Timber
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
@@ -81,11 +82,23 @@ inline fun <reified T : Any> NavGraphBuilder.newComposableWithDefaultScreenTrans
             typeOf<UISchema>() to JsonNavType(UISchema::class.java, UISchema.serializer()),
         ),
     deepLinks = deepLinks,
-    enterTransition = { defaultScreenEnterTransition() },
+    enterTransition = {
+        if (isSameBottomBarItem()) {
+            defaultScreenEnterTransition()
+        } else {
+            null
+        }
+      },
     exitTransition = { defaultScreenExitTransition() },
     popEnterTransition = { defaultScreenPopEnterTransition() },
     content = content,
 )
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.isSameBottomBarItem(): Boolean {
+    val startDestinationRoute = initialState.destination.parent?.startDestinationRoute
+    val destinationRoute = initialState.destination.route
+    return startDestinationRoute == destinationRoute
+}
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.defaultScreenEnterTransition() =
     slideIntoContainer(

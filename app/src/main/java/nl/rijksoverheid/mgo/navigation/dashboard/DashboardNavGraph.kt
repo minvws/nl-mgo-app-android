@@ -81,7 +81,7 @@ fun NavGraphBuilder.addDashboardNavGraph(
                                               // uiSchema))
                             },
                             onNavigateBack = {
-                                //navController.popBackStack()
+                                dashboardNavController.popBackStack()
                             },
                         )
                     }

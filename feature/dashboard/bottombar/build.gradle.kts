@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.framework.navigation)
     implementation(project(":data:localisation"))
 }

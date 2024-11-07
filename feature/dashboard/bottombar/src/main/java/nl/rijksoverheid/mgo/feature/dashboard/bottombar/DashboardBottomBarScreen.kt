@@ -1,6 +1,11 @@
 package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -12,11 +17,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
@@ -25,46 +42,42 @@ import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
+import timber.log.Timber
+import kotlin.enums.EnumEntries
 
 @Composable
 fun DashboardBottomBarScreen(
-    overviewTab: @Composable () -> Unit,
-    organizationsTab: @Composable () -> Unit,
+    navController: NavHostController,
+    graph: NavGraphBuilder.() -> Unit,
+    overviewTab: @Composable (navController: NavHostController) -> Unit,
+    organizationsTab: @Composable (navController: NavHostController) -> Unit,
     aboutThisAppTab: @Composable () -> Unit,
 ) {
-    var selectedBottomBarItem by rememberSaveable { mutableStateOf(BottomBarItem.OVERVIEW) }
+    val navControllersMap = mutableMapOf<Any, NavHostController>()
+    val organizationsNavController = rememberNavController()
+    val bottomBarItems = BottomBarItem.entries
     MgoScaffold(
         contentPadding = PaddingValues(),
         content = {
-            when (selectedBottomBarItem) {
-                BottomBarItem.OVERVIEW -> {
-                    overviewTab()
-                }
-
-                BottomBarItem.ORGANIZATIONS -> {
-                    organizationsTab()
-                }
-
-                BottomBarItem.ABOUT_THIS_APP -> {
-                    aboutThisAppTab()
-                }
-            }
+            NavHost(
+                navController = navController,
+                startDestination = BottomBarNavigation.Overview,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None },
+                builder = graph
+            )
         },
         bottomBar = {
-            BottomNavigationBar(
-                selectedItem = selectedBottomBarItem,
-                onSelectBottomBarItem = { selectedItem ->
-                    selectedBottomBarItem = selectedItem
-                },
-            )
+            BottomNavigationBar(navController = navController, items = bottomBarItems, navControllersMap = navControllersMap)
         },
     )
 }
 
 @Composable
 private fun BottomNavigationBar(
-    selectedItem: BottomBarItem,
-    onSelectBottomBarItem: (item: BottomBarItem) -> Unit,
+    navController: NavController,
+    items: EnumEntries<BottomBarItem>,
+    navControllersMap: Map<Any, NavHostController>,
 ) {
     val bottomBarItemTextStyle =
         TextStyle(
@@ -77,11 +90,15 @@ private fun BottomNavigationBar(
         containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
         contentColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
     ) {
-        BottomBarItem.entries.forEach { item ->
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+
+        items.forEach { item ->
+            val isSelected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
             NavigationBarItem(
                 icon = {
                     val iconId =
-                        if (item == selectedItem) {
+                        if (isSelected) {
                             item.selectedIconId
                         } else {
                             item.deselectedIconId
@@ -89,16 +106,26 @@ private fun BottomNavigationBar(
                     Icon(painter = painterResource(id = iconId), contentDescription = null)
                 },
                 label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
-                selected = item == selectedItem,
-                onClick = { onSelectBottomBarItem(item) },
-                colors =
-                    NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-                        selectedTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-                        unselectedIconColor = MaterialTheme.colorScheme.iconsPrimary(),
-                        unselectedTextColor = MaterialTheme.colorScheme.iconsPrimary(),
-                        indicatorColor = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(),
-                    ),
+                selected = isSelected,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
+                    }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                    selectedTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                    unselectedIconColor = MaterialTheme.colorScheme.iconsPrimary(),
+                    unselectedTextColor = MaterialTheme.colorScheme.iconsPrimary(),
+                    indicatorColor = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(),
+                ),
             )
         }
     }
@@ -108,6 +135,7 @@ private fun BottomNavigationBar(
 @Composable
 internal fun DashboardBottomBarScreenPreview() {
     MgoTheme {
-        BottomNavigationBar(selectedItem = BottomBarItem.OVERVIEW, onSelectBottomBarItem = {})
+        val navController = rememberNavController()
+        BottomNavigationBar(navController = navController, items = BottomBarItem.entries, navControllersMap = mapOf())
     }
 }

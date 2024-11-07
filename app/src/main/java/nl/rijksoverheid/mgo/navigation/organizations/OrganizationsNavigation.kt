@@ -5,6 +5,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
 
 @Composable
 fun OrganizationsNavigation(
@@ -17,18 +18,7 @@ fun OrganizationsNavigation(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
     ) {
-//        composableWithDefaultScreenTransitions(OrganizationsNavigationScreen.Start.getRoute()) {
-//            OrganizationsScreen(
-//                onNavigateToHealthCategories = { organization ->
-//                    navController.navigate(
-//                        DashboardNavigationScreen.HealthCategories.setOrganization(organization).getNavigationRoute(),
-//                    )
-//                },
-//                onNavigateToLocalisation = {
-//                    rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
-//                },
-//            )
-//        }
+        //newComposableWithDefaultScreenTransitions<OrganizationsNavigationScreen.Start> {  }
 
 //        composableWithDefaultScreenTransitions(DashboardNavigationScreen.HealthCategories.getRoute()) { backStackEntry ->
 //            val organization = DashboardNavigationScreen.HealthCategories.getOrganization(backStackEntry)

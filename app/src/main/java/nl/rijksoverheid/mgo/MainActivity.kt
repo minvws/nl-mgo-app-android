@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -23,6 +24,7 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
+import nl.rijksoverheid.mgo.feature.dashboard.bottombar.BottomBarNavigation
 import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
@@ -40,9 +42,8 @@ class MainActivity : FragmentActivity() {
             MgoTheme(modifier = Modifier.fillMaxSize()) {
                 val viewModel: MainViewModel = hiltViewModel()
                 val startDestination = viewModel.getStartDestination()
-                val overviewNavController = rememberNavController()
-                val organizationsNavController = rememberNavController()
                 val navController = rememberNavController()
+                val dashboardNavController = rememberNavController()
 
                 CompositionLocalProvider(LocalSnackbarPresenter provides DefaultLocalSnackbarPresenter()) {
                     NavHost(
@@ -53,14 +54,14 @@ class MainActivity : FragmentActivity() {
                     ) {
                         addOnboardingNavGraph(navController = navController)
                         addPinCodeNavGraph(navController = navController, hasPinCode = viewModel.hasPinCode())
-                        addDashboardNavGraph(
-                            rootNavController = navController,
-                            overviewNavController = overviewNavController,
-                            organizationsNavController = organizationsNavController,
-                        )
+                        addDashboardNavGraph(rootNavController = navController)
                         addLocalisationNavGraph(navController = navController)
                         composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
                             UpdateRequiredScreen()
+                        }
+
+                        composable<BottomBarNavigation.Overview> {
+
                         }
                     }
                 }

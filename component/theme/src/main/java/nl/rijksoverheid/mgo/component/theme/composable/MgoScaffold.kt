@@ -44,6 +44,7 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.vibrate
+import timber.log.Timber
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -91,9 +92,7 @@ fun MgoScaffold(
                     MgoTypography.copy(
                         titleLarge =
                             MaterialTheme.typography.bodySmall.copy(
-                                fontWeight =
-                                    FontWeight
-                                        .Bold,
+                                fontWeight = FontWeight.Bold,
                             ),
                         headlineSmall = MaterialTheme.typography.headingLarge,
                     )
@@ -106,7 +105,7 @@ fun MgoScaffold(
                                         .fillMaxWidth()
                                         .onGloballyPositioned {
                                             val heightDp = with(localDensity) { it.size.height.toDp() }
-                                            if (heightDp != 0.dp) {
+                                            if (heightDp != 0.dp && heightDp != Int.MAX_VALUE.dp) {
                                                 expandedAppBarHeight =
                                                     heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
                                             }
@@ -119,7 +118,7 @@ fun MgoScaffold(
                             if (LocalInspectionMode.current) {
                                 TopAppBarDefaults.MediumAppBarExpandedHeight
                             } else {
-                                expandedAppBarHeight + 16.dp
+                                200.dp
                             },
                         // Add 16dp for some bottom padding
                         navigationIcon = {

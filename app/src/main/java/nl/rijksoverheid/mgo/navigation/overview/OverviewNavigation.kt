@@ -1,25 +1,15 @@
-package nl.rijksoverheid.mgo.navigation.dashboard
+package nl.rijksoverheid.mgo.navigation.overview
 
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import kotlinx.serialization.Serializable
 
-sealed class DashboardNavigation {
+sealed class OverviewNavigation {
     @Serializable
-    data object Root
+    object Root
 
     @Serializable
-    data object BottomBar
-
-    @Serializable
-    data class HealthCategories(val organization: MgoOrganization? = null)
-
-    @Serializable
-    data object Organizations
-
-    @Serializable
-    data object AboutThisApp
+    object HealthCategories
 
     @Serializable
     data class HealthCategory(val arguments: HealthCategoryScreenArguments)

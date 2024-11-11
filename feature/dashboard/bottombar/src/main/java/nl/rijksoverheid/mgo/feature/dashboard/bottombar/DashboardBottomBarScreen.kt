@@ -13,7 +13,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,6 +24,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
@@ -43,16 +44,8 @@ fun DashboardBottomBarScreen(
     aboutThisAppNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val bottomBarItems =
-        remember {
-            listOf(
-                createOverviewBottomBarItem(),
-                createOrganizationsBottomBarItem(),
-                createAboutThisAppBottomBarItem(),
-            )
-        }
+    val bottomBarItems = BottomBarItem.entries
     val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
-
     MgoScaffold(
         contentPadding = PaddingValues(),
         content = {
@@ -99,7 +92,6 @@ fun DashboardBottomBarScreen(
         },
         bottomBar = {
             BottomNavigationBar(
-                items = bottomBarItems,
                 currentRoute = bottomBarItems[pagerState.currentPage].route,
                 onClickItem = { position ->
                     coroutineScope.launch {
@@ -113,7 +105,6 @@ fun DashboardBottomBarScreen(
 
 @Composable
 private fun BottomNavigationBar(
-    items: List<BottomBarItem>,
     currentRoute: BottomBarItemNavigation,
     onClickItem: (position: Int) -> Unit,
 ) {
@@ -128,8 +119,8 @@ private fun BottomNavigationBar(
         containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
         contentColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
     ) {
-        items.forEachIndexed { index, item ->
-            val isSelected = false
+        BottomBarItem.entries.forEachIndexed { index, item ->
+            val isSelected = item.route == currentRoute
             NavigationBarItem(
                 icon = {
                     val iconId =
@@ -141,7 +132,7 @@ private fun BottomNavigationBar(
                     Icon(painter = painterResource(id = iconId), contentDescription = null)
                 },
                 label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
-                selected = item.route == currentRoute,
+                selected = isSelected,
                 onClick = {
                     onClickItem(index)
                 },
@@ -158,11 +149,13 @@ private fun BottomNavigationBar(
     }
 }
 
-// @DefaultPreviews
-// @Composable
-// internal fun DashboardBottomBarScreenPreview() {
-//    MgoTheme {
-//        val navController = rememberNavController()
-//        BottomNavigationBar()
-//    }
-// }
+@DefaultPreviews
+@Composable
+internal fun DashboardBottomBarScreenPreview() {
+    MgoTheme {
+        BottomNavigationBar(
+            currentRoute = BottomBarItemNavigation.Overview,
+            onClickItem = {},
+        )
+    }
+}

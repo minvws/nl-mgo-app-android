@@ -13,6 +13,7 @@ android {
 dependencies {
     testFixturesImplementation(libs.kotlin.stdlib)
     testImplementation(testFixtures(projects.framework.test))
+    testImplementation(testFixtures(projects.framework.storage))
     implementation(projects.data.api.load)
     implementation(projects.framework.storage)
 }

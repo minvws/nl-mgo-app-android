@@ -45,10 +45,10 @@ sonar {
             add("**/*Activity*.kt") // Activities
             add("**/res/**/") // Resources folder
             add("**/*Module*.kt") // Dagger modules
-            add("**/*Navigation*.kt") // Navigation classes
             add("**/*NavGraph*.kt") // NavGraph classes
             add("**/*Screen*.kt") // We exclude all composable screens since it messes with our code coverage
             add("**/*Prompt*.kt") // We exclude all prompts
+            add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/navigation/**") // Exclude navigation module
             add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
             add("component/theme/src/main/java/nl/rijksoverheid/mgo/component/theme/**") // Exclude theme module
 

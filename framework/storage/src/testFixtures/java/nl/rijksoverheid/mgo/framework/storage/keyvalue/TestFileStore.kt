@@ -1,5 +1,6 @@
-package nl.rijksoverheid.mgo.framework.storage.file
+package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
+import nl.rijksoverheid.mgo.framework.storage.file.FileStore
 import kotlin.reflect.KClass
 
 class TestFileStore : FileStore {

@@ -28,7 +28,7 @@ internal class HealthCategoryScreenViewModelTest {
             // When
             val viewModel =
                 HealthCategoryScreenViewModel(
-                    arguments = HealthCategoryScreenArguments(category = HealthCareCategory.MEDICATIONS, filterOrganization = null),
+                    category = HealthCareCategory.MEDICATIONS,
                     healthCareDataStatesRepository = healthCareDataStatesRepository,
                     organizationRepository = organizationRepository,
                 )
@@ -51,11 +51,8 @@ internal class HealthCategoryScreenViewModelTest {
             // When
             val viewModel =
                 HealthCategoryScreenViewModel(
-                    arguments =
-                        HealthCategoryScreenArguments(
-                            category = HealthCareCategory.MEDICATIONS,
-                            filterOrganization = TEST_MGO_ORGANIZATION,
-                        ),
+                    category = HealthCareCategory.MEDICATIONS,
+                    filterOrganization = TEST_MGO_ORGANIZATION,
                     healthCareDataStatesRepository = healthCareDataStatesRepository,
                     organizationRepository = organizationRepository,
                 )
@@ -85,7 +82,7 @@ internal class HealthCategoryScreenViewModelTest {
             // When
             val viewModel =
                 HealthCategoryScreenViewModel(
-                    arguments = HealthCategoryScreenArguments(category = HealthCareCategory.MEDICATIONS, filterOrganization = null),
+                    category = HealthCareCategory.MEDICATIONS,
                     healthCareDataStatesRepository = healthCareDataStatesRepository,
                     organizationRepository = organizationRepository,
                 )

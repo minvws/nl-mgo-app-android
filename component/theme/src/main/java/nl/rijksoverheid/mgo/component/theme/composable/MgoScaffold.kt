@@ -171,6 +171,10 @@ fun MgoScaffold(
     )
 }
 
+/**
+ * A MediumTopAppBar expects an expandedHeight in dps. For this app we want it be a tall as the content (the title),
+ * but the MediumTopAppBar composable does not support something like that out of the box
+ */
 @Composable
 private fun calculateExpandedHeight(
     title: String,

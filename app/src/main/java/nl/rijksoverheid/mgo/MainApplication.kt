@@ -27,17 +27,10 @@ class MainApplication : Application() {
         }
         coroutineScope.launch {
             launch { observeHealthCareDataStates.invoke().collect() }
-
-//            // When ever a Snackbar should be shown, dismiss it here so it never displays twice
-//            launch {
-//                snackBarRepository.get().collect {
-//                    delay(100)
-//                    snackBarRepository.dismiss()
-//                }
-//            }
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onLowMemory() {
         super.onLowMemory()
         coroutineScope.cancel()

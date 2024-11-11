@@ -24,10 +24,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -64,10 +66,15 @@ fun MgoScaffold(
 ) {
     val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    var measured by remember { mutableStateOf(false) }
     val scaffoldModifier =
-        Modifier.nestedScroll(
-            scrollBehavior.nestedScrollConnection,
-        )
+        if (!measured) {
+            Modifier
+        } else {
+            Modifier.nestedScroll(
+                scrollBehavior.nestedScrollConnection,
+            )
+        }
     val snackBarHostState = remember { SnackbarHostState() }
     if (!LocalInspectionMode.current) {
         val snackbarPresenter = LocalSnackbarPresenter.current
@@ -96,6 +103,10 @@ fun MgoScaffold(
                     )
                 MgoTheme(typography = adjustedTypography) {
                     MediumTopAppBar(
+                        modifier =
+                            Modifier.onGloballyPositioned {
+                                measured = true
+                            },
                         title = {
                             Text(
                                 modifier =

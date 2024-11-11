@@ -4,20 +4,20 @@ import kotlinx.serialization.Serializable
 
 sealed class PinCodeNavigation {
     @Serializable
-    data object Root
+    data object Root : PinCodeNavigation()
 
     @Serializable
-    data object Create
+    data object Create : PinCodeNavigation()
 
     @Serializable
-    data class Confirm(val pinCode: List<Int>)
+    data class Confirm(val pinCode: List<Int>) : PinCodeNavigation()
 
     @Serializable
-    data object BiometricSetup
+    data object BiometricSetup : PinCodeNavigation()
 
     @Serializable
-    data object Login
+    data object Login : PinCodeNavigation()
 
     @Serializable
-    data object Forgot
+    data object Forgot : PinCodeNavigation()
 }

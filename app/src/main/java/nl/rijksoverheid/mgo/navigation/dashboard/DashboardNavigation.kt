@@ -18,6 +18,9 @@ sealed class DashboardNavigation {
         data object Root : Overview()
 
         @Serializable
+        data object HealthCareCategories : Overview()
+
+        @Serializable
         data class HealthCareCategory(val category: HealthCareCategoryModel) : Overview()
 
         @Serializable
@@ -30,6 +33,9 @@ sealed class DashboardNavigation {
         data object Root : Organizations()
 
         @Serializable
+        data object List : Organizations()
+
+        @Serializable
         data class HealthCareCategories(val organization: MgoOrganization) : Organizations()
 
         @Serializable
@@ -37,6 +43,9 @@ sealed class DashboardNavigation {
 
         @Serializable
         data class UISchemaDetail(val toolbarTitle: String, val uiSchema: UISchema) : Organizations()
+
+        @Serializable
+        data class RemoveOrganization(val organizationId: String, val organizationName: String) : Organizations()
     }
 
     @Serializable

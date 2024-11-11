@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 
 sealed class OnboardingNavigation {
     @Serializable
-    object Root
+    object Root : OnboardingNavigation()
 
     @Serializable
-    object Introduction
+    object Introduction : OnboardingNavigation()
 
     @Serializable
-    object Proposition
+    object Proposition : OnboardingNavigation()
 }

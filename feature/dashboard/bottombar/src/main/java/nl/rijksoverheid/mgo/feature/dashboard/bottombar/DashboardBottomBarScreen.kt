@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -47,7 +48,7 @@ fun DashboardBottomBarScreen(
     val coroutineScope = rememberCoroutineScope()
     val bottomBarItems = BottomBarItem.entries
     val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
-    val navControllers = mutableMapOf<BottomBarItemNavigation, NavHostController>()
+    val navControllers = rememberSaveable { mutableMapOf<BottomBarItemNavigation, NavHostController>() }
     MgoScaffold(
         contentPadding = PaddingValues(),
         content = {

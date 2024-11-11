@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 
 @Composable
-inline fun <reified VM : ViewModel> NavController.getViewModel(route: String): VM? {
+inline fun <reified VM : ViewModel> NavController.getViewModel(route: Any): VM? {
     val entry =
         try {
             getBackStackEntry(route)

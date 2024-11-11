@@ -12,14 +12,14 @@ import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
 import nl.rijksoverheid.mgo.feature.pincode.forgot.PinCodeForgotScreen
 import nl.rijksoverheid.mgo.feature.pincode.login.PinCodeLoginScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
-import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
+import nl.rijksoverheid.mgo.navigation.mgoComposable
 
 fun NavGraphBuilder.addPinCodeNavGraph(
     navController: NavController,
     hasPinCode: Boolean,
 ) {
     navigation<PinCodeNavigation.Root>(if (hasPinCode) PinCodeNavigation.Login else PinCodeNavigation.Create) {
-        newComposableWithDefaultScreenTransitions<PinCodeNavigation.Create> {
+        mgoComposable<PinCodeNavigation.Create> {
             PinCodeCreateScreen(
                 hasBackButton = remember { navController.previousBackStackEntry != null },
                 onPinEntered = { pinCode ->
@@ -31,7 +31,7 @@ fun NavGraphBuilder.addPinCodeNavGraph(
             )
         }
 
-        newComposableWithDefaultScreenTransitions<PinCodeNavigation.Confirm> { backStackEntry ->
+        mgoComposable<PinCodeNavigation.Confirm> { backStackEntry ->
             val route = backStackEntry.toRoute<PinCodeNavigation.Confirm>()
             PinCodeConfirmScreen(
                 pinCodeToMatch = route.pinCode,
@@ -60,7 +60,7 @@ fun NavGraphBuilder.addPinCodeNavGraph(
             )
         }
 
-        newComposableWithDefaultScreenTransitions<PinCodeNavigation.BiometricSetup> {
+        mgoComposable<PinCodeNavigation.BiometricSetup> {
             PinCodeBioMetricSetupScreen(
                 onNavigateToDashboard = {
                     navController.navigate(DashboardNavigation.Root) {
@@ -72,7 +72,7 @@ fun NavGraphBuilder.addPinCodeNavGraph(
             )
         }
 
-        newComposableWithDefaultScreenTransitions<PinCodeNavigation.Login> {
+        mgoComposable<PinCodeNavigation.Login> {
             PinCodeLoginScreen(
                 onNavigateForgotPin = {
                     navController.navigate(PinCodeNavigation.Forgot)
@@ -87,7 +87,7 @@ fun NavGraphBuilder.addPinCodeNavGraph(
             )
         }
 
-        newComposableWithDefaultScreenTransitions<PinCodeNavigation.Forgot> {
+        mgoComposable<PinCodeNavigation.Forgot> {
             PinCodeForgotScreen(
                 onNavigateToPinCodeCreate = {
                     navController.navigate(PinCodeNavigation.Create) {

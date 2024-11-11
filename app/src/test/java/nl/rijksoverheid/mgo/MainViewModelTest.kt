@@ -8,6 +8,8 @@ import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigation
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +38,7 @@ internal class MainViewModelTest {
         val startDestination = viewModel.getStartDestination()
 
         // Then
-        assertEquals(PinCodeNavigationScreen.Start.getNavigationRoute(), startDestination)
+        assertEquals(PinCodeNavigation.Root, startDestination)
     }
 
     @Test
@@ -58,7 +60,7 @@ internal class MainViewModelTest {
         val startDestination = viewModel.getStartDestination()
 
         // Then
-        assertEquals(OnboardingNavigationScreen.Start.getNavigationRoute(), startDestination)
+        assertEquals(OnboardingNavigation.Root, startDestination)
     }
 
     @Test

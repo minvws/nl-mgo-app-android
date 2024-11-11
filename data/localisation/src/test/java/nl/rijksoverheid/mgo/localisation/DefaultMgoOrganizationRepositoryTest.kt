@@ -13,7 +13,6 @@ import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
@@ -25,11 +24,6 @@ internal class DefaultMgoOrganizationRepositoryTest {
 
     private val testServer = testServerRule.testServer
     private val fileStore = TestFileStore()
-
-    @Before
-    fun setUp() {
-        fileStore.clear()
-    }
 
     @Test
     fun `Given loadApi request is successful, When calling search, Then emit health providers`() =
@@ -118,7 +112,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
                             TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedMgoOrganizations, "organizations.json")
+            fileStore.saveFile(storedMgoOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
 
             // When
             val repository = getRepository()
@@ -159,7 +153,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
                             TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedMgoOrganizations, "organizations.json")
+            fileStore.saveFile(storedMgoOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
 
             // When
             val repository = getRepository()

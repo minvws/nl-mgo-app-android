@@ -44,7 +44,6 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.vibrate
-import timber.log.Timber
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable

@@ -1,128 +1,148 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.feature.dashboard.bottombar.BottomBarNavigation
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigationScreen
 import nl.rijksoverheid.mgo.navigation.newComposableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.overview.OverviewNavigation
-import nl.rijksoverheid.mgo.navigation.organizations.OrganizationsNavigation
-import nl.rijksoverheid.mgo.navigation.overview.addOverviewNavGraph
 
-fun NavGraphBuilder.addDashboardNavGraph(
-    rootNavController: NavController,
-) {
+fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
     navigation<DashboardNavigation.Root>(DashboardNavigation.BottomBar) {
         composable<DashboardNavigation.BottomBar> {
-            val dashboardNavController = rememberNavController()
             DashboardBottomBarScreen(
-                navController = dashboardNavController,
-                graph = {
-                    composable<BottomBarNavigation.Overview> {
+                overviewStartDestination = DashboardNavigation.Overview.Root,
+                overviewNavGraph = { navController ->
+                    composable<DashboardNavigation.Overview.Root> {
                         HealthCategoriesScreen(
                             appBarTitle = stringResource(R.string.overview_heading),
                             onNavigateToLocalisation = {
                                 rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
                             },
                             onNavigateToHealthCategory = { category, _ ->
-                                dashboardNavController.navigate(
-                                    OverviewNavigation.HealthCategory(HealthCategoryScreenArguments(category = category, filterOrganization = null)),
+                                navController.navigate(
+                                    DashboardNavigation.Overview.HealthCareCategory(
+                                        HealthCategoryScreenArguments(category = category, filterOrganization = null),
+                                    ),
                                 )
                             },
                             onNavigateRemoveOrganization = { },
                         )
                     }
 
-                    composable<BottomBarNavigation.Organizations> {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Red)) {
-                            Button({ dashboardNavController.navigate(BottomBarNavigation.Test) }) { Text("Click me") }
-                        }
-                    }
-
-                    composable<BottomBarNavigation.Test> {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Blue))
-                    }
-
-                    newComposableWithDefaultScreenTransitions<OverviewNavigation.HealthCategory> { backStackEntry ->
-                        val route = backStackEntry.toRoute<OverviewNavigation.HealthCategory>()
+                    newComposableWithDefaultScreenTransitions<DashboardNavigation.Overview.HealthCareCategory> { backStackEntry ->
+                        val route = backStackEntry.toRoute<DashboardNavigation.Overview.HealthCareCategory>()
                         HealthCategoryScreen(
                             arguments = route.arguments,
                             onClickUiSchema = { toolbarTitle, uiSchema ->
-                                //navController.navigate(OverviewNavigation.UiSchemaDetail(toolbarTitle = toolbarTitle, uiSchema =
-                                              // uiSchema))
+                                navController.navigate(
+                                    DashboardNavigation.Overview.UISchemaDetail(
+                                        toolbarTitle = toolbarTitle,
+                                        uiSchema = uiSchema,
+                                    ),
+                                )
                             },
                             onNavigateBack = {
-                                dashboardNavController.popBackStack()
+                                navController.popBackStack()
+                            },
+                        )
+                    }
+
+                    newComposableWithDefaultScreenTransitions<DashboardNavigation.Overview.UISchemaDetail> { backStackEntry ->
+                        val route = backStackEntry.toRoute<DashboardNavigation.Overview.UISchemaDetail>()
+                        UiSchemaDetailScreen(
+                            toolbarTitle = route.toolbarTitle,
+                            uiSchema = route.uiSchema,
+                            onNavigateBack = {
+                                navController.popBackStack()
                             },
                         )
                     }
                 },
-                overviewTab = { navController ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = OverviewNavigation.HealthCategories,
-                        enterTransition = { EnterTransition.None },
-                        exitTransition = { ExitTransition.None },
-                    ) {
-                        addOverviewNavGraph(rootNavController = rootNavController, navController = navController)
+                organizationsStartDestination = DashboardNavigation.Organizations.Root,
+                organizationsNavGraph = { navController ->
+                    composable<DashboardNavigation.Organizations.Root> {
+                        OrganizationsScreen(
+                            onNavigateToHealthCategories = { organization ->
+                                navController.navigate(DashboardNavigation.Organizations.HealthCareCategories(organization))
+                            },
+                            onNavigateToLocalisation = {
+                                rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
+                            },
+                        )
+                    }
+
+                    newComposableWithDefaultScreenTransitions<DashboardNavigation.Organizations.HealthCareCategories> { backStackEntry ->
+                        val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategories>()
+                        HealthCategoriesScreen(
+                            appBarTitle = route.organization.name,
+                            organization = route.organization,
+                            onNavigateToLocalisation = {
+                                rootNavController.navigate(LocalisationNavigationScreen.Start.getNavigationRoute())
+                            },
+                            onNavigateToHealthCategory = { category, filterOrganization ->
+                                navController.navigate(
+                                    DashboardNavigation.Organizations.HealthCareCategory(
+                                        HealthCategoryScreenArguments(category = category, filterOrganization = filterOrganization),
+                                    ),
+                                )
+                            },
+                            onNavigateRemoveOrganization = { },
+                        )
+                    }
+
+                    newComposableWithDefaultScreenTransitions<DashboardNavigation.Organizations.HealthCareCategory> { backStackEntry ->
+                        val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategory>()
+                        HealthCategoryScreen(
+                            arguments = route.arguments,
+                            onClickUiSchema = { toolbarTitle, uiSchema ->
+                                navController.navigate(
+                                    DashboardNavigation.Organizations.UISchemaDetail(
+                                        toolbarTitle = toolbarTitle,
+                                        uiSchema = uiSchema,
+                                    ),
+                                )
+                            },
+                            onNavigateBack = {
+                                navController.popBackStack()
+                            },
+                        )
+                    }
+
+                    newComposableWithDefaultScreenTransitions<DashboardNavigation.Organizations.UISchemaDetail> { backStackEntry ->
+                        val route = backStackEntry.toRoute<DashboardNavigation.Organizations.UISchemaDetail>()
+                        UiSchemaDetailScreen(
+                            toolbarTitle = route.toolbarTitle,
+                            uiSchema = route.uiSchema,
+                            onNavigateBack = {
+                                navController.popBackStack()
+                            },
+                        )
                     }
                 },
-                organizationsTab = { navController ->
-                    OrganizationsScreen(
-                        onNavigateToLocalisation = {},
-                        onNavigateToHealthCategories = {}
-                    )
-                },
-                aboutThisAppTab = {
-                    val applicationContext = LocalContext.current.applicationContext
-                    Scaffold { innerPadding ->
-                        Column(modifier = Modifier.padding(innerPadding).padding(horizontal = 16.dp)) {
-                            Text(
-                                modifier = Modifier.padding(top = 32.dp),
-                                text = "Over de app",
-                                style = MaterialTheme.typography.headingLarge,
-                            )
-                            Button(
-                                modifier = Modifier.padding(top = 16.dp),
-                                onClick = {
-                                    val packageName = applicationContext.packageName
-                                    val runtime = Runtime.getRuntime()
-                                    runtime.exec("pm clear $packageName")
-                                },
-                                content = {
-                                    Text(text = "Reset App")
-                                },
-                            )
-                        }
+                aboutThisAppStartDestination = DashboardNavigation.AboutThisApp.Root,
+                aboutThisAppNavGraph = { navController ->
+                    composable<DashboardNavigation.AboutThisApp.Root> {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .background(Color.Red),
+                        )
                     }
                 },
             )

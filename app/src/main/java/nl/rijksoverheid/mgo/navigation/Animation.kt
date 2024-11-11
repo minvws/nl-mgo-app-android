@@ -15,14 +15,11 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
-import timber.log.Timber
-import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
 const val SCREEN_TRANSITION_DURATION_MILLIS = 250
@@ -68,12 +65,13 @@ fun NavGraphBuilder.composableWithDefaultScreenTransitions(
 
 inline fun <reified T : Any> NavGraphBuilder.newComposableWithDefaultScreenTransitions(
     deepLinks: List<NavDeepLink> = emptyList(),
-    typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
+    animatedRoutes: List<Any> = listOf(),
     noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) = composable<T>(
     typeMap =
         mapOf(
             typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
+            typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
             typeOf<HealthCategoryScreenArguments>() to
                 JsonNavType(
                     HealthCategoryScreenArguments::class.java,
@@ -82,22 +80,14 @@ inline fun <reified T : Any> NavGraphBuilder.newComposableWithDefaultScreenTrans
             typeOf<UISchema>() to JsonNavType(UISchema::class.java, UISchema.serializer()),
         ),
     deepLinks = deepLinks,
-    enterTransition = {
-        if (isSameBottomBarItem()) {
-            defaultScreenEnterTransition()
-        } else {
-            null
-        }
-      },
+    enterTransition = { defaultScreenEnterTransition() },
     exitTransition = { defaultScreenExitTransition() },
     popEnterTransition = { defaultScreenPopEnterTransition() },
     content = content,
 )
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.isSameBottomBarItem(): Boolean {
-    val startDestinationRoute = initialState.destination.parent?.startDestinationRoute
-    val destinationRoute = initialState.destination.route
-    return startDestinationRoute == destinationRoute
+    return true
 }
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.defaultScreenEnterTransition() =

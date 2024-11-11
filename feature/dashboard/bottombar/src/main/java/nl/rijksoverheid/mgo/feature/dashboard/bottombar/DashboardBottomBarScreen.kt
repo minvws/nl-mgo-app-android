@@ -2,10 +2,9 @@ package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -14,70 +13,109 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
-import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
-import timber.log.Timber
-import kotlin.enums.EnumEntries
+import kotlinx.coroutines.launch
 
 @Composable
 fun DashboardBottomBarScreen(
-    navController: NavHostController,
-    graph: NavGraphBuilder.() -> Unit,
-    overviewTab: @Composable (navController: NavHostController) -> Unit,
-    organizationsTab: @Composable (navController: NavHostController) -> Unit,
-    aboutThisAppTab: @Composable () -> Unit,
+    overviewStartDestination: Any,
+    overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+    organizationsStartDestination: Any,
+    organizationsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+    aboutThisAppStartDestination: Any,
+    aboutThisAppNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
 ) {
-    val navControllersMap = mutableMapOf<Any, NavHostController>()
-    val organizationsNavController = rememberNavController()
-    val bottomBarItems = BottomBarItem.entries
+    val coroutineScope = rememberCoroutineScope()
+    val bottomBarItems =
+        remember {
+            listOf(
+                createOverviewBottomBarItem(),
+                createOrganizationsBottomBarItem(),
+                createAboutThisAppBottomBarItem(),
+            )
+        }
+    val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
+
     MgoScaffold(
         contentPadding = PaddingValues(),
         content = {
-            NavHost(
-                navController = navController,
-                startDestination = BottomBarNavigation.Overview,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None },
-                builder = graph
-            )
+            HorizontalPager(pagerState) { position ->
+                val bottomBarItem = bottomBarItems[position]
+                when (bottomBarItem.route) {
+                    BottomBarItemNavigation.AboutThisApp -> {
+                        val aboutThisAppNavController = rememberNavController()
+                        NavHost(
+                            navController = aboutThisAppNavController,
+                            startDestination = aboutThisAppStartDestination,
+                            enterTransition = { EnterTransition.None },
+                            exitTransition = { ExitTransition.None },
+                        ) {
+                            aboutThisAppNavGraph(aboutThisAppNavController)
+                        }
+                    }
+
+                    BottomBarItemNavigation.Organizations -> {
+                        val organizationsNavController = rememberNavController()
+                        NavHost(
+                            navController = organizationsNavController,
+                            startDestination = organizationsStartDestination,
+                            enterTransition = { EnterTransition.None },
+                            exitTransition = { ExitTransition.None },
+                        ) {
+                            organizationsNavGraph(organizationsNavController)
+                        }
+                    }
+
+                    BottomBarItemNavigation.Overview -> {
+                        val overviewNavController = rememberNavController()
+                        NavHost(
+                            navController = overviewNavController,
+                            startDestination = overviewStartDestination,
+                            enterTransition = { EnterTransition.None },
+                            exitTransition = { ExitTransition.None },
+                        ) {
+                            overviewNavGraph(overviewNavController)
+                        }
+                    }
+                }
+            }
         },
         bottomBar = {
-            BottomNavigationBar(navController = navController, items = bottomBarItems, navControllersMap = navControllersMap)
+            BottomNavigationBar(
+                items = bottomBarItems,
+                currentRoute = bottomBarItems[pagerState.currentPage].route,
+                onClickItem = { position ->
+                    coroutineScope.launch {
+                        pagerState.scrollToPage(position)
+                    }
+                },
+            )
         },
     )
 }
 
 @Composable
 private fun BottomNavigationBar(
-    navController: NavController,
-    items: EnumEntries<BottomBarItem>,
-    navControllersMap: Map<Any, NavHostController>,
+    items: List<BottomBarItem>,
+    currentRoute: BottomBarItemNavigation,
+    onClickItem: (position: Int) -> Unit,
 ) {
     val bottomBarItemTextStyle =
         TextStyle(
@@ -90,11 +128,8 @@ private fun BottomNavigationBar(
         containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
         contentColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
-
-        items.forEach { item ->
-            val isSelected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
+        items.forEachIndexed { index, item ->
+            val isSelected = false
             NavigationBarItem(
                 icon = {
                     val iconId =
@@ -106,36 +141,28 @@ private fun BottomNavigationBar(
                     Icon(painter = painterResource(id = iconId), contentDescription = null)
                 },
                 label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
-                selected = isSelected,
+                selected = item.route == currentRoute,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
-                    }
+                    onClickItem(index)
                 },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-                    selectedTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-                    unselectedIconColor = MaterialTheme.colorScheme.iconsPrimary(),
-                    unselectedTextColor = MaterialTheme.colorScheme.iconsPrimary(),
-                    indicatorColor = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(),
-                ),
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                        selectedTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                        unselectedIconColor = MaterialTheme.colorScheme.iconsPrimary(),
+                        unselectedTextColor = MaterialTheme.colorScheme.iconsPrimary(),
+                        indicatorColor = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(),
+                    ),
             )
         }
     }
 }
 
-@DefaultPreviews
-@Composable
-internal fun DashboardBottomBarScreenPreview() {
-    MgoTheme {
-        val navController = rememberNavController()
-        BottomNavigationBar(navController = navController, items = BottomBarItem.entries, navControllersMap = mapOf())
-    }
-}
+// @DefaultPreviews
+// @Composable
+// internal fun DashboardBottomBarScreenPreview() {
+//    MgoTheme {
+//        val navController = rememberNavController()
+//        BottomNavigationBar()
+//    }
+// }

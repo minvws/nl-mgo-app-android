@@ -13,20 +13,35 @@ sealed class DashboardNavigation {
     data object BottomBar
 
     @Serializable
-    data class HealthCategories(val organization: MgoOrganization? = null)
+    sealed class Overview {
+        @Serializable
+        data object Root : Overview()
+
+        @Serializable
+        data class HealthCareCategory(val arguments: HealthCategoryScreenArguments) : Overview()
+
+        @Serializable
+        data class UISchemaDetail(val toolbarTitle: String, val uiSchema: UISchema) : Overview()
+    }
 
     @Serializable
-    data object Organizations
+    sealed class Organizations {
+        @Serializable
+        data object Root : Organizations()
+
+        @Serializable
+        data class HealthCareCategories(val organization: MgoOrganization) : Organizations()
+
+        @Serializable
+        data class HealthCareCategory(val arguments: HealthCategoryScreenArguments) : Organizations()
+
+        @Serializable
+        data class UISchemaDetail(val toolbarTitle: String, val uiSchema: UISchema) : Organizations()
+    }
 
     @Serializable
-    data object AboutThisApp
-
-    @Serializable
-    data class HealthCategory(val arguments: HealthCategoryScreenArguments)
-
-    @Serializable
-    data class UiSchemaDetail(val toolbarTitle: String, val uiSchema: UISchema)
-
-    @Serializable
-    data class RemoveOrganization(val providerId: String, val providerName: String)
+    sealed class AboutThisApp {
+        @Serializable
+        data object Root : AboutThisApp()
+    }
 }

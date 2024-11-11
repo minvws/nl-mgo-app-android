@@ -12,6 +12,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.painterResource
@@ -20,8 +21,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -46,46 +49,32 @@ fun DashboardBottomBarScreen(
     val coroutineScope = rememberCoroutineScope()
     val bottomBarItems = BottomBarItem.entries
     val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
+    val navControllers = mutableMapOf<BottomBarItemNavigation, NavHostController>()
     MgoScaffold(
         contentPadding = PaddingValues(),
         content = {
             HorizontalPager(pagerState) { position ->
                 val bottomBarItem = bottomBarItems[position]
-                when (bottomBarItem.route) {
-                    BottomBarItemNavigation.AboutThisApp -> {
-                        val aboutThisAppNavController = rememberNavController()
-                        NavHost(
-                            navController = aboutThisAppNavController,
-                            startDestination = aboutThisAppStartDestination,
-                            enterTransition = { EnterTransition.None },
-                            exitTransition = { ExitTransition.None },
-                        ) {
-                            aboutThisAppNavGraph(aboutThisAppNavController)
-                        }
+                val navController = rememberNavController()
+                LaunchedEffect(Unit) {
+                    navControllers[bottomBarItem.route] = navController
+                }
+                val startDestination =
+                    when (bottomBarItem.route) {
+                        BottomBarItemNavigation.AboutThisApp -> aboutThisAppStartDestination
+                        BottomBarItemNavigation.Organizations -> organizationsStartDestination
+                        BottomBarItemNavigation.Overview -> overviewStartDestination
                     }
-
-                    BottomBarItemNavigation.Organizations -> {
-                        val organizationsNavController = rememberNavController()
-                        NavHost(
-                            navController = organizationsNavController,
-                            startDestination = organizationsStartDestination,
-                            enterTransition = { EnterTransition.None },
-                            exitTransition = { ExitTransition.None },
-                        ) {
-                            organizationsNavGraph(organizationsNavController)
-                        }
-                    }
-
-                    BottomBarItemNavigation.Overview -> {
-                        val overviewNavController = rememberNavController()
-                        NavHost(
-                            navController = overviewNavController,
-                            startDestination = overviewStartDestination,
-                            enterTransition = { EnterTransition.None },
-                            exitTransition = { ExitTransition.None },
-                        ) {
-                            overviewNavGraph(overviewNavController)
-                        }
+                NavHost(
+                    navController = navController,
+                    startDestination = startDestination,
+                    enterTransition = { EnterTransition.None },
+                    exitTransition = { ExitTransition.None },
+                ) {
+                    when (bottomBarItem.route) {
+                        BottomBarItemNavigation.AboutThisApp -> aboutThisAppNavGraph(navController)
+                        BottomBarItemNavigation.Organizations -> organizationsNavGraph(navController)
+                        BottomBarItemNavigation.Overview -> overviewNavGraph(navController)
                     }
                 }
             }
@@ -94,9 +83,19 @@ fun DashboardBottomBarScreen(
             BottomNavigationBar(
                 currentRoute = bottomBarItems[pagerState.currentPage].route,
                 onClickItem = { position ->
-                    coroutineScope.launch {
-                        pagerState.scrollToPage(position)
+                    // If we are selecting a different item, navigate to that screen
+                    val isDifferentItem = position != pagerState.currentPage
+                    if (isDifferentItem) {
+                        coroutineScope.launch {
+                            pagerState.scrollToPage(position)
+                        }
+                        return@BottomNavigationBar
                     }
+
+                    // If re selecting the item, navigate to the root of that nav controller
+                    val currentRoute = bottomBarItems[pagerState.currentPage].route
+                    val navController = navControllers[currentRoute]
+                    navController?.navigate(navController.graph.findStartDestination().id)
                 },
             )
         },

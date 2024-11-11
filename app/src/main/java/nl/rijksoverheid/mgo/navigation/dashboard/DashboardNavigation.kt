@@ -2,8 +2,8 @@ package nl.rijksoverheid.mgo.navigation.dashboard
 
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import kotlinx.serialization.Serializable
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory as HealthCareCategoryModel
 
 sealed class DashboardNavigation {
     @Serializable
@@ -18,7 +18,7 @@ sealed class DashboardNavigation {
         data object Root : Overview()
 
         @Serializable
-        data class HealthCareCategory(val arguments: HealthCategoryScreenArguments) : Overview()
+        data class HealthCareCategory(val category: HealthCareCategoryModel) : Overview()
 
         @Serializable
         data class UISchemaDetail(val toolbarTitle: String, val uiSchema: UISchema) : Overview()
@@ -33,7 +33,7 @@ sealed class DashboardNavigation {
         data class HealthCareCategories(val organization: MgoOrganization) : Organizations()
 
         @Serializable
-        data class HealthCareCategory(val arguments: HealthCategoryScreenArguments) : Organizations()
+        data class HealthCareCategory(val category: HealthCareCategoryModel, val filterOrganization: MgoOrganization) : Organizations()
 
         @Serializable
         data class UISchemaDetail(val toolbarTitle: String, val uiSchema: UISchema) : Organizations()

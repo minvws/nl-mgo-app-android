@@ -19,7 +19,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import kotlin.reflect.typeOf
 
 const val SCREEN_TRANSITION_DURATION_MILLIS = 250
@@ -72,11 +71,6 @@ inline fun <reified T : Any> NavGraphBuilder.newComposableWithDefaultScreenTrans
         mapOf(
             typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
             typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-            typeOf<HealthCategoryScreenArguments>() to
-                JsonNavType(
-                    HealthCategoryScreenArguments::class.java,
-                    HealthCategoryScreenArguments.serializer(),
-                ),
             typeOf<UISchema>() to JsonNavType(UISchema::class.java, UISchema.serializer()),
         ),
     deepLinks = deepLinks,

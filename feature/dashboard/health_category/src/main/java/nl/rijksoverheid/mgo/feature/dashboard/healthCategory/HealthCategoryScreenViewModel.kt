@@ -6,9 +6,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -20,26 +22,28 @@ import kotlinx.coroutines.launch
 internal class HealthCategoryScreenViewModel
     @AssistedInject
     constructor(
-        @Assisted("arguments") private val arguments: HealthCategoryScreenArguments,
+        @Assisted("category") private val category: HealthCareCategory,
+        @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
         private val organizationRepository: OrganizationRepository,
         private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
             fun create(
-                @Assisted("arguments") arguments: HealthCategoryScreenArguments,
+                @Assisted("category") category: HealthCareCategory,
+                @Assisted("filterOrganization") filterOrganization: MgoOrganization? = null,
             ): HealthCategoryScreenViewModel
         }
 
-        private val initialState = HealthCategoryScreenViewState.initialState(arguments.category)
+        private val initialState = HealthCategoryScreenViewState.initialState(category)
         private val _viewState: MutableStateFlow<HealthCategoryScreenViewState> = MutableStateFlow(initialState)
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {
             viewModelScope.launch {
                 healthCareDataStatesRepository.observe(
-                    category = arguments.category,
-                    filterOrganization = arguments.filterOrganization,
+                    category = category,
+                    filterOrganization = filterOrganization,
                 )
                     .collectLatest { states ->
                         val loading = states.any { state -> state.loading }
@@ -53,7 +57,7 @@ internal class HealthCategoryScreenViewModel
                                     else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
                                 }
                             HealthCategoryScreenViewState(
-                                category = arguments.category,
+                                category = category,
                                 showErrorBanner = error,
                                 listItemsState = listItemState,
                             )
@@ -64,14 +68,13 @@ internal class HealthCategoryScreenViewModel
 
         fun retry() {
             viewModelScope.launch {
-                val filterOrganization = arguments.filterOrganization
                 if (filterOrganization == null) {
                     val organizations = organizationRepository.get()
                     for (organization in organizations) {
-                        healthCareDataStatesRepository.refresh(category = arguments.category, organization = organization)
+                        healthCareDataStatesRepository.refresh(category = category, organization = organization)
                     }
                 } else {
-                    healthCareDataStatesRepository.refresh(category = arguments.category, organization = filterOrganization)
+                    healthCareDataStatesRepository.refresh(category = category, organization = filterOrganization)
                 }
             }
         }

@@ -14,7 +14,6 @@ import androidx.navigation.toRoute
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenArguments
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.UiSchemaDetailScreen
 import nl.rijksoverheid.mgo.framework.copy.R
@@ -35,9 +34,7 @@ fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
                             },
                             onNavigateToHealthCategory = { category, _ ->
                                 navController.navigate(
-                                    DashboardNavigation.Overview.HealthCareCategory(
-                                        HealthCategoryScreenArguments(category = category, filterOrganization = null),
-                                    ),
+                                    DashboardNavigation.Overview.HealthCareCategory(category = category),
                                 )
                             },
                             onNavigateRemoveOrganization = { },
@@ -47,7 +44,7 @@ fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
                     newComposableWithDefaultScreenTransitions<DashboardNavigation.Overview.HealthCareCategory> { backStackEntry ->
                         val route = backStackEntry.toRoute<DashboardNavigation.Overview.HealthCareCategory>()
                         HealthCategoryScreen(
-                            arguments = route.arguments,
+                            category = route.category,
                             onClickUiSchema = { toolbarTitle, uiSchema ->
                                 navController.navigate(
                                     DashboardNavigation.Overview.UISchemaDetail(
@@ -97,18 +94,21 @@ fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
                             onNavigateToHealthCategory = { category, filterOrganization ->
                                 navController.navigate(
                                     DashboardNavigation.Organizations.HealthCareCategory(
-                                        HealthCategoryScreenArguments(category = category, filterOrganization = filterOrganization),
+                                        category = category,
+                                        filterOrganization = filterOrganization!!,
                                     ),
                                 )
                             },
                             onNavigateRemoveOrganization = { },
+                            onNavigateBack = { navController.popBackStack() },
                         )
                     }
 
                     newComposableWithDefaultScreenTransitions<DashboardNavigation.Organizations.HealthCareCategory> { backStackEntry ->
                         val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategory>()
                         HealthCategoryScreen(
-                            arguments = route.arguments,
+                            category = route.category,
+                            filterOrganization = route.filterOrganization,
                             onClickUiSchema = { toolbarTitle, uiSchema ->
                                 navController.navigate(
                                     DashboardNavigation.Organizations.UISchemaDetail(

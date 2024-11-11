@@ -7,10 +7,12 @@ import nl.rijksoverheid.mgo.data.api.load.SearchResponse
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
+typealias MgoOrganizationId = String
+
 @Parcelize
 @Serializable
 data class MgoOrganization(
-    val id: String,
+    val id: MgoOrganizationId,
     val name: String,
     val address: String?,
     val category: String?,

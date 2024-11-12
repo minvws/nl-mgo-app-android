@@ -1,19 +1,24 @@
 package nl.rijksoverheid.mgo.data.localisation.models
 
-import com.squareup.moshi.JsonClass
+import android.os.Parcelable
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_BGZ
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_GP
 import nl.rijksoverheid.mgo.data.api.load.SearchResponse
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+typealias MgoOrganizationId = String
+
+@Parcelize
+@Serializable
 data class MgoOrganization(
-    val id: String,
+    val id: MgoOrganizationId,
     val name: String,
     val address: String?,
     val category: String?,
     val added: Boolean,
     val dataServices: List<MgoOrganizationDataService>,
-)
+) : Parcelable
 
 val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
 val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)

@@ -17,5 +17,4 @@ dependencies {
     implementation(libs.androidx.test.runner)
     implementation(libs.androidx.test.core)
     implementation(libs.dagger.hilt.testing)
-    implementation(libs.moshi.kotlin)
 }

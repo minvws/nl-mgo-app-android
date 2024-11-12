@@ -1,35 +1,28 @@
-package nl.rijksoverheid.mgo.localisation
+package nl.rijksoverheid.mgo.data.localisation
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.api.load.createLoadApi
-import nl.rijksoverheid.mgo.data.localisation.DefaultOrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.storage.file.TestFileStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestFileStore
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
 import kotlinx.coroutines.test.runTest
 
-internal class DefaultMgoOrganizationRepositoryTest {
+internal class DefaultOrganizationRepositoryTest {
     @get:Rule
     val testServerRule = TestServerRule()
 
     private val testServer = testServerRule.testServer
     private val fileStore = TestFileStore()
-
-    @Before
-    fun setUp() {
-        fileStore.clear()
-    }
 
     @Test
     fun `Given loadApi request is successful, When calling search, Then emit health providers`() =
@@ -118,7 +111,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
                             TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedMgoOrganizations, "organizations.json")
+            fileStore.saveFile(storedMgoOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
 
             // When
             val repository = getRepository()
@@ -159,7 +152,7 @@ internal class DefaultMgoOrganizationRepositoryTest {
                             TEST_MGO_ORGANIZATION.copy(id = "3"),
                         ),
                 )
-            fileStore.saveFile(storedMgoOrganizations, "organizations.json")
+            fileStore.saveFile(storedMgoOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
 
             // When
             val repository = getRepository()

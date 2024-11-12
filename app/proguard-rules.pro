@@ -30,6 +30,5 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.eclipsesource.v8.** { *; }
--keep class * extends com.fasterxml.jackson.core.type.TypeReference { *; }
--keep class com.fasterxml.jackson.core.type.TypeReference
 -keep class nl.rijksoverheid.mgo.data.uiSchema.** {  *; }
+-keep class nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory { *; }

@@ -1,24 +1,24 @@
-package nl.rijksoverheid.mgo.framework.storage.file
+package nl.rijksoverheid.mgo.framework.storage.keyvalue
+
+import nl.rijksoverheid.mgo.framework.storage.file.FileStore
+import kotlin.reflect.KClass
 
 class TestFileStore : FileStore {
     private val files = mutableMapOf<String, Any>()
 
     override suspend fun <O : Any> saveFile(
-        file: O,
+        value: O,
+        clazz: KClass<O>,
         name: String,
     ) {
-        files[name] = file
+        files[name] = value
     }
 
     @Suppress("UNCHECKED_CAST")
     override suspend fun <O : Any> getFile(
-        clazz: Class<O>,
+        clazz: KClass<O>,
         name: String,
     ): O? {
         return files[name] as O?
-    }
-
-    fun clear() {
-        files.clear()
     }
 }

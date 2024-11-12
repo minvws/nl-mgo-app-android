@@ -10,4 +10,5 @@ android {
 dependencies {
     api(libs.compose.navigation)
     implementation(libs.androidx.browser)
+    implementation(libs.kotlin.reflect)
 }

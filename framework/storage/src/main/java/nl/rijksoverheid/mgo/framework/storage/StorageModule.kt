@@ -5,7 +5,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.security.crypto.MasterKeys
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,19 +51,10 @@ internal object StorageModule {
     @Singleton
     fun provideFileStore(
         @ApplicationContext context: Context,
-        @Named("storageMoshi") moshi: Moshi,
     ): FileStore {
         return EncryptedFileStore(
             context = context,
-            moshi = moshi,
             masterKeyAlias = masterKeyAlias,
         )
-    }
-
-    @Provides
-    @Singleton
-    @Named("storageMoshi")
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder().build()
     }
 }

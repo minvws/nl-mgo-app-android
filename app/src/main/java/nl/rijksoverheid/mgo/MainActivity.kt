@@ -23,10 +23,10 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
-import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
-import nl.rijksoverheid.mgo.navigation.config.ConfigNavigationScreen
+import nl.rijksoverheid.mgo.navigation.config.ConfigNavigation
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
+import nl.rijksoverheid.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeNavGraph
 
@@ -40,8 +40,6 @@ class MainActivity : FragmentActivity() {
             MgoTheme(modifier = Modifier.fillMaxSize()) {
                 val viewModel: MainViewModel = hiltViewModel()
                 val startDestination = viewModel.getStartDestination()
-                val overviewNavController = rememberNavController()
-                val organizationsNavController = rememberNavController()
                 val navController = rememberNavController()
 
                 CompositionLocalProvider(LocalSnackbarPresenter provides DefaultLocalSnackbarPresenter()) {
@@ -53,13 +51,9 @@ class MainActivity : FragmentActivity() {
                     ) {
                         addOnboardingNavGraph(navController = navController)
                         addPinCodeNavGraph(navController = navController, hasPinCode = viewModel.hasPinCode())
-                        addDashboardNavGraph(
-                            rootNavController = navController,
-                            overviewNavController = overviewNavController,
-                            organizationsNavController = organizationsNavController,
-                        )
+                        addDashboardNavGraph(rootNavController = navController)
                         addLocalisationNavGraph(navController = navController)
-                        composableWithDefaultScreenTransitions(route = ConfigNavigationScreen.UpdateRequired.getRoute()) {
+                        mgoComposable<ConfigNavigation.UpdateRequired> {
                             UpdateRequiredScreen()
                         }
                     }
@@ -75,7 +69,7 @@ class MainActivity : FragmentActivity() {
                 when (configState) {
                     ConfigState.NoAction -> {}
                     ConfigState.UpdateRequired ->
-                        navController.navigate(ConfigNavigationScreen.UpdateRequired.getNavigationRoute()) {
+                        navController.navigate(ConfigNavigation.UpdateRequired) {
                             popUpTo(navController.graph.id) {
                                 inclusive = true
                             }

@@ -3,43 +3,42 @@ package nl.rijksoverheid.mgo.navigation.localisation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreen
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
 import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.OrganizationSearchScreen
-import nl.rijksoverheid.mgo.navigation.composableWithDefaultScreenTransitions
 import nl.rijksoverheid.mgo.navigation.getViewModel
+import nl.rijksoverheid.mgo.navigation.mgoComposable
 
 fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
-    navigation(
-        startDestination = LocalisationNavigationScreen.AddOrganization.getRoute(),
-        route = LocalisationNavigationScreen.Start.getRoute(),
-    ) {
-        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.AddOrganization.getRoute()) {
+    navigation<LocalisationNavigation.Root>(LocalisationNavigation.AddOrganization) {
+        mgoComposable<LocalisationNavigation.AddOrganization> {
             AddOrganizationScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToOrganizationSearch = { name, city ->
-                    navController.navigate(LocalisationNavigationScreen.OrganizationList.setName(name).setCity(city).getNavigationRoute())
+                    navController.navigate(LocalisationNavigation.OrganizationList(name = name, city = city))
                 },
             )
         }
 
-        composableWithDefaultScreenTransitions(route = LocalisationNavigationScreen.OrganizationList.getRoute()) { backStackEntry ->
+        mgoComposable<LocalisationNavigation.OrganizationList> { backStackEntry ->
+            val route = backStackEntry.toRoute<LocalisationNavigation.OrganizationList>()
             val addOrganizationScreenViewModel =
                 navController.getViewModel<AddOrganizationScreenViewModel>(
-                    route = LocalisationNavigationScreen.AddOrganization.getRoute(),
+                    route = LocalisationNavigation.AddOrganization,
                 )
             OrganizationSearchScreen(
-                name = LocalisationNavigationScreen.OrganizationList.getName(backStackEntry),
-                city = LocalisationNavigationScreen.OrganizationList.getCity(backStackEntry),
+                name = route.name,
+                city = route.city,
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToAddOrganization = {
                     addOrganizationScreenViewModel?.setName("")
                     addOrganizationScreenViewModel?.setCity("")
-                    navController.popBackStack(route = LocalisationNavigationScreen.AddOrganization.getNavigationRoute(), inclusive = false)
+                    navController.popBackStack(route = LocalisationNavigation.AddOrganization, inclusive = false)
                 },
                 onNavigateToDashboard = {
                     navController.popBackStack(
-                        route = LocalisationNavigationScreen.AddOrganization.getNavigationRoute(),
+                        route = LocalisationNavigation.AddOrganization,
                         inclusive = true,
                     )
                 },

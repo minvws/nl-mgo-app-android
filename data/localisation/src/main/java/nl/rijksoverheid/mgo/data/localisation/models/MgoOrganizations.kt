@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.localisation.models
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MgoOrganizations(
     val providers: List<MgoOrganization>,
 )

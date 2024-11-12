@@ -3,6 +3,8 @@ package nl.rijksoverheid.mgo.component.theme.composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,13 +30,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
@@ -58,13 +65,10 @@ fun MgoScaffold(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val context = LocalContext.current
-    val localDensity = LocalDensity.current
-    var expandedAppBarHeight by remember {
-        mutableStateOf(Int.MAX_VALUE.dp)
-    }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    var measured by remember { mutableStateOf(false) }
     val scaffoldModifier =
-        if (expandedAppBarHeight == Int.MAX_VALUE.dp) {
+        if (!measured) {
             Modifier
         } else {
             Modifier.nestedScroll(
@@ -99,28 +103,26 @@ fun MgoScaffold(
                     )
                 MgoTheme(typography = adjustedTypography) {
                     MediumTopAppBar(
+                        modifier =
+                            Modifier.onGloballyPositioned {
+                                measured = true
+                            },
                         title = {
                             Text(
                                 modifier =
                                     Modifier
-                                        .fillMaxWidth()
-                                        .onGloballyPositioned {
-                                            val heightDp = with(localDensity) { it.size.height.toDp() }
-                                            if (heightDp != 0.dp) {
-                                                expandedAppBarHeight =
-                                                    heightDp + TopAppBarDefaults.MediumAppBarCollapsedHeight
-                                            }
-                                        },
+                                        .fillMaxWidth(),
                                 text = appBarTitle,
                                 textAlign = appBarTitleAlign,
                             )
                         },
                         expandedHeight =
-                            if (LocalInspectionMode.current) {
-                                TopAppBarDefaults.MediumAppBarExpandedHeight
-                            } else {
-                                expandedAppBarHeight + 16.dp
-                            },
+                            calculateExpandedHeight(
+                                title = appBarTitle,
+                                horizontalPadding =
+                                    contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+                                        .plus(contentPadding.calculateEndPadding(LayoutDirection.Ltr)),
+                            ),
                         // Add 16dp for some bottom padding
                         navigationIcon = {
                             onNavigateBack?.let {
@@ -167,6 +169,28 @@ fun MgoScaffold(
             }
         },
     )
+}
+
+/**
+ * A MediumTopAppBar expects an expandedHeight in dps. For this app we want it be a tall as the content (the title),
+ * but the MediumTopAppBar composable does not support something like that out of the box
+ */
+@Composable
+private fun calculateExpandedHeight(
+    title: String,
+    horizontalPadding: Dp,
+): Dp {
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+    val constraintsWidth = with(density) { (configuration.screenWidthDp.dp - horizontalPadding).toPx().toInt() }
+    val textMeasurer = rememberTextMeasurer()
+    val expandedHeightPx =
+        textMeasurer.measure(
+            constraints = Constraints(maxWidth = constraintsWidth),
+            text = title,
+            style = MaterialTheme.typography.headingLarge,
+        ).size.height
+    return density.run { expandedHeightPx.toDp() } + TopAppBarDefaults.MediumAppBarCollapsedHeight + 16.dp
 }
 
 @PreviewLightDark

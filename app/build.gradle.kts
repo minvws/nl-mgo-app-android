@@ -73,7 +73,6 @@ dependencies {
     // LIBRARIES
     // ================================
     implementation(libs.rootbeer)
-    implementation(libs.jackson)
 
     // ================================
     // FEATURES

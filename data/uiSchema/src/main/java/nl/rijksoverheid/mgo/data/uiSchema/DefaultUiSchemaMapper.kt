@@ -9,12 +9,15 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import javax.inject.Inject
+import kotlinx.serialization.json.Json
 
 internal class DefaultUiSchemaMapper
     @Inject
     constructor(
         @ApplicationContext private val context: Context,
     ) : UiSchemaMapper {
+        private val json = Json
+
         override fun getUiSchema(
             fhirBundleJson: String,
             profile: String,
@@ -54,7 +57,7 @@ internal class DefaultUiSchemaMapper
                     val uiSchemaJson = mgoFhirData.executeStringFunction("getUiSchemaJson", getUiSchemaJsonParameters)
 
                     // Parse ui schema json to class
-                    val uiSchema = UISchema.fromJson(uiSchemaJson)
+                    val uiSchema = json.decodeFromString<UISchema>(uiSchemaJson)
                     uiSchemas.add(uiSchema)
                 }
             }

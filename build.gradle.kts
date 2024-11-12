@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.composeCompiler) apply false
+    alias(libs.plugins.serializable) apply false
     alias(libs.plugins.sonarqube)
 }
 true // Needed to make the Suppress annotation work for the plugins block
@@ -44,10 +45,11 @@ sonar {
             add("**/*Activity*.kt") // Activities
             add("**/res/**/") // Resources folder
             add("**/*Module*.kt") // Dagger modules
-            add("**/*Navigation*.kt") // Navigation classes
             add("**/*NavGraph*.kt") // NavGraph classes
             add("**/*Screen*.kt") // We exclude all composable screens since it messes with our code coverage
             add("**/*Prompt*.kt") // We exclude all prompts
+            add("app/src/main/java/nl/rijksoverheid/mgo/navigation/**") // Exclude navigation module
+            add("framework/navigation/src/main/java/nl/rijksoverheid/mgo/framework/navigation/**") // Exclude navigation module
             add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
             add("component/theme/src/main/java/nl/rijksoverheid/mgo/component/theme/**") // Exclude theme module
 

@@ -43,21 +43,23 @@ import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.getStringResourceByName
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun HealthCategoryScreen(
-    arguments: HealthCategoryScreenArguments,
+    category: HealthCareCategory,
     onClickUiSchema: (toolbarTitle: String, uiSchema: UISchema) -> Unit,
     onNavigateBack: () -> Unit,
+    filterOrganization: MgoOrganization? = null,
 ) {
     val viewModel =
         hiltViewModel<HealthCategoryScreenViewModel, HealthCategoryScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(arguments) },
+            creationCallback = { factory -> factory.create(category = category, filterOrganization = filterOrganization) },
         )
     val viewState by viewModel.viewState.collectAsState()
-    val uiSchemaDetailScreenToolbarTitle = stringResource(id = arguments.category.getUiSchemaToolbarTitle())
+    val uiSchemaDetailScreenToolbarTitle = stringResource(id = category.getUiSchemaToolbarTitle())
     HealthCategoryScreenContent(
         viewState = viewState,
         onClickUiSchema = { uiSchema ->

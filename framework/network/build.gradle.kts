@@ -12,8 +12,6 @@ android {
 
 dependencies {
     api(libs.retrofit)
-    api(libs.retrofit.moshi)
-    api(libs.moshi.kotlin)
     api(libs.okhttp)
     testImplementation(testFixtures(projects.framework.test))
     debugImplementation(libs.chucker)

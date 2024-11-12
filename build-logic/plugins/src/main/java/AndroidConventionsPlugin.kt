@@ -30,6 +30,8 @@ class AndroidConventionsPlugin : Plugin<Project> {
             apply(versionCatalog.findPlugin("kotlinAndroid").get().get().pluginId)
             apply(versionCatalog.findPlugin("ksp").get().get().pluginId)
             apply(versionCatalog.findPlugin("daggerHilt").get().get().pluginId)
+            apply(versionCatalog.findPlugin("serializable").get().get().pluginId)
+            apply("kotlin-parcelize")
             apply("jacoco")
         }
     }
@@ -200,6 +202,9 @@ class AndroidConventionsPlugin : Plugin<Project> {
             addBillOfMaterials("compose.bom")
             addBillOfMaterials("coroutines.bom")
 
+            // Json serialization
+            add("implementation", versionCatalog.findLibrary("kotlinx.serialization.json").get())
+
             // Coroutines
             add("implementation", versionCatalog.findLibrary("coroutines.core").get())
             add("implementation", versionCatalog.findLibrary("coroutines.android").get())
@@ -224,9 +229,6 @@ class AndroidConventionsPlugin : Plugin<Project> {
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())
-
-            // Moshi
-            add("ksp", versionCatalog.findLibrary("moshi.kotlin.codegen").get())
 
             // Test Fixtures
             add("testFixturesImplementation", versionCatalog.findLibrary("coroutines-core").get())

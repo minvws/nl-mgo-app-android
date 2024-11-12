@@ -41,13 +41,13 @@ internal class DefaultOrganizationRepository(
     }
 
     override suspend fun get(): List<MgoOrganization> {
-        val localMgoOrganizations = fileStore.getFile(MgoOrganizations::class.java, fileName)
+        val localMgoOrganizations = fileStore.getFile(MgoOrganizations::class, fileName)
         return localMgoOrganizations?.providers ?: listOf()
     }
 
     override suspend fun save(provider: MgoOrganization) {
         // Get stored health care providers
-        val storedMgoOrganizations = fileStore.getFile(MgoOrganizations::class.java, fileName) ?: MgoOrganizations(listOf())
+        val storedMgoOrganizations = fileStore.getFile(MgoOrganizations::class, fileName) ?: MgoOrganizations(listOf())
 
         // Add our provider we want to save
         val newProviders = storedMgoOrganizations.providers.toMutableList()
@@ -55,7 +55,7 @@ internal class DefaultOrganizationRepository(
         val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(clazz = newStoredOrganizations, name = fileName)
+        fileStore.saveFile(value = newStoredOrganizations, clazz = MgoOrganizations::class, name = fileName)
 
         // Update flow
         storedOrganizationsFlow.value = newStoredOrganizations.providers
@@ -63,7 +63,7 @@ internal class DefaultOrganizationRepository(
 
     override suspend fun delete(providerId: String) {
         // Get stored health care providers
-        val storedMgoOrganizations = requireNotNull(fileStore.getFile(MgoOrganizations::class.java, fileName))
+        val storedMgoOrganizations = requireNotNull(fileStore.getFile(MgoOrganizations::class, fileName))
 
         // Delete the provider from the file
         val newProviders = storedMgoOrganizations.providers.toMutableList()
@@ -71,7 +71,7 @@ internal class DefaultOrganizationRepository(
         val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file
-        fileStore.saveFile(clazz = newStoredOrganizations, name = fileName)
+        fileStore.saveFile(value = newStoredOrganizations, clazz = MgoOrganizations::class, name = fileName)
 
         // Update flow
         storedOrganizationsFlow.value = newStoredOrganizations.providers

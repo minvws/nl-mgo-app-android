@@ -19,8 +19,6 @@ android {
 
 dependencies {
     implementation(projects.framework.test) // Needed because we need a reference to the HiltTestRunner inside this gradle
-    implementation(libs.moshi.kotlin)
     implementation(libs.androidx.security.crypto)
-    ksp(libs.moshi.kotlin.codegen)
     api(libs.datastore.preference)
 }

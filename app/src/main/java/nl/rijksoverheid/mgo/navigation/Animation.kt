@@ -11,24 +11,22 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.DialogWindowProvider
-import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
+import kotlin.reflect.typeOf
 
 const val SCREEN_TRANSITION_DURATION_MILLIS = 250
 
-fun NavGraphBuilder.dialogWithDefaultScreenTransitions(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
+inline fun <reified T : Any> NavGraphBuilder.mgoComposableDialog(
     deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable (NavBackStackEntry) -> Unit,
+    crossinline content: @Composable (NavBackStackEntry) -> Unit,
 ) {
-    dialog(
-        route = route,
-        arguments = arguments,
+    dialog<T>(
         deepLinks = deepLinks,
         content = { backStackEntry ->
             // Make dialog full screen
@@ -44,18 +42,21 @@ fun NavGraphBuilder.dialogWithDefaultScreenTransitions(
     )
 }
 
-fun NavGraphBuilder.composableWithDefaultScreenTransitions(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
+inline fun <reified T : Any> NavGraphBuilder.mgoComposable(
     deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
-) = composable(
-    route = route,
-    arguments = arguments,
+    animate: Boolean = true,
+    noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
+) = composable<T>(
+    typeMap =
+        mapOf(
+            typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
+            typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
+            typeOf<UISchema>() to JsonNavType(UISchema::class.java, UISchema.serializer()),
+        ),
     deepLinks = deepLinks,
-    enterTransition = { defaultScreenEnterTransition() },
-    exitTransition = { defaultScreenExitTransition() },
-    popEnterTransition = { defaultScreenPopEnterTransition() },
+    enterTransition = { if (animate) defaultScreenEnterTransition() else null },
+    exitTransition = { if (animate) defaultScreenExitTransition() else null },
+    popEnterTransition = { if (animate) defaultScreenPopEnterTransition() else null },
     content = content,
 )
 

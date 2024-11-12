@@ -2,8 +2,6 @@ package nl.rijksoverheid.mgo.framework.storage.file
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.squareup.moshi.JsonClass
-import com.squareup.moshi.Moshi
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
@@ -12,18 +10,13 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.Serializable
 
 @HiltAndroidTest
 internal class EncryptedFileStoreTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
-
-    @Inject
-    @Named("storageMoshi")
-    lateinit var moshi: Moshi
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private lateinit var fileStore: EncryptedFileStore
@@ -34,12 +27,11 @@ internal class EncryptedFileStoreTest {
         fileStore =
             EncryptedFileStore(
                 context = context,
-                moshi = moshi,
                 masterKeyAlias = "123",
             )
     }
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class TestData(
         val id: Int,
         val name: String,
@@ -67,10 +59,10 @@ internal class EncryptedFileStoreTest {
         runTest {
             // Given
             val testData = TestData(id = 5, name = "Hello World")
-            fileStore.saveFile(clazz = testData, name = "testdata.json")
+            fileStore.saveFile(value = testData, name = "testdata.json", clazz = TestData::class)
 
             // When
-            val fileContent = fileStore.getFile(clazz = TestData::class.java, name = "testdata.json")
+            val fileContent = fileStore.getFile(clazz = TestData::class, name = "testdata.json")
 
             // Then
             assertEquals(testData, fileContent)
@@ -81,11 +73,11 @@ internal class EncryptedFileStoreTest {
         runTest {
             // Given
             val testData = TestData(id = 5, name = "Hello World")
-            fileStore.saveFile(clazz = testData, name = "testdata.json")
+            fileStore.saveFile(value = testData, name = "testdata.json", clazz = TestData::class)
 
             // When
             val testData2 = TestData(id = 6, name = "Hello World 2")
-            fileStore.saveFile(clazz = testData2, name = "testdata.json")
+            fileStore.saveFile(value = testData2, name = "testdata.json", clazz = TestData::class)
 
             // Then no errors are thrown
         }
@@ -96,7 +88,7 @@ internal class EncryptedFileStoreTest {
             // Given no saved file
 
             // When
-            val fileContent = fileStore.getFile(clazz = TestData::class.java, name = "testdata.json")
+            val fileContent = fileStore.getFile(clazz = TestData::class, name = "testdata.json")
 
             // Then
             assertNull(fileContent)

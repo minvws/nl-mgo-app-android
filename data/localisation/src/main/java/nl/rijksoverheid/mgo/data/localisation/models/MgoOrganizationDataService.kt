@@ -1,14 +1,16 @@
 package nl.rijksoverheid.mgo.data.localisation.models
 
-import com.squareup.moshi.JsonClass
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Parcelize
+@Serializable
 data class MgoOrganizationDataService(
     val resourceEndpoint: String,
     val type: MgoOrganizationDataServiceType,
-)
+) : Parcelable
 
-@JsonClass(generateAdapter = false)
 enum class MgoOrganizationDataServiceType {
     BGZ,
     GP,

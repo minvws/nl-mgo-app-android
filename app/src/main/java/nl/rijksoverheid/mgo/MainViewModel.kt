@@ -8,8 +8,8 @@ import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
-import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigationScreen
-import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigationScreen
+import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigation
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -31,14 +31,13 @@ internal class MainViewModel
                 initialValue = ConfigState.NoAction,
             )
 
-        fun getStartDestination(): String {
+        fun getStartDestination(): Any {
             return when {
                 hasSeenOnboarding.invoke() -> {
-                    PinCodeNavigationScreen.Start.getNavigationRoute()
+                    PinCodeNavigation.Root
                 }
-
                 else -> {
-                    OnboardingNavigationScreen.Start.getNavigationRoute()
+                    OnboardingNavigation.Root
                 }
             }
         }

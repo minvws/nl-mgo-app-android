@@ -1,5 +1,8 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
+import androidx.annotation.Keep
+
+@Keep
 enum class HealthCareCategory(val id: String) {
     MEDICATIONS("medication"),
     MEASUREMENTS("measurements"),

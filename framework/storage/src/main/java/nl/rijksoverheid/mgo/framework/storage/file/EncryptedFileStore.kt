@@ -76,10 +76,6 @@ internal class EncryptedFileStore(
     }
 
     override suspend fun clear() {
-        try {
-            dir.listFiles()?.forEach { it.deleteRecursively() }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        dir.listFiles()?.forEach { it.deleteRecursively() }
     }
 }

@@ -2,9 +2,12 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import android.content.Context
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.security.crypto.EncryptedSharedPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+
+val KEY_PIN_CODE = stringPreferencesKey("pin_code")
 
 internal class EncryptedSharedPreferencesSecureKeyValueStore
     @Inject
@@ -32,6 +35,10 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
             return encryptedSharedPreferences.getBoolean(key.name, false)
         }
 
+        override suspend fun removeBoolean(key: Preferences.Key<Boolean>) {
+            encryptedSharedPreferences.edit().remove(key.name).apply()
+        }
+
         override suspend fun setString(
             key: Preferences.Key<String>,
             value: String,
@@ -41,6 +48,10 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
 
         override suspend fun getString(key: Preferences.Key<String>): String? {
             return encryptedSharedPreferences.getString(key.name, null)
+        }
+
+        override suspend fun removeString(key: Preferences.Key<String>) {
+            encryptedSharedPreferences.edit().remove(key.name).apply()
         }
 
         override fun clear() {

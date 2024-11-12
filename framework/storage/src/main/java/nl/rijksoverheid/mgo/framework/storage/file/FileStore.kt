@@ -13,4 +13,6 @@ interface FileStore {
         clazz: KClass<O>,
         name: String,
     ): O?
+
+    suspend fun clear()
 }

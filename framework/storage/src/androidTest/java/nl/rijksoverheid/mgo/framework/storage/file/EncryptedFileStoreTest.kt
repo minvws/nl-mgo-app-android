@@ -93,4 +93,19 @@ internal class EncryptedFileStoreTest {
             // Then
             assertNull(fileContent)
         }
+
+    @Test
+    fun given_saved_file_when_calling_clear_then_remove_files() =
+        runTest {
+            // Given
+            val testData = TestData(id = 5, name = "Hello World")
+            fileStore.saveFile(value = testData, name = "testdata.json", clazz = TestData::class)
+
+            // When
+            fileStore.clear()
+
+            // Then
+            val file = fileStore.getFile(clazz = TestData::class, name = "testdata.json")
+            assertNull(file)
+        }
 }

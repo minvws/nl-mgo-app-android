@@ -13,8 +13,8 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -34,6 +33,8 @@ import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,10 +46,11 @@ fun DashboardBottomBarScreen(
     aboutThisAppStartDestination: Any,
     aboutThisAppNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
 ) {
+    val navigateToRootOfGraph = remember { MutableSharedFlow<Int>(extraBufferCapacity = 1) }
     val coroutineScope = rememberCoroutineScope()
     val bottomBarItems = BottomBarItem.entries
     val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
-    val navControllers = rememberSaveable { mutableMapOf<BottomBarItemNavigation, NavHostController>() }
+
     MgoScaffold(
         contentPadding = PaddingValues(),
         content = {
@@ -56,7 +58,12 @@ fun DashboardBottomBarScreen(
                 val bottomBarItem = bottomBarItems[position]
                 val navController = rememberNavController()
                 LaunchedEffect(Unit) {
-                    navControllers[bottomBarItem.route] = navController
+                    // Navigate to the root of nav controller if requested
+                    navigateToRootOfGraph.collectLatest {
+                        if (position == it) {
+                            navController.navigate(navController.graph.findStartDestination().id)
+                        }
+                    }
                 }
                 val startDestination =
                     when (bottomBarItem.route) {
@@ -92,9 +99,7 @@ fun DashboardBottomBarScreen(
                     }
 
                     // If re selecting the item, navigate to the root of that nav controller
-                    val currentRoute = bottomBarItems[pagerState.currentPage].route
-                    val navController = navControllers[currentRoute]
-                    navController?.navigate(navController.graph.findStartDestination().id)
+                    navigateToRootOfGraph.tryEmit(pagerState.currentPage)
                 },
             )
         },

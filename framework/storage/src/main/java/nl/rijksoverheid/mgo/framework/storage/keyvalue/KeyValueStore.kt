@@ -21,5 +21,14 @@ interface KeyValueStore {
 
     suspend fun removeString(key: Preferences.Key<String>)
 
+    suspend fun setLong(
+        key: Preferences.Key<Long>,
+        value: Long,
+    )
+
+    suspend fun getLong(key: Preferences.Key<Long>): Long?
+
+    suspend fun removeLong(key: Preferences.Key<Long>)
+
     fun clear()
 }

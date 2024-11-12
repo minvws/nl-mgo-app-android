@@ -10,15 +10,11 @@ import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreen
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavigation
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
 import nl.rijksoverheid.mgo.feature.pincode.forgot.PinCodeForgotScreen
-import nl.rijksoverheid.mgo.feature.pincode.login.PinCodeLoginScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
-fun NavGraphBuilder.addPinCodeNavGraph(
-    navController: NavController,
-    hasPinCode: Boolean,
-) {
-    navigation<PinCodeNavigation.Root>(if (hasPinCode) PinCodeNavigation.Login else PinCodeNavigation.Create) {
+fun NavGraphBuilder.addPinCodeNavGraph(navController: NavController) {
+    navigation<PinCodeNavigation.Root>(PinCodeNavigation.Create) {
         mgoComposable<PinCodeNavigation.Create> {
             PinCodeCreateScreen(
                 hasBackButton = remember { navController.previousBackStackEntry != null },
@@ -63,21 +59,6 @@ fun NavGraphBuilder.addPinCodeNavGraph(
         mgoComposable<PinCodeNavigation.BiometricSetup> {
             PinCodeBioMetricSetupScreen(
                 onNavigateToDashboard = {
-                    navController.navigate(DashboardNavigation.Root) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                },
-            )
-        }
-
-        mgoComposable<PinCodeNavigation.Login> {
-            PinCodeLoginScreen(
-                onNavigateForgotPin = {
-                    navController.navigate(PinCodeNavigation.Forgot)
-                },
-                onPinValidated = {
                     navController.navigate(DashboardNavigation.Root) {
                         popUpTo(navController.graph.id) {
                             inclusive = true

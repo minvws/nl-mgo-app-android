@@ -21,4 +21,8 @@ class TestFileStore : FileStore {
     ): O? {
         return files[name] as O?
     }
+
+    override suspend fun clear() {
+        files.clear()
+    }
 }

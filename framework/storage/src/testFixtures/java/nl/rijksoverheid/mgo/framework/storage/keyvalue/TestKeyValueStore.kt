@@ -14,7 +14,11 @@ class TestKeyValueStore : KeyValueStore {
     }
 
     override suspend fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
-        return booleans[key] ?: false
+        return booleans[key] == true
+    }
+
+    override suspend fun removeBoolean(key: Preferences.Key<Boolean>) {
+        booleans.remove(key)
     }
 
     override suspend fun setString(
@@ -26,6 +30,10 @@ class TestKeyValueStore : KeyValueStore {
 
     override suspend fun getString(key: Preferences.Key<String>): String? {
         return strings[key]
+    }
+
+    override suspend fun removeString(key: Preferences.Key<String>) {
+        strings.remove(key)
     }
 
     override fun clear() {

@@ -25,18 +25,18 @@ internal class DataStoreKeyValueStoreTest {
     fun validateBoolean() =
         runTest {
             // Given
-            val preferenceKey1 = booleanPreferencesKey("test1")
-            val preferenceKey2 = booleanPreferencesKey("test2")
             val keyValueStore = DataStoreKeyValueStore(dataStore = context.dataStore)
 
             // When
-            keyValueStore.setBoolean(preferenceKey1, true)
-            keyValueStore.setBoolean(preferenceKey2, true)
-            keyValueStore.removeBoolean(preferenceKey2)
+            keyValueStore.setBoolean(KEY_HAS_SEEN_ONBOARDING, true)
+            keyValueStore.setBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED, true)
+            keyValueStore.setBoolean(KEY_IS_ROOT_CHECKED, true)
+            keyValueStore.removeBoolean(KEY_IS_ROOT_CHECKED)
 
             // Then
-            assertTrue(keyValueStore.getBoolean(preferenceKey1))
-            assertFalse(keyValueStore.getBoolean(preferenceKey2))
+            assertTrue(keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING))
+            assertTrue(keyValueStore.getBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED))
+            assertFalse(keyValueStore.getBoolean(KEY_IS_ROOT_CHECKED))
         }
 
     @Test

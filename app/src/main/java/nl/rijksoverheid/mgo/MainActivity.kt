@@ -23,11 +23,8 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.snackbar.DefaultLocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
-import nl.rijksoverheid.mgo.feature.config.UpdateRequiredScreen
-import nl.rijksoverheid.mgo.navigation.config.ConfigNavigation
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
-import nl.rijksoverheid.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeCreateNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeLoginNavGraph
@@ -74,9 +71,6 @@ class MainActivity : FragmentActivity() {
             addPinCodeLoginNavGraph(navController = navController, activity = this@MainActivity)
             addDashboardNavGraph(rootNavController = navController)
             addLocalisationNavGraph(navController = navController)
-            mgoComposable<ConfigNavigation.UpdateRequired> {
-                UpdateRequiredScreen()
-            }
         }
     }
 

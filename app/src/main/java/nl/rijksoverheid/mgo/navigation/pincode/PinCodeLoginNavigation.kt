@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 sealed class PinCodeLoginNavigation {
     @Serializable
-    data object Root : PinCodeCreateNavigation()
+    data object Root : PinCodeLoginNavigation()
 
     @Serializable
     data object Login : PinCodeLoginNavigation()
@@ -13,5 +13,5 @@ sealed class PinCodeLoginNavigation {
     data object LoginDialog : PinCodeLoginNavigation()
 
     @Serializable
-    data object Forgot : PinCodeCreateNavigation()
+    data object Forgot : PinCodeLoginNavigation()
 }

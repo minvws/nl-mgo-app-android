@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.security.crypto.MasterKeys
 import androidx.test.core.app.ApplicationProvider
@@ -47,6 +48,24 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
             // Then
             assertEquals("123", keyValueStore.getString(preferenceKey1))
             assertNull(keyValueStore.getString(preferenceKey2))
+        }
+
+    @Test
+    fun validateLong() =
+        runTest {
+            // Given
+            val preferenceKey1 = longPreferencesKey("test1")
+            val preferenceKey2 = longPreferencesKey("test2")
+            val keyValueStore = createKeyValueStore()
+
+            // When
+            keyValueStore.setLong(preferenceKey1, 1L)
+            keyValueStore.setLong(preferenceKey2, 2L)
+            keyValueStore.removeLong(preferenceKey2)
+
+            // Then
+            assertEquals(1L, keyValueStore.getLong(preferenceKey1))
+            assertNull(keyValueStore.getLong(preferenceKey2))
         }
 
     @Test

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.test.core.app.ApplicationProvider
@@ -55,6 +56,24 @@ internal class DataStoreKeyValueStoreTest {
             // Then
             assertEquals("123", keyValueStore.getString(preferenceKey1))
             assertNull(keyValueStore.getString(preferenceKey2))
+        }
+
+    @Test
+    fun validateLong() =
+        runTest {
+            // Given
+            val preferenceKey1 = longPreferencesKey("test1")
+            val preferenceKey2 = longPreferencesKey("test2")
+            val keyValueStore = DataStoreKeyValueStore(dataStore = context.dataStore)
+
+            // When
+            keyValueStore.setLong(preferenceKey1, 1L)
+            keyValueStore.setLong(preferenceKey2, 2L)
+            keyValueStore.removeLong(preferenceKey2)
+
+            // Then
+            assertEquals(1L, keyValueStore.getLong(preferenceKey1))
+            assertNull(keyValueStore.getLong(preferenceKey2))
         }
 
     @Test

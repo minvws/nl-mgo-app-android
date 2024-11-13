@@ -3,16 +3,17 @@ package nl.rijksoverheid.mgo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.config.ConfigRepository
-import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
+import nl.rijksoverheid.mgo.lock.AppLocked
+import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
-import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigation
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import javax.inject.Inject
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -20,31 +21,42 @@ internal class MainViewModel
     @Inject
     constructor(
         val showDeviceRootedDialog: ShowDeviceRootedDialog,
-        val hasPinCode: HasPinCode,
+        private val appLocked: AppLocked,
+        private val saveClosedAppTimestamp: SaveClosedAppTimestamp,
+        private val hasPinCode: HasPinCode,
         private val hasSeenOnboarding: HasSeenOnboarding,
-        private val configRepository: ConfigRepository,
     ) : ViewModel() {
-        val configStateFlow =
-            configRepository.configStateFlow.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = ConfigState.NoAction,
-            )
+        private val _navigateDialog = MutableSharedFlow<Any>(extraBufferCapacity = 1)
+        val navigateDialog = _navigateDialog.asSharedFlow()
 
         fun getStartDestination(): Any {
             return when {
-                hasSeenOnboarding.invoke() -> {
-                    PinCodeNavigation.Root
+                hasPinCode.invoke() -> {
+                    PinCodeLoginNavigation.Root
                 }
+
+                hasSeenOnboarding.invoke() -> {
+                    PinCodeCreateNavigation.Root
+                }
+
                 else -> {
                     OnboardingNavigation.Root
                 }
             }
         }
 
-        fun refreshConfig() {
+        fun checkAppLock() {
             viewModelScope.launch {
-                configRepository.refresh()
+                val appLocked = appLocked.invoke()
+                if (appLocked) {
+                    _navigateDialog.tryEmit(PinCodeLoginNavigation.LoginDialog)
+                }
+            }
+        }
+
+        fun saveClosedAppTimestamp() {
+            viewModelScope.launch {
+                saveClosedAppTimestamp.invoke()
             }
         }
     }

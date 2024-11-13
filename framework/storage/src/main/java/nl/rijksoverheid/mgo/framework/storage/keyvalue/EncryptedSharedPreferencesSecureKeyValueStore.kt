@@ -54,6 +54,21 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
             encryptedSharedPreferences.edit().remove(key.name).apply()
         }
 
+        override suspend fun setLong(
+            key: Preferences.Key<Long>,
+            value: Long,
+        ) {
+            encryptedSharedPreferences.edit().putLong(key.name, value).apply()
+        }
+
+        override suspend fun getLong(key: Preferences.Key<Long>): Long? {
+            return encryptedSharedPreferences.getLong(key.name, 0L)
+        }
+
+        override suspend fun removeLong(key: Preferences.Key<Long>) {
+            encryptedSharedPreferences.edit().remove(key.name).apply()
+        }
+
         override fun clear() {
             this.encryptedSharedPreferences.edit().clear().apply()
         }

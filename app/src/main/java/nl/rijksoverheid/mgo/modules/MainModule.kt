@@ -11,6 +11,10 @@ import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.BuildConfig
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import nl.rijksoverheid.mgo.lock.CheckAppLock
+import nl.rijksoverheid.mgo.lock.DefaultCheckAppLock
+import nl.rijksoverheid.mgo.lock.DefaultSaveClosedAppTimestamp
+import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import java.io.File
 import java.time.Clock
 import javax.inject.Named
@@ -73,5 +77,19 @@ internal object MainModule {
             return MgoAuthentication.Basic(user = basicAuthUser, password = basicAuthPassword)
         }
         return MgoAuthentication.None
+    }
+
+    @Provides
+    fun provideCheckAppLock(
+        @Named("keyValueStore") keyValueStore: KeyValueStore,
+    ): CheckAppLock {
+        return DefaultCheckAppLock(keyValueStore)
+    }
+
+    @Provides
+    fun provideSaveClosedAppTimestamp(
+        @Named("keyValueStore") keyValueStore: KeyValueStore,
+    ): SaveClosedAppTimestamp {
+        return DefaultSaveClosedAppTimestamp(keyValueStore)
     }
 }

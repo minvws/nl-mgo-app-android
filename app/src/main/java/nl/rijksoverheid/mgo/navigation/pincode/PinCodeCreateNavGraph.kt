@@ -9,17 +9,16 @@ import nl.rijksoverheid.mgo.feature.pincode.biometric.PinCodeBioMetricSetupScree
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreen
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavigation
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
-import nl.rijksoverheid.mgo.feature.pincode.forgot.PinCodeForgotScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
-fun NavGraphBuilder.addPinCodeNavGraph(navController: NavController) {
-    navigation<PinCodeNavigation.Root>(PinCodeNavigation.Create) {
-        mgoComposable<PinCodeNavigation.Create> {
+fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
+    navigation<PinCodeCreateNavigation.Root>(PinCodeCreateNavigation.Create) {
+        mgoComposable<PinCodeCreateNavigation.Create> {
             PinCodeCreateScreen(
                 hasBackButton = remember { navController.previousBackStackEntry != null },
                 onPinEntered = { pinCode ->
-                    navController.navigate(PinCodeNavigation.Confirm(pinCode))
+                    navController.navigate(PinCodeCreateNavigation.Confirm(pinCode))
                 },
                 onNavigateBack = {
                     navController.popBackStack()
@@ -27,14 +26,14 @@ fun NavGraphBuilder.addPinCodeNavGraph(navController: NavController) {
             )
         }
 
-        mgoComposable<PinCodeNavigation.Confirm> { backStackEntry ->
-            val route = backStackEntry.toRoute<PinCodeNavigation.Confirm>()
+        mgoComposable<PinCodeCreateNavigation.Confirm> { backStackEntry ->
+            val route = backStackEntry.toRoute<PinCodeCreateNavigation.Confirm>()
             PinCodeConfirmScreen(
                 pinCodeToMatch = route.pinCode,
                 onNavigate = { navigation ->
                     when (navigation) {
                         PinCodeConfirmScreenNextNavigation.BIOMETRIC -> {
-                            navController.navigate(PinCodeNavigation.BiometricSetup) {
+                            navController.navigate(PinCodeCreateNavigation.BiometricSetup) {
                                 popUpTo(navController.graph.id) {
                                     inclusive = true
                                 }
@@ -56,7 +55,7 @@ fun NavGraphBuilder.addPinCodeNavGraph(navController: NavController) {
             )
         }
 
-        mgoComposable<PinCodeNavigation.BiometricSetup> {
+        mgoComposable<PinCodeCreateNavigation.BiometricSetup> {
             PinCodeBioMetricSetupScreen(
                 onNavigateToDashboard = {
                     navController.navigate(DashboardNavigation.Root) {
@@ -64,21 +63,6 @@ fun NavGraphBuilder.addPinCodeNavGraph(navController: NavController) {
                             inclusive = true
                         }
                     }
-                },
-            )
-        }
-
-        mgoComposable<PinCodeNavigation.Forgot> {
-            PinCodeForgotScreen(
-                onNavigateToPinCodeCreate = {
-                    navController.navigate(PinCodeNavigation.Create) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onNavigateBack = {
-                    navController.popBackStack()
                 },
             )
         }

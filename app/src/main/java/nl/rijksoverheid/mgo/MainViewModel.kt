@@ -8,16 +8,15 @@ import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_CLOSED_TIMESTAMP
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
-import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
+import nl.rijksoverheid.mgo.lock.CheckAppLock
+import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
-import nl.rijksoverheid.mgo.navigation.pincode.PinCodeNavigation
-import java.time.Instant
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
+import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -26,12 +25,14 @@ internal class MainViewModel
     @Inject
     constructor(
         val showDeviceRootedDialog: ShowDeviceRootedDialog,
-        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
+        private val checkAppLock: CheckAppLock,
+        private val saveClosedAppTimestamp: SaveClosedAppTimestamp,
         private val hasPinCode: HasPinCode,
         private val hasSeenOnboarding: HasSeenOnboarding,
         private val configRepository: ConfigRepository,
     ) : ViewModel() {
-        val lockAppFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
+        private val _navigateDialog = MutableSharedFlow<Any>(extraBufferCapacity = 1)
+        val navigateDialog = _navigateDialog.asSharedFlow()
 
         val configStateFlow =
             configRepository.configStateFlow.stateIn(
@@ -43,11 +44,11 @@ internal class MainViewModel
         fun getStartDestination(): Any {
             return when {
                 hasPinCode.invoke() -> {
-                    DashboardNavigation.Root
+                    PinCodeLoginNavigation.Root
                 }
 
                 hasSeenOnboarding.invoke() -> {
-                    PinCodeNavigation.Root
+                    PinCodeCreateNavigation.Root
                 }
 
                 else -> {
@@ -62,23 +63,18 @@ internal class MainViewModel
             }
         }
 
-        fun getClosedAppTimestamp() {
+        fun checkAppLock() {
             viewModelScope.launch {
-                val currentTimestamp = Instant.now().epochSecond
-                val closedAppTimestamp = keyValueStore.getLong(KEY_APP_CLOSED_TIMESTAMP)
-                if (closedAppTimestamp != null) {
-                    val closedAppSeconds = currentTimestamp - closedAppTimestamp
-                    if (closedAppSeconds > 5L) {
-                        lockAppFlow.tryEmit(true)
-                    }
+                val appLocked = checkAppLock.invoke()
+                if (appLocked) {
+                    _navigateDialog.tryEmit(PinCodeLoginNavigation.LoginDialog)
                 }
             }
         }
 
         fun saveClosedAppTimestamp() {
             viewModelScope.launch {
-                val currentTimestamp = Instant.now().epochSecond
-                keyValueStore.setLong(KEY_APP_CLOSED_TIMESTAMP, currentTimestamp)
+                saveClosedAppTimestamp.invoke()
             }
         }
     }

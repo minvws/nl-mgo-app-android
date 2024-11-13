@@ -65,7 +65,7 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
 
             // Then
             assertEquals(1L, keyValueStore.getLong(preferenceKey1))
-            assertNull(keyValueStore.getLong(preferenceKey2))
+            assertEquals(0L, keyValueStore.getLong(preferenceKey2))
         }
 
     @Test

@@ -8,6 +8,8 @@ import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.lock.TestAppLocked
+import nl.rijksoverheid.mgo.lock.TestSaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import org.junit.Assert.assertEquals
@@ -32,6 +34,8 @@ internal class MainViewModelTest {
                 hasPinCode = hasPinCode,
                 configRepository = configRepository,
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
+                saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
+                appLocked = TestAppLocked(false),
             )
 
         // When
@@ -54,6 +58,8 @@ internal class MainViewModelTest {
                 hasPinCode = hasPinCode,
                 configRepository = configRepository,
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
+                saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
+                appLocked = TestAppLocked(false),
             )
 
         // When
@@ -76,6 +82,8 @@ internal class MainViewModelTest {
                     hasPinCode = hasPinCode,
                     configRepository = configRepository,
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
+                    saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
+                    appLocked = TestAppLocked(false),
                 )
 
             // When

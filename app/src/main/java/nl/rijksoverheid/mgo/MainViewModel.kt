@@ -8,7 +8,7 @@ import nl.rijksoverheid.mgo.data.config.ConfigState
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
-import nl.rijksoverheid.mgo.lock.CheckAppLock
+import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
@@ -25,7 +25,7 @@ internal class MainViewModel
     @Inject
     constructor(
         val showDeviceRootedDialog: ShowDeviceRootedDialog,
-        private val checkAppLock: CheckAppLock,
+        private val appLocked: AppLocked,
         private val saveClosedAppTimestamp: SaveClosedAppTimestamp,
         private val hasPinCode: HasPinCode,
         private val hasSeenOnboarding: HasSeenOnboarding,
@@ -65,7 +65,7 @@ internal class MainViewModel
 
         fun checkAppLock() {
             viewModelScope.launch {
-                val appLocked = checkAppLock.invoke()
+                val appLocked = appLocked.invoke()
                 if (appLocked) {
                     _navigateDialog.tryEmit(PinCodeLoginNavigation.LoginDialog)
                 }

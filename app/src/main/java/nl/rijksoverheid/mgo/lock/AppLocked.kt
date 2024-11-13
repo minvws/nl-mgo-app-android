@@ -1,5 +1,5 @@
 package nl.rijksoverheid.mgo.lock
 
-interface CheckAppLock {
+interface AppLocked {
     suspend operator fun invoke(): Boolean
 }

@@ -11,8 +11,8 @@ import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.BuildConfig
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
-import nl.rijksoverheid.mgo.lock.CheckAppLock
-import nl.rijksoverheid.mgo.lock.DefaultCheckAppLock
+import nl.rijksoverheid.mgo.lock.AppLocked
+import nl.rijksoverheid.mgo.lock.DefaultAppLocked
 import nl.rijksoverheid.mgo.lock.DefaultSaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import java.io.File
@@ -80,16 +80,18 @@ internal object MainModule {
     }
 
     @Provides
-    fun provideCheckAppLock(
+    fun provideAppLocked(
+        clock: Clock,
         @Named("keyValueStore") keyValueStore: KeyValueStore,
-    ): CheckAppLock {
-        return DefaultCheckAppLock(keyValueStore)
+    ): AppLocked {
+        return DefaultAppLocked(clock = clock, keyValueStore = keyValueStore)
     }
 
     @Provides
     fun provideSaveClosedAppTimestamp(
+        clock: Clock,
         @Named("keyValueStore") keyValueStore: KeyValueStore,
     ): SaveClosedAppTimestamp {
-        return DefaultSaveClosedAppTimestamp(keyValueStore)
+        return DefaultSaveClosedAppTimestamp(clock = clock, keyValueStore)
     }
 }

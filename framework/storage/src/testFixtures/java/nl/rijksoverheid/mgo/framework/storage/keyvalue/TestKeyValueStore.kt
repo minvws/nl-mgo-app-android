@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 class TestKeyValueStore : KeyValueStore {
     private val strings = HashMap<Preferences.Key<String>, String>(emptyMap())
     private val booleans = HashMap<Preferences.Key<Boolean>, Boolean>(emptyMap())
+    private val longs = HashMap<Preferences.Key<Long>, Long>(emptyMap())
 
     override suspend fun setBoolean(
         key: Preferences.Key<Boolean>,
@@ -34,6 +35,21 @@ class TestKeyValueStore : KeyValueStore {
 
     override suspend fun removeString(key: Preferences.Key<String>) {
         strings.remove(key)
+    }
+
+    override suspend fun setLong(
+        key: Preferences.Key<Long>,
+        value: Long,
+    ) {
+        longs[key] = value
+    }
+
+    override suspend fun getLong(key: Preferences.Key<Long>): Long? {
+        return longs[key]
+    }
+
+    override suspend fun removeLong(key: Preferences.Key<Long>) {
+        longs.remove(key)
     }
 
     override fun clear() {

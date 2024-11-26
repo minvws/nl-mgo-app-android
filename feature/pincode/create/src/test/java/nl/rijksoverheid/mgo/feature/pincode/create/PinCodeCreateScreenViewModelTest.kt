@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.feature.pincode.create
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.pincode.strength.TestPinCodeStrengthValidator
-import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -43,7 +42,7 @@ internal class PinCodeCreateScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeCreateScreenViewState(subHeading = R.string.pincode_create_tooweak, error = true)
+                val expectedViewState = PinCodeCreateScreenViewState(error = true)
                 assertEquals(expectedViewState, awaitItem())
             }
         }
@@ -62,7 +61,7 @@ internal class PinCodeCreateScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeCreateScreenViewState(subHeading = R.string.pincode_create_tooweak, error = false)
+                val expectedViewState = PinCodeCreateScreenViewState(error = false)
                 assertEquals(expectedViewState, awaitItem())
             }
         }

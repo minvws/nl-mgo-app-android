@@ -9,12 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.fragment.app.FragmentActivity
@@ -25,10 +23,8 @@ import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.framework.copy.R
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun PinCodeLoginScreen(
@@ -65,9 +61,7 @@ private fun PinCodeLoginScreenContent(
     onResetError: () -> Unit,
     onNavigateForgotPin: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
     val subHeadingFocusRequester = remember { FocusRequester() }
 
     // Immediately show the biometric prompt if it has been enabled in the onboarding before
@@ -81,7 +75,7 @@ private fun PinCodeLoginScreenContent(
     }
 
     MgoScaffold(
-        appBarTitle = stringResource(id = R.string.pincode_validation_heading),
+        appBarTitle = stringResource(id = CopyR.string.pincode_validation_heading),
         appBarTitleAlign = TextAlign.Center,
         content = {
             Text(
@@ -90,25 +84,16 @@ private fun PinCodeLoginScreenContent(
                         .fillMaxWidth()
                         .focusRequester(subHeadingFocusRequester)
                         .focusable(),
-                text = stringResource(id = viewState.subHeading),
+                text = stringResource(id = CopyR.string.pincode_confirm_subheading),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
             )
             PinCodeWithKeyboard(
                 modifier = Modifier.fillMaxSize(),
                 onPinCodeEntered = onPinCodeEntered,
-                onResetError = {
-                    onResetError()
-                    coroutineScope.launch {
-                        // Seems to be a bug where if you request focus it only works once.
-                        // Doing it like this fixes that.
-                        focusManager.clearFocus()
-                        delay(100)
-                        subHeadingFocusRequester.requestFocus()
-                    }
-                },
-                error = viewState.error,
-                hint = stringResource(id = R.string.pincode_forgot),
+                onResetError = onResetError,
+                error = if (viewState.error) stringResource(id = CopyR.string.pincode_validation_wrong) else null,
+                hint = stringResource(id = CopyR.string.pincode_forgot),
                 onClickHint = onNavigateForgotPin,
                 hasBiometric = viewState.hasBiometric,
                 onPressBiometric = {
@@ -129,7 +114,6 @@ internal fun PinCodeLoginScreenPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    subHeading = R.string.pincode_confirm_heading,
                     hasBiometric = true,
                     error = false,
                 ),
@@ -148,7 +132,6 @@ internal fun PinCodeLoginScreenErrorPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    subHeading = R.string.pincode_validation_wrong,
                     hasBiometric = true,
                     error = true,
                 ),
@@ -167,7 +150,6 @@ internal fun PinCodeLoginWithoutBiometricScreenPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    subHeading = R.string.pincode_confirm_heading,
                     hasBiometric = false,
                     error = false,
                 ),

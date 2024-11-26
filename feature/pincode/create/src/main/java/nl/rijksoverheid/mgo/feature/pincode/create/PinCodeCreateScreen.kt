@@ -22,10 +22,10 @@ import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun PinCodeCreateScreen(
@@ -65,13 +65,13 @@ private fun PinCodeCreateScreenContent(
     val focusManager = LocalFocusManager.current
     val subHeadingFocusRequester = remember { FocusRequester() }
     MgoScaffold(
-        appBarTitle = stringResource(id = R.string.pincode_create_heading),
+        appBarTitle = stringResource(id = CopyR.string.pincode_create_heading),
         onNavigateBack = if (hasBackButton) onNavigateBack else null,
         contentPadding = PaddingValues(horizontal = 16.dp),
         content = {
             Text(
                 modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
-                text = stringResource(id = viewState.subHeading),
+                text = stringResource(id = CopyR.string.pincode_create_subheading),
                 style = MaterialTheme.typography.bodySmall,
             )
             PinCodeWithKeyboard(
@@ -87,7 +87,7 @@ private fun PinCodeCreateScreenContent(
                         subHeadingFocusRequester.requestFocus()
                     }
                 },
-                error = viewState.error,
+                error = if (viewState.error) stringResource(CopyR.string.pincode_create_tooweak) else null,
             )
         },
     )
@@ -100,7 +100,6 @@ internal fun PinCodeCreateScreenPreview() {
         PinCodeCreateScreenContent(
             viewState =
                 PinCodeCreateScreenViewState(
-                    subHeading = R.string.pincode_create_subheading,
                     error = false,
                 ),
             hasBackButton = true,
@@ -118,7 +117,6 @@ internal fun PinCodeCreateScreenErrorPreview() {
         PinCodeCreateScreenContent(
             viewState =
                 PinCodeCreateScreenViewState(
-                    subHeading = R.string.pincode_confirm_mismatch,
                     error = true,
                 ),
             hasBackButton = true,

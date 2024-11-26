@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @HiltViewModel(assistedFactory = PinCodeConfirmScreenViewModel.Factory::class)
 internal class PinCodeConfirmScreenViewModel
@@ -46,7 +45,7 @@ internal class PinCodeConfirmScreenViewModel
                 }
             } else {
                 _viewState.update { viewState ->
-                    viewState.copy(error = true, subHeading = CopyR.string.pincode_confirm_mismatch)
+                    viewState.copy(error = true)
                 }
             }
         }

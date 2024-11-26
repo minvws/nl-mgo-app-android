@@ -10,7 +10,7 @@
   <string name="add_organization.heading">Welke zorgaanbieder wil je toevoegen?</string>
   <string name="add_organization.name">Naam (verplicht)</string>
   <string name="add_organization.not_implemented">Zorgaanbieder nog niet beschikbaar</string>
-  <string name="add_organization.not_participating">Zorgaanbieder doet niet mee</string>
+  <string name="add_organization.not_participating">Zorgaanbieder niet aangesloten</string>
   <string name="add_organization_list.add_organization">Voeg een zorgaanbieder toe</string>
   <string name="add_organization_list.heading">Welke zorgaanbieders wil je in je overzicht tonen?</string>
   <string name="add_organization_list.no_results_subheading">Je hebt nog geen zorgaanbieders toegevoegd aan deze lijst. Je kunt dit nu doen, of later via je profiel.</string>
@@ -70,8 +70,10 @@
   <string name="hc_complaints.heading_detail">Alle klachtgegevens</string>
   <string name="hc_devices.heading">Medische hulpmiddelen</string>
   <string name="hc_devices.heading_detail">Alle medische hulpmiddel gegevens</string>
+  <string name="hc_documents.error">Sorry, we kunnen de bijlage nu niet ophalen. Probeer het later opnieuw.</string>
   <string name="hc_documents.heading">Documenten</string>
   <string name="hc_documents.heading_detail">Alle documentgegevens</string>
+  <string name="hc_documents.no_document">Geen bijlage gevonden. Klopt dit niet? Vraag je zorgaanbieder om hulp.</string>
   <string name="hc_lab_results.heading">Uitslagen</string>
   <string name="hc_lab_results.heading_detail">Alle uitslaggegevens</string>
   <string name="hc_lifestyle.heading">Leefstijl</string>
@@ -126,18 +128,18 @@
   <string name="overview.subheading">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
   <string name="pincode.biometric.voiceover">Biometrisch inloggen</string>
   <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
-  <string name="pincode.confirm.mismatch">Dit is een andere code dan de vorige. Voer dezelfde code in om verder te gaan.</string>
+  <string name="pincode.confirm.mismatch">Deze code is anders dan de vorige</string>
   <string name="pincode.confirm.subheading">Voer je 5-cijferige code nog een keer in.</string>
   <string name="pincode.create.heading">Kies je toegangscode</string>
   <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig. Gebruik geen simpele codes zoals 00000 of 12345.</string>
-  <string name="pincode.create.tooweak">Deze persoonlijke toegangscode is niet veilig genoeg. Gebruik geen cijfers die na elkaar komen.</string>
+  <string name="pincode.create.tooweak">Deze code is te simpel en dus onveilig</string>
   <string name="pincode.empty.voiceover">Leeg</string>
   <string name="pincode.erase.voiceover">Leeg</string>
   <string name="pincode.filled.voiceover">Gevuld</string>
   <string name="pincode.forgot">Toegangscode vergeten?</string>
   <string name="pincode.validation.heading">Welkom terug</string>
   <string name="pincode.validation.subheading">Vul je toegangscode in om door te gaan</string>
-  <string name="pincode.validation.wrong">De ingevoerde toegangscode is <b>onjuist</b>.\nProbeer het opnieuw.</string>
+  <string name="pincode.validation.wrong">Deze code klopt niet</string>
   <string name="pincode.voiceover" formatted="false">Veld %s van %s, %s</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>

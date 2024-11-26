@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.pincode.login
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.pincode.TestValidatePinCode
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestLoginWithBiometricEnabled
-import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -53,7 +52,6 @@ internal class PinCodeLoginScreenViewModelTest {
                 val expectedViewState =
                     PinCodeLoginScreenViewState(
                         hasBiometric = true,
-                        subHeading = R.string.pincode_validation_wrong,
                         error = true,
                     )
                 assertEquals(expectedViewState, awaitItem())
@@ -80,7 +78,6 @@ internal class PinCodeLoginScreenViewModelTest {
                 val expectedViewState =
                     PinCodeLoginScreenViewState(
                         hasBiometric = true,
-                        subHeading = R.string.pincode_validation_wrong,
                         error = false,
                     )
                 assertEquals(expectedViewState, awaitItem())

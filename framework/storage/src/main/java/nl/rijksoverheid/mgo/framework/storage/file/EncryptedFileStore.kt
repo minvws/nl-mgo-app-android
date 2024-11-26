@@ -13,7 +13,7 @@ internal class EncryptedFileStore(
     private val masterKeyAlias: String,
 ) : FileStore {
     private val json = Json
-    private val dir = File(context.filesDir, "encrypted").also { if (!it.exists()) it.mkdir() }
+    private val dir = File(context.filesDir, "encrypted").also { if (!it.exists()) check(it.mkdir()) { "Could not create dir" } }
 
     @OptIn(InternalSerializationApi::class)
     override suspend fun <O : Any> saveFile(
@@ -77,6 +77,6 @@ internal class EncryptedFileStore(
 
     override suspend fun deleteFile(name: String) {
         val file = File(dir, name)
-        file.delete()
+        check(file.delete()) { "Could not delete file" }
     }
 }

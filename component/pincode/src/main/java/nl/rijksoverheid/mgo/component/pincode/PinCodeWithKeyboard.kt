@@ -123,7 +123,7 @@ private fun PinCodeWithKeyboardContent(
             onPressNumber = { number ->
                 if (error != null) {
                     // When there is a error showing and the user presses the keyboard, clear the error state
-                    onSetPinCode(listOf())
+                    onSetPinCode(listOf(number))
                     onResetError()
                 } else {
                     // Announce that pin code has changed

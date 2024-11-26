@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.feature.pincode.create
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.pincode.strength.TestPinCodeStrengthValidator
-import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule

@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.pincode.confirm
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.pincode.TestStorePinCode
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
-import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule

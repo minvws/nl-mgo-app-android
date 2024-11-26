@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.pincode.strength.PinCodeStrengthValidator
-import nl.rijksoverheid.mgo.framework.copy.R
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +30,7 @@ internal class PinCodeCreateScreenViewModel
                 _navigateToConfirm.tryEmit(pinCode)
             } else {
                 _viewState.update { viewState ->
-                    viewState.copy(error = true, subHeading = R.string.pincode_create_tooweak)
+                    viewState.copy(error = true)
                 }
             }
         }

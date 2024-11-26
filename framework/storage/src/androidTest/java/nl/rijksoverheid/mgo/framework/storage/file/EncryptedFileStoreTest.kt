@@ -10,6 +10,7 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.io.File
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 
@@ -43,12 +44,8 @@ internal class EncryptedFileStoreTest {
             // After each test, make sure there are not more files in the cache dir.
             val context = ApplicationProvider.getApplicationContext<Context>()
             try {
-                val cacheFiles = context.cacheDir.listFiles()
-                if (cacheFiles != null) {
-                    for (file in cacheFiles) {
-                        file.delete()
-                    }
-                }
+                val dir = File(context.filesDir, "encrypted")
+                dir.deleteRecursively()
             } catch (e: Exception) {
                 // Never crash
             }

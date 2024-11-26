@@ -76,4 +76,12 @@ internal class DefaultOrganizationRepository(
         // Update flow
         storedOrganizationsFlow.value = newStoredOrganizations.providers
     }
+
+    override suspend fun deleteAll() {
+        // Update flow
+        storedOrganizationsFlow.value = listOf<MgoOrganization>()
+
+        // Delete file
+        fileStore.deleteFile(fileName)
+    }
 }

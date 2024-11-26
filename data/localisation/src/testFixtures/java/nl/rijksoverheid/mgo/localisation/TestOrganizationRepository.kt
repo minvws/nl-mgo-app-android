@@ -53,4 +53,8 @@ class TestOrganizationRepository : OrganizationRepository {
         newProviders.removeIf { provider -> provider.id == providerId }
         storedOrganizationsFlow.value = newProviders
     }
+
+    override suspend fun deleteAll() {
+        storedOrganizationsFlow.value = listOf<MgoOrganization>()
+    }
 }

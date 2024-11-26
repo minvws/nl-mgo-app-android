@@ -14,5 +14,5 @@ interface FileStore {
         name: String,
     ): O?
 
-    suspend fun clear()
+    suspend fun deleteFile(name: String)
 }

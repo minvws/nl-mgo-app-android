@@ -10,6 +10,7 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.io.File
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 
@@ -43,12 +44,8 @@ internal class EncryptedFileStoreTest {
             // After each test, make sure there are not more files in the cache dir.
             val context = ApplicationProvider.getApplicationContext<Context>()
             try {
-                val cacheFiles = context.cacheDir.listFiles()
-                if (cacheFiles != null) {
-                    for (file in cacheFiles) {
-                        file.delete()
-                    }
-                }
+                val dir = File(context.filesDir, "encrypted")
+                dir.deleteRecursively()
             } catch (e: Exception) {
                 // Never crash
             }
@@ -95,16 +92,16 @@ internal class EncryptedFileStoreTest {
         }
 
     @Test
-    fun given_saved_file_when_calling_clear_then_remove_files() =
+    fun given_saved_file_when_calling_delete_then_remove_file() =
         runTest {
-            // Given
+            // Given: saved testdata.json file
             val testData = TestData(id = 5, name = "Hello World")
             fileStore.saveFile(value = testData, name = "testdata.json", clazz = TestData::class)
 
-            // When
-            fileStore.clear()
+            // When: calling delete testdata.json
+            fileStore.deleteFile("testdata.json")
 
-            // Then
+            // Then: File is deleted
             val file = fileStore.getFile(clazz = TestData::class, name = "testdata.json")
             assertNull(file)
         }

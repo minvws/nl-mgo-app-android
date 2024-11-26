@@ -26,4 +26,9 @@ class TestHealthCareDataStatesRepository(initialData: List<HealthCareDataState>)
     ): Flow<List<HealthCareDataState>> {
         return stateFlow
     }
+
+    override fun delete(organization: MgoOrganization) {
+        stateFlow.value = listOf<HealthCareDataState>()
+        refreshData.clear()
+    }
 }

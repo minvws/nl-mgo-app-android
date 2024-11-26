@@ -87,7 +87,7 @@ private fun PinCodeCreateScreenContent(
                         subHeadingFocusRequester.requestFocus()
                     }
                 },
-                error = viewState.error,
+                error = null,
             )
         },
     )

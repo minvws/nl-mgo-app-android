@@ -25,10 +25,10 @@ import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun PinCodeLoginScreen(
@@ -81,7 +81,7 @@ private fun PinCodeLoginScreenContent(
     }
 
     MgoScaffold(
-        appBarTitle = stringResource(id = R.string.pincode_validation_heading),
+        appBarTitle = stringResource(id = CopyR.string.pincode_validation_heading),
         appBarTitleAlign = TextAlign.Center,
         content = {
             Text(
@@ -90,7 +90,7 @@ private fun PinCodeLoginScreenContent(
                         .fillMaxWidth()
                         .focusRequester(subHeadingFocusRequester)
                         .focusable(),
-                text = stringResource(id = R.string.pincode_confirm_subheading),
+                text = stringResource(id = CopyR.string.pincode_confirm_subheading),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
             )
@@ -107,8 +107,8 @@ private fun PinCodeLoginScreenContent(
                         subHeadingFocusRequester.requestFocus()
                     }
                 },
-                error = viewState.error,
-                hint = stringResource(id = R.string.pincode_forgot),
+                error = if (viewState.error) stringResource(id = CopyR.string.pincode_validation_wrong) else null,
+                hint = stringResource(id = CopyR.string.pincode_forgot),
                 onClickHint = onNavigateForgotPin,
                 hasBiometric = viewState.hasBiometric,
                 onPressBiometric = {

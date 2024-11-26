@@ -1,15 +1,19 @@
 package nl.rijksoverheid.mgo.component.pincode
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -28,7 +33,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.accessibilityAnnounce
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.notificationError
-import nl.rijksoverheid.mgo.framework.copy.R
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun PinCodeWithKeyboard(
@@ -39,7 +44,7 @@ fun PinCodeWithKeyboard(
     onClickHint: (() -> Unit)? = null,
     hasBiometric: Boolean = false,
     onPressBiometric: (() -> Unit)? = null,
-    error: Boolean = false,
+    error: String? = null,
 ) {
     var pinCode by remember { mutableStateOf(listOf<Int>()) }
     PinCodeWithKeyboardContent(
@@ -69,7 +74,7 @@ private fun PinCodeWithKeyboardContent(
     onClickHint: (() -> Unit)? = null,
     hasBiometric: Boolean = false,
     onPressBiometric: (() -> Unit)? = null,
-    error: Boolean = false,
+    error: String? = null,
 ) {
     val context = LocalContext.current
     Column(
@@ -83,15 +88,9 @@ private fun PinCodeWithKeyboardContent(
         PinCode(
             modifier = Modifier.padding(vertical = 32.dp),
             pinCode = pinCode,
-            error = error,
+            error = error != null,
         )
-        Text(
-            modifier = Modifier.alpha(if (error) 1f else 0f),
-            text = "Deze code is te simpel en dus onveilig",
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.notificationError(),
-        )
+        PinCodeError(modifier = Modifier.alpha(if (error == null) 0f else 1f), error = error)
         Spacer(modifier = Modifier.weight(1f))
         if (hint != null) {
             TextButton(onClick = { onClickHint?.invoke() }) {
@@ -106,23 +105,23 @@ private fun PinCodeWithKeyboardContent(
 
         val accessibilityAnnouncePinCodeAdded =
             stringResource(
-                R.string.pincode_voiceover,
+                CopyR.string.pincode_voiceover,
                 (pinCode.size + 1).toString(),
                 "5",
-                stringResource(id = R.string.pincode_filled_voiceover),
+                stringResource(id = CopyR.string.pincode_filled_voiceover),
             )
 
         val accessibilityAnnouncePinCodeRemoved =
             stringResource(
-                R.string.pincode_voiceover,
+                CopyR.string.pincode_voiceover,
                 (pinCode.size).toString(),
                 "5",
-                stringResource(id = R.string.pincode_empty_voiceover),
+                stringResource(id = CopyR.string.pincode_empty_voiceover),
             )
 
         Keyboard(
             onPressNumber = { number ->
-                if (error) {
+                if (error != null) {
                     // When there is a error showing and the user presses the keyboard, clear the error state
                     onSetPinCode(listOf())
                     onResetError()
@@ -138,7 +137,7 @@ private fun PinCodeWithKeyboardContent(
                 }
             },
             onPressBackspace = {
-                if (error) {
+                if (error != null) {
                     // When there is a error showing and the user presses the keyboard, clear the error state
                     onSetPinCode(listOf())
                     onResetError()
@@ -156,6 +155,25 @@ private fun PinCodeWithKeyboardContent(
             hasBiometric = hasBiometric,
             onPressBiometric = onPressBiometric,
         )
+    }
+}
+
+@Composable
+private fun PinCodeError(
+    error: String?,
+    modifier: Modifier = Modifier,
+) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.notificationError()) {
+        Row(modifier = modifier) {
+            Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
+            Text(
+                modifier = Modifier.padding(start = 6.dp),
+                text = error ?: "",
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.notificationError(),
+            )
+        }
     }
 }
 
@@ -189,7 +207,7 @@ internal fun PinCodeWithKeyboardErrorPreview() {
             onSetPinCode = {},
             onPinCodeEntered = {},
             onResetError = {},
-            error = true,
+            error = "Dit is een foutmelding",
         )
     }
 }

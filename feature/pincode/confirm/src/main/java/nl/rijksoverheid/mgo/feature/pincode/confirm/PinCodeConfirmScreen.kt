@@ -72,7 +72,7 @@ private fun PinCodeConfirmScreenContent(
         content = {
             Text(
                 modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
-                text = stringResource(id = viewState.subHeading),
+                text = stringResource(id = CopyR.string.pincode_confirm_subheading),
                 style = MaterialTheme.typography.bodySmall,
             )
             PinCodeWithKeyboard(
@@ -88,7 +88,7 @@ private fun PinCodeConfirmScreenContent(
                         subHeadingFocusRequester.requestFocus()
                     }
                 },
-                error = null,
+                error = if (viewState.error) stringResource(CopyR.string.pincode_confirm_mismatch) else null,
             )
         },
     )
@@ -101,7 +101,6 @@ internal fun PinCodeConfirmScreenPreview() {
         PinCodeConfirmScreenContent(
             viewState =
                 PinCodeConfirmScreenViewState(
-                    subHeading = CopyR.string.pincode_confirm_heading,
                     error = false,
                 ),
             onPinCodeEntered = {},
@@ -118,7 +117,6 @@ internal fun PinCodeConfirmScreenErrorPreview() {
         PinCodeConfirmScreenContent(
             viewState =
                 PinCodeConfirmScreenViewState(
-                    subHeading = CopyR.string.pincode_confirm_mismatch,
                     error = true,
                 ),
             onPinCodeEntered = {},

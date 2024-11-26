@@ -90,7 +90,7 @@ private fun PinCodeLoginScreenContent(
                         .fillMaxWidth()
                         .focusRequester(subHeadingFocusRequester)
                         .focusable(),
-                text = stringResource(id = viewState.subHeading),
+                text = stringResource(id = R.string.pincode_confirm_subheading),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
             )
@@ -129,7 +129,6 @@ internal fun PinCodeLoginScreenPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    subHeading = R.string.pincode_confirm_heading,
                     hasBiometric = true,
                     error = false,
                 ),
@@ -148,7 +147,6 @@ internal fun PinCodeLoginScreenErrorPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    subHeading = R.string.pincode_validation_wrong,
                     hasBiometric = true,
                     error = true,
                 ),
@@ -167,7 +165,6 @@ internal fun PinCodeLoginWithoutBiometricScreenPreview() {
         PinCodeLoginScreenContent(
             viewState =
                 PinCodeLoginScreenViewState(
-                    subHeading = R.string.pincode_confirm_heading,
                     hasBiometric = false,
                     error = false,
                 ),

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.pincode.ValidatePinCode
 import nl.rijksoverheid.mgo.data.pincode.biometric.LoginWithBiometricEnabled
-import nl.rijksoverheid.mgo.framework.copy.R
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +33,7 @@ internal class PinCodeLoginScreenViewModel
                     _navigateToDashboard.tryEmit(Unit)
                 } else {
                     _viewState.update { viewState ->
-                        viewState.copy(error = true, subHeading = R.string.pincode_validation_wrong)
+                        viewState.copy(error = true)
                     }
                 }
             }

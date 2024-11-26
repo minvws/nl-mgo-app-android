@@ -34,7 +34,6 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun PinCodeItem(
     position: Int,
     color: Color,
-    onErrorAnimationFinished: () -> Unit,
     modifier: Modifier = Modifier,
     error: Boolean = false,
     fill: Boolean = false,
@@ -64,9 +63,6 @@ fun PinCodeItem(
                         OvershootInterpolator().getInterpolation(it)
                     }),
             )
-            if (error) {
-                onErrorAnimationFinished()
-            }
         }
     }
 
@@ -103,7 +99,6 @@ internal fun PinCodeItemNotFilledPreview() {
             modifier = Modifier.size(32.dp),
             color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(),
             position = 1,
-            onErrorAnimationFinished = {},
         )
     }
 }
@@ -117,7 +112,6 @@ internal fun PinCodeItemFilledPreview() {
             color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(),
             position = 1,
             fill = true,
-            onErrorAnimationFinished = {},
         )
     }
 }

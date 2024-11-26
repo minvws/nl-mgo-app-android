@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +27,7 @@ import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.accessibilityAnnounce
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
@@ -79,13 +81,16 @@ private fun PinCodeWithKeyboardContent(
     ) {
         Spacer(modifier = Modifier.weight(1f))
         PinCode(
-            modifier = Modifier.padding(vertical = 64.dp),
+            modifier = Modifier.padding(vertical = 32.dp),
             pinCode = pinCode,
             error = error,
-            onErrorAnimationFinished = {
-                onSetPinCode(listOf())
-                onResetError()
-            },
+        )
+        Text(
+            modifier = Modifier.alpha(if (error) 1f else 0f),
+            text = "Deze code is te simpel en dus onveilig",
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.notificationError(),
         )
         Spacer(modifier = Modifier.weight(1f))
         if (hint != null) {
@@ -117,23 +122,35 @@ private fun PinCodeWithKeyboardContent(
 
         Keyboard(
             onPressNumber = { number ->
-                // Announce that pin code has changed
-                context.accessibilityAnnounce(accessibilityAnnouncePinCodeAdded)
+                if (error) {
+                    // When there is a error showing and the user presses the keyboard, clear the error state
+                    onSetPinCode(listOf())
+                    onResetError()
+                } else {
+                    // Announce that pin code has changed
+                    context.accessibilityAnnounce(accessibilityAnnouncePinCodeAdded)
 
-                val newPinCode = pinCode.toMutableList().also { list -> list.add(number) }
-                onSetPinCode(newPinCode)
-                if (newPinCode.size == 5) {
-                    onPinCodeEntered(newPinCode)
+                    val newPinCode = pinCode.toMutableList().also { list -> list.add(number) }
+                    onSetPinCode(newPinCode)
+                    if (newPinCode.size == 5) {
+                        onPinCodeEntered(newPinCode)
+                    }
                 }
             },
             onPressBackspace = {
-                // Announce that the pin code has changed
-                context.accessibilityAnnounce(accessibilityAnnouncePinCodeRemoved)
+                if (error) {
+                    // When there is a error showing and the user presses the keyboard, clear the error state
+                    onSetPinCode(listOf())
+                    onResetError()
+                } else {
+                    // Announce that the pin code has changed
+                    context.accessibilityAnnounce(accessibilityAnnouncePinCodeRemoved)
 
-                if (pinCode.isNotEmpty()) {
-                    onSetPinCode(
-                        pinCode.toMutableList().also { list -> list.removeAt(list.size - 1) },
-                    )
+                    if (pinCode.isNotEmpty()) {
+                        onSetPinCode(
+                            pinCode.toMutableList().also { list -> list.removeAt(list.size - 1) },
+                        )
+                    }
                 }
             },
             hasBiometric = hasBiometric,
@@ -155,6 +172,24 @@ internal fun PinCodeWithKeyboardPreview() {
             onSetPinCode = {},
             onPinCodeEntered = {},
             onResetError = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun PinCodeWithKeyboardErrorPreview() {
+    MgoTheme {
+        PinCodeWithKeyboardContent(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
+            pinCode = listOf(1, 2, 3),
+            onSetPinCode = {},
+            onPinCodeEntered = {},
+            onResetError = {},
+            error = true,
         )
     }
 }

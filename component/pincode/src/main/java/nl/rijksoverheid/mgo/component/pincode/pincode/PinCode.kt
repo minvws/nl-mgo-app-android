@@ -21,7 +21,6 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 @Composable
 fun PinCode(
     pinCode: List<Int>,
-    onErrorAnimationFinished: () -> Unit,
     modifier: Modifier = Modifier,
     error: Boolean = false,
 ) {
@@ -49,7 +48,6 @@ fun PinCode(
                         },
                     ),
             )
-            onErrorAnimationFinished()
         }
     }
 
@@ -59,7 +57,6 @@ fun PinCode(
             scale = animatedScale.value,
             position = 1,
             error = error,
-            onErrorAnimationFinished = onErrorAnimationFinished,
             fill = pinCode.isNotEmpty(),
         )
         PinCodeItemInstance(
@@ -67,7 +64,6 @@ fun PinCode(
             scale = animatedScale.value,
             position = 2,
             error = error,
-            onErrorAnimationFinished = onErrorAnimationFinished,
             fill = pinCode.size > 1,
         )
         PinCodeItemInstance(
@@ -75,7 +71,6 @@ fun PinCode(
             scale = animatedScale.value,
             position = 3,
             error = error,
-            onErrorAnimationFinished = onErrorAnimationFinished,
             fill = pinCode.size > 2,
         )
         PinCodeItemInstance(
@@ -83,7 +78,6 @@ fun PinCode(
             scale = animatedScale.value,
             position = 4,
             error = error,
-            onErrorAnimationFinished = onErrorAnimationFinished,
             fill = pinCode.size > 3,
         )
         PinCodeItemInstance(
@@ -91,8 +85,6 @@ fun PinCode(
             scale = animatedScale.value,
             position = 5,
             error = error,
-            onErrorAnimationFinished =
-            onErrorAnimationFinished,
             fill = pinCode.size > 4,
         )
     }
@@ -105,14 +97,12 @@ private fun PinCodeItemInstance(
     error: Boolean,
     fill: Boolean,
     position: Int,
-    onErrorAnimationFinished: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PinCodeItem(
         modifier = modifier.size(32.dp),
         color = color,
         error = error,
-        onErrorAnimationFinished = onErrorAnimationFinished,
         position = position,
         fill = fill,
     )
@@ -122,7 +112,7 @@ private fun PinCodeItemInstance(
 @Composable
 internal fun PinCodeEmptyPreview() {
     MgoTheme {
-        PinCode(pinCode = listOf(), onErrorAnimationFinished = {})
+        PinCode(pinCode = listOf())
     }
 }
 
@@ -130,6 +120,6 @@ internal fun PinCodeEmptyPreview() {
 @Composable
 internal fun PinCodeHalfFilledPreview() {
     MgoTheme {
-        PinCode(pinCode = listOf(1, 2, 3), onErrorAnimationFinished = {})
+        PinCode(pinCode = listOf(1, 2, 3))
     }
 }

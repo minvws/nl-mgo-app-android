@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -10,7 +11,14 @@ class TestHealthCareDataStateRepository : HealthCareDataStateRepository {
         category: HealthCareCategory,
     ): Flow<HealthCareDataState> {
         return flow {
-            emit(TEST_HEALTH_CARE_DATA_STATE_LOADED)
+            emit(
+                HealthCareDataState(
+                    loading = false,
+                    organization = organization,
+                    category = category,
+                    uiSchemaListResults = listOf(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION))),
+                ),
+            )
         }
     }
 }

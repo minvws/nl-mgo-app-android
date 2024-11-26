@@ -12,6 +12,7 @@ import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
@@ -164,6 +165,32 @@ internal class DefaultOrganizationRepositoryTest {
                 val storedProviders = awaitItem()
                 assertEquals(expectedProviders, storedProviders)
             }
+        }
+
+    @Test
+    fun `Given stored organizations, When calling deleteAll, Then delete all health care provider from storage`() =
+        runTest {
+            // Given: saved mgo organizations
+            val storedMgoOrganizations =
+                MgoOrganizations(
+                    providers =
+                        listOf(
+                            TEST_MGO_ORGANIZATION.copy(id = "1"),
+                            TEST_MGO_ORGANIZATION.copy(id = "2"),
+                            TEST_MGO_ORGANIZATION.copy(id = "3"),
+                        ),
+                )
+            val repository = getRepository()
+            storedMgoOrganizations.providers.forEach { provider -> repository.save(provider) }
+
+            // When: deleting all organizations
+            repository.deleteAll()
+
+            // Then: Organizations file is removed
+            assertNull(fileStore.getFile(MgoOrganizations::class, "organizations.json"))
+
+            // Then: Flow is empty
+            assertEquals(listOf<MgoOrganization>(), repository.get())
         }
 
     private fun getRepository(): DefaultOrganizationRepository {

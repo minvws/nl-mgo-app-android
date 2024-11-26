@@ -47,4 +47,15 @@ internal class DefaultHealthCareDataStatesRepository
                 }
             }
         }
+
+        override fun delete(organization: MgoOrganization) {
+            val stateKeys = statesFlow.value.keys.filter { key -> key.organization == organization }
+            statesFlow.update { states ->
+                states.toMutableMap().apply {
+                    for (stateKey in stateKeys) {
+                        remove(stateKey)
+                    }
+                }
+            }
+        }
     }

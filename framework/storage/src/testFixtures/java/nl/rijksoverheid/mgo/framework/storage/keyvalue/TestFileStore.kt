@@ -22,7 +22,7 @@ class TestFileStore : FileStore {
         return files[name] as O?
     }
 
-    override suspend fun clear() {
-        files.clear()
+    override suspend fun deleteFile(name: String) {
+        files.remove(name)
     }
 }

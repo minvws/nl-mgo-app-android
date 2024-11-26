@@ -13,4 +13,6 @@ interface HealthCareDataStatesRepository {
         category: HealthCareCategory,
         filterOrganization: MgoOrganization?,
     ): Flow<List<HealthCareDataState>>
+
+    fun delete(organization: MgoOrganization)
 }

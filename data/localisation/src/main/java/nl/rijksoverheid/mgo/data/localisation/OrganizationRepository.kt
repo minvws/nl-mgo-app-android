@@ -16,4 +16,6 @@ interface OrganizationRepository {
     suspend fun save(provider: MgoOrganization)
 
     suspend fun delete(providerId: String)
+
+    suspend fun deleteAll()
 }

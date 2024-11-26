@@ -80,7 +80,7 @@ internal class PinCodeConfirmScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeConfirmScreenViewState(subHeading = R.string.pincode_confirm_mismatch, error = false)
+                val expectedViewState = PinCodeConfirmScreenViewState(error = false)
                 assertEquals(expectedViewState, awaitItem())
             }
         }

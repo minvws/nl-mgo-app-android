@@ -53,7 +53,6 @@ internal class PinCodeLoginScreenViewModelTest {
                 val expectedViewState =
                     PinCodeLoginScreenViewState(
                         hasBiometric = true,
-                        subHeading = R.string.pincode_validation_wrong,
                         error = true,
                     )
                 assertEquals(expectedViewState, awaitItem())
@@ -80,7 +79,6 @@ internal class PinCodeLoginScreenViewModelTest {
                 val expectedViewState =
                     PinCodeLoginScreenViewState(
                         hasBiometric = true,
-                        subHeading = R.string.pincode_validation_wrong,
                         error = false,
                     )
                 assertEquals(expectedViewState, awaitItem())

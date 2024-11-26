@@ -43,7 +43,7 @@ internal class PinCodeCreateScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeCreateScreenViewState(subHeading = R.string.pincode_create_tooweak, error = true)
+                val expectedViewState = PinCodeCreateScreenViewState(error = true)
                 assertEquals(expectedViewState, awaitItem())
             }
         }
@@ -62,7 +62,7 @@ internal class PinCodeCreateScreenViewModelTest {
 
             // Then
             viewModel.viewState.test {
-                val expectedViewState = PinCodeCreateScreenViewState(subHeading = R.string.pincode_create_tooweak, error = false)
+                val expectedViewState = PinCodeCreateScreenViewState(error = false)
                 assertEquals(expectedViewState, awaitItem())
             }
         }

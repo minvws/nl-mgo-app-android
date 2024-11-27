@@ -96,6 +96,7 @@ dependencies {
     implementation(projects.feature.dashboard.healthCategory)
     implementation(projects.feature.dashboard.uischemaDetail)
     implementation(projects.feature.dashboard.removeOrganization)
+    implementation(projects.feature.dashboard.settings)
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)
@@ -113,6 +114,7 @@ dependencies {
     implementation(projects.framework.test)
     implementation(projects.framework.storage)
     implementation(projects.framework.network)
+    implementation(projects.framework.featuretoggle)
 
     // ================================
     // DATA

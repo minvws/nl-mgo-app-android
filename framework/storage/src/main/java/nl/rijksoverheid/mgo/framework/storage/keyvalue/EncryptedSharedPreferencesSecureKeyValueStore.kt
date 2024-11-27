@@ -31,7 +31,7 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
             encryptedSharedPreferences.edit().putBoolean(key.name, value).apply()
         }
 
-        override suspend fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
+        override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
             return encryptedSharedPreferences.getBoolean(key.name, false)
         }
 
@@ -46,7 +46,7 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
             encryptedSharedPreferences.edit().putString(key.name, value).apply()
         }
 
-        override suspend fun getString(key: Preferences.Key<String>): String? {
+        override fun getString(key: Preferences.Key<String>): String? {
             return encryptedSharedPreferences.getString(key.name, null)
         }
 
@@ -61,7 +61,7 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
             encryptedSharedPreferences.edit().putLong(key.name, value).apply()
         }
 
-        override suspend fun getLong(key: Preferences.Key<Long>): Long? {
+        override fun getLong(key: Preferences.Key<Long>): Long? {
             return encryptedSharedPreferences.getLong(key.name, 0L)
         }
 

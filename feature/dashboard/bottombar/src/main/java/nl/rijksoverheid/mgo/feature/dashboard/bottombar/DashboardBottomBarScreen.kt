@@ -43,8 +43,8 @@ fun DashboardBottomBarScreen(
     overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
     organizationsStartDestination: Any,
     organizationsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
-    aboutThisAppStartDestination: Any,
-    aboutThisAppNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+    settingsStartDestination: Any,
+    settingsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
 ) {
     val navigateToRootOfGraph = remember { MutableSharedFlow<Int>(extraBufferCapacity = 1) }
     val coroutineScope = rememberCoroutineScope()
@@ -67,7 +67,7 @@ fun DashboardBottomBarScreen(
                 }
                 val startDestination =
                     when (bottomBarItem.route) {
-                        BottomBarItemNavigation.AboutThisApp -> aboutThisAppStartDestination
+                        BottomBarItemNavigation.Settings -> settingsStartDestination
                         BottomBarItemNavigation.Organizations -> organizationsStartDestination
                         BottomBarItemNavigation.Overview -> overviewStartDestination
                     }
@@ -78,7 +78,7 @@ fun DashboardBottomBarScreen(
                     exitTransition = { ExitTransition.None },
                 ) {
                     when (bottomBarItem.route) {
-                        BottomBarItemNavigation.AboutThisApp -> aboutThisAppNavGraph(navController)
+                        BottomBarItemNavigation.Settings -> settingsNavGraph(navController)
                         BottomBarItemNavigation.Organizations -> organizationsNavGraph(navController)
                         BottomBarItemNavigation.Overview -> overviewNavGraph(navController)
                     }

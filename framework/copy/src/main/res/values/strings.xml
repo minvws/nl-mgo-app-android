@@ -23,9 +23,9 @@
   <string name="biometric_setup.enable">Vingerafdruk aanzetten</string>
   <string name="biometric_setup.heading">Log in met je vingerafdruk</string>
   <string name="biometric_setup.subheading">Houd je vinger tegen de scanner op je scherm</string>
-  <string name="bottombar.about_this_app">Over de app</string>
   <string name="bottombar.healthcareproviders">Zorgaanbieders</string>
   <string name="bottombar.overview">Overzicht</string>
+  <string name="bottombar.settings">Instellingen</string>
   <string name="common.add">toevoegen</string>
   <string name="common.add_organizations">Voeg zorgaanbieders toe</string>
   <string name="common.app_name">Mijn Gezondheidsoverzicht</string>
@@ -129,7 +129,7 @@
   <string name="pincode.biometric.voiceover">Biometrisch inloggen</string>
   <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
   <string name="pincode.confirm.mismatch">Deze code is anders dan de vorige</string>
-  <string name="pincode.confirm.subheading">Voer je 5-cijferige code nog een keer in.</string>
+  <string name="pincode.confirm.subheading">Vul je toegangscode in om door te gaan</string>
   <string name="pincode.create.heading">Kies je toegangscode</string>
   <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig. Gebruik geen simpele codes zoals 00000 of 12345.</string>
   <string name="pincode.create.tooweak">Deze code is te simpel en dus onveilig</string>
@@ -153,6 +153,8 @@
   <string name="remove_organization.no_cancel">Nee, annuleren</string>
   <string name="remove_organization.subheading">Daarmee verwijder je deze gegevens uit de app. Je gegevens blijven altijd bewaard bij de zorgaanbieder zelf. Je kunt %1$s later altijd weer toevoegen aan de app.</string>
   <string name="remove_organization.yes_delete">Ja, verwijderen</string>
+  <string name="settings.featureflag.localization">Automatische lokalisatie</string>
+  <string name="settings_heading">Instellingen</string>
   <string name="toast.organization_removed.heading">Zorgaanbieder verwijderd</string>
   <string name="toast.organization_removed.subheading">Herstel</string>
   <string name="update_required.download">Nu downloaden</string>

@@ -14,6 +14,10 @@ val KEY_HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
 val KEY_LOGIN_WITH_BIOMETRIC_ENABLED = booleanPreferencesKey("login_with_biometric_enabled")
 val KEY_IS_ROOT_CHECKED = booleanPreferencesKey("is_root_checked")
 val KEY_APP_CLOSED_TIMESTAMP = longPreferencesKey("app_closed_timestamp")
+val KEY_FLAG_SECURE = booleanPreferencesKey("flag_secure")
+val KEY_SKIP_PIN = booleanPreferencesKey("skip_pin")
+val KEY_AUTOMATIC_LOCALISATION = booleanPreferencesKey("automatic_localisation")
+val KEY_LOCAL_FEATURE_TOGGLES_INITIALISED = booleanPreferencesKey("local_feature_toggles_initialised")
 
 internal class DataStoreKeyValueStore(
     private val dataStore: DataStore<Preferences>,
@@ -27,7 +31,7 @@ internal class DataStoreKeyValueStore(
         }
     }
 
-    override suspend fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
+    override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
         return runBlocking {
             dataStore.data.map { preferences ->
                 preferences[key]
@@ -50,7 +54,7 @@ internal class DataStoreKeyValueStore(
         }
     }
 
-    override suspend fun getString(key: Preferences.Key<String>): String? {
+    override fun getString(key: Preferences.Key<String>): String? {
         return runBlocking {
             dataStore.data.map { preferences ->
                 preferences[key]
@@ -73,7 +77,7 @@ internal class DataStoreKeyValueStore(
         }
     }
 
-    override suspend fun getLong(key: Preferences.Key<Long>): Long? {
+    override fun getLong(key: Preferences.Key<Long>): Long? {
         return runBlocking {
             dataStore.data.map { preferences ->
                 preferences[key]

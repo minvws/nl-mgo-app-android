@@ -49,8 +49,11 @@ sealed class DashboardNavigation {
     }
 
     @Serializable
-    sealed class AboutThisApp {
+    sealed class Settings {
         @Serializable
-        data object Root : AboutThisApp()
+        data object Root : Settings()
+
+        @Serializable
+        data object Debug : Settings()
     }
 }

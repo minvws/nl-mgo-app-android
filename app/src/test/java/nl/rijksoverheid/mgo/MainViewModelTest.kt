@@ -1,10 +1,13 @@
 package nl.rijksoverheid.mgo
 
 import app.cash.turbine.test
+import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
+import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
+import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.lock.TestAppLocked
 import nl.rijksoverheid.mgo.lock.TestSaveClosedAppTimestamp
@@ -12,13 +15,23 @@ import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 
 internal class MainViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
+
+    private val featureToggleRepository = mockk<FeatureToggleRepository>()
+
+    @Before
+    fun setup() {
+        every { featureToggleRepository.observe(FeatureToggleId.FlagSecure) } answers { flow { emit(false) } }
+        every { featureToggleRepository.get(FeatureToggleId.SkipPin) } answers { false }
+    }
 
     @Test
     fun `Given has pin code, When calling getStartDestination, Then return correct navigation`() {
@@ -33,6 +46,7 @@ internal class MainViewModelTest {
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
+                featureToggleRepository = featureToggleRepository,
             )
 
         // When
@@ -55,6 +69,7 @@ internal class MainViewModelTest {
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
+                featureToggleRepository = featureToggleRepository,
             )
 
         // When
@@ -77,6 +92,7 @@ internal class MainViewModelTest {
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
+                featureToggleRepository = featureToggleRepository,
             )
 
         // When
@@ -99,6 +115,7 @@ internal class MainViewModelTest {
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                     saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                     appLocked = TestAppLocked(true),
+                    featureToggleRepository = featureToggleRepository,
                 )
 
             viewModel.navigateDialog.test {
@@ -123,6 +140,7 @@ internal class MainViewModelTest {
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                     saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                     appLocked = TestAppLocked(false),
+                    featureToggleRepository = featureToggleRepository,
                 )
 
             viewModel.navigateDialog.test {
@@ -148,6 +166,7 @@ internal class MainViewModelTest {
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                     saveClosedAppTimestamp = saveClosedAppTimestamp,
                     appLocked = TestAppLocked(true),
+                    featureToggleRepository = featureToggleRepository,
                 )
 
             // When

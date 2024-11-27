@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
@@ -42,6 +43,8 @@ class MainActivity : FragmentActivity() {
                 val startDestination = viewModel.getStartDestination()
                 val navController = rememberNavController()
 
+                CheckFlagSecure(viewModel = viewModel)
+
                 CompositionLocalProvider(LocalSnackbarPresenter provides DefaultLocalSnackbarPresenter()) {
                     RootNavigation(navController = navController, startDestination = startDestination)
                 }
@@ -51,6 +54,22 @@ class MainActivity : FragmentActivity() {
 
                 // Device rooted dialog
                 DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
+            }
+        }
+    }
+
+    @Composable
+    private fun CheckFlagSecure(viewModel: MainViewModel) {
+        LaunchedEffect(Unit) {
+            viewModel.flagSecureFeatureToggle.collectLatest { enabled ->
+                if (enabled) {
+                    window.setFlags(
+                        WindowManager.LayoutParams.FLAG_SECURE,
+                        WindowManager.LayoutParams.FLAG_SECURE,
+                    )
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                }
             }
         }
     }

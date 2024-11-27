@@ -14,7 +14,7 @@ class TestKeyValueStore : KeyValueStore {
         booleans[key] = value
     }
 
-    override suspend fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
+    override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
         return booleans[key] == true
     }
 
@@ -29,7 +29,7 @@ class TestKeyValueStore : KeyValueStore {
         strings[key] = value
     }
 
-    override suspend fun getString(key: Preferences.Key<String>): String? {
+    override fun getString(key: Preferences.Key<String>): String? {
         return strings[key]
     }
 
@@ -44,7 +44,7 @@ class TestKeyValueStore : KeyValueStore {
         longs[key] = value
     }
 
-    override suspend fun getLong(key: Preferences.Key<Long>): Long? {
+    override fun getLong(key: Preferences.Key<Long>): Long? {
         return longs[key]
     }
 

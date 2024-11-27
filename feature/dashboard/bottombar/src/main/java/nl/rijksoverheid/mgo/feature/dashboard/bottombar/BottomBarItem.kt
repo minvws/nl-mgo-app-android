@@ -23,10 +23,10 @@ internal enum class BottomBarItem(
         R.drawable.ic_bottombar_item_organizations_deselected,
         R.drawable.ic_bottombar_item_organizations_selected,
     ),
-    ABOUT_THIS_APP(
-        BottomBarItemNavigation.AboutThisApp,
+    SETTINGS(
+        BottomBarItemNavigation.Settings,
         CopyR.string.bottombar_settings,
-        R.drawable.ic_bottombar_item_about_this_app_deselected,
-        R.drawable.ic_bottombar_item_about_this_app_selected,
+        R.drawable.ic_bottombar_item_settings_deselected,
+        R.drawable.ic_bottombar_item_settings_selected,
     ),
 }

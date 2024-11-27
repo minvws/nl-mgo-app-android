@@ -67,7 +67,7 @@ fun DashboardBottomBarScreen(
                 }
                 val startDestination =
                     when (bottomBarItem.route) {
-                        BottomBarItemNavigation.AboutThisApp -> settingsStartDestination
+                        BottomBarItemNavigation.Settings -> settingsStartDestination
                         BottomBarItemNavigation.Organizations -> organizationsStartDestination
                         BottomBarItemNavigation.Overview -> overviewStartDestination
                     }
@@ -78,7 +78,7 @@ fun DashboardBottomBarScreen(
                     exitTransition = { ExitTransition.None },
                 ) {
                     when (bottomBarItem.route) {
-                        BottomBarItemNavigation.AboutThisApp -> settingsNavGraph(navController)
+                        BottomBarItemNavigation.Settings -> settingsNavGraph(navController)
                         BottomBarItemNavigation.Organizations -> organizationsNavGraph(navController)
                         BottomBarItemNavigation.Overview -> overviewNavGraph(navController)
                     }

@@ -10,5 +10,5 @@ internal sealed class BottomBarItemNavigation {
     data object Organizations : BottomBarItemNavigation()
 
     @Serializable
-    data object AboutThisApp : BottomBarItemNavigation()
+    data object Settings : BottomBarItemNavigation()
 }

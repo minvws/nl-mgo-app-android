@@ -17,6 +17,7 @@ import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -30,8 +31,19 @@ internal class MainViewModel
         private val hasSeenOnboarding: HasSeenOnboarding,
         private val featureToggleRepository: FeatureToggleRepository,
     ) : ViewModel() {
+        private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
+        val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
+
         private val _navigateDialog = MutableSharedFlow<Any>(extraBufferCapacity = 1)
         val navigateDialog = _navigateDialog.asSharedFlow()
+
+        init {
+            viewModelScope.launch {
+                featureToggleRepository.observe(FeatureToggleId.FlagSecure).collectLatest { enabled ->
+                    _flagSecureFeatureToggle.tryEmit(enabled)
+                }
+            }
+        }
 
         fun getStartDestination(): Any {
             return when {

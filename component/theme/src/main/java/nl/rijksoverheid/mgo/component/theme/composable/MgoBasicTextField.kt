@@ -1,18 +1,16 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.R
 import nl.rijksoverheid.mgo.component.theme.fonts
+import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 
 @Composable
 fun MgoBasicTextField(
@@ -106,18 +106,26 @@ fun MgoBasicTextFieldContent(
                 keyboardActions = keyboardActions,
                 cursorBrush = SolidColor(LocalContentColor.current),
                 decorationBox = { innerTextField ->
-                    Row(
-                        modifier =
-                            Modifier
-                                .heightIn(40.dp)
-                                .border(
-                                    BorderStroke(border, SolidColor(LocalContentColor.current)),
-                                    shape = RoundedCornerShape(8.dp),
+                    MgoCard {
+                        Row(modifier = Modifier.padding(start = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier.weight(1f),
+                                contentAlignment = Alignment.CenterStart,
+                            ) {
+                                innerTextField()
+                            }
+                            IconButton(
+                                modifier = Modifier.alpha(if (value.isEmpty()) 0f else 1f),
+                                onClick = { onValueChange("") },
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_clear),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.iconsSecondary(),
                                 )
-                                .padding(horizontal = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        content = { innerTextField() },
-                    )
+                            }
+                        }
+                    }
                 },
             )
 

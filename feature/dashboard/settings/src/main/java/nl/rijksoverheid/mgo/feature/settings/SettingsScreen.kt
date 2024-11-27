@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.feature.settings
 
+import android.app.Activity
+import android.view.WindowManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,10 +15,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -33,6 +37,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun SettingsScreen(onNavigateToOnboarding: () -> Unit) {
+    val context = LocalContext.current
     val viewModel: SettingsScreenViewModel = hiltViewModel()
     val viewState: SettingsScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -46,6 +51,10 @@ fun SettingsScreen(onNavigateToOnboarding: () -> Unit) {
         viewState = viewState,
         onFeatureToggleChanged = { id, enabled ->
             viewModel.onFeatureToggleChanged(id, enabled)
+            if (id == FeatureToggleId.FlagSecureEnabled) {
+                val fragmentActivity = context as FragmentActivity
+                fragmentActivity.setSecureFlag(enabled)
+            }
         },
         onResetAppButtonClicked = {
             viewModel.resetApp()
@@ -66,8 +75,18 @@ private fun SettingsScreenContent(
         content = {
             Column {
                 FeatureToggleListItem(
+                    featureToggle = viewState.featureToggleSkipPin,
+                    onCheckedChange = { checked -> onFeatureToggleChanged(viewState.featureToggleSkipPin.id, checked) },
+                )
+                FeatureToggleListItem(
+                    modifier = Modifier.padding(top = 16.dp),
                     featureToggle = viewState.featureToggleFlagSecure,
                     onCheckedChange = { checked -> onFeatureToggleChanged(viewState.featureToggleFlagSecure.id, checked) },
+                )
+                FeatureToggleListItem(
+                    modifier = Modifier.padding(top = 16.dp),
+                    featureToggle = viewState.featureToggleAutomaticLocalisation,
+                    onCheckedChange = { checked -> onFeatureToggleChanged(viewState.featureToggleAutomaticLocalisation.id, checked) },
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 MgoButton(
@@ -108,7 +127,20 @@ private fun FeatureToggleListItem(
 @Composable
 private fun FeatureToggle.getHeading(): String {
     return when (this.id) {
-        FeatureToggleId.FlagSecureEnabled -> stringResource(CopyR.string.settings_featureflag_localization)
+        FeatureToggleId.SkipPin -> "Pin code"
+        FeatureToggleId.FlagSecureEnabled -> "Flag secure"
+        FeatureToggleId.AutomaticLocalisation -> stringResource(CopyR.string.settings_featureflag_localization)
+    }
+}
+
+private fun Activity.setSecureFlag(enabled: Boolean) {
+    if (enabled) {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE,
+        )
+    } else {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
     }
 }
 
@@ -122,6 +154,16 @@ private fun SettingsScreenPreview() {
                     featureToggleFlagSecure =
                         FeatureToggle(
                             FeatureToggleId.FlagSecureEnabled,
+                            false,
+                        ),
+                    featureToggleSkipPin =
+                        FeatureToggle(
+                            FeatureToggleId.SkipPin,
+                            true,
+                        ),
+                    featureToggleAutomaticLocalisation =
+                        FeatureToggle(
+                            FeatureToggleId.AutomaticLocalisation,
                             false,
                         ),
                 ),

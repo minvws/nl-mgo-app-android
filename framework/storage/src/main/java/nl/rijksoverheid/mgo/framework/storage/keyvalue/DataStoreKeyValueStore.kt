@@ -15,6 +15,8 @@ val KEY_LOGIN_WITH_BIOMETRIC_ENABLED = booleanPreferencesKey("login_with_biometr
 val KEY_IS_ROOT_CHECKED = booleanPreferencesKey("is_root_checked")
 val KEY_APP_CLOSED_TIMESTAMP = longPreferencesKey("app_closed_timestamp")
 val KEY_FLAG_SECURE_ENABLED = booleanPreferencesKey("is_flag_secure_enabled")
+val KEY_SKIP_PIN_CODE = booleanPreferencesKey("skip_pin_code")
+val KEY_AUTOMATIC_LOCALISATION = booleanPreferencesKey("automatic_localisation")
 
 internal class DataStoreKeyValueStore(
     private val dataStore: DataStore<Preferences>,

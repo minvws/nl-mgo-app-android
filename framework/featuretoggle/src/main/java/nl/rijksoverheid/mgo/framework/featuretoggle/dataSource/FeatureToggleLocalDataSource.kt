@@ -1,7 +1,9 @@
 package nl.rijksoverheid.mgo.framework.featuretoggle.dataSource
 
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_FLAG_SECURE_ENABLED
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_SKIP_PIN_CODE
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,6 +24,18 @@ internal class FeatureToggleLocalDataSource
                     MutableStateFlow(
                         keyValueStore.getBoolean(
                             KEY_FLAG_SECURE_ENABLED,
+                        ),
+                    ),
+                FeatureToggleId.SkipPin to
+                    MutableStateFlow(
+                        keyValueStore.getBoolean(
+                            KEY_SKIP_PIN_CODE,
+                        ),
+                    ),
+                FeatureToggleId.AutomaticLocalisation to
+                    MutableStateFlow(
+                        keyValueStore.getBoolean(
+                            KEY_AUTOMATIC_LOCALISATION,
                         ),
                     ),
             )

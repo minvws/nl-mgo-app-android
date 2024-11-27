@@ -29,10 +29,20 @@ internal class SettingsScreenViewModel
     ) : ViewModel() {
         private val initialState =
             SettingsScreenViewState.initialState(
+                featureToggleSkipPin =
+                    FeatureToggle(
+                        id = FeatureToggleId.SkipPin,
+                        enabled = featureToggleRepository.get(FeatureToggleId.SkipPin),
+                    ),
                 featureToggleFlagSecure =
                     FeatureToggle(
                         id = FeatureToggleId.FlagSecureEnabled,
                         enabled = featureToggleRepository.get(FeatureToggleId.FlagSecureEnabled),
+                    ),
+                featureToggleAutomaticLocalisation =
+                    FeatureToggle(
+                        id = FeatureToggleId.AutomaticLocalisation,
+                        enabled = featureToggleRepository.get(FeatureToggleId.AutomaticLocalisation),
                     ),
             )
         private val _viewState: MutableStateFlow<SettingsScreenViewState> = MutableStateFlow(initialState)
@@ -50,6 +60,34 @@ internal class SettingsScreenViewModel
                                 featureToggleFlagSecure =
                                     FeatureToggle(
                                         id = FeatureToggleId.FlagSecureEnabled,
+                                        enabled = enabled,
+                                    ),
+                            )
+                        }
+                    }
+                }
+
+                launch {
+                    featureToggleRepository.observe(FeatureToggleId.SkipPin).collectLatest { enabled ->
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                featureToggleSkipPin =
+                                    FeatureToggle(
+                                        id = FeatureToggleId.SkipPin,
+                                        enabled = enabled,
+                                    ),
+                            )
+                        }
+                    }
+                }
+
+                launch {
+                    featureToggleRepository.observe(FeatureToggleId.AutomaticLocalisation).collectLatest { enabled ->
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                featureToggleAutomaticLocalisation =
+                                    FeatureToggle(
+                                        id = FeatureToggleId.AutomaticLocalisation,
                                         enabled = enabled,
                                     ),
                             )

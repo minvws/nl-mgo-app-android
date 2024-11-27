@@ -53,9 +53,11 @@ sonar {
             add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
             add("component/theme/src/main/java/nl/rijksoverheid/mgo/component/theme/**") // Exclude theme module
 
-            // Exclude uiSchema module. This module is experimental for now and is subject to heavy change. Should be tested
-            // before going to production.
+            // Experimental or temporary modules
             add("data/uiSchema/src/main/**")
+            add("framework/featuretoggle/src/main/**")
+            add("feature/dashboard/settings/src/main/**")
+
         }.joinToString(",")
         val excludeContentInFile = listOf(
             "import androidx.compose.runtime.Composable", // Exclude composables

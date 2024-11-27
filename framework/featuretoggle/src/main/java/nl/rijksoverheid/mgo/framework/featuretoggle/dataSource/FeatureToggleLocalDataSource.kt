@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.framework.featuretoggle.data_source
+package nl.rijksoverheid.mgo.framework.featuretoggle.dataSource
 
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_FLAG_SECURE_ENABLED

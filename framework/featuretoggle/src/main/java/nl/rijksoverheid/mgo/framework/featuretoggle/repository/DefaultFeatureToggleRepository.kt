@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.framework.featuretoggle.repository
 
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
-import nl.rijksoverheid.mgo.framework.featuretoggle.data_source.FeatureToggleLocalDataSource
+import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 

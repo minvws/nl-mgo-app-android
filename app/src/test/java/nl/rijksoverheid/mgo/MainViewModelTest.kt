@@ -46,7 +46,7 @@ internal class MainViewModelTest {
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
-                featureToggleRepository = featureToggleRepository
+                featureToggleRepository = featureToggleRepository,
             )
 
         // When
@@ -69,7 +69,7 @@ internal class MainViewModelTest {
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
-                featureToggleRepository = featureToggleRepository
+                featureToggleRepository = featureToggleRepository,
             )
 
         // When
@@ -92,7 +92,7 @@ internal class MainViewModelTest {
                 showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
-                featureToggleRepository = featureToggleRepository
+                featureToggleRepository = featureToggleRepository,
             )
 
         // When
@@ -115,7 +115,7 @@ internal class MainViewModelTest {
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                     saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                     appLocked = TestAppLocked(true),
-                    featureToggleRepository = featureToggleRepository
+                    featureToggleRepository = featureToggleRepository,
                 )
 
             viewModel.navigateDialog.test {
@@ -140,7 +140,7 @@ internal class MainViewModelTest {
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                     saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                     appLocked = TestAppLocked(false),
-                    featureToggleRepository = featureToggleRepository
+                    featureToggleRepository = featureToggleRepository,
                 )
 
             viewModel.navigateDialog.test {
@@ -166,7 +166,7 @@ internal class MainViewModelTest {
                     showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
                     saveClosedAppTimestamp = saveClosedAppTimestamp,
                     appLocked = TestAppLocked(true),
-                    featureToggleRepository = featureToggleRepository
+                    featureToggleRepository = featureToggleRepository,
                 )
 
             // When

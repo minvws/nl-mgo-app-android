@@ -28,6 +28,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -36,6 +37,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.R
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun MgoBasicTextField(
@@ -120,7 +122,7 @@ fun MgoBasicTextFieldContent(
                             ) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_clear),
-                                    contentDescription = null,
+                                    contentDescription = stringResource(CopyR.string.common_clear),
                                     tint = MaterialTheme.colorScheme.iconsSecondary(),
                                 )
                             }

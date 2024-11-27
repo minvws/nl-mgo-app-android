@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,21 +25,30 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
  * This screen currently only exists for debugging purposes. So no testing or snapshots need to be done for now.
  */
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(onNavigateToOnboarding: () -> Unit) {
     val viewModel: SettingsScreenViewModel = hiltViewModel()
     val viewState: SettingsScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.navigateToOnboarding.collectLatest {
+            onNavigateToOnboarding()
+        }
+    }
+
     SettingsScreenContent(
         viewState = viewState,
         onFeatureToggleChanged = { id, enabled ->
             viewModel.onFeatureToggleChanged(id, enabled)
         },
         onResetAppButtonClicked = {
+            viewModel.resetApp()
         },
     )
 }

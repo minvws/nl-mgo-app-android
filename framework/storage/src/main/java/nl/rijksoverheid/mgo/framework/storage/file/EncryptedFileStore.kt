@@ -77,6 +77,8 @@ internal class EncryptedFileStore(
 
     override suspend fun deleteFile(name: String) {
         val file = File(dir, name)
-        check(file.delete()) { "Could not delete file" }
+        if (file.exists()) {
+            check(file.delete()) { "Could not delete file" }
+        }
     }
 }

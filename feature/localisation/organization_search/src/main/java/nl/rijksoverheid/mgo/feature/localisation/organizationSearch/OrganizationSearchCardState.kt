@@ -7,14 +7,13 @@ enum class OrganizationSearchCardState {
     ADD,
     ADDED,
     NOT_SUPPORTED,
-    NOT_IMPLEMENTED,
 }
 
 fun MgoOrganization.getCardState(): OrganizationSearchCardState {
     return when {
         added -> OrganizationSearchCardState.ADDED
         dataServices.isEmpty() -> OrganizationSearchCardState.NOT_SUPPORTED
-        !containsBgz() && !containsGp() -> OrganizationSearchCardState.NOT_IMPLEMENTED
+        !containsBgz() && !containsGp() -> OrganizationSearchCardState.NOT_SUPPORTED
         else -> OrganizationSearchCardState.ADD
     }
 }

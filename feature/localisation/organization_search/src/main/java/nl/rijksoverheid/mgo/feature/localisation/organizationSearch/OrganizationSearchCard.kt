@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -62,7 +61,7 @@ fun OrganizationSearchCard(
                 Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 val address = searchResult.address
                 if (address != null) {
-                    Text(text = address, style = MaterialTheme.typography.bodySmall)
+                    Text(modifier = Modifier.padding(top = 4.dp), text = address, style = MaterialTheme.typography.bodySmall)
                 }
                 when (cardState) {
                     OrganizationSearchCardState.ADD -> {}
@@ -79,15 +78,6 @@ fun OrganizationSearchCard(
                         AdditionalText(
                             text = CopyR.string.add_organization_not_participating,
                             icon = R.drawable.ic_search_result_card_not_supported,
-                            contentColor = MaterialTheme.colorScheme.notificationError(),
-                            modifier = Modifier.padding(top = 8.dp),
-                        )
-                    }
-
-                    OrganizationSearchCardState.NOT_IMPLEMENTED -> {
-                        AdditionalText(
-                            text = CopyR.string.add_organization_not_implemented,
-                            icon = R.drawable.ic_search_result_card_not_implemented,
                             contentColor = MaterialTheme.colorScheme.notificationInformation(),
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -165,19 +155,6 @@ internal fun OrganizationSearchCardNotSupportedPreview() {
             onClick = { },
             modifier = Modifier.padding(all = 16.dp),
             cardState = OrganizationSearchCardState.NOT_SUPPORTED,
-        )
-    }
-}
-
-@PreviewLightDark
-@Composable
-internal fun OrganizationSearchCardNotImplementedPreview() {
-    MgoTheme {
-        OrganizationSearchCard(
-            searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
-            onClick = { },
-            modifier = Modifier.padding(all = 16.dp),
-            cardState = OrganizationSearchCardState.NOT_IMPLEMENTED,
         )
     }
 }

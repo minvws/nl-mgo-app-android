@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import nl.rijksoverheid.mgo.data.healthcare.ObserveHealthCareDataStates
+import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
 import javax.inject.Inject
@@ -18,6 +19,9 @@ class MainApplication : Application() {
     @Inject
     lateinit var observeHealthCareDataStates: ObserveHealthCareDataStates
 
+    @Inject
+    lateinit var featureToggleLocalDataSource: FeatureToggleLocalDataSource
+
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate() {
@@ -25,8 +29,15 @@ class MainApplication : Application() {
         if (BuildConfig.DEBUG) {
             plant(Timber.DebugTree())
         }
+        initFeatureToggles()
         coroutineScope.launch {
             launch { observeHealthCareDataStates.invoke().collect() }
+        }
+    }
+
+    private fun initFeatureToggles() {
+        coroutineScope.launch {
+            featureToggleLocalDataSource.init()
         }
     }
 

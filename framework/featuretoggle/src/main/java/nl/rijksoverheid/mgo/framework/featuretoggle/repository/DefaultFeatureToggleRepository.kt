@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.framework.featuretoggle.repository
 
+import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import javax.inject.Inject
@@ -23,11 +24,11 @@ internal class DefaultFeatureToggleRepository
         }
 
         override suspend fun set(
-            id: FeatureToggleId,
+            toggle: FeatureToggle,
             enabled: Boolean,
         ) {
             for (dataSource in dataSources) {
-                dataSource.set(id, enabled)
+                dataSource.set(toggle, enabled)
             }
         }
     }

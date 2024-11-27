@@ -14,9 +14,10 @@ val KEY_HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
 val KEY_LOGIN_WITH_BIOMETRIC_ENABLED = booleanPreferencesKey("login_with_biometric_enabled")
 val KEY_IS_ROOT_CHECKED = booleanPreferencesKey("is_root_checked")
 val KEY_APP_CLOSED_TIMESTAMP = longPreferencesKey("app_closed_timestamp")
-val KEY_FLAG_SECURE_ENABLED = booleanPreferencesKey("is_flag_secure_enabled")
-val KEY_SKIP_PIN_CODE = booleanPreferencesKey("skip_pin_code")
+val KEY_FLAG_SECURE = booleanPreferencesKey("flag_secure")
+val KEY_SKIP_PIN = booleanPreferencesKey("skip_pin")
 val KEY_AUTOMATIC_LOCALISATION = booleanPreferencesKey("automatic_localisation")
+val KEY_LOCAL_FEATURE_TOGGLES_INITIALISED = booleanPreferencesKey("local_feature_toggles_initialised")
 
 internal class DataStoreKeyValueStore(
     private val dataStore: DataStore<Preferences>,

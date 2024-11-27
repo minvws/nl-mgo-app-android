@@ -1,13 +1,12 @@
 package nl.rijksoverheid.mgo.feature.settings
 
-import android.app.Activity
-import android.view.WindowManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,12 +14,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -28,7 +25,9 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
+import nl.rijksoverheid.mgo.framework.featuretoggle.featureToggles
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -37,9 +36,8 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun SettingsScreen(onNavigateToOnboarding: () -> Unit) {
-    val context = LocalContext.current
     val viewModel: SettingsScreenViewModel = hiltViewModel()
-    val viewState: SettingsScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+    val togglesWithState: List<FeatureToggleWithState> by viewModel.featureToggleStates.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.navigateToOnboarding.collectLatest {
@@ -48,14 +46,8 @@ fun SettingsScreen(onNavigateToOnboarding: () -> Unit) {
     }
 
     SettingsScreenContent(
-        viewState = viewState,
-        onFeatureToggleChanged = { id, enabled ->
-            viewModel.onFeatureToggleChanged(id, enabled)
-            if (id == FeatureToggleId.FlagSecureEnabled) {
-                val fragmentActivity = context as FragmentActivity
-                fragmentActivity.setSecureFlag(enabled)
-            }
-        },
+        togglesWithState = togglesWithState,
+        onFeatureToggleChanged = { id, enabled -> viewModel.onFeatureToggleChanged(id, enabled) },
         onResetAppButtonClicked = {
             viewModel.resetApp()
         },
@@ -64,8 +56,8 @@ fun SettingsScreen(onNavigateToOnboarding: () -> Unit) {
 
 @Composable
 private fun SettingsScreenContent(
-    viewState: SettingsScreenViewState,
-    onFeatureToggleChanged: (FeatureToggleId, Boolean) -> Unit,
+    togglesWithState: List<FeatureToggleWithState>,
+    onFeatureToggleChanged: (FeatureToggle, Boolean) -> Unit,
     onResetAppButtonClicked: () -> Unit,
 ) {
     MgoScaffold(
@@ -74,20 +66,13 @@ private fun SettingsScreenContent(
         contentPadding = PaddingValues(16.dp),
         content = {
             Column {
-                FeatureToggleListItem(
-                    featureToggle = viewState.featureToggleSkipPin,
-                    onCheckedChange = { checked -> onFeatureToggleChanged(viewState.featureToggleSkipPin.id, checked) },
-                )
-                FeatureToggleListItem(
-                    modifier = Modifier.padding(top = 16.dp),
-                    featureToggle = viewState.featureToggleFlagSecure,
-                    onCheckedChange = { checked -> onFeatureToggleChanged(viewState.featureToggleFlagSecure.id, checked) },
-                )
-                FeatureToggleListItem(
-                    modifier = Modifier.padding(top = 16.dp),
-                    featureToggle = viewState.featureToggleAutomaticLocalisation,
-                    onCheckedChange = { checked -> onFeatureToggleChanged(viewState.featureToggleAutomaticLocalisation.id, checked) },
-                )
+                togglesWithState.forEachIndexed { index, toggleWithState ->
+                    FeatureToggleListItem(
+                        modifier = Modifier.padding(bottom = 16.dp),
+                        featureToggleWithState = toggleWithState,
+                        onCheckedChange = { checked -> onFeatureToggleChanged(toggleWithState.featureToggle, checked) },
+                    )
+                }
                 Spacer(modifier = Modifier.weight(1f))
                 MgoButton(
                     modifier = Modifier.fillMaxWidth(),
@@ -102,16 +87,17 @@ private fun SettingsScreenContent(
 
 @Composable
 private fun FeatureToggleListItem(
-    featureToggle: FeatureToggle,
+    featureToggleWithState: FeatureToggleWithState,
     onCheckedChange: (checked: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     MgoCard(modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = featureToggle.getHeading(),
+                text = featureToggleWithState.getHeading(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodySmall,
             )
             Spacer(
                 modifier =
@@ -119,54 +105,29 @@ private fun FeatureToggleListItem(
                         .weight(1f)
                         .padding(horizontal = 8.dp),
             )
-            Switch(checked = featureToggle.enabled, onCheckedChange = onCheckedChange)
+            Switch(checked = featureToggleWithState.enabled, onCheckedChange = onCheckedChange)
         }
     }
 }
 
 @Composable
-private fun FeatureToggle.getHeading(): String {
-    return when (this.id) {
-        FeatureToggleId.SkipPin -> "Pin code"
-        FeatureToggleId.FlagSecureEnabled -> "Flag secure"
+private fun FeatureToggleWithState.getHeading(): String {
+    return when (this.featureToggle.id) {
+        FeatureToggleId.SkipPin -> "Sla pin code over"
+        FeatureToggleId.FlagSecure -> "Flag secure"
         FeatureToggleId.AutomaticLocalisation -> stringResource(CopyR.string.settings_featureflag_localization)
-    }
-}
-
-private fun Activity.setSecureFlag(enabled: Boolean) {
-    if (enabled) {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE,
-        )
-    } else {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
     }
 }
 
 @PreviewLightDark
 @Composable
-private fun SettingsScreenPreview() {
+private fun SettingsScreenContentPreview() {
     MgoTheme {
         SettingsScreenContent(
-            viewState =
-                SettingsScreenViewState.initialState(
-                    featureToggleFlagSecure =
-                        FeatureToggle(
-                            FeatureToggleId.FlagSecureEnabled,
-                            false,
-                        ),
-                    featureToggleSkipPin =
-                        FeatureToggle(
-                            FeatureToggleId.SkipPin,
-                            true,
-                        ),
-                    featureToggleAutomaticLocalisation =
-                        FeatureToggle(
-                            FeatureToggleId.AutomaticLocalisation,
-                            false,
-                        ),
-                ),
+            togglesWithState =
+                featureToggles.mapIndexed { index, toggle ->
+                    FeatureToggleWithState(toggle, index == 1)
+                },
             onFeatureToggleChanged = { _, _ -> },
             onResetAppButtonClicked = {},
         )

@@ -114,6 +114,7 @@ dependencies {
     implementation(projects.framework.test)
     implementation(projects.framework.storage)
     implementation(projects.framework.network)
+    implementation(projects.framework.featuretoggle)
 
     // ================================
     // DATA

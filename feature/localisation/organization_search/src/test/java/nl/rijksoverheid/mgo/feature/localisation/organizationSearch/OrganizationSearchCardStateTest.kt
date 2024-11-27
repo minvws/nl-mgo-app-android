@@ -41,7 +41,7 @@ internal class OrganizationSearchCardStateTest {
         val state = organization.getCardState()
 
         // Then
-        assertEquals(OrganizationSearchCardState.NOT_IMPLEMENTED, state)
+        assertEquals(OrganizationSearchCardState.NOT_SUPPORTED, state)
     }
 
     @Test

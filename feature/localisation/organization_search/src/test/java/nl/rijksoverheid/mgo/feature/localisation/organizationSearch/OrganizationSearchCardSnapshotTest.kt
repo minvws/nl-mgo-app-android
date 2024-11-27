@@ -29,11 +29,4 @@ internal class OrganizationSearchCardSnapshotTest {
             OrganizationSearchCardNotSupportedPreview()
         }
     }
-
-    @Test
-    fun notImplemented() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            OrganizationSearchCardNotImplementedPreview()
-        }
-    }
 }

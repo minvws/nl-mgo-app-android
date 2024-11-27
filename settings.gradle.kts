@@ -48,6 +48,7 @@ include(":data:pincode")
 include(":component:pincode")
 include(":feature:pincode:biometric")
 include(":feature:pincode:forgot")
+include(":framework:featuretoggle")
 
 include(":feature:dashboard:remove_organization")
 include(":feature:dashboard:organizations")

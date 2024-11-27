@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -14,6 +15,7 @@ val KEY_HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
 val KEY_LOGIN_WITH_BIOMETRIC_ENABLED = booleanPreferencesKey("login_with_biometric_enabled")
 val KEY_IS_ROOT_CHECKED = booleanPreferencesKey("is_root_checked")
 val KEY_APP_CLOSED_TIMESTAMP = longPreferencesKey("app_closed_timestamp")
+val KEY_FLAG_SECURE_ENABLED = booleanPreferencesKey("is_flag_secure_enabled")
 
 internal class DataStoreKeyValueStore(
     private val dataStore: DataStore<Preferences>,

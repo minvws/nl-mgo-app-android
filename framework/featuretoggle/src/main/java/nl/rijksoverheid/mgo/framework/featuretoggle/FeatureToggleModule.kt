@@ -11,5 +11,5 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepo
 @InstallIn(SingletonComponent::class)
 internal abstract class FeatureToggleModule {
     @Binds
-    abstract fun provideFeatureToggleRepository(default: FeatureToggleRepository): DefaultFeatureToggleRepository
+    abstract fun provideFeatureToggleRepository(default: DefaultFeatureToggleRepository): FeatureToggleRepository
 }

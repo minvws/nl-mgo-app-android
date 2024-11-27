@@ -25,7 +25,7 @@ internal enum class BottomBarItem(
     ),
     ABOUT_THIS_APP(
         BottomBarItemNavigation.AboutThisApp,
-        CopyR.string.bottombar_about_this_app,
+        CopyR.string.bottombar_settings,
         R.drawable.ic_bottombar_item_about_this_app_deselected,
         R.drawable.ic_bottombar_item_about_this_app_selected,
     ),

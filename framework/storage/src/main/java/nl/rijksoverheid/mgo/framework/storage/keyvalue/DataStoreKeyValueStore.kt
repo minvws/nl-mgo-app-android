@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -29,7 +28,7 @@ internal class DataStoreKeyValueStore(
         }
     }
 
-    override suspend fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
+    override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
         return runBlocking {
             dataStore.data.map { preferences ->
                 preferences[key]
@@ -52,7 +51,7 @@ internal class DataStoreKeyValueStore(
         }
     }
 
-    override suspend fun getString(key: Preferences.Key<String>): String? {
+    override fun getString(key: Preferences.Key<String>): String? {
         return runBlocking {
             dataStore.data.map { preferences ->
                 preferences[key]
@@ -75,7 +74,7 @@ internal class DataStoreKeyValueStore(
         }
     }
 
-    override suspend fun getLong(key: Preferences.Key<Long>): Long? {
+    override fun getLong(key: Preferences.Key<Long>): Long? {
         return runBlocking {
             dataStore.data.map { preferences ->
                 preferences[key]

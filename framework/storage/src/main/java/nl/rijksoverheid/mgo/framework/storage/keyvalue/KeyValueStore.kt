@@ -8,7 +8,7 @@ interface KeyValueStore {
         value: Boolean,
     )
 
-    suspend fun getBoolean(key: Preferences.Key<Boolean>): Boolean
+    fun getBoolean(key: Preferences.Key<Boolean>): Boolean
 
     suspend fun removeBoolean(key: Preferences.Key<Boolean>)
 
@@ -17,7 +17,7 @@ interface KeyValueStore {
         value: String,
     )
 
-    suspend fun getString(key: Preferences.Key<String>): String?
+    fun getString(key: Preferences.Key<String>): String?
 
     suspend fun removeString(key: Preferences.Key<String>)
 
@@ -26,7 +26,7 @@ interface KeyValueStore {
         value: Long,
     )
 
-    suspend fun getLong(key: Preferences.Key<Long>): Long?
+    fun getLong(key: Preferences.Key<Long>): Long?
 
     suspend fun removeLong(key: Preferences.Key<Long>)
 

@@ -43,3 +43,10 @@ val TEST_UI_SCHEMA_MEDICATION =
                 ),
             ),
     )
+
+val TEST_UI_ENTRY =
+    UIEntry(
+        label = "Label",
+        display = UIEntryDisplay.StringValue("Display"),
+        type = UIEntryType.SingleValue,
+    )

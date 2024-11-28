@@ -2,27 +2,23 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
@@ -43,6 +39,33 @@ fun UiSchemaDetailScreen(
     uiSchema: UISchema,
     onNavigateBack: () -> Unit,
 ) {
+    val viewModel =
+        hiltViewModel<UiSchemaDetailScreenViewModel, UiSchemaDetailScreenViewModel.Factory>(
+            creationCallback = { factory -> factory.create(uiSchema) },
+        )
+    val attachmentStates by viewModel.attachmentStates.collectAsStateWithLifecycle()
+    UiSchemaDetailScreenContent(
+        toolbarTitle = toolbarTitle,
+        uiSchema = uiSchema,
+        attachmentStates = attachmentStates,
+        onDownloadAttachment = { entry ->
+            viewModel.onDownloadAttachment(entry)
+        },
+        onOpenAttachment = {
+        },
+        onNavigateBack = onNavigateBack,
+    )
+}
+
+@Composable
+private fun UiSchemaDetailScreenContent(
+    toolbarTitle: String,
+    uiSchema: UISchema,
+    attachmentStates: List<AttachmentState>,
+    onDownloadAttachment: (entry: UIEntry) -> Unit,
+    onOpenAttachment: (entry: UIEntry) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     MgoScaffold(
         appBarTitle = toolbarTitle,
         onNavigateBack = onNavigateBack,
@@ -50,7 +73,13 @@ fun UiSchemaDetailScreen(
             LazyColumn(contentPadding = PaddingValues(top = 8.dp)) {
                 items(uiSchema.children.size) { position ->
                     val uiSchemaGroup = uiSchema.children[position]
-                    UiSchemaSection(group = uiSchemaGroup, modifier = Modifier.padding(bottom = 24.dp))
+                    UiSchemaSection(
+                        modifier = Modifier.padding(bottom = 24.dp),
+                        group = uiSchemaGroup,
+                        attachmentStates = attachmentStates,
+                        onOpenAttachment = onOpenAttachment,
+                        onDownloadAttachment = onDownloadAttachment,
+                    )
                 }
             }
         },
@@ -60,6 +89,9 @@ fun UiSchemaDetailScreen(
 @Composable
 private fun UiSchemaSection(
     group: UISchemaGroup,
+    attachmentStates: List<AttachmentState>,
+    onDownloadAttachment: (entry: UIEntry) -> Unit,
+    onOpenAttachment: (entry: UIEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -68,13 +100,30 @@ private fun UiSchemaSection(
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
         )
-        MgoCard(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+        MgoCard(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+        ) {
             Column {
                 group.children.forEachIndexed { index, entry ->
-                    if (entry.type == UIEntryType.DownloadLink) {
-                        UiSchemaAttachment(entry)
-                    } else {
-                        UiSchemaLabelWithValue(entry = entry, hasDivider = index != group.children.lastIndex)
+                    when (entry.type) {
+                        UIEntryType.DownloadLink -> {
+                            val attachmentState = attachmentStates.firstOrNull { state -> state.label == entry.label }
+                            if (attachmentState != null) {
+                                UiSchemaAttachmentListItem(
+                                    entry = entry,
+                                    state = attachmentState,
+                                    onDownloadAttachment = onDownloadAttachment,
+                                    onOpenAttachment = onOpenAttachment,
+                                )
+                            }
+                        }
+
+                        else -> {
+                            UiSchemaLabelWithValueListItem(entry = entry, hasDivider = index != group.children.lastIndex)
+                        }
                     }
                 }
             }
@@ -83,27 +132,7 @@ private fun UiSchemaSection(
 }
 
 @Composable
-private fun UiSchemaAttachment(
-    entry: UIEntry,
-    modifier: Modifier = Modifier,
-) {
-    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.actionTertiaryDefaultText()) {
-        Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                modifier = Modifier.weight(1f).padding(end = 8.dp),
-                text = entry.label.getStringFromResourceWithFallback(),
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Icon(
-                painter = painterResource(R.drawable.ic_attachment),
-                contentDescription = null,
-            )
-        }
-    }
-}
-
-@Composable
-private fun UiSchemaLabelWithValue(
+private fun UiSchemaLabelWithValueListItem(
     entry: UIEntry,
     hasDivider: Boolean,
 ) {
@@ -121,7 +150,10 @@ private fun UiSchemaLabelWithValue(
         )
         if (hasDivider) {
             HorizontalDivider(
-                modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp),
                 color = MaterialTheme.colorScheme.strokesPrimary(),
                 thickness = 0.33.dp,
             )
@@ -135,7 +167,7 @@ private fun UiSchemaLabelWithValue(
  * If that doesn't exist, returns the fallback key as string.
  */
 @Composable
-private fun String.getStringFromResourceWithFallback(): String {
+internal fun String.getStringFromResourceWithFallback(): String {
     val context = LocalContext.current
     val resId: Int = context.resources.getIdentifier(this, "string", context.packageName)
     if (resId == 0) {
@@ -169,9 +201,12 @@ private fun DisplayElement.getString(): String {
 @Composable
 internal fun UiSchemaDetailScreenPreview() {
     MgoTheme {
-        UiSchemaDetailScreen(
+        UiSchemaDetailScreenContent(
             toolbarTitle = stringResource(id = CopyR.string.hc_medication_heading_detail),
             uiSchema = TEST_UI_SCHEMA_MEDICATION,
+            attachmentStates = listOf(),
+            onDownloadAttachment = {},
+            onOpenAttachment = {},
             onNavigateBack = {},
         )
     }

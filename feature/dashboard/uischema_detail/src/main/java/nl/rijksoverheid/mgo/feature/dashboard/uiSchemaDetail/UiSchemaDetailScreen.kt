@@ -51,8 +51,6 @@ fun UiSchemaDetailScreen(
         onDownloadAttachment = { entry ->
             viewModel.onDownloadAttachment(entry)
         },
-        onOpenAttachment = {
-        },
         onNavigateBack = onNavigateBack,
     )
 }
@@ -63,7 +61,6 @@ private fun UiSchemaDetailScreenContent(
     uiSchema: UISchema,
     attachmentStates: List<AttachmentState>,
     onDownloadAttachment: (entry: UIEntry) -> Unit,
-    onOpenAttachment: (entry: UIEntry) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     MgoScaffold(
@@ -77,7 +74,6 @@ private fun UiSchemaDetailScreenContent(
                         modifier = Modifier.padding(bottom = 24.dp),
                         group = uiSchemaGroup,
                         attachmentStates = attachmentStates,
-                        onOpenAttachment = onOpenAttachment,
                         onDownloadAttachment = onDownloadAttachment,
                     )
                 }
@@ -91,7 +87,6 @@ private fun UiSchemaSection(
     group: UISchemaGroup,
     attachmentStates: List<AttachmentState>,
     onDownloadAttachment: (entry: UIEntry) -> Unit,
-    onOpenAttachment: (entry: UIEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -116,7 +111,6 @@ private fun UiSchemaSection(
                                     entry = entry,
                                     state = attachmentState,
                                     onDownloadAttachment = onDownloadAttachment,
-                                    onOpenAttachment = onOpenAttachment,
                                 )
                             }
                         }
@@ -206,7 +200,6 @@ internal fun UiSchemaDetailScreenPreview() {
             uiSchema = TEST_UI_SCHEMA_MEDICATION,
             attachmentStates = listOf(),
             onDownloadAttachment = {},
-            onOpenAttachment = {},
             onNavigateBack = {},
         )
     }

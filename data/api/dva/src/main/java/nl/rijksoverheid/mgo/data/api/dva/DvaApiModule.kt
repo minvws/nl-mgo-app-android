@@ -8,19 +8,28 @@ import nl.nl.rijksoverheid.mgo.framework.network.BasicAuthInterceptor
 import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.serialization.json.Json
 
 fun createDvaApi(
     okHttpClient: OkHttpClient,
     baseUrl: String,
 ): DvaApi {
+    val json = Json { ignoreUnknownKeys = true }
     val retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
+            .addConverterFactory(
+                json.asConverterFactory(
+                    "application/json; charset=UTF8".toMediaType(),
+                ),
+            )
             .build()
     return retrofit.create(DvaApi::class.java)
 }
@@ -49,8 +58,8 @@ internal class DvaApiModule {
     @Named("dvaApiBaseUrl")
     fun provideBaseUrl(environmentRepository: EnvironmentRepository): String {
         return when (val environment = environmentRepository.getEnvironment()) {
-            is Environment.Acc -> "https://dva.acc.mgo.irealisatie.nl/"
-            is Environment.Prod -> "https://dva.acc.mgo.irealisatie.nl/"
+            is Environment.Acc -> "https://dva.acc.mgo.irealisatie.nl"
+            is Environment.Prod -> "https://dva.acc.mgo.irealisatie.nl"
             is Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
             is Environment.Custom -> environment.url
         }

@@ -1,18 +1,18 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntryType
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import java.io.File
-import kotlinx.coroutines.delay
+import timber.log.Timber
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,20 +22,24 @@ import kotlinx.coroutines.launch
 internal class UiSchemaDetailScreenViewModel
     @AssistedInject
     constructor(
+        @Assisted private val organization: MgoOrganization,
         @Assisted private val uiSchema: UISchema,
-        @ApplicationContext private val context: Context,
+        private val healthCareBinaryRepository: HealthCareBinaryRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
-            fun create(uiSchema: UISchema): UiSchemaDetailScreenViewModel
+            fun create(
+                organization: MgoOrganization,
+                uiSchema: UISchema,
+            ): UiSchemaDetailScreenViewModel
         }
 
         private val _attachmentStates = MutableStateFlow<List<AttachmentState>>(listOf())
         val attachmentStates = _attachmentStates.asStateFlow()
 
         init {
-            // Loop through all UI entries, and set initial state for all attachments that can be downloaded
-            _attachmentStates.tryEmit(
+            // Set initial attachment states
+            _attachmentStates.value =
                 uiSchema.children
                     .map { group -> group.children }
                     .flatten()
@@ -43,48 +47,58 @@ internal class UiSchemaDetailScreenViewModel
                     .mapNotNull { entry ->
                         val entryUrl = entry.url ?: return@mapNotNull null
                         AttachmentState.NotDownloaded(label = entry.label, url = entryUrl)
-                    },
-            )
+                    }
         }
 
         fun onDownloadAttachment(entry: UIEntry) {
             viewModelScope.launch {
-                _attachmentStates.update { states ->
-                    states.map { state ->
-                        if (state.label == entry.label) {
-                            AttachmentState.Loading(entry.label)
-                        } else {
-                            state
-                        }
-                    }
-                }
+                val resourceEndpoint =
+                    organization.dataServices.firstOrNull { service ->
+                        service.type ==
+                            MgoOrganizationDataServiceType
+                                .DOCUMENTS
+                    }?.resourceEndpoint ?: return@launch
+                val entryUrl = entry.url ?: return@launch
 
-                delay(3000)
+                // Set loading state
+                updateAttachmentState(label = entry.label, updatedState = AttachmentState.Loading(label = entry.label))
 
-                _attachmentStates.update { states ->
-                    states.map { state ->
-                        if (state.label == entry.label) {
-                            AttachmentState.Downloaded(
-                                label = entry.label,
-                                file = File(context.cacheDir, "example.pdf"),
-                                contentType = "application/pdf",
-                            )
-                        } else {
-                            state
-                        }
+                // Download attachment
+                healthCareBinaryRepository
+                    .download(resourceEndpoint = resourceEndpoint, fhirBinary = entryUrl)
+                    .onSuccess { binary ->
+                        updateAttachmentState(
+                            label = entry.label,
+                            updatedState =
+                                AttachmentState.Downloaded(
+                                    label = entry.label,
+                                    file = binary.file,
+                                    contentType = binary.contentType,
+                                ),
+                        )
                     }
-                }
+                    .onFailure { error ->
+                        Timber.e(error, "Could not download attachment")
+                        updateAttachmentState(
+                            label = entry.label,
+                            updatedState = AttachmentState.NotDownloaded(label = entry.label, url = entryUrl),
+                        )
+                    }
             }
         }
 
-        override fun onCleared() {
-            super.onCleared()
-
-            // Clean up all downloaded attachments
-            _attachmentStates.value
-                .filterIsInstance<AttachmentState.Downloaded>()
-                .forEach { state ->
-                    check(state.file.delete()) { "Could not delete file" }
+        private fun updateAttachmentState(
+            label: String,
+            updatedState: AttachmentState,
+        ) {
+            _attachmentStates.update { states ->
+                states.map { state ->
+                    if (state.label == label) {
+                        updatedState
+                    } else {
+                        state
+                    }
                 }
+            }
         }
     }

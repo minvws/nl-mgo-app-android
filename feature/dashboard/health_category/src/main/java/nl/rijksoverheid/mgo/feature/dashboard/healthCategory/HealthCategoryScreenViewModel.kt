@@ -47,7 +47,7 @@ internal class HealthCategoryScreenViewModel
                 )
                     .collectLatest { states ->
                         val loading = states.any { state -> state.loading }
-                        val listItems = states.map { state -> state.toListItems() }.flatten()
+                        val listItems = states.map { state -> state.toListItems(state.organization) }.flatten()
                         val error = states.any { state -> state.uiSchemaListResults.any { it.isFailure } }
                         _viewState.update {
                             val listItemState =
@@ -79,7 +79,7 @@ internal class HealthCategoryScreenViewModel
             }
         }
 
-        private fun HealthCareDataState.toListItems(): List<HealthCategoryScreenListItem> {
+        private fun HealthCareDataState.toListItems(organization: MgoOrganization): List<HealthCategoryScreenListItem> {
             return uiSchemaListResults
                 .map { it.getOrNull() ?: listOf() }
                 .flatten()
@@ -88,6 +88,7 @@ internal class HealthCategoryScreenViewModel
                         title = uiSchema.label ?: "",
                         subtitle = organization.name,
                         uiSchema = uiSchema,
+                        organization = organization,
                     )
                 }
         }

@@ -1,46 +1,29 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nl.rijksoverheid.mgo.data.api.dva.DvaApi
-import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
-import javax.inject.Named
+import nl.rijksoverheid.mgo.data.healthcare.binary.DefaultHealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
-object HealthCareModule {
-    @Provides
+@InstallIn(SingletonComponent::class)
+internal abstract class HealthCareModule {
+    @Binds
     @Singleton
-    fun provideUiSchemaRepository(
-        uiSchemaMapper: UiSchemaMapper,
-        dvaApi: DvaApi,
-        @Named("dvaApiBaseUrl") dvaApiBaseUrl: String,
-    ): UiSchemaRepository {
-        return DefaultUiSchemaRepository(
-            uiSchemaMapper = uiSchemaMapper,
-            dvaApi = dvaApi,
-            dvaApiBaseUrl = dvaApiBaseUrl,
-        )
-    }
+    abstract fun provideUiSchemaRepository(default: DefaultUiSchemaRepository): UiSchemaRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideHealthCareDataStateRepository(uiSchemaRepository: UiSchemaRepository): HealthCareDataStateRepository {
-        return DefaultHealthCareDataStateRepository(
-            uiSchemaRepository = uiSchemaRepository,
-        )
-    }
+    abstract fun provideHealthCareDataStateRepository(default: DefaultHealthCareDataStateRepository): HealthCareDataStateRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideHealthCareDataStatesRepository(
-        healthCareDataStateRepository: HealthCareDataStateRepository,
-    ): HealthCareDataStatesRepository {
-        return DefaultHealthCareDataStatesRepository(
-            healthCareDataStateRepository = healthCareDataStateRepository,
-        )
-    }
+    abstract fun provideHealthCareDataStatesRepository(default: DefaultHealthCareDataStatesRepository): HealthCareDataStatesRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideHealthCareBinaryRepository(default: DefaultHealthCareBinaryRepository): HealthCareBinaryRepository
 }

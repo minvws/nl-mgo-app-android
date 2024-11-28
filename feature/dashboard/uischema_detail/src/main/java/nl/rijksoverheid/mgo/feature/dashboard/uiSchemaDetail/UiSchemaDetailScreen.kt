@@ -24,6 +24,7 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
@@ -36,12 +37,13 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun UiSchemaDetailScreen(
     toolbarTitle: String,
+    organization: MgoOrganization,
     uiSchema: UISchema,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
         hiltViewModel<UiSchemaDetailScreenViewModel, UiSchemaDetailScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(uiSchema) },
+            creationCallback = { factory -> factory.create(organization = organization, uiSchema = uiSchema) },
         )
     val attachmentStates by viewModel.attachmentStates.collectAsStateWithLifecycle()
     UiSchemaDetailScreenContent(

@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +39,13 @@ internal fun UiSchemaAttachmentListItem(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+
+    // When file is downloaded launch share intent without user interaction
+    LaunchedEffect(state) {
+        if (state is AttachmentState.Downloaded) {
+            context.shareAttachment(file = state.file, contentType = state.contentType)
+        }
+    }
     when (state) {
         is AttachmentState.NotDownloaded ->
             UiSchemaAttachmentClickableListItem(

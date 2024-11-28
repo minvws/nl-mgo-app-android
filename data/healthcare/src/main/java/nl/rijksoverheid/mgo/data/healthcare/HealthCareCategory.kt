@@ -42,6 +42,9 @@ fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
         HealthCareCategory.MENTAL -> {
             listOf(BGZ_FUNCTIONAL_OR_MENTAL_STATUS)
         }
+        HealthCareCategory.DOCUMENTS -> {
+            listOf(DOCUMENT_REFERENCE)
+        }
         else -> listOf()
     }
 }

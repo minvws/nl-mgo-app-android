@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.localisation.models
 
 import android.os.Parcelable
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_BGZ
+import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_DOCUMENTS
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_GP
 import nl.rijksoverheid.mgo.data.api.load.SearchResponse
 import kotlinx.parcelize.Parcelize
@@ -58,6 +59,12 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
                         MgoOrganizationDataService(
                             resourceEndpoint = dataService.roles.first().resourceEndpoint,
                             MgoOrganizationDataServiceType.GP,
+                        )
+
+                    DATA_SERVICE_DOCUMENTS ->
+                        MgoOrganizationDataService(
+                            resourceEndpoint = dataService.roles.first().resourceEndpoint,
+                            MgoOrganizationDataServiceType.DOCUMENTS,
                         )
 
                     else ->

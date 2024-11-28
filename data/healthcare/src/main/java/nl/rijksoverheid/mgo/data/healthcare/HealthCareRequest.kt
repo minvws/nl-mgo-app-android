@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
+import nl.rijksoverheid.mgo.data.uiSchema.IheMhdMinimalDocumentReferenceProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibAdministrationAgreementProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibAlcoholUseProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibAlertProfile
@@ -136,4 +137,16 @@ internal val GP_ALLERGY_INTOLERANCE =
         urlPath = "AllergyIntolerance?category=medication",
         profile = ZibAllergyIntoleranceProfile.HTTPNictizNlFhirStructureDefinitionZibAllergyIntolerance.value,
         dataServiceType = MgoOrganizationDataServiceType.GP,
+    )
+
+// ================
+// DOCUMENTS
+// https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_PDFA
+// ================
+
+internal val DOCUMENT_REFERENCE =
+    HealthCareRequest(
+        urlPath = "DocumentReference?status=current",
+        profile = IheMhdMinimalDocumentReferenceProfile.HTTPNictizNlFhirStructureDefinitionIHEMHDMinimalDocumentReference.value,
+        dataServiceType = MgoOrganizationDataServiceType.DOCUMENTS,
     )

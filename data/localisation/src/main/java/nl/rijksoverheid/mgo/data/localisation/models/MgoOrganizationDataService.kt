@@ -14,5 +14,6 @@ data class MgoOrganizationDataService(
 enum class MgoOrganizationDataServiceType {
     BGZ,
     GP,
+    DOCUMENTS,
     NOT_IMPLEMENTED,
 }

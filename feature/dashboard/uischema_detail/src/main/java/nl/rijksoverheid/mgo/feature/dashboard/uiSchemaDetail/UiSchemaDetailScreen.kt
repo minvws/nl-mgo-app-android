@@ -60,7 +60,7 @@ private fun UiSchemaSection(
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
         )
-        MgoCard(modifier = Modifier.padding(top = 8.dp)) {
+        MgoCard(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
             Column {
                 group.children.forEachIndexed { index, entry ->
                     UiSchemaLabelWithValue(entry = entry, hasDivider = index != group.children.lastIndex)

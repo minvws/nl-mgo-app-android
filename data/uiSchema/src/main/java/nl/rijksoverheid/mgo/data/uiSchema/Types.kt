@@ -1,126 +1,160 @@
 // To parse the JSON, install kotlin's serialization plugin and do:
 //
-// val json                        = Json { allowStructuredMapKeys = true }
-// val mgoAnnotation               = json.parse(MgoAnnotation.serializer(), jsonString)
-// val mgoReference                = json.parse(MgoReference.serializer(), jsonString)
-// val mgoBoolean                  = json.parse(MgoBoolean.serializer(), jsonString)
-// val mgoCode                     = json.parse(MgoCode.serializer(), jsonString)
-// val mgoCodeableConcept          = json.parse(MgoCodeableConcept.serializer(), jsonString)
-// val mgoCoding                   = json.parse(MgoCoding.serializer(), jsonString)
-// val mgoDate                     = json.parse(MgoDate.serializer(), jsonString)
-// val mgoDateTime                 = json.parse(MgoDateTime.serializer(), jsonString)
-// val mgoDecimal                  = json.parse(MgoDecimal.serializer(), jsonString)
-// val mgoDuration                 = json.parse(MgoDuration.serializer(), jsonString)
-// val mgoQuantity                 = json.parse(MgoQuantity.serializer(), jsonString)
-// val mgoIdentifier               = json.parse(MgoIdentifier.serializer(), jsonString)
-// val mgoInteger                  = json.parse(MgoInteger.serializer(), jsonString)
-// val mgoInteger64                = json.parse(MgoInteger64.serializer(), jsonString)
-// val mgoPeriod                   = json.parse(MgoPeriod.serializer(), jsonString)
-// val mgoPositiveInt              = json.parse(MgoPositiveInt.serializer(), jsonString)
-// val mgoRange                    = json.parse(MgoRange.serializer(), jsonString)
-// val mgoRatio                    = json.parse(MgoRatio.serializer(), jsonString)
-// val mgoString                   = json.parse(MgoString.serializer(), jsonString)
-// val mgoUnsignedInt              = json.parse(MgoUnsignedInt.serializer(), jsonString)
-// val multipleGroupValue          = json.parse(MultipleGroupValue.serializer(), jsonString)
-// val valueOptions                = json.parse(ValueOptions.serializer(), jsonString)
-// val multipleValue               = json.parse(MultipleValue.serializer(), jsonString)
-// val nlCoreAddress               = json.parse(NlCoreAddress.serializer(), jsonString)
-// val nlCoreContactpoint          = json.parse(NlCoreContactpoint.serializer(), jsonString)
-// val nlCoreHumanname             = json.parse(NlCoreHumanname.serializer(), jsonString)
-// val nlCoreObservation           = json.parse(NlCoreObservation.serializer(), jsonString)
-// val nlCorePatient               = json.parse(NlCorePatient.serializer(), jsonString)
-// val referenceValue              = json.parse(ReferenceValue.serializer(), jsonString)
-// val singleValue                 = json.parse(SingleValue.serializer(), jsonString)
-// val uISchema                    = json.parse(UISchema.serializer(), jsonString)
-// val uISchemaGroup               = json.parse(UISchemaGroup.serializer(), jsonString)
-// val zibAdministrationAgreement  = json.parse(ZibAdministrationAgreement.serializer(), jsonString)
-// val zibInstructionsForUse       = json.parse(ZibInstructionsForUse.serializer(), jsonString)
-// val zibAdministrationSchedule   = json.parse(ZibAdministrationSchedule.serializer(), jsonString)
-// val zibAlcoholUse               = json.parse(ZibAlcoholUse.serializer(), jsonString)
-// val zibAlert                    = json.parse(ZibAlert.serializer(), jsonString)
-// val zibAllergyIntolerance       = json.parse(ZibAllergyIntolerance.serializer(), jsonString)
-// val zibDrugUse                  = json.parse(ZibDrugUse.serializer(), jsonString)
-// val zibFunctionalOrMentalStatus = json.parse(ZibFunctionalOrMentalStatus.serializer(), jsonString)
-// val zibLivingSituation          = json.parse(ZibLivingSituation.serializer(), jsonString)
-// val zibMedicalDevice            = json.parse(ZibMedicalDevice.serializer(), jsonString)
-// val zibMedicalDeviceProduct     = json.parse(ZibMedicalDeviceProduct.serializer(), jsonString)
-// val zibMedicationAgreement      = json.parse(ZibMedicationAgreement.serializer(), jsonString)
-// val zibMedicationUse            = json.parse(ZibMedicationUse.serializer(), jsonString)
-// val zibNutritionAdvice          = json.parse(ZibNutritionAdvice.serializer(), jsonString)
-// val zibPayer                    = json.parse(ZibPayer.serializer(), jsonString)
-// val zibProblem                  = json.parse(ZibProblem.serializer(), jsonString)
-// val zibProduct                  = json.parse(ZibProduct.serializer(), jsonString)
-// val zibProductIngredient        = json.parse(ZibProductIngredient.serializer(), jsonString)
-// val zibProductPackage           = json.parse(ZibProductPackage.serializer(), jsonString)
-// val zibTobaccoUse               = json.parse(ZibTobaccoUse.serializer(), jsonString)
-// val zibTreatmentDirective       = json.parse(ZibTreatmentDirective.serializer(), jsonString)
-
-@file:Suppress("ktlint:standard:no-wildcard-imports")
+// val json                                    = Json { allowStructuredMapKeys = true }
+// val downloadLink                            = json.parse(DownloadLink.serializer(), jsonString)
+// val uIEntryOptions                          = json.parse(UIEntryOptions.serializer(), jsonString)
+// val eAfspraakAppointment                    = json.parse(EAfspraakAppointment.serializer(), jsonString)
+// val mgoCodeableConcept                      = json.parse(MgoCodeableConcept.serializer(), jsonString)
+// val mgoCoding                               = json.parse(MgoCoding.serializer(), jsonString)
+// val mgoReference                            = json.parse(MgoReference.serializer(), jsonString)
+// val fhirVersionR3                           = json.parse(FhirVersionR3.serializer(), jsonString)
+// val fhirVersionR4                           = json.parse(FhirVersionR4.serializer(), jsonString)
+// val gpDiagnosticResult                      = json.parse(GpDiagnosticResult.serializer(), jsonString)
+// val mgoPeriod                               = json.parse(MgoPeriod.serializer(), jsonString)
+// val mgoQuantity                             = json.parse(MgoQuantity.serializer(), jsonString)
+// val mgoRange                                = json.parse(MgoRange.serializer(), jsonString)
+// val mgoIdentifier                           = json.parse(MgoIdentifier.serializer(), jsonString)
+// val gpEncounter                             = json.parse(GpEncounter.serializer(), jsonString)
+// val gpEncounterReport                       = json.parse(GpEncounterReport.serializer(), jsonString)
+// val gpJournalEntry                          = json.parse(GpJournalEntry.serializer(), jsonString)
+// val gpLaboratoryResult                      = json.parse(GpLaboratoryResult.serializer(), jsonString)
+// val iheMhdMinimalDocumentReference          = json.parse(IheMhdMinimalDocumentReference.serializer(), jsonString)
+// val mgoAttachment                           = json.parse(MgoAttachment.serializer(), jsonString)
+// val mgoString                               = json.parse(MgoString.serializer(), jsonString)
+// val mgoUnsignedInt                          = json.parse(MgoUnsignedInt.serializer(), jsonString)
+// val mgoDateTime                             = json.parse(MgoDateTime.serializer(), jsonString)
+// val mgoAnnotation                           = json.parse(MgoAnnotation.serializer(), jsonString)
+// val mgoBoolean                              = json.parse(MgoBoolean.serializer(), jsonString)
+// val mgoCode                                 = json.parse(MgoCode.serializer(), jsonString)
+// val mgoDate                                 = json.parse(MgoDate.serializer(), jsonString)
+// val mgoDecimal                              = json.parse(MgoDecimal.serializer(), jsonString)
+// val mgoDuration                             = json.parse(MgoDuration.serializer(), jsonString)
+// val mgoInteger                              = json.parse(MgoInteger.serializer(), jsonString)
+// val mgoInteger64                            = json.parse(MgoInteger64.serializer(), jsonString)
+// val mgoPositiveInt                          = json.parse(MgoPositiveInt.serializer(), jsonString)
+// val mgoRatio                                = json.parse(MgoRatio.serializer(), jsonString)
+// val multipleGroupedValues                   = json.parse(MultipleGroupedValues.serializer(), jsonString)
+// val uIEntryValueMULTIPLEGROUPEDVALUESString = json.parse(UIEntryValueMULTIPLEGROUPEDVALUESString.serializer(), jsonString)
+// val multipleValues                          = json.parse(MultipleValues.serializer(), jsonString)
+// val uIEntryValueMULTIPLEVALUESString        = json.parse(UIEntryValueMULTIPLEVALUESString.serializer(), jsonString)
+// val nlCoreAddress                           = json.parse(NlCoreAddress.serializer(), jsonString)
+// val nlCoreContactpoint                      = json.parse(NlCoreContactpoint.serializer(), jsonString)
+// val nlCoreHealthProfessionalPractitioner    = json.parse(NlCoreHealthProfessionalPractitioner.serializer(), jsonString)
+// val nlCoreHumanname                         = json.parse(NlCoreHumanname.serializer(), jsonString)
+// val nlCoreObservation                       = json.parse(NlCoreObservation.serializer(), jsonString)
+// val nlCoreOrganization                      = json.parse(NlCoreOrganization.serializer(), jsonString)
+// val nlCorePatient                           = json.parse(NlCorePatient.serializer(), jsonString)
+// val nlCorePatientR4                         = json.parse(NlCorePatientR4.serializer(), jsonString)
+// val nlCorePractitioner                      = json.parse(NlCorePractitioner.serializer(), jsonString)
+// val nlCorePractitionerRole                  = json.parse(NlCorePractitionerRole.serializer(), jsonString)
+// val nlCoreVaccinationEvent                  = json.parse(NlCoreVaccinationEvent.serializer(), jsonString)
+// val referenceValue                          = json.parse(ReferenceValue.serializer(), jsonString)
+// val uIEntryValueREFERENCEVALUEString        = json.parse(UIEntryValueREFERENCEVALUEString.serializer(), jsonString)
+// val singleValue                             = json.parse(SingleValue.serializer(), jsonString)
+// val uIEntryValueSINGLEVALUEString           = json.parse(UIEntryValueSINGLEVALUEString.serializer(), jsonString)
+// val uIEntry                                 = json.parse(UIEntry.serializer(), jsonString)
+// val uISchema                                = json.parse(UISchema.serializer(), jsonString)
+// val uISchemaGroup                           = json.parse(UISchemaGroup.serializer(), jsonString)
+// val zibAdministrationAgreement              = json.parse(ZibAdministrationAgreement.serializer(), jsonString)
+// val zibInstructionsForUse                   = json.parse(ZibInstructionsForUse.serializer(), jsonString)
+// val zibAdministrationSchedule               = json.parse(ZibAdministrationSchedule.serializer(), jsonString)
+// val zibAdvanceDirective                     = json.parse(ZibAdvanceDirective.serializer(), jsonString)
+// val zibAlcoholUse                           = json.parse(ZibAlcoholUse.serializer(), jsonString)
+// val zibAlert                                = json.parse(ZibAlert.serializer(), jsonString)
+// val zibAllergyIntolerance                   = json.parse(ZibAllergyIntolerance.serializer(), jsonString)
+// val zibBloodPressure                        = json.parse(ZibBloodPressure.serializer(), jsonString)
+// val zibBodyHeight                           = json.parse(ZibBodyHeight.serializer(), jsonString)
+// val zibBodyWeight                           = json.parse(ZibBodyWeight.serializer(), jsonString)
+// val zibDrugUse                              = json.parse(ZibDrugUse.serializer(), jsonString)
+// val zibEncounter                            = json.parse(ZibEncounter.serializer(), jsonString)
+// val zibFunctionalOrMentalStatus             = json.parse(ZibFunctionalOrMentalStatus.serializer(), jsonString)
+// val zibLaboratoryTestResultObservation      = json.parse(ZibLaboratoryTestResultObservation.serializer(), jsonString)
+// val zibLaboratoryTestResultSpecimen         = json.parse(ZibLaboratoryTestResultSpecimen.serializer(), jsonString)
+// val zibLaboratoryTestResultSpecimenIsolate  = json.parse(ZibLaboratoryTestResultSpecimenIsolate.serializer(), jsonString)
+// val zibLaboratoryTestResultSubstance        = json.parse(ZibLaboratoryTestResultSubstance.serializer(), jsonString)
+// val zibLivingSituation                      = json.parse(ZibLivingSituation.serializer(), jsonString)
+// val zibMedicalDevice                        = json.parse(ZibMedicalDevice.serializer(), jsonString)
+// val zibMedicalDeviceProduct                 = json.parse(ZibMedicalDeviceProduct.serializer(), jsonString)
+// val zibMedicalDeviceRequest                 = json.parse(ZibMedicalDeviceRequest.serializer(), jsonString)
+// val zibMedicationAgreement                  = json.parse(ZibMedicationAgreement.serializer(), jsonString)
+// val zibMedicationUse                        = json.parse(ZibMedicationUse.serializer(), jsonString)
+// val zibNutritionAdvice                      = json.parse(ZibNutritionAdvice.serializer(), jsonString)
+// val zibPayer                                = json.parse(ZibPayer.serializer(), jsonString)
+// val zibProblem                              = json.parse(ZibProblem.serializer(), jsonString)
+// val zibProcedure                            = json.parse(ZibProcedure.serializer(), jsonString)
+// val zibProcedureRequest                     = json.parse(ZibProcedureRequest.serializer(), jsonString)
+// val zibProduct                              = json.parse(ZibProduct.serializer(), jsonString)
+// val zibProductIngredient                    = json.parse(ZibProductIngredient.serializer(), jsonString)
+// val zibProductPackage                       = json.parse(ZibProductPackage.serializer(), jsonString)
+// val zibTobaccoUse                           = json.parse(ZibTobaccoUse.serializer(), jsonString)
+// val zibTreatmentDirective                   = json.parse(ZibTreatmentDirective.serializer(), jsonString)
+// val zibVaccination                          = json.parse(ZibVaccination.serializer(), jsonString)
+// val zibVaccinationRecommendation            = json.parse(ZibVaccinationRecommendation.serializer(), jsonString)
 
 package nl.rijksoverheid.mgo.data.uiSchema
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonArray
 
+typealias MgoCodeableConcept = JsonArray
+typealias MgoString = String
+typealias MgoUnsignedInt = Double
+typealias MgoDateTime = String
 typealias MgoBoolean = Boolean
 typealias MgoCode = String
-typealias MgoCodeableConcept = JsonArray
 typealias MgoDate = String
-typealias MgoDateTime = String
 typealias MgoDecimal = Double
 typealias MgoInteger = Double
 typealias MgoInteger64 = Double
 typealias MgoPositiveInt = Double
-typealias MgoString = String
-typealias MgoUnsignedInt = Double
 
 @Serializable
-data class MultipleGroupValue(
-    val display: List<List<String>>? = null,
+data class DownloadLink(
     val label: String,
     val summary: Boolean? = null,
-    val type: String,
+    val type: DownloadLinkType,
+    val url: String,
 )
 
 @Serializable
-data class ValueOptions(
+enum class DownloadLinkType(val value: String) {
+    @SerialName("DOWNLOAD_LINK")
+    DownloadLink("DOWNLOAD_LINK"),
+}
+
+@Serializable
+data class UIEntryOptions(
     val summary: Boolean? = null,
 )
 
 @Serializable
-data class MultipleValue(
-    val display: List<String>? = null,
-    val label: String,
-    val summary: Boolean? = null,
-    val type: String,
-)
-
-@Serializable
-data class NlCoreObservation(
-    val bodySite: List<MgoCoding>? = null,
-    val category: List<List<MgoCoding>>? = null,
-    val comment: String? = null,
-    val context: MgoReference? = null,
-    val dataAbsentReason: List<MgoCoding>? = null,
-    val effectiveDateTime: String? = null,
-    val effectivePeriod: MgoPeriod? = null,
+data class EAfspraakAppointment(
+    val description: String? = null,
+    val end: String? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
-    val identifier: List<MgoIdentifier>? = null,
-    val profile: NlCoreObservationProfile,
+    val participant: List<EAfspraakAppointmentParticipant>? = null,
+    val profile: EAfspraakAppointmentProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val resourceType: String? = null,
+    val specialty: List<List<MgoCoding>>? = null,
+    val start: String? = null,
     val status: String? = null,
-    val subject: MgoReference? = null,
 )
 
 @Serializable
-data class MgoCoding(
-    val code: String? = null,
-    val display: String? = null,
-    val system: String? = null,
+enum class FhirVersionR3(val value: String) {
+    @SerialName("R3")
+    R3("R3"),
+}
+
+@Serializable
+data class EAfspraakAppointmentParticipant(
+    val actor: MgoReference? = null,
 )
 
 @Serializable
@@ -130,9 +164,42 @@ data class MgoReference(
 )
 
 @Serializable
-data class MgoPeriod(
-    val end: String? = null,
-    val start: String? = null,
+enum class EAfspraakAppointmentProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment")
+    HTTPNictizNlFhirStructureDefinitionEAfspraakAppointment("http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment"),
+}
+
+@Serializable
+data class MgoCoding(
+    val code: String? = null,
+    val display: String? = null,
+    val system: String? = null,
+)
+
+@Serializable
+data class GpDiagnosticResult(
+    val code: List<MgoCoding>? = null,
+    val comment: String? = null,
+    val context: MgoReference? = null,
+    val effective: String? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
+    val performer: List<MgoReference>? = null,
+    val profile: GpDiagnosticResultProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+    val valueBoolean: Boolean? = null,
+    val valueCodeableConcept: List<MgoCoding>? = null,
+    val valueDateTime: String? = null,
+    val valuePeriod: MgoPeriod? = null,
+    val valueQuantity: MgoDuration? = null,
+    val valueRange: MgoRange? = null,
+    val valueString: String? = null,
 )
 
 @Serializable
@@ -144,32 +211,408 @@ data class MgoIdentifier(
 )
 
 @Serializable
+enum class GpDiagnosticResultProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult")
+    HTTPNictizNlFhirStructureDefinitionGpDiagnosticResult("http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult"),
+}
+
+@Serializable
+data class MgoPeriod(
+    val end: String? = null,
+    val start: String? = null,
+)
+
+@Serializable
+data class MgoDuration(
+    val code: String? = null,
+    val comparator: String? = null,
+    val system: String? = null,
+    val unit: String? = null,
+    val value: Double? = null,
+)
+
+@Serializable
+data class MgoRange(
+    val high: MgoDuration? = null,
+    val low: MgoDuration? = null,
+)
+
+@Serializable
+data class GpEncounter(
+    @SerialName("class")
+    val gpEncounterClass: MgoCoding? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val participant: List<GpEncounterParticipant>? = null,
+    val period: MgoPeriod? = null,
+    val profile: GpEncounterProfile,
+    val reason: List<List<MgoCoding>>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val serviceProvider: MgoReference? = null,
+)
+
+@Serializable
+data class GpEncounterParticipant(
+    val individual: MgoReference? = null,
+)
+
+@Serializable
+enum class GpEncounterProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/gp-Encounter")
+    HTTPNictizNlFhirStructureDefinitionGpEncounter("http://nictiz.nl/fhir/StructureDefinition/gp-Encounter"),
+}
+
+@Serializable
+data class GpEncounterReport(
+    val author: List<MgoReference>? = null,
+    val date: String? = null,
+    val encounter: MgoReference? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: MgoIdentifier? = null,
+    val profile: GpEncounterReportProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val section: List<Section>? = null,
+    val status: String? = null,
+    val title: String? = null,
+    val type: List<MgoCoding>? = null,
+)
+
+@Serializable
+enum class GpEncounterReportProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport")
+    HTTPNictizNlFhirStructureDefinitionGpEncounterReport("http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport"),
+}
+
+@Serializable
+data class Section(
+    val code: List<MgoCoding>? = null,
+    val entry: List<MgoReference>? = null,
+)
+
+@Serializable
+data class GpJournalEntry(
+    val code: List<MgoCoding>? = null,
+    val context: MgoReference? = null,
+    val effectiveDateTime: String? = null,
+    val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
+    @SerialName("ICPC_E")
+    val icpcE: IcpcE,
+    @SerialName("ICPC_S")
+    val icpcS: IcpcS,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val performer: List<MgoReference>? = null,
+    val profile: GpJournalEntryProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val valueString: String? = null,
+)
+
+@Serializable
+data class IcpcE(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class IcpcS(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+enum class GpJournalEntryProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry")
+    HTTPNictizNlFhirStructureDefinitionGpJournalEntry("http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry"),
+}
+
+@Serializable
+data class GpLaboratoryResult(
+    val basedOn: List<MgoReference>? = null,
+    val category: List<List<MgoCoding>>? = null,
+    val code: List<MgoCoding>? = null,
+    val comment: String? = null,
+    val effective: Effective? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val interpretation: List<MgoCoding>? = null,
+    val method: List<MgoCoding>? = null,
+    val profile: GpLaboratoryResultProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val referenceRange: List<GpLaboratoryResultReferenceRange>? = null,
+    val related: List<GpLaboratoryResultRelated>? = null,
+    val resourceType: String? = null,
+    val result: MgoDuration? = null,
+    val specimen: MgoReference? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+)
+
+@Serializable
+sealed class Effective {
+    class MgoPeriodValue(val value: MgoPeriod) : Effective()
+
+    class StringValue(val value: String) : Effective()
+}
+
+@Serializable
+enum class GpLaboratoryResultProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult")
+    HTTPNictizNlFhirStructureDefinitionGpLaboratoryResult("http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult"),
+}
+
+@Serializable
+data class GpLaboratoryResultReferenceRange(
+    val high: MgoDuration? = null,
+    val low: MgoDuration? = null,
+)
+
+@Serializable
+data class GpLaboratoryResultRelated(
+    val target: MgoReference? = null,
+)
+
+@Serializable
+data class IheMhdMinimalDocumentReference(
+    val author: List<MgoReference>? = null,
+    val content: IheMhdMinimalDocumentReferenceContent,
+    val description: String? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val indexed: String? = null,
+    val profile: IheMhdMinimalDocumentReferenceProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val securityLabel: List<List<MgoCoding>>? = null,
+    val status: String? = null,
+    val type: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class IheMhdMinimalDocumentReferenceContent(
+    val attachment: MgoAttachment? = null,
+)
+
+@Serializable
+data class MgoAttachment(
+    val contentType: String? = null,
+    val creation: String? = null,
+    val data: String? = null,
+    val hash: String? = null,
+    val language: String? = null,
+    val size: Double? = null,
+    val title: String? = null,
+    val url: String? = null,
+)
+
+@Serializable
+enum class IheMhdMinimalDocumentReferenceProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference")
+    HTTPNictizNlFhirStructureDefinitionIHEMHDMinimalDocumentReference(
+        "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference",
+    ),
+}
+
+@Serializable
+data class MultipleGroupedValues(
+    val display: List<List<String>>? = null,
+    val label: String,
+    val summary: Boolean? = null,
+    val type: MultipleGroupedValuesType,
+)
+
+@Serializable
+enum class MultipleGroupedValuesType(val value: String) {
+    @SerialName("MULTIPLE_GROUPED_VALUES")
+    MultipleGroupedValues("MULTIPLE_GROUPED_VALUES"),
+}
+
+@Serializable
+data class UIEntryValueMULTIPLEGROUPEDVALUESString(
+    val display: List<List<String>>? = null,
+    val label: String,
+    val summary: Boolean? = null,
+    val type: MultipleGroupedValuesType,
+)
+
+@Serializable
+data class MultipleValues(
+    val display: List<String>? = null,
+    val label: String,
+    val summary: Boolean? = null,
+    val type: MultipleValuesType,
+)
+
+@Serializable
+enum class MultipleValuesType(val value: String) {
+    @SerialName("MULTIPLE_VALUES")
+    MultipleValues("MULTIPLE_VALUES"),
+}
+
+@Serializable
+data class UIEntryValueMULTIPLEVALUESString(
+    val display: List<String>? = null,
+    val label: String,
+    val summary: Boolean? = null,
+    val type: MultipleValuesType,
+)
+
+@Serializable
+data class NlCoreHealthProfessionalPractitioner(
+    val address: List<NlCoreHealthProfessionalPractitionerAddress>? = null,
+    val birthDate: String? = null,
+    val communication: List<List<MgoCoding>>? = null,
+    val emailAddresses: List<EmailAddress>? = null,
+    val fhirVersion: FhirVersionR4,
+    val gender: String? = null,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val name: List<NlCoreHealthProfessionalPractitionerName>? = null,
+    val profile: NlCoreHealthProfessionalPractitionerProfile,
+    val qualification: List<Qualification>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val telephoneNumbers: List<TelephoneNumber>? = null,
+)
+
+@Serializable
+data class NlCoreHealthProfessionalPractitionerAddress(
+    val additionalInformation: String? = null,
+    val addressType: List<MgoCoding>? = null,
+    val city: String? = null,
+    val country: String? = null,
+    val countryCode: List<MgoCoding>? = null,
+    val district: String? = null,
+    val houseNumber: String? = null,
+    val houseNumberAddition: String? = null,
+    val houseNumberIndication: String? = null,
+    val line: String? = null,
+    val period: MgoPeriod? = null,
+    val postalCode: String? = null,
+    val streetName: String? = null,
+)
+
+@Serializable
+data class EmailAddress(
+    val system: EmailAddressSystem,
+    val use: String? = null,
+    val value: String? = null,
+)
+
+@Serializable
+enum class EmailAddressSystem(val value: String) {
+    @SerialName("email")
+    Email("email"),
+}
+
+@Serializable
+enum class FhirVersionR4(val value: String) {
+    @SerialName("R4")
+    R4("R4"),
+}
+
+@Serializable
+data class NlCoreHealthProfessionalPractitionerName(
+    val family: String? = null,
+    val given: List<String>? = null,
+    val givenInitials: List<String>? = null,
+    val givenNames: List<String>? = null,
+    val nameUsage: String? = null,
+    val period: MgoPeriod? = null,
+    val prefix: List<String>? = null,
+    val suffix: List<String>? = null,
+    val text: String? = null,
+    val use: Use,
+)
+
+@Serializable
+enum class Use(val value: String) {
+    @SerialName("official")
+    Official("official"),
+
+    @SerialName("usual")
+    Usual("usual"),
+}
+
+@Serializable
+enum class NlCoreHealthProfessionalPractitionerProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner")
+    HTTPNictizNlFhirStructureDefinitionNlCoreHealthProfessionalPractitioner(
+        "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner",
+    ),
+}
+
+@Serializable
+data class Qualification(
+    val code: List<MgoCoding>? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val issuer: MgoReference? = null,
+    val period: MgoPeriod? = null,
+)
+
+@Serializable
+data class TelephoneNumber(
+    val comment: String? = null,
+    val system: TelephoneNumberSystem,
+    val telecomType: List<MgoCoding>? = null,
+    val use: String? = null,
+    val value: String? = null,
+)
+
+@Serializable
+enum class TelephoneNumberSystem(val value: String) {
+    @SerialName("phone")
+    Phone("phone"),
+}
+
+@Serializable
+data class NlCoreObservation(
+    val bodySite: List<MgoCoding>? = null,
+    val category: List<List<MgoCoding>>? = null,
+    val comment: String? = null,
+    val context: MgoReference? = null,
+    val dataAbsentReason: List<MgoCoding>? = null,
+    val effectiveDateTime: String? = null,
+    val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
+    val profile: NlCoreObservationProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
 enum class NlCoreObservationProfile(val value: String) {
     @SerialName("http://fhir.nl/fhir/StructureDefinition/nl-core-observation")
     HTTPFhirNlFhirStructureDefinitionNlCoreObservation("http://fhir.nl/fhir/StructureDefinition/nl-core-observation"),
 }
 
 @Serializable
-data class NlCorePatient(
-    val active: Boolean? = null,
+data class NlCoreOrganization(
     val address: List<NlCoreAddress>? = null,
-    val birthDate: String? = null,
-    val communication: List<Communication>? = null,
-    val contact: List<Contact>? = null,
-    val deceased: Boolean? = null,
-    val deceasedDateTime: String? = null,
-    val gender: String? = null,
-    val generalPractitioner: List<MgoReference>? = null,
+    val departmentSpecialty: List<List<MgoCoding>>? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    val link: List<Link>? = null,
-    val managingOrganization: MgoReference? = null,
-    val maritalStatus: List<MgoCoding>? = null,
-    val multipleBirth: Boolean? = null,
-    val multipleBirthInteger: Double? = null,
-    val name: List<NlCoreHumanname>? = null,
-    val photo: List<Photo>? = null,
-    val profile: NlCorePatientProfile,
+    val name: String? = null,
+    val organizationType: List<List<MgoCoding>>? = null,
+    val profile: NlCoreOrganizationProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val resourceType: String? = null,
@@ -188,6 +631,49 @@ data class NlCoreAddress(
     val text: String? = null,
     val type: String? = null,
     val use: String? = null,
+)
+
+@Serializable
+enum class NlCoreOrganizationProfile(val value: String) {
+    @SerialName("http://fhir.nl/fhir/StructureDefinition/nl-core-organization")
+    HTTPFhirNlFhirStructureDefinitionNlCoreOrganization("http://fhir.nl/fhir/StructureDefinition/nl-core-organization"),
+}
+
+@Serializable
+data class NlCoreContactpoint(
+    val period: MgoPeriod? = null,
+    val rank: Double? = null,
+    val system: String? = null,
+    val use: String? = null,
+    val value: String? = null,
+)
+
+@Serializable
+data class NlCorePatient(
+    val active: Boolean? = null,
+    val address: List<NlCoreAddress>? = null,
+    val birthDate: String? = null,
+    val communication: List<Communication>? = null,
+    val contact: List<Contact>? = null,
+    val deceased: Boolean? = null,
+    val deceasedDateTime: String? = null,
+    val fhirVersion: FhirVersionR3,
+    val gender: String? = null,
+    val generalPractitioner: List<MgoReference>? = null,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val link: List<Link>? = null,
+    val managingOrganization: MgoReference? = null,
+    val maritalStatus: List<MgoCoding>? = null,
+    val multipleBirth: Boolean? = null,
+    val multipleBirthInteger: Double? = null,
+    val name: List<NlCoreHumanname>? = null,
+    val photo: List<MgoAttachment>? = null,
+    val profile: NlCorePatientProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val telecom: List<NlCoreContactpoint>? = null,
 )
 
 @Serializable
@@ -219,30 +705,9 @@ data class NlCoreHumanname(
 )
 
 @Serializable
-data class NlCoreContactpoint(
-    val period: MgoPeriod? = null,
-    val rank: Double? = null,
-    val system: String? = null,
-    val use: String? = null,
-    val value: String? = null,
-)
-
-@Serializable
 data class Link(
     val other: MgoReference? = null,
     val type: String? = null,
-)
-
-@Serializable
-data class Photo(
-    val contentType: String? = null,
-    val creation: String? = null,
-    val data: String? = null,
-    val hash: String? = null,
-    val language: String? = null,
-    val size: Double? = null,
-    val title: String? = null,
-    val url: String? = null,
 )
 
 @Serializable
@@ -252,12 +717,171 @@ enum class NlCorePatientProfile(val value: String) {
 }
 
 @Serializable
+data class NlCorePatientR4(
+    val address: List<NlCorePatientR4Address>? = null,
+    val birthDate: String? = null,
+    val deceased: Boolean? = null,
+    val deceasedDateTime: String? = null,
+    val fhirVersion: FhirVersionR4,
+    val gender: String? = null,
+    val generalPractitioner: List<MgoReference>? = null,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val managingOrganization: MgoReference? = null,
+    val maritalStatus: List<MgoCoding>? = null,
+    val multipleBirth: Boolean? = null,
+    val name: List<NlCorePatientR4Name>? = null,
+    val profile: NlCorePatientR4Profile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+)
+
+@Serializable
+data class NlCorePatientR4Address(
+    val additionalInformation: String? = null,
+    val addressType: List<MgoCoding>? = null,
+    val city: String? = null,
+    val country: String? = null,
+    val countryCode: List<MgoCoding>? = null,
+    val district: String? = null,
+    val houseNumber: String? = null,
+    val houseNumberAddition: String? = null,
+    val houseNumberIndication: String? = null,
+    val line: String? = null,
+    val period: MgoPeriod? = null,
+    val postalCode: String? = null,
+    val streetName: String? = null,
+)
+
+@Serializable
+data class NlCorePatientR4Name(
+    val family: String? = null,
+    val given: List<String>? = null,
+    val givenInitials: List<String>? = null,
+    val givenNames: List<String>? = null,
+    val nameUsage: String? = null,
+    val period: MgoPeriod? = null,
+    val prefix: List<String>? = null,
+    val suffix: List<String>? = null,
+    val text: String? = null,
+    val use: Use,
+)
+
+@Serializable
+enum class NlCorePatientR4Profile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient")
+    HTTPNictizNlFhirStructureDefinitionNlCorePatient("http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"),
+}
+
+@Serializable
+data class NlCorePractitioner(
+    val address: List<NlCoreAddress>? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val name: List<NlCoreHumanname>? = null,
+    val profile: NlCorePractitionerProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val telecom: List<NlCoreContactpoint>? = null,
+)
+
+@Serializable
+enum class NlCorePractitionerProfile(val value: String) {
+    @SerialName("http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner")
+    HTTPFhirNlFhirStructureDefinitionNlCorePractitioner("http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner"),
+}
+
+@Serializable
+data class NlCorePractitionerRole(
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val organization: MgoReference? = null,
+    val profile: NlCorePractitionerRoleProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val specialty: List<List<MgoCoding>>? = null,
+    val telecom: List<NlCoreContactpoint>? = null,
+)
+
+@Serializable
+enum class NlCorePractitionerRoleProfile(val value: String) {
+    @SerialName("http://fhir.nl/fhir/StructureDefinition/nl-core-practitionerrole")
+    HTTPFhirNlFhirStructureDefinitionNlCorePractitionerrole("http://fhir.nl/fhir/StructureDefinition/nl-core-practitionerrole"),
+}
+
+@Serializable
+data class NlCoreVaccinationEvent(
+    val administrator: List<MgoReference>? = null,
+    val doseQuantity: MgoDuration? = null,
+    val fhirVersion: FhirVersionR4,
+    val id: String? = null,
+    val location: MgoReference? = null,
+    val note: List<MgoAnnotation>? = null,
+    val occurrenceDateTime: String? = null,
+    val patient: MgoReference? = null,
+    val pharmaceuticalProduct: MgoReference? = null,
+    val profile: NlCoreVaccinationEventProfile,
+    val protocolApplied: List<ProtocolApplied>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val route: List<MgoCoding>? = null,
+    val site: List<MgoCoding>? = null,
+    val status: String? = null,
+    val vaccinationIndication: List<List<MgoCoding>>? = null,
+    val vaccinationMotive: List<List<MgoCoding>>? = null,
+    val vaccineCode: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class MgoAnnotation(
+    val author: MgoReference? = null,
+    val text: String? = null,
+    val time: String? = null,
+)
+
+@Serializable
+enum class NlCoreVaccinationEventProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event")
+    HTTPNictizNlFhirStructureDefinitionNlCoreVaccinationEvent("http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event"),
+}
+
+@Serializable
+data class ProtocolApplied(
+    val authority: MgoReference? = null,
+    val doseNumberPositiveInt: Double? = null,
+    val doseNumberString: String? = null,
+    val seriesDosesPositiveInt: Double? = null,
+    val seriesDosesString: String? = null,
+    val targetDisease: List<List<MgoCoding>>? = null,
+)
+
+@Serializable
 data class ReferenceValue(
     val display: String? = null,
     val label: String,
     val reference: String? = null,
     val summary: Boolean? = null,
-    val type: String,
+    val type: ReferenceValueType,
+)
+
+@Serializable
+enum class ReferenceValueType(val value: String) {
+    @SerialName("REFERENCE_VALUE")
+    ReferenceValue("REFERENCE_VALUE"),
+}
+
+@Serializable
+data class UIEntryValueREFERENCEVALUEString(
+    val display: String? = null,
+    val label: String,
+    val summary: Boolean? = null,
+    val type: ReferenceValueType,
 )
 
 @Serializable
@@ -265,50 +889,61 @@ data class SingleValue(
     val display: String? = null,
     val label: String,
     val summary: Boolean? = null,
-    val type: String,
+    val type: SingleValueType,
+)
+
+@Serializable
+enum class SingleValueType(val value: String) {
+    @SerialName("SINGLE_VALUE")
+    SingleValue("SINGLE_VALUE"),
+}
+
+@Serializable
+data class UIEntryValueSINGLEVALUEString(
+    val display: String? = null,
+    val label: String,
+    val summary: Boolean? = null,
+    val type: SingleValueType,
 )
 
 @Serializable
 @Parcelize
 data class UISchema(
-    val label: String? = null,
     val children: List<UISchemaGroup>,
-) : Parcelable
-
-@Serializable
-@Parcelize
-data class TestUISchema(
     val label: String? = null,
 ) : Parcelable
 
-@Parcelize
 @Serializable
+@Parcelize
 data class UISchemaGroup(
-    val children: List<Value>,
+    val children: List<UIEntry>,
     val label: String,
 ) : Parcelable
 
-@Parcelize
 @Serializable
-data class Value(
-    @Serializable(with = ChildDisplaySerializer::class)
-    val display: ChildDisplay? = null,
+@Parcelize
+data class UIEntry(
+    @Serializable(with = UIEntryDisplaySerializer::class)
+    val display: UIEntryDisplay? = null,
     val label: String,
     val summary: Boolean? = null,
-    val type: String,
+    val type: UIEntryType,
     val reference: String? = null,
+    val url: String? = null,
 ) : Parcelable
 
 @Serializable
-sealed class ChildDisplay : Parcelable {
+@Parcelize
+sealed class UIEntryDisplay : Parcelable {
     @Parcelize
-    class StringValue(val value: String) : ChildDisplay()
+    class StringValue(val value: String) : UIEntryDisplay()
 
     @Parcelize
-    class UnionArrayValue(val value: List<DisplayElement>) : ChildDisplay()
+    class UnionArrayValue(val value: List<DisplayElement>) : UIEntryDisplay()
 }
 
 @Serializable
+@Parcelize
 sealed class DisplayElement : Parcelable {
     @Parcelize
     class StringArrayValue(val value: List<String>) : DisplayElement()
@@ -318,61 +953,65 @@ sealed class DisplayElement : Parcelable {
 }
 
 @Serializable
+enum class UIEntryType(val value: String) {
+    @SerialName("DOWNLOAD_LINK")
+    DownloadLink("DOWNLOAD_LINK"),
+
+    @SerialName("MULTIPLE_GROUPED_VALUES")
+    MultipleGroupedValues("MULTIPLE_GROUPED_VALUES"),
+
+    @SerialName("MULTIPLE_VALUES")
+    MultipleValues("MULTIPLE_VALUES"),
+
+    @SerialName("REFERENCE_VALUE")
+    ReferenceValue("REFERENCE_VALUE"),
+
+    @SerialName("SINGLE_VALUE")
+    SingleValue("SINGLE_VALUE"),
+}
+
+@Serializable
 data class ZibAdministrationAgreement(
     val additionalInformation: List<MgoCoding>? = null,
     val agreementReason: String? = null,
     val authoredOn: String? = null,
     val category: List<MgoCoding>? = null,
-    val daysSupply: MgoQuantity? = null,
+    val daysSupply: MgoDuration? = null,
     val dossageInstruction: List<ZibInstructionsForUse>? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val medicationReference: MgoReference? = null,
     val medicationTreatment: MgoIdentifier? = null,
     val note: List<MgoAnnotation>? = null,
     val profile: ZibAdministrationAgreementProfile,
-    val quantity: MgoQuantity? = null,
+    val quantity: MgoDuration? = null,
     @SerialName("referenceId")
     val referenceID: String,
-    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
+    val repeatPeriodCyclicalSchedule: MgoDuration? = null,
     val resourceType: String? = null,
     val status: String? = null,
     val stopType: List<MgoCoding>? = null,
-    val usageDuration: MgoQuantity? = null,
-)
-
-@Serializable
-data class MgoQuantity(
-    val code: String? = null,
-    val comparator: String? = null,
-    val system: String? = null,
-    val unit: String? = null,
-    val value: Double? = null,
+    val usageDuration: MgoDuration? = null,
 )
 
 @Serializable
 data class ZibInstructionsForUse(
     val additionalInstruction: List<List<MgoCoding>>? = null,
     val asNeeded: List<MgoCoding>? = null,
-    val doseQuantity: MgoQuantity? = null,
+    val doseQuantity: MgoDuration? = null,
     val doseRange: MgoRange? = null,
     val maxDosePerPeriod: MgoRatio? = null,
-    val rateQuantity: MgoQuantity? = null,
+    val rateQuantity: MgoDuration? = null,
     val rateRange: MgoRange? = null,
     val rateRatio: MgoRatio? = null,
     val timing: ZibAdministrationSchedule,
 )
 
 @Serializable
-data class MgoRange(
-    val high: MgoQuantity? = null,
-    val low: MgoQuantity? = null,
-)
-
-@Serializable
 data class MgoRatio(
-    val denominator: MgoQuantity? = null,
-    val numerator: MgoQuantity? = null,
+    val denominator: MgoDuration? = null,
+    val numerator: MgoDuration? = null,
 )
 
 @Serializable
@@ -390,17 +1029,39 @@ data class ZibAdministrationSchedule(
 )
 
 @Serializable
-data class MgoAnnotation(
-    val author: MgoReference? = null,
-    val text: String? = null,
-    val time: String? = null,
-)
-
-@Serializable
 enum class ZibAdministrationAgreementProfile(val value: String) {
     @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement")
     HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement("http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"),
 }
+
+@Serializable
+data class ZibAdvanceDirective(
+    val category: List<List<MgoCoding>>? = null,
+    val comment: String? = null,
+    val consentingParty: List<MgoReference>? = null,
+    val dateTime: String? = null,
+    val disorder: MgoReference? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val profile: ZibAdvanceDirectiveProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val source: Source,
+)
+
+@Serializable
+enum class ZibAdvanceDirectiveProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective")
+    HTTPNictizNlFhirStructureDefinitionZibAdvanceDirective("http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective"),
+}
+
+@Serializable
+data class Source(
+    val attachment: MgoAttachment,
+    val identifier: MgoIdentifier? = null,
+    val reference: MgoReference? = null,
+)
 
 @Serializable
 data class ZibAlcoholUse(
@@ -410,14 +1071,17 @@ data class ZibAlcoholUse(
     val context: MgoReference? = null,
     val dataAbsentReason: List<MgoCoding>? = null,
     val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
     val profile: ZibAlcoholUseProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
 )
 
 @Serializable
@@ -432,6 +1096,7 @@ data class ZibAlert(
     val category: List<MgoCoding>? = null,
     val code: List<MgoCoding>? = null,
     val encounter: MgoReference? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val period: MgoPeriod? = null,
@@ -455,6 +1120,7 @@ data class ZibAllergyIntolerance(
     val clinicalStatus: String? = null,
     val code: List<MgoCoding>? = null,
     val criticality: String? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val patient: MgoReference? = null,
@@ -473,6 +1139,150 @@ enum class ZibAllergyIntoleranceProfile(val value: String) {
 }
 
 @Serializable
+data class ZibBloodPressure(
+    val averageBloodPressureLOINC: AverageBloodPressureLOINC,
+    val averageBloodPressureSNOMED: AverageBloodPressureSNOMED,
+    val bodySite: List<MgoCoding>? = null,
+    val category: List<List<MgoCoding>>? = null,
+    val comment: String? = null,
+    val context: MgoReference? = null,
+    val cuffTypeLOINC: CuffTypeLOINC,
+    val cuffTypeSNOMED: CuffTypeSNOMED,
+    val dataAbsentReason: List<MgoCoding>? = null,
+    val diastolicBP: DiastolicBP,
+    val diastolicEndpoint: DiastolicEndpoint,
+    val effectiveDateTime: String? = null,
+    val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
+    val positionLOINC: PositionLOINC,
+    val positionSNOMED: PositionSNOMED,
+    val profile: ZibBloodPressureProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+    val systolicBP: SystolicBP,
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
+data class AverageBloodPressureLOINC(
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
+data class AverageBloodPressureSNOMED(
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
+data class CuffTypeLOINC(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class CuffTypeSNOMED(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class DiastolicBP(
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
+data class DiastolicEndpoint(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class PositionLOINC(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class PositionSNOMED(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+enum class ZibBloodPressureProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure")
+    HTTPNictizNlFhirStructureDefinitionZibBloodPressure("http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure"),
+}
+
+@Serializable
+data class SystolicBP(
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
+data class ZibBodyHeight(
+    val bodySite: List<MgoCoding>? = null,
+    val category: List<List<MgoCoding>>? = null,
+    val comment: String? = null,
+    val context: MgoReference? = null,
+    val dataAbsentReason: List<MgoCoding>? = null,
+    val effectiveDateTime: String? = null,
+    val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
+    val profile: ZibBodyHeightProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
+enum class ZibBodyHeightProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-BodyHeight")
+    HTTPNictizNlFhirStructureDefinitionZibBodyHeight("http://nictiz.nl/fhir/StructureDefinition/zib-BodyHeight"),
+}
+
+@Serializable
+data class ZibBodyWeight(
+    val bodySite: List<MgoCoding>? = null,
+    val category: List<List<MgoCoding>>? = null,
+    val clothing: Clothing,
+    val comment: String? = null,
+    val context: MgoReference? = null,
+    val dataAbsentReason: List<MgoCoding>? = null,
+    val effectiveDateTime: String? = null,
+    val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
+    val profile: ZibBodyWeightProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
+)
+
+@Serializable
+data class Clothing(
+    val valueCodeableConcept: List<MgoCoding>? = null,
+)
+
+@Serializable
+enum class ZibBodyWeightProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-BodyWeight")
+    HTTPNictizNlFhirStructureDefinitionZibBodyWeight("http://nictiz.nl/fhir/StructureDefinition/zib-BodyWeight"),
+}
+
+@Serializable
 data class ZibDrugUse(
     val bodySite: List<MgoCoding>? = null,
     val category: List<List<MgoCoding>>? = null,
@@ -480,20 +1290,65 @@ data class ZibDrugUse(
     val context: MgoReference? = null,
     val dataAbsentReason: List<MgoCoding>? = null,
     val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
     val profile: ZibDrugUseProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
 )
 
 @Serializable
 enum class ZibDrugUseProfile(val value: String) {
     @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse")
     HTTPNictizNlFhirStructureDefinitionZibDrugUse("http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse"),
+}
+
+@Serializable
+data class ZibEncounter(
+    @SerialName("class")
+    val zibEncounterClass: MgoCoding? = null,
+    val diagnosis: List<Diagnosis>? = null,
+    val fhirVersion: FhirVersionR3,
+    val hospitalization: Hospitalization,
+    val id: String? = null,
+    val participant: List<ZibEncounterParticipant>? = null,
+    val period: MgoPeriod? = null,
+    val profile: ZibEncounterProfile,
+    val reason: List<List<MgoCoding>>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val serviceProvider: MgoReference? = null,
+)
+
+@Serializable
+data class Diagnosis(
+    val condition: MgoReference? = null,
+    val rank: Double? = null,
+    val role: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class Hospitalization(
+    val admitSource: List<MgoCoding>? = null,
+    val dischargeDisposition: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class ZibEncounterParticipant(
+    val individual: MgoReference? = null,
+)
+
+@Serializable
+enum class ZibEncounterProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-Encounter")
+    HTTPNictizNlFhirStructureDefinitionZibEncounter("http://nictiz.nl/fhir/StructureDefinition/zib-Encounter"),
 }
 
 @Serializable
@@ -504,14 +1359,17 @@ data class ZibFunctionalOrMentalStatus(
     val context: MgoReference? = null,
     val dataAbsentReason: List<MgoCoding>? = null,
     val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
     val profile: ZibFunctionalOrMentalStatusProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
 )
 
 @Serializable
@@ -519,6 +1377,166 @@ enum class ZibFunctionalOrMentalStatusProfile(val value: String) {
     @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus")
     HTTPNictizNlFhirStructureDefinitionZibFunctionalOrMentalStatus(
         "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus",
+    ),
+}
+
+@Serializable
+data class ZibLaboratoryTestResultObservation(
+    val basedOn: List<MgoReference>? = null,
+    val category: List<List<MgoCoding>>? = null,
+    val code: List<MgoCoding>? = null,
+    val comment: String? = null,
+    val effective: Effective? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val interpretation: List<MgoCoding>? = null,
+    val method: List<MgoCoding>? = null,
+    val profile: ZibLaboratoryTestResultObservationProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val referenceRange: List<ZibLaboratoryTestResultObservationReferenceRange>? = null,
+    val related: List<ZibLaboratoryTestResultObservationRelated>? = null,
+    val resourceType: String? = null,
+    val result: MgoDuration? = null,
+    val specimen: MgoReference? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+)
+
+@Serializable
+enum class ZibLaboratoryTestResultObservationProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation")
+    HTTPNictizNlFhirStructureDefinitionZibLaboratoryTestResultObservation(
+        "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation",
+    ),
+}
+
+@Serializable
+data class ZibLaboratoryTestResultObservationReferenceRange(
+    val high: MgoDuration? = null,
+    val low: MgoDuration? = null,
+)
+
+@Serializable
+data class ZibLaboratoryTestResultObservationRelated(
+    val target: MgoReference? = null,
+)
+
+@Serializable
+data class ZibLaboratoryTestResultSpecimen(
+    val collection: ZibLaboratoryTestResultSpecimenCollection,
+    val container: List<ZibLaboratoryTestResultSpecimenContainer>? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val note: List<MgoAnnotation>? = null,
+    val profile: ZibLaboratoryTestResultSpecimenProfile,
+    val receivedTime: String? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val subject: MgoReference? = null,
+    val type: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class ZibLaboratoryTestResultSpecimenCollection(
+    val bodySite: PurpleBodySite,
+    val collectedDateTime: String? = null,
+    val collectedPeriod: MgoPeriod? = null,
+    val method: List<MgoCoding>? = null,
+    val quantity: MgoDuration? = null,
+)
+
+@Serializable
+data class PurpleBodySite(
+    val laterality: List<MgoCoding>? = null,
+    val morphology: List<MgoCoding>? = null,
+    val value: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class ZibLaboratoryTestResultSpecimenContainer(
+    val identifier: List<MgoIdentifier>? = null,
+    val type: List<MgoCoding>? = null,
+)
+
+@Serializable
+enum class ZibLaboratoryTestResultSpecimenProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen")
+    HTTPNictizNlFhirStructureDefinitionZibLaboratoryTestResultSpecimen(
+        "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen",
+    ),
+}
+
+@Serializable
+data class ZibLaboratoryTestResultSpecimenIsolate(
+    val collection: ZibLaboratoryTestResultSpecimenIsolateCollection,
+    val container: List<ZibLaboratoryTestResultSpecimenIsolateContainer>? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val note: List<MgoAnnotation>? = null,
+    val profile: ZibLaboratoryTestResultSpecimenIsolateProfile,
+    val receivedTime: String? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val subject: MgoReference? = null,
+    val type: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class ZibLaboratoryTestResultSpecimenIsolateCollection(
+    val bodySite: FluffyBodySite,
+    val collectedDateTime: String? = null,
+    val collectedPeriod: MgoPeriod? = null,
+    val method: List<MgoCoding>? = null,
+    val quantity: MgoDuration? = null,
+)
+
+@Serializable
+data class FluffyBodySite(
+    val laterality: List<MgoCoding>? = null,
+    val morphology: List<MgoCoding>? = null,
+    val value: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class ZibLaboratoryTestResultSpecimenIsolateContainer(
+    val identifier: List<MgoIdentifier>? = null,
+    val type: List<MgoCoding>? = null,
+)
+
+@Serializable
+enum class ZibLaboratoryTestResultSpecimenIsolateProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate")
+    HTTPNictizNlFhirStructureDefinitionZibLaboratoryTestResultSpecimenIsolate(
+        "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate",
+    ),
+}
+
+@Serializable
+data class ZibLaboratoryTestResultSubstance(
+    val category: List<List<MgoCoding>>? = null,
+    val code: List<MgoCoding>? = null,
+    val description: String? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val profile: ZibLaboratoryTestResultSubstanceProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+)
+
+@Serializable
+enum class ZibLaboratoryTestResultSubstanceProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Substance")
+    HTTPNictizNlFhirStructureDefinitionZibLaboratoryTestResultSubstance(
+        "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Substance",
     ),
 }
 
@@ -531,14 +1549,17 @@ data class ZibLivingSituation(
     val dataAbsentReason: List<MgoCoding>? = null,
     val effectiveDateTime: String? = null,
     val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
     val profile: ZibLivingSituationProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
 )
 
 @Serializable
@@ -551,6 +1572,7 @@ enum class ZibLivingSituationProfile(val value: String) {
 data class ZibMedicalDevice(
     val bodySite: List<MgoCoding>? = null,
     val device: MgoReference? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val laterality: List<MgoCoding>? = null,
@@ -578,6 +1600,7 @@ enum class ZibMedicalDeviceProfile(val value: String) {
 @Serializable
 data class ZibMedicalDeviceProduct(
     val expirationDate: String? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val note: List<MgoAnnotation>? = null,
     val patient: MgoReference? = null,
@@ -594,11 +1617,35 @@ enum class ZibMedicalDeviceProductProfile(val value: String) {
 }
 
 @Serializable
+data class ZibMedicalDeviceRequest(
+    val codeCodeableConcept: List<MgoCoding>? = null,
+    val codeReference: MgoReference? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val intent: List<MgoCoding>? = null,
+    val occurrence: MgoPeriod? = null,
+    val perfomer: MgoReference? = null,
+    val profile: ZibMedicalDeviceRequestProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+)
+
+@Serializable
+enum class ZibMedicalDeviceRequestProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest")
+    HTTPNictizNlFhirStructureDefinitionZibMedicalDeviceRequest("http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest"),
+}
+
+@Serializable
 data class ZibMedicationAgreement(
     val basedOn: List<MgoReference>? = null,
     val category: List<MgoCoding>? = null,
     val definition: List<MgoReference>? = null,
     val dossageInstruction: List<ZibInstructionsForUse>? = null,
+    val fhirVersion: FhirVersionR3,
     val groupIdentifier: MgoIdentifier? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
@@ -611,11 +1658,11 @@ data class ZibMedicationAgreement(
     val profile: ZibMedicationAgreementProfile,
     @SerialName("referenceId")
     val referenceID: String,
-    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
+    val repeatPeriodCyclicalSchedule: MgoDuration? = null,
     val resourceType: String? = null,
     val status: String? = null,
     val stopType: List<MgoCoding>? = null,
-    val usageDuration: MgoQuantity? = null,
+    val usageDuration: MgoDuration? = null,
 )
 
 @Serializable
@@ -631,8 +1678,9 @@ data class ZibMedicationUse(
     val category: List<MgoCoding>? = null,
     val dateAsserted: String? = null,
     val dosage: List<ZibInstructionsForUse>? = null,
-    val effectiveDuration: MgoQuantity? = null,
+    val effectiveDuration: MgoDuration? = null,
     val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val informationSource: MgoReference? = null,
@@ -645,7 +1693,7 @@ data class ZibMedicationUse(
     val reasonForChangeOrDiscontinuationOfUse: List<MgoCoding>? = null,
     @SerialName("referenceId")
     val referenceID: String,
-    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
+    val repeatPeriodCyclicalSchedule: MgoDuration? = null,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
@@ -662,6 +1710,7 @@ enum class ZibMedicationUseProfile(val value: String) {
 data class ZibNutritionAdvice(
     val comment: String? = null,
     val dateTime: String? = null,
+    val fhirVersion: FhirVersionR3,
     val foodPreferenceModifier: List<List<MgoCoding>>? = null,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
@@ -684,6 +1733,7 @@ data class ZibPayer(
     val beneficiary: MgoReference? = null,
     val contract: List<MgoReference>? = null,
     val dependent: String? = null,
+    val fhirVersion: FhirVersionR3,
     val grouping: Grouping,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
@@ -739,6 +1789,7 @@ data class ZibProblem(
     val code: List<MgoCoding>? = null,
     val context: MgoReference? = null,
     val evidence: List<Evidence>? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val note: List<MgoAnnotation>? = null,
@@ -772,9 +1823,69 @@ data class Stage(
 )
 
 @Serializable
+data class ZibProcedure(
+    val bodySite: List<List<MgoCoding>>? = null,
+    val bodySiteQualifier: List<List<MgoCoding>>? = null,
+    val code: List<MgoCoding>? = null,
+    val fhirVersion: FhirVersionR3,
+    val focalDevice: List<FocalDevice>? = null,
+    val id: String? = null,
+    val location: MgoReference? = null,
+    val performedPeriod: MgoPeriod? = null,
+    val performer: List<Performer>? = null,
+    val procedureMethod: List<MgoCoding>? = null,
+    val profile: ZibProcedureProfile,
+    val reasonReference: List<MgoReference>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val subject: MgoReference? = null,
+)
+
+@Serializable
+data class FocalDevice(
+    val manipulated: MgoReference? = null,
+)
+
+@Serializable
+data class Performer(
+    val actor: MgoReference? = null,
+)
+
+@Serializable
+enum class ZibProcedureProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-Procedure")
+    HTTPNictizNlFhirStructureDefinitionZibProcedure("http://nictiz.nl/fhir/StructureDefinition/zib-Procedure"),
+}
+
+@Serializable
+data class ZibProcedureRequest(
+    val code: List<MgoCoding>? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val intent: String? = null,
+    val occurrence: MgoPeriod? = null,
+    val perfomer: MgoReference? = null,
+    val profile: ZibProcedureRequestProfile,
+    val reason: List<MgoReference>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val status: String? = null,
+    val subject: MgoReference? = null,
+)
+
+@Serializable
+enum class ZibProcedureRequestProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest")
+    HTTPNictizNlFhirStructureDefinitionZibProcedureRequest("http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest"),
+}
+
+@Serializable
 data class ZibProduct(
     val code: List<MgoCoding>? = null,
     val description: String? = null,
+    val fhirVersion: FhirVersionR3,
     val form: List<MgoCoding>? = null,
     val id: String? = null,
     val ingredient: List<ZibProductIngredient>? = null,
@@ -828,14 +1939,17 @@ data class ZibTobaccoUse(
     val context: MgoReference? = null,
     val dataAbsentReason: List<MgoCoding>? = null,
     val effectivePeriod: MgoPeriod? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val method: List<MgoCoding>? = null,
     val profile: ZibTobaccoUseProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val resourceType: String? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
+    val valueQuantity: MgoDuration? = null,
 )
 
 @Serializable
@@ -854,6 +1968,7 @@ data class ZibTreatmentDirective(
     val dataPeriod: MgoPeriod? = null,
     val dateTime: String? = null,
     val except: List<Except>? = null,
+    val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: MgoIdentifier? = null,
     val organization: List<MgoReference>? = null,
@@ -867,7 +1982,7 @@ data class ZibTreatmentDirective(
     val referenceID: String,
     val resourceType: String? = null,
     val securityLabel: List<MgoCoding>? = null,
-    val sourceAttachment: SourceAttachment,
+    val sourceAttachment: MgoAttachment,
     val sourceIdentifier: MgoIdentifier? = null,
     val sourceReference: MgoReference? = null,
     val status: String? = null,
@@ -926,13 +2041,56 @@ enum class ZibTreatmentDirectiveProfile(val value: String) {
 }
 
 @Serializable
-data class SourceAttachment(
-    val contentType: String? = null,
-    val creation: String? = null,
-    val data: String? = null,
-    val hash: String? = null,
-    val language: String? = null,
-    val size: Double? = null,
-    val title: String? = null,
-    val url: String? = null,
+data class ZibVaccination(
+    val dose: MgoDuration? = null,
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val note: List<MgoAnnotation>? = null,
+    val patient: MgoReference? = null,
+    val practitioner: List<Practitioner>? = null,
+    val profile: ZibVaccinationProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val vaccinationDate: String? = null,
+    val vaccineCode: List<MgoCoding>? = null,
+)
+
+@Serializable
+data class Practitioner(
+    val actor: MgoReference? = null,
+)
+
+@Serializable
+enum class ZibVaccinationProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination")
+    HTTPNictizNlFhirStructureDefinitionZibVaccination("http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination"),
+}
+
+@Serializable
+data class ZibVaccinationRecommendation(
+    val fhirVersion: FhirVersionR3,
+    val id: String? = null,
+    val orderStatus: List<MgoCoding>? = null,
+    val profile: ZibVaccinationRecommendationProfile,
+    val recommendation: List<Recommendation>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+)
+
+@Serializable
+enum class ZibVaccinationRecommendationProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation")
+    HTTPNictizNlFhirStructureDefinitionZibVaccinationRecommendation(
+        "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation",
+    ),
+}
+
+@Serializable
+data class Recommendation(
+    val code: List<MgoCoding>? = null,
+    val date: String? = null,
+    val dateCriterion: List<String>? = null,
 )

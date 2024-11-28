@@ -9,19 +9,19 @@ val TEST_UI_SCHEMA_MEDICATION =
                     label = "Algemeen",
                     children =
                         listOf(
-                            Value(
+                            UIEntry(
                                 label = "Gebruiksaanwijzing",
                                 display =
-                                    ChildDisplay.StringValue(
+                                    UIEntryDisplay.StringValue(
                                         "1 keer per dag 1 capsule een half uur voor het ontbijt heel " +
                                             "doorslikken, niet kauwen",
                                     ),
-                                type = "",
+                                type = UIEntryType.SingleValue,
                             ),
-                            Value(
+                            UIEntry(
                                 label = "Reden",
-                                display = ChildDisplay.StringValue("Boezemfibrilleren/-fladderen"),
-                                type = "",
+                                display = UIEntryDisplay.StringValue("Boezemfibrilleren/-fladderen"),
+                                type = UIEntryType.SingleValue,
                             ),
                         ),
                 ),
@@ -29,15 +29,15 @@ val TEST_UI_SCHEMA_MEDICATION =
                     label = "Periode van gebruik",
                     children =
                         listOf(
-                            Value(
+                            UIEntry(
                                 label = "Startdatum",
-                                display = ChildDisplay.StringValue("9 maart 2022"),
-                                type = "",
+                                display = UIEntryDisplay.StringValue("9 maart 2022"),
+                                type = UIEntryType.SingleValue,
                             ),
-                            Value(
+                            UIEntry(
                                 label = "Einddatum",
-                                display = ChildDisplay.StringValue("Niet bekend"),
-                                type = "",
+                                display = UIEntryDisplay.StringValue("Niet bekend"),
+                                type = UIEntryType.SingleValue,
                             ),
                         ),
                 ),

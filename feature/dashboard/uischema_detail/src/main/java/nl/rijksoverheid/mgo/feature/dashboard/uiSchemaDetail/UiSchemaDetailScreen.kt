@@ -22,12 +22,12 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
-import nl.rijksoverheid.mgo.data.uiSchema.ChildDisplay
 import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
+import nl.rijksoverheid.mgo.data.uiSchema.UIEntryDisplay
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
-import nl.rijksoverheid.mgo.data.uiSchema.Value
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
@@ -73,7 +73,7 @@ private fun UiSchemaSection(
 
 @Composable
 private fun UiSchemaLabelWithValue(
-    value: Value,
+    value: UIEntry,
     hasDivider: Boolean,
 ) {
     Column {
@@ -122,11 +122,11 @@ private fun String.getStringFromResourceWithFallback(): String {
 }
 
 @Composable
-private fun ChildDisplay?.getStringOrUnknown(): String {
+private fun UIEntryDisplay?.getStringOrUnknown(): String {
     if (this == null) return stringResource(id = R.string.common_unknown)
     return when (this) {
-        is ChildDisplay.StringValue -> this.value
-        is ChildDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
+        is UIEntryDisplay.StringValue -> this.value
+        is UIEntryDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
     }
 }
 

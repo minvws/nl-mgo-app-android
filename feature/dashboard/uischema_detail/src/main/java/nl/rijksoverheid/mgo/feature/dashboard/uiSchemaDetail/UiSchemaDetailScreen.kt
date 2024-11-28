@@ -3,10 +3,9 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,8 +62,8 @@ private fun UiSchemaSection(
         )
         MgoCard(modifier = Modifier.padding(top = 8.dp)) {
             Column {
-                group.children.forEachIndexed { index, childElement ->
-                    UiSchemaLabelWithValue(value = childElement, hasDivider = index != group.children.lastIndex)
+                group.children.forEachIndexed { index, entry ->
+                    UiSchemaLabelWithValue(entry = entry, hasDivider = index != group.children.lastIndex)
                 }
             }
         }
@@ -73,29 +72,26 @@ private fun UiSchemaSection(
 
 @Composable
 private fun UiSchemaLabelWithValue(
-    value: UIEntry,
+    entry: UIEntry,
     hasDivider: Boolean,
 ) {
     Column {
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            text = value.label.getStringFromResourceWithFallback(),
+            text = entry.label.getStringFromResourceWithFallback(),
             style = MaterialTheme.typography.bodySmallMini,
             color = MaterialTheme.colorScheme.contentTertiary(),
         )
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
-            text = value.display.getStringOrUnknown(),
+            text = entry.display.getStringOrUnknown(),
             style = MaterialTheme.typography.bodySmall,
         )
         if (hasDivider) {
-            Divider(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(0.33.dp)
-                        .padding(start = 16.dp),
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
                 color = MaterialTheme.colorScheme.strokesPrimary(),
+                thickness = 0.33.dp,
             )
         }
     }

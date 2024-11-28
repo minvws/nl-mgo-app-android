@@ -2,20 +2,27 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
@@ -25,9 +32,10 @@ import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntryDisplay
+import nl.rijksoverheid.mgo.data.uiSchema.UIEntryType
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
-import nl.rijksoverheid.mgo.framework.copy.R
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun UiSchemaDetailScreen(
@@ -63,9 +71,33 @@ private fun UiSchemaSection(
         MgoCard(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
             Column {
                 group.children.forEachIndexed { index, entry ->
-                    UiSchemaLabelWithValue(entry = entry, hasDivider = index != group.children.lastIndex)
+                    if (entry.type == UIEntryType.DownloadLink) {
+                        UiSchemaAttachment(entry)
+                    } else {
+                        UiSchemaLabelWithValue(entry = entry, hasDivider = index != group.children.lastIndex)
+                    }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun UiSchemaAttachment(
+    entry: UIEntry,
+    modifier: Modifier = Modifier,
+) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.actionTertiaryDefaultText()) {
+        Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                modifier = Modifier.weight(1f).padding(end = 8.dp),
+                text = entry.label.getStringFromResourceWithFallback(),
+                style = MaterialTheme.typography.bodySmall,
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_attachment),
+                contentDescription = null,
+            )
         }
     }
 }
@@ -119,7 +151,7 @@ private fun String.getStringFromResourceWithFallback(): String {
 
 @Composable
 private fun UIEntryDisplay?.getStringOrUnknown(): String {
-    if (this == null) return stringResource(id = R.string.common_unknown)
+    if (this == null) return stringResource(id = CopyR.string.common_unknown)
     return when (this) {
         is UIEntryDisplay.StringValue -> this.value
         is UIEntryDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
@@ -138,7 +170,7 @@ private fun DisplayElement.getString(): String {
 internal fun UiSchemaDetailScreenPreview() {
     MgoTheme {
         UiSchemaDetailScreen(
-            toolbarTitle = stringResource(id = R.string.hc_medication_heading_detail),
+            toolbarTitle = stringResource(id = CopyR.string.hc_medication_heading_detail),
             uiSchema = TEST_UI_SCHEMA_MEDICATION,
             onNavigateBack = {},
         )

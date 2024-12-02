@@ -96,6 +96,9 @@ internal class DefaultHealthCareBinaryRepository
         }
 
         override suspend fun cleanup() {
-            check(attachmentsDir.deleteRecursively()) { "Failed to clean up attachments" }
+            val files = attachmentsDir.listFiles() ?: return
+            for (file in files) {
+                check(file.exists()) { "Could not delete attachment" }
+            }
         }
     }

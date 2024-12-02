@@ -51,6 +51,12 @@ val TEST_UI_ENTRY =
         type = UIEntryType.SingleValue,
     )
 
+val TEST_UI_ENTRY_DOWNLOAD_LINK =
+    TEST_UI_ENTRY.copy(
+        url = "example.pdf",
+        type = UIEntryType.DownloadLink,
+    )
+
 val TEST_UI_SCHEMA_GROUP =
     UISchemaGroup(
         label = "UI Schema Group",

@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare.binary
 
+import kotlinx.coroutines.delay
+
 class TestHealthCareBinaryRepository : HealthCareBinaryRepository {
     private var downloadResult: Result<HealthCareBinary>? = null
     private var downloads: Int = 0
@@ -18,6 +20,7 @@ class TestHealthCareBinaryRepository : HealthCareBinaryRepository {
         fhirBinary: String,
     ): Result<HealthCareBinary> {
         val downloadResult = checkNotNull(downloadResult) { "You need to call setDownloadResult first" }
+        delay(100)
         downloads++
         return downloadResult
     }

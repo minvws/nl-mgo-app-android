@@ -28,7 +28,7 @@ internal class DefaultHealthCareBinaryRepository
                         cacheFileStore.saveFile(
                             name = binaryResponse.id,
                             contentType = binaryResponse.contentType,
-                            content = binaryResponse.content,
+                            base64Content = binaryResponse.content,
                         )
                     HealthCareBinary(
                         file = file,

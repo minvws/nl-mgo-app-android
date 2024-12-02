@@ -18,6 +18,7 @@ dependencies {
     testImplementation(testFixtures(projects.data.localisation))
     testImplementation(testFixtures(projects.data.uiSchema))
     testImplementation(testFixtures(projects.framework.test))
+    testImplementation(testFixtures(projects.framework.storage))
     testFixturesImplementation(projects.data.localisation)
     testFixturesImplementation(projects.data.uiSchema)
 }

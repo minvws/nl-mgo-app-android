@@ -15,18 +15,18 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 
 @HiltAndroidTest
-internal class EncryptedFileStoreTest {
+internal class DefaultEncryptedEncryptedFileStoreTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
-    private lateinit var fileStore: EncryptedFileStore
+    private lateinit var fileStore: DefaultEncryptedEncryptedFileStore
 
     @Before
     fun init() {
         hiltRule.inject()
         fileStore =
-            EncryptedFileStore(
+            DefaultEncryptedEncryptedFileStore(
                 context = context,
                 masterKeyAlias = "123",
             )

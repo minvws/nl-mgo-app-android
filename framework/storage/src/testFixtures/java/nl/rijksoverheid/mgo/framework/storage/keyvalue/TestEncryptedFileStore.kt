@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
-import nl.rijksoverheid.mgo.framework.storage.file.FileStore
+import nl.rijksoverheid.mgo.framework.storage.file.EncryptedFileStore
 import kotlin.reflect.KClass
 
-class TestFileStore : FileStore {
+class TestEncryptedFileStore : EncryptedFileStore {
     private val files = mutableMapOf<String, Any>()
 
     override suspend fun <O : Any> saveFile(

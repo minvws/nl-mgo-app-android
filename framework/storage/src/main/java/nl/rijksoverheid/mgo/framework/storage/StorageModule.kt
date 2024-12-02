@@ -10,8 +10,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
+import nl.rijksoverheid.mgo.framework.storage.file.DefaultCacheFileStore
+import nl.rijksoverheid.mgo.framework.storage.file.DefaultEncryptedEncryptedFileStore
 import nl.rijksoverheid.mgo.framework.storage.file.EncryptedFileStore
-import nl.rijksoverheid.mgo.framework.storage.file.FileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.DataStoreKeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.EncryptedSharedPreferencesSecureKeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
@@ -49,12 +51,22 @@ internal object StorageModule {
 
     @Provides
     @Singleton
-    fun provideFileStore(
+    fun provideEncryptedFileStore(
         @ApplicationContext context: Context,
-    ): FileStore {
-        return EncryptedFileStore(
+    ): EncryptedFileStore {
+        return DefaultEncryptedEncryptedFileStore(
             context = context,
             masterKeyAlias = masterKeyAlias,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCacheFileStore(
+        @ApplicationContext context: Context,
+    ): CacheFileStore {
+        return DefaultCacheFileStore(
+            context = context,
         )
     }
 }

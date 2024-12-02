@@ -67,21 +67,28 @@ internal class UiSchemaDetailScreenViewModel
                 healthCareBinaryRepository
                     .download(resourceEndpoint = resourceEndpoint, fhirBinary = entryUrl)
                     .onSuccess { binary ->
-                        updateAttachmentState(
-                            label = entry.label,
-                            updatedState =
-                                AttachmentState.Downloaded(
-                                    label = entry.label,
-                                    file = binary.file,
-                                    contentType = binary.contentType,
-                                ),
-                        )
+                        if (entry.url.isNullOrEmpty()) {
+                            updateAttachmentState(
+                                label = entry.label,
+                                updatedState = AttachmentState.Empty(entry.label),
+                            )
+                        } else {
+                            updateAttachmentState(
+                                label = entry.label,
+                                updatedState =
+                                    AttachmentState.Downloaded(
+                                        label = entry.label,
+                                        file = binary.file,
+                                        contentType = binary.contentType,
+                                    ),
+                            )
+                        }
                     }
                     .onFailure { error ->
                         Timber.e(error, "Could not download attachment")
                         updateAttachmentState(
                             label = entry.label,
-                            updatedState = AttachmentState.NotDownloaded(label = entry.label, url = entryUrl),
+                            updatedState = AttachmentState.Error(label = entry.label, error = error),
                         )
                     }
             }

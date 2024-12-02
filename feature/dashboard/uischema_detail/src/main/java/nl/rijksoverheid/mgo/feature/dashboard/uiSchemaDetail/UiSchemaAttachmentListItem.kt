@@ -3,8 +3,12 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,18 +21,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
+import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_ENTRY
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
 import java.io.File
+import java.lang.IllegalStateException
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -48,22 +57,35 @@ internal fun UiSchemaAttachmentListItem(
     }
     when (state) {
         is AttachmentState.NotDownloaded ->
-            UiSchemaAttachmentClickableListItem(
+            UiSchemaAttachmentNotDownloadedListItem(
                 modifier = modifier.clickable { onDownloadAttachment(entry) },
                 entry = entry,
             )
 
         is AttachmentState.Loading -> UiSchemaAttachmentLoadingListItem()
         is AttachmentState.Downloaded ->
-            UiSchemaAttachmentClickableListItem(
+            UiSchemaAttachmentNotDownloadedListItem(
                 modifier = modifier.clickable { context.shareAttachment(file = state.file, contentType = state.contentType) },
                 entry = entry,
+            )
+
+        is AttachmentState.Empty ->
+            UiSchemaAttachmentErrorListItem(
+                icon = R.drawable.ic_info,
+                iconTint = MaterialTheme.colorScheme.notificationInformation(),
+                heading = CopyR.string.hc_documents_no_document,
+            )
+        is AttachmentState.Error ->
+            UiSchemaAttachmentErrorListItem(
+                icon = R.drawable.ic_error,
+                iconTint = MaterialTheme.colorScheme.notificationError(),
+                heading = CopyR.string.hc_documents_error,
             )
     }
 }
 
 @Composable
-private fun UiSchemaAttachmentClickableListItem(
+private fun UiSchemaAttachmentNotDownloadedListItem(
     entry: UIEntry,
     modifier: Modifier = Modifier,
 ) {
@@ -117,6 +139,31 @@ private fun UiSchemaAttachmentLoadingListItem(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+private fun UiSchemaAttachmentErrorListItem(
+    @DrawableRes icon: Int,
+    iconTint: Color,
+    @StringRes heading: Int,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Icon(painter = painterResource(icon), tint = iconTint, contentDescription = null)
+        Text(
+            modifier = Modifier.padding(top = 8.dp),
+            text = stringResource(heading),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
+}
+
 private fun Context.shareAttachment(
     file: File,
     contentType: String,
@@ -141,11 +188,23 @@ private fun Context.shareAttachment(
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaAttachmentListItemClickablePreview() {
+internal fun UiSchemaAttachmentListItemNotDownloadedPreview() {
     MgoTheme {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
             state = AttachmentState.NotDownloaded(label = "file.pdf", url = "https://google.com"),
+            onDownloadAttachment = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaAttachmentListItemDownloadedPreview() {
+    MgoTheme {
+        UiSchemaAttachmentListItem(
+            entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
+            state = AttachmentState.Downloaded(label = "file.pdf", file = File(""), contentType = ""),
             onDownloadAttachment = {},
         )
     }
@@ -158,6 +217,30 @@ internal fun UiSchemaAttachmentListItemLoadingPreview() {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
             state = AttachmentState.Loading(label = "file.pdf"),
+            onDownloadAttachment = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaAttachmentListItemEmptyPreview() {
+    MgoTheme {
+        UiSchemaAttachmentListItem(
+            entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
+            state = AttachmentState.Empty(label = "file.pdf"),
+            onDownloadAttachment = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaAttachmentListItemErrorPreview() {
+    MgoTheme {
+        UiSchemaAttachmentListItem(
+            entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
+            state = AttachmentState.Error(label = "file.pdf", error = IllegalStateException("Some error")),
             onDownloadAttachment = {},
         )
     }

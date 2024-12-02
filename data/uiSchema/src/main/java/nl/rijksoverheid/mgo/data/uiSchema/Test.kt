@@ -46,7 +46,22 @@ val TEST_UI_SCHEMA_MEDICATION =
 
 val TEST_UI_ENTRY =
     UIEntry(
-        label = "Label",
+        label = "UI Entry Label",
         display = UIEntryDisplay.StringValue("Display"),
         type = UIEntryType.SingleValue,
+    )
+
+val TEST_UI_SCHEMA_GROUP =
+    UISchemaGroup(
+        label = "UI Schema Group",
+        children =
+            listOf(
+                TEST_UI_ENTRY,
+            ),
+    )
+
+val TEST_UI_SCHEMA =
+    UISchema(
+        label = "UI Schema Label",
+        children = listOf(TEST_UI_SCHEMA_GROUP),
     )

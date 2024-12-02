@@ -6,7 +6,7 @@ interface CacheFileStore {
     fun saveFile(
         name: String,
         contentType: String,
-        content: String,
+        base64Content: String,
     ): File
 
     fun deleteAll()

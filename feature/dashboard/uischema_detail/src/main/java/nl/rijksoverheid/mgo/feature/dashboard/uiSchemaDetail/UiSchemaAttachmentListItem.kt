@@ -34,6 +34,7 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
+import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinary
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_ENTRY
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
 import java.io.File
@@ -52,7 +53,7 @@ internal fun UiSchemaAttachmentListItem(
     // When file is downloaded launch share intent without user interaction
     LaunchedEffect(state) {
         if (state is AttachmentState.Downloaded) {
-            context.shareAttachment(file = state.file, contentType = state.contentType)
+            context.shareAttachment(file = state.binary.file, contentType = state.binary.contentType)
         }
     }
     when (state) {
@@ -65,7 +66,7 @@ internal fun UiSchemaAttachmentListItem(
         is AttachmentState.Loading -> UiSchemaAttachmentLoadingListItem()
         is AttachmentState.Downloaded ->
             UiSchemaAttachmentNotDownloadedListItem(
-                modifier = modifier.clickable { context.shareAttachment(file = state.file, contentType = state.contentType) },
+                modifier = modifier.clickable { context.shareAttachment(file = state.binary.file, contentType = state.binary.contentType) },
                 entry = entry,
             )
 
@@ -192,7 +193,7 @@ internal fun UiSchemaAttachmentListItemNotDownloadedPreview() {
     MgoTheme {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
-            state = AttachmentState.NotDownloaded(label = "file.pdf", url = "https://google.com"),
+            state = AttachmentState.NotDownloaded,
             onDownloadAttachment = {},
         )
     }
@@ -204,7 +205,7 @@ internal fun UiSchemaAttachmentListItemDownloadedPreview() {
     MgoTheme {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
-            state = AttachmentState.Downloaded(label = "file.pdf", file = File(""), contentType = ""),
+            state = AttachmentState.Downloaded(binary = HealthCareBinary(file = File(""), contentType = "")),
             onDownloadAttachment = {},
         )
     }
@@ -216,7 +217,7 @@ internal fun UiSchemaAttachmentListItemLoadingPreview() {
     MgoTheme {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
-            state = AttachmentState.Loading(label = "file.pdf"),
+            state = AttachmentState.Loading,
             onDownloadAttachment = {},
         )
     }
@@ -228,7 +229,7 @@ internal fun UiSchemaAttachmentListItemEmptyPreview() {
     MgoTheme {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
-            state = AttachmentState.Empty(label = "file.pdf"),
+            state = AttachmentState.Empty,
             onDownloadAttachment = {},
         )
     }
@@ -240,7 +241,7 @@ internal fun UiSchemaAttachmentListItemErrorPreview() {
     MgoTheme {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
-            state = AttachmentState.Error(label = "file.pdf", error = IllegalStateException("Some error")),
+            state = AttachmentState.Error(IllegalStateException("Some error")),
             onDownloadAttachment = {},
         )
     }

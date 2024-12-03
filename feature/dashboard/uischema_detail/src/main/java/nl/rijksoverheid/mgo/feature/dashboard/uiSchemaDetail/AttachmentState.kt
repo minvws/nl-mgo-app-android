@@ -1,15 +1,15 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
-import java.io.File
+import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinary
 
-internal sealed class AttachmentState(open val label: String) {
-    data class NotDownloaded(override val label: String, val url: String) : AttachmentState(label)
+internal sealed class AttachmentState {
+    data object NotDownloaded : AttachmentState()
 
-    data class Loading(override val label: String) : AttachmentState(label)
+    data object Loading : AttachmentState()
 
-    data class Empty(override val label: String) : AttachmentState(label)
+    data object Empty : AttachmentState()
 
-    data class Error(override val label: String, val error: Throwable) : AttachmentState(label)
+    data class Error(val error: Throwable) : AttachmentState()
 
-    data class Downloaded(override val label: String, val file: File, val contentType: String) : AttachmentState(label)
+    data class Downloaded(val binary: HealthCareBinary) : AttachmentState()
 }

@@ -63,4 +63,26 @@ internal class DefaultHealthCareBinaryRepositoryTest {
             // Then: Correct binary is returned
             assertEquals(Result.failure<HealthCareBinary>(error), healthCareBinary)
         }
+
+    @Test
+    fun testCleanup() =
+        runTest {
+            // Given: binary download success
+            coEvery { dvaApi.binary(resourceEndpoint = "", fhirBinary = "") } answers {
+                BinaryResponse(
+                    id = "example.pdf",
+                    contentType = "application/pdf",
+                    content = "SGVsbG8gV29ybGQ=",
+                )
+            }
+
+            // Given: File is downloaded
+            repository.download(resourceEndpoint = "", fhirBinary = "")
+
+            // When: Calling cleanup
+            repository.cleanup()
+
+            // Then: Attachment is removed
+            assertTrue(cacheFileStore.assertNoFilesSaved())
+        }
 }

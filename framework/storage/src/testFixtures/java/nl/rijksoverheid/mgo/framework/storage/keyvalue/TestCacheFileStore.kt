@@ -10,6 +10,10 @@ class TestCacheFileStore : CacheFileStore {
         return savedFiles > 0
     }
 
+    fun assertNoFilesSaved(): Boolean {
+        return savedFiles == 0
+    }
+
     override fun saveFile(
         name: String,
         contentType: String,

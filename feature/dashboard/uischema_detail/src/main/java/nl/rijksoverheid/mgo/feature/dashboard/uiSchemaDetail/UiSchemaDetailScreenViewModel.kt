@@ -34,19 +34,18 @@ internal class UiSchemaDetailScreenViewModel
             ): UiSchemaDetailScreenViewModel
         }
 
-        private val _attachmentStates = MutableStateFlow<List<AttachmentState>>(listOf())
-        val attachmentStates = _attachmentStates.asStateFlow()
+        private val _attachmentsState = MutableStateFlow<Map<UIEntry, AttachmentState>>(mapOf())
+        val attachmentsState = _attachmentsState.asStateFlow()
 
         init {
             // Set initial attachment states
-            _attachmentStates.value =
+            _attachmentsState.value =
                 uiSchema.children
                     .map { group -> group.children }
                     .flatten()
                     .filter { entry -> entry.type == UIEntryType.DownloadLink }
-                    .mapNotNull { entry ->
-                        val entryUrl = entry.url ?: return@mapNotNull null
-                        AttachmentState.NotDownloaded(label = entry.label, url = entryUrl)
+                    .associateWith {
+                        AttachmentState.NotDownloaded
                     }
         }
 
@@ -61,7 +60,7 @@ internal class UiSchemaDetailScreenViewModel
                 val entryUrl = entry.url ?: return@launch
 
                 // Set loading state
-                updateAttachmentState(label = entry.label, updatedState = AttachmentState.Loading(label = entry.label))
+                updateAttachmentState(uiEntry = entry, state = AttachmentState.Loading)
 
                 // Download attachment
                 healthCareBinaryRepository
@@ -69,43 +68,32 @@ internal class UiSchemaDetailScreenViewModel
                     .onSuccess { binary ->
                         if (entry.url.isNullOrEmpty()) {
                             updateAttachmentState(
-                                label = entry.label,
-                                updatedState = AttachmentState.Empty(entry.label),
+                                uiEntry = entry,
+                                state = AttachmentState.Empty,
                             )
                         } else {
                             updateAttachmentState(
-                                label = entry.label,
-                                updatedState =
-                                    AttachmentState.Downloaded(
-                                        label = entry.label,
-                                        file = binary.file,
-                                        contentType = binary.contentType,
-                                    ),
+                                uiEntry = entry,
+                                state = AttachmentState.Downloaded(binary),
                             )
                         }
                     }
                     .onFailure { error ->
                         Timber.e(error, "Could not download attachment")
                         updateAttachmentState(
-                            label = entry.label,
-                            updatedState = AttachmentState.Error(label = entry.label, error = error),
+                            uiEntry = entry,
+                            state = AttachmentState.Error(error),
                         )
                     }
             }
         }
 
         private fun updateAttachmentState(
-            label: String,
-            updatedState: AttachmentState,
+            uiEntry: UIEntry,
+            state: AttachmentState,
         ) {
-            _attachmentStates.update { states ->
-                states.map { state ->
-                    if (state.label == label) {
-                        updatedState
-                    } else {
-                        state
-                    }
-                }
+            _attachmentsState.update { states ->
+                states.toMutableMap().also { it.put(uiEntry, state) }
             }
         }
     }

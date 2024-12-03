@@ -18,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import java.io.File
 import java.lang.IllegalStateException
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 
 internal class UiSchemaDetailScreenViewModelTest {
@@ -69,19 +70,15 @@ internal class UiSchemaDetailScreenViewModelTest {
 
     private suspend fun UiSchemaDetailScreenViewModel.downloadAndAssert(
         uiEntry: UIEntry,
-        expectedList: List<AttachmentState>,
+        expectedStates: List<AttachmentState>,
     ) {
-        attachmentStates.test {
+        attachmentsState.map { it[uiEntry] }.test {
             // When: Calling onDownloadAttachment
             onDownloadAttachment(uiEntry)
 
-            // Then: sequentially: not downloaded, loading and downloaded states are emitted
-            if (expectedList.isEmpty()) {
-                assertEquals(awaitItem(), listOf<AttachmentState>())
-            } else {
-                for (expected in expectedList) {
-                    assertEquals(awaitItem(), listOf(expected))
-                }
+            // Then: Expect emitted states
+            for (expectedState in expectedStates) {
+                assertEquals(expectedState, awaitItem())
             }
         }
     }
@@ -107,11 +104,11 @@ internal class UiSchemaDetailScreenViewModelTest {
             // Then: Assert attachment states
             viewModel.downloadAndAssert(
                 uiEntry = uiEntry,
-                expectedList =
+                expectedStates =
                     listOf(
-                        AttachmentState.NotDownloaded(label = "UI Entry Label", url = "example.pdf"),
-                        AttachmentState.Loading(label = "UI Entry Label"),
-                        AttachmentState.Downloaded(label = "UI Entry Label", file = File(""), contentType = ""),
+                        AttachmentState.NotDownloaded,
+                        AttachmentState.Loading,
+                        AttachmentState.Downloaded(binary = HealthCareBinary(file = File(""), contentType = "")),
                     ),
             )
         }
@@ -132,9 +129,9 @@ internal class UiSchemaDetailScreenViewModelTest {
             // Then: Assert attachment states
             viewModel.downloadAndAssert(
                 uiEntry = uiEntry,
-                expectedList =
+                expectedStates =
                     listOf(
-                        AttachmentState.NotDownloaded(label = "UI Entry Label", url = "example.pdf"),
+                        AttachmentState.NotDownloaded,
                     ),
             )
         }
@@ -155,11 +152,11 @@ internal class UiSchemaDetailScreenViewModelTest {
             // Then: Assert attachment states
             viewModel.downloadAndAssert(
                 uiEntry = uiEntry,
-                expectedList =
+                expectedStates =
                     listOf(
-                        AttachmentState.NotDownloaded(label = "UI Entry Label", url = ""),
-                        AttachmentState.Loading(label = "UI Entry Label"),
-                        AttachmentState.Empty(label = "UI Entry Label"),
+                        AttachmentState.NotDownloaded,
+                        AttachmentState.Loading,
+                        AttachmentState.Empty,
                     ),
             )
         }
@@ -180,7 +177,10 @@ internal class UiSchemaDetailScreenViewModelTest {
             // Then: Assert attachment states
             viewModel.downloadAndAssert(
                 uiEntry = uiEntry,
-                expectedList = listOf(),
+                expectedStates =
+                    listOf(
+                        AttachmentState.NotDownloaded,
+                    ),
             )
         }
 
@@ -201,11 +201,11 @@ internal class UiSchemaDetailScreenViewModelTest {
             // Then: Assert attachment states
             viewModel.downloadAndAssert(
                 uiEntry = uiEntry,
-                expectedList =
+                expectedStates =
                     listOf(
-                        AttachmentState.NotDownloaded(label = "UI Entry Label", url = "example.pdf"),
-                        AttachmentState.Loading(label = "UI Entry Label"),
-                        AttachmentState.Error(label = "UI Entry Label", error = error),
+                        AttachmentState.NotDownloaded,
+                        AttachmentState.Loading,
+                        AttachmentState.Error(error),
                     ),
             )
         }

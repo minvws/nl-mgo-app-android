@@ -45,11 +45,11 @@ fun UiSchemaDetailScreen(
         hiltViewModel<UiSchemaDetailScreenViewModel, UiSchemaDetailScreenViewModel.Factory>(
             creationCallback = { factory -> factory.create(organization = organization, uiSchema = uiSchema) },
         )
-    val attachmentStates by viewModel.attachmentStates.collectAsStateWithLifecycle()
+    val attachmentsState by viewModel.attachmentsState.collectAsStateWithLifecycle()
     UiSchemaDetailScreenContent(
         toolbarTitle = toolbarTitle,
         uiSchema = uiSchema,
-        attachmentStates = attachmentStates,
+        attachmentsState = attachmentsState,
         onDownloadAttachment = { entry ->
             viewModel.onDownloadAttachment(entry)
         },
@@ -61,7 +61,7 @@ fun UiSchemaDetailScreen(
 private fun UiSchemaDetailScreenContent(
     toolbarTitle: String,
     uiSchema: UISchema,
-    attachmentStates: List<AttachmentState>,
+    attachmentsState: Map<UIEntry, AttachmentState>,
     onDownloadAttachment: (entry: UIEntry) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -75,7 +75,7 @@ private fun UiSchemaDetailScreenContent(
                     UiSchemaSection(
                         modifier = Modifier.padding(bottom = 24.dp),
                         group = uiSchemaGroup,
-                        attachmentStates = attachmentStates,
+                        attachmentsState = attachmentsState,
                         onDownloadAttachment = onDownloadAttachment,
                     )
                 }
@@ -87,7 +87,7 @@ private fun UiSchemaDetailScreenContent(
 @Composable
 private fun UiSchemaSection(
     group: UISchemaGroup,
-    attachmentStates: List<AttachmentState>,
+    attachmentsState: Map<UIEntry, AttachmentState>,
     onDownloadAttachment: (entry: UIEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -107,7 +107,7 @@ private fun UiSchemaSection(
                 group.children.forEachIndexed { index, entry ->
                     when (entry.type) {
                         UIEntryType.DownloadLink -> {
-                            val attachmentState = attachmentStates.firstOrNull { state -> state.label == entry.label }
+                            val attachmentState = attachmentsState[entry]
                             if (attachmentState != null) {
                                 UiSchemaAttachmentListItem(
                                     entry = entry,
@@ -200,7 +200,7 @@ internal fun UiSchemaDetailScreenPreview() {
         UiSchemaDetailScreenContent(
             toolbarTitle = stringResource(id = CopyR.string.hc_medication_heading_detail),
             uiSchema = TEST_UI_SCHEMA_MEDICATION,
-            attachmentStates = listOf(),
+            attachmentsState = mapOf(),
             onDownloadAttachment = {},
             onNavigateBack = {},
         )

@@ -7,6 +7,7 @@ typealias DataServiceId = String
 
 const val DATA_SERVICE_BGZ: DataServiceId = "48"
 const val DATA_SERVICE_GP: DataServiceId = "49"
+const val DATA_SERVICE_DOCUMENTS: DataServiceId = "51"
 
 @Serializable
 class SearchResponse(

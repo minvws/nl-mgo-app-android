@@ -7,7 +7,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestFileStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestEncryptedFileStore
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
@@ -23,7 +23,7 @@ internal class DefaultOrganizationRepositoryTest {
     val testServerRule = TestServerRule()
 
     private val testServer = testServerRule.testServer
-    private val fileStore = TestFileStore()
+    private val fileStore = TestEncryptedFileStore()
 
     @Test
     fun `Given loadApi request is successful, When calling search, Then emit health providers`() =
@@ -51,7 +51,7 @@ internal class DefaultOrganizationRepositoryTest {
                             listOf(
                                 MgoOrganizationDataService(
                                     resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/51",
-                                    type = MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
+                                    type = MgoOrganizationDataServiceType.DOCUMENTS,
                                 ),
                                 MgoOrganizationDataService(
                                     resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/49",
@@ -196,6 +196,6 @@ internal class DefaultOrganizationRepositoryTest {
     private fun getRepository(): DefaultOrganizationRepository {
         val okHttpClient = TEST_OKHTTP_CLIENT
         val loadApi = createLoadApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-        return DefaultOrganizationRepository(loadApi = loadApi, fileStore = fileStore)
+        return DefaultOrganizationRepository(loadApi = loadApi, encryptedFileStore = fileStore)
     }
 }

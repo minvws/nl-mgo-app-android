@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import nl.rijksoverheid.mgo.data.healthcare.ObserveHealthCareDataStates
+import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
@@ -23,6 +24,9 @@ class MainApplication : Application() {
     @Inject
     lateinit var featureToggleLocalDataSource: FeatureToggleLocalDataSource
 
+    @Inject
+    lateinit var healthCareBinaryRepository: HealthCareBinaryRepository
+
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate() {
@@ -30,8 +34,15 @@ class MainApplication : Application() {
         if (BuildConfig.DEBUG) {
             plant(Timber.DebugTree())
         }
+
+        // Initialize feature toggles
         runBlocking { featureToggleLocalDataSource.init() }
+
         coroutineScope.launch {
+            // Check if we need to clean up cached attachments
+            launch { healthCareBinaryRepository.cleanup() }
+
+            // Start the observer for health care data states
             launch { observeHealthCareDataStates.invoke().collect() }
         }
     }

@@ -8,4 +8,7 @@ android {
 
 dependencies {
     implementation(projects.data.uiSchema)
+    implementation(projects.data.healthcare)
+    implementation(projects.data.localisation)
+    testImplementation(testFixtures(projects.data.healthcare))
 }

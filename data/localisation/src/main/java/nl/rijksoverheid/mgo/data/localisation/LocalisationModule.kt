@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.api.load.LoadApi
-import nl.rijksoverheid.mgo.framework.storage.file.FileStore
+import nl.rijksoverheid.mgo.framework.storage.file.EncryptedFileStore
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -15,8 +15,8 @@ internal object LocalisationModule {
     @Singleton
     fun provideSearchRepository(
         loadApi: LoadApi,
-        fileStore: FileStore,
+        encryptedFileStore: EncryptedFileStore,
     ): OrganizationRepository {
-        return DefaultOrganizationRepository(loadApi = loadApi, fileStore = fileStore)
+        return DefaultOrganizationRepository(loadApi = loadApi, encryptedFileStore = encryptedFileStore)
     }
 }

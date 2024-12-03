@@ -60,10 +60,11 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
             HealthCategoryScreen(
                 category = route.category,
                 filterOrganization = route.filterOrganization,
-                onClickUiSchema = { toolbarTitle, uiSchema ->
+                onClickUiSchema = { toolbarTitle, organization, uiSchema ->
                     navController.navigate(
                         DashboardNavigation.Organizations.UISchemaDetail(
                             toolbarTitle = toolbarTitle,
+                            organization = organization,
                             uiSchema = uiSchema,
                         ),
                     )
@@ -78,6 +79,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
             val route = backStackEntry.toRoute<DashboardNavigation.Organizations.UISchemaDetail>()
             UiSchemaDetailScreen(
                 toolbarTitle = route.toolbarTitle,
+                organization = route.organization,
                 uiSchema = route.uiSchema,
                 onNavigateBack = {
                     navController.popBackStack()

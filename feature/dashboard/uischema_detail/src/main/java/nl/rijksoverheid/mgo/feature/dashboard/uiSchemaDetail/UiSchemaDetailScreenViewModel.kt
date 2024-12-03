@@ -1,0 +1,99 @@
+package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
+import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
+import nl.rijksoverheid.mgo.data.uiSchema.UIEntryType
+import nl.rijksoverheid.mgo.data.uiSchema.UISchema
+import timber.log.Timber
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+@HiltViewModel(assistedFactory = UiSchemaDetailScreenViewModel.Factory::class)
+internal class UiSchemaDetailScreenViewModel
+    @AssistedInject
+    constructor(
+        @Assisted private val organization: MgoOrganization,
+        @Assisted private val uiSchema: UISchema,
+        private val healthCareBinaryRepository: HealthCareBinaryRepository,
+    ) : ViewModel() {
+        @AssistedFactory
+        interface Factory {
+            fun create(
+                organization: MgoOrganization,
+                uiSchema: UISchema,
+            ): UiSchemaDetailScreenViewModel
+        }
+
+        private val _attachmentsState = MutableStateFlow<Map<UIEntry, AttachmentState>>(mapOf())
+        val attachmentsState = _attachmentsState.asStateFlow()
+
+        init {
+            // Set initial attachment states
+            _attachmentsState.value =
+                uiSchema.children
+                    .map { group -> group.children }
+                    .flatten()
+                    .filter { entry -> entry.type == UIEntryType.DownloadLink }
+                    .associateWith {
+                        AttachmentState.NotDownloaded
+                    }
+        }
+
+        fun onDownloadAttachment(entry: UIEntry) {
+            viewModelScope.launch {
+                val resourceEndpoint =
+                    organization.dataServices.firstOrNull { service ->
+                        service.type ==
+                            MgoOrganizationDataServiceType
+                                .DOCUMENTS
+                    }?.resourceEndpoint ?: return@launch
+                val entryUrl = entry.url ?: return@launch
+
+                // Set loading state
+                updateAttachmentState(uiEntry = entry, state = AttachmentState.Loading)
+
+                // Download attachment
+                healthCareBinaryRepository
+                    .download(resourceEndpoint = resourceEndpoint, fhirBinary = entryUrl)
+                    .onSuccess { binary ->
+                        if (entry.url.isNullOrEmpty()) {
+                            updateAttachmentState(
+                                uiEntry = entry,
+                                state = AttachmentState.Empty,
+                            )
+                        } else {
+                            updateAttachmentState(
+                                uiEntry = entry,
+                                state = AttachmentState.Downloaded(binary),
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        Timber.e(error, "Could not download attachment")
+                        updateAttachmentState(
+                            uiEntry = entry,
+                            state = AttachmentState.Error(error),
+                        )
+                    }
+            }
+        }
+
+        private fun updateAttachmentState(
+            uiEntry: UIEntry,
+            state: AttachmentState,
+        ) {
+            _attachmentsState.update { states ->
+                states.toMutableMap().also { it.put(uiEntry, state) }
+            }
+        }
+    }

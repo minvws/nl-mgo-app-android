@@ -15,27 +15,27 @@ import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 
-object ChildDisplaySerializer : KSerializer<ChildDisplay> {
+object UIEntryDisplaySerializer : KSerializer<UIEntryDisplay> {
     override val descriptor: SerialDescriptor
         get() = PrimitiveSerialDescriptor("ChildDisplay", PrimitiveKind.STRING)
 
-    override fun deserialize(decoder: Decoder): ChildDisplay {
+    override fun deserialize(decoder: Decoder): UIEntryDisplay {
         val input = decoder as? JsonDecoder ?: error("This serializer only works with JSON format")
         return when (val element = input.decodeJsonElement()) {
-            is JsonPrimitive -> ChildDisplay.StringValue(element.content) // If it's a single string
-            is JsonArray -> ChildDisplay.UnionArrayValue(element.map { it.jsonPrimitive.content }.map { DisplayElement.StringValue(it) })
+            is JsonPrimitive -> UIEntryDisplay.StringValue(element.content) // If it's a single string
+            is JsonArray -> UIEntryDisplay.UnionArrayValue(element.map { it.jsonPrimitive.content }.map { DisplayElement.StringValue(it) })
             else -> throw SerializationException("Unexpected JSON element type: ${element::class}")
         }
     }
 
     override fun serialize(
         encoder: Encoder,
-        value: ChildDisplay,
+        value: UIEntryDisplay,
     ) {
         val output = encoder as? JsonEncoder ?: error("This serializer only works with JSON format")
         when (value) {
-            is ChildDisplay.StringValue -> output.encodeString(value.value)
-            is ChildDisplay.UnionArrayValue -> {
+            is UIEntryDisplay.StringValue -> output.encodeString(value.value)
+            is UIEntryDisplay.UnionArrayValue -> {
                 val elements = value.value.filterIsInstance<DisplayElement.StringValue>().map { it.value }
                 output.encodeSerializableValue(ListSerializer(String.serializer()), elements)
             }

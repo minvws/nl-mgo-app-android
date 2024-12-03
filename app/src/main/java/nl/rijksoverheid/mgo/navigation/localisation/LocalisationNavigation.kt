@@ -11,4 +11,7 @@ sealed class LocalisationNavigation {
 
     @Serializable
     data class OrganizationList(val name: String, val city: String) : LocalisationNavigation()
+
+    @Serializable
+    data object OrganizationListAutomatic : LocalisationNavigation()
 }

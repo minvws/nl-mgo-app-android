@@ -7,11 +7,17 @@ import androidx.navigation.toRoute
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreen
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
 import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.OrganizationSearchScreen
+import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.automatic.OrganizationAutomaticSearchScreen
 import nl.rijksoverheid.mgo.navigation.getViewModel
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
-fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
-    navigation<LocalisationNavigation.Root>(LocalisationNavigation.AddOrganization) {
+fun NavGraphBuilder.addLocalisationNavGraph(
+    navController: NavController,
+    automaticLocalisationEnabled: Boolean,
+) {
+    val startNavigation =
+        if (automaticLocalisationEnabled) LocalisationNavigation.OrganizationListAutomatic else LocalisationNavigation.AddOrganization
+    navigation<LocalisationNavigation.Root>(startNavigation) {
         mgoComposable<LocalisationNavigation.AddOrganization> {
             AddOrganizationScreen(
                 onNavigateBack = { navController.popBackStack() },
@@ -36,6 +42,18 @@ fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
                     addOrganizationScreenViewModel?.setCity("")
                     navController.popBackStack(route = LocalisationNavigation.AddOrganization, inclusive = false)
                 },
+                onNavigateToDashboard = {
+                    navController.popBackStack(
+                        route = LocalisationNavigation.AddOrganization,
+                        inclusive = true,
+                    )
+                },
+            )
+        }
+
+        mgoComposable<LocalisationNavigation.OrganizationListAutomatic> {
+            OrganizationAutomaticSearchScreen(
+                onNavigateBack = { navController.popBackStack() },
                 onNavigateToDashboard = {
                     navController.popBackStack(
                         route = LocalisationNavigation.AddOrganization,

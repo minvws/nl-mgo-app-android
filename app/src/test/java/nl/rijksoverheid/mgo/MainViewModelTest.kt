@@ -8,6 +8,8 @@ import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.lock.TestAppLocked
 import nl.rijksoverheid.mgo.lock.TestSaveClosedAppTimestamp
@@ -26,12 +28,15 @@ internal class MainViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val featureToggleRepository = mockk<FeatureToggleRepository>()
+    private val keyValueStore = TestKeyValueStore()
 
     @Before
-    fun setup() {
-        every { featureToggleRepository.observe(FeatureToggleId.FlagSecure) } answers { flow { emit(false) } }
-        every { featureToggleRepository.get(FeatureToggleId.SkipPin) } answers { false }
-    }
+    fun setup() =
+        runTest {
+            keyValueStore.setBoolean(KEY_AUTOMATIC_LOCALISATION, false)
+            every { featureToggleRepository.observe(FeatureToggleId.FlagSecure) } answers { flow { emit(false) } }
+            every { featureToggleRepository.get(FeatureToggleId.SkipPin) } answers { false }
+        }
 
     @Test
     fun `Given has pin code, When calling getStartDestination, Then return correct navigation`() {
@@ -47,6 +52,7 @@ internal class MainViewModelTest {
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
                 featureToggleRepository = featureToggleRepository,
+                keyValueStore = keyValueStore,
             )
 
         // When
@@ -70,6 +76,7 @@ internal class MainViewModelTest {
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
                 featureToggleRepository = featureToggleRepository,
+                keyValueStore = keyValueStore,
             )
 
         // When
@@ -93,6 +100,7 @@ internal class MainViewModelTest {
                 saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                 appLocked = TestAppLocked(false),
                 featureToggleRepository = featureToggleRepository,
+                keyValueStore = keyValueStore,
             )
 
         // When
@@ -116,6 +124,7 @@ internal class MainViewModelTest {
                     saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                     appLocked = TestAppLocked(true),
                     featureToggleRepository = featureToggleRepository,
+                    keyValueStore = keyValueStore,
                 )
 
             viewModel.navigateDialog.test {
@@ -141,6 +150,7 @@ internal class MainViewModelTest {
                     saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
                     appLocked = TestAppLocked(false),
                     featureToggleRepository = featureToggleRepository,
+                    keyValueStore = keyValueStore,
                 )
 
             viewModel.navigateDialog.test {
@@ -167,6 +177,7 @@ internal class MainViewModelTest {
                     saveClosedAppTimestamp = saveClosedAppTimestamp,
                     appLocked = TestAppLocked(true),
                     featureToggleRepository = featureToggleRepository,
+                    keyValueStore = keyValueStore,
                 )
 
             // When

@@ -46,7 +46,7 @@ class MainActivity : FragmentActivity() {
                 CheckFlagSecure(viewModel = viewModel)
 
                 CompositionLocalProvider(LocalSnackbarPresenter provides DefaultLocalSnackbarPresenter()) {
-                    RootNavigation(navController = navController, startDestination = startDestination)
+                    RootNavigation(navController = navController, startDestination = startDestination, viewModel = viewModel)
                 }
 
                 CheckAppLock(viewModel = viewModel)
@@ -78,6 +78,7 @@ class MainActivity : FragmentActivity() {
     private fun RootNavigation(
         navController: NavHostController,
         startDestination: Any,
+        viewModel: MainViewModel,
     ) {
         NavHost(
             navController = navController,
@@ -89,7 +90,10 @@ class MainActivity : FragmentActivity() {
             addPinCodeCreateNavGraph(navController = navController)
             addPinCodeLoginNavGraph(navController = navController, activity = this@MainActivity)
             addDashboardNavGraph(rootNavController = navController)
-            addLocalisationNavGraph(navController = navController)
+            addLocalisationNavGraph(
+                navController = navController,
+                automaticLocalisationEnabled = viewModel.getAutomaticLocalisationEnabled(),
+            )
         }
     }
 

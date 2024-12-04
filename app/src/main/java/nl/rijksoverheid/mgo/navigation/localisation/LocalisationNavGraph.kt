@@ -6,8 +6,8 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreen
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
-import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.OrganizationSearchScreen
-import nl.rijksoverheid.mgo.feature.localisation.organizationSearch.automatic.OrganizationAutomaticSearchScreen
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreen
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationListManualScreen
 import nl.rijksoverheid.mgo.navigation.getViewModel
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
@@ -22,18 +22,18 @@ fun NavGraphBuilder.addLocalisationNavGraph(
             AddOrganizationScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToOrganizationSearch = { name, city ->
-                    navController.navigate(LocalisationNavigation.OrganizationList(name = name, city = city))
+                    navController.navigate(LocalisationNavigation.OrganisationListManual(name = name, city = city))
                 },
             )
         }
 
-        mgoComposable<LocalisationNavigation.OrganizationList> { backStackEntry ->
-            val route = backStackEntry.toRoute<LocalisationNavigation.OrganizationList>()
+        mgoComposable<LocalisationNavigation.OrganisationListManual> { backStackEntry ->
+            val route = backStackEntry.toRoute<LocalisationNavigation.OrganisationListManual>()
             val addOrganizationScreenViewModel =
                 navController.getViewModel<AddOrganizationScreenViewModel>(
                     route = LocalisationNavigation.AddOrganization,
                 )
-            OrganizationSearchScreen(
+            OrganizationListManualScreen(
                 name = route.name,
                 city = route.city,
                 onNavigateBack = { navController.popBackStack() },
@@ -52,7 +52,7 @@ fun NavGraphBuilder.addLocalisationNavGraph(
         }
 
         mgoComposable<LocalisationNavigation.OrganizationListAutomatic> {
-            OrganizationAutomaticSearchScreen(
+            OrganizationListAutomaticSearchScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToDashboard = {
                     navController.popBackStack(

@@ -11,6 +11,8 @@ interface OrganizationRepository {
         city: String,
     ): Flow<List<MgoOrganization>>
 
+    suspend fun searchDemo(): Flow<List<MgoOrganization>>
+
     suspend fun get(): List<MgoOrganization>
 
     suspend fun save(provider: MgoOrganization)

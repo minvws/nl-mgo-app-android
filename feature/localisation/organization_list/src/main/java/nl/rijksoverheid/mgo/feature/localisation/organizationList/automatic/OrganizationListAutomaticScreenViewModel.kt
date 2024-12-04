@@ -37,7 +37,7 @@ internal class OrganizationListAutomaticScreenViewModel
             viewModelScope.launch {
                 _viewState.value = _viewState.value.copy(loading = true, results = listOf(), error = null)
                 organizationRepository
-                    .search(name = "test", city = "test")
+                    .searchDemo()
                     .catch { error ->
                         _viewState.value = _viewState.value.copy(loading = false, error = error)
                     }

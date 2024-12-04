@@ -40,6 +40,19 @@ internal class DefaultOrganizationRepository(
         }
     }
 
+    override suspend fun searchDemo(): Flow<List<MgoOrganization>> {
+        val searchResponseFlow =
+            flow {
+                val result = executeNetworkRequest { loadApi.searchDemo() }
+                emit(result.getOrThrow())
+            }
+        return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
+            searchResponse.organizations.map { organization ->
+                organization.toMgoOrganization(added = storedOrganizations.any { provider -> provider.id == organization.id })
+            }
+        }
+    }
+
     override suspend fun get(): List<MgoOrganization> {
         val localMgoOrganizations = encryptedFileStore.getFile(MgoOrganizations::class, fileName)
         return localMgoOrganizations?.providers ?: listOf()

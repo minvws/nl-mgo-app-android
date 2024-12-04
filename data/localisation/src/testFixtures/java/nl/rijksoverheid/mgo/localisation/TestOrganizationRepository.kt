@@ -23,6 +23,13 @@ class TestOrganizationRepository : OrganizationRepository {
         }
     }
 
+    override suspend fun searchDemo(): Flow<List<MgoOrganization>> {
+        return flow {
+            searchResultError?.let { throwable -> throw throwable }
+            emit(searchResults)
+        }
+    }
+
     suspend fun setSearchResults(searchResults: List<MgoOrganization>) {
         delay(100)
         this.searchResults = searchResults

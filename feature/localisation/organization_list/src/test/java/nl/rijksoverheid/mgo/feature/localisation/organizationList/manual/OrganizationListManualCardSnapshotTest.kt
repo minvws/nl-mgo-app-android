@@ -1,8 +1,5 @@
-package nl.rijksoverheid.mgo.feature.localisation.organizationSearch.manual
+package nl.rijksoverheid.mgo.feature.localisation.organizationList.manual
 
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationSearchCardAddPreview
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationSearchCardAddedPreview
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationSearchCardNotSupportedPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotDevices
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule

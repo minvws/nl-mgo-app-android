@@ -1,11 +1,9 @@
-package nl.rijksoverheid.mgo.feature.localisation.organizationSearch
+package nl.rijksoverheid.mgo.feature.localisation.organizationList
 
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_BGZ_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_NOT_IMPLEMENTED_DATA_SERVICE
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

@@ -56,7 +56,7 @@ fun OrganizationListAutomaticSearchScreen(
         onNavigateBack = onNavigateBack,
         onGetSearchResults = { viewModel.getSearchResults() },
         updateOrganization = { organization, added -> viewModel.updateOrganization(organization, added) },
-        onAddCheckedOrganizations = {},
+        onAddCheckedOrganizations = { viewModel.addCheckedOrganizations() },
     )
 }
 

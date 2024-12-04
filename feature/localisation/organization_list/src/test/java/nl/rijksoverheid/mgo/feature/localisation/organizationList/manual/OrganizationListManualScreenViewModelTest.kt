@@ -1,9 +1,7 @@
-package nl.rijksoverheid.mgo.feature.localisation.organizationSearch.manual
+package nl.rijksoverheid.mgo.feature.localisation.organizationList.manual
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationListManualScreenViewModel
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationListManualScreenViewState
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.After

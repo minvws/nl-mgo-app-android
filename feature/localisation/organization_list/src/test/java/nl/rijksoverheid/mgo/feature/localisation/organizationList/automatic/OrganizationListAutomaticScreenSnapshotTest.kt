@@ -1,8 +1,5 @@
-package nl.rijksoverheid.mgo.feature.localisation.organizationSearch.automatic
+package nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic
 
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreenErrorPreview
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreenLoadingPreview
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreenSearchResultsPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test

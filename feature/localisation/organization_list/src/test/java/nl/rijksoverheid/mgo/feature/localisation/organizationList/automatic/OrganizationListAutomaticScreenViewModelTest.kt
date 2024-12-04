@@ -1,10 +1,8 @@
-package nl.rijksoverheid.mgo.feature.localisation.organizationSearch.automatic
+package nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticScreenViewModel
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticScreenViewState
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.After
@@ -86,7 +84,27 @@ internal class OrganizationListAutomaticScreenViewModelTest {
             assertViewState(expectedViewState)
         }
 
-    private fun setSearchResultsSuccess(organizations: List<MgoOrganization>) {
+    @Test
+    fun testAddCheckedOrganizations() =
+        runTest {
+            // Given: two organizations that are added and one organization that is not added
+            val organization1 = TEST_MGO_ORGANIZATION.copy(id = "1", added = true)
+            val organization2 = TEST_MGO_ORGANIZATION.copy(id = "2", added = false)
+            val organization3 = TEST_MGO_ORGANIZATION.copy(id = "3", added = true)
+            setSearchResultsSuccess(listOf(organization1, organization2, organization3))
+            viewModel.getSearchResults()
+
+            // When calling addCheckedOrganizations
+            viewModel.addCheckedOrganizations()
+
+            // Then: Stored organizations contain organization1 and organization3
+            val storedOrganizations = organizationRepository.get()
+            assertEquals(2, storedOrganizations.size)
+            assertEquals(organization1, storedOrganizations[0])
+            assertEquals(organization3, storedOrganizations[1])
+        }
+
+    private suspend fun setSearchResultsSuccess(organizations: List<MgoOrganization>) {
         organizationRepository.setSearchResults(organizations)
     }
 

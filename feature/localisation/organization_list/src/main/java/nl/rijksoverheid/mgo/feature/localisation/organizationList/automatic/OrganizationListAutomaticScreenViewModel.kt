@@ -35,14 +35,14 @@ internal class OrganizationListAutomaticScreenViewModel
 
         fun getSearchResults() {
             viewModelScope.launch {
-                _viewState.update { viewState -> viewState.copy(loading = true, results = listOf(), error = null) }
+                _viewState.value = _viewState.value.copy(loading = true, results = listOf(), error = null)
                 organizationRepository
                     .search(name = "test", city = "test")
                     .catch { error ->
-                        _viewState.update { viewState -> viewState.copy(loading = false, error = error) }
+                        _viewState.value = _viewState.value.copy(loading = false, error = error)
                     }
                     .collectLatest { results ->
-                        _viewState.update { viewState -> viewState.copy(loading = false, results = results, error = null) }
+                        _viewState.value = _viewState.value.copy(loading = false, results = results, error = null)
                     }
             }
         }
@@ -62,6 +62,16 @@ internal class OrganizationListAutomaticScreenViewModel
                             }
                         },
                 )
+            }
+        }
+
+        fun addCheckedOrganizations() {
+            viewModelScope.launch {
+                val checkedOrganisations = _viewState.value.results.filter { organization -> organization.added }
+                for (organization in checkedOrganisations) {
+                    organizationRepository.save(organization)
+                }
+                _navigation.tryEmit(Unit)
             }
         }
     }

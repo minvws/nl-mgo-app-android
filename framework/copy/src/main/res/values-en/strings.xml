@@ -48,6 +48,7 @@
   <string name="common.search">Zoeken</string>
   <string name="common.search_again">Opnieuw zoeken</string>
   <string name="common.skip">Overslaan</string>
+  <string name="common.to_overview">Naar overzicht</string>
   <string name="common.try_again">Probeer opnieuw</string>
   <string name="common.unknown">Niet bekend</string>
   <string name="common.yes">Ja</string>
@@ -120,6 +121,7 @@
   <string name="organization_search.search_hint_2">Vul de juiste naam in. Je vindt deze op de rekening. Of vraag aan de zorgaanbieder hoe je hun naam schrijft.</string>
   <string name="organization_search.search_hint_3">Heeft deze zorgaanbieder meerdere vestigingen? Vul dan de plaatsnaam van de hoofdvestiging in.</string>
   <string name="organization_search.searching">Zorgaanbieders aan het zoeken...</string>
+  <string name="organization_search.subheading">Welke wil je toevoegen aan de app? Je kunt dit later altijd veranderen.</string>
   <string name="organizations.heading">Zorgaanbieders</string>
   <string name="organizations.remove_organization">Verwijder zorgaanbieder</string>
   <string name="overview.heading">Overzicht</string>

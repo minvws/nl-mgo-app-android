@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,10 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.composable.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -54,6 +56,7 @@ fun OrganizationListAutomaticSearchScreen(
         onNavigateBack = onNavigateBack,
         onGetSearchResults = { viewModel.getSearchResults() },
         updateOrganization = { organization, added -> viewModel.updateOrganization(organization, added) },
+        onAddCheckedOrganizations = {},
     )
 }
 
@@ -61,11 +64,28 @@ fun OrganizationListAutomaticSearchScreen(
 private fun OrganizationListAutomaticSearchScreenContent(
     viewState: OrganizationListAutomaticScreenViewState,
     onNavigateBack: () -> Unit,
+    onAddCheckedOrganizations: () -> Unit,
     onGetSearchResults: () -> Unit,
     updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
 ) {
+    val lazyListState = rememberLazyListState()
+    val primaryButtonText =
+        if (viewState.error == null) {
+            stringResource(CopyR.string.common_to_overview)
+        } else {
+            stringResource(
+                id =
+                    CopyR.string
+                        .common_try_again,
+            )
+        }
+    val onPrimaryButtonClick = if (viewState.error == null) onAddCheckedOrganizations else onGetSearchResults
+
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
+        primaryButtonText = primaryButtonText,
+        onPrimaryButtonClick = onPrimaryButtonClick,
+        scrollStateProvider = MgoScaffoldScrollStateProvider.LazyColumn(lazyListState),
         onNavigateBack = onNavigateBack,
         content = {
             when {
@@ -74,10 +94,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
                 }
 
                 viewState.error != null -> {
-                    ErrorContent(
-                        error = viewState.error,
-                        onButtonClick = onGetSearchResults,
-                    )
+                    ErrorContent(viewState.error)
                 }
 
                 viewState.results.isEmpty() -> {
@@ -86,6 +103,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
 
                 else -> {
                     ResultsContent(
+                        lazyListState = lazyListState,
                         searchResults = viewState.results,
                         updateOrganization = updateOrganization,
                     )
@@ -120,11 +138,12 @@ private fun ColumnScope.LoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ResultsContent(
+    lazyListState: LazyListState,
     searchResults: List<MgoOrganization>,
     updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp)) {
+    LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp), state = lazyListState) {
         items(searchResults.size) { position ->
             val organization = searchResults[position]
             OrganizationListAutomaticCard(
@@ -143,33 +162,23 @@ private fun ResultsContent(
 }
 
 @Composable
-private fun ErrorContent(
-    error: Throwable,
-    onButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    ColumnWithButtons(
-        modifier = modifier,
-        buttonText = stringResource(id = CopyR.string.common_try_again),
-        onButtonClick = onButtonClick,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = ThemeR.drawable.illustration_alert),
-            contentDescription = null,
-        )
+private fun ColumnScope.ErrorContent(error: Throwable) {
+    Image(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+        painter = painterResource(id = ThemeR.drawable.illustration_alert),
+        contentDescription = null,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.common_error_subheading),
-            style = MaterialTheme.typography.bodySmall,
-        )
+    Text(
+        modifier = Modifier.padding(top = 24.dp),
+        text = stringResource(id = CopyR.string.common_error_subheading),
+        style = MaterialTheme.typography.bodySmall,
+    )
 
-        MgoDebugErrorButton(error = error)
-    }
+    MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews
@@ -181,6 +190,7 @@ internal fun OrganizationListAutomaticSearchScreenLoadingPreview() {
             onNavigateBack = {},
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
+            onAddCheckedOrganizations = {},
         )
     }
 }
@@ -198,6 +208,7 @@ internal fun OrganizationListAutomaticSearchScreenSearchResultsPreview() {
             onNavigateBack = {},
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
+            onAddCheckedOrganizations = {},
         )
     }
 }
@@ -215,6 +226,7 @@ internal fun OrganizationListAutomaticSearchScreenErrorPreview() {
             onNavigateBack = {},
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
+            onAddCheckedOrganizations = {},
         )
     }
 }

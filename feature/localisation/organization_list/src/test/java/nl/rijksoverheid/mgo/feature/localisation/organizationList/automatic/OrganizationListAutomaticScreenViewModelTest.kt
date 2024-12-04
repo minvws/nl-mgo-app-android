@@ -3,6 +3,8 @@ package nl.rijksoverheid.mgo.feature.localisation.organizationSearch.automatic
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticScreenViewModel
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticScreenViewState
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.After
@@ -10,8 +12,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticScreenViewModel
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticScreenViewState
 
 internal class OrganizationListAutomaticScreenViewModelTest {
     @get:Rule

@@ -13,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
@@ -23,36 +22,32 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
     MgoScaffold(
-        content = {
-            ColumnWithButtons(
-                modifier = Modifier.padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight),
-                buttonText = stringResource(id = CopyR.string.common_next),
-                onButtonClick = onNavigateToProposition,
-            ) {
-                Image(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                    painter = painterResource(id = R.drawable.illustration_introduction),
-                    contentDescription = null,
-                )
+        primaryButtonText = stringResource(id = CopyR.string.common_next),
+        onPrimaryButtonClick = onNavigateToProposition,
+    ) {
+        Image(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+                    .align(Alignment.CenterHorizontally),
+            painter = painterResource(id = R.drawable.illustration_introduction),
+            contentDescription = null,
+        )
 
-                Text(
-                    modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = CopyR.string.introduction_heading),
-                    style = MaterialTheme.typography.headingLarge,
-                    fontWeight = FontWeight.Bold,
-                )
+        Text(
+            modifier = Modifier.padding(top = 32.dp),
+            text = stringResource(id = CopyR.string.introduction_heading),
+            style = MaterialTheme.typography.headingLarge,
+            fontWeight = FontWeight.Bold,
+        )
 
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.introduction_subheading),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
-        },
-    )
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = CopyR.string.introduction_subheading),
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
 }
 
 @DefaultPreviews

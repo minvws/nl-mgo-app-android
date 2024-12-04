@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -17,11 +17,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -72,47 +72,44 @@ private fun AddOrganizationScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.add_organization_heading),
         onNavigateBack = onNavigateBack,
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        primaryButtonText = stringResource(id = CopyR.string.common_search),
+        onPrimaryButtonClick = onSearch,
         content = {
-            ColumnWithButtons(
-                modifier = Modifier.imePadding(),
-                buttonText = stringResource(id = CopyR.string.common_search),
-                onButtonClick = onSearch,
-            ) {
-                MgoBasicTextField(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .focusRequester(nameFocusRequester),
-                    value = viewState.name,
-                    header =
-                        stringResource(
-                            id = CopyR.string.add_organization_name,
-                        ),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, capitalization = KeyboardCapitalization.Words),
-                    keyboardActions = KeyboardActions(onNext = { cityFocusRequester.requestFocus() }),
-                    onValueChange = onSetName,
-                    error = viewState.nameError?.let { resource -> stringResource(id = resource) },
-                    textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
-                )
+            MgoBasicTextField(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(nameFocusRequester),
+                value = viewState.name,
+                header =
+                    stringResource(
+                        id = CopyR.string.add_organization_name,
+                    ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, capitalization = KeyboardCapitalization.Words),
+                keyboardActions = KeyboardActions(onNext = { cityFocusRequester.requestFocus() }),
+                onValueChange = onSetName,
+                error = viewState.nameError?.let { resource -> stringResource(id = resource) },
+                textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
+            )
 
-                MgoBasicTextField(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .focusRequester(cityFocusRequester)
-                            .padding(top = 16.dp),
-                    value = viewState.city,
-                    header =
-                        stringResource(
-                            id = CopyR.string.add_organization_city,
-                        ),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, capitalization = KeyboardCapitalization.Words),
-                    keyboardActions = KeyboardActions(onSearch = { onSearch() }),
-                    onValueChange = onSetCity,
-                    error = viewState.cityError?.let { resource -> stringResource(id = resource) },
-                    textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,
-                )
-            }
+            MgoBasicTextField(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(cityFocusRequester)
+                        .padding(top = 16.dp),
+                value = viewState.city,
+                header =
+                    stringResource(
+                        id = CopyR.string.add_organization_city,
+                    ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, capitalization = KeyboardCapitalization.Words),
+                keyboardActions = KeyboardActions(onSearch = { onSearch() }),
+                onValueChange = onSetCity,
+                error = viewState.cityError?.let { resource -> stringResource(id = resource) },
+                textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,
+            )
         },
     )
 }

@@ -3,12 +3,13 @@ package nl.rijksoverheid.mgo.feature.dashboard.organizations
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,11 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
@@ -56,12 +57,23 @@ private fun OrganizationsScreenContent(
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
+    val scrollStateProvider =
+        if (viewState.organizations.isEmpty()) {
+            MgoScaffoldScrollStateProvider.None
+        } else {
+            MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            )
+        }
+    val primaryButtonText = if (viewState.organizations.isEmpty()) stringResource(id = CopyR.string.common_add_organizations) else null
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.organizations_heading),
-        scrollable = viewState.organizations.isNotEmpty(),
+        scrollStateProvider = scrollStateProvider,
+        primaryButtonText = primaryButtonText,
+        onPrimaryButtonClick = onClickAddProvider,
         content = {
             if (viewState.organizations.isEmpty()) {
-                NoOrganizations(onClickAddProvider)
+                NoOrganizations()
             } else {
                 WithOrganizations(
                     organizations = viewState.organizations,
@@ -74,46 +86,36 @@ private fun OrganizationsScreenContent(
 }
 
 @Composable
-private fun NoOrganizations(
-    onClickAddProvider: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    ColumnWithButtons(
-        modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        buttonText = stringResource(id = CopyR.string.common_add_organizations),
-        onButtonClick = onClickAddProvider,
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(156.dp),
-            painter = painterResource(id = R.drawable.illustration_organizations_empty),
-            contentDescription = null,
-        )
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.common_no_organizations_heading),
-            style = MaterialTheme.typography.headingSmall,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentTertiary(),
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-    }
+private fun ColumnScope.NoOrganizations() {
+    Spacer(modifier = Modifier.weight(1f))
+    Image(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(156.dp),
+        painter = painterResource(id = R.drawable.illustration_organizations_empty),
+        contentDescription = null,
+    )
+    Text(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_heading),
+        style = MaterialTheme.typography.headingSmall,
+        textAlign = TextAlign.Center,
+    )
+    Text(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_subheading),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.contentTertiary(),
+        textAlign = TextAlign.Center,
+    )
+    Spacer(modifier = Modifier.weight(1f))
 }
 
 @Composable
@@ -139,7 +141,10 @@ private fun WithOrganizations(
     }
 
     MgoCard(
-        modifier = Modifier.padding(top = 16.dp, bottom = 2.dp).clickable { onClickAddProvider() },
+        modifier =
+            Modifier
+                .padding(top = 16.dp, bottom = 2.dp)
+                .clickable { onClickAddProvider() },
     ) {
         Row(
             modifier =

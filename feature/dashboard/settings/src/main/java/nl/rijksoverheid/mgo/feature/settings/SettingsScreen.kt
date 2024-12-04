@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.settings
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -62,10 +61,8 @@ private fun SettingsScreenContent(
 ) {
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_heading),
-        scrollable = false,
-        contentPadding = PaddingValues(16.dp),
         content = {
-            Column {
+            Column(modifier = Modifier.padding(bottom = 16.dp)) {
                 togglesWithState.forEachIndexed { index, toggleWithState ->
                     FeatureToggleListItem(
                         modifier = Modifier.padding(bottom = 16.dp),

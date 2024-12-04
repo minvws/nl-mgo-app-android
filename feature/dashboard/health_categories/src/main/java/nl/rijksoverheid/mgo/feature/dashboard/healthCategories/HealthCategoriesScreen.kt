@@ -6,11 +6,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,13 +25,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.getStringResourceByName
 import nl.rijksoverheid.mgo.component.theme.headingSmall
@@ -89,14 +89,17 @@ private fun HealthCategoriesScreenContent(
     organization: MgoOrganization? = null,
     onNavigateBack: (() -> Unit)? = null,
 ) {
+    val primaryButtonText = if (viewState.providers.isEmpty()) stringResource(id = CopyR.string.common_add_organizations) else null
     MgoScaffold(
         appBarTitle = appBarTitle,
-        scrollable = viewState.providers.isNotEmpty(),
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         isRootScaffold = false,
+        primaryButtonText = primaryButtonText,
+        onPrimaryButtonClick = onClickAddProvider,
         onNavigateBack = onNavigateBack,
         content = {
             if (viewState.providers.isEmpty()) {
-                NoProviders(onClickAddProvider)
+                NoProviders()
             } else {
                 WithProviders(
                     filterOrganization = organization,
@@ -109,46 +112,36 @@ private fun HealthCategoriesScreenContent(
 }
 
 @Composable
-private fun NoProviders(
-    onClickAddProvider: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    ColumnWithButtons(
-        modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        buttonText = stringResource(id = CopyR.string.common_add_organizations),
-        onButtonClick = onClickAddProvider,
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(156.dp),
-            painter = painterResource(id = R.drawable.illustration_overview_empty),
-            contentDescription = null,
-        )
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.common_no_organizations_heading),
-            style = MaterialTheme.typography.headingSmall,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentTertiary(),
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-    }
+private fun ColumnScope.NoProviders() {
+    Spacer(modifier = Modifier.weight(1f))
+    Image(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(156.dp),
+        painter = painterResource(id = R.drawable.illustration_overview_empty),
+        contentDescription = null,
+    )
+    Text(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_heading),
+        style = MaterialTheme.typography.headingSmall,
+        textAlign = TextAlign.Center,
+    )
+    Text(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_subheading),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.contentTertiary(),
+        textAlign = TextAlign.Center,
+    )
+    Spacer(modifier = Modifier.weight(1f))
 }
 
 @Composable
@@ -158,7 +151,7 @@ private fun ColumnScope.WithProviders(
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)) {
+    MgoCard(modifier = modifier.padding(top = 2.dp, bottom = 16.dp)) {
         Column {
             HealthCareCategory.entries.forEach { category ->
                 HealthCategoriesListItem(

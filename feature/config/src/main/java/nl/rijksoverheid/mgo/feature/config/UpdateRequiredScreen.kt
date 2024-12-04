@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
@@ -27,33 +26,31 @@ const val TEST_TAG_UPDATE_REQUIRED_TITLE = "UPDATE_REQUIRED_TITLE"
 @Composable
 fun UpdateRequiredScreen(packageName: String = LocalContext.current.packageName) {
     val context = LocalContext.current
-    MgoScaffold {
-        ColumnWithButtons(
-            buttonText = stringResource(id = CopyR.string.update_required_download),
-            onButtonClick = { "https://play.google.com/store/apps/details?id=$packageName".launchBrowser(context) },
-        ) {
-            Image(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight),
-                painter = painterResource(id = R.drawable.illustration_old_version),
-                contentDescription = null,
-            )
+    MgoScaffold(
+        primaryButtonText = stringResource(id = CopyR.string.update_required_download),
+        onPrimaryButtonClick = { "https://play.google.com/store/apps/details?id=$packageName".launchBrowser(context) },
+    ) {
+        Image(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight),
+            painter = painterResource(id = R.drawable.illustration_old_version),
+            contentDescription = null,
+        )
 
-            Text(
-                modifier = Modifier.padding(top = 32.dp).testTag(TEST_TAG_UPDATE_REQUIRED_TITLE),
-                text = "Je hebt een oude versie van de app",
-                style = MaterialTheme.typography.headingMedium,
-            )
+        Text(
+            modifier = Modifier.padding(top = 32.dp).testTag(TEST_TAG_UPDATE_REQUIRED_TITLE),
+            text = "Je hebt een oude versie van de app",
+            style = MaterialTheme.typography.headingMedium,
+        )
 
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = CopyR.string.update_required_subheading),
-                style = MaterialTheme.typography.bodySmall,
-            )
-        }
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = CopyR.string.update_required_subheading),
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 

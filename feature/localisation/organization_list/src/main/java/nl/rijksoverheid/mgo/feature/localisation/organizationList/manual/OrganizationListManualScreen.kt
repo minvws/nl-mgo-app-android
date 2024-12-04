@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
@@ -82,9 +81,49 @@ private fun OrganizationListManualScreenContent(
     onAddSearchResult: (provider: MgoOrganization) -> Unit,
     onNavigateToSearch: () -> Unit,
 ) {
+    val primaryButtonText =
+        when {
+            viewState.loading -> {
+                null
+            }
+
+            viewState.error != null -> {
+                stringResource(CopyR.string.common_try_again)
+            }
+
+            viewState.results.isEmpty() -> {
+                stringResource(CopyR.string.common_search_again)
+            }
+
+            else -> {
+                null
+            }
+        }
+
+    val onPrimaryButtonClick =
+        when {
+            viewState.loading -> {
+                null
+            }
+
+            viewState.error != null -> {
+                onGetSearchResults
+            }
+
+            viewState.results.isEmpty() -> {
+                onNavigateToSearch
+            }
+
+            else -> {
+                null
+            }
+        }
+
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
         onNavigateBack = onNavigateBack,
+        primaryButtonText = primaryButtonText,
+        onPrimaryButtonClick = onPrimaryButtonClick,
         content = {
             when {
                 viewState.loading -> {
@@ -94,7 +133,6 @@ private fun OrganizationListManualScreenContent(
                 viewState.error != null -> {
                     ErrorContent(
                         error = viewState.error,
-                        onButtonClick = onGetSearchResults,
                     )
                 }
 
@@ -102,7 +140,6 @@ private fun OrganizationListManualScreenContent(
                     EmptyContent(
                         name = viewState.name,
                         city = viewState.city,
-                        onButtonClick = onNavigateToSearch,
                     )
                 }
 
@@ -118,7 +155,7 @@ private fun OrganizationListManualScreenContent(
 }
 
 @Composable
-private fun ColumnScope.LoadingContent(modifier: Modifier = Modifier) {
+private fun ColumnScope.LoadingContent() {
     Box(
         modifier =
             Modifier
@@ -163,53 +200,45 @@ private fun ResultsContent(
 }
 
 @Composable
-private fun EmptyContent(
+private fun ColumnScope.EmptyContent(
     name: String,
     city: String,
-    onButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
-    ColumnWithButtons(
-        modifier = modifier,
-        buttonText = stringResource(id = CopyR.string.common_search_again),
-        onButtonClick = onButtonClick,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = ThemeR.drawable.illustration_alert),
-            contentDescription = null,
-        )
-        MgoHtmlText(
-            modifier = Modifier.padding(top = 24.dp),
-            html = stringResource(id = CopyR.string.organization_search_no_results_found_subheading, name, city),
-            style = MaterialTheme.typography.bodySmall,
-        )
+    Image(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+        painter = painterResource(id = ThemeR.drawable.illustration_alert),
+        contentDescription = null,
+    )
+    MgoHtmlText(
+        modifier = Modifier.padding(top = 24.dp),
+        html = stringResource(id = CopyR.string.organization_search_no_results_found_subheading, name, city),
+        style = MaterialTheme.typography.bodySmall,
+    )
 
-        EmptyListItem(
-            modifier = Modifier.padding(top = 16.dp),
-            text =
-                stringResource(
-                    id = CopyR.string.organization_search_search_hint_1,
-                ),
-        )
-        EmptyListItem(
-            modifier = Modifier.padding(top = 8.dp),
-            text =
-                stringResource(
-                    id = CopyR.string.organization_search_search_hint_2,
-                ),
-        )
-        EmptyListItem(
-            modifier = Modifier.padding(top = 8.dp),
-            text =
-                stringResource(
-                    id = CopyR.string.organization_search_search_hint_3,
-                ),
-        )
-    }
+    EmptyListItem(
+        modifier = Modifier.padding(top = 16.dp),
+        text =
+            stringResource(
+                id = CopyR.string.organization_search_search_hint_1,
+            ),
+    )
+    EmptyListItem(
+        modifier = Modifier.padding(top = 8.dp),
+        text =
+            stringResource(
+                id = CopyR.string.organization_search_search_hint_2,
+            ),
+    )
+    EmptyListItem(
+        modifier = Modifier.padding(top = 8.dp),
+        text =
+            stringResource(
+                id = CopyR.string.organization_search_search_hint_3,
+            ),
+    )
 }
 
 @Composable
@@ -228,33 +257,23 @@ private fun EmptyListItem(
 }
 
 @Composable
-private fun ErrorContent(
-    error: Throwable,
-    onButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    ColumnWithButtons(
-        modifier = modifier,
-        buttonText = stringResource(id = CopyR.string.common_try_again),
-        onButtonClick = onButtonClick,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = ThemeR.drawable.illustration_alert),
-            contentDescription = null,
-        )
+private fun ColumnScope.ErrorContent(error: Throwable) {
+    Image(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+        painter = painterResource(id = ThemeR.drawable.illustration_alert),
+        contentDescription = null,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.common_error_subheading),
-            style = MaterialTheme.typography.bodySmall,
-        )
+    Text(
+        modifier = Modifier.padding(top = 24.dp),
+        text = stringResource(id = CopyR.string.common_error_subheading),
+        style = MaterialTheme.typography.bodySmall,
+    )
 
-        MgoDebugErrorButton(error = error)
-    }
+    MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

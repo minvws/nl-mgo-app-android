@@ -62,7 +62,7 @@ sealed class MgoScaffoldScrollStateProvider(open val canScrollForward: Boolean) 
 
     data class LazyColumn(val lazyListState: LazyListState) : MgoScaffoldScrollStateProvider(lazyListState.canScrollForward)
 
-    data class Custom(override val canScrollForward: Boolean) : MgoScaffoldScrollStateProvider(canScrollForward)
+    data class Preview(override val canScrollForward: Boolean) : MgoScaffoldScrollStateProvider(canScrollForward)
 }
 
 @Composable
@@ -188,8 +188,15 @@ fun MgoScaffold(
                 }
 
                 if (primaryButtonText != null && onPrimaryButtonClick != null) {
+                    // Disable shadow for all previews that use this composable (excepting being this one)
+                    val canScrollForward =
+                        if (LocalInspectionMode.current && scrollStateProvider !is MgoScaffoldScrollStateProvider.Preview) {
+                            false
+                        } else {
+                            scrollStateProvider.canScrollForward
+                        }
                     Buttons(
-                        canScrollForward = scrollStateProvider.canScrollForward,
+                        canScrollForward = canScrollForward,
                         primaryButtonText = primaryButtonText,
                         onPrimaryButtonClick = onPrimaryButtonClick,
                         secondaryButtonText = secondaryButtonText,
@@ -264,8 +271,7 @@ private fun Buttons(
         MgoButton(
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
+                    .fillMaxWidth(),
             buttonText = primaryButtonText,
             onClick = onPrimaryButtonClick,
         )
@@ -305,12 +311,14 @@ internal fun MgoScaffoldWithAppBar() {
 @Composable
 internal fun MgoScaffoldWithoutAppBar() {
     MgoTheme {
-        MgoScaffold(
-            horizontalPadding = 16.dp,
-            content = {
-                Text("Hello World")
-            },
-        )
+        Box(modifier = Modifier.padding(top = 16.dp)) {
+            MgoScaffold(
+                horizontalPadding = 16.dp,
+                content = {
+                    Text("Hello World")
+                },
+            )
+        }
     }
 }
 
@@ -342,7 +350,7 @@ internal fun MgoScaffoldWithPrimaryButtonScrollable() {
             },
             primaryButtonText = "Primary Button",
             onPrimaryButtonClick = {},
-            scrollStateProvider = MgoScaffoldScrollStateProvider.Custom(true),
+            scrollStateProvider = MgoScaffoldScrollStateProvider.Preview(true),
         )
     }
 }
@@ -379,7 +387,7 @@ internal fun MgoScaffoldWithPrimaryAndSecondaryButtonScrollable() {
             onPrimaryButtonClick = {},
             secondaryButtonText = "Secondary Button",
             onSecondaryButtonClick = {},
-            scrollStateProvider = MgoScaffoldScrollStateProvider.Custom(true),
+            scrollStateProvider = MgoScaffoldScrollStateProvider.Preview(true),
         )
     }
 }

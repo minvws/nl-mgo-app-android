@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.data.api.load
 
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface LoadApi {
@@ -10,6 +9,6 @@ interface LoadApi {
         @Body requestBody: SearchRequestBody,
     ): SearchResponse
 
-    @GET("/localization/organization/search-demo")
+    @POST("/localization/organization/search-demo")
     suspend fun searchDemo(): SearchResponse
 }

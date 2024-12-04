@@ -92,7 +92,7 @@ internal class DefaultOrganizationRepository(
 
     override suspend fun deleteAll() {
         // Update flow
-        storedOrganizationsFlow.value = listOf<MgoOrganization>()
+        storedOrganizationsFlow.value = listOf()
 
         // Delete file
         encryptedFileStore.deleteFile(fileName)

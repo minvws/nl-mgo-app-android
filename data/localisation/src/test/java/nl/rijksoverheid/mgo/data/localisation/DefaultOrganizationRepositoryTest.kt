@@ -68,6 +68,48 @@ internal class DefaultOrganizationRepositoryTest {
         }
 
     @Test
+    fun testSearchDemoSuccess() =
+        runTest {
+            // Given: successful response
+            testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/search.json"))
+
+            // When: Calling searchDemo
+            val repository = getRepository()
+            val searchFlow = repository.searchDemo()
+
+            // Then: organizations are emitted in the flow
+            searchFlow.test {
+                val providers = awaitItem()
+                assertEquals(45, providers.size)
+
+                val expectedFirstHealthProvider =
+                    MgoOrganization(
+                        id = "agb-z:12001468",
+                        name = "Tandartspraktijk Van Dijck",
+                        address = "Ginnekenweg 183\r\n4835NA BREDA",
+                        category = "Tandartsen",
+                        added = false,
+                        dataServices =
+                            listOf(
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/51",
+                                    type = MgoOrganizationDataServiceType.DOCUMENTS,
+                                ),
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/49",
+                                    type = MgoOrganizationDataServiceType.GP,
+                                ),
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
+                                    type = MgoOrganizationDataServiceType.BGZ,
+                                ),
+                            ),
+                    )
+                assertEquals(expectedFirstHealthProvider, providers.firstOrNull())
+            }
+        }
+
+    @Test
     fun `Given loadApi request failed, When calling search, Then emit error`() =
         runTest {
             // Given

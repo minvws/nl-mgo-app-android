@@ -123,7 +123,6 @@ private fun WithOrganizations(
     organizations: List<MgoOrganization>,
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     MgoCard(modifier = Modifier.padding(top = 2.dp)) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -143,7 +142,7 @@ private fun WithOrganizations(
     MgoCard(
         modifier =
             Modifier
-                .padding(top = 16.dp, bottom = 2.dp)
+                .padding(vertical = 16.dp)
                 .clickable { onClickAddProvider() },
     ) {
         Row(

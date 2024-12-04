@@ -56,7 +56,7 @@ fun NavGraphBuilder.addLocalisationNavGraph(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToDashboard = {
                     navController.popBackStack(
-                        route = LocalisationNavigation.AddOrganization,
+                        route = LocalisationNavigation.OrganizationListAutomatic,
                         inclusive = true,
                     )
                 },

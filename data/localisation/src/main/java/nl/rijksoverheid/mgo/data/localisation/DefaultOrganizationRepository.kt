@@ -79,7 +79,7 @@ internal class DefaultOrganizationRepository(
 
     override suspend fun delete(providerId: String) {
         // Get stored health care providers
-        val storedMgoOrganizations = requireNotNull(encryptedFileStore.getFile(MgoOrganizations::class, fileName))
+        val storedMgoOrganizations = encryptedFileStore.getFile(MgoOrganizations::class, fileName) ?: MgoOrganizations(listOf())
 
         // Delete the provider from the file
         val newProviders = storedMgoOrganizations.providers.toMutableList()

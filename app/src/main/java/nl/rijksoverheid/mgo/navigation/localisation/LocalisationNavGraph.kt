@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganization
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreen
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationListManualScreen
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.getViewModel
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
@@ -55,10 +56,20 @@ fun NavGraphBuilder.addLocalisationNavGraph(
             OrganizationListAutomaticSearchScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToDashboard = {
-                    navController.popBackStack(
-                        route = LocalisationNavigation.OrganizationListAutomatic,
-                        inclusive = true,
-                    )
+                    // If coming from dashboard, we want to pop back
+                    val canPop =
+                        navController.popBackStack(
+                            route = LocalisationNavigation.OrganizationListAutomatic,
+                            inclusive = true,
+                        )
+                    // If not coming from dashboard, navigate to it
+                    if (!canPop) {
+                        navController.navigate(DashboardNavigation.Root) {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                    }
                 },
             )
         }

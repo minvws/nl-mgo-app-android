@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface OrganizationRepository {
     val storedOrganizationsFlow: Flow<List<MgoOrganization>>
 
-    suspend fun search(
+    fun search(
         name: String,
         city: String,
     ): Flow<List<MgoOrganization>>

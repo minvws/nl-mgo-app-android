@@ -22,7 +22,7 @@ internal class DefaultOrganizationRepository(
 
     override val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(runBlocking { get() })
 
-    override suspend fun search(
+    override fun search(
         name: String,
         city: String,
     ): Flow<List<MgoOrganization>> {

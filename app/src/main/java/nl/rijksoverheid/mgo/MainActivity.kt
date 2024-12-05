@@ -89,7 +89,7 @@ class MainActivity : FragmentActivity() {
             addOnboardingNavGraph(navController = navController)
             addPinCodeCreateNavGraph(navController = navController)
             addPinCodeLoginNavGraph(navController = navController, activity = this@MainActivity)
-            addDashboardNavGraph(rootNavController = navController)
+            addDashboardNavGraph(mainActivity = this@MainActivity, rootNavController = navController)
             addLocalisationNavGraph(
                 navController = navController,
                 automaticLocalisationEnabled = viewModel.getAutomaticLocalisationEnabled(),

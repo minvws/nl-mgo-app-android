@@ -41,7 +41,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun SettingsScreen(
     onNavigateToOnboarding: () -> Unit,
-    onRestartApp: () -> Unit,
+    onRestartApp: (clearData: Boolean) -> Unit,
 ) {
     val viewModel: SettingsScreenViewModel = hiltViewModel()
     val togglesWithState: List<FeatureToggleWithState> by viewModel.featureToggleStates.collectAsStateWithLifecycle()
@@ -55,10 +55,8 @@ fun SettingsScreen(
     SettingsScreenContent(
         togglesWithState = togglesWithState,
         onFeatureToggleChanged = { id, enabled -> viewModel.onFeatureToggleChanged(id, enabled) },
-        onResetAppButtonClicked = {
-            viewModel.resetApp()
-        },
-        onRestartApp = onRestartApp,
+        onResetAppButtonClicked = { onRestartApp(true) },
+        onRestartApp = { onRestartApp(false) },
     )
 }
 

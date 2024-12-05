@@ -64,7 +64,10 @@ internal class DefaultOrganizationRepository(
 
         // Add our provider we want to save
         val newProviders = storedMgoOrganizations.providers.toMutableList()
-        newProviders.add(provider)
+        val alreadyAdded = newProviders.map { organization -> organization.id }.contains(provider.id)
+        if (!alreadyAdded) {
+            newProviders.add(provider)
+        }
         val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file

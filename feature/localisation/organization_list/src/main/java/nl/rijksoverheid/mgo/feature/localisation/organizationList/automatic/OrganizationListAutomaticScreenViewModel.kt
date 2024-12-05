@@ -65,12 +65,19 @@ internal class OrganizationListAutomaticScreenViewModel
             }
         }
 
-        fun addCheckedOrganizations() {
+        fun updateOrganizations() {
             viewModelScope.launch {
-                val checkedOrganisations = _viewState.value.results.filter { organization -> organization.added }
-                for (organization in checkedOrganisations) {
+                val checkedOrganizations = _viewState.value.results.filter { organization -> organization.added }
+                val unCheckedOrganizations = _viewState.value.results.filter { organization -> !organization.added }
+
+                for (organization in checkedOrganizations) {
                     organizationRepository.save(organization)
                 }
+
+                for (organization in unCheckedOrganizations) {
+                    organizationRepository.delete(organization.id)
+                }
+
                 _navigation.tryEmit(Unit)
             }
         }

@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
@@ -85,23 +86,34 @@ internal class OrganizationListAutomaticScreenViewModelTest {
         }
 
     @Test
-    fun testAddCheckedOrganizations() =
+    fun testUpdateOrganizations() =
         runTest {
-            // Given: two organizations that are added and one organization that is not added
-            val organization1 = TEST_MGO_ORGANIZATION.copy(id = "1", added = true)
-            val organization2 = TEST_MGO_ORGANIZATION.copy(id = "2", added = false)
-            val organization3 = TEST_MGO_ORGANIZATION.copy(id = "3", added = true)
+            // Given: Some organizations
+            val organization1 = TEST_MGO_ORGANIZATION.copy(id = "1")
+            val organization2 = TEST_MGO_ORGANIZATION.copy(id = "2")
+            val organization3 = TEST_MGO_ORGANIZATION.copy(id = "3")
+
+            // Given: Stored organizations
+            organizationRepository.setStoredProviders(listOf(organization1, organization2))
+
+            // Given: fetched organizations
             setSearchResultsSuccess(listOf(organization1, organization2, organization3))
-            viewModel.getSearchResults()
+
+            // Given: user unchecks organization1
+            viewModel.updateOrganization(organization = organization1, added = false)
+
+            // Given: user checks organization3
+            viewModel.updateOrganization(organization = organization3, added = true)
 
             // When calling addCheckedOrganizations
-            viewModel.addCheckedOrganizations()
+            viewModel.updateOrganizations()
 
-            // Then: Stored organizations contain organization1 and organization3
+            // Then: organization1 is removed
             val storedOrganizations = organizationRepository.get()
-            assertEquals(2, storedOrganizations.size)
-            assertEquals(organization1, storedOrganizations[0])
-            assertEquals(organization3, storedOrganizations[1])
+            assertTrue(!storedOrganizations.contains(organization1))
+
+            // Then: organization3 is added
+            assertEquals(organization3.copy(added = true), storedOrganizations.last())
         }
 
     private suspend fun setSearchResultsSuccess(organizations: List<MgoOrganization>) {

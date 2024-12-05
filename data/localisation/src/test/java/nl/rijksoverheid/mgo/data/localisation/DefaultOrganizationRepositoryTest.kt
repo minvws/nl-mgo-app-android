@@ -166,6 +166,38 @@ internal class DefaultOrganizationRepositoryTest {
         }
 
     @Test
+    fun testSave() =
+        runTest {
+            // When: Calling save
+            val provider = TEST_MGO_ORGANIZATION
+            val repository = getRepository()
+            repository.save(provider)
+
+            // Then: Organization is emitted
+            repository.storedOrganizationsFlow.test {
+                assertEquals(listOf(provider), awaitItem())
+            }
+        }
+
+    @Test
+    fun testSaveAlreadySaved() =
+        runTest {
+            // Given: Organization is saved
+            val organization = TEST_MGO_ORGANIZATION
+            val storedOrganizations = MgoOrganizations(providers = listOf(organization))
+            fileStore.saveFile(storedOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
+
+            // When: Calling save for same organization
+            val repository = getRepository()
+            repository.save(organization)
+
+            // Then: Organization is emitted, and does not include it twice
+            repository.storedOrganizationsFlow.test {
+                assertEquals(listOf(organization), awaitItem())
+            }
+        }
+
+    @Test
     fun `Given health care provider, When calling save, Then save health care provider to storage`() =
         runTest {
             // Given no providers

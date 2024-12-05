@@ -56,7 +56,7 @@ fun OrganizationListAutomaticSearchScreen(
         onNavigateBack = onNavigateBack,
         onGetSearchResults = { viewModel.getSearchResults() },
         updateOrganization = { organization, added -> viewModel.updateOrganization(organization, added) },
-        onAddCheckedOrganizations = { viewModel.addCheckedOrganizations() },
+        onUpdateOrganizations = { viewModel.updateOrganizations() },
     )
 }
 
@@ -64,7 +64,7 @@ fun OrganizationListAutomaticSearchScreen(
 private fun OrganizationListAutomaticSearchScreenContent(
     viewState: OrganizationListAutomaticScreenViewState,
     onNavigateBack: () -> Unit,
-    onAddCheckedOrganizations: () -> Unit,
+    onUpdateOrganizations: () -> Unit,
     onGetSearchResults: () -> Unit,
     updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
 ) {
@@ -79,7 +79,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
                         .common_try_again,
             )
         }
-    val onPrimaryButtonClick = if (viewState.error == null) onAddCheckedOrganizations else onGetSearchResults
+    val onPrimaryButtonClick = if (viewState.error == null) onUpdateOrganizations else onGetSearchResults
 
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
@@ -195,7 +195,7 @@ internal fun OrganizationListAutomaticSearchScreenLoadingPreview() {
             onNavigateBack = {},
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
-            onAddCheckedOrganizations = {},
+            onUpdateOrganizations = {},
         )
     }
 }
@@ -213,7 +213,7 @@ internal fun OrganizationListAutomaticSearchScreenSearchResultsPreview() {
             onNavigateBack = {},
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
-            onAddCheckedOrganizations = {},
+            onUpdateOrganizations = {},
         )
     }
 }
@@ -231,7 +231,7 @@ internal fun OrganizationListAutomaticSearchScreenErrorPreview() {
             onNavigateBack = {},
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
-            onAddCheckedOrganizations = {},
+            onUpdateOrganizations = {},
         )
     }
 }

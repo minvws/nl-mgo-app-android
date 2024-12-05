@@ -52,6 +52,7 @@
   <string name="common.try_again">Probeer opnieuw</string>
   <string name="common.unknown">Niet bekend</string>
   <string name="common.yes">Ja</string>
+  <string name="common_search_organizations">Zoeken naar zorgaanbieders</string>
   <string name="dialog.remove_organization_heading">%1$s weglaten?</string>
   <string name="dialog.remove_organization_no">Nee, toch tonen</string>
   <string name="dialog.remove_organization_subheading">We halen je dossier van deze zorgaanbieder niet op. Je kunt deze later alsnog toevoegen via je profiel.</string>

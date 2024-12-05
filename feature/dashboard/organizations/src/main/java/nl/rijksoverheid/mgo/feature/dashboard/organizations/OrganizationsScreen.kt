@@ -79,6 +79,7 @@ private fun OrganizationsScreenContent(
                     organizations = viewState.organizations,
                     onClickOrganization = onClickOrganization,
                     onClickAddProvider = onClickAddProvider,
+                    automaticLocalisationEnabled = viewState.automaticLocalisationEnabled,
                 )
             }
         },
@@ -121,6 +122,7 @@ private fun ColumnScope.NoOrganizations() {
 @Composable
 private fun WithOrganizations(
     organizations: List<MgoOrganization>,
+    automaticLocalisationEnabled: Boolean,
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
@@ -151,7 +153,9 @@ private fun WithOrganizations(
                     .fillMaxWidth()
                     .padding(16.dp),
         ) {
-            Text(text = stringResource(id = CopyR.string.common_add_organizations), style = MaterialTheme.typography.bodySmall)
+            val stringResource =
+                if (automaticLocalisationEnabled) CopyR.string.common_search_organizations else CopyR.string.common_add_organizations
+            Text(text = stringResource(id = stringResource), style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 modifier = Modifier.padding(start = 8.dp),
@@ -193,7 +197,7 @@ private fun OrganizationCard(
 internal fun OrganizationsScreenNoOrganizationsPreview() {
     MgoTheme {
         OrganizationsScreenContent(
-            viewState = OrganizationsViewState(organizations = listOf()),
+            viewState = OrganizationsViewState(organizations = listOf(), automaticLocalisationEnabled = false),
             onClickOrganization = {},
             onClickAddProvider = {},
         )
@@ -215,6 +219,7 @@ internal fun OrganizationsScreenWithOrganizationsPreview() {
                             TEST_MGO_ORGANIZATION.copy(name = "Tandartsenpraktijk Tandje Erbij"),
                             TEST_MGO_ORGANIZATION.copy(name = "Apotheek de Pillendoos"),
                         ),
+                    automaticLocalisationEnabled = false,
                 ),
             onClickOrganization = {},
             onClickAddProvider = {},

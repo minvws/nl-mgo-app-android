@@ -13,7 +13,7 @@ class TestOrganizationRepository : OrganizationRepository {
     private var searchResults: List<MgoOrganization> = listOf()
     private var searchResultError: Throwable? = null
 
-    override suspend fun search(
+    override fun search(
         name: String,
         city: String,
     ): Flow<List<MgoOrganization>> {

@@ -22,12 +22,19 @@ import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun PinCodeBioMetricSetupScreen(onNavigateToDashboard: () -> Unit) {
+fun PinCodeBioMetricSetupScreen(
+    onNavigateToLocalisation: () -> Unit,
+    onNavigateToDashboard: () -> Unit,
+) {
     val viewModel: PinCodeBiometricSetupScreenViewModel = hiltViewModel()
     PinCodeBioMetricSetupScreenContent(
         onBiometricLoginSuccess = {
             viewModel.setBiometricLoginEnabled()
-            onNavigateToDashboard()
+            if (viewModel.getAutomaticLocalisationEnabled()) {
+                onNavigateToLocalisation()
+            } else {
+                onNavigateToDashboard()
+            }
         },
         onNavigateToDashboard = onNavigateToDashboard,
     )

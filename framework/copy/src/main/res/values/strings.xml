@@ -105,6 +105,7 @@
   <string name="launch.jailbreak_subheading">Let op: je apparaat is geroot. Je gegevens zijn mogelijk niet veilig.</string>
   <string name="medication_use.heading">Medicijnen</string>
   <string name="medication_use.subheading">Een overzicht van de medicijnen die zijn voorgeschreven door je zorgaanbieder.</string>
+  <string name="organisation_list_automatic.subheading">Welke wil je tonen in je overzicht? Je kunt dit later altijd veranderen.</string>
   <string name="organization.diagnosis_heading">Klachten en diagnoses</string>
   <string name="organization.diagnosis_subheading">Vastgesteld door je zorgaanbieder</string>
   <string name="organization.lab_results_heading">Uitslagen</string>
@@ -127,7 +128,8 @@
   <string name="overview.heading">Overzicht</string>
   <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
   <string name="overview.no_results_action">Voeg zorgaanbieders toe</string>
-  <string name="overview.subheading">Dit is je persoonlijke overzicht.\nJe vindt hier al je medische gegevens.</string>
+  <string name="overview.organizations.subheading">Al je gegevens van deze zorgaanbieder</string>
+  <string name="overview.subheading">Al je zorgaanbieders op één plek</string>
   <string name="pincode.biometric.voiceover">Biometrisch inloggen</string>
   <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
   <string name="pincode.confirm.mismatch">Deze code is anders dan de vorige</string>

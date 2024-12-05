@@ -102,6 +102,11 @@ private fun OrganizationListAutomaticSearchScreenContent(
                 }
 
                 else -> {
+                    Text(
+                        modifier = Modifier.padding(bottom = 16.dp),
+                        text = stringResource(id = CopyR.string.organisation_list_automatic_subheading),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                     ResultsContent(
                         lazyListState = lazyListState,
                         searchResults = viewState.results,

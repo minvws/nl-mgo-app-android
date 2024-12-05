@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.create
 
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,7 +14,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
@@ -67,7 +65,6 @@ private fun PinCodeCreateScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.pincode_create_heading),
         onNavigateBack = if (hasBackButton) onNavigateBack else null,
-        contentPadding = PaddingValues(horizontal = 16.dp),
         content = {
             Text(
                 modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),

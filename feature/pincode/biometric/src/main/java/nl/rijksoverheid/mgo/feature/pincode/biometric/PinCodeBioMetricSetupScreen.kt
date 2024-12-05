@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
@@ -23,12 +22,19 @@ import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun PinCodeBioMetricSetupScreen(onNavigateToDashboard: () -> Unit) {
+fun PinCodeBioMetricSetupScreen(
+    onNavigateToLocalisation: () -> Unit,
+    onNavigateToDashboard: () -> Unit,
+) {
     val viewModel: PinCodeBiometricSetupScreenViewModel = hiltViewModel()
     PinCodeBioMetricSetupScreenContent(
         onBiometricLoginSuccess = {
             viewModel.setBiometricLoginEnabled()
-            onNavigateToDashboard()
+            if (viewModel.getAutomaticLocalisationEnabled()) {
+                onNavigateToLocalisation()
+            } else {
+                onNavigateToDashboard()
+            }
         },
         onNavigateToDashboard = onNavigateToDashboard,
     )
@@ -41,41 +47,37 @@ private fun PinCodeBioMetricSetupScreenContent(
 ) {
     val context = LocalContext.current
     MgoScaffold(
-        content = {
-            ColumnWithButtons(
-                buttonText = stringResource(id = CopyR.string.biometric_setup_enable),
-                secondaryButtonText = stringResource(id = CopyR.string.common_skip),
-                onButtonClick = {
-                    val fragmentActivity = context as FragmentActivity
-                    fragmentActivity.showBiometricPrompt(
-                        onSuccess = onBiometricLoginSuccess,
-                    )
-                },
-                onSecondaryButtonClick = { onNavigateToDashboard() },
-            ) {
-                Image(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                    painter = painterResource(id = R.drawable.illustration_biometric),
-                    contentDescription = null,
-                )
-
-                Text(
-                    modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(CopyR.string.biometric_setup_heading),
-                    style = MaterialTheme.typography.headingMedium,
-                )
-
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.biometric_setup_subheading),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
+        primaryButtonText = stringResource(id = CopyR.string.biometric_setup_enable),
+        onPrimaryButtonClick = {
+            val fragmentActivity = context as FragmentActivity
+            fragmentActivity.showBiometricPrompt(
+                onSuccess = onBiometricLoginSuccess,
+            )
         },
-    )
+        secondaryButtonText = stringResource(id = CopyR.string.common_skip),
+        onSecondaryButtonClick = onNavigateToDashboard,
+    ) {
+        Image(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+            painter = painterResource(id = R.drawable.illustration_biometric),
+            contentDescription = null,
+        )
+
+        Text(
+            modifier = Modifier.padding(top = 32.dp),
+            text = stringResource(CopyR.string.biometric_setup_heading),
+            style = MaterialTheme.typography.headingMedium,
+        )
+
+        Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = CopyR.string.biometric_setup_subheading),
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
 }
 
 @DefaultPreviews

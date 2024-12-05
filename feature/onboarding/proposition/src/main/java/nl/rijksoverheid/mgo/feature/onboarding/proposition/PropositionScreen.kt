@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
@@ -46,37 +45,34 @@ internal fun PropositionOverviewScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.proposition_heading),
         onNavigateBack = onNavigateBack,
+        primaryButtonText = stringResource(id = CopyR.string.common_next),
+        onPrimaryButtonClick = onClickNext,
         content = {
-            ColumnWithButtons(
-                buttonText = stringResource(id = CopyR.string.common_next),
-                onButtonClick = { onClickNext.invoke() },
-            ) {
-                MgoHtmlText(
-                    html = stringResource(id = CopyR.string.proposition_subheading, url),
-                    style = MaterialTheme.typography.bodySmall,
-                    onLinkClicked = { url -> url.launchBrowser(context) },
-                )
-                ListItem(
-                    modifier = Modifier.padding(top = 16.dp),
-                    icon = R.drawable.ic_privacy_overview_encrypted,
-                    text = stringResource(id = CopyR.string.proposition_statement_1),
-                )
-                ListItem(
-                    modifier = Modifier.padding(top = 24.dp),
-                    icon = R.drawable.ic_privacy_overview_health_and_safety,
-                    text = stringResource(id = CopyR.string.proposition_statement_2),
-                )
-                ListItem(
-                    modifier = Modifier.padding(top = 24.dp),
-                    icon = R.drawable.ic_privacy_overview_verified_user,
-                    text = stringResource(id = CopyR.string.proposition_statement_3),
-                )
-                ListItem(
-                    modifier = Modifier.padding(top = 24.dp),
-                    icon = R.drawable.ic_privacy_overview_gpp_bad,
-                    text = stringResource(id = CopyR.string.proposition_statement_4),
-                )
-            }
+            MgoHtmlText(
+                html = stringResource(id = CopyR.string.proposition_subheading, url),
+                style = MaterialTheme.typography.bodySmall,
+                onLinkClicked = { url -> url.launchBrowser(context) },
+            )
+            ListItem(
+                modifier = Modifier.padding(top = 16.dp),
+                icon = R.drawable.ic_privacy_overview_encrypted,
+                text = stringResource(id = CopyR.string.proposition_statement_1),
+            )
+            ListItem(
+                modifier = Modifier.padding(top = 24.dp),
+                icon = R.drawable.ic_privacy_overview_health_and_safety,
+                text = stringResource(id = CopyR.string.proposition_statement_2),
+            )
+            ListItem(
+                modifier = Modifier.padding(top = 24.dp),
+                icon = R.drawable.ic_privacy_overview_verified_user,
+                text = stringResource(id = CopyR.string.proposition_statement_3),
+            )
+            ListItem(
+                modifier = Modifier.padding(top = 24.dp),
+                icon = R.drawable.ic_privacy_overview_gpp_bad,
+                text = stringResource(id = CopyR.string.proposition_statement_4),
+            )
         },
     )
 }

@@ -100,10 +100,7 @@ dependencies {
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)
-    implementation(projects.feature.localisation.organizationSearch)
-
-    // Config
-    implementation(projects.feature.config)
+    implementation(projects.feature.localisation.organizationList)
 
     // ================================
     // FRAMEWORKS

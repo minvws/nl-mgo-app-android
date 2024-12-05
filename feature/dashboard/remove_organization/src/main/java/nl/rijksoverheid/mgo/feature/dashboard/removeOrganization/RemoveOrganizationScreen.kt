@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
@@ -61,45 +60,42 @@ private fun RemoveOrganizationScreenContent(
 ) {
     MgoScaffold(
         onNavigateBack = onNavigateBack,
+        primaryButtonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
+        onPrimaryButtonClick = onNavigateBack,
+        secondaryButtonText = stringResource(id = CopyR.string.remove_organization_yes_delete),
+        onSecondaryButtonClick = onDeleteProvider,
         content = {
-            ColumnWithButtons(
-                buttonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
-                secondaryButtonText = stringResource(id = CopyR.string.remove_organization_yes_delete),
-                onButtonClick = onNavigateBack,
-                onSecondaryButtonClick = onDeleteProvider,
+            Box(
+                modifier =
+                    Modifier
+                        .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+                        .size(102.dp)
+                        .background(MaterialTheme.colorScheme.notificationError(), CircleShape)
+                        .align(Alignment.CenterHorizontally),
+                contentAlignment = Alignment.Center,
             ) {
-                Box(
+                Icon(
                     modifier =
                         Modifier
-                            .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-                            .size(102.dp)
-                            .background(MaterialTheme.colorScheme.notificationError(), CircleShape)
-                            .align(Alignment.CenterHorizontally),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        modifier =
-                            Modifier
-                                .size(61.dp),
-                        painter = painterResource(id = R.drawable.ic_delete),
-                        tint = MaterialTheme.colorScheme.backgroundSecondary(),
-                        contentDescription = null,
-                    )
-                }
-
-                Text(
-                    modifier = Modifier.padding(top = 32.dp),
-                    text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
-                    style = MaterialTheme.typography.headingLarge,
-                    fontWeight = FontWeight.Bold,
-                )
-
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.remove_organization_subheading, providerName),
-                    style = MaterialTheme.typography.bodyDefault,
+                            .size(61.dp),
+                    painter = painterResource(id = R.drawable.ic_delete),
+                    tint = MaterialTheme.colorScheme.backgroundSecondary(),
+                    contentDescription = null,
                 )
             }
+
+            Text(
+                modifier = Modifier.padding(top = 32.dp),
+                text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
+                style = MaterialTheme.typography.headingLarge,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Text(
+                modifier = Modifier.padding(top = 16.dp),
+                text = stringResource(id = CopyR.string.remove_organization_subheading, providerName),
+                style = MaterialTheme.typography.bodyDefault,
+            )
         },
     )
 }

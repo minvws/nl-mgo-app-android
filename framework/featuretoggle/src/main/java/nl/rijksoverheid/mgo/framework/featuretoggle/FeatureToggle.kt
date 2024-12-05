@@ -34,6 +34,6 @@ val featureToggles =
         FeatureToggle(
             id = FeatureToggleId.AutomaticLocalisation,
             preferenceKey = KEY_AUTOMATIC_LOCALISATION,
-            initialValue = false,
+            initialValue = true,
         ),
     )

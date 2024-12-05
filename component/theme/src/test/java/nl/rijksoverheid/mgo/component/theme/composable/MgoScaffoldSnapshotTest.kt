@@ -28,4 +28,32 @@ internal class MgoScaffoldSnapshotTest {
             MgoScaffoldWithoutAppBar()
         }
     }
+
+    @Test
+    fun withPrimaryButton() {
+        snapshotTestRule.snapshots {
+            MgoScaffoldWithPrimaryButton()
+        }
+    }
+
+    @Test
+    fun withPrimaryButtonScrollable() {
+        snapshotTestRule.snapshots {
+            MgoScaffoldWithPrimaryButtonScrollable()
+        }
+    }
+
+    @Test
+    fun withPrimaryAndSecondaryButton() {
+        snapshotTestRule.snapshots {
+            MgoScaffoldWithPrimaryButton()
+        }
+    }
+
+    @Test
+    fun withPrimaryAndSecondaryButtonScrollable() {
+        snapshotTestRule.snapshots {
+            MgoScaffoldWithPrimaryButtonScrollable()
+        }
+    }
 }

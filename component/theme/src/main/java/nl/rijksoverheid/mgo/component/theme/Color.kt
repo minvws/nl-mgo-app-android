@@ -9,11 +9,11 @@ import androidx.compose.ui.graphics.compositeOver
 // Base
 @Composable
 fun ColorScheme.backgroundPrimary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF0C0C0C) else Color(0xFFF3F3F3)
+    if (isSystemDarkTheme) Color(0xFF121212) else Color(0xFFF5F5F5)
 
 @Composable
 fun ColorScheme.backgroundSecondary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF222222) else Color(0xFFFFFFFF)
+    if (isSystemDarkTheme) Color(0xFF252525) else Color(0xFFFFFFFF)
 
 @Composable
 fun ColorScheme.backgroundTertiary(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
@@ -183,7 +183,7 @@ fun ColorScheme.supportOverige(isSystemDarkTheme: Boolean = isSystemInDarkTheme(
 
 @Composable
 fun ColorScheme.supportRijkslint(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
-    if (isSystemDarkTheme) Color(0xFF738EAB) else Color(0xFF154273)
+    if (isSystemDarkTheme) Color(0xFF4f7196) else Color(0xFF154273)
 
 @Composable
 fun ColorScheme.supportGgd(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =

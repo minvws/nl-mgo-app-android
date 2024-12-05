@@ -7,6 +7,9 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.pincode.StorePinCode
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import javax.inject.Named
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -20,6 +23,7 @@ internal class PinCodeConfirmScreenViewModel
         @Assisted("pinCodeToMatch") private val pinCodeToMatch: List<Int>,
         private val storePinCode: StorePinCode,
         private val deviceHasBiometric: DeviceHasBiometric,
+        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
     ) :
     ViewModel() {
         @AssistedFactory
@@ -40,6 +44,8 @@ internal class PinCodeConfirmScreenViewModel
                 storePinCode.invoke(pinCodeToMatch)
                 if (deviceHasBiometric()) {
                     _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.BIOMETRIC)
+                } else if (keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)) {
+                    _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.AUTOMATIC_LOCALISATION)
                 } else {
                     _navigate.tryEmit(PinCodeConfirmScreenNextNavigation.DASHBOARD)
                 }

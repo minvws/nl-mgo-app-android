@@ -22,7 +22,7 @@ internal class DefaultOrganizationRepository(
 
     override val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(runBlocking { get() })
 
-    override suspend fun search(
+    override fun search(
         name: String,
         city: String,
     ): Flow<List<MgoOrganization>> {
@@ -31,6 +31,19 @@ internal class DefaultOrganizationRepository(
         val searchResponseFlow =
             flow {
                 val result = executeNetworkRequest { loadApi.search(requestBody) }
+                emit(result.getOrThrow())
+            }
+        return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
+            searchResponse.organizations.map { organization ->
+                organization.toMgoOrganization(added = storedOrganizations.any { provider -> provider.id == organization.id })
+            }
+        }
+    }
+
+    override suspend fun searchDemo(): Flow<List<MgoOrganization>> {
+        val searchResponseFlow =
+            flow {
+                val result = executeNetworkRequest { loadApi.searchDemo() }
                 emit(result.getOrThrow())
             }
         return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
@@ -51,7 +64,10 @@ internal class DefaultOrganizationRepository(
 
         // Add our provider we want to save
         val newProviders = storedMgoOrganizations.providers.toMutableList()
-        newProviders.add(provider)
+        val alreadyAdded = newProviders.map { organization -> organization.id }.contains(provider.id)
+        if (!alreadyAdded) {
+            newProviders.add(provider)
+        }
         val newStoredOrganizations = storedMgoOrganizations.copy(providers = newProviders)
 
         // Save new file
@@ -63,7 +79,7 @@ internal class DefaultOrganizationRepository(
 
     override suspend fun delete(providerId: String) {
         // Get stored health care providers
-        val storedMgoOrganizations = requireNotNull(encryptedFileStore.getFile(MgoOrganizations::class, fileName))
+        val storedMgoOrganizations = encryptedFileStore.getFile(MgoOrganizations::class, fileName) ?: MgoOrganizations(listOf())
 
         // Delete the provider from the file
         val newProviders = storedMgoOrganizations.providers.toMutableList()
@@ -79,7 +95,7 @@ internal class DefaultOrganizationRepository(
 
     override suspend fun deleteAll() {
         // Update flow
-        storedOrganizationsFlow.value = listOf<MgoOrganization>()
+        storedOrganizationsFlow.value = listOf()
 
         // Delete file
         encryptedFileStore.deleteFile(fileName)

@@ -4,9 +4,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import nl.rijksoverheid.mgo.MainActivity
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 
-fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
+fun NavGraphBuilder.addDashboardNavGraph(
+    mainActivity: MainActivity,
+    rootNavController: NavController,
+) {
     navigation<DashboardNavigation.Root>(DashboardNavigation.BottomBar) {
         composable<DashboardNavigation.BottomBar> {
             DashboardBottomBarScreen(
@@ -19,8 +23,8 @@ fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
                     addDashboardOrganizationsNavGraph(rootNavController = rootNavController, navController = navController)
                 },
                 settingsStartDestination = DashboardNavigation.Settings.Root,
-                settingsNavGraph = { navController ->
-                    addDashboardSettingsNavGraph(rootNavController)
+                settingsNavGraph = {
+                    addDashboardSettingsNavGraph(mainActivity = mainActivity, rootNavController = rootNavController)
                 },
             )
         }

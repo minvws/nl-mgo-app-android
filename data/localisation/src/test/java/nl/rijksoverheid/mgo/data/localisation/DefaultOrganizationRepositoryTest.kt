@@ -68,6 +68,48 @@ internal class DefaultOrganizationRepositoryTest {
         }
 
     @Test
+    fun testSearchDemoSuccess() =
+        runTest {
+            // Given: successful response
+            testServer.enqueueJson(json = getTestServerBodyForUnitTest(filePath = "response/search.json"))
+
+            // When: Calling searchDemo
+            val repository = getRepository()
+            val searchFlow = repository.searchDemo()
+
+            // Then: organizations are emitted in the flow
+            searchFlow.test {
+                val providers = awaitItem()
+                assertEquals(45, providers.size)
+
+                val expectedFirstHealthProvider =
+                    MgoOrganization(
+                        id = "agb-z:12001468",
+                        name = "Tandartspraktijk Van Dijck",
+                        address = "Ginnekenweg 183\r\n4835NA BREDA",
+                        category = "Tandartsen",
+                        added = false,
+                        dataServices =
+                            listOf(
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/51",
+                                    type = MgoOrganizationDataServiceType.DOCUMENTS,
+                                ),
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/49",
+                                    type = MgoOrganizationDataServiceType.GP,
+                                ),
+                                MgoOrganizationDataService(
+                                    resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
+                                    type = MgoOrganizationDataServiceType.BGZ,
+                                ),
+                            ),
+                    )
+                assertEquals(expectedFirstHealthProvider, providers.firstOrNull())
+            }
+        }
+
+    @Test
     fun `Given loadApi request failed, When calling search, Then emit error`() =
         runTest {
             // Given
@@ -120,6 +162,38 @@ internal class DefaultOrganizationRepositoryTest {
             // Then
             repository.storedOrganizationsFlow.test {
                 assertEquals(storedMgoOrganizations.providers, awaitItem())
+            }
+        }
+
+    @Test
+    fun testSave() =
+        runTest {
+            // When: Calling save
+            val provider = TEST_MGO_ORGANIZATION
+            val repository = getRepository()
+            repository.save(provider)
+
+            // Then: Organization is emitted
+            repository.storedOrganizationsFlow.test {
+                assertEquals(listOf(provider), awaitItem())
+            }
+        }
+
+    @Test
+    fun testSaveAlreadySaved() =
+        runTest {
+            // Given: Organization is saved
+            val organization = TEST_MGO_ORGANIZATION
+            val storedOrganizations = MgoOrganizations(providers = listOf(organization))
+            fileStore.saveFile(storedOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
+
+            // When: Calling save for same organization
+            val repository = getRepository()
+            repository.save(organization)
+
+            // Then: Organization is emitted, and does not include it twice
+            repository.storedOrganizationsFlow.test {
+                assertEquals(listOf(organization), awaitItem())
             }
         }
 

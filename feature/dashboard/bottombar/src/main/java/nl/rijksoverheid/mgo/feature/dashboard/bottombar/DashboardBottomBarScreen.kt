@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.BottomAppBar
@@ -19,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -52,7 +52,7 @@ fun DashboardBottomBarScreen(
     val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
 
     MgoScaffold(
-        contentPadding = PaddingValues(),
+        horizontalPadding = 0.dp,
         content = {
             HorizontalPager(state = pagerState, userScrollEnabled = false) { position ->
                 val bottomBarItem = bottomBarItems[position]

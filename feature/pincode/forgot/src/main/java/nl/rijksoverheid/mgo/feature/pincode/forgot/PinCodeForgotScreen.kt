@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nl.rijksoverheid.mgo.component.theme.ColumnWithButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionPrimaryNegativeBackground
@@ -77,19 +76,16 @@ private fun PinCodeForgotScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.forgot_pincode_heading),
         onNavigateBack = onNavigateBack,
+        primaryButtonText = stringResource(id = CopyR.string.common_cancel),
+        onPrimaryButtonClick = onNavigateBack,
+        secondaryButtonText = stringResource(id = CopyR.string.forgot_pincode_button),
+        onSecondaryButtonClick = { showDialog = true },
         content = {
-            ColumnWithButtons(
-                buttonText = stringResource(id = CopyR.string.common_cancel),
-                secondaryButtonText = stringResource(id = CopyR.string.forgot_pincode_button),
-                onButtonClick = onNavigateBack,
-                onSecondaryButtonClick = { showDialog = true },
-            ) {
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = stringResource(id = CopyR.string.forgot_pincode_subheading),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
+            Text(
+                modifier = Modifier.padding(top = 16.dp),
+                text = stringResource(id = CopyR.string.forgot_pincode_subheading),
+                style = MaterialTheme.typography.bodySmall,
+            )
         },
     )
 }

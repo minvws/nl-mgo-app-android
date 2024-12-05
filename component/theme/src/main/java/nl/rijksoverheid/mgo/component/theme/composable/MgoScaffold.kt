@@ -1,14 +1,15 @@
 package nl.rijksoverheid.mgo.component.theme.composable
 
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -28,6 +29,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
@@ -41,7 +44,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
@@ -53,15 +55,29 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.vibrate
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+sealed class MgoScaffoldScrollStateProvider(open val canScrollForward: Boolean) {
+    data object None : MgoScaffoldScrollStateProvider(false)
+
+    data class Column(val scrollState: ScrollState) : MgoScaffoldScrollStateProvider(scrollState.canScrollForward)
+
+    data class LazyColumn(val lazyListState: LazyListState) : MgoScaffoldScrollStateProvider(lazyListState.canScrollForward)
+
+    data class Preview(override val canScrollForward: Boolean) : MgoScaffoldScrollStateProvider(canScrollForward)
+}
+
 @Composable
 fun MgoScaffold(
     appBarTitle: String? = null,
     appBarTitleAlign: TextAlign = TextAlign.Start,
     bottomBar: @Composable () -> Unit = {},
+    scrollStateProvider: MgoScaffoldScrollStateProvider = MgoScaffoldScrollStateProvider.None,
+    primaryButtonText: String? = null,
+    onPrimaryButtonClick: (() -> Unit)? = null,
+    secondaryButtonText: String? = null,
+    onSecondaryButtonClick: (() -> Unit)? = null,
     onNavigateBack: (() -> Unit)? = null,
-    scrollable: Boolean = false,
     isRootScaffold: Boolean = true,
-    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
+    horizontalPadding: Dp = 16.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val context = LocalContext.current
@@ -119,9 +135,7 @@ fun MgoScaffold(
                         expandedHeight =
                             calculateExpandedHeight(
                                 title = appBarTitle,
-                                horizontalPadding =
-                                    contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-                                        .plus(contentPadding.calculateEndPadding(LayoutDirection.Ltr)),
+                                horizontalPadding = horizontalPadding,
                             ),
                         // Add 16dp for some bottom padding
                         navigationIcon = {
@@ -155,17 +169,41 @@ fun MgoScaffold(
                 modifier =
                     Modifier
                         .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
-                        .padding(innerPadding)
-                        .padding(contentPadding)
-                        .then(
-                            if (scrollable) {
-                                Modifier.verticalScroll(rememberScrollState())
-                            } else {
-                                Modifier
-                            },
-                        ),
+                        .padding(innerPadding),
             ) {
-                content()
+                Column(
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .padding(horizontal = horizontalPadding)
+                            .then(
+                                if (scrollStateProvider is MgoScaffoldScrollStateProvider.Column) {
+                                    Modifier.verticalScroll(scrollStateProvider.scrollState)
+                                } else {
+                                    Modifier
+                                },
+                            ),
+                ) {
+                    content()
+                }
+
+                if (primaryButtonText != null && onPrimaryButtonClick != null) {
+                    // Disable shadow for all previews that use this composable (excepting being this one)
+                    val canScrollForward =
+                        if (LocalInspectionMode.current && scrollStateProvider !is MgoScaffoldScrollStateProvider.Preview) {
+                            false
+                        } else {
+                            scrollStateProvider.canScrollForward
+                        }
+                    Buttons(
+                        canScrollForward = canScrollForward,
+                        primaryButtonText = primaryButtonText,
+                        onPrimaryButtonClick = onPrimaryButtonClick,
+                        secondaryButtonText = secondaryButtonText,
+                        onSecondaryButtonClick = onSecondaryButtonClick,
+                        horizontalPadding = horizontalPadding,
+                    )
+                }
             }
         },
     )
@@ -193,6 +231,53 @@ private fun calculateExpandedHeight(
     return density.run { expandedHeightPx.toDp() } + TopAppBarDefaults.MediumAppBarCollapsedHeight + 16.dp
 }
 
+@Composable
+private fun Buttons(
+    horizontalPadding: Dp,
+    canScrollForward: Boolean,
+    primaryButtonText: String,
+    onPrimaryButtonClick: () -> Unit,
+    secondaryButtonText: String? = null,
+    onSecondaryButtonClick: (() -> Unit)? = null,
+) {
+    if (canScrollForward) {
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(2.dp)
+                    .shadow(elevation = 1.dp, spotColor = Color.Gray),
+        )
+    }
+    val background = if (canScrollForward) MaterialTheme.colorScheme.surface else Color.Transparent
+    Column(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(background)
+                .padding(horizontal = horizontalPadding, vertical = 16.dp),
+    ) {
+        if (secondaryButtonText != null && onSecondaryButtonClick != null) {
+            MgoButton(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                buttonText = secondaryButtonText,
+                onClick = onSecondaryButtonClick,
+                buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
+            )
+        }
+        MgoButton(
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            buttonText = primaryButtonText,
+            onClick = onPrimaryButtonClick,
+        )
+    }
+}
+
 @PreviewLightDark
 @Composable
 internal fun MgoScaffoldWithAppBarAndBackButton() {
@@ -200,7 +285,7 @@ internal fun MgoScaffoldWithAppBarAndBackButton() {
         MgoScaffold(
             appBarTitle = "App Bar Title",
             onNavigateBack = {},
-            contentPadding = PaddingValues(16.dp),
+            horizontalPadding = 16.dp,
             content = {
                 Text("Hello World")
             },
@@ -214,7 +299,7 @@ internal fun MgoScaffoldWithAppBar() {
     MgoTheme {
         MgoScaffold(
             appBarTitle = "App Bar Title",
-            contentPadding = PaddingValues(16.dp),
+            horizontalPadding = 16.dp,
             content = {
                 Text("Hello World")
             },
@@ -226,11 +311,83 @@ internal fun MgoScaffoldWithAppBar() {
 @Composable
 internal fun MgoScaffoldWithoutAppBar() {
     MgoTheme {
+        Box(modifier = Modifier.padding(top = 16.dp)) {
+            MgoScaffold(
+                horizontalPadding = 16.dp,
+                content = {
+                    Text("Hello World")
+                },
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithPrimaryButton() {
+    MgoTheme {
         MgoScaffold(
-            contentPadding = PaddingValues(16.dp),
+            appBarTitle = "App Bar Title",
+            horizontalPadding = 16.dp,
             content = {
                 Text("Hello World")
             },
+            primaryButtonText = "Primary Button",
+            onPrimaryButtonClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithPrimaryButtonScrollable() {
+    MgoTheme {
+        MgoScaffold(
+            appBarTitle = "App Bar Title",
+            horizontalPadding = 16.dp,
+            content = {
+                Text("Hello World")
+            },
+            primaryButtonText = "Primary Button",
+            onPrimaryButtonClick = {},
+            scrollStateProvider = MgoScaffoldScrollStateProvider.Preview(true),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithPrimaryAndSecondaryButton() {
+    MgoTheme {
+        MgoScaffold(
+            appBarTitle = "App Bar Title",
+            horizontalPadding = 16.dp,
+            content = {
+                Text("Hello World")
+            },
+            primaryButtonText = "Primary Button",
+            onPrimaryButtonClick = {},
+            secondaryButtonText = "Secondary Button",
+            onSecondaryButtonClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoScaffoldWithPrimaryAndSecondaryButtonScrollable() {
+    MgoTheme {
+        MgoScaffold(
+            appBarTitle = "App Bar Title",
+            horizontalPadding = 16.dp,
+            content = {
+                Text("Hello World")
+            },
+            primaryButtonText = "Primary Button",
+            onPrimaryButtonClick = {},
+            secondaryButtonText = "Secondary Button",
+            onSecondaryButtonClick = {},
+            scrollStateProvider = MgoScaffoldScrollStateProvider.Preview(true),
         )
     }
 }

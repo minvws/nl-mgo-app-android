@@ -56,13 +56,4 @@ internal class SettingsScreenViewModel
                 featureToggleRepository.set(toggle, enabled)
             }
         }
-
-        fun resetApp() {
-            viewModelScope.launch {
-                organizationRepository.deleteAll()
-                keyValueStore.clear()
-                secureKeyValueStore.clear()
-                _navigateToOnboarding.tryEmit(Unit)
-            }
-        }
     }

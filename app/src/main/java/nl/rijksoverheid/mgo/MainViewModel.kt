@@ -8,6 +8,8 @@ import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
@@ -15,6 +17,7 @@ import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -30,6 +33,7 @@ internal class MainViewModel
         private val hasPinCode: HasPinCode,
         private val hasSeenOnboarding: HasSeenOnboarding,
         private val featureToggleRepository: FeatureToggleRepository,
+        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
     ) : ViewModel() {
         private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
         val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -78,5 +82,9 @@ internal class MainViewModel
             viewModelScope.launch {
                 saveClosedAppTimestamp.invoke()
             }
+        }
+
+        fun getAutomaticLocalisationEnabled(): Boolean {
+            return keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
         }
     }

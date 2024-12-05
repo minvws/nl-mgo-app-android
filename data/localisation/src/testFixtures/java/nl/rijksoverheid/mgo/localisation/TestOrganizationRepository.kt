@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.localisation
 
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
@@ -12,7 +13,7 @@ class TestOrganizationRepository : OrganizationRepository {
     private var searchResults: List<MgoOrganization> = listOf()
     private var searchResultError: Throwable? = null
 
-    override suspend fun search(
+    override fun search(
         name: String,
         city: String,
     ): Flow<List<MgoOrganization>> {
@@ -22,7 +23,15 @@ class TestOrganizationRepository : OrganizationRepository {
         }
     }
 
-    fun setSearchResults(searchResults: List<MgoOrganization>) {
+    override suspend fun searchDemo(): Flow<List<MgoOrganization>> {
+        return flow {
+            searchResultError?.let { throwable -> throw throwable }
+            emit(searchResults)
+        }
+    }
+
+    suspend fun setSearchResults(searchResults: List<MgoOrganization>) {
+        delay(100)
         this.searchResults = searchResults
     }
 
@@ -55,6 +64,6 @@ class TestOrganizationRepository : OrganizationRepository {
     }
 
     override suspend fun deleteAll() {
-        storedOrganizationsFlow.value = listOf<MgoOrganization>()
+        storedOrganizationsFlow.value = listOf()
     }
 }

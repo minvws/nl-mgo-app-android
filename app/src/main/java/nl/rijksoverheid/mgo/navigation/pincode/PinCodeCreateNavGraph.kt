@@ -10,6 +10,7 @@ import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreen
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavigation
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
+import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
 fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
@@ -47,6 +48,14 @@ fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
                                 }
                             }
                         }
+
+                        PinCodeConfirmScreenNextNavigation.AUTOMATIC_LOCALISATION -> {
+                            navController.navigate(LocalisationNavigation.Root) {
+                                popUpTo(navController.graph.id) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     }
                 },
                 onNavigateBack = {
@@ -59,6 +68,13 @@ fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
             PinCodeBioMetricSetupScreen(
                 onNavigateToDashboard = {
                     navController.navigate(DashboardNavigation.Root) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onNavigateToLocalisation = {
+                    navController.navigate(LocalisationNavigation.Root) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }

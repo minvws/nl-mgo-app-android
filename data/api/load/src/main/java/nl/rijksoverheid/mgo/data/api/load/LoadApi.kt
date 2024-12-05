@@ -8,4 +8,7 @@ interface LoadApi {
     suspend fun search(
         @Body requestBody: SearchRequestBody,
     ): SearchResponse
+
+    @POST("/localization/organization/search-demo")
+    suspend fun searchDemo(): SearchResponse
 }

@@ -67,6 +67,34 @@ private fun SettingsScreenContent(
     onResetAppButtonClicked: () -> Unit,
     onRestartApp: () -> Unit,
 ) {
+    var showResetAppDialog by remember { mutableStateOf(false) }
+    if (showResetAppDialog) {
+        AlertDialog(
+            title = { Text(stringResource(CopyR.string.settings_reset_app_dialog_heading)) },
+            text = { Text(stringResource(CopyR.string.settings_reset_app_dialog_subheading)) },
+            onDismissRequest = { showResetAppDialog = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showResetAppDialog = false
+                        onResetAppButtonClicked()
+                    },
+                ) {
+                    Text(stringResource(CopyR.string.common_yes))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showResetAppDialog = false
+                    },
+                ) {
+                    Text(stringResource(CopyR.string.common_no))
+                }
+            },
+        )
+    }
+
     var showRestartAppDialog by remember { mutableStateOf(false) }
     if (showRestartAppDialog) {
         AlertDialog(
@@ -112,9 +140,9 @@ private fun SettingsScreenContent(
                 Spacer(modifier = Modifier.weight(1f))
                 MgoButton(
                     modifier = Modifier.fillMaxWidth(),
-                    buttonText = "Reset de app",
+                    buttonText = stringResource(CopyR.string.settings_reset_app_button),
                     buttonTheme = MgoButtonTheme.PRIMARY_NEGATIVE,
-                    onClick = onResetAppButtonClicked,
+                    onClick = { showResetAppDialog = true },
                 )
             }
         },

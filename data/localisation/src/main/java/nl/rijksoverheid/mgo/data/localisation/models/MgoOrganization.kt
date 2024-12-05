@@ -36,7 +36,7 @@ val TEST_MGO_ORGANIZATION =
         address = "Boorplatform 5\r\n1234AB Roermond",
         category = "Tandarts",
         added = false,
-        dataServices = listOf(),
+        dataServices = listOf(TEST_BGZ_DATA_SERVICE),
     )
 
 internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoOrganization {

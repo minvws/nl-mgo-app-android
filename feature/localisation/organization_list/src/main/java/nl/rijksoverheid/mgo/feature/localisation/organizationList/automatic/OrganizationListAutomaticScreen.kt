@@ -41,7 +41,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun OrganizationListAutomaticSearchScreen(
-    onNavigateBack: () -> Unit,
+    onNavigateBack: (() -> Unit)?,
     onNavigateToDashboard: () -> Unit,
 ) {
     val viewModel: OrganizationListAutomaticScreenViewModel = hiltViewModel()
@@ -63,7 +63,7 @@ fun OrganizationListAutomaticSearchScreen(
 @Composable
 private fun OrganizationListAutomaticSearchScreenContent(
     viewState: OrganizationListAutomaticScreenViewState,
-    onNavigateBack: () -> Unit,
+    onNavigateBack: (() -> Unit)?,
     onUpdateOrganizations: () -> Unit,
     onGetSearchResults: () -> Unit,
     updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,

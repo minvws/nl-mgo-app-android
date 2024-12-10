@@ -22,28 +22,21 @@ import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun PinCodeBioMetricSetupScreen(
-    onNavigateToLocalisation: () -> Unit,
-    onNavigateToDashboard: () -> Unit,
-) {
+fun PinCodeBioMetricSetupScreen(onNavigateToDigid: () -> Unit) {
     val viewModel: PinCodeBiometricSetupScreenViewModel = hiltViewModel()
     PinCodeBioMetricSetupScreenContent(
         onBiometricLoginSuccess = {
             viewModel.setBiometricLoginEnabled()
-            if (viewModel.getAutomaticLocalisationEnabled()) {
-                onNavigateToLocalisation()
-            } else {
-                onNavigateToDashboard()
-            }
+            onNavigateToDigid()
         },
-        onNavigateToDashboard = onNavigateToDashboard,
+        onClickSkip = onNavigateToDigid,
     )
 }
 
 @Composable
 private fun PinCodeBioMetricSetupScreenContent(
     onBiometricLoginSuccess: () -> Unit,
-    onNavigateToDashboard: () -> Unit,
+    onClickSkip: () -> Unit,
 ) {
     val context = LocalContext.current
     MgoScaffold(
@@ -55,7 +48,7 @@ private fun PinCodeBioMetricSetupScreenContent(
             )
         },
         secondaryButtonText = stringResource(id = CopyR.string.common_skip),
-        onSecondaryButtonClick = onNavigateToDashboard,
+        onSecondaryButtonClick = onClickSkip,
     ) {
         Image(
             modifier =
@@ -86,7 +79,7 @@ internal fun PinCodeBiometricSetupScreenPreview() {
     MgoTheme {
         PinCodeBioMetricSetupScreenContent(
             onBiometricLoginSuccess = {},
-            onNavigateToDashboard = {},
+            onClickSkip = {},
         )
     }
 }

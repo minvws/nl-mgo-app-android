@@ -20,8 +20,14 @@ fun NavGraphBuilder.addLocalisationNavGraph(
         if (automaticLocalisationEnabled) LocalisationNavigation.OrganizationListAutomatic else LocalisationNavigation.AddOrganization
     navigation<LocalisationNavigation.Root>(startNavigation) {
         mgoComposable<LocalisationNavigation.AddOrganization> {
+            val onNavigateBack: (() -> Unit)? =
+                if (navController.previousBackStackEntry == null) {
+                    null
+                } else {
+                    { navController.popBackStack() }
+                }
             AddOrganizationScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = onNavigateBack,
                 onNavigateToOrganizationSearch = { name, city ->
                     navController.navigate(LocalisationNavigation.OrganisationListManual(name = name, city = city))
                 },
@@ -53,8 +59,14 @@ fun NavGraphBuilder.addLocalisationNavGraph(
         }
 
         mgoComposable<LocalisationNavigation.OrganizationListAutomatic> {
+            val onNavigateBack: (() -> Unit)? =
+                if (navController.previousBackStackEntry == null) {
+                    null
+                } else {
+                    { navController.popBackStack() }
+                }
             OrganizationListAutomaticSearchScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = onNavigateBack,
                 onNavigateToDashboard = {
                     // If coming from dashboard, we want to pop back
                     val canPop =

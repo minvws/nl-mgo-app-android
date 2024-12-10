@@ -102,6 +102,9 @@ dependencies {
     implementation(projects.feature.localisation.addOrganization)
     implementation(projects.feature.localisation.organizationList)
 
+    // DigiD
+    implementation(projects.feature.digid)
+
     // ================================
     // FRAMEWORKS
     // ================================

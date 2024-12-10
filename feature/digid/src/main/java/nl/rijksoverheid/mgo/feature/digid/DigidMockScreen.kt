@@ -15,15 +15,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun DigidMockScreen(onNavigateToAutomaticLocalisation: () -> Unit) {
+fun DigidMockScreen(onNavigateToLocalisation: () -> Unit) {
     MgoScaffold(
         primaryButtonText = stringResource(id = CopyR.string.common_next),
-        onPrimaryButtonClick = onNavigateToAutomaticLocalisation,
+        onPrimaryButtonClick = onNavigateToLocalisation,
     ) {
         Image(
             modifier =
@@ -42,9 +43,9 @@ fun DigidMockScreen(onNavigateToAutomaticLocalisation: () -> Unit) {
             fontWeight = FontWeight.Bold,
         )
 
-        Text(
+        MgoHtmlText(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = CopyR.string.login_info_subheading),
+            html = stringResource(id = CopyR.string.login_info_subheading),
             style = MaterialTheme.typography.bodySmall,
         )
     }
@@ -55,7 +56,7 @@ fun DigidMockScreen(onNavigateToAutomaticLocalisation: () -> Unit) {
 internal fun DigidMockScreenPreview() {
     MgoTheme {
         DigidMockScreen(
-            onNavigateToAutomaticLocalisation = {},
+            onNavigateToLocalisation = {},
         )
     }
 }

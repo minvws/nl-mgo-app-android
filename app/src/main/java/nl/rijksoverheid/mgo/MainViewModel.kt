@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
@@ -13,6 +14,7 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
+import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
@@ -33,7 +35,8 @@ internal class MainViewModel
         private val hasPinCode: HasPinCode,
         private val hasSeenOnboarding: HasSeenOnboarding,
         private val featureToggleRepository: FeatureToggleRepository,
-        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
+        @Named("keyValueStore") val keyValueStore: KeyValueStore,
+        val isDigidAuthenticated: IsDigidAuthenticated,
     ) : ViewModel() {
         private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
         val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -51,20 +54,29 @@ internal class MainViewModel
 
         fun getStartDestination(): Any {
             return when {
-                hasPinCode.invoke() -> {
-                    if (featureToggleRepository.get(FeatureToggleId.SkipPin)) {
-                        DashboardNavigation.Root
-                    } else {
-                        PinCodeLoginNavigation.Root
-                    }
+                // If the user has not seen the onboarding, show the onboarding flow.
+                !hasSeenOnboarding.invoke() -> {
+                    OnboardingNavigation.Root
                 }
 
-                hasSeenOnboarding.invoke() -> {
+                // If the user has not create a pin code, show the create pin code flow.
+                !hasPinCode.invoke() -> {
                     PinCodeCreateNavigation.Root
                 }
 
+                // If the user has not yet authenticated with DigiD, show the DigiD flow.
+                !isDigidAuthenticated.invoke() -> {
+                    DigidNavigation.Root
+                }
+
+                // If all above things are not true, then we can show the dashboard.
                 else -> {
-                    OnboardingNavigation.Root
+                    if (featureToggleRepository.get(FeatureToggleId.SkipPin)) {
+                        DashboardNavigation.Root
+                    } else {
+                        // Lock dashboard with pin code first.
+                        PinCodeLoginNavigation.Root
+                    }
                 }
             }
         }

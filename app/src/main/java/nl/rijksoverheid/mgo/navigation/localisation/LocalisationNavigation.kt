@@ -2,9 +2,10 @@ package nl.rijksoverheid.mgo.navigation.localisation
 
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed class LocalisationNavigation {
     @Serializable
-    data object Root : LocalisationNavigation()
+    data class Root(val checkResults: Boolean) : LocalisationNavigation()
 
     @Serializable
     data object AddOrganization : LocalisationNavigation()
@@ -13,5 +14,5 @@ sealed class LocalisationNavigation {
     data class OrganisationListManual(val name: String, val city: String) : LocalisationNavigation()
 
     @Serializable
-    data object OrganizationListAutomatic : LocalisationNavigation()
+    data class OrganizationListAutomatic(val checkResults: Boolean) : LocalisationNavigation()
 }

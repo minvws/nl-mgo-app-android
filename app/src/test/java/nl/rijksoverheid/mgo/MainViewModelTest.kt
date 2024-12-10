@@ -1,189 +1,190 @@
 package nl.rijksoverheid.mgo
 
 import app.cash.turbine.test
-import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.mgo.data.digid.TestIsDigidAuthenticated
 import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
-import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
-import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.featuretoggle.TestFeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.featuretoggle.skipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.lock.TestAppLocked
 import nl.rijksoverheid.mgo.lock.TestSaveClosedAppTimestamp
+import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
+import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 
 internal class MainViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val featureToggleRepository = mockk<FeatureToggleRepository>()
+    private val featureToggleRepository = TestFeatureToggleRepository()
     private val keyValueStore = TestKeyValueStore()
-
-    @Before
-    fun setup() =
-        runTest {
-            keyValueStore.setBoolean(KEY_AUTOMATIC_LOCALISATION, false)
-            every { featureToggleRepository.observe(FeatureToggleId.FlagSecure) } answers { flow { emit(false) } }
-            every { featureToggleRepository.get(FeatureToggleId.SkipPin) } answers { false }
-        }
-
-    @Test
-    fun `Given has pin code, When calling getStartDestination, Then return correct navigation`() {
-        // Given
-        val hasSeenOnboarding = TestHasSeenOnboarding()
-        val hasPinCode = TestHasPinCode()
-        hasPinCode.set(true)
-        val viewModel =
-            MainViewModel(
-                hasSeenOnboarding = hasSeenOnboarding,
-                hasPinCode = hasPinCode,
-                showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
-                saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
-                appLocked = TestAppLocked(false),
-                featureToggleRepository = featureToggleRepository,
-                keyValueStore = keyValueStore,
-            )
-
-        // When
-        val startDestination = viewModel.getStartDestination()
-
-        // Then
-        assertEquals(PinCodeLoginNavigation.Root, startDestination)
+    private val hasSeenOnboarding = TestHasSeenOnboarding()
+    private val hasPinCode = TestHasPinCode()
+    private val appLocked = TestAppLocked()
+    private val isDigidAuthenticated = TestIsDigidAuthenticated()
+    private val saveClosedAppTimestamp = TestSaveClosedAppTimestamp()
+    private val viewModel by lazy {
+        MainViewModel(
+            hasSeenOnboarding = hasSeenOnboarding,
+            hasPinCode = hasPinCode,
+            showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
+            saveClosedAppTimestamp = saveClosedAppTimestamp,
+            appLocked = appLocked,
+            featureToggleRepository = featureToggleRepository,
+            keyValueStore = keyValueStore,
+            isDigidAuthenticated = isDigidAuthenticated,
+        )
     }
 
     @Test
-    fun `Given onboarding seen, When calling getStartDestination, Then return correct navigation`() {
-        // Given
-        val hasSeenOnboarding = TestHasSeenOnboarding()
-        val hasPinCode = TestHasPinCode()
-        hasSeenOnboarding.set(true)
-        val viewModel =
-            MainViewModel(
-                hasSeenOnboarding = hasSeenOnboarding,
-                hasPinCode = hasPinCode,
-                showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
-                saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
-                appLocked = TestAppLocked(false),
-                featureToggleRepository = featureToggleRepository,
-                keyValueStore = keyValueStore,
-            )
-
-        // When
-        val startDestination = viewModel.getStartDestination()
-
-        // Then
-        assertEquals(PinCodeCreateNavigation.Root, startDestination)
-    }
-
-    @Test
-    fun `Given onboarding not seen, When calling getStartDestination, Then return correct navigation`() {
-        // Given
-        val hasSeenOnboarding = TestHasSeenOnboarding()
-        val hasPinCode = TestHasPinCode()
+    fun testStartDestinationOnboarding() {
+        // Given: Onboarding not seen
         hasSeenOnboarding.set(false)
-        val viewModel =
-            MainViewModel(
-                hasSeenOnboarding = hasSeenOnboarding,
-                hasPinCode = hasPinCode,
-                showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
-                saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
-                appLocked = TestAppLocked(false),
-                featureToggleRepository = featureToggleRepository,
-                keyValueStore = keyValueStore,
-            )
 
-        // When
+        // When: Getting start destination
         val startDestination = viewModel.getStartDestination()
 
-        // Then
+        // Then: Start destination is onboarding
         assertEquals(OnboardingNavigation.Root, startDestination)
     }
 
     @Test
-    fun `Given app is locked, When calling checkAppLock, Then navigate to login dialog`() =
+    fun testStartDestinationPinCodeCreate() {
+        // Given: Onboarding seen
+        hasSeenOnboarding.set(true)
+
+        // Given: No pin code
+        hasPinCode.set(false)
+
+        // When: Getting start destination
+        val startDestination = viewModel.getStartDestination()
+
+        // Then: Start destination is create pin code
+        assertEquals(PinCodeCreateNavigation.Root, startDestination)
+    }
+
+    @Test
+    fun testStartDestinationDigid() {
+        // Given: Onboarding seen
+        hasSeenOnboarding.set(true)
+
+        // Given: Has pin code
+        hasPinCode.set(true)
+
+        // Given: Not authenticated with DigiD
+        isDigidAuthenticated.set(false)
+
+        // When: Getting start destination
+        val startDestination = viewModel.getStartDestination()
+
+        // Then: Start destination is DigiD
+        assertEquals(DigidNavigation.Root, startDestination)
+    }
+
+    @Test
+    fun testStartDestinationPinCodeLogin() =
         runTest {
-            // Given
-            val hasSeenOnboarding = TestHasSeenOnboarding()
-            val hasPinCode = TestHasPinCode()
-            val viewModel =
-                MainViewModel(
-                    hasSeenOnboarding = hasSeenOnboarding,
-                    hasPinCode = hasPinCode,
-                    showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
-                    saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
-                    appLocked = TestAppLocked(true),
-                    featureToggleRepository = featureToggleRepository,
-                    keyValueStore = keyValueStore,
-                )
+            // Given: Onboarding seen
+            hasSeenOnboarding.set(true)
+
+            // Given: Has pin code
+            hasPinCode.set(true)
+
+            // Given: Authenticated with DigiD
+            isDigidAuthenticated.set(true)
+
+            // Given: Skip pin feature toggle is disabled
+            featureToggleRepository.set(skipPinFeatureToggle, false)
+
+            // When: Getting start destination
+            val startDestination = viewModel.getStartDestination()
+
+            // Then: Start destination is dashboard
+            assertEquals(PinCodeLoginNavigation.Root, startDestination)
+        }
+
+    @Test
+    fun testStartDestinationDashboard() =
+        runTest {
+            // Given: Onboarding seen
+            hasSeenOnboarding.set(true)
+
+            // Given: Has pin code
+            hasPinCode.set(true)
+
+            // Given: Authenticated with DigiD
+            isDigidAuthenticated.set(true)
+
+            // Given: Skip pin feature toggle is enabled
+            featureToggleRepository.set(skipPinFeatureToggle, true)
+
+            // When: Getting start destination
+            val startDestination = viewModel.getStartDestination()
+
+            // Then: Start destination is create pin code
+            assertEquals(DashboardNavigation.Root, startDestination)
+        }
+
+    @Test
+    fun testAppIsLocked() =
+        runTest {
+            // Given: App is locked
+            appLocked.set(true)
 
             viewModel.navigateDialog.test {
-                // When
+                // When: Calling checkAppLock
                 viewModel.checkAppLock()
 
-                // Then
+                // Then: Navigate to login dialog
                 assertEquals(PinCodeLoginNavigation.LoginDialog, awaitItem())
             }
         }
 
     @Test
-    fun `Given app is not locked, When calling checkAppLock, Then do not navigate to login dialog`() =
+    fun testAppIsNotLocked() =
         runTest {
-            // Given
-            val hasSeenOnboarding = TestHasSeenOnboarding()
-            val hasPinCode = TestHasPinCode()
-            val viewModel =
-                MainViewModel(
-                    hasSeenOnboarding = hasSeenOnboarding,
-                    hasPinCode = hasPinCode,
-                    showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
-                    saveClosedAppTimestamp = TestSaveClosedAppTimestamp(),
-                    appLocked = TestAppLocked(false),
-                    featureToggleRepository = featureToggleRepository,
-                    keyValueStore = keyValueStore,
-                )
+            // Given: App is not locked
+            appLocked.set(false)
 
             viewModel.navigateDialog.test {
-                // When
+                // When: Calling checkAppLock
                 viewModel.checkAppLock()
 
-                // Then
+                // Then: No navigation is happening
                 expectNoEvents()
             }
         }
 
     @Test
-    fun `Given timestamp, When calling saveClosedAppTimestamp, Then save timestamp`() =
+    fun testSaveClosedTimestamp() {
+        // When: Calling saveClosedAppTimestamp
+        viewModel.saveClosedAppTimestamp()
+
+        // Then: Use case is called
+        assertEquals(true, saveClosedAppTimestamp.saved)
+    }
+
+    @Test
+    fun testGetAutomaticLocalisationEnabled() =
         runTest {
-            // Given
-            val hasSeenOnboarding = TestHasSeenOnboarding()
-            val hasPinCode = TestHasPinCode()
-            val saveClosedAppTimestamp = TestSaveClosedAppTimestamp()
-            val viewModel =
-                MainViewModel(
-                    hasSeenOnboarding = hasSeenOnboarding,
-                    hasPinCode = hasPinCode,
-                    showDeviceRootedDialog = mockk<ShowDeviceRootedDialog>(),
-                    saveClosedAppTimestamp = saveClosedAppTimestamp,
-                    appLocked = TestAppLocked(true),
-                    featureToggleRepository = featureToggleRepository,
-                    keyValueStore = keyValueStore,
-                )
+            // Given: automatic localisation is enabled
+            keyValueStore.setBoolean(KEY_AUTOMATIC_LOCALISATION, true)
 
-            // When
-            viewModel.saveClosedAppTimestamp()
+            // When: calling getAutomaticLocalisationEnabled
+            val enabled = viewModel.getAutomaticLocalisationEnabled()
 
-            // Then
-            assertEquals(true, saveClosedAppTimestamp.saved)
+            // Then: return true
+            assertEquals(true, enabled)
         }
 }

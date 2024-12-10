@@ -4,6 +4,9 @@ plugins {
 
 android {
     namespace = "nl.rijksoverheid.mgo.framework.featuretoggle"
+    testFixtures {
+        enable = true
+    }
 }
 
 dependencies {

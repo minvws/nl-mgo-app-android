@@ -94,8 +94,9 @@ class MainActivity : FragmentActivity() {
             addLocalisationNavGraph(
                 navController = navController,
                 automaticLocalisationEnabled = viewModel.getAutomaticLocalisationEnabled(),
+                fromOnboarding = !viewModel.isDigidAuthenticated(),
             )
-            addDigidNavGraph(navController)
+            addDigidNavGraph(navController = navController, keyValueStore = viewModel.keyValueStore)
         }
     }
 

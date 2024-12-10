@@ -33,6 +33,7 @@ import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStatePro
 import nl.rijksoverheid.mgo.component.theme.composable.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TAG_ORGANIZATION_SEARCH_CARD
 import kotlinx.coroutines.flow.collectLatest
@@ -41,6 +42,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun OrganizationListAutomaticSearchScreen(
+    checkResults: Boolean,
     onNavigateBack: (() -> Unit)?,
     onNavigateToDashboard: () -> Unit,
 ) {
@@ -53,6 +55,7 @@ fun OrganizationListAutomaticSearchScreen(
     }
     OrganizationListAutomaticSearchScreenContent(
         viewState = viewState,
+        checkResults = checkResults,
         onNavigateBack = onNavigateBack,
         onGetSearchResults = { viewModel.getSearchResults() },
         updateOrganization = { organization, added -> viewModel.updateOrganization(organization, added) },
@@ -63,6 +66,7 @@ fun OrganizationListAutomaticSearchScreen(
 @Composable
 private fun OrganizationListAutomaticSearchScreenContent(
     viewState: OrganizationListAutomaticScreenViewState,
+    checkResults: Boolean,
     onNavigateBack: (() -> Unit)?,
     onUpdateOrganizations: () -> Unit,
     onGetSearchResults: () -> Unit,
@@ -108,6 +112,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
                         style = MaterialTheme.typography.bodySmall,
                     )
                     ResultsContent(
+                        checkResults = checkResults,
                         lazyListState = lazyListState,
                         searchResults = viewState.results,
                         updateOrganization = updateOrganization,
@@ -143,11 +148,24 @@ private fun ColumnScope.LoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ResultsContent(
+    checkResults: Boolean,
     lazyListState: LazyListState,
     searchResults: List<MgoOrganization>,
     updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // If requested, check all search results
+    LaunchedEffect(Unit) {
+        if (checkResults) {
+            for (searchResult in searchResults) {
+                val cardState = searchResult.getCardState()
+                if (cardState == OrganizationSearchCardState.ADD) {
+                    updateOrganization(searchResult, true)
+                }
+            }
+        }
+    }
+
     LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp), state = lazyListState) {
         items(searchResults.size) { position ->
             val organization = searchResults[position]
@@ -196,6 +214,7 @@ internal fun OrganizationListAutomaticSearchScreenLoadingPreview() {
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
             onUpdateOrganizations = {},
+            checkResults = false,
         )
     }
 }
@@ -214,6 +233,7 @@ internal fun OrganizationListAutomaticSearchScreenSearchResultsPreview() {
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
             onUpdateOrganizations = {},
+            checkResults = false,
         )
     }
 }
@@ -232,6 +252,7 @@ internal fun OrganizationListAutomaticSearchScreenErrorPreview() {
             onGetSearchResults = {},
             updateOrganization = { _, _ -> },
             onUpdateOrganizations = {},
+            checkResults = false,
         )
     }
 }

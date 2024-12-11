@@ -22,7 +22,7 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
                 appBarTitle = stringResource(R.string.overview_heading),
                 subHeading = stringResource(R.string.overview_subheading),
                 onNavigateToLocalisation = {
-                    rootNavController.navigate(LocalisationNavigation.Root)
+                    rootNavController.navigate(LocalisationNavigation.Root(false))
                 },
                 onNavigateToHealthCategory = { category, _ ->
                     navController.navigate(

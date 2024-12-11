@@ -9,8 +9,7 @@ import nl.rijksoverheid.mgo.feature.pincode.biometric.PinCodeBioMetricSetupScree
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreen
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavigation
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
-import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
-import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
+import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
 fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
@@ -41,16 +40,8 @@ fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
                             }
                         }
 
-                        PinCodeConfirmScreenNextNavigation.DASHBOARD -> {
-                            navController.navigate(DashboardNavigation.Root) {
-                                popUpTo(navController.graph.id) {
-                                    inclusive = true
-                                }
-                            }
-                        }
-
-                        PinCodeConfirmScreenNextNavigation.AUTOMATIC_LOCALISATION -> {
-                            navController.navigate(LocalisationNavigation.Root) {
+                        PinCodeConfirmScreenNextNavigation.DIGID -> {
+                            navController.navigate(DigidNavigation.Root) {
                                 popUpTo(navController.graph.id) {
                                     inclusive = true
                                 }
@@ -66,15 +57,8 @@ fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
 
         mgoComposable<PinCodeCreateNavigation.BiometricSetup> {
             PinCodeBioMetricSetupScreen(
-                onNavigateToDashboard = {
-                    navController.navigate(DashboardNavigation.Root) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onNavigateToLocalisation = {
-                    navController.navigate(LocalisationNavigation.Root) {
+                onNavigateToDigid = {
+                    navController.navigate(DigidNavigation.Root) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }

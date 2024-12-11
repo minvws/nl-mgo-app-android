@@ -30,7 +30,7 @@ const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
 
 @Composable
 fun AddOrganizationScreen(
-    onNavigateBack: () -> Unit,
+    onNavigateBack: (() -> Unit)?,
     onNavigateToOrganizationSearch: (name: String, city: String) -> Unit,
 ) {
     val viewModel: AddOrganizationScreenViewModel = hiltViewModel()
@@ -60,7 +60,7 @@ fun AddOrganizationScreen(
 @Composable
 private fun AddOrganizationScreenContent(
     viewState: AddOrganizationScreenViewState,
-    onNavigateBack: () -> Unit,
+    onNavigateBack: (() -> Unit)?,
     onSetName: (name: String) -> Unit,
     onSetCity: (city: String) -> Unit,
     onSearch: () -> Unit,

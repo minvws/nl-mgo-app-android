@@ -47,12 +47,12 @@
   <string name="common.previous">Vorige</string>
   <string name="common.search">Zoeken</string>
   <string name="common.search_again">Opnieuw zoeken</string>
+  <string name="common.search_organizations">Zoeken naar zorgaanbieders</string>
   <string name="common.skip">Overslaan</string>
   <string name="common.to_overview">Naar overzicht</string>
   <string name="common.try_again">Probeer opnieuw</string>
   <string name="common.unknown">Niet bekend</string>
   <string name="common.yes">Ja</string>
-  <string name="common_search_organizations">Zoeken naar zorgaanbieders</string>
   <string name="dialog.remove_organization_heading">%1$s weglaten?</string>
   <string name="dialog.remove_organization_no">Nee, toch tonen</string>
   <string name="dialog.remove_organization_subheading">We halen je dossier van deze zorgaanbieder niet op. Je kunt deze later alsnog toevoegen via je profiel.</string>
@@ -104,8 +104,11 @@
   <string name="lab_results.subheading">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans.</string>
   <string name="launch.jailbreak_heading">Er zijn beveiligingsrisico’s gevonden</string>
   <string name="launch.jailbreak_subheading">Let op: je apparaat is geroot. Je gegevens zijn mogelijk niet veilig.</string>
+  <string name="login.digid">Inloggen met DigiD</string>
+  <string name="login.heading">Bewijs wie je bent</string>
+  <string name="login.subheading">Kies de manier waarop je wilt inloggen. Zo kunnen we jouw gegevens veilig ophalen bij je huisarts, ziekenhuis en andere zorgaanbieders.</string>
   <string name="login_info.heading">Je bent nu ingelogd met DigiD</string>
-  <string name="login_info.subheading">Normaal zou je nu naar de website of app van DigiD gaan om je te identificeren. Voor deze demo hoeft dat niet en ben je ingelogd met een fictief account, als <b>Johan Helleman</b>. De gegevens die je ziet, zijn niet echt.</string>
+  <string name="login_info.subheading"><![CDATA[Normaal zou je nu naar de website of app van DigiD gaan om je te identificeren. Voor deze demo hoeft dat niet en ben je ingelogd met een fictief account, als <b>Johan Helleman</b>. De gegevens die je ziet, zijn niet echt.]]></string>
   <string name="medication_use.heading">Medicijnen</string>
   <string name="medication_use.subheading">Een overzicht van de medicijnen die zijn voorgeschreven door je zorgaanbieder.</string>
   <string name="organisation_list_automatic.subheading">Welke wil je tonen in je overzicht? Je kunt dit later altijd veranderen.</string>

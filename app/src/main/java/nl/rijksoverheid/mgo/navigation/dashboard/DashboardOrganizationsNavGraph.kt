@@ -24,7 +24,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
                     navController.navigate(DashboardNavigation.Organizations.HealthCareCategories(organization))
                 },
                 onNavigateToLocalisation = {
-                    rootNavController.navigate(LocalisationNavigation.Root)
+                    rootNavController.navigate(LocalisationNavigation.Root(false))
                 },
             )
         }
@@ -35,7 +35,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
                 appBarTitle = route.organization.name,
                 organization = route.organization,
                 onNavigateToLocalisation = {
-                    rootNavController.navigate(LocalisationNavigation.Root)
+                    rootNavController.navigate(LocalisationNavigation.Root(false))
                 },
                 onNavigateToHealthCategory = { category, filterOrganization ->
                     navController.navigate(

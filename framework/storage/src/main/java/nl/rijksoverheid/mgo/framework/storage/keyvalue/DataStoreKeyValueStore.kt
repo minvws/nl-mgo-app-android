@@ -18,6 +18,7 @@ val KEY_FLAG_SECURE = booleanPreferencesKey("flag_secure")
 val KEY_SKIP_PIN = booleanPreferencesKey("skip_pin")
 val KEY_AUTOMATIC_LOCALISATION = booleanPreferencesKey("automatic_localisation")
 val KEY_LOCAL_FEATURE_TOGGLES_INITIALISED = booleanPreferencesKey("local_feature_toggles_initialised")
+val KEY_DIGID_AUTHENTICATED = booleanPreferencesKey("digid_authenticated")
 
 internal class DataStoreKeyValueStore(
     private val dataStore: DataStore<Preferences>,

@@ -15,13 +15,25 @@ import nl.rijksoverheid.mgo.navigation.mgoComposable
 fun NavGraphBuilder.addLocalisationNavGraph(
     navController: NavController,
     automaticLocalisationEnabled: Boolean,
+    fromOnboarding: Boolean,
 ) {
     val startNavigation =
-        if (automaticLocalisationEnabled) LocalisationNavigation.OrganizationListAutomatic else LocalisationNavigation.AddOrganization
+        if (automaticLocalisationEnabled) {
+            LocalisationNavigation.OrganizationListAutomatic(fromOnboarding)
+        } else {
+            LocalisationNavigation
+                .AddOrganization
+        }
     navigation<LocalisationNavigation.Root>(startNavigation) {
         mgoComposable<LocalisationNavigation.AddOrganization> {
+            val onNavigateBack: (() -> Unit)? =
+                if (navController.previousBackStackEntry == null) {
+                    null
+                } else {
+                    { navController.popBackStack() }
+                }
             AddOrganizationScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = onNavigateBack,
                 onNavigateToOrganizationSearch = { name, city ->
                     navController.navigate(LocalisationNavigation.OrganisationListManual(name = name, city = city))
                 },
@@ -52,14 +64,22 @@ fun NavGraphBuilder.addLocalisationNavGraph(
             )
         }
 
-        mgoComposable<LocalisationNavigation.OrganizationListAutomatic> {
+        mgoComposable<LocalisationNavigation.OrganizationListAutomatic> { backStackEntry ->
+            val route = backStackEntry.toRoute<LocalisationNavigation.OrganizationListAutomatic>()
+            val onNavigateBack: (() -> Unit)? =
+                if (navController.previousBackStackEntry == null) {
+                    null
+                } else {
+                    { navController.popBackStack() }
+                }
             OrganizationListAutomaticSearchScreen(
-                onNavigateBack = { navController.popBackStack() },
+                checkResults = route.checkResults,
+                onNavigateBack = onNavigateBack,
                 onNavigateToDashboard = {
                     // If coming from dashboard, we want to pop back
                     val canPop =
                         navController.popBackStack(
-                            route = LocalisationNavigation.OrganizationListAutomatic,
+                            route = route,
                             inclusive = true,
                         )
                     // If not coming from dashboard, navigate to it

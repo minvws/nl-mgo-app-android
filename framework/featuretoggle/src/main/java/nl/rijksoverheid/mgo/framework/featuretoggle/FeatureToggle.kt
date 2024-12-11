@@ -19,13 +19,16 @@ data class FeatureToggle(
     val initialValue: Boolean,
 )
 
+val skipPinFeatureToggle =
+    FeatureToggle(
+        id = FeatureToggleId.SkipPin,
+        preferenceKey = KEY_SKIP_PIN,
+        initialValue = false,
+    )
+
 val featureToggles =
     listOf(
-        FeatureToggle(
-            id = FeatureToggleId.SkipPin,
-            preferenceKey = KEY_SKIP_PIN,
-            initialValue = false,
-        ),
+        skipPinFeatureToggle,
         FeatureToggle(
             id = FeatureToggleId.FlagSecure,
             preferenceKey = KEY_FLAG_SECURE,

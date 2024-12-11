@@ -102,6 +102,9 @@ dependencies {
     implementation(projects.feature.localisation.addOrganization)
     implementation(projects.feature.localisation.organizationList)
 
+    // DigiD
+    implementation(projects.feature.digid)
+
     // ================================
     // FRAMEWORKS
     // ================================
@@ -123,6 +126,7 @@ dependencies {
     implementation(projects.data.uiSchema)
     implementation(projects.data.healthcare)
     implementation(projects.data.pincode)
+    implementation(projects.data.digid)
 
     // ================================
     // TESTING
@@ -132,5 +136,7 @@ dependencies {
     testImplementation(testFixtures(projects.data.pincode))
     testImplementation(testFixtures(projects.data.config))
     testImplementation(testFixtures(projects.framework.storage))
+    testImplementation(testFixtures(projects.data.digid))
+    testImplementation(testFixtures(projects.framework.featuretoggle))
     androidTestImplementation(testFixtures(projects.framework.environment))
 }

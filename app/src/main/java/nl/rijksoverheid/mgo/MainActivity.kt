@@ -25,6 +25,7 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.DefaultLocalSnackbarPresent
 import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
+import nl.rijksoverheid.mgo.navigation.digid.addDigidNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeCreateNavGraph
@@ -93,7 +94,9 @@ class MainActivity : FragmentActivity() {
             addLocalisationNavGraph(
                 navController = navController,
                 automaticLocalisationEnabled = viewModel.getAutomaticLocalisationEnabled(),
+                fromOnboarding = !viewModel.isDigidAuthenticated(),
             )
+            addDigidNavGraph(navController = navController, keyValueStore = viewModel.keyValueStore)
         }
     }
 

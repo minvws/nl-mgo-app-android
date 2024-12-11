@@ -20,6 +20,7 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
         mgoComposable<DashboardNavigation.Overview.HealthCareCategories>(animate = false) {
             HealthCategoriesScreen(
                 appBarTitle = stringResource(R.string.overview_heading),
+                subHeading = stringResource(R.string.overview_subheading),
                 onNavigateToLocalisation = {
                     rootNavController.navigate(LocalisationNavigation.Root)
                 },

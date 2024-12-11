@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -16,10 +19,12 @@ internal class HealthCategoriesScreenViewModel
     @Inject
     constructor(
         organizationRepository: OrganizationRepository,
+        @Named("keyValueStore") keyValueStore: KeyValueStore,
     ) : ViewModel() {
         private val initialViewState =
             HealthCategoriesScreenViewState.initialState(
                 providers = runBlocking { organizationRepository.get() },
+                automaticLocalisationEnabled = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION),
             )
         private val _viewState = MutableStateFlow(initialViewState)
         val viewState =
@@ -27,6 +32,7 @@ internal class HealthCategoriesScreenViewModel
                 HealthCategoriesScreenViewState(
                     name = viewState.name,
                     providers = providers,
+                    automaticLocalisationEnabled = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION),
                 )
             }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
     }

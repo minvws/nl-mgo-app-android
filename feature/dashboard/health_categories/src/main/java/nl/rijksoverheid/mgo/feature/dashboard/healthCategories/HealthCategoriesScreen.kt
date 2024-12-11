@@ -60,6 +60,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun HealthCategoriesScreen(
     appBarTitle: String,
+    subHeading: String,
     onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
     onNavigateToLocalisation: () -> Unit,
     onNavigateToHealthCategory: (category: HealthCareCategory, organization: MgoOrganization?) -> Unit,
@@ -70,6 +71,7 @@ fun HealthCategoriesScreen(
     val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
     HealthCategoriesScreenContent(
         appBarTitle = appBarTitle,
+        subHeading = subHeading,
         viewState = viewState,
         onNavigateBack = onNavigateBack,
         onClickAddProvider = onNavigateToLocalisation,
@@ -82,6 +84,7 @@ fun HealthCategoriesScreen(
 @Composable
 private fun HealthCategoriesScreenContent(
     appBarTitle: String,
+    subHeading: String,
     viewState: HealthCategoriesScreenViewState,
     onClickListItem: (category: HealthCareCategory) -> Unit,
     onClickAddProvider: () -> Unit,
@@ -102,6 +105,7 @@ private fun HealthCategoriesScreenContent(
                 NoProviders()
             } else {
                 WithProviders(
+                    subHeading = subHeading,
                     filterOrganization = organization,
                     onClickListItem = onClickListItem,
                     onClickRemoveOrganization = onClickRemoveOrganization,
@@ -146,12 +150,17 @@ private fun ColumnScope.NoProviders() {
 
 @Composable
 private fun ColumnScope.WithProviders(
+    subHeading: String,
     onClickListItem: (category: HealthCareCategory) -> Unit,
     filterOrganization: MgoOrganization?,
     onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = modifier.padding(top = 2.dp, bottom = 16.dp)) {
+    Text(
+        text = subHeading,
+        style = MaterialTheme.typography.bodySmall,
+    )
+    MgoCard(modifier = modifier.padding(top = 8.dp, bottom = 16.dp)) {
         Column {
             HealthCareCategory.entries.forEach { category ->
                 HealthCategoriesListItem(
@@ -238,6 +247,7 @@ internal fun OverviewScreenNoProvidersPreview() {
     MgoTheme {
         HealthCategoriesScreenContent(
             appBarTitle = stringResource(CopyR.string.overview_heading),
+            subHeading = stringResource(CopyR.string.overview_subheading),
             viewState = HealthCategoriesScreenViewState(name = "", providers = listOf()),
             onNavigateBack = {},
             onClickAddProvider = {},
@@ -252,7 +262,8 @@ internal fun OverviewScreenNoProvidersPreview() {
 internal fun OverviewScreenWithProvidersPreview() {
     MgoTheme {
         HealthCategoriesScreenContent(
-            stringResource(CopyR.string.overview_heading),
+            appBarTitle = stringResource(CopyR.string.overview_heading),
+            subHeading = stringResource(CopyR.string.overview_subheading),
             viewState =
                 HealthCategoriesScreenViewState(
                     name = "",

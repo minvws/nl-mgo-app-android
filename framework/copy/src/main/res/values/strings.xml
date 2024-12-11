@@ -108,7 +108,7 @@
   <string name="login.heading">Bewijs wie je bent</string>
   <string name="login.subheading">Kies de manier waarop je wilt inloggen. Zo kunnen we jouw gegevens veilig ophalen bij je huisarts, ziekenhuis en andere zorgaanbieders.</string>
   <string name="login_info.heading">Je bent nu ingelogd met DigiD</string>
-  <string name="login_info.subheading"><![CDATA[Normaal zou je nu naar de website of app van DigiD gaan om je te identificeren. Voor deze demo hoeft dat niet en ben je ingelogd met een fictief account, als <b>Johan Helleman</b>. De gegevens die je ziet, zijn niet echt.]]></string>
+  <string name="login_info.subheading">Normaal zou je nu naar de website of app van DigiD gaan om je te identificeren. Voor deze demo hoeft dat niet en ben je ingelogd met een fictief account, als <b>Johan Helleman</b>. De gegevens die je ziet, zijn niet echt.</string>
   <string name="medication_use.heading">Medicijnen</string>
   <string name="medication_use.subheading">Een overzicht van de medicijnen die zijn voorgeschreven door je zorgaanbieder.</string>
   <string name="organisation_list_automatic.subheading">Welke wil je tonen in je overzicht? Je kunt dit later altijd veranderen.</string>
@@ -134,8 +134,8 @@
   <string name="overview.heading">Overzicht</string>
   <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
   <string name="overview.no_results_action">Voeg zorgaanbieders toe</string>
-  <string name="overview.organizations.subheading">Al je gegevens van deze zorgaanbieder</string>
-  <string name="overview.subheading">Al je zorgaanbieders op één plek</string>
+  <string name="overview.organizations.subheading">Je gegevens van deze zorgaanbieder</string>
+  <string name="overview.subheading">Je gegevens van alle zorgaanbieders</string>
   <string name="pincode.biometric.voiceover">Biometrisch inloggen</string>
   <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
   <string name="pincode.confirm.mismatch">Deze code is anders dan de vorige</string>
@@ -170,7 +170,7 @@
   <string name="settings_heading">Instellingen</string>
   <string name="toast.organization_removed.heading">Zorgaanbieder verwijderd</string>
   <string name="toast.organization_removed.subheading">Herstel</string>
-  <string name="update_required.download">Nu downloaden</string>
-  <string name="update_required.heading">Je hebt een oude versie van de app</string>
-  <string name="update_required.subheading">Download de nieuwste versie van de app om te zorgen dat Mijn Gezondheidsoverzicht goed blijft werken.</string>
+  <string name="update_required.download">Installeer update</string>
+  <string name="update_required.heading">Tijd voor een update</string>
+  <string name="update_required.subheading">Je hebt de nieuwste versie van de app nodig om verder te gaan.</string>
 </resources>

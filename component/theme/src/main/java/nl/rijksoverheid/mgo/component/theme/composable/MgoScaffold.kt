@@ -220,13 +220,16 @@ private fun calculateExpandedHeight(
 ): Dp {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
-    val constraintsWidth = with(density) { (configuration.screenWidthDp.dp - horizontalPadding).toPx().toInt() }
+    val fontScale = density.fontScale
+    val style = MaterialTheme.typography.headingLarge
+    val adjustedFontSize = style.fontSize * fontScale
+    val constraintsWidth = with(density) { (configuration.screenWidthDp.dp - 20.dp).roundToPx() }
     val textMeasurer = rememberTextMeasurer()
     val expandedHeightPx =
         textMeasurer.measure(
             constraints = Constraints(maxWidth = constraintsWidth),
             text = title,
-            style = MaterialTheme.typography.headingLarge,
+            style = style.copy(fontSize = adjustedFontSize),
         ).size.height
     return density.run { expandedHeightPx.toDp() } + TopAppBarDefaults.MediumAppBarCollapsedHeight + 16.dp
 }

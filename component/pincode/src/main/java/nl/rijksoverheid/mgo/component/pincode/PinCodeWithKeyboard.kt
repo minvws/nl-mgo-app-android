@@ -163,7 +163,7 @@ private fun PinCodeError(
     modifier: Modifier = Modifier,
 ) {
     CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.notificationError()) {
-        Row(modifier = modifier) {
+        Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
             Text(
                 modifier = Modifier.padding(start = 6.dp),

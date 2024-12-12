@@ -92,7 +92,18 @@ private fun HealthCategoriesScreenContent(
     organization: MgoOrganization? = null,
     onNavigateBack: (() -> Unit)? = null,
 ) {
-    val primaryButtonText = if (viewState.providers.isEmpty()) stringResource(id = CopyR.string.common_add_organizations) else null
+    val primaryButtonText =
+        when {
+            viewState.providers.isEmpty() -> {
+                if (viewState.automaticLocalisationEnabled) {
+                    stringResource(id = CopyR.string.common_search_organizations)
+                } else {
+                    stringResource(id = CopyR.string.common_add_organizations)
+                }
+            } else -> {
+                null
+            }
+        }
     MgoScaffold(
         appBarTitle = appBarTitle,
         scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
@@ -177,7 +188,10 @@ private fun ColumnScope.WithProviders(
 
     if (filterOrganization != null) {
         MgoButton(
-            modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally),
+            modifier =
+                Modifier
+                    .padding(bottom = 16.dp)
+                    .align(Alignment.CenterHorizontally),
             buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
             onClick = {
                 onClickRemoveOrganization(filterOrganization)
@@ -248,7 +262,7 @@ internal fun OverviewScreenNoProvidersPreview() {
         HealthCategoriesScreenContent(
             appBarTitle = stringResource(CopyR.string.overview_heading),
             subHeading = stringResource(CopyR.string.overview_subheading),
-            viewState = HealthCategoriesScreenViewState(name = "", providers = listOf()),
+            viewState = HealthCategoriesScreenViewState(name = "", providers = listOf(), automaticLocalisationEnabled = false),
             onNavigateBack = {},
             onClickAddProvider = {},
             onClickListItem = {},
@@ -268,6 +282,7 @@ internal fun OverviewScreenWithProvidersPreview() {
                 HealthCategoriesScreenViewState(
                     name = "",
                     providers = listOf(TEST_MGO_ORGANIZATION),
+                    automaticLocalisationEnabled = false,
                 ),
             onNavigateBack = {},
             onClickAddProvider = {},

@@ -65,7 +65,18 @@ private fun OrganizationsScreenContent(
                 rememberScrollState(),
             )
         }
-    val primaryButtonText = if (viewState.organizations.isEmpty()) stringResource(id = CopyR.string.common_add_organizations) else null
+    val primaryButtonText =
+        when {
+            viewState.organizations.isEmpty() -> {
+                if (viewState.automaticLocalisationEnabled) {
+                    stringResource(id = CopyR.string.common_search_organizations)
+                } else {
+                    stringResource(id = CopyR.string.common_add_organizations)
+                }
+            } else -> {
+                null
+            }
+        }
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.organizations_heading),
         scrollStateProvider = scrollStateProvider,

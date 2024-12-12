@@ -53,7 +53,6 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.vibrate
-import kotlin.math.roundToInt
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 sealed class MgoScaffoldScrollStateProvider(open val canScrollForward: Boolean) {

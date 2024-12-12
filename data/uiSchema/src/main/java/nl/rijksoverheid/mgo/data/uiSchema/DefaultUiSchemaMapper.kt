@@ -16,7 +16,7 @@ internal class DefaultUiSchemaMapper
     constructor(
         @ApplicationContext private val context: Context,
     ) : UiSchemaMapper {
-        private val json = Json
+        private val json = Json { ignoreUnknownKeys = true }
 
         override fun getUiSchema(
             fhirBundleJson: String,

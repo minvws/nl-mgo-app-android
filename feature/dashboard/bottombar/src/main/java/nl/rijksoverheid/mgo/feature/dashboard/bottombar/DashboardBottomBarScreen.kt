@@ -20,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -39,6 +40,26 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DashboardBottomBarScreen(
+    overviewStartDestination: Any,
+    overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+    organizationsStartDestination: Any,
+    organizationsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+    settingsStartDestination: Any,
+    settingsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+) {
+    val viewModel: DashboardBottomBarScreenViewModel = hiltViewModel()
+    DashboardBottomBarScreenContent(
+        overviewStartDestination = overviewStartDestination,
+        overviewNavGraph = overviewNavGraph,
+        organizationsStartDestination = organizationsStartDestination,
+        organizationsNavGraph = organizationsNavGraph,
+        settingsStartDestination = settingsStartDestination,
+        settingsNavGraph = settingsNavGraph,
+    )
+}
+
+@Composable
+fun DashboardBottomBarScreenContent(
     overviewStartDestination: Any,
     overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
     organizationsStartDestination: Any,

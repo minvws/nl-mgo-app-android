@@ -10,7 +10,6 @@ import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import timber.log.Timber
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -45,8 +44,7 @@ internal class HealthCategoriesListItemViewModel
             viewModelScope.launch {
                 healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).distinctUntilChanged()
                     .collectLatest { states ->
-                        Timber.v("States: $states")
-                        if (!states.isEmpty()) {
+                        if (states.isNotEmpty()) {
                             val loading = states.any { state -> state is HealthCareDataState.Loading }
                             val empty = states.all { state -> state is HealthCareDataState.Empty }
                             val amountOfItems =

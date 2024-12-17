@@ -22,6 +22,12 @@ sealed class HealthCareDataState(open val organization: MgoOrganization, open va
 val TEST_HEALTH_CARE_DATA_STATE_LOADING =
     HealthCareDataState.Loading(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
 
+val TEST_HEALTH_CARE_DATA_STATE_EMPTY =
+    HealthCareDataState.Empty(
+        organization = TEST_MGO_ORGANIZATION,
+        category = HealthCareCategory.MEDICATIONS,
+    )
+
 val TEST_HEALTH_CARE_DATA_STATE_LOADED =
     HealthCareDataState.Loaded(
         results = listOf(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION))),

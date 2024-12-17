@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.data.healthcare.CollectHealthCareDataStates
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -18,7 +19,7 @@ internal class DashboardBottomBarScreenViewModel
     ) : ViewModel() {
         init {
             viewModelScope.launch(ioDispatcher) {
-                collectHealthCareDataStates.invoke()
+                collectHealthCareDataStates.invoke().collect()
             }
         }
     }

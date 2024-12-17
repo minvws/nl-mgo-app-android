@@ -5,7 +5,7 @@ import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
@@ -19,9 +19,9 @@ class CollectHealthCareDataStates
         @VisibleForTesting
         var previousStoredOrganizations: List<MgoOrganization> = runBlocking { organizationRepository.get() }
 
-        suspend operator fun invoke() {
-            organizationRepository.storedOrganizationsFlow.onEach { organizations ->
-                val removedOrganizations = previousStoredOrganizations - organizations
+        operator fun invoke(): Flow<List<MgoOrganization>> {
+            return organizationRepository.storedOrganizationsFlow.onEach { organizations ->
+                val removedOrganizations = previousStoredOrganizations - organizations.toSet()
 
                 for (organization in removedOrganizations) {
                     healthCareDataStatesRepository.delete(organization)
@@ -34,6 +34,6 @@ class CollectHealthCareDataStates
                 }
 
                 previousStoredOrganizations = organizations
-            }.collect()
+            }
         }
     }

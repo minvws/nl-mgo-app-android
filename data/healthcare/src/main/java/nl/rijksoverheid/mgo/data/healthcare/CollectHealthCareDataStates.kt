@@ -27,8 +27,8 @@ class CollectHealthCareDataStates
                     healthCareDataStatesRepository.delete(organization)
                 }
 
-                for (organization in organizations) {
-                    for (category in HealthCareCategory.entries) {
+                for (category in HealthCareCategory.entries) {
+                    for (organization in organizations) {
                         healthCareDataStatesRepository.refresh(organization = organization, category = category)
                     }
                 }

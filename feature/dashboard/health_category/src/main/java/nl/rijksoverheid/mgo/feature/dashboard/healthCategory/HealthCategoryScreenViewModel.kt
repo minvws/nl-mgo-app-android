@@ -14,6 +14,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,16 +45,21 @@ internal class HealthCategoryScreenViewModel
                 healthCareDataStatesRepository.observe(
                     category = category,
                     filterOrganization = filterOrganization,
-                )
+                ).distinctUntilChanged()
                     .collectLatest { states ->
-                        val loading = states.any { state -> state.loading }
+                        val loading = states.any { state -> state is HealthCareDataState.Loading }
+                        val empty = states.all { state -> state is HealthCareDataState.Empty }
                         val listItems = states.map { state -> state.toListItems(state.organization) }.flatten()
-                        val error = states.any { state -> state.uiSchemaListResults.any { it.isFailure } }
+                        val error =
+                            states
+                                .filterIsInstance<HealthCareDataState.Loaded>()
+                                .any { state -> state.results.any { result -> result.isFailure } }
+
                         _viewState.update {
                             val listItemState =
                                 when {
                                     loading -> HealthCategoryScreenViewState.ListItemsState.Loading
-                                    listItems.isEmpty() -> HealthCategoryScreenViewState.ListItemsState.NoData
+                                    empty -> HealthCategoryScreenViewState.ListItemsState.NoData
                                     else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
                                 }
                             HealthCategoryScreenViewState(
@@ -80,16 +86,20 @@ internal class HealthCategoryScreenViewModel
         }
 
         private fun HealthCareDataState.toListItems(organization: MgoOrganization): List<HealthCategoryScreenListItem> {
-            return uiSchemaListResults
-                .map { it.getOrNull() ?: listOf() }
-                .flatten()
-                .map { uiSchema ->
-                    HealthCategoryScreenListItem(
-                        title = uiSchema.label ?: "",
-                        subtitle = organization.name,
-                        uiSchema = uiSchema,
-                        organization = organization,
-                    )
-                }
+            if (this is HealthCareDataState.Loaded) {
+                return this.results
+                    .map { it.getOrNull() ?: listOf() }
+                    .flatten()
+                    .map { uiSchema ->
+                        HealthCategoryScreenListItem(
+                            title = uiSchema.label ?: "",
+                            subtitle = organization.name,
+                            uiSchema = uiSchema,
+                            organization = organization,
+                        )
+                    }
+            } else {
+                return listOf()
+            }
         }
     }

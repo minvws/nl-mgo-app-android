@@ -14,15 +14,18 @@ internal class DefaultHealthCareDataStateRepository
             category: HealthCareCategory,
         ): Flow<HealthCareDataState> =
             flow {
-                emit(HealthCareDataState(loading = true, organization = organization, category = category, uiSchemaListResults = listOf()))
-                val uiSchemaListResults = uiSchemaRepository.getUiSchema(organization = organization, category = category)
-                emit(
-                    HealthCareDataState(
-                        loading = false,
-                        organization = organization,
-                        category = category,
-                        uiSchemaListResults = uiSchemaListResults,
-                    ),
-                )
+                emit(HealthCareDataState.Loading(organization = organization, category = category))
+                val results = uiSchemaRepository.getUiSchema(organization = organization, category = category)
+                if (results.isEmpty()) {
+                    emit(HealthCareDataState.Empty(organization = organization, category = category))
+                } else {
+                    emit(
+                        HealthCareDataState.Loaded(
+                            results = results,
+                            organization = organization,
+                            category = category,
+                        ),
+                    )
+                }
             }
     }

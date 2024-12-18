@@ -15,56 +15,58 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceT
 
 sealed class HealthCareRequest(
     open val path: String,
-    open val queryParameters: Map<HealthCareRequestQueryKey, String>,
+    open val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>,
     val dataServiceType: MgoOrganizationDataServiceType,
 ) {
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
-    sealed class Bgz(override val path: String, override val queryParameters: Map<HealthCareRequestQueryKey, String>) : HealthCareRequest
+    sealed class Bgz(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
+        HealthCareRequest
         (path, queryParameters, MgoOrganizationDataServiceType.BGZ) {
         data object MedicationUse : Bgz(
             path = "MedicationStatement",
             queryParameters =
-                mapOf(
-                    CATEGORY to "urn:oid:2.16.840.1.113883.2.4.3.11.60.20.77.5.3|6",
-                    INCLUDE to "MedicationStatement:medication",
+                listOf(
+                    Pair(CATEGORY, "urn:oid:2.16.840.1.113883.2.4.3.11.60.20.77.5.3|6"),
+                    Pair(INCLUDE, "MedicationStatement:medication"),
                 ),
         )
 
         data object LaboratoryTestResult : Bgz(
-            path = "Observation",
+            path = "Observation/\$lastn",
             queryParameters =
-                mapOf(
-                    CATEGORY to "urn:oid:2.16.840.1.113883.2.4.3.11.60.20.77.5.3|6",
-                    INCLUDE to "Observation:related-target",
-                    INCLUDE to "Observation:specimen",
+                listOf(
+                    Pair(CATEGORY, "http://snomed.info/sct|275711006"),
+                    Pair(INCLUDE, "Observation:related-target"),
+                    Pair(INCLUDE, "Observation:specimen"),
                 ),
         )
     }
 
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_GP_Data
-    sealed class Gp(override val path: String, override val queryParameters: Map<HealthCareRequestQueryKey, String>) : HealthCareRequest
+    sealed class Gp(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
+        HealthCareRequest
         (path, queryParameters, MgoOrganizationDataServiceType.GP) {
         data object DiagnosticsAndLabResult : Gp(
             path = "Observation",
             queryParameters =
-                mapOf(
-                    CODE to "https://referentiemodel.nhg.org/tabellen/nhg-tabel-45-diagnostische-bepalingen|",
-                    INCLUDE to "Observation:related-target",
-                    INCLUDE to "Observation:specimen",
-                    DATE to "ge2017-01-01",
+                listOf(
+                    Pair(CODE, "https://referentiemodel.nhg.org/tabellen/nhg-tabel-45-diagnostische-bepalingen|"),
+                    Pair(INCLUDE, "Observation:related-target"),
+                    Pair(INCLUDE, "Observation:specimen"),
+                    Pair(DATE, "ge2017-01-01"),
                 ),
         )
     }
 
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA
-    sealed class Documents(override val path: String, override val queryParameters: Map<HealthCareRequestQueryKey, String>) :
+    sealed class Documents(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
         HealthCareRequest
         (path, queryParameters, MgoOrganizationDataServiceType.DOCUMENTS) {
         data object DocumentReference : Documents(
             path = "DocumentReference",
             queryParameters =
-                mapOf(
-                    STATUS to "current",
+                listOf(
+                    Pair(STATUS, "current"),
                 ),
         )
     }

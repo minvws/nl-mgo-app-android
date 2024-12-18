@@ -33,7 +33,7 @@ internal class DefaultUiSchemaRepository
                     executeNetworkRequest {
                         dvaApi.get(
                             resourceEndpoint = resourceEndpoint,
-                            url = request.createUrl("${dvaApiBaseUrl}fhir/${request.path}/"),
+                            url = request.createUrl("${dvaApiBaseUrl}fhir/${request.path}"),
                         )
                     }
                 requestResult

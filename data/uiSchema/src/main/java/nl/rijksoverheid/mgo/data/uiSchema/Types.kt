@@ -316,7 +316,6 @@ data class IheMhdMinimalDocumentReference(
     @SerialName("class")
     val iheMhdMinimalDocumentReferenceClass: MgoCodeableConcept? = null,
     val content: IheMhdMinimalDocumentReferenceContent,
-    val created: String? = null,
     val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val indexed: String? = null,
@@ -777,14 +776,15 @@ enum class NlCorePractitionerRoleProfile(val value: String) {
 @Serializable
 @Parcelize
 data class NlCoreVaccinationEvent(
-    val administrator: List<MgoReference>? = null,
     val doseQuantity: MgoDuration? = null,
     val fhirVersion: FhirVersionR4,
     val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
     val location: MgoReference? = null,
     val note: List<MgoAnnotation>? = null,
     val occurrenceDateTime: String? = null,
     val patient: MgoReference? = null,
+    val performer: List<MgoReference>? = null,
     val pharmaceuticalProduct: MgoReference? = null,
     val profile: NlCoreVaccinationEventProfile,
     val protocolApplied: List<ProtocolApplied>? = null,

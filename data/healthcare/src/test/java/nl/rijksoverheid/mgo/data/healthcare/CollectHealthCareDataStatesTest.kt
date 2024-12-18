@@ -8,9 +8,9 @@ import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
-class ObserveHealthCareDataStatesTest {
+class CollectHealthCareDataStatesTest {
     @Test
-    fun `Given stored organization, When calling invoke, Then health care data states are updated and emitted`() =
+    fun testRefreshingAndDeleting() =
         runTest {
             turbineScope {
                 // Given: Some dummy organizations
@@ -25,7 +25,7 @@ class ObserveHealthCareDataStatesTest {
 
                 // Given: The use case
                 val usecase =
-                    ObserveHealthCareDataStates(
+                    CollectHealthCareDataStates(
                         organizationRepository = organizationRepository,
                         healthCareDataStatesRepository = healthCareDataStatesRepository,
                     )

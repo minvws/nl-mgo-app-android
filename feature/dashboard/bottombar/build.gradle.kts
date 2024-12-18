@@ -9,5 +9,6 @@ android {
 dependencies {
     implementation(projects.framework.navigation)
     implementation(libs.kotlin.reflect)
-    implementation(project(":data:localisation"))
+    implementation(projects.data.localisation)
+    implementation(projects.data.healthcare)
 }

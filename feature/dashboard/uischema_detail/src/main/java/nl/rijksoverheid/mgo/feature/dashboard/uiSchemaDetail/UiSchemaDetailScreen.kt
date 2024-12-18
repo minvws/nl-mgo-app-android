@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -93,7 +92,7 @@ private fun UiSchemaSection(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = group.label.getStringFromResourceWithFallback(),
+            text = group.label,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
         )
@@ -135,7 +134,7 @@ private fun UiSchemaLabelWithValueListItem(
     Column {
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            text = entry.label.getStringFromResourceWithFallback(),
+            text = entry.label,
             style = MaterialTheme.typography.bodySmallMini,
             color = MaterialTheme.colorScheme.contentTertiary(),
         )
@@ -157,32 +156,12 @@ private fun UiSchemaLabelWithValueListItem(
     }
 }
 
-/**
- * Expects the string to be a resources key, and tries to grab the string resource.
- * If it doesn't exist, it will try a fallback key.
- * If that doesn't exist, returns the fallback key as string.
- */
-@Composable
-internal fun String.getStringFromResourceWithFallback(): String {
-    val context = LocalContext.current
-    val resId: Int = context.resources.getIdentifier(this, "string", context.packageName)
-    if (resId == 0) {
-        val fallbackLabel = "fhir." + this.substringAfter(".")
-        val fallbackResId = context.resources.getIdentifier(fallbackLabel, "string", context.packageName)
-        if (fallbackResId == 0) {
-            return fallbackLabel
-        }
-        return stringResource(id = fallbackResId)
-    }
-    return stringResource(id = resId)
-}
-
 @Composable
 private fun UIEntryDisplay?.getStringOrUnknown(): String {
-    if (this == null) return stringResource(id = CopyR.string.common_unknown)
     return when (this) {
         is UIEntryDisplay.StringValue -> this.value
         is UIEntryDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
+        else -> ""
     }
 }
 

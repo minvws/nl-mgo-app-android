@@ -103,7 +103,7 @@ private fun UiSchemaAttachmentNotDownloadedListItem(
                     .weight(1f)
                     .padding(end = 8.dp),
             color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-            text = entry.label.getStringFromResourceWithFallback(),
+            text = entry.label,
             style = MaterialTheme.typography.bodySmall,
         )
         Icon(

@@ -7,11 +7,13 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -40,16 +42,23 @@ internal class HealthCategoriesListItemViewModel
 
         init {
             viewModelScope.launch {
-                healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).collectLatest {
-                        states ->
-                    val loading = states.any { state -> state.loading }
-                    val amountOfItems = states.sumOf { state -> state.uiSchemaListResults.sumOf { it.getOrNull()?.size ?: 0 } }
-                    when {
-                        loading -> _listItemState.update { HealthCategoriesListItemState.LOADING }
-                        amountOfItems == 0 -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
-                        amountOfItems > 0 -> _listItemState.update { HealthCategoriesListItemState.LOADED }
+                healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).distinctUntilChanged()
+                    .collectLatest { states ->
+                        if (states.isNotEmpty()) {
+                            val loading = states.any { state -> state is HealthCareDataState.Loading }
+                            val empty = states.all { state -> state is HealthCareDataState.Empty }
+                            val amountOfItems =
+                                states
+                                    .filterIsInstance<HealthCareDataState.Loaded>()
+                                    .sumOf { state -> state.results.sumOf { it.getOrNull()?.size ?: 0 } }
+                            when {
+                                loading -> _listItemState.update { HealthCategoriesListItemState.LOADING }
+                                empty -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
+                                amountOfItems == 0 -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
+                                else -> _listItemState.update { HealthCategoriesListItemState.LOADED }
+                            }
+                        }
                     }
-                }
             }
         }
     }

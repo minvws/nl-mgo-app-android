@@ -94,4 +94,10 @@ internal object MainModule {
     ): SaveClosedAppTimestamp {
         return DefaultSaveClosedAppTimestamp(clock = clock, keyValueStore)
     }
+
+    @Provides
+    @Named("ioDispatcher")
+    fun provideIoDispatcher(): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
 }

@@ -2,9 +2,10 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_STATE_ERROR
+import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_ERROR
 import nl.rijksoverheid.mgo.data.healthcare.TEST_HEALTH_CARE_DATA_STATE_LOADED
 import nl.rijksoverheid.mgo.data.healthcare.TestHealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
@@ -18,22 +19,23 @@ internal class HealthCategoryScreenViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf())
+    private val organizationRepository =
+        TestOrganizationRepository().apply {
+            setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+        }
+
     @Test
-    fun `Given medications, When creating viewmodel, List items are shown`() =
+    fun testLoadedState() =
         runTest {
-            // Given
-            val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
-            val organizationRepository = TestOrganizationRepository()
+            // Given: Health care data state has loaded state
+            healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
+            healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
 
-            // When
-            val viewModel =
-                HealthCategoryScreenViewModel(
-                    category = HealthCareCategory.MEDICATIONS,
-                    healthCareDataStatesRepository = healthCareDataStatesRepository,
-                    organizationRepository = organizationRepository,
-                )
+            // When: Creating viewmodel
+            val viewModel = createViewModel(TEST_MGO_ORGANIZATION)
 
-            // Then
+            // Then: List items state loaded
             viewModel.viewState.test {
                 val emit = awaitItem()
                 assertTrue(emit.listItemsState is HealthCategoryScreenViewState.ListItemsState.Loaded)
@@ -41,62 +43,51 @@ internal class HealthCategoryScreenViewModelTest {
         }
 
     @Test
-    fun `Given failed medications for organization, When calling retry, Show error banner is updated`() =
+    fun testRetryForOrganizationAndCategory() =
         runTest {
-            // Given
-            val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf(TEST_HEALTH_CARE_DATA_STATE_ERROR))
+            // Given: Health care data state has error state
+            healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_ERROR))
+            healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+
+            // Given: Upon next refresh data state is loaded
             healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
-            val organizationRepository = TestOrganizationRepository()
 
-            // When
-            val viewModel =
-                HealthCategoryScreenViewModel(
-                    category = HealthCareCategory.MEDICATIONS,
-                    filterOrganization = TEST_MGO_ORGANIZATION,
-                    healthCareDataStatesRepository = healthCareDataStatesRepository,
-                    organizationRepository = organizationRepository,
-                )
+            // When: Calling retry
+            val viewModel = createViewModel(TEST_MGO_ORGANIZATION)
+            viewModel.retry()
 
-            // When
             viewModel.viewState.test {
-                val emit1 = awaitItem()
-                assertTrue(emit1.showErrorBanner)
-
-                viewModel.retry()
-
-                // Then
-                val emit2 = awaitItem()
-                assertFalse(emit2.showErrorBanner)
+                // Then: error banner is shown
+                assertFalse(awaitItem().showErrorBanner)
             }
         }
 
     @Test
-    fun `Given failed medications for category, When calling retry, Show error banner is updated`() =
+    fun testRetryForOrganization() =
         runTest {
-            // Given
-            val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf(TEST_HEALTH_CARE_DATA_STATE_ERROR))
+            // Given: Health care data state has error state
+            healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_ERROR))
+            healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+
+            // Given: Upon next refresh data state is loaded
             healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
-            val organizationRepository = TestOrganizationRepository()
-            organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
 
-            // When
-            val viewModel =
-                HealthCategoryScreenViewModel(
-                    category = HealthCareCategory.MEDICATIONS,
-                    healthCareDataStatesRepository = healthCareDataStatesRepository,
-                    organizationRepository = organizationRepository,
-                )
+            // When: Calling retry
+            val viewModel = createViewModel(null)
+            viewModel.retry()
 
-            // When
             viewModel.viewState.test {
-                val emit1 = awaitItem()
-                assertTrue(emit1.showErrorBanner)
-
-                viewModel.retry()
-
-                // Then
-                val emit2 = awaitItem()
-                assertFalse(emit2.showErrorBanner)
+                // Then: error banner is shown
+                assertFalse(awaitItem().showErrorBanner)
             }
         }
+
+    private fun createViewModel(organization: MgoOrganization?): HealthCategoryScreenViewModel {
+        return HealthCategoryScreenViewModel(
+            category = HealthCareCategory.MEDICATIONS,
+            filterOrganization = organization,
+            healthCareDataStatesRepository = healthCareDataStatesRepository,
+            organizationRepository = organizationRepository,
+        )
+    }
 }

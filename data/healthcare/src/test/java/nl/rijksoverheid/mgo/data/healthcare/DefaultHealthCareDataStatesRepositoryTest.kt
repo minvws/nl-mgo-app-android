@@ -7,69 +7,68 @@ import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
 class DefaultHealthCareDataStatesRepositoryTest {
-    @Test
-    fun `Given dummy organization and medication category, When observing organization and category, Then state is emitted`() =
-        runTest {
-            // Given: Refresh organization with medication category
-            val healthCareDataStateRepository = TestHealthCareDataStateRepository()
-            val repository = DefaultHealthCareDataStatesRepository(healthCareDataStateRepository = healthCareDataStateRepository)
-            repository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+    private val healthCareDataStateRepository = TestHealthCareDataStateRepository()
+    private val repository = DefaultHealthCareDataStatesRepository(healthCareDataStateRepository = healthCareDataStateRepository)
 
-            // When: Observing state for organization with category
+    @Test
+    fun testCategoryAndOrganization() =
+        runTest {
+            val organization = TEST_MGO_ORGANIZATION
+            val category = HealthCareCategory.MEDICATIONS
+
+            // Given: Set loaded state
+            healthCareDataStateRepository.setLoadedState(organization = organization, category = category)
+
+            // When: Refresh
+            repository.refresh(organization = organization, category = category)
+
+            // Then: Collect state
             repository.observe(category = HealthCareCategory.MEDICATIONS, filterOrganization = TEST_MGO_ORGANIZATION).test {
-                // Then: Expect our state
                 val emit = awaitItem()
                 assertEquals(1, emit.size)
-                assertEquals(HealthCareCategory.MEDICATIONS, emit.first().category)
+                assertEquals(category, emit.first().category)
             }
         }
 
     @Test
-    fun `Given multiple organizations, When observing category, Then state is emitted`() =
+    fun testOrganizations() =
         runTest {
-            // Given: Refresh organization with multiple categories
-            val healthCareDataStateRepository = TestHealthCareDataStateRepository()
-            healthCareDataStateRepository
-            val repository = DefaultHealthCareDataStatesRepository(healthCareDataStateRepository = healthCareDataStateRepository)
-            repository.refresh(organization = TEST_MGO_ORGANIZATION.copy(id = "1", name = "bla"), category = HealthCareCategory.MEDICATIONS)
-            repository.refresh(
-                organization = TEST_MGO_ORGANIZATION.copy(id = "2", name = "bla2"),
-                category =
-                    HealthCareCategory
-                        .MEDICATIONS,
-            )
-            repository.refresh(
-                organization = TEST_MGO_ORGANIZATION.copy(id = "3", name = "bla3"),
-                category =
-                    HealthCareCategory
-                        .MEDICATIONS,
-            )
+            val organization1 = TEST_MGO_ORGANIZATION.copy(id = "1")
+            val organization2 = TEST_MGO_ORGANIZATION.copy(id = "2")
+            val category = HealthCareCategory.MEDICATIONS
 
-            // When: Observing state for all medications
+            // Given: Set loaded states
+            healthCareDataStateRepository.setLoadedState(organization = organization1, category = category)
+            healthCareDataStateRepository.setLoadedState(organization = organization2, category = category)
+
+            // When: Refresh
+            repository.refresh(organization = organization1, category = category)
+            repository.refresh(organization = organization2, category = category)
+
+            // Then: Collect state
             repository.observe(category = HealthCareCategory.MEDICATIONS, filterOrganization = null).test {
-                // Then: Expect our organizations
                 val emit = awaitItem()
-                assertEquals(3, emit.size)
+                assertEquals(2, emit.size)
                 assertEquals("1", emit[0].organization.id)
                 assertEquals("2", emit[1].organization.id)
-                assertEquals("3", emit[2].organization.id)
             }
         }
 
     @Test
-    fun `Given dummy organization is present, When calling delete, Then state is emitted`() =
+    fun testDelete() =
         runTest {
-            // Given: Dummy organization is present with medications and appointments data
-            val healthCareDataStateRepository = TestHealthCareDataStateRepository()
-            val repository = DefaultHealthCareDataStatesRepository(healthCareDataStateRepository = healthCareDataStateRepository)
-            repository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
-            repository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.APPOINTMENTS)
+            val organization = TEST_MGO_ORGANIZATION.copy(id = "1")
+            val category = HealthCareCategory.MEDICATIONS
 
-            // When: Deleting the organization
-            repository.delete(TEST_MGO_ORGANIZATION)
+            // Given: Organization is stored
+            healthCareDataStateRepository.setLoadedState(organization = organization, category = category)
+            repository.refresh(organization = organization, category = category)
 
-            // Then: Nothing is expected when observing that organization since it's removed
-            repository.observe(category = HealthCareCategory.MEDICATIONS, filterOrganization = TEST_MGO_ORGANIZATION).test {
+            // When: Deleting the first organization
+            repository.delete(organization)
+
+            // Then: Nothing is observed
+            repository.observe(category = category, filterOrganization = organization).test {
                 expectNoEvents()
             }
         }

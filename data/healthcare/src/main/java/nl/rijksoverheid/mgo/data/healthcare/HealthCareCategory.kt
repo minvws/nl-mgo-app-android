@@ -1,5 +1,8 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Bgz
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Documents
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Gp
 import nl.rijksoverheid.mgo.data.uiSchema.GpLaboratoryResultProfile
 import nl.rijksoverheid.mgo.data.uiSchema.IheMhdMinimalDocumentReferenceProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibAdministrationAgreementProfile
@@ -29,17 +32,14 @@ enum class HealthCareCategory(val id: String) {
 fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> {
-            listOf(BGZ.MEDICATION_USE.request)
+            listOf(Bgz.MedicationUse)
         }
-
         HealthCareCategory.LAB_RESULTS -> {
-            listOf(BGZ.LABORATORY_TEST_RESULTS.request, GP.DIAGNOSTIC_AND_LAB_RESULTS.request)
+            listOf(Bgz.LaboratoryTestResult, Gp.DiagnosticsAndLabResult)
         }
-
         HealthCareCategory.DOCUMENTS -> {
-            listOf(DOCUMENTS.DOCUMENT_REFERENCE.request)
+            listOf(Documents.DocumentReference)
         }
-
         else -> listOf()
     }
 }

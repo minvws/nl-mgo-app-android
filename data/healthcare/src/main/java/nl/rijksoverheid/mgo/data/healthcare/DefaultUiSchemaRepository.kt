@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
+import nl.rijksoverheid.mgo.data.healthcare.util.HealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
@@ -16,6 +17,7 @@ internal class DefaultUiSchemaRepository
     constructor(
         private val uiSchemaMapper: UiSchemaMapper,
         private val dvaApi: DvaApi,
+        private val urlCreator: HealthCareUrlCreator,
         @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     ) : UiSchemaRepository {
         override suspend fun getUiSchema(
@@ -33,14 +35,15 @@ internal class DefaultUiSchemaRepository
                     executeNetworkRequest {
                         dvaApi.get(
                             resourceEndpoint = resourceEndpoint,
-                            url = "$dvaApiBaseUrl/fhir/${request.urlPath}",
+                            url = urlCreator.invoke(baseUrl = "${dvaApiBaseUrl}fhir/${request.path}", request = request),
                         )
                     }
                 requestResult
                     .mapCatching { responseBody ->
                         uiSchemaMapper.getUiSchema(
                             fhirBundleJson = responseBody.string(),
-                            profile = request.profile,
+                            fhirVersion = request.fhirVersion,
+                            profiles = category.getProfiles(),
                         )
                     }
                     .onFailure { error ->

@@ -1,14 +1,28 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Bgz
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Documents
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Gp
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Vaccination
+import nl.rijksoverheid.mgo.data.uiSchema.GpLaboratoryResultProfile
+import nl.rijksoverheid.mgo.data.uiSchema.IheMhdMinimalDocumentReferenceProfile
+import nl.rijksoverheid.mgo.data.uiSchema.R4NlCoreVaccinationEventProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibAdministrationAgreementProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibLaboratoryTestResultObservationProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationAgreementProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationUseProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibVaccinationProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibVaccinationRecommendationProfile
+
 enum class HealthCareCategory(val id: String) {
     MEDICATIONS("medication"),
-    MEASUREMENTS("measurements"),
     LAB_RESULTS("lab_results"),
+    DOCUMENTS("documents"),
+    VACCINATIONS("vaccinations"),
+    MEASUREMENTS("measurements"),
     ALLERGIES("allergies"),
     TREATMENTS("treatments"),
     APPOINTMENTS("appointments"),
-    VACCINATIONS("vaccinations"),
-    DOCUMENTS("documents"),
     COMPLAINTS("complaints"),
     PATIENT("patient"),
     ALERTS("alerts"),
@@ -22,29 +36,56 @@ enum class HealthCareCategory(val id: String) {
 fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> {
-            listOf(BGZ_MEDICATION_USE, BGZ_MEDICATION_AGREEMENT, BGZ_ADMINISTRATION_AGREEMENT, GP_MEDICATION_AGREEMENT)
+            listOf(Bgz.MedicationUse)
         }
-        HealthCareCategory.ALLERGIES -> {
-            listOf(BGZ_ALLERGY_INTOLERANCE, GP_ALLERGY_INTOLERANCE)
+
+        HealthCareCategory.LAB_RESULTS -> {
+            listOf(Bgz.LaboratoryTestResult, Gp.DiagnosticsAndLabResult)
         }
-        HealthCareCategory.COMPLAINTS -> {
-            listOf(BGZ_CONCERN)
-        }
-        HealthCareCategory.ALERTS -> {
-            listOf(BGZ_ALERT)
-        }
-        HealthCareCategory.DEVICES -> {
-            listOf(BGZ_MEDICAL_DEVICE)
-        }
-        HealthCareCategory.LIFESTYLE -> {
-            listOf(BGZ_LIVING_SITUATION, BGZ_DRUGS_USE, BGZ_ALCOHOL_USE, BGZ_TABACCO_USE, BGZ_NUTRITION_USE)
-        }
-        HealthCareCategory.MENTAL -> {
-            listOf(BGZ_FUNCTIONAL_OR_MENTAL_STATUS)
-        }
+
         HealthCareCategory.DOCUMENTS -> {
-            listOf(DOCUMENT_REFERENCE)
+            listOf(Documents.DocumentReference)
         }
+
+        HealthCareCategory.VACCINATIONS -> {
+            listOf(Vaccination.Patient)
+        }
+
+        else -> listOf()
+    }
+}
+
+fun HealthCareCategory.getProfiles(): List<String> {
+    return when (this) {
+        HealthCareCategory.MEDICATIONS -> {
+            listOf(
+                ZibMedicationUseProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationUse.value,
+                ZibMedicationAgreementProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationAgreement.value,
+                ZibAdministrationAgreementProfile.HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement.value,
+            )
+        }
+
+        HealthCareCategory.LAB_RESULTS -> {
+            listOf(
+                ZibLaboratoryTestResultObservationProfile.HTTPNictizNlFhirStructureDefinitionZibLaboratoryTestResultObservation.value,
+                GpLaboratoryResultProfile.HTTPNictizNlFhirStructureDefinitionGpLaboratoryResult.value,
+            )
+        }
+
+        HealthCareCategory.DOCUMENTS -> {
+            listOf(
+                IheMhdMinimalDocumentReferenceProfile.HTTPNictizNlFhirStructureDefinitionIHEMHDMinimalDocumentReference.value,
+            )
+        }
+
+        HealthCareCategory.VACCINATIONS -> {
+            listOf(
+                ZibVaccinationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccination.value,
+                ZibVaccinationRecommendationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccinationRecommendation.value,
+                R4NlCoreVaccinationEventProfile.HTTPNictizNlFhirStructureDefinitionNlCoreVaccinationEvent.value,
+            )
+        }
+
         else -> listOf()
     }
 }

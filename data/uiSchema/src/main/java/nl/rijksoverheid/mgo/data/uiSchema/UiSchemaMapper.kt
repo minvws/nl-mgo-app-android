@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.data.uiSchema
 interface UiSchemaMapper {
     fun getUiSchema(
         fhirBundleJson: String,
-        profile: String,
+        fhirVersion: FhirVersion,
+        profiles: List<String>,
     ): List<UISchema>
 }

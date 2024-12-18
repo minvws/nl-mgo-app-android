@@ -4,6 +4,7 @@ import android.os.Parcelable
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_BGZ
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_DOCUMENTS
 import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_GP
+import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_VACCINATION
 import nl.rijksoverheid.mgo.data.api.load.SearchResponse
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
@@ -23,6 +24,9 @@ data class MgoOrganization(
 
 val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
 val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)
+val TEST_DOCUMENTS_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.DOCUMENTS)
+val TEST_VACCINATION_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.VACCINATION)
+
 val TEST_NOT_IMPLEMENTED_DATA_SERVICE =
     MgoOrganizationDataService(
         resourceEndpoint = "",
@@ -65,6 +69,12 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
                         MgoOrganizationDataService(
                             resourceEndpoint = dataService.roles.first().resourceEndpoint,
                             MgoOrganizationDataServiceType.DOCUMENTS,
+                        )
+
+                    DATA_SERVICE_VACCINATION ->
+                        MgoOrganizationDataService(
+                            resourceEndpoint = dataService.roles.first().resourceEndpoint,
+                            MgoOrganizationDataServiceType.VACCINATION,
                         )
 
                     else ->

@@ -259,36 +259,36 @@ enum class GpJournalEntryProfile(val value: String) {
 @Parcelize
 data class GpLaboratoryResult(
     val basedOn: List<MgoReference>? = null,
-    val category: List<MgoCodeableConcept>? = null,
     val code: MgoCodeableConcept? = null,
     val comment: String? = null,
-    val effective: Effective? = null,
+    val effectiveDateTime: String? = null,
+    val effectivePeriod: MgoPeriod? = null,
     val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val interpretation: MgoCodeableConcept? = null,
+    val laboratoryTestResultCode: List<MgoCodeableConcept>? = null,
     val method: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
     val profile: GpLaboratoryResultProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val referenceRange: List<GpLaboratoryResultReferenceRange>? = null,
     val related: List<GpLaboratoryResultRelated>? = null,
     val resourceType: String? = null,
-    val result: MgoDuration? = null,
+    val resultType: List<MgoCodeableConcept>? = null,
     val specimen: MgoReference? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
+    val valueBoolean: Boolean? = null,
+    val valueCodeableConcept: MgoCodeableConcept? = null,
+    val valueDateTime: String? = null,
+    val valuePeriod: MgoPeriod? = null,
+    val valueQuantity: MgoDuration? = null,
+    val valueRange: MgoRange? = null,
+    val valueRatio: MgoRatio? = null,
+    val valueString: String? = null,
 ) : Parcelable
-
-@Serializable
-@Parcelize
-sealed class Effective : Parcelable {
-    @Parcelize
-    class MgoPeriodValue(val value: MgoPeriod) : Effective()
-
-    @Parcelize
-    class StringValue(val value: String) : Effective()
-}
 
 @Serializable
 enum class GpLaboratoryResultProfile(val value: String) {
@@ -299,14 +299,24 @@ enum class GpLaboratoryResultProfile(val value: String) {
 @Serializable
 @Parcelize
 data class GpLaboratoryResultReferenceRange(
+    val age: MgoRange? = null,
+    val appliesTo: List<MgoCodeableConcept>? = null,
     val high: MgoDuration? = null,
     val low: MgoDuration? = null,
+    val type: MgoCodeableConcept? = null,
 ) : Parcelable
 
 @Serializable
 @Parcelize
 data class GpLaboratoryResultRelated(
     val target: MgoReference? = null,
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class MgoRatio(
+    val denominator: MgoDuration? = null,
+    val numerator: MgoDuration? = null,
 ) : Parcelable
 
 @Serializable
@@ -404,121 +414,6 @@ data class UIEntryValueMULTIPLEVALUESString(
     val showEmpty: Boolean? = null,
     val type: MultipleValuesType,
 ) : Parcelable
-
-@Serializable
-@Parcelize
-data class NlCoreHealthProfessionalPractitioner(
-    val address: List<NlCoreHealthProfessionalPractitionerAddress>? = null,
-    val birthDate: String? = null,
-    val communication: List<MgoCodeableConcept>? = null,
-    val emailAddresses: List<EmailAddress>? = null,
-    val fhirVersion: FhirVersionR4,
-    val gender: String? = null,
-    val id: String? = null,
-    val identifier: List<MgoIdentifier>? = null,
-    val name: List<NlCoreHealthProfessionalPractitionerName>? = null,
-    val profile: NlCoreHealthProfessionalPractitionerProfile,
-    val qualification: List<Qualification>? = null,
-    @SerialName("referenceId")
-    val referenceID: String,
-    val resourceType: String? = null,
-    val telephoneNumbers: List<TelephoneNumber>? = null,
-) : Parcelable
-
-@Serializable
-@Parcelize
-data class NlCoreHealthProfessionalPractitionerAddress(
-    val additionalInformation: String? = null,
-    val addressType: MgoCodeableConcept? = null,
-    val city: String? = null,
-    val country: String? = null,
-    val countryCode: MgoCodeableConcept? = null,
-    val district: String? = null,
-    val houseNumber: String? = null,
-    val houseNumberAddition: String? = null,
-    val houseNumberIndication: String? = null,
-    val line: String? = null,
-    val period: MgoPeriod? = null,
-    val postalCode: String? = null,
-    val streetName: String? = null,
-) : Parcelable
-
-@Serializable
-@Parcelize
-data class EmailAddress(
-    val system: EmailAddressSystem,
-    val use: String? = null,
-    val value: String? = null,
-) : Parcelable
-
-@Serializable
-enum class EmailAddressSystem(val value: String) {
-    @SerialName("email")
-    Email("email"),
-}
-
-@Serializable
-enum class FhirVersionR4(val value: String) {
-    @SerialName("R4")
-    R4("R4"),
-}
-
-@Serializable
-@Parcelize
-data class NlCoreHealthProfessionalPractitionerName(
-    val family: String? = null,
-    val given: List<String>? = null,
-    val givenInitials: List<String>? = null,
-    val givenNames: List<String>? = null,
-    val nameUsage: String? = null,
-    val period: MgoPeriod? = null,
-    val prefix: List<String>? = null,
-    val suffix: List<String>? = null,
-    val text: String? = null,
-    val use: Use,
-) : Parcelable
-
-@Serializable
-enum class Use(val value: String) {
-    @SerialName("official")
-    Official("official"),
-
-    @SerialName("usual")
-    Usual("usual"),
-}
-
-@Serializable
-enum class NlCoreHealthProfessionalPractitionerProfile(val value: String) {
-    @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner")
-    HTTPNictizNlFhirStructureDefinitionNlCoreHealthProfessionalPractitioner(
-        "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner",
-    ),
-}
-
-@Serializable
-@Parcelize
-data class Qualification(
-    val code: MgoCodeableConcept? = null,
-    val identifier: List<MgoIdentifier>? = null,
-    val issuer: MgoReference? = null,
-    val period: MgoPeriod? = null,
-) : Parcelable
-
-@Serializable
-@Parcelize
-data class TelephoneNumber(
-    val comment: String? = null,
-    val system: TelephoneNumberSystem,
-    val telecomType: MgoCodeableConcept? = null,
-    val use: String? = null,
-    val value: String? = null,
-) : Parcelable
-
-@Serializable
-enum class TelephoneNumberSystem(val value: String) {
-    @SerialName("phone")
-    Phone("phone"),
-}
 
 @Serializable
 @Parcelize
@@ -672,67 +567,6 @@ enum class NlCorePatientProfile(val value: String) {
 
 @Serializable
 @Parcelize
-data class NlCorePatientR4(
-    val address: List<NlCorePatientR4Address>? = null,
-    val birthDate: String? = null,
-    val deceased: Boolean? = null,
-    val deceasedDateTime: String? = null,
-    val fhirVersion: FhirVersionR4,
-    val gender: String? = null,
-    val generalPractitioner: List<MgoReference>? = null,
-    val id: String? = null,
-    val identifier: List<MgoIdentifier>? = null,
-    val managingOrganization: MgoReference? = null,
-    val maritalStatus: MgoCodeableConcept? = null,
-    val multipleBirth: Boolean? = null,
-    val name: List<NlCorePatientR4Name>? = null,
-    val profile: NlCorePatientR4Profile,
-    @SerialName("referenceId")
-    val referenceID: String,
-    val resourceType: String? = null,
-) : Parcelable
-
-@Serializable
-@Parcelize
-data class NlCorePatientR4Address(
-    val additionalInformation: String? = null,
-    val addressType: MgoCodeableConcept? = null,
-    val city: String? = null,
-    val country: String? = null,
-    val countryCode: MgoCodeableConcept? = null,
-    val district: String? = null,
-    val houseNumber: String? = null,
-    val houseNumberAddition: String? = null,
-    val houseNumberIndication: String? = null,
-    val line: String? = null,
-    val period: MgoPeriod? = null,
-    val postalCode: String? = null,
-    val streetName: String? = null,
-) : Parcelable
-
-@Serializable
-@Parcelize
-data class NlCorePatientR4Name(
-    val family: String? = null,
-    val given: List<String>? = null,
-    val givenInitials: List<String>? = null,
-    val givenNames: List<String>? = null,
-    val nameUsage: String? = null,
-    val period: MgoPeriod? = null,
-    val prefix: List<String>? = null,
-    val suffix: List<String>? = null,
-    val text: String? = null,
-    val use: Use,
-) : Parcelable
-
-@Serializable
-enum class NlCorePatientR4Profile(val value: String) {
-    @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient")
-    HTTPNictizNlFhirStructureDefinitionNlCorePatient("http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"),
-}
-
-@Serializable
-@Parcelize
 data class NlCorePractitioner(
     val address: List<NlCoreAddress>? = null,
     val fhirVersion: FhirVersionR3,
@@ -775,7 +609,183 @@ enum class NlCorePractitionerRoleProfile(val value: String) {
 
 @Serializable
 @Parcelize
-data class NlCoreVaccinationEvent(
+data class R4NlCoreHealthProfessionalPractitioner(
+    val address: List<R4NlCoreHealthProfessionalPractitionerAddress>? = null,
+    val birthDate: String? = null,
+    val communication: List<MgoCodeableConcept>? = null,
+    val emailAddresses: List<EmailAddress>? = null,
+    val fhirVersion: FhirVersionR4,
+    val gender: String? = null,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val name: List<R4NlCoreHealthProfessionalPractitionerName>? = null,
+    val profile: R4NlCoreHealthProfessionalPractitionerProfile,
+    val qualification: List<Qualification>? = null,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+    val telephoneNumbers: List<TelephoneNumber>? = null,
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class R4NlCoreHealthProfessionalPractitionerAddress(
+    val additionalInformation: String? = null,
+    val addressType: MgoCodeableConcept? = null,
+    val city: String? = null,
+    val country: String? = null,
+    val countryCode: MgoCodeableConcept? = null,
+    val district: String? = null,
+    val houseNumber: String? = null,
+    val houseNumberAddition: String? = null,
+    val houseNumberIndication: String? = null,
+    val line: String? = null,
+    val period: MgoPeriod? = null,
+    val postalCode: String? = null,
+    val streetName: String? = null,
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class EmailAddress(
+    val system: EmailAddressSystem,
+    val use: String? = null,
+    val value: String? = null,
+) : Parcelable
+
+@Serializable
+enum class EmailAddressSystem(val value: String) {
+    @SerialName("email")
+    Email("email"),
+}
+
+@Serializable
+enum class FhirVersionR4(val value: String) {
+    @SerialName("R4")
+    R4("R4"),
+}
+
+@Serializable
+@Parcelize
+data class R4NlCoreHealthProfessionalPractitionerName(
+    val family: String? = null,
+    val given: List<String>? = null,
+    val givenInitials: List<String>? = null,
+    val givenNames: List<String>? = null,
+    val nameUsage: String? = null,
+    val period: MgoPeriod? = null,
+    val prefix: List<String>? = null,
+    val suffix: List<String>? = null,
+    val text: String? = null,
+    val use: Use,
+) : Parcelable
+
+@Serializable
+enum class Use(val value: String) {
+    @SerialName("official")
+    Official("official"),
+
+    @SerialName("usual")
+    Usual("usual"),
+}
+
+@Serializable
+enum class R4NlCoreHealthProfessionalPractitionerProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner")
+    HTTPNictizNlFhirStructureDefinitionNlCoreHealthProfessionalPractitioner(
+        "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner",
+    ),
+}
+
+@Serializable
+@Parcelize
+data class Qualification(
+    val code: MgoCodeableConcept? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val issuer: MgoReference? = null,
+    val period: MgoPeriod? = null,
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class TelephoneNumber(
+    val comment: String? = null,
+    val system: TelephoneNumberSystem,
+    val telecomType: MgoCodeableConcept? = null,
+    val use: String? = null,
+    val value: String? = null,
+) : Parcelable
+
+@Serializable
+enum class TelephoneNumberSystem(val value: String) {
+    @SerialName("phone")
+    Phone("phone"),
+}
+
+@Serializable
+@Parcelize
+data class R4NlCorePatient(
+    val address: List<R4NlCorePatientAddress>? = null,
+    val birthDate: String? = null,
+    val deceased: Boolean? = null,
+    val deceasedDateTime: String? = null,
+    val fhirVersion: FhirVersionR4,
+    val gender: String? = null,
+    val generalPractitioner: List<MgoReference>? = null,
+    val id: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val managingOrganization: MgoReference? = null,
+    val maritalStatus: MgoCodeableConcept? = null,
+    val multipleBirth: Boolean? = null,
+    val name: List<R4NlCorePatientName>? = null,
+    val profile: R4NlCorePatientProfile,
+    @SerialName("referenceId")
+    val referenceID: String,
+    val resourceType: String? = null,
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class R4NlCorePatientAddress(
+    val additionalInformation: String? = null,
+    val addressType: MgoCodeableConcept? = null,
+    val city: String? = null,
+    val country: String? = null,
+    val countryCode: MgoCodeableConcept? = null,
+    val district: String? = null,
+    val houseNumber: String? = null,
+    val houseNumberAddition: String? = null,
+    val houseNumberIndication: String? = null,
+    val line: String? = null,
+    val period: MgoPeriod? = null,
+    val postalCode: String? = null,
+    val streetName: String? = null,
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class R4NlCorePatientName(
+    val family: String? = null,
+    val given: List<String>? = null,
+    val givenInitials: List<String>? = null,
+    val givenNames: List<String>? = null,
+    val nameUsage: String? = null,
+    val period: MgoPeriod? = null,
+    val prefix: List<String>? = null,
+    val suffix: List<String>? = null,
+    val text: String? = null,
+    val use: Use,
+) : Parcelable
+
+@Serializable
+enum class R4NlCorePatientProfile(val value: String) {
+    @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient")
+    HTTPNictizNlFhirStructureDefinitionNlCorePatient("http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"),
+}
+
+@Serializable
+@Parcelize
+data class R4NlCoreVaccinationEvent(
     val doseQuantity: MgoDuration? = null,
     val fhirVersion: FhirVersionR4,
     val id: String? = null,
@@ -786,7 +796,7 @@ data class NlCoreVaccinationEvent(
     val patient: MgoReference? = null,
     val performer: List<MgoReference>? = null,
     val pharmaceuticalProduct: MgoReference? = null,
-    val profile: NlCoreVaccinationEventProfile,
+    val profile: R4NlCoreVaccinationEventProfile,
     val protocolApplied: List<ProtocolApplied>? = null,
     @SerialName("referenceId")
     val referenceID: String,
@@ -808,7 +818,7 @@ data class MgoAnnotation(
 ) : Parcelable
 
 @Serializable
-enum class NlCoreVaccinationEventProfile(val value: String) {
+enum class R4NlCoreVaccinationEventProfile(val value: String) {
     @SerialName("http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event")
     HTTPNictizNlFhirStructureDefinitionNlCoreVaccinationEvent("http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event"),
 }
@@ -978,13 +988,6 @@ data class ZibInstructionsForUse(
     val sequence: Double? = null,
     val text: String? = null,
     val timing: ZibAdministrationSchedule,
-) : Parcelable
-
-@Serializable
-@Parcelize
-data class MgoRatio(
-    val denominator: MgoDuration? = null,
-    val numerator: MgoDuration? = null,
 ) : Parcelable
 
 @Serializable
@@ -1391,25 +1394,35 @@ enum class ZibFunctionalOrMentalStatusProfile(val value: String) {
 @Parcelize
 data class ZibLaboratoryTestResultObservation(
     val basedOn: List<MgoReference>? = null,
-    val category: List<MgoCodeableConcept>? = null,
     val code: MgoCodeableConcept? = null,
     val comment: String? = null,
-    val effective: Effective? = null,
+    val effectiveDateTime: String? = null,
+    val effectivePeriod: MgoPeriod? = null,
     val fhirVersion: FhirVersionR3,
     val id: String? = null,
     val identifier: List<MgoIdentifier>? = null,
     val interpretation: MgoCodeableConcept? = null,
+    val laboratoryTestResultCode: List<MgoCodeableConcept>? = null,
     val method: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
     val profile: ZibLaboratoryTestResultObservationProfile,
     @SerialName("referenceId")
     val referenceID: String,
     val referenceRange: List<ZibLaboratoryTestResultObservationReferenceRange>? = null,
     val related: List<ZibLaboratoryTestResultObservationRelated>? = null,
     val resourceType: String? = null,
-    val result: MgoDuration? = null,
+    val resultType: List<MgoCodeableConcept>? = null,
     val specimen: MgoReference? = null,
     val status: String? = null,
     val subject: MgoReference? = null,
+    val valueBoolean: Boolean? = null,
+    val valueCodeableConcept: MgoCodeableConcept? = null,
+    val valueDateTime: String? = null,
+    val valuePeriod: MgoPeriod? = null,
+    val valueQuantity: MgoDuration? = null,
+    val valueRange: MgoRange? = null,
+    val valueRatio: MgoRatio? = null,
+    val valueString: String? = null,
 ) : Parcelable
 
 @Serializable
@@ -1423,8 +1436,11 @@ enum class ZibLaboratoryTestResultObservationProfile(val value: String) {
 @Serializable
 @Parcelize
 data class ZibLaboratoryTestResultObservationReferenceRange(
+    val age: MgoRange? = null,
+    val appliesTo: List<MgoCodeableConcept>? = null,
     val high: MgoDuration? = null,
     val low: MgoDuration? = null,
+    val type: MgoCodeableConcept? = null,
 ) : Parcelable
 
 @Serializable

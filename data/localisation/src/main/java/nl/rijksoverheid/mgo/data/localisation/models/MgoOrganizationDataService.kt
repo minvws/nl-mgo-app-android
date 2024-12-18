@@ -15,5 +15,6 @@ enum class MgoOrganizationDataServiceType {
     BGZ,
     GP,
     DOCUMENTS,
+    VACCINATION,
     NOT_IMPLEMENTED,
 }

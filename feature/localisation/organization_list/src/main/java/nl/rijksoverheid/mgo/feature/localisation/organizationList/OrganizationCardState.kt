@@ -11,7 +11,7 @@ enum class OrganizationSearchCardState {
 
 fun MgoOrganization.getCardState(): OrganizationSearchCardState {
     return when {
-        !containsBgz() && !containsGp() -> OrganizationSearchCardState.NOT_SUPPORTED
+        !containsBgz() && !containsGp() && !containsDocuments() && !containsVaccination() -> OrganizationSearchCardState.NOT_SUPPORTED
         dataServices.isEmpty() -> OrganizationSearchCardState.NOT_SUPPORTED
         added -> OrganizationSearchCardState.ADDED
         else -> OrganizationSearchCardState.ADD
@@ -24,4 +24,12 @@ private fun MgoOrganization.containsBgz(): Boolean {
 
 private fun MgoOrganization.containsGp(): Boolean {
     return dataServices.map { it.type }.contains(MgoOrganizationDataServiceType.GP)
+}
+
+private fun MgoOrganization.containsDocuments(): Boolean {
+    return dataServices.map { it.type }.contains(MgoOrganizationDataServiceType.DOCUMENTS)
+}
+
+private fun MgoOrganization.containsVaccination(): Boolean {
+    return dataServices.map { it.type }.contains(MgoOrganizationDataServiceType.VACCINATION)
 }

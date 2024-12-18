@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequestQueryKey.DATE
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequestQueryKey.INCLUDE
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequestQueryKey.STATUS
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
+import nl.rijksoverheid.mgo.data.uiSchema.FhirVersion
 
 // ================
 // BGZ
@@ -17,11 +18,12 @@ sealed class HealthCareRequest(
     open val path: String,
     open val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>,
     val dataServiceType: MgoOrganizationDataServiceType,
+    val fhirVersion: FhirVersion,
 ) {
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
     sealed class Bgz(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
         HealthCareRequest
-        (path, queryParameters, MgoOrganizationDataServiceType.BGZ) {
+        (path, queryParameters, MgoOrganizationDataServiceType.BGZ, FhirVersion.R3) {
         data object MedicationUse : Bgz(
             path = "MedicationStatement",
             queryParameters =
@@ -45,7 +47,7 @@ sealed class HealthCareRequest(
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_GP_Data
     sealed class Gp(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
         HealthCareRequest
-        (path, queryParameters, MgoOrganizationDataServiceType.GP) {
+        (path, queryParameters, MgoOrganizationDataServiceType.GP, FhirVersion.R3) {
         data object DiagnosticsAndLabResult : Gp(
             path = "Observation",
             queryParameters =
@@ -61,12 +63,25 @@ sealed class HealthCareRequest(
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA
     sealed class Documents(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
         HealthCareRequest
-        (path, queryParameters, MgoOrganizationDataServiceType.DOCUMENTS) {
+        (path, queryParameters, MgoOrganizationDataServiceType.DOCUMENTS, FhirVersion.R3) {
         data object DocumentReference : Documents(
             path = "DocumentReference",
             queryParameters =
                 listOf(
                     Pair(STATUS, "current"),
+                ),
+        )
+    }
+
+    // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V6/FHIR_Vaccination-Immunization
+    sealed class Vaccination(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
+        HealthCareRequest
+        (path, queryParameters, MgoOrganizationDataServiceType.VACCINATION, FhirVersion.R4) {
+        data object Patient : Vaccination(
+            path = "Immunization",
+            queryParameters =
+                listOf(
+                    Pair(INCLUDE, "patient"),
                 ),
         )
     }

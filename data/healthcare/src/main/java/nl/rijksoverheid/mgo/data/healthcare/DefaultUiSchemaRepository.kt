@@ -40,6 +40,7 @@ internal class DefaultUiSchemaRepository
                     .mapCatching { responseBody ->
                         uiSchemaMapper.getUiSchema(
                             fhirBundleJson = responseBody.string(),
+                            fhirVersion = request.fhirVersion,
                             profiles = category.getProfiles(),
                         )
                     }

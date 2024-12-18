@@ -20,6 +20,7 @@ internal class DefaultUiSchemaMapper
 
         override fun getUiSchema(
             fhirBundleJson: String,
+            fhirVersion: FhirVersion,
             profiles: List<String>,
         ): List<UISchema> {
             // Javascript code
@@ -47,6 +48,7 @@ internal class DefaultUiSchemaMapper
 
                 val getMgoResourceJsonParameters = V8Array(runtime)
                 getMgoResourceJsonParameters.push(bundleResourceJsonObject.toString())
+                getMgoResourceJsonParameters.push(fhirVersion.toString())
                 val mgoResourceJson = mgoFhirData.executeStringFunction("getMgoResourceJson", getMgoResourceJsonParameters)
                 val mgoResourceJsonObject = JSONObject(mgoResourceJson)
 

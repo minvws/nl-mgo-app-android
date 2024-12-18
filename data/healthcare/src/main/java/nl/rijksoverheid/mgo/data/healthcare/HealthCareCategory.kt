@@ -3,12 +3,16 @@ package nl.rijksoverheid.mgo.data.healthcare
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Bgz
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Documents
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Gp
+import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Vaccination
 import nl.rijksoverheid.mgo.data.uiSchema.GpLaboratoryResultProfile
 import nl.rijksoverheid.mgo.data.uiSchema.IheMhdMinimalDocumentReferenceProfile
+import nl.rijksoverheid.mgo.data.uiSchema.R4NlCoreVaccinationEventProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibAdministrationAgreementProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibLaboratoryTestResultObservationProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationAgreementProfile
 import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationUseProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibVaccinationProfile
+import nl.rijksoverheid.mgo.data.uiSchema.ZibVaccinationRecommendationProfile
 
 enum class HealthCareCategory(val id: String) {
     MEDICATIONS("medication"),
@@ -40,6 +44,9 @@ fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
         HealthCareCategory.DOCUMENTS -> {
             listOf(Documents.DocumentReference)
         }
+        HealthCareCategory.VACCINATIONS -> {
+            listOf(Vaccination.Patient)
+        }
         else -> listOf()
     }
 }
@@ -64,6 +71,14 @@ fun HealthCareCategory.getProfiles(): List<String> {
         HealthCareCategory.DOCUMENTS -> {
             listOf(
                 IheMhdMinimalDocumentReferenceProfile.HTTPNictizNlFhirStructureDefinitionIHEMHDMinimalDocumentReference.value,
+            )
+        }
+
+        HealthCareCategory.VACCINATIONS -> {
+            listOf(
+                ZibVaccinationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccination.value,
+                ZibVaccinationRecommendationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccinationRecommendation.value,
+                R4NlCoreVaccinationEventProfile.HTTPNictizNlFhirStructureDefinitionNlCoreVaccinationEvent.value,
             )
         }
 

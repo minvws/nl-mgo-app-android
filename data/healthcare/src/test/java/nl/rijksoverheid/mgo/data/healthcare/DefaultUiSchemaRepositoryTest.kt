@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
+import nl.rijksoverheid.mgo.data.healthcare.util.TestHealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_BGZ_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -26,8 +27,14 @@ internal class DefaultUiSchemaRepositoryTest {
             // Given
             val uiSchemaMapper = TestUiSchemaMapper(listOf(TEST_UI_SCHEMA_MEDICATION))
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
-            testServer.enqueue200(amount = 4)
-            val repository = DefaultUiSchemaRepository(uiSchemaMapper = uiSchemaMapper, dvaApi = dvaApi, dvaApiBaseUrl = "")
+            testServer.enqueue200(amount = 1)
+            val repository =
+                DefaultUiSchemaRepository(
+                    uiSchemaMapper = uiSchemaMapper,
+                    dvaApi = dvaApi,
+                    dvaApiBaseUrl = "",
+                    urlCreator = TestHealthCareUrlCreator(),
+                )
 
             // When
             val result =
@@ -37,7 +44,7 @@ internal class DefaultUiSchemaRepositoryTest {
                 )
 
             // Then
-            assertEquals(4, result.size)
+            assertEquals(1, result.size)
             assertTrue(result.all { it.isSuccess })
         }
 
@@ -47,8 +54,14 @@ internal class DefaultUiSchemaRepositoryTest {
             // Given
             val uiSchemaMapper = TestUiSchemaMapper(listOf(TEST_UI_SCHEMA_MEDICATION))
             val dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url())
-            testServer.enqueue500(amount = 4)
-            val repository = DefaultUiSchemaRepository(uiSchemaMapper = uiSchemaMapper, dvaApi = dvaApi, dvaApiBaseUrl = "")
+            testServer.enqueue500(amount = 1)
+            val repository =
+                DefaultUiSchemaRepository(
+                    uiSchemaMapper = uiSchemaMapper,
+                    dvaApi = dvaApi,
+                    dvaApiBaseUrl = "",
+                    urlCreator = TestHealthCareUrlCreator(),
+                )
 
             // When
             val result =
@@ -58,7 +71,7 @@ internal class DefaultUiSchemaRepositoryTest {
                 )
 
             // Then
-            assertEquals(4, result.size)
+            assertEquals(1, result.size)
             assertTrue(result.all { it.isFailure })
         }
 }

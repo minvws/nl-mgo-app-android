@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.healthcare.binary.DefaultHealthCareBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.util.DefaultHealthCareUrlCreator
+import nl.rijksoverheid.mgo.data.healthcare.util.HealthCareUrlCreator
 import javax.inject.Singleton
 
 @Module
@@ -26,4 +28,8 @@ internal abstract class HealthCareModule {
     @Binds
     @Singleton
     abstract fun provideHealthCareBinaryRepository(default: DefaultHealthCareBinaryRepository): HealthCareBinaryRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideHealthCareUrlCreator(default: DefaultHealthCareUrlCreator): HealthCareUrlCreator
 }

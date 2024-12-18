@@ -12,41 +12,40 @@ import javax.inject.Singleton
 
 @Singleton
 internal class DefaultUiSchemaRepository
-@Inject
-constructor(
-    private val uiSchemaMapper: UiSchemaMapper,
-    private val dvaApi: DvaApi,
-    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
-) : UiSchemaRepository {
-    override suspend fun getUiSchema(
-        organization: MgoOrganization,
-        category: HealthCareCategory,
-    ): List<Result<List<UISchema>>> {
-        val requests = category.getRequests()
-        return requests.mapNotNull { request ->
-            val resourceEndpoint =
-                organization.dataServices.firstOrNull { dataService ->
-                    dataService.type == request.dataServiceType
-                }?.resourceEndpoint
-            if (resourceEndpoint == null) return@mapNotNull null
-            val requestResult =
-                executeNetworkRequest {
-                    dvaApi.get(
-                        resourceEndpoint = resourceEndpoint,
-                        url = "$dvaApiBaseUrl/fhir/${request.path}",
-                        queries = request.queryParameters.map { parameter -> parameter.key.value to parameter.value }.toMap(),
-                    )
-                }
-            requestResult
-                .mapCatching { responseBody ->
-                    uiSchemaMapper.getUiSchema(
-                        fhirBundleJson = responseBody.string(),
-                        profile = request.profile,
-                    )
-                }
-                .onFailure { error ->
-                    Timber.e(error, "Failed")
-                }
+    @Inject
+    constructor(
+        private val uiSchemaMapper: UiSchemaMapper,
+        private val dvaApi: DvaApi,
+        @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
+    ) : UiSchemaRepository {
+        override suspend fun getUiSchema(
+            organization: MgoOrganization,
+            category: HealthCareCategory,
+        ): List<Result<List<UISchema>>> {
+            val requests = category.getRequests()
+            return requests.mapNotNull { request ->
+                val resourceEndpoint =
+                    organization.dataServices.firstOrNull { dataService ->
+                        dataService.type == request.dataServiceType
+                    }?.resourceEndpoint
+                if (resourceEndpoint == null) return@mapNotNull null
+                val requestResult =
+                    executeNetworkRequest {
+                        dvaApi.get(
+                            resourceEndpoint = resourceEndpoint,
+                            url = request.createUrl("$dvaApiBaseUrl/fhir/${request.path}"),
+                        )
+                    }
+                requestResult
+                    .mapCatching { responseBody ->
+                        uiSchemaMapper.getUiSchema(
+                            fhirBundleJson = responseBody.string(),
+                            profiles = category.getProfiles(),
+                        )
+                    }
+                    .onFailure { error ->
+                        Timber.e(error, "Failed")
+                    }
+            }
         }
     }
-}

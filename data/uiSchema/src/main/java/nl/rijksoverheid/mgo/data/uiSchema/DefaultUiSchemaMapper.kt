@@ -20,7 +20,7 @@ internal class DefaultUiSchemaMapper
 
         override fun getUiSchema(
             fhirBundleJson: String,
-            profile: String,
+            profiles: List<String>,
         ): List<UISchema> {
             // Javascript code
             val reader1 = BufferedReader(InputStreamReader(context.assets.open("mgo-fhir-data.iife.js")))
@@ -50,7 +50,7 @@ internal class DefaultUiSchemaMapper
                 val mgoResourceJson = mgoFhirData.executeStringFunction("getMgoResourceJson", getMgoResourceJsonParameters)
                 val mgoResourceJsonObject = JSONObject(mgoResourceJson)
 
-                if (mgoResourceJsonObject.getString("profile") == profile) {
+                if (profiles.contains(mgoResourceJsonObject.getString("profile"))) {
                     // Get ui schema json
                     val getUiSchemaJsonParameters = V8Array(runtime)
                     getUiSchemaJsonParameters.push(mgoResourceJson)

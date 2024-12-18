@@ -16,13 +16,13 @@ import nl.rijksoverheid.mgo.data.uiSchema.ZibVaccinationRecommendationProfile
 
 enum class HealthCareCategory(val id: String) {
     MEDICATIONS("medication"),
-    MEASUREMENTS("measurements"),
     LAB_RESULTS("lab_results"),
+    DOCUMENTS("documents"),
+    VACCINATIONS("vaccinations"),
+    MEASUREMENTS("measurements"),
     ALLERGIES("allergies"),
     TREATMENTS("treatments"),
     APPOINTMENTS("appointments"),
-    VACCINATIONS("vaccinations"),
-    DOCUMENTS("documents"),
     COMPLAINTS("complaints"),
     PATIENT("patient"),
     ALERTS("alerts"),
@@ -38,15 +38,19 @@ fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
         HealthCareCategory.MEDICATIONS -> {
             listOf(Bgz.MedicationUse)
         }
+
         HealthCareCategory.LAB_RESULTS -> {
             listOf(Bgz.LaboratoryTestResult, Gp.DiagnosticsAndLabResult)
         }
+
         HealthCareCategory.DOCUMENTS -> {
             listOf(Documents.DocumentReference)
         }
+
         HealthCareCategory.VACCINATIONS -> {
             listOf(Vaccination.Patient)
         }
+
         else -> listOf()
     }
 }

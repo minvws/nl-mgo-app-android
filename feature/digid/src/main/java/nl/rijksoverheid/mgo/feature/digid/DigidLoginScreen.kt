@@ -3,9 +3,12 @@ package nl.rijksoverheid.mgo.feature.digid
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,12 +22,14 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.login_heading),
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
     ) {
         Text(
             text = stringResource(id = CopyR.string.login_subheading),
@@ -33,15 +38,15 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
 
         MgoCard(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp),
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .clickable { onNavigateToDigidMock() }
-                        .padding(16.dp),
+                Modifier
+                    .clickable { onNavigateToDigidMock() }
+                    .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(modifier = Modifier.size(32.dp), painter = painterResource(R.drawable.ic_digid), contentDescription = null)
@@ -53,6 +58,8 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

@@ -40,6 +40,7 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
             Row(
                 modifier =
                     Modifier
+                        .fillMaxWidth()
                         .clickable { onNavigateToDigidMock() }
                         .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,

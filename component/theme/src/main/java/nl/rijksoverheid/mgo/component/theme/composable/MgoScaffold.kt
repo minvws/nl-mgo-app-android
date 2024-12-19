@@ -55,14 +55,14 @@ import nl.rijksoverheid.mgo.component.theme.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.vibrate
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-sealed class MgoScaffoldScrollStateProvider(open val canScrollForward: Boolean) {
-    data object None : MgoScaffoldScrollStateProvider(false)
+sealed class MgoScaffoldScrollStateProvider {
+    data object None : MgoScaffoldScrollStateProvider()
 
-    data class Column(val scrollState: ScrollState) : MgoScaffoldScrollStateProvider(scrollState.canScrollForward)
+    data class Column(val scrollState: ScrollState) : MgoScaffoldScrollStateProvider()
 
-    data class LazyColumn(val lazyListState: LazyListState) : MgoScaffoldScrollStateProvider(lazyListState.canScrollForward)
+    data class LazyColumn(val lazyListState: LazyListState) : MgoScaffoldScrollStateProvider()
 
-    data class Preview(override val canScrollForward: Boolean) : MgoScaffoldScrollStateProvider(canScrollForward)
+    data class Preview(val canScrollForward: Boolean) : MgoScaffoldScrollStateProvider()
 }
 
 @Composable
@@ -189,14 +189,23 @@ fun MgoScaffold(
 
                 if (primaryButtonText != null && onPrimaryButtonClick != null) {
                     // Disable shadow for all previews that use this composable (excepting being this one)
-                    val canScrollForward =
+                    val canScroll =
                         if (LocalInspectionMode.current && scrollStateProvider !is MgoScaffoldScrollStateProvider.Preview) {
                             false
                         } else {
-                            scrollStateProvider.canScrollForward
+                            when (scrollStateProvider) {
+                                is MgoScaffoldScrollStateProvider.Column ->
+                                    scrollStateProvider.scrollState.canScrollForward ||
+                                        scrollStateProvider.scrollState.canScrollBackward
+                                is MgoScaffoldScrollStateProvider.LazyColumn ->
+                                    scrollStateProvider.lazyListState.canScrollForward ||
+                                        scrollStateProvider.lazyListState.canScrollBackward
+                                MgoScaffoldScrollStateProvider.None -> false
+                                is MgoScaffoldScrollStateProvider.Preview -> false
+                            }
                         }
                     Buttons(
-                        canScrollForward = canScrollForward,
+                        canScroll = canScroll,
                         primaryButtonText = primaryButtonText,
                         onPrimaryButtonClick = onPrimaryButtonClick,
                         secondaryButtonText = secondaryButtonText,
@@ -237,13 +246,13 @@ private fun calculateExpandedHeight(
 @Composable
 private fun Buttons(
     horizontalPadding: Dp,
-    canScrollForward: Boolean,
+    canScroll: Boolean,
     primaryButtonText: String,
     onPrimaryButtonClick: () -> Unit,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
 ) {
-    if (canScrollForward) {
+    if (canScroll) {
         Box(
             modifier =
                 Modifier
@@ -252,7 +261,7 @@ private fun Buttons(
                     .shadow(elevation = 1.dp, spotColor = Color.Gray),
         )
     }
-    val background = if (canScrollForward) MaterialTheme.colorScheme.surface else Color.Transparent
+    val background = if (canScroll) MaterialTheme.colorScheme.surface else Color.Transparent
     Column(
         modifier =
             Modifier

@@ -38,15 +38,15 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
 
         MgoCard(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
         ) {
             Row(
                 modifier =
-                Modifier
-                    .clickable { onNavigateToDigidMock() }
-                    .padding(16.dp),
+                    Modifier
+                        .clickable { onNavigateToDigidMock() }
+                        .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(modifier = Modifier.size(32.dp), painter = painterResource(R.drawable.ic_digid), contentDescription = null)

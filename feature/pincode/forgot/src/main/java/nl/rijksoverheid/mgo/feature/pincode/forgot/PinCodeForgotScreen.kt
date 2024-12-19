@@ -1,6 +1,9 @@
 package nl.rijksoverheid.mgo.feature.pincode.forgot
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +23,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionPrimaryNegativeBackground
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -75,6 +79,7 @@ private fun PinCodeForgotScreenContent(
 
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.forgot_pincode_heading),
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         onNavigateBack = onNavigateBack,
         primaryButtonText = stringResource(id = CopyR.string.common_cancel),
         onPrimaryButtonClick = onNavigateBack,
@@ -86,6 +91,7 @@ private fun PinCodeForgotScreenContent(
                 text = stringResource(id = CopyR.string.forgot_pincode_subheading),
                 style = MaterialTheme.typography.bodySmall,
             )
+            Spacer(modifier = Modifier.height(16.dp))
         },
     )
 }

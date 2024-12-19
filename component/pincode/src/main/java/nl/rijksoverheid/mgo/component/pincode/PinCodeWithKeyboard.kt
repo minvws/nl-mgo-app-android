@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -22,10 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
@@ -89,7 +88,6 @@ private fun PinCodeWithKeyboardContent(
     Column(
         modifier =
             modifier
-                .verticalScroll(rememberScrollState())
                 .padding(bottom = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -99,7 +97,9 @@ private fun PinCodeWithKeyboardContent(
             pinCode = pinCode,
             error = error != null,
         )
-        PinCodeError(modifier = Modifier.alpha(if (error == null) 0f else 1f), error = error)
+        if (error != null) {
+            PinCodeError(modifier = Modifier.padding(bottom = 32.dp), error = error)
+        }
         Spacer(modifier = Modifier.weight(1f))
         if (hint != null) {
             TextButton(onClick = { onClickHint?.invoke() }) {
@@ -166,10 +166,11 @@ private fun PinCodeError(
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
             Text(
-                modifier = Modifier.padding(start = 6.dp),
+                modifier = Modifier.wrapContentWidth().padding(start = 6.dp),
                 text = error ?: "",
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.notificationError(),
             )
         }

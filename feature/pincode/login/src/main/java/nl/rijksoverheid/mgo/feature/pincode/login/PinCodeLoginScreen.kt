@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.pincode.login
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -77,6 +79,7 @@ private fun PinCodeLoginScreenContent(
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.pincode_validation_heading),
         appBarTitleAlign = TextAlign.Center,
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         content = {
             Text(
                 modifier =

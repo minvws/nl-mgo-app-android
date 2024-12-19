@@ -27,6 +27,9 @@ class AndroidConventionsPlugin : Plugin<Project> {
 
     private fun Project.configurePlugins() {
         plugins.apply {
+            // Bug in Paparazzi 1.3.5, see: https://github.com/cashapp/paparazzi/issues/1692#issuecomment-2489002011
+            CreateSnapshotsDirTask.register(project)
+
             apply(versionCatalog.findPlugin("kotlinAndroid").get().get().pluginId)
             apply(versionCatalog.findPlugin("ksp").get().get().pluginId)
             apply(versionCatalog.findPlugin("daggerHilt").get().get().pluginId)

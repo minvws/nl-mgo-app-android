@@ -57,14 +57,6 @@ private fun OrganizationsScreenContent(
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
-    val scrollStateProvider =
-        if (viewState.organizations.isEmpty()) {
-            MgoScaffoldScrollStateProvider.None
-        } else {
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            )
-        }
     val primaryButtonText =
         when {
             viewState.organizations.isEmpty() -> {
@@ -79,7 +71,7 @@ private fun OrganizationsScreenContent(
         }
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.organizations_heading),
-        scrollStateProvider = scrollStateProvider,
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onClickAddProvider,
         content = {
@@ -127,6 +119,7 @@ private fun ColumnScope.NoOrganizations() {
         color = MaterialTheme.colorScheme.contentTertiary(),
         textAlign = TextAlign.Center,
     )
+    Spacer(modifier = Modifier.height(16.dp))
     Spacer(modifier = Modifier.weight(1f))
 }
 

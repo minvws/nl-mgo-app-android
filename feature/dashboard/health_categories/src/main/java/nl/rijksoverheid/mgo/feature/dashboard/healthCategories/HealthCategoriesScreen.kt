@@ -156,6 +156,7 @@ private fun ColumnScope.NoProviders() {
         color = MaterialTheme.colorScheme.contentTertiary(),
         textAlign = TextAlign.Center,
     )
+    Spacer(modifier = Modifier.height(16.dp))
     Spacer(modifier = Modifier.weight(1f))
 }
 

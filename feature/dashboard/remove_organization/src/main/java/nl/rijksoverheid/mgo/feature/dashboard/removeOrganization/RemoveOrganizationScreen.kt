@@ -2,8 +2,11 @@ package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +26,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
@@ -59,6 +63,7 @@ private fun RemoveOrganizationScreenContent(
     onDeleteProvider: () -> Unit,
 ) {
     MgoScaffold(
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         onNavigateBack = onNavigateBack,
         primaryButtonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
         onPrimaryButtonClick = onNavigateBack,
@@ -96,6 +101,8 @@ private fun RemoveOrganizationScreenContent(
                 text = stringResource(id = CopyR.string.remove_organization_subheading, providerName),
                 style = MaterialTheme.typography.bodyDefault,
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
         },
     )
 }

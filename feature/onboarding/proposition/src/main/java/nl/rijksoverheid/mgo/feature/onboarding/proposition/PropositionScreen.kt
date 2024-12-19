@@ -3,7 +3,10 @@ package nl.rijksoverheid.mgo.feature.onboarding.proposition
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,6 +19,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -44,6 +48,7 @@ internal fun PropositionOverviewScreenContent(
     val context = LocalContext.current
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.proposition_heading),
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         onNavigateBack = onNavigateBack,
         primaryButtonText = stringResource(id = CopyR.string.common_next),
         onPrimaryButtonClick = onClickNext,
@@ -73,6 +78,7 @@ internal fun PropositionOverviewScreenContent(
                 icon = R.drawable.ic_privacy_overview_gpp_bad,
                 text = stringResource(id = CopyR.string.proposition_statement_4),
             )
+            Spacer(modifier = Modifier.height(16.dp))
         },
     )
 }

@@ -1,8 +1,11 @@
 package nl.rijksoverheid.mgo.feature.pincode.biometric
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +21,7 @@ import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -40,6 +44,7 @@ private fun PinCodeBioMetricSetupScreenContent(
 ) {
     val context = LocalContext.current
     MgoScaffold(
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         primaryButtonText = stringResource(id = CopyR.string.biometric_setup_enable),
         onPrimaryButtonClick = {
             val fragmentActivity = context as FragmentActivity
@@ -70,6 +75,8 @@ private fun PinCodeBioMetricSetupScreenContent(
             text = stringResource(id = CopyR.string.biometric_setup_subheading),
             style = MaterialTheme.typography.bodySmall,
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

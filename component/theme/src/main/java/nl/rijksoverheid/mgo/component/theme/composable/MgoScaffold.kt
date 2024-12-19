@@ -102,6 +102,19 @@ fun MgoScaffold(
             }
         }
     }
+    val canScroll =
+        when (scrollStateProvider) {
+            is MgoScaffoldScrollStateProvider.Column ->
+                scrollStateProvider.scrollState.canScrollForward ||
+                    scrollStateProvider.scrollState.canScrollBackward
+
+            is MgoScaffoldScrollStateProvider.LazyColumn ->
+                scrollStateProvider.lazyListState.canScrollForward ||
+                    scrollStateProvider.lazyListState.canScrollBackward
+
+            MgoScaffoldScrollStateProvider.None -> false
+            is MgoScaffoldScrollStateProvider.Preview -> false
+        }
 
     Scaffold(
         modifier = scaffoldModifier,
@@ -177,7 +190,7 @@ fun MgoScaffold(
                             .weight(1f)
                             .padding(horizontal = horizontalPadding)
                             .then(
-                                if (scrollStateProvider is MgoScaffoldScrollStateProvider.Column) {
+                                if (scrollStateProvider is MgoScaffoldScrollStateProvider.Column && canScroll) {
                                     Modifier.verticalScroll(scrollStateProvider.scrollState)
                                 } else {
                                     Modifier
@@ -193,16 +206,7 @@ fun MgoScaffold(
                         if (LocalInspectionMode.current && scrollStateProvider !is MgoScaffoldScrollStateProvider.Preview) {
                             false
                         } else {
-                            when (scrollStateProvider) {
-                                is MgoScaffoldScrollStateProvider.Column ->
-                                    scrollStateProvider.scrollState.canScrollForward ||
-                                        scrollStateProvider.scrollState.canScrollBackward
-                                is MgoScaffoldScrollStateProvider.LazyColumn ->
-                                    scrollStateProvider.lazyListState.canScrollForward ||
-                                        scrollStateProvider.lazyListState.canScrollBackward
-                                MgoScaffoldScrollStateProvider.None -> false
-                                is MgoScaffoldScrollStateProvider.Preview -> false
-                            }
+                            canScroll
                         }
                     Buttons(
                         canScroll = canScroll,

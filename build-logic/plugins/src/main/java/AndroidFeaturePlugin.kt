@@ -14,6 +14,9 @@ class AndroidFeaturePlugin : Plugin<Project> {
             apply(AndroidConventionsPlugin::class.java)
             apply(AndroidUiPlugin::class.java)
             apply(LintPlugin::class.java)
+
+            // Bug in Paparazzi 1.3.5, see: https://github.com/cashapp/paparazzi/issues/1692#issuecomment-2489002011
+            CreateSnapshotsDirTask.register(project)
             apply(SnapshotsPlugin::class.java)
         }
     }

@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.pincode.confirm
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -65,6 +67,7 @@ private fun PinCodeConfirmScreenContent(
     val subHeadingFocusRequester = remember { FocusRequester() }
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.pincode_confirm_heading),
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         onNavigateBack = onNavigateBack,
         content = {
             Text(

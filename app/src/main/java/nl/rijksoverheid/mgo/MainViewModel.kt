@@ -38,7 +38,7 @@ internal class MainViewModel
         @Named("keyValueStore") val keyValueStore: KeyValueStore,
         val isDigidAuthenticated: IsDigidAuthenticated,
     ) : ViewModel() {
-        private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
+        private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
         val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
 
         private val _navigateDialog = MutableSharedFlow<Any>(extraBufferCapacity = 1)

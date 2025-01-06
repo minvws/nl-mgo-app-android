@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.composable.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
 import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
@@ -71,28 +72,18 @@ private fun SettingsScreenContent(
 ) {
     var showResetAppDialog by remember { mutableStateOf(false) }
     if (showResetAppDialog) {
-        AlertDialog(
-            title = { Text(stringResource(CopyR.string.settings_reset_app_dialog_heading)) },
-            text = { Text(stringResource(CopyR.string.settings_reset_app_dialog_subheading)) },
+        MgoAlertDialog(
+            title = stringResource(CopyR.string.settings_reset_app_dialog_heading),
+            text = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
             onDismissRequest = { showResetAppDialog = false },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showResetAppDialog = false
-                        onResetAppButtonClicked()
-                    },
-                ) {
-                    Text(stringResource(CopyR.string.common_yes))
-                }
+            confirmButtonText = stringResource(CopyR.string.common_yes),
+            onClickConfirmButton = {
+                showResetAppDialog = false
+                onResetAppButtonClicked()
             },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        showResetAppDialog = false
-                    },
-                ) {
-                    Text(stringResource(CopyR.string.common_no))
-                }
+            dismissButtonText = stringResource(CopyR.string.common_no),
+            onClickDismissButton = {
+                showResetAppDialog = false
             },
         )
     }

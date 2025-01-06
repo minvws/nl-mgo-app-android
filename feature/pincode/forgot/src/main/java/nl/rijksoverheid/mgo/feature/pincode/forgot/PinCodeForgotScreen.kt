@@ -4,11 +4,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryNegativeBackground
+import nl.rijksoverheid.mgo.component.theme.composable.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.framework.copy.R
@@ -52,27 +49,18 @@ private fun PinCodeForgotScreenContent(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     if (showDialog) {
-        AlertDialog(
-            title = { Text(text = stringResource(id = R.string.forgot_pincode_dialog_heading)) },
-            text = { Text(text = stringResource(id = R.string.forgot_pincode_dialog_subheading)) },
+        MgoAlertDialog(
+            title = stringResource(id = R.string.forgot_pincode_dialog_heading),
+            text = stringResource(id = R.string.forgot_pincode_dialog_subheading),
             onDismissRequest = { showDialog = false },
-            confirmButton = {
-                TextButton(
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.actionPrimaryNegativeBackground()),
-                    onClick = {
-                        onCreateNewAccount()
-                        showDialog = false
-                    },
-                ) {
-                    Text(stringResource(id = R.string.common_yes))
-                }
+            confirmButtonText = stringResource(id = R.string.common_yes),
+            onClickConfirmButton = {
+                onCreateNewAccount()
+                showDialog = false
             },
-            dismissButton = {
-                TextButton(
-                    onClick = { showDialog = false },
-                ) {
-                    Text(stringResource(id = R.string.common_no))
-                }
+            dismissButtonText = stringResource(id = R.string.common_no),
+            onClickDismissButton = {
+                showDialog = false
             },
         )
     }

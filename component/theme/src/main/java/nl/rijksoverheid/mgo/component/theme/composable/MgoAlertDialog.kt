@@ -21,9 +21,9 @@ fun MgoAlertDialog(
     confirmButtonText: String,
     confirmButtonColor: Color = MaterialTheme.colorScheme.actionTertiaryNegativeText(),
     onClickConfirmButton: () -> Unit,
-    dismissButtonText: String?,
+    dismissButtonText: String? = null,
     dismissButtonColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-    onClickDismissButton: (() -> Unit)?,
+    onClickDismissButton: (() -> Unit)? = null,
     title: String,
     text: String,
 ) {

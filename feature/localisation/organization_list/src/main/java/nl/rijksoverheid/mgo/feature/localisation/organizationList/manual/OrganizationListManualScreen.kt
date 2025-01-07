@@ -28,16 +28,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoHtmlText
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import kotlinx.coroutines.flow.collectLatest
-import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -119,7 +115,7 @@ private fun OrganizationListManualScreenContent(
             }
         }
 
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
         onNavigateBack = onNavigateBack,
         primaryButtonText = primaryButtonText,
@@ -209,12 +205,17 @@ private fun ColumnScope.EmptyContent(
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = ThemeR.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_alert),
         contentDescription = null,
     )
-    MgoHtmlText(
+    nl.rijksoverheid.mgo.component.mgo.MgoHtmlText(
         modifier = Modifier.padding(top = 24.dp),
-        html = stringResource(id = CopyR.string.organization_search_no_results_found_subheading, name, city),
+        html =
+            stringResource(
+                id = CopyR.string.organization_search_no_results_found_subheading,
+                name,
+                city,
+            ),
         style = MaterialTheme.typography.bodySmall,
     )
 
@@ -263,7 +264,7 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = ThemeR.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_alert),
         contentDescription = null,
     )
 
@@ -273,7 +274,7 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
         style = MaterialTheme.typography.bodySmall,
     )
 
-    MgoDebugErrorButton(error = error)
+    nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

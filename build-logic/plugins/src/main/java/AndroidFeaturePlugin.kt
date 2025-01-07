@@ -21,6 +21,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
     private fun Project.configureDependencies() {
         dependencies {
             add("implementation", project(":component:theme"))
+            add("implementation", project(":component:mgo"))
             add("implementation", project(":framework:navigation"))
             add("implementation", project(":framework:copy"))
             add("implementation", project(":framework:test"))

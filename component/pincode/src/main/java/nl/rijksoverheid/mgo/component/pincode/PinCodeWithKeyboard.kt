@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.accessibilityAnnounce
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.framework.util.accessibilityAnnounce
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable

@@ -21,7 +21,11 @@ internal class PropositionScreenTest {
     fun privacyPolicyIsOpenedOnButtonClick() {
         composeTestRule.setContent {
             MgoTheme {
-                PropositionOverviewScreenContent(url = "https://www.google.nl", onNavigateBack = {}, onClickNext = {})
+                PropositionOverviewScreenContent(
+                    url = "https://www.google.nl",
+                    onNavigateBack = {},
+                    onClickNext = {},
+                )
             }
         }
 

@@ -18,9 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoAlertDialog
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -49,7 +46,7 @@ private fun PinCodeForgotScreenContent(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     if (showDialog) {
-        MgoAlertDialog(
+        nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog(
             title = stringResource(id = R.string.forgot_pincode_dialog_heading),
             text = stringResource(id = R.string.forgot_pincode_dialog_subheading),
             onDismissRequest = { showDialog = false },
@@ -65,9 +62,12 @@ private fun PinCodeForgotScreenContent(
         )
     }
 
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(CopyR.string.forgot_pincode_heading),
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
         onNavigateBack = onNavigateBack,
         primaryButtonText = stringResource(id = CopyR.string.common_cancel),
         onPrimaryButtonClick = onNavigateBack,

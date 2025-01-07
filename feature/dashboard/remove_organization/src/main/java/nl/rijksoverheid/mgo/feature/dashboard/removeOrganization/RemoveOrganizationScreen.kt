@@ -22,14 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.notificationError
-import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -62,8 +60,11 @@ private fun RemoveOrganizationScreenContent(
     onNavigateBack: () -> Unit,
     onDeleteProvider: () -> Unit,
 ) {
-    MgoScaffold(
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
         onNavigateBack = onNavigateBack,
         primaryButtonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
         onPrimaryButtonClick = onNavigateBack,
@@ -98,7 +99,11 @@ private fun RemoveOrganizationScreenContent(
 
             Text(
                 modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = CopyR.string.remove_organization_subheading, providerName),
+                text =
+                    stringResource(
+                        id = CopyR.string.remove_organization_subheading,
+                        providerName,
+                    ),
                 style = MaterialTheme.typography.bodyDefault,
             )
 

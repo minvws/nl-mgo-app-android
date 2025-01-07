@@ -31,7 +31,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -72,7 +71,7 @@ fun DashboardBottomBarScreenContent(
     val bottomBarItems = BottomBarItem.entries
     val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
 
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         horizontalPadding = 0.dp,
         content = {
             HorizontalPager(state = pagerState, userScrollEnabled = false) { position ->

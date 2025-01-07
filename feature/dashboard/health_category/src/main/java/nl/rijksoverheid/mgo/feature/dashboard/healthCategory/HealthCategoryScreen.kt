@@ -32,19 +32,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nl.rijksoverheid.mgo.component.banner.MgoBanner
-import nl.rijksoverheid.mgo.component.banner.MgoBannerType
+import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
+import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.getStringResourceByName
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
+import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -78,7 +76,7 @@ private fun HealthCategoryScreenContent(
     onNavigateBack: () -> Unit,
 ) {
     var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(viewState.category.getTitle()),
         onNavigateBack = onNavigateBack,
         content = {
@@ -244,9 +242,13 @@ private fun HealthCategoryCard(
     subtitle: String,
     modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = modifier) {
+    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = modifier) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = title, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+            )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = subtitle,

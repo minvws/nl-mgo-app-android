@@ -23,7 +23,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
     private fun Project.configureDependencies() {
         dependencies {
-            add("implementation", project(":component:theme"))
             add("implementation", project(":framework:navigation"))
         }
     }

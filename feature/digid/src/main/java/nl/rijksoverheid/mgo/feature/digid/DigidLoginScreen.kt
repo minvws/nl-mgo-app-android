@@ -20,23 +20,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.login_heading),
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
     ) {
         Text(
             text = stringResource(id = CopyR.string.login_subheading),
             style = MaterialTheme.typography.bodySmall,
         )
 
-        MgoCard(
+        nl.rijksoverheid.mgo.component.mgo.MgoCard(
             modifier =
                 Modifier
                     .fillMaxWidth()
@@ -50,7 +50,11 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
                         .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(modifier = Modifier.size(32.dp), painter = painterResource(R.drawable.ic_digid), contentDescription = null)
+                Image(
+                    modifier = Modifier.size(32.dp),
+                    painter = painterResource(R.drawable.ic_digid),
+                    contentDescription = null,
+                )
                 Text(
                     modifier = Modifier.padding(start = 16.dp),
                     text = stringResource(CopyR.string.login_digid),

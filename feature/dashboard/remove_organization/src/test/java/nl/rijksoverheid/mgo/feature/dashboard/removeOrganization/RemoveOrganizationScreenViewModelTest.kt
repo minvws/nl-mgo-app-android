@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import app.cash.turbine.turbineScope
-import nl.rijksoverheid.mgo.component.theme.snackbar.DefaultLocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackbarPresenter
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository

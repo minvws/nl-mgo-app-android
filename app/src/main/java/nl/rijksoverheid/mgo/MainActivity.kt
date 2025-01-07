@@ -20,9 +20,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.snackbar.DefaultLocalSnackbarPresenter
-import nl.rijksoverheid.mgo.component.theme.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.digid.addDigidNavGraph
@@ -47,7 +47,11 @@ class MainActivity : FragmentActivity() {
                 CheckFlagSecure(viewModel = viewModel)
 
                 CompositionLocalProvider(LocalSnackbarPresenter provides DefaultLocalSnackbarPresenter()) {
-                    RootNavigation(navController = navController, startDestination = startDestination, viewModel = viewModel)
+                    RootNavigation(
+                        navController = navController,
+                        startDestination = startDestination,
+                        viewModel = viewModel,
+                    )
                 }
 
                 CheckAppLock(viewModel = viewModel)

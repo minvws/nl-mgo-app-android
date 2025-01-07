@@ -19,8 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -64,7 +62,7 @@ private fun UiSchemaDetailScreenContent(
     onDownloadAttachment: (entry: UIEntry) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = toolbarTitle,
         onNavigateBack = onNavigateBack,
         content = {
@@ -96,7 +94,7 @@ private fun UiSchemaSection(
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
         )
-        MgoCard(
+        nl.rijksoverheid.mgo.component.mgo.MgoCard(
             modifier =
                 Modifier
                     .fillMaxWidth()
@@ -117,7 +115,10 @@ private fun UiSchemaSection(
                         }
 
                         else -> {
-                            UiSchemaLabelWithValueListItem(entry = entry, hasDivider = index != group.children.lastIndex)
+                            UiSchemaLabelWithValueListItem(
+                                entry = entry,
+                                hasDivider = index != group.children.lastIndex,
+                            )
                         }
                     }
                 }

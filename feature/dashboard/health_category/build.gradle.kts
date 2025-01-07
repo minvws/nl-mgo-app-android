@@ -16,7 +16,6 @@ dependencies {
     implementation(projects.framework.navigation)
     implementation(projects.data.uiSchema)
     implementation(projects.data.healthcare)
-    implementation(projects.component.banner)
     testImplementation(testFixtures(projects.data.localisation))
     testImplementation(testFixtures(projects.data.healthcare))
     testFixturesImplementation(testFixtures(projects.data.uiSchema))

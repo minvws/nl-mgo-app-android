@@ -4,10 +4,14 @@ plugins {
 
 android {
     namespace = "nl.rijksoverheid.mgo.component.theme"
+
+    buildFeatures {
+        compose = true
+    }
 }
+
 dependencies {
     implementation(libs.compose.material3)
-    implementation(projects.framework.copy)
-    implementation(projects.framework.environment)
-    testImplementation(testFixtures(projects.framework.environment))
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
 }

@@ -17,6 +17,15 @@ android {
 
     flavorDimensions += listOf("environment")
     productFlavors {
+        // Temporary flavor to demo the app to externals
+        create("demo") {
+            dimension = "environment"
+            applicationIdSuffix = ".demo"
+            versionNameSuffix = "-demo"
+            manifestPlaceholders["appLabel"] = "@string/app_name_demo"
+            buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
+            buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"")
+        }
         create("tst") {
             dimension = "environment"
             applicationIdSuffix = ".tst"

@@ -26,11 +26,12 @@ val flagSkipPinFeatureToggle =
         initialValue = false,
     )
 
-val flagSecureFeatureToggle = FeatureToggle(
-    id = FeatureToggleId.FlagSecure,
-    preferenceKey = KEY_FLAG_SECURE,
-    initialValue = true,
-)
+val flagSecureFeatureToggle =
+    FeatureToggle(
+        id = FeatureToggleId.FlagSecure,
+        preferenceKey = KEY_FLAG_SECURE,
+        initialValue = true,
+    )
 
 fun flagAutomaticLocalisationFeatureToggle(initialValue: Boolean) =
     FeatureToggle(

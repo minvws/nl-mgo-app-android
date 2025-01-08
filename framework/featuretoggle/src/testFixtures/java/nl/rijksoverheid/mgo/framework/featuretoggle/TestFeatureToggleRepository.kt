@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.flow
 
 class TestFeatureToggleRepository : FeatureToggleRepository {
     private val featureToggles = mutableMapOf<FeatureToggleId, Boolean>()
+
     override fun getAll(): List<FeatureToggle> {
         return listOf()
     }

@@ -179,10 +179,11 @@ private fun FeatureToggleWithState.getHeading(): String {
 private fun SettingsScreenContentPreview() {
     MgoTheme {
         SettingsScreenContent(
-            togglesWithState = listOf(
-                FeatureToggleWithState(featureToggle = flagSkipPinFeatureToggle, enabled = true),
-                FeatureToggleWithState(featureToggle = flagSecureFeatureToggle, enabled = false)
-            ),
+            togglesWithState =
+                listOf(
+                    FeatureToggleWithState(featureToggle = flagSkipPinFeatureToggle, enabled = true),
+                    FeatureToggleWithState(featureToggle = flagSecureFeatureToggle, enabled = false),
+                ),
             onFeatureToggleChanged = { _, _ -> },
             onResetAppButtonClicked = {},
             onRestartApp = {},

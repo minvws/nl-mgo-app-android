@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 internal class DefaultEnvironmentRepositoryTest {
-
     @Test
     fun testTstAppFlavor() {
         // Given

@@ -25,10 +25,13 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoButton
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
-import nl.rijksoverheid.mgo.framework.featuretoggle.featureToggles
+import nl.rijksoverheid.mgo.framework.featuretoggle.flagSecureFeatureToggle
+import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -112,7 +115,7 @@ private fun SettingsScreenContent(
 
     nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_heading),
-        scrollStateProvider = nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         content = {
             Column(modifier = Modifier.padding(bottom = 16.dp)) {
                 togglesWithState.forEachIndexed { _, toggleWithState ->
@@ -126,7 +129,7 @@ private fun SettingsScreenContent(
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                nl.rijksoverheid.mgo.component.mgo.MgoButton(
+                MgoButton(
                     modifier = Modifier.fillMaxWidth(),
                     buttonText = stringResource(CopyR.string.settings_reset_app_button),
                     buttonTheme = nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme.PRIMARY_NEGATIVE,
@@ -176,10 +179,10 @@ private fun FeatureToggleWithState.getHeading(): String {
 private fun SettingsScreenContentPreview() {
     MgoTheme {
         SettingsScreenContent(
-            togglesWithState =
-                featureToggles.mapIndexed { index, toggle ->
-                    FeatureToggleWithState(toggle, index == 1)
-                },
+            togglesWithState = listOf(
+                FeatureToggleWithState(featureToggle = flagSkipPinFeatureToggle, enabled = true),
+                FeatureToggleWithState(featureToggle = flagSecureFeatureToggle, enabled = false)
+            ),
             onFeatureToggleChanged = { _, _ -> },
             onResetAppButtonClicked = {},
             onRestartApp = {},

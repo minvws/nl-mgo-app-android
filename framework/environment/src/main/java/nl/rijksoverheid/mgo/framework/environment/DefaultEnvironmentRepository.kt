@@ -11,6 +11,7 @@ internal class DefaultEnvironmentRepository
     ) : EnvironmentRepository {
         override fun getEnvironment(): Environment {
             return when (appFlavor) {
+                "demo" -> Environment.Demo(versionCode)
                 "tst" -> Environment.Tst(versionCode)
                 "acc" -> Environment.Acc(versionCode)
                 "prod" -> Environment.Prod(versionCode)

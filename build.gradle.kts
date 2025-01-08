@@ -52,6 +52,8 @@ sonar {
             add("framework/navigation/src/main/java/nl/rijksoverheid/mgo/framework/navigation/**") // Exclude navigation module
             add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
             add("component/theme/src/main/java/nl/rijksoverheid/mgo/component/theme/**") // Exclude theme module
+            add("component/mgo/src/main/java/nl/rijksoverheid/mgo/component/mgo/**") // Exclude mgo module
+            add("framework/util/src/main/java/nl/rijksoverheid/mgo/framework/util/**") // Exclude util module
 
             // Experimental or temporary modules
             add("data/uiSchema/src/main/**")

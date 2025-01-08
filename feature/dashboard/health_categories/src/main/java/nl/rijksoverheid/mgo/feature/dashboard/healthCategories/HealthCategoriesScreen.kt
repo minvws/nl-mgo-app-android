@@ -27,13 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
-import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.getStringResourceByName
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.supportApotheek
@@ -55,6 +49,7 @@ import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
+import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -104,9 +99,12 @@ private fun HealthCategoriesScreenContent(
                 null
             }
         }
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = appBarTitle,
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
         isRootScaffold = false,
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onClickAddProvider,
@@ -172,7 +170,13 @@ private fun ColumnScope.WithProviders(
         text = subHeading,
         style = MaterialTheme.typography.bodySmall,
     )
-    MgoCard(modifier = modifier.padding(top = 8.dp, bottom = 16.dp)) {
+    nl.rijksoverheid.mgo.component.mgo.MgoCard(
+        modifier =
+            modifier.padding(
+                top = 8.dp,
+                bottom = 16.dp,
+            ),
+    ) {
         Column {
             HealthCareCategory.entries.forEach { category ->
                 HealthCategoriesListItem(
@@ -188,7 +192,7 @@ private fun ColumnScope.WithProviders(
     }
 
     if (filterOrganization != null) {
-        MgoButton(
+        nl.rijksoverheid.mgo.component.mgo.MgoButton(
             modifier =
                 Modifier
                     .padding(bottom = 16.dp)
@@ -197,7 +201,7 @@ private fun ColumnScope.WithProviders(
             onClick = {
                 onClickRemoveOrganization(filterOrganization)
             },
-            buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+            buttonTheme = nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme.TERTIARY_NEGATIVE,
         )
     }
 }

@@ -106,6 +106,13 @@ dependencies {
     implementation(projects.feature.digid)
 
     // ================================
+    // COMPONENTS
+    // ================================
+
+    implementation(projects.component.mgo)
+    implementation(projects.component.theme)
+
+    // ================================
     // FRAMEWORKS
     // ================================
 

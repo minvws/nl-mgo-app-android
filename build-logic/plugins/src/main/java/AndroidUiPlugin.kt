@@ -34,6 +34,9 @@ class AndroidUiPlugin : Plugin<Project> {
 
     private fun Project.configureDependencies() {
         dependencies.apply {
+            // Modules
+            add("implementation", project(":framework:util"))
+
             // Android
             add("implementation", versionCatalog.findLibrary("core.ktx").get())
             add("implementation", versionCatalog.findLibrary("appcompat").get())

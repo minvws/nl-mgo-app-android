@@ -19,9 +19,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoBasicTextField
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -69,14 +66,17 @@ private fun AddOrganizationScreenContent(
     LaunchedEffect(Unit) {
         nameFocusRequester.requestFocus()
     }
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.add_organization_heading),
         onNavigateBack = onNavigateBack,
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
         primaryButtonText = stringResource(id = CopyR.string.common_search),
         onPrimaryButtonClick = onSearch,
         content = {
-            MgoBasicTextField(
+            nl.rijksoverheid.mgo.component.mgo.MgoBasicTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -86,14 +86,18 @@ private fun AddOrganizationScreenContent(
                     stringResource(
                         id = CopyR.string.add_organization_name,
                     ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, capitalization = KeyboardCapitalization.Words),
+                keyboardOptions =
+                    KeyboardOptions(
+                        imeAction = ImeAction.Next,
+                        capitalization = KeyboardCapitalization.Words,
+                    ),
                 keyboardActions = KeyboardActions(onNext = { cityFocusRequester.requestFocus() }),
                 onValueChange = onSetName,
                 error = viewState.nameError?.let { resource -> stringResource(id = resource) },
                 textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
             )
 
-            MgoBasicTextField(
+            nl.rijksoverheid.mgo.component.mgo.MgoBasicTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -104,7 +108,11 @@ private fun AddOrganizationScreenContent(
                     stringResource(
                         id = CopyR.string.add_organization_city,
                     ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, capitalization = KeyboardCapitalization.Words),
+                keyboardOptions =
+                    KeyboardOptions(
+                        imeAction = ImeAction.Search,
+                        capitalization = KeyboardCapitalization.Words,
+                    ),
                 keyboardActions = KeyboardActions(onSearch = { onSearch() }),
                 onValueChange = onSetCity,
                 error = viewState.cityError?.let { resource -> stringResource(id = resource) },

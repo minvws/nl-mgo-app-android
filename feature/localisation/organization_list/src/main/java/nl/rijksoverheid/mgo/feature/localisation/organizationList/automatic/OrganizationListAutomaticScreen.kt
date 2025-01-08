@@ -28,16 +28,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
-import nl.rijksoverheid.mgo.component.theme.composable.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TAG_ORGANIZATION_SEARCH_CARD
 import kotlinx.coroutines.flow.collectLatest
-import nl.rijksoverheid.mgo.component.theme.R as ThemeR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -85,11 +82,14 @@ private fun OrganizationListAutomaticSearchScreenContent(
         }
     val onPrimaryButtonClick = if (viewState.error == null) onUpdateOrganizations else onGetSearchResults
 
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onPrimaryButtonClick,
-        scrollStateProvider = MgoScaffoldScrollStateProvider.LazyColumn(lazyListState),
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.LazyColumn(
+                lazyListState,
+            ),
         onNavigateBack = onNavigateBack,
         content = {
             when {
@@ -191,7 +191,7 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = ThemeR.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_alert),
         contentDescription = null,
     )
 
@@ -201,7 +201,7 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
         style = MaterialTheme.typography.bodySmall,
     )
 
-    MgoDebugErrorButton(error = error)
+    nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

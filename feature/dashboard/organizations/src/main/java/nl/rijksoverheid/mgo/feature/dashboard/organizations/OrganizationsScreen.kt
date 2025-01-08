@@ -25,9 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
@@ -69,9 +66,12 @@ private fun OrganizationsScreenContent(
                 null
             }
         }
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(CopyR.string.organizations_heading),
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onClickAddProvider,
         content = {
@@ -130,7 +130,7 @@ private fun WithOrganizations(
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
-    MgoCard(modifier = Modifier.padding(top = 2.dp)) {
+    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = Modifier.padding(top = 2.dp)) {
         Column(modifier = Modifier.fillMaxWidth()) {
             organizations.forEachIndexed { index, organization ->
                 OrganizationCard(
@@ -145,7 +145,7 @@ private fun WithOrganizations(
         }
     }
 
-    MgoCard(
+    nl.rijksoverheid.mgo.component.mgo.MgoCard(
         modifier =
             Modifier
                 .padding(vertical = 16.dp)
@@ -159,7 +159,10 @@ private fun WithOrganizations(
         ) {
             val stringResource =
                 if (automaticLocalisationEnabled) CopyR.string.common_search_organizations else CopyR.string.common_add_organizations
-            Text(text = stringResource(id = stringResource), style = MaterialTheme.typography.bodySmall)
+            Text(
+                text = stringResource(id = stringResource),
+                style = MaterialTheme.typography.bodySmall,
+            )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 modifier = Modifier.padding(start = 8.dp),

@@ -25,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -48,7 +47,7 @@ fun OrganizationListManualCard(
             OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
             else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
         }
-    MgoCard(modifier = modifier) {
+    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = modifier) {
         Row(
             modifier =
                 Modifier
@@ -60,10 +59,18 @@ fun OrganizationListManualCard(
                     .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = searchResult.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                Text(
+                    text = searchResult.name,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                )
                 val address = searchResult.address
                 if (address != null) {
-                    Text(modifier = Modifier.padding(top = 4.dp), text = address, style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        modifier = Modifier.padding(top = 4.dp),
+                        text = address,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
                 when (cardState) {
                     OrganizationSearchCardState.ADD -> {}
@@ -87,7 +94,10 @@ fun OrganizationListManualCard(
                 }
             }
             if (cardState == OrganizationSearchCardState.ADD) {
-                IconButton(modifier = Modifier.align(Alignment.CenterVertically), onClick = { onClick(searchResult) }) {
+                IconButton(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    onClick = { onClick(searchResult) },
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_search_result_card_add),
                         contentDescription = stringResource(id = CopyR.string.common_add).uppercase(),

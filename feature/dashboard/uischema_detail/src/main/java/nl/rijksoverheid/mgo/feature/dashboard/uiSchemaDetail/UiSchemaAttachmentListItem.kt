@@ -205,7 +205,14 @@ internal fun UiSchemaAttachmentListItemDownloadedPreview() {
     MgoTheme {
         UiSchemaAttachmentListItem(
             entry = TEST_UI_ENTRY.copy(label = "file.pdf"),
-            state = AttachmentState.Downloaded(binary = HealthCareBinary(file = File(""), contentType = "")),
+            state =
+                AttachmentState.Downloaded(
+                    binary =
+                        HealthCareBinary(
+                            file = File(""),
+                            contentType = "",
+                        ),
+                ),
             onDownloadAttachment = {},
         )
     }

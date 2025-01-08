@@ -26,12 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoAlertDialog
-import nl.rijksoverheid.mgo.component.theme.composable.MgoButton
-import nl.rijksoverheid.mgo.component.theme.composable.MgoButtonTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.featureToggles
@@ -72,7 +66,7 @@ private fun SettingsScreenContent(
 ) {
     var showResetAppDialog by remember { mutableStateOf(false) }
     if (showResetAppDialog) {
-        MgoAlertDialog(
+        nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog(
             title = stringResource(CopyR.string.settings_reset_app_dialog_heading),
             text = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
             onDismissRequest = { showResetAppDialog = false },
@@ -116,9 +110,9 @@ private fun SettingsScreenContent(
         )
     }
 
-    MgoScaffold(
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_heading),
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider = nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         content = {
             Column(modifier = Modifier.padding(bottom = 16.dp)) {
                 togglesWithState.forEachIndexed { _, toggleWithState ->
@@ -132,10 +126,10 @@ private fun SettingsScreenContent(
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                MgoButton(
+                nl.rijksoverheid.mgo.component.mgo.MgoButton(
                     modifier = Modifier.fillMaxWidth(),
                     buttonText = stringResource(CopyR.string.settings_reset_app_button),
-                    buttonTheme = MgoButtonTheme.PRIMARY_NEGATIVE,
+                    buttonTheme = nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme.PRIMARY_NEGATIVE,
                     onClick = { showResetAppDialog = true },
                 )
             }
@@ -149,7 +143,7 @@ private fun FeatureToggleListItem(
     onCheckedChange: (checked: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier.fillMaxWidth()) {
+    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = featureToggleWithState.getHeading(),

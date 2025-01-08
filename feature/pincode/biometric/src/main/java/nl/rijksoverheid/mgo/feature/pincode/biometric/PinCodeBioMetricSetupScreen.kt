@@ -20,8 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.composable.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -43,8 +41,11 @@ private fun PinCodeBioMetricSetupScreenContent(
     onClickSkip: () -> Unit,
 ) {
     val context = LocalContext.current
-    MgoScaffold(
-        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+        scrollStateProvider =
+            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
         primaryButtonText = stringResource(id = CopyR.string.biometric_setup_enable),
         onPrimaryButtonClick = {
             val fragmentActivity = context as FragmentActivity

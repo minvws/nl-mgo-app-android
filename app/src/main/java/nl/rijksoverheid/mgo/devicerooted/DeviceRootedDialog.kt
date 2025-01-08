@@ -8,9 +8,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.composable.MgoAlertDialog
 import nl.rijksoverheid.mgo.framework.copy.R
 import java.util.Locale
 
@@ -18,7 +18,7 @@ import java.util.Locale
 fun DeviceRootedDialog(show: Boolean) {
     var showDialog by remember { mutableStateOf(show) }
     if (showDialog) {
-        MgoAlertDialog(
+        nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog(
             title = stringResource(id = R.string.launch_jailbreak_heading),
             text = stringResource(id = R.string.launch_jailbreak_subheading),
             onDismissRequest = { showDialog = false },

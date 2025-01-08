@@ -24,8 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCard
-import nl.rijksoverheid.mgo.component.theme.composable.MgoCheckbox
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -46,7 +44,7 @@ fun OrganizationListAutomaticCard(
             OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
             else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
         }
-    MgoCard(modifier = modifier) {
+    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = modifier) {
         Row(
             modifier =
                 Modifier
@@ -59,10 +57,18 @@ fun OrganizationListAutomaticCard(
                     .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = organization.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                Text(
+                    text = organization.name,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                )
                 val address = organization.address
                 if (address != null) {
-                    Text(modifier = Modifier.padding(top = 4.dp), text = address, style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        modifier = Modifier.padding(top = 4.dp),
+                        text = address,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
                 when (cardState) {
                     OrganizationSearchCardState.ADD -> {}
@@ -78,7 +84,7 @@ fun OrganizationListAutomaticCard(
                 }
             }
             if (cardState != OrganizationSearchCardState.NOT_SUPPORTED) {
-                MgoCheckbox(
+                nl.rijksoverheid.mgo.component.mgo.MgoCheckbox(
                     modifier = Modifier.align(Alignment.CenterVertically),
                     checked = cardState == OrganizationSearchCardState.ADDED,
                     onCheckedChange = onCheckedChange,

@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.pincode.ValidatePinCode
 import nl.rijksoverheid.mgo.data.pincode.biometric.LoginWithBiometricEnabled
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -27,7 +28,7 @@ internal class PinCodeLoginScreenViewModel
         val navigateToDashboard = _navigateToDashboard.asSharedFlow()
 
         fun validatePinCode(pinCode: List<Int>) {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 val validated = validatePinCode.invoke(pinCode)
                 if (validated) {
                     _navigateToDashboard.tryEmit(Unit)

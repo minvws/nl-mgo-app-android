@@ -13,7 +13,7 @@ import nl.rijksoverheid.mgo.data.healthcare.getProfiles
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
-import kotlinx.coroutines.Dispatchers
+import timber.log.Timber
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -45,7 +45,7 @@ internal class HealthCategoryScreenViewModel
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 healthCareDataStatesRepository.observe(
                     category = category,
                     filterOrganization = filterOrganization,
@@ -54,7 +54,12 @@ internal class HealthCategoryScreenViewModel
                         val loading = states.any { state -> state is HealthCareDataState.Loading }
                         val empty = states.all { state -> state is HealthCareDataState.Empty }
                         val listItems =
-                            states.map { state -> state.toListItems(organization = state.organization, category = state.category) }
+                            states.map { state ->
+                                state.toListItems(
+                                    organization = state.organization,
+                                    category = state.category,
+                                )
+                            }
                                 .flatten()
                         val error =
                             states
@@ -91,7 +96,7 @@ internal class HealthCategoryScreenViewModel
             }
         }
 
-        private fun HealthCareDataState.toListItems(
+        private suspend fun HealthCareDataState.toListItems(
             organization: MgoOrganization,
             category: HealthCareCategory,
         ): List<HealthCategoryScreenListItem> {

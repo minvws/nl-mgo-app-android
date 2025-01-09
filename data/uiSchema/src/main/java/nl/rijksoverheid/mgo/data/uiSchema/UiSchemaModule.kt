@@ -1,29 +1,25 @@
 package nl.rijksoverheid.mgo.data.uiSchema
 
-import android.content.Context
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.data.uiSchema.javascript.DefaultJsRuntimeRepository
+import nl.rijksoverheid.mgo.data.uiSchema.javascript.JsRuntimeRepository
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
-object UiSchemaModule {
-    @Provides
+@InstallIn(SingletonComponent::class)
+internal abstract class UiSchemaModule {
+    @Binds
     @Singleton
-    fun provideUiSchemaMapper(
-        @ApplicationContext context: Context,
-    ): UiSchemaMapper {
-        return DefaultUiSchemaMapper(context)
-    }
+    abstract fun provideJsRuntimeRepository(default: DefaultJsRuntimeRepository): JsRuntimeRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideHealthCareResourceMapper(
-        @ApplicationContext context: Context,
-    ): HealthCareResourceMapper {
-        return DefaultHealthCareResourceMapper(context)
-    }
+    abstract fun provideUiSchemaMapper(default: DefaultUiSchemaMapper): UiSchemaMapper
+
+    @Binds
+    @Singleton
+    abstract fun provideHealthCareResourceMapper(default: DefaultHealthCareResourceMapper): HealthCareResourceMapper
 }

@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.uiSchema
 
 interface HealthCareResourceMapper {
-    fun getResources(
+    suspend fun getResources(
         fhirBundleJson: String,
         fhirVersion: FhirVersion,
     ): List<String>

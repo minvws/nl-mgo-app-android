@@ -74,4 +74,4 @@ jobs:
           fi
       - name: Distribute Apps
         if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
-        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern,valsplat --releaseNotes="${RELEASE_NOTES}" appDistributionUploadAccRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadProdRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}"
+        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern,valsplat --releaseNotes="${RELEASE_NOTES}" appDistributionUploadAccRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadProdRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadDemoRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}"

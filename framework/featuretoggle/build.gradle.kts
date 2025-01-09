@@ -11,4 +11,5 @@ android {
 
 dependencies {
     implementation(projects.framework.storage)
+    implementation(projects.framework.environment)
 }

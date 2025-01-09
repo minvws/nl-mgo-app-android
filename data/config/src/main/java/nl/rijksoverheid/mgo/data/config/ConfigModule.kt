@@ -63,6 +63,7 @@ internal object ConfigModule {
             is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/"
             is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/"
             is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/"
+            is Environment.Demo -> "https://app-api.test.mgo.irealisatie.nl/"
             is Environment.Custom -> environment.url
         }
     }

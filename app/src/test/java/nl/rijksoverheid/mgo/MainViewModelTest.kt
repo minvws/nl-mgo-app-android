@@ -7,7 +7,7 @@ import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.TestFeatureToggleRepository
-import nl.rijksoverheid.mgo.framework.featuretoggle.skipPinFeatureToggle
+import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -105,7 +105,7 @@ internal class MainViewModelTest {
             isDigidAuthenticated.set(true)
 
             // Given: Skip pin feature toggle is disabled
-            featureToggleRepository.set(skipPinFeatureToggle, false)
+            featureToggleRepository.set(flagSkipPinFeatureToggle, false)
 
             // When: Getting start destination
             val startDestination = viewModel.getStartDestination()
@@ -127,7 +127,7 @@ internal class MainViewModelTest {
             isDigidAuthenticated.set(true)
 
             // Given: Skip pin feature toggle is enabled
-            featureToggleRepository.set(skipPinFeatureToggle, true)
+            featureToggleRepository.set(flagSkipPinFeatureToggle, true)
 
             // When: Getting start destination
             val startDestination = viewModel.getStartDestination()

@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
+import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
 import javax.inject.Inject
@@ -18,6 +19,9 @@ import kotlinx.coroutines.runBlocking
 
 @HiltAndroidApp
 class MainApplication : Application() {
+    @Inject
+    lateinit var featureToggleRepository: FeatureToggleRepository
+
     @Inject
     lateinit var featureToggleLocalDataSource: FeatureToggleLocalDataSource
 
@@ -37,7 +41,7 @@ class MainApplication : Application() {
         }
 
         // Initialize feature toggles
-        runBlocking { featureToggleLocalDataSource.init() }
+        runBlocking { featureToggleLocalDataSource.init(featureToggleRepository.getAll()) }
 
         coroutineScope.launch(ioDispatcher) {
             // Check if we need to clean up cached attachments

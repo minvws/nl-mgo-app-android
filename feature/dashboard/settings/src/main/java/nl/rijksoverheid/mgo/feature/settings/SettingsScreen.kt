@@ -25,10 +25,16 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
+import nl.rijksoverheid.mgo.component.mgo.MgoButton
+import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
-import nl.rijksoverheid.mgo.framework.featuretoggle.featureToggles
+import nl.rijksoverheid.mgo.framework.featuretoggle.flagSecureFeatureToggle
+import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -51,6 +57,7 @@ fun SettingsScreen(
 
     SettingsScreenContent(
         togglesWithState = togglesWithState,
+        showToggles = viewModel.getShowToggles(),
         onFeatureToggleChanged = { id, enabled -> viewModel.onFeatureToggleChanged(id, enabled) },
         onResetAppButtonClicked = { onRestartApp(true) },
         onRestartApp = { onRestartApp(false) },
@@ -60,13 +67,14 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenContent(
     togglesWithState: List<FeatureToggleWithState>,
+    showToggles: Boolean,
     onFeatureToggleChanged: (FeatureToggle, Boolean) -> Unit,
     onResetAppButtonClicked: () -> Unit,
     onRestartApp: () -> Unit,
 ) {
     var showResetAppDialog by remember { mutableStateOf(false) }
     if (showResetAppDialog) {
-        nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog(
+        MgoAlertDialog(
             title = stringResource(CopyR.string.settings_reset_app_dialog_heading),
             text = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
             onDismissRequest = { showResetAppDialog = false },
@@ -110,23 +118,26 @@ private fun SettingsScreenContent(
         )
     }
 
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_heading),
-        scrollStateProvider = nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
+        scrollStateProvider = MgoScaffoldScrollStateProvider.Column(rememberScrollState()),
         content = {
             Column(modifier = Modifier.padding(bottom = 16.dp)) {
-                togglesWithState.forEachIndexed { _, toggleWithState ->
-                    FeatureToggleListItem(
-                        modifier = Modifier.padding(bottom = 16.dp),
-                        featureToggleWithState = toggleWithState,
-                        onCheckedChange = { checked ->
-                            onFeatureToggleChanged(toggleWithState.featureToggle, checked)
-                            showRestartAppDialog = true
-                        },
-                    )
+                if (showToggles) {
+                    // Do not show the toggles for the demo flavor to make the app more production realistic
+                    togglesWithState.forEachIndexed { _, toggleWithState ->
+                        FeatureToggleListItem(
+                            modifier = Modifier.padding(bottom = 16.dp),
+                            featureToggleWithState = toggleWithState,
+                            onCheckedChange = { checked ->
+                                onFeatureToggleChanged(toggleWithState.featureToggle, checked)
+                                showRestartAppDialog = true
+                            },
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                nl.rijksoverheid.mgo.component.mgo.MgoButton(
+                MgoButton(
                     modifier = Modifier.fillMaxWidth(),
                     buttonText = stringResource(CopyR.string.settings_reset_app_button),
                     buttonTheme = nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme.PRIMARY_NEGATIVE,
@@ -143,7 +154,7 @@ private fun FeatureToggleListItem(
     onCheckedChange: (checked: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier.fillMaxWidth()) {
+    MgoCard(modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = featureToggleWithState.getHeading(),
@@ -177,9 +188,11 @@ private fun SettingsScreenContentPreview() {
     MgoTheme {
         SettingsScreenContent(
             togglesWithState =
-                featureToggles.mapIndexed { index, toggle ->
-                    FeatureToggleWithState(toggle, index == 1)
-                },
+                listOf(
+                    FeatureToggleWithState(featureToggle = flagSkipPinFeatureToggle, enabled = true),
+                    FeatureToggleWithState(featureToggle = flagSecureFeatureToggle, enabled = false),
+                ),
+            showToggles = true,
             onFeatureToggleChanged = { _, _ -> },
             onResetAppButtonClicked = {},
             onRestartApp = {},

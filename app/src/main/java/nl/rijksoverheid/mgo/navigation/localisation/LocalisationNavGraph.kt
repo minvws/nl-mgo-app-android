@@ -56,10 +56,20 @@ fun NavGraphBuilder.addLocalisationNavGraph(
                     navController.popBackStack(route = LocalisationNavigation.AddOrganization, inclusive = false)
                 },
                 onNavigateToDashboard = {
-                    navController.popBackStack(
-                        route = LocalisationNavigation.AddOrganization,
-                        inclusive = true,
-                    )
+                    // If coming from dashboard, we want to pop back
+                    val canPop =
+                        navController.popBackStack(
+                            route = LocalisationNavigation.AddOrganization,
+                            inclusive = true,
+                        )
+                    // If not coming from dashboard, navigate to it
+                    if (!canPop) {
+                        navController.navigate(DashboardNavigation.Root) {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                    }
                 },
             )
         }

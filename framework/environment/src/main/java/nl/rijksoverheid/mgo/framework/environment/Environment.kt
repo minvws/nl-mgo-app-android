@@ -1,6 +1,8 @@
 package nl.rijksoverheid.mgo.framework.environment
 
 sealed class Environment(open val versionCode: Int) {
+    data class Demo(override val versionCode: Int) : Environment(versionCode)
+
     data class Tst(override val versionCode: Int) : Environment(versionCode)
 
     data class Acc(override val versionCode: Int) : Environment(versionCode)

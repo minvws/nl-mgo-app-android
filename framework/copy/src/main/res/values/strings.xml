@@ -18,6 +18,7 @@
   <string name="app_name">MGO</string>
   <string name="app_name_acc">MGO (Acc)</string>
   <string name="app_name_tst">MGO (Test)</string>
+  <string name="app_name_demo">MGO (Demo)</string>
   <string name="biometric_prompt.heading">Log in met je vingerafdruk</string>
   <string name="biometric_prompt.subheading">Houd je vinger tegen de scanner op je scherm</string>
   <string name="biometric_setup.enable">Vingerafdruk aanzetten</string>

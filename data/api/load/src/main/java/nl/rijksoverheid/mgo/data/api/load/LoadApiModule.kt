@@ -61,6 +61,7 @@ object LoadApiModule {
             is Environment.Acc -> "https://lo-ad.acc.mgo.irealisatie.nl/"
             is Environment.Prod -> "https://lo-ad.acc.mgo.irealisatie.nl/"
             is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/"
+            is Environment.Demo -> "https://lo-ad.test.mgo.irealisatie.nl/"
             is Environment.Custom -> environment.url
         }
     }

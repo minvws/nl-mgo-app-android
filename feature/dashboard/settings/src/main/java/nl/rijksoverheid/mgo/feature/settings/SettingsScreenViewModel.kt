@@ -3,14 +3,12 @@ package nl.rijksoverheid.mgo.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
-import nl.rijksoverheid.mgo.framework.featuretoggle.featureToggles
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
@@ -23,9 +21,7 @@ internal class SettingsScreenViewModel
     @Inject
     constructor(
         private val featureToggleRepository: FeatureToggleRepository,
-        private val organizationRepository: OrganizationRepository,
-        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
-        @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
+        private val environmentRepository: EnvironmentRepository,
     ) : ViewModel() {
         private val _featureToggleStates =
             combine(
@@ -33,7 +29,7 @@ internal class SettingsScreenViewModel
                 featureToggleRepository.observe(FeatureToggleId.FlagSecure),
                 featureToggleRepository.observe(FeatureToggleId.AutomaticLocalisation),
             ) { skipPin, flagSecure, automaticLocalisation ->
-                featureToggles.map { featureToggle ->
+                featureToggleRepository.getAll().map { featureToggle ->
                     val enabled =
                         when (featureToggle.id) {
                             FeatureToggleId.AutomaticLocalisation -> automaticLocalisation
@@ -55,5 +51,9 @@ internal class SettingsScreenViewModel
             viewModelScope.launch {
                 featureToggleRepository.set(toggle, enabled)
             }
+        }
+
+        fun getShowToggles(): Boolean {
+            return environmentRepository.getEnvironment() !is Environment.Demo
         }
     }

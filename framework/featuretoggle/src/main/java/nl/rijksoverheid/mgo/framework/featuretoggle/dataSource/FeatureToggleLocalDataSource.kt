@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.framework.featuretoggle.dataSource
 
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
-import nl.rijksoverheid.mgo.framework.featuretoggle.featureToggles
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_LOCAL_FEATURE_TOGGLES_INITIALISED
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
@@ -22,7 +21,7 @@ class FeatureToggleLocalDataSource
     FeatureToggleDataSource {
         private var flows: Map<FeatureToggleId, MutableStateFlow<Boolean>> = mapOf()
 
-        suspend fun init() {
+        suspend fun init(featureToggles: List<FeatureToggle>) {
             // If not executed yet, set the default values for the feature toggles in local storage
             val initialized = keyValueStore.getBoolean(KEY_LOCAL_FEATURE_TOGGLES_INITIALISED)
             if (!initialized) {

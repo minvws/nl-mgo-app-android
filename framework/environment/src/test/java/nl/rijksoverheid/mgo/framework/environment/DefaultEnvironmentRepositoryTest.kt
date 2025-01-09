@@ -5,7 +5,7 @@ import org.junit.Test
 
 internal class DefaultEnvironmentRepositoryTest {
     @Test
-    fun `Given tst app flavor, When calling getEnvironment, Return correct environment`() {
+    fun testTstAppFlavor() {
         // Given
         val appFlavor = "tst"
 
@@ -18,7 +18,7 @@ internal class DefaultEnvironmentRepositoryTest {
     }
 
     @Test
-    fun `Given acc app flavor, When calling getEnvironment, Return correct environment`() {
+    fun testAccAppFlavor() {
         // Given
         val appFlavor = "acc"
 
@@ -31,7 +31,7 @@ internal class DefaultEnvironmentRepositoryTest {
     }
 
     @Test
-    fun `Given prod app flavor, When calling getEnvironment, Return correct environment`() {
+    fun testProdAppFlavor() {
         // Given
         val appFlavor = "prod"
 
@@ -44,7 +44,20 @@ internal class DefaultEnvironmentRepositoryTest {
     }
 
     @Test
-    fun `Given bla app flavor, When calling getEnvironment, Return correct environment`() {
+    fun testDemoAppFlavor() {
+        // Given
+        val appFlavor = "demo"
+
+        // When
+        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1)
+
+        // Then
+        val environment = Environment.Demo(versionCode = 1)
+        assertEquals(environment, repository.getEnvironment())
+    }
+
+    @Test
+    fun testBlaAppFlavor() {
         // Given
         val appFlavor = "bla"
 

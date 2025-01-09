@@ -9,5 +9,5 @@ android {
 dependencies {
     implementation(projects.framework.featuretoggle)
     implementation(projects.data.localisation)
-    implementation(projects.framework.storage)
+    implementation(projects.framework.environment)
 }

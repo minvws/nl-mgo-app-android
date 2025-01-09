@@ -3,6 +3,8 @@ package nl.rijksoverheid.mgo.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
@@ -19,6 +21,7 @@ internal class SettingsScreenViewModel
     @Inject
     constructor(
         private val featureToggleRepository: FeatureToggleRepository,
+        private val environmentRepository: EnvironmentRepository,
     ) : ViewModel() {
         private val _featureToggleStates =
             combine(
@@ -48,5 +51,9 @@ internal class SettingsScreenViewModel
             viewModelScope.launch {
                 featureToggleRepository.set(toggle, enabled)
             }
+        }
+
+        fun getShowToggles(): Boolean {
+            return environmentRepository.getEnvironment() !is Environment.Demo
         }
     }

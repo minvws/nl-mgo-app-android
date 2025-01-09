@@ -4,7 +4,6 @@ import android.content.Context
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Array
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -18,9 +17,8 @@ internal class DefaultUiSchemaMapper
     ) : UiSchemaMapper {
         private val json = Json { ignoreUnknownKeys = true }
 
-        override fun getUiSchema(
-            fhirBundleJson: String,
-            fhirVersion: FhirVersion,
+        override fun getSummary(
+            resources: List<String>,
             profiles: List<String>,
         ): List<UISchema> {
             // Javascript code
@@ -33,29 +31,54 @@ internal class DefaultUiSchemaMapper
             // Parse javascript
             runtime.executeVoidScript(jsCode)
 
-            // Get bundle resources json
             val mgoFhirData = runtime.getObject("MgoFhirData")
-            val getBundleResourcesJsonParameters = V8Array(runtime)
-            getBundleResourcesJsonParameters.push(fhirBundleJson)
-            val bundleResourcesJsonString = mgoFhirData.executeStringFunction("getBundleResourcesJson", getBundleResourcesJsonParameters)
-            val bundleResourcesJsonArray = JSONArray(bundleResourcesJsonString)
 
-            // Get ui schemas
             val uiSchemas = mutableListOf<UISchema>()
-            for (i in 0 until bundleResourcesJsonArray.length()) {
-                // Get mgo resource json for requested resource type
-                val bundleResourceJsonObject = bundleResourcesJsonArray.getJSONObject(i)
 
-                val getMgoResourceJsonParameters = V8Array(runtime)
-                getMgoResourceJsonParameters.push(bundleResourceJsonObject.toString())
-                getMgoResourceJsonParameters.push(fhirVersion.toString())
-                val mgoResourceJson = mgoFhirData.executeStringFunction("getMgoResourceJson", getMgoResourceJsonParameters)
-                val mgoResourceJsonObject = JSONObject(mgoResourceJson)
-
-                if (profiles.contains(mgoResourceJsonObject.getString("profile"))) {
+            for (resourceJson in resources) {
+                val resource = JSONObject(resourceJson)
+                if (profiles.contains(resource.getString("profile"))) {
                     // Get ui schema json
                     val getUiSchemaJsonParameters = V8Array(runtime)
-                    getUiSchemaJsonParameters.push(mgoResourceJson)
+                    getUiSchemaJsonParameters.push(resourceJson)
+                    val uiSchemaJson = mgoFhirData.executeStringFunction("getUiSchemaJson", getUiSchemaJsonParameters)
+
+                    // Parse ui schema json to class
+                    val uiSchema = json.decodeFromString<UISchema>(uiSchemaJson)
+                    uiSchemas.add(uiSchema)
+                }
+            }
+
+            // Release javascript runtime
+            runtime.release(false)
+
+            return uiSchemas
+        }
+
+        override fun getDetail(
+            resources: List<String>,
+            profiles: List<String>,
+        ): List<UISchema> {
+            // Javascript code
+            val reader1 = BufferedReader(InputStreamReader(context.assets.open("mgo-fhir-data.iife.js")))
+            val jsCode = reader1.use { it.readText() }
+
+            // Create the javascript runtime
+            val runtime = V8.createV8Runtime()
+
+            val mgoFhirData = runtime.getObject("MgoFhirData")
+
+            // Parse javascript
+            runtime.executeVoidScript(jsCode)
+
+            val uiSchemas = mutableListOf<UISchema>()
+
+            for (resourceJson in resources) {
+                val resource = JSONObject(resourceJson)
+                if (profiles.contains(resource.getString("profile"))) {
+                    // Get ui schema json
+                    val getUiSchemaJsonParameters = V8Array(runtime)
+                    getUiSchemaJsonParameters.push(resourceJson)
                     val uiSchemaJson = mgoFhirData.executeStringFunction("getUiSchemaJson", getUiSchemaJsonParameters)
 
                     // Parse ui schema json to class

@@ -9,8 +9,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.getProfiles
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -27,6 +30,7 @@ internal class HealthCategoryScreenViewModel
         @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
         private val organizationRepository: OrganizationRepository,
         private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
+        private val uiSchemaMapper: UiSchemaMapper,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -41,7 +45,7 @@ internal class HealthCategoryScreenViewModel
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
         init {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 healthCareDataStatesRepository.observe(
                     category = category,
                     filterOrganization = filterOrganization,
@@ -49,7 +53,9 @@ internal class HealthCategoryScreenViewModel
                     .collectLatest { states ->
                         val loading = states.any { state -> state is HealthCareDataState.Loading }
                         val empty = states.all { state -> state is HealthCareDataState.Empty }
-                        val listItems = states.map { state -> state.toListItems(state.organization) }.flatten()
+                        val listItems =
+                            states.map { state -> state.toListItems(organization = state.organization, category = state.category) }
+                                .flatten()
                         val error =
                             states
                                 .filterIsInstance<HealthCareDataState.Loaded>()
@@ -85,21 +91,23 @@ internal class HealthCategoryScreenViewModel
             }
         }
 
-        private fun HealthCareDataState.toListItems(organization: MgoOrganization): List<HealthCategoryScreenListItem> {
-            if (this is HealthCareDataState.Loaded) {
-                return this.results
-                    .map { it.getOrNull() ?: listOf() }
-                    .flatten()
-                    .map { uiSchema ->
-                        HealthCategoryScreenListItem(
-                            title = uiSchema.label ?: "",
-                            subtitle = organization.name,
-                            uiSchema = uiSchema,
-                            organization = organization,
-                        )
-                    }
+        private fun HealthCareDataState.toListItems(
+            organization: MgoOrganization,
+            category: HealthCareCategory,
+        ): List<HealthCategoryScreenListItem> {
+            return if (this is HealthCareDataState.Loaded) {
+                this.results.map { it.getOrNull() ?: listOf() }.flatten().let { jsons ->
+                    uiSchemaMapper.getSummary(resources = jsons, profiles = category.getProfiles())
+                }.map { uiSchema ->
+                    HealthCategoryScreenListItem(
+                        title = uiSchema.label ?: "",
+                        subtitle = organization.name,
+                        uiSchema = uiSchema,
+                        organization = organization,
+                    )
+                }
             } else {
-                return listOf()
+                listOf()
             }
         }
     }

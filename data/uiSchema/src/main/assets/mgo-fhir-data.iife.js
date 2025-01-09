@@ -41900,6 +41900,17 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return stringify(value2);
   }
+  function createJsonApi(func) {
+    return function(...args) {
+      const result = func(...args.map(losslessParse));
+      return losslessStringify(result);
+    };
+  }
+  var FhirVersion = /* @__PURE__ */ ((FhirVersion2) => {
+    FhirVersion2["R3"] = "R3";
+    FhirVersion2["R4"] = "R4";
+    return FhirVersion2;
+  })(FhirVersion || {});
   function isFhirResource(value2, type) {
     const resource = value2;
     if (!type) {
@@ -41923,26 +41934,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     if (!str) return str;
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
-  function getBundleResources(bundle) {
-    const resources = bundle.entry?.map((entry) => entry.resource).filter(isNonNullish);
-    if (!resources?.length) return [];
-    return resources;
-  }
-  function getBundleResourcesJson(fhirBundleJson, formatResponse = false) {
-    const fhirBundle = losslessParse(fhirBundleJson);
-    if (!isFhirResource(fhirBundle, "Bundle")) {
-      throw new Error(
-        `input does not seem to be a Fhir Bundle. Received resourceType: "${fhirBundle?.resourceType}"`
-      );
-    }
-    const resources = getBundleResources(fhirBundle);
-    return losslessStringify(resources, formatResponse);
-  }
-  var FhirVersion = /* @__PURE__ */ ((FhirVersion2) => {
-    FhirVersion2["R3"] = "R3";
-    FhirVersion2["R4"] = "R4";
-    return FhirVersion2;
-  })(FhirVersion || {});
   var lodash = { exports: {} };
   /**
    * @license
@@ -43939,7 +43930,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (isArray(value2)) {
             return value2;
           }
-          return isKey(value2, object) ? [value2] : stringToPath(toString2(value2));
+          return isKey(value2, object) ? [value2] : stringToPath(toString(value2));
         }
         var castRest = baseRest;
         function castSlice(array, start, end) {
@@ -44132,7 +44123,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         }
         function createCaseFirst(methodName) {
           return function(string2) {
-            string2 = toString2(string2);
+            string2 = toString(string2);
             var strSymbols = hasUnicode(string2) ? stringToArray(string2) : undefined$1;
             var chr = strSymbols ? strSymbols[0] : string2.charAt(0);
             var trailing = strSymbols ? castSlice(strSymbols, 1).join("") : string2.slice(1);
@@ -44419,8 +44410,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             number = toNumber2(number);
             precision = precision == null ? 0 : nativeMin(toInteger2(precision), 292);
             if (precision && nativeIsFinite(number)) {
-              var pair = (toString2(number) + "e").split("e"), value2 = func(pair[0] + "e" + (+pair[1] + precision));
-              pair = (toString2(value2) + "e").split("e");
+              var pair = (toString(number) + "e").split("e"), value2 = func(pair[0] + "e" + (+pair[1] + precision));
+              pair = (toString(value2) + "e").split("e");
               return +(pair[0] + "e" + (+pair[1] - precision));
             }
             return func(number);
@@ -46189,7 +46180,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         function toSafeInteger(value2) {
           return value2 ? baseClamp(toInteger2(value2), -MAX_SAFE_INTEGER2, MAX_SAFE_INTEGER2) : value2 === 0 ? value2 : 0;
         }
-        function toString2(value2) {
+        function toString(value2) {
           return value2 == null ? "" : baseToString(value2);
         }
         var assign = createAssigner(function(object, source) {
@@ -46489,14 +46480,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return result2 + (index ? capitalize(word) : word);
         });
         function capitalize(string2) {
-          return upperFirst(toString2(string2).toLowerCase());
+          return upperFirst(toString(string2).toLowerCase());
         }
         function deburr(string2) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           return string2 && string2.replace(reLatin, deburrLetter).replace(reComboMark, "");
         }
         function endsWith(string2, target, position) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           target = baseToString(target);
           var length = string2.length;
           position = position === undefined$1 ? length : baseClamp(toInteger2(position), 0, length);
@@ -46505,11 +46496,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return position >= 0 && string2.slice(position, end) == target;
         }
         function escape(string2) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           return string2 && reHasUnescapedHtml.test(string2) ? string2.replace(reUnescapedHtml, escapeHtmlChar) : string2;
         }
         function escapeRegExp(string2) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           return string2 && reHasRegExpChar.test(string2) ? string2.replace(reRegExpChar, "\\$&") : string2;
         }
         var kebabCase = createCompounder(function(result2, word, index) {
@@ -46520,7 +46511,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         });
         var lowerFirst = createCaseFirst("toLowerCase");
         function pad2(string2, length, chars) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           length = toInteger2(length);
           var strLength = length ? stringSize(string2) : 0;
           if (!length || strLength >= length) {
@@ -46530,13 +46521,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return createPadding(nativeFloor(mid), chars) + string2 + createPadding(nativeCeil(mid), chars);
         }
         function padEnd(string2, length, chars) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           length = toInteger2(length);
           var strLength = length ? stringSize(string2) : 0;
           return length && strLength < length ? string2 + createPadding(length - strLength, chars) : string2;
         }
         function padStart(string2, length, chars) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           length = toInteger2(length);
           var strLength = length ? stringSize(string2) : 0;
           return length && strLength < length ? createPadding(length - strLength, chars) + string2 : string2;
@@ -46547,7 +46538,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           } else if (radix) {
             radix = +radix;
           }
-          return nativeParseInt(toString2(string2).replace(reTrimStart, ""), radix || 0);
+          return nativeParseInt(toString(string2).replace(reTrimStart, ""), radix || 0);
         }
         function repeat2(string2, n, guard) {
           if (guard ? isIterateeCall(string2, n, guard) : n === undefined$1) {
@@ -46555,10 +46546,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           } else {
             n = toInteger2(n);
           }
-          return baseRepeat(toString2(string2), n);
+          return baseRepeat(toString(string2), n);
         }
         function replace() {
-          var args = arguments, string2 = toString2(args[0]);
+          var args = arguments, string2 = toString(args[0]);
           return args.length < 3 ? string2 : string2.replace(args[1], args[2]);
         }
         var snakeCase = createCompounder(function(result2, word, index) {
@@ -46572,7 +46563,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (!limit) {
             return [];
           }
-          string2 = toString2(string2);
+          string2 = toString(string2);
           if (string2 && (typeof separator == "string" || separator != null && !isRegExp(separator))) {
             separator = baseToString(separator);
             if (!separator && hasUnicode(string2)) {
@@ -46585,7 +46576,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return result2 + (index ? " " : "") + upperFirst(word);
         });
         function startsWith2(string2, target, position) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           position = position == null ? 0 : baseClamp(toInteger2(position), 0, string2.length);
           target = baseToString(target);
           return string2.slice(position, position + target.length) == target;
@@ -46595,7 +46586,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (guard && isIterateeCall(string2, options, guard)) {
             options = undefined$1;
           }
-          string2 = toString2(string2);
+          string2 = toString(string2);
           options = assignInWith({}, options, settings, customDefaultsAssignIn);
           var imports = assignInWith({}, options.imports, settings.imports, customDefaultsAssignIn), importsKeys = keys(imports), importsValues = baseValues(imports, importsKeys);
           var isEscaping, isEvaluating, index = 0, interpolate = options.interpolate || reNoMatch, source = "__p += '";
@@ -46640,13 +46631,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return result2;
         }
         function toLower(value2) {
-          return toString2(value2).toLowerCase();
+          return toString(value2).toLowerCase();
         }
         function toUpper(value2) {
-          return toString2(value2).toUpperCase();
+          return toString(value2).toUpperCase();
         }
         function trim(string2, chars, guard) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           if (string2 && (guard || chars === undefined$1)) {
             return baseTrim(string2);
           }
@@ -46657,7 +46648,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return castSlice(strSymbols, start, end).join("");
         }
         function trimEnd2(string2, chars, guard) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           if (string2 && (guard || chars === undefined$1)) {
             return string2.slice(0, trimmedEndIndex(string2) + 1);
           }
@@ -46668,7 +46659,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return castSlice(strSymbols, 0, end).join("");
         }
         function trimStart2(string2, chars, guard) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           if (string2 && (guard || chars === undefined$1)) {
             return string2.replace(reTrimStart, "");
           }
@@ -46685,7 +46676,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             length = "length" in options ? toInteger2(options.length) : length;
             omission = "omission" in options ? baseToString(options.omission) : omission;
           }
-          string2 = toString2(string2);
+          string2 = toString(string2);
           var strLength = string2.length;
           if (hasUnicode(string2)) {
             var strSymbols = stringToArray(string2);
@@ -46709,7 +46700,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             if (string2.slice(end).search(separator)) {
               var match2, substring = result2;
               if (!separator.global) {
-                separator = RegExp2(separator.source, toString2(reFlags.exec(separator)) + "g");
+                separator = RegExp2(separator.source, toString(reFlags.exec(separator)) + "g");
               }
               separator.lastIndex = 0;
               while (match2 = separator.exec(substring)) {
@@ -46726,7 +46717,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return result2 + omission;
         }
         function unescape(string2) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           return string2 && reHasEscapedHtml.test(string2) ? string2.replace(reEscapedHtml, unescapeHtmlChar) : string2;
         }
         var upperCase = createCompounder(function(result2, word, index) {
@@ -46734,7 +46725,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         });
         var upperFirst = createCaseFirst("toUpperCase");
         function words(string2, pattern, guard) {
-          string2 = toString2(string2);
+          string2 = toString(string2);
           pattern = guard ? undefined$1 : pattern;
           if (pattern === undefined$1) {
             return hasUnicodeWord(string2) ? unicodeWords(string2) : asciiWords(string2);
@@ -46895,11 +46886,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (isArray(value2)) {
             return arrayMap(value2, toKey);
           }
-          return isSymbol(value2) ? [value2] : copyArray(stringToPath(toString2(value2)));
+          return isSymbol(value2) ? [value2] : copyArray(stringToPath(toString(value2)));
         }
         function uniqueId(prefix) {
           var id = ++idCounter;
-          return toString2(prefix) + id;
+          return toString(prefix) + id;
         }
         var add2 = createMathOperation(function(augend, addend) {
           return augend + addend;
@@ -47233,7 +47224,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         lodash2.toLower = toLower;
         lodash2.toNumber = toNumber2;
         lodash2.toSafeInteger = toSafeInteger;
-        lodash2.toString = toString2;
+        lodash2.toString = toString;
         lodash2.toUpper = toUpper;
         lodash2.trim = trim;
         lodash2.trimEnd = trimEnd2;
@@ -47436,7 +47427,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     return { value: valueQuantity, comparator, unit, system, code: code2 };
   }
   const quantity$1 = createTypeParser(quantityLike);
-  const dateTime$3 = createTypeParser((value2) => value2);
+  const dateTime$1 = createTypeParser((value2) => value2);
   const reference$1 = createTypeParser((value2) => {
     const { reference: reference2, display } = value2;
     return {
@@ -47447,13 +47438,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   const annotation$1 = createTypeParser((value2) => {
     const { time, text, authorReference } = value2;
     return {
-      time: dateTime$3(time),
+      time: dateTime$1(time),
       text,
       author: reference$1(authorReference)
     };
   });
   const boolean$1 = createTypeParser((value2) => value2);
-  const code$1 = createTypeParser((value2) => value2);
+  function code$1(value2) {
+    if (isNullish(value2)) return;
+    return value2;
+  }
   const nictizIdValueXMap = {
     "BodySite-Qualifier": "codeableConcept",
     "BodySite-Morphology": "codeableConcept",
@@ -47477,6 +47471,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     "zib-AdvanceDirective-Disorder": "reference",
     "zib-VaccinationRecommendation-OrderStatus": "codeableConcept",
     "ext-Vaccination.PharmaceuticalProduct": "reference",
+    "ext-PharmaceuticalProduct.Description": "string",
     Comment: "string"
   };
   function extensionNictiz(resource, zibId) {
@@ -47563,7 +47558,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       coding: map(value2.coding, coding$1, true)
     };
   });
-  const date$4 = createTypeParser((value2) => value2);
+  const date$3 = createTypeParser((value2) => value2);
   const instant$1 = createTypeParser((value2) => value2);
   const duration$1 = createTypeParser(quantityLike);
   const identifier$1 = createTypeParser((value2) => {
@@ -47578,8 +47573,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   const period$1 = createTypeParser((value2) => {
     const { start, end } = value2;
     return {
-      start: dateTime$3(start),
-      end: dateTime$3(end)
+      start: dateTime$1(start),
+      end: dateTime$1(end)
     };
   });
   const range$1 = createTypeParser((value2) => {
@@ -47608,8 +47603,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     code: code$1,
     codeableConcept: codeableConcept$1,
     coding: coding$1,
-    date: date$4,
-    dateTime: dateTime$3,
+    date: date$3,
+    dateTime: dateTime$1,
     decimal: decimal$1,
     duration: duration$1,
     identifier: identifier$1,
@@ -47655,15 +47650,231 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       fhirVersion: `${fhirVersion}`
     };
   }
+  const uiSchema$N = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.gp_diagnostic_result";
+    return {
+      label: resource.context?.display,
+      children: [
+        {
+          label: `${profile2}.group_details`,
+          children: [
+            ui.identifier(`${profile2}.identifier`, resource.identifier),
+            ui.reference(`${profile2}.context`, resource.context),
+            ui.reference(`${profile2}.subject`, resource.subject),
+            ui.dateTime(`${profile2}.effective`, resource.effective),
+            ui.reference(`${profile2}.performer`, resource.performer),
+            ui.string(`${profile2}.status`, resource.status),
+            ui.codeableConcept(`${profile2}.code`, resource.code),
+            ui.string(`${profile2}.comment`, resource.comment),
+            ui.codeableConcept(`${profile2}.method`, resource.method),
+            ...ui.oneOfValueX(`${profile2}.value`, resource, "value")
+          ]
+        }
+      ]
+    };
+  };
+  const profile$N = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult";
+  function parseGpDiagnosticResult(resource) {
+    return {
+      ...resourceMeta(resource, profile$N, FhirVersion.R3),
+      identifier: map(resource.identifier, identifier$1),
+      context: reference$1(resource.context),
+      subject: reference$1(resource.subject),
+      effective: dateTime$1(resource.effectiveDateTime),
+      performer: map(resource.performer, reference$1),
+      status: string$1(resource.status),
+      code: codeableConcept$1(resource.code),
+      ...oneOfValueX$1(resource, [
+        "quantity",
+        "codeableConcept",
+        "string",
+        "boolean",
+        "range",
+        "dateTime",
+        "period"
+      ]),
+      comment: string$1(resource.comment),
+      method: codeableConcept$1(resource.method)
+    };
+  }
+  const gpDiagnosticResult = {
+    profile: profile$N,
+    parse: parseGpDiagnosticResult,
+    uiSchema: uiSchema$N
+  };
+  const uiSchemaGroup$B = (resource, context) => {
+    const ui = context.ui;
+    return {
+      label: "Encounter.participant",
+      children: [ui.reference(`Encounter.participant.individual`, resource.individual)]
+    };
+  };
+  function parseEncounterParticipant(value2) {
+    return {
+      individual: reference$1(value2?.individual)
+    };
+  }
+  const encounterParticipant = {
+    parse: parseEncounterParticipant,
+    uiSchemaGroup: uiSchemaGroup$B
+  };
+  const uiSchema$M = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.Encounter";
+    const participants = map(
+      resource.participant,
+      (x) => uiSchemaGroup$B(x, context),
+      true
+    ).flat();
+    return {
+      label: resource.serviceProvider?.display,
+      children: [
+        {
+          label: `${profile2}`,
+          children: [
+            ui.coding(`${profile2}.class`, resource.class),
+            ...ui.helpers.getChildren(participants),
+            ui.reference(`${profile2}.serviceProvider`, resource.serviceProvider),
+            ...ui.period(`${profile2}.period`, resource.period),
+            ui.codeableConcept(`${profile2}.reason`, resource.reason)
+          ]
+        }
+      ]
+    };
+  };
+  const profile$M = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter";
+  function parseGpEncounter(resource) {
+    return {
+      ...resourceMeta(resource, profile$M, FhirVersion.R3),
+      class: coding$1(resource.class),
+      participant: map(resource.participant, encounterParticipant.parse),
+      serviceProvider: reference$1(resource.serviceProvider),
+      period: period$1(resource.period),
+      reason: map(resource.reason, codeableConcept$1)
+    };
+  }
+  const gpEncounter = {
+    profile: profile$M,
+    parse: parseGpEncounter,
+    uiSchema: uiSchema$M
+  };
+  function parseSection(value2) {
+    return {
+      code: codeableConcept$1(value2?.code),
+      entry: map(value2?.entry, reference$1)
+    };
+  }
+  const uiSchemaGroup$A = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "EncounterReport.Section";
+    return {
+      label: profile2,
+      children: [
+        ui.codeableConcept(`${profile2}.code`, resource.code),
+        ...map(resource.entry, (entry) => ui.reference(`${profile2}.entry`, entry), true)
+      ]
+    };
+  };
+  const uiSchema$L = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.EncounterReport";
+    const section = map(resource.section, (x) => uiSchemaGroup$A(x, context), true);
+    return {
+      label: resource.title,
+      children: [
+        {
+          label: `${profile2}`,
+          children: [
+            ui.string(`${profile2}.title`, resource.title),
+            ui.string(`${profile2}.status`, resource.status),
+            ui.coding(`${profile2}.type`, resource.type),
+            ui.reference(`${profile2}.encounter`, resource.encounter),
+            ui.dateTime(`${profile2}.date`, resource.date),
+            ui.reference(`${profile2}.author`, resource.author)
+          ]
+        },
+        ...section
+      ]
+    };
+  };
+  const profile$L = "http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport";
+  function parseGpEncounterReport(resource) {
+    return {
+      ...resourceMeta(resource, profile$L, FhirVersion.R3),
+      identifier: identifier$1(resource.identifier),
+      status: string$1(resource.status),
+      type: map(resource.type.coding, coding$1),
+      encounter: reference$1(resource.encounter),
+      date: dateTime$1(resource.date),
+      author: map(resource.author, reference$1),
+      title: string$1(resource.title),
+      section: map(resource.section, parseSection)
+    };
+  }
+  const gpEncounterReport = {
+    profile: profile$L,
+    parse: parseGpEncounterReport,
+    uiSchema: uiSchema$L
+  };
+  const uiSchema$K = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.gp_journal_entry";
+    return {
+      label: resource.context?.display,
+      children: [
+        {
+          label: `${profile2}.group_details`,
+          children: [
+            ui.identifier(`${profile2}.identifier`, resource.identifier),
+            ui.string(`${profile2}.status`, resource.status),
+            ui.codeableConcept(`${profile2}.code`, resource.code),
+            ui.reference(`${profile2}.context`, resource.context),
+            ...ui.oneOfValueX(`${profile2}.effective`, resource, "effective"),
+            ui.reference(`${profile2}.performer`, resource.performer),
+            ui.string(`${profile2}.valueString`, resource.valueString),
+            ui.codeableConcept(`${profile2}.ICPC_S`, resource.ICPC_S.valueCodeableConcept),
+            ui.codeableConcept(`${profile2}.ICPC_E`, resource.ICPC_E.valueCodeableConcept)
+          ]
+        }
+      ]
+    };
+  };
+  const profile$K = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry";
+  function parseGpJournalEntry(resource) {
+    const ICPC_S = findComponentByCode(resource.component, "ADMDX");
+    const ICPC_E = findComponentByCode(resource.component, "DISDX");
+    return {
+      ...resourceMeta(resource, profile$K, FhirVersion.R3),
+      identifier: map(resource.identifier, identifier$1),
+      status: string$1(resource.status),
+      code: codeableConcept$1(resource.code),
+      context: reference$1(resource.context),
+      ...oneOfValueX$1(resource, ["dateTime", "period"], "effective"),
+      performer: map(resource.performer, reference$1),
+      valueString: string$1(resource.valueString),
+      ICPC_S: {
+        valueCodeableConcept: codeableConcept$1(ICPC_S?.valueCodeableConcept)
+      },
+      ICPC_E: {
+        valueCodeableConcept: codeableConcept$1(ICPC_E?.valueCodeableConcept)
+      }
+    };
+  }
+  const gpJournalEntry = {
+    profile: profile$K,
+    parse: parseGpJournalEntry,
+    uiSchema: uiSchema$K
+  };
   const uiSchemaGroup$z = (resource, context) => {
-    const i18n = "r3.zib_laboratory_test_result_observation.reference_range";
+    const i18n2 = "r3.zib_laboratory_test_result_observation.reference_range";
     const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: formatMessage2(i18n),
+      label: formatMessage2(i18n2),
       children: [
-        ui.quantity(`${i18n}.low`, resource.low),
-        ui.quantity(`${i18n}.high`, resource.high),
-        ui.codeableConcept(`${i18n}.type`, resource.type)
+        ui.quantity(`${i18n2}.low`, resource.low),
+        ui.quantity(`${i18n2}.high`, resource.high),
+        ui.codeableConcept(`${i18n2}.type`, resource.type)
       ]
     };
   };
@@ -47676,20 +47887,20 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const uiSchema$K = (resource, context) => {
-    const i18n = "r3.zib_laboratory_test_result_observation";
+  const uiSchema$J = (resource, context) => {
+    const i18n2 = "r3.zib_laboratory_test_result_observation";
     const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
     const hcimLaboratoryTestResult = {
-      BasedOn: ui.reference(`${i18n}.based_on`, resource.basedOn),
-      Status: ui.string(`${i18n}.status`, resource.status),
-      ResultType: ui.codeableConcept(`${i18n}.result_type`, resource.resultType),
-      Code: ui.codeableConcept(`${i18n}.code`, resource.code),
-      Effective: ui.oneOfValueX(`${i18n}.effective`, resource, "effective"),
-      Value: ui.oneOfValueX(`${i18n}.value`, resource),
-      Interpretation: ui.codeableConcept(`${i18n}.interpretation`, resource.interpretation),
-      Comment: ui.string(`${i18n}.comment`, resource.comment),
-      Method: ui.codeableConcept(`${i18n}.method`, resource.method),
-      Specimen: ui.reference(`${i18n}.specimen`, resource.specimen),
+      BasedOn: ui.reference(`${i18n2}.based_on`, resource.basedOn),
+      Status: ui.code(`${i18n2}.status`, resource.status),
+      ResultType: ui.codeableConcept(`${i18n2}.result_type`, resource.resultType),
+      Code: ui.codeableConcept(`${i18n2}.code`, resource.code),
+      Effective: ui.oneOfValueX(`${i18n2}.effective`, resource, "effective"),
+      Value: ui.oneOfValueX(`${i18n2}.value`, resource),
+      Interpretation: ui.codeableConcept(`${i18n2}.interpretation`, resource.interpretation),
+      Comment: ui.string(`${i18n2}.comment`, resource.comment),
+      Method: ui.codeableConcept(`${i18n2}.method`, resource.method),
+      Specimen: ui.reference(`${i18n2}.specimen`, resource.specimen),
       ReferenceRange: map(
         resource.referenceRange,
         (x) => uiSchemaGroup$z(x, context),
@@ -47698,16 +47909,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       Related: map(resource.related, (x) => uiSchemaGroup$y(x, context), true).flat()
     };
     const hcimBasicElements = {
-      Identifier: ui.identifier(`${i18n}.identifier`, resource.identifier),
-      Subject: ui.reference(`${i18n}.subject`, resource.subject),
-      Performer: ui.reference(`${i18n}.performer`, resource.performer)
+      Identifier: ui.identifier(`${i18n2}.identifier`, resource.identifier),
+      Subject: ui.reference(`${i18n2}.subject`, resource.subject),
+      Performer: ui.reference(`${i18n2}.performer`, resource.performer)
     };
     const label = resource.resultType?.at(0)?.coding.at(0)?.display ?? resource.laboratoryTestResultCode?.at(0)?.coding.at(0)?.display;
     return setEmptyEntries2({
-      label: label ?? formatMessage2(i18n),
+      label: label ?? formatMessage2(i18n2),
       children: [
         {
-          label: formatMessage2(i18n),
+          label: formatMessage2(i18n2),
           children: [
             hcimBasicElements.Identifier,
             hcimBasicElements.Subject,
@@ -47715,11 +47926,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           ]
         },
         {
-          label: formatMessage2(`${i18n}.general_test_information`),
+          label: formatMessage2(`${i18n2}.general_test_information`),
           children: [hcimLaboratoryTestResult.ResultType, hcimLaboratoryTestResult.Comment]
         },
         {
-          label: formatMessage2(`${i18n}.lab_test`),
+          label: formatMessage2(`${i18n2}.lab_test`),
           children: [
             hcimLaboratoryTestResult.Code,
             hcimLaboratoryTestResult.Method,
@@ -47777,7 +47988,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     "405825005"
     /* MOLECULAR_GENETICS */
   ];
-  const profile$K = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation";
+  const profile$J = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation";
   function parseZibLaboratoryTestResultObservationBase(resource) {
     const laboratoryTestResultCode = filterCodeableConceptByCoding(
       resource.category,
@@ -47803,7 +48014,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         "dateTime",
         "period"
       ]),
-      status: string$1(resource?.status),
+      status: code$1(resource?.status),
       referenceRange: map(resource?.referenceRange, referenceRange.parse),
       interpretation: codeableConcept$1(resource?.interpretation),
       specimen: reference$1(resource.specimen),
@@ -47817,270 +48028,181 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   function parseZibLaboratoryTestResultObservation(resource) {
     return {
-      ...resourceMeta(resource, profile$K, FhirVersion.R3),
+      ...resourceMeta(resource, profile$J, FhirVersion.R3),
       ...parseZibLaboratoryTestResultObservationBase(resource)
     };
   }
   const zibLaboratoryTestResultObservation = {
-    profile: profile$K,
+    profile: profile$J,
     parse: parseZibLaboratoryTestResultObservation,
-    uiSchema: uiSchema$K
+    uiSchema: uiSchema$J
   };
-  const uiSchema$J = (resource, context) => {
+  const uiSchema$I = (resource, context) => {
     return zibLaboratoryTestResultObservation.uiSchema(resource, context);
   };
-  const profile$J = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult";
+  const profile$I = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult";
   function parseGpLaboratoryResult(resource) {
     const { ...rest } = parseZibLaboratoryTestResultObservationBase(resource);
     return {
       ...rest,
-      ...resourceMeta(resource, profile$J, FhirVersion.R3)
+      ...resourceMeta(resource, profile$I, FhirVersion.R3)
     };
   }
   const gpLaboratoryResult = {
-    profile: profile$J,
-    parse: parseGpLaboratoryResult,
-    uiSchema: uiSchema$J
-  };
-  const uiSchema$I = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.gp_diagnostic_result";
-    return {
-      label: resource.context?.display,
-      children: [
-        {
-          label: `${profile2}.group_details`,
-          children: [
-            ui.identifier(`${profile2}.identifier`, resource.identifier),
-            ui.reference(`${profile2}.context`, resource.context),
-            ui.reference(`${profile2}.subject`, resource.subject),
-            ui.dateTime(`${profile2}.effective`, resource.effective),
-            ui.reference(`${profile2}.performer`, resource.performer),
-            ui.string(`${profile2}.status`, resource.status),
-            ui.codeableConcept(`${profile2}.code`, resource.code),
-            ui.string(`${profile2}.comment`, resource.comment),
-            ui.codeableConcept(`${profile2}.method`, resource.method),
-            ...ui.oneOfValueX(`${profile2}.value`, resource, "value")
-          ]
-        }
-      ]
-    };
-  };
-  const profile$I = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult";
-  function parseGpDiagnosticResult(resource) {
-    return {
-      ...resourceMeta(resource, profile$I, FhirVersion.R3),
-      identifier: map(resource.identifier, identifier$1),
-      context: reference$1(resource.context),
-      subject: reference$1(resource.subject),
-      effective: dateTime$3(resource.effectiveDateTime),
-      performer: map(resource.performer, reference$1),
-      status: string$1(resource.status),
-      code: codeableConcept$1(resource.code),
-      ...oneOfValueX$1(resource, [
-        "quantity",
-        "codeableConcept",
-        "string",
-        "boolean",
-        "range",
-        "dateTime",
-        "period"
-      ]),
-      comment: string$1(resource.comment),
-      method: codeableConcept$1(resource.method)
-    };
-  }
-  const gpDiagnosticResult = {
     profile: profile$I,
-    parse: parseGpDiagnosticResult,
+    parse: parseGpLaboratoryResult,
     uiSchema: uiSchema$I
   };
   const uiSchemaGroup$x = (resource, context) => {
+    const i18n2 = "r3.attachment";
     const ui = context.ui;
     return {
-      label: "Encounter.participant",
-      children: [ui.reference(`Encounter.participant.individual`, resource.individual)]
+      label: i18n2,
+      children: [
+        ui.string(`${i18n2}.contentType`, resource.contentType),
+        ui.string(`${i18n2}.language`, resource.language),
+        ui.string(`${i18n2}.data`, resource.data),
+        ui.string(`${i18n2}.url`, resource.url),
+        ui.unsignedInt(`${i18n2}.size`, resource.size),
+        ui.string(`${i18n2}.hash`, resource.hash),
+        ui.string(`${i18n2}.title`, resource.title),
+        ui.dateTime(`${i18n2}.creation`, resource.creation)
+      ]
     };
   };
-  function parseEncounterParticipant(value2) {
+  function parseAttachment(value2) {
     return {
-      individual: reference$1(value2?.individual)
+      contentType: string$1(value2?.contentType),
+      language: string$1(value2?.language),
+      data: string$1(value2?.data),
+      url: string$1(value2?.url),
+      size: unsignedInt$1(value2?.size),
+      hash: string$1(value2?.hash),
+      title: string$1(value2?.title),
+      creation: dateTime$1(value2?.creation)
     };
   }
-  const encounterParticipant = {
-    parse: parseEncounterParticipant,
+  const attachment$1 = {
+    parse: parseAttachment,
     uiSchemaGroup: uiSchemaGroup$x
   };
-  const uiSchema$H = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.Encounter";
-    const participants = map(
-      resource.participant,
-      (x) => uiSchemaGroup$x(x, context),
-      true
-    ).flat();
-    return {
-      label: resource.serviceProvider?.display,
-      children: [
-        {
-          label: `${profile2}`,
-          children: [
-            ui.coding(`${profile2}.class`, resource.class),
-            ...ui.helpers.getChildren(participants),
-            ui.reference(`${profile2}.serviceProvider`, resource.serviceProvider),
-            ...ui.period(`${profile2}.period`, resource.period),
-            ui.codeableConcept(`${profile2}.reason`, resource.reason)
-          ]
-        }
-      ]
-    };
-  };
-  const profile$H = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter";
-  function parseGpEncounter(resource) {
-    return {
-      ...resourceMeta(resource, profile$H, FhirVersion.R3),
-      class: coding$1(resource.class),
-      participant: map(resource.participant, encounterParticipant.parse),
-      serviceProvider: reference$1(resource.serviceProvider),
-      period: period$1(resource.period),
-      reason: map(resource.reason, codeableConcept$1)
-    };
-  }
-  const gpEncounter = {
-    profile: profile$H,
-    parse: parseGpEncounter,
-    uiSchema: uiSchema$H
-  };
-  const uiSchema$G = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.gp_journal_entry";
-    return {
-      label: resource.context?.display,
-      children: [
-        {
-          label: `${profile2}.group_details`,
-          children: [
-            ui.identifier(`${profile2}.identifier`, resource.identifier),
-            ui.string(`${profile2}.status`, resource.status),
-            ui.codeableConcept(`${profile2}.code`, resource.code),
-            ui.reference(`${profile2}.context`, resource.context),
-            ...ui.oneOfValueX(`${profile2}.effective`, resource, "effective"),
-            ui.reference(`${profile2}.performer`, resource.performer),
-            ui.string(`${profile2}.valueString`, resource.valueString),
-            ui.codeableConcept(`${profile2}.ICPC_S`, resource.ICPC_S.valueCodeableConcept),
-            ui.codeableConcept(`${profile2}.ICPC_E`, resource.ICPC_E.valueCodeableConcept)
-          ]
-        }
-      ]
-    };
-  };
-  const profile$G = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry";
-  function parseGpJournalEntry(resource) {
-    const ICPC_S = findComponentByCode(resource.component, "ADMDX");
-    const ICPC_E = findComponentByCode(resource.component, "DISDX");
-    return {
-      ...resourceMeta(resource, profile$G, FhirVersion.R3),
-      identifier: map(resource.identifier, identifier$1),
-      status: string$1(resource.status),
-      code: codeableConcept$1(resource.code),
-      context: reference$1(resource.context),
-      ...oneOfValueX$1(resource, ["dateTime", "period"], "effective"),
-      performer: map(resource.performer, reference$1),
-      valueString: string$1(resource.valueString),
-      ICPC_S: {
-        valueCodeableConcept: codeableConcept$1(ICPC_S?.valueCodeableConcept)
-      },
-      ICPC_E: {
-        valueCodeableConcept: codeableConcept$1(ICPC_E?.valueCodeableConcept)
-      }
-    };
-  }
-  const gpJournalEntry = {
-    profile: profile$G,
-    parse: parseGpJournalEntry,
-    uiSchema: uiSchema$G
-  };
-  function parseSection(value2) {
-    return {
-      code: codeableConcept$1(value2?.code),
-      entry: map(value2?.entry, reference$1)
-    };
-  }
   const uiSchemaGroup$w = (resource, context) => {
+    const i18n2 = "r3.nl_core_address";
     const ui = context.ui;
-    const profile2 = "EncounterReport.Section";
     return {
-      label: profile2,
+      label: i18n2,
       children: [
-        ui.codeableConcept(`${profile2}.code`, resource.code),
-        ...map(resource.entry, (entry) => ui.reference(`${profile2}.entry`, entry), true)
+        ui.code(`${i18n2}.use`, resource?.use),
+        ui.code(`${i18n2}.type`, resource?.type),
+        ui.string(`${i18n2}.text`, resource?.text),
+        ui.string(`${i18n2}.city`, resource?.city),
+        ui.string(`${i18n2}.district`, resource?.district),
+        ui.string(`${i18n2}.state`, resource?.state),
+        ui.string(`${i18n2}.postalCode`, resource?.postalCode),
+        ui.string(`${i18n2}.country`, resource?.country),
+        ...ui.period(`${i18n2}.period`, resource?.period)
       ]
     };
   };
-  const uiSchema$F = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.EncounterReport";
-    const section = map(resource.section, (x) => uiSchemaGroup$w(x, context), true);
+  function parseNlCoreAddress(value2) {
     return {
-      label: resource.title,
-      children: [
-        {
-          label: `${profile2}`,
-          children: [
-            ui.string(`${profile2}.title`, resource.title),
-            ui.string(`${profile2}.status`, resource.status),
-            ui.coding(`${profile2}.type`, resource.type),
-            ui.reference(`${profile2}.encounter`, resource.encounter),
-            ui.dateTime(`${profile2}.date`, resource.date),
-            ui.reference(`${profile2}.author`, resource.author)
-          ]
-        },
-        ...section
-      ]
-    };
-  };
-  const profile$F = "http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport";
-  function parseGpEncounterReport(resource) {
-    return {
-      ...resourceMeta(resource, profile$F, FhirVersion.R3),
-      identifier: identifier$1(resource.identifier),
-      status: string$1(resource.status),
-      type: map(resource.type.coding, coding$1),
-      encounter: reference$1(resource.encounter),
-      date: dateTime$3(resource.date),
-      author: map(resource.author, reference$1),
-      title: string$1(resource.title),
-      section: map(resource.section, parseSection)
+      use: code$1(value2?.use),
+      type: code$1(value2?.type),
+      text: string$1(value2?.text),
+      line: map(value2?.line, string$1),
+      city: string$1(value2?.city),
+      district: string$1(value2?.district),
+      state: string$1(value2?.state),
+      postalCode: string$1(value2?.postalCode),
+      country: string$1(value2?.country),
+      period: period$1(value2?.period)
     };
   }
-  const gpEncounterReport = {
-    profile: profile$F,
-    parse: parseGpEncounterReport,
-    uiSchema: uiSchema$F
+  const nlCoreAddress = {
+    parse: parseNlCoreAddress,
+    uiSchemaGroup: uiSchemaGroup$w
   };
-  const uiSchemaGroup$v = (resource, { ui, formatMessage: formatMessage2 }) => {
-    const i18n = "r3.zib_administration_schedule";
+  const uiSchemaGroup$v = (resource, context) => {
+    const i18n2 = "r3.nl_core_contact_point";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.code(`${i18n2}.system`, resource?.system),
+        ui.string(`${i18n2}.value`, resource?.value),
+        ui.code(`${i18n2}.use`, resource?.use),
+        ui.positiveInt(`${i18n2}.rank`, resource?.rank),
+        ...ui.period(`${i18n2}.period`, resource.period)
+      ]
+    };
+  };
+  function parseNlCoreContactpoint(value2) {
+    return {
+      system: code$1(value2?.system),
+      value: string$1(value2?.value),
+      use: code$1(value2?.use),
+      rank: positiveInt$1(value2?.rank),
+      period: period$1(value2?.period)
+    };
+  }
+  const nlCoreContactpoint = {
+    parse: parseNlCoreContactpoint,
+    uiSchemaGroup: uiSchemaGroup$v
+  };
+  const uiSchemaGroup$u = (resource, context) => {
+    const i18n2 = "r3.nl_core_humanname";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.string(`${i18n2}.family`, resource?.family),
+        ui.string(`${i18n2}.given`, resource?.given),
+        ...ui.period(`${i18n2}.period`, resource?.period),
+        ui.string(`${i18n2}.prefix`, resource?.prefix),
+        ui.string(`${i18n2}.suffix`, resource?.suffix),
+        ui.string(`${i18n2}.use`, resource?.use),
+        ui.string(`${i18n2}.text`, resource?.text)
+      ]
+    };
+  };
+  function parseNlCoreHumanname(value2) {
+    return {
+      family: string$1(value2?.family),
+      given: map(value2?.given, string$1),
+      period: period$1(value2?.period),
+      prefix: map(value2?.prefix, string$1),
+      suffix: map(value2?.suffix, string$1),
+      text: string$1(value2?.text),
+      use: string$1(value2?.use)
+    };
+  }
+  const nlCoreHumanname = {
+    parse: parseNlCoreHumanname,
+    uiSchemaGroup: uiSchemaGroup$u
+  };
+  const uiSchemaGroup$t = (resource, { ui, formatMessage: formatMessage2 }) => {
+    const i18n2 = "r3.zib_administration_schedule";
     const { repeat: repeat2 } = resource;
     const hcimInstructionsForUse = {
-      DoseDuration: ui.oneOfValueX(`${i18n}.repeat.bounds`, repeat2, "bounds"),
+      DoseDuration: ui.oneOfValueX(`${i18n2}.repeat.bounds`, repeat2, "bounds"),
       DurationOfAdministration: ui.valueWithUnit(
-        `${i18n}.repeat.duration`,
+        `${i18n2}.repeat.duration`,
         repeat2?.duration,
         repeat2?.durationUnit
       ),
-      Frequency: ui.integer(`${i18n}.repeat.frequency`, repeat2?.frequency),
-      FrequencyMax: ui.integer(`${i18n}.repeat.frequency_max`, repeat2?.frequencyMax),
+      Frequency: ui.integer(`${i18n2}.repeat.frequency`, repeat2?.frequency),
+      FrequencyMax: ui.integer(`${i18n2}.repeat.frequency_max`, repeat2?.frequencyMax),
       FrequencyOrInterval: ui.valueWithUnit(
-        `${i18n}.repeat.period`,
+        `${i18n2}.repeat.period`,
         repeat2?.period,
         repeat2?.periodUnit
       ),
-      WeekDay: ui.string(`${i18n}.repeat.day_of_week`, repeat2?.dayOfWeek),
-      AdministrationTime: ui.dateTime(`${i18n}.repeat.time_of_day`, repeat2?.timeOfDay),
-      TimeOfDay: ui.string(`${i18n}.repeat.when`, repeat2?.when)
+      WeekDay: ui.code(`${i18n2}.repeat.day_of_week`, repeat2?.dayOfWeek),
+      AdministrationTime: ui.dateTime(`${i18n2}.repeat.time_of_day`, repeat2?.timeOfDay),
+      TimeOfDay: ui.code(`${i18n2}.repeat.when`, repeat2?.when)
     };
     return {
-      label: formatMessage2(i18n),
+      label: formatMessage2(i18n2),
       children: [
         ...hcimInstructionsForUse.DoseDuration,
         hcimInstructionsForUse.DurationOfAdministration,
@@ -48105,35 +48227,35 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         period: decimal$1(repeat2?.period),
         periodUnit: code$1(repeat2?.periodUnit),
         dayOfWeek: map(repeat2?.dayOfWeek, code$1),
-        timeOfDay: map(repeat2?.timeOfDay, dateTime$3),
+        timeOfDay: map(repeat2?.timeOfDay, dateTime$1),
         when: map(repeat2?.when, code$1)
       }
     };
   }
   const zibAdministrationSchedule = {
     parse: parseZibAdministrationSchedule,
-    uiSchemaGroup: uiSchemaGroup$v
+    uiSchemaGroup: uiSchemaGroup$t
   };
-  const uiSchemaGroup$u = (resource, context) => {
-    const i18n = "r3.zib_instructions_for_use";
+  const uiSchemaGroup$s = (resource, context) => {
+    const i18n2 = "r3.zib_instructions_for_use";
     const { ui, formatMessage: formatMessage2 } = context;
     const hcimInstructionsForUse = {
-      SequenceNumber: ui.integer(`${i18n}.sequence`, resource.sequence),
-      Description: ui.string(`${i18n}.text`, resource.text),
+      SequenceNumber: ui.integer(`${i18n2}.sequence`, resource.sequence),
+      Description: ui.string(`${i18n2}.text`, resource.text),
       AdditionalInstructions: ui.codeableConcept(
-        `${i18n}.additional_instruction`,
+        `${i18n2}.additional_instruction`,
         resource.additionalInstruction
       ),
       AdministeringSchedule: zibAdministrationSchedule.uiSchemaGroup(resource.timing, context),
-      AsNeeded: ui.codeableConcept(`${i18n}.as_needed_codeable_concept`, resource.asNeeded),
-      RouteOfAdministration: ui.codeableConcept(`${i18n}.route`, resource.route),
-      Dose: ui.oneOfValueX(`${i18n}.dose`, resource, "dose"),
-      MaximumDose: ui.ratio(`${i18n}.max_dose_per_period`, resource.maxDosePerPeriod),
-      AdministeringSpeed: ui.oneOfValueX(`${i18n}.rate`, resource, "rate")
+      AsNeeded: ui.codeableConcept(`${i18n2}.as_needed_codeable_concept`, resource.asNeeded),
+      RouteOfAdministration: ui.codeableConcept(`${i18n2}.route`, resource.route),
+      Dose: ui.oneOfValueX(`${i18n2}.dose`, resource, "dose"),
+      MaximumDose: ui.ratio(`${i18n2}.max_dose_per_period`, resource.maxDosePerPeriod),
+      AdministeringSpeed: ui.oneOfValueX(`${i18n2}.rate`, resource, "rate")
     };
     return [
       {
-        label: formatMessage2(i18n),
+        label: formatMessage2(i18n2),
         children: [
           hcimInstructionsForUse.Description,
           hcimInstructionsForUse.RouteOfAdministration,
@@ -48168,16 +48290,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const zibInstructionsForUse = {
     parse: parseZibInstructionsForUse,
-    uiSchemaGroup: uiSchemaGroup$u
+    uiSchemaGroup: uiSchemaGroup$s
   };
-  const uiSchemaGroup$t = (resource, context) => {
-    const i18n = "r3.zib_product_ingredient";
+  const uiSchemaGroup$r = (resource, context) => {
+    const i18n2 = "r3.zib_product_ingredient";
     const ui = context.ui;
     return {
-      label: i18n,
+      label: i18n2,
       children: [
-        ui.codeableConcept(`${i18n}.item`, resource.item),
-        ...ui.ratio(`${i18n}.amount`, resource.amount)
+        ui.codeableConcept(`${i18n2}.item`, resource.item),
+        ...ui.ratio(`${i18n2}.amount`, resource.amount)
       ]
     };
   };
@@ -48189,23 +48311,23 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const zibProductIngredient = {
     parse: parseZibProductIngredient,
-    uiSchemaGroup: uiSchemaGroup$t
+    uiSchemaGroup: uiSchemaGroup$r
   };
-  const uiSchemaGroup$s = (resource, context) => {
-    const i18n = "r3.zib_product_package";
+  const uiSchemaGroup$q = (resource, context) => {
+    const i18n2 = "r3.zib_product_package";
     const ui = context.ui;
     const contents = map(
       resource.content,
       (content) => {
         return [
-          ui.codeableConcept(`${i18n}.content_item`, content.item),
-          ui.reference(`${i18n}.content_reference`, content.reference)
+          ui.codeableConcept(`${i18n2}.content_item`, content.item),
+          ui.reference(`${i18n2}.content_reference`, content.reference)
         ];
       },
       true
     );
     return {
-      label: i18n,
+      label: i18n2,
       children: [...contents.flat()]
     };
   };
@@ -48219,289 +48341,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const zibProductPackage = {
     parse: parseZibProductPackage,
-    uiSchemaGroup: uiSchemaGroup$s
-  };
-  const uiSchemaGroup$r = (resource, context) => {
-    const i18n = "r3.nl_core_address";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.string(`${i18n}.use`, resource?.use),
-        ui.string(`${i18n}.type`, resource?.type),
-        ui.string(`${i18n}.text`, resource?.text),
-        ui.string(`${i18n}.city`, resource?.city),
-        ui.string(`${i18n}.district`, resource?.district),
-        ui.string(`${i18n}.state`, resource?.state),
-        ui.string(`${i18n}.postalCode`, resource?.postalCode),
-        ui.string(`${i18n}.country`, resource?.country),
-        ...ui.period(`${i18n}.period`, resource?.period)
-      ]
-    };
-  };
-  function parseNlCoreAddress(value2) {
-    return {
-      use: code$1(value2?.use),
-      type: code$1(value2?.type),
-      text: string$1(value2?.text),
-      line: map(value2?.line, string$1),
-      city: string$1(value2?.city),
-      district: string$1(value2?.district),
-      state: string$1(value2?.state),
-      postalCode: string$1(value2?.postalCode),
-      country: string$1(value2?.country),
-      period: period$1(value2?.period)
-    };
-  }
-  const nlCoreAddress = {
-    parse: parseNlCoreAddress,
-    uiSchemaGroup: uiSchemaGroup$r
-  };
-  const uiSchemaGroup$q = (resource, context) => {
-    const i18n = "r3.nl_core_contact_point";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.string(`${i18n}.system`, resource?.system),
-        ui.string(`${i18n}.value`, resource?.value),
-        ui.string(`${i18n}.use`, resource?.use),
-        ui.positiveInt(`${i18n}.rank`, resource?.rank),
-        ...ui.period(`${i18n}.period`, resource.period)
-      ]
-    };
-  };
-  function parseNlCoreContactpoint(value2) {
-    return {
-      system: code$1(value2?.system),
-      value: string$1(value2?.value),
-      use: code$1(value2?.use),
-      rank: positiveInt$1(value2?.rank),
-      period: period$1(value2?.period)
-    };
-  }
-  const nlCoreContactpoint = {
-    parse: parseNlCoreContactpoint,
     uiSchemaGroup: uiSchemaGroup$q
   };
-  const uiSchemaGroup$p = (resource, context) => {
-    const i18n = "r3.nl_core_humanname";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.string(`${i18n}.family`, resource?.family),
-        ui.string(`${i18n}.given`, resource?.given),
-        ...ui.period(`${i18n}.period`, resource?.period),
-        ui.string(`${i18n}.prefix`, resource?.prefix),
-        ui.string(`${i18n}.suffix`, resource?.suffix),
-        ui.string(`${i18n}.use`, resource?.use),
-        ui.string(`${i18n}.text`, resource?.text)
-      ]
-    };
-  };
-  function parseNlCoreHumanname(value2) {
-    return {
-      family: string$1(value2?.family),
-      given: map(value2?.given, string$1),
-      period: period$1(value2?.period),
-      prefix: map(value2?.prefix, string$1),
-      suffix: map(value2?.suffix, string$1),
-      text: string$1(value2?.text),
-      use: string$1(value2?.use)
-    };
-  }
-  const nlCoreHumanname = {
-    parse: parseNlCoreHumanname,
-    uiSchemaGroup: uiSchemaGroup$p
-  };
-  const uiSchemaGroup$o = (resource, context) => {
-    const i18n = "r3.attachment";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.string(`${i18n}.contentType`, resource.contentType),
-        ui.string(`${i18n}.language`, resource.language),
-        ui.string(`${i18n}.data`, resource.data),
-        ui.string(`${i18n}.url`, resource.url),
-        ui.unsignedInt(`${i18n}.size`, resource.size),
-        ui.string(`${i18n}.hash`, resource.hash),
-        ui.string(`${i18n}.title`, resource.title),
-        ui.dateTime(`${i18n}.creation`, resource.creation)
-      ]
-    };
-  };
-  function parseAttachment(value2) {
-    return {
-      contentType: code$1(value2?.contentType),
-      language: code$1(value2?.language),
-      data: string$1(value2?.data),
-      url: string$1(value2?.url),
-      size: unsignedInt$1(value2?.size),
-      hash: string$1(value2?.hash),
-      title: string$1(value2?.title),
-      creation: dateTime$3(value2?.creation)
-    };
-  }
-  const attachment = {
-    parse: parseAttachment,
-    uiSchemaGroup: uiSchemaGroup$o
-  };
-  const uiSchemaGroup$n = (resource, context) => {
-    const i18n = "r3.nl_core_patient.communication";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.codeableConcept(`${i18n}.language`, resource.language),
-        ui.boolean(`${i18n}.preferred`, resource.preferred)
-      ]
-    };
-  };
-  function parseCommunication(value2) {
-    return {
-      language: codeableConcept$1(value2?.language),
-      preferred: boolean$1(value2?.preferred)
-    };
-  }
-  const communication = {
-    parse: parseCommunication,
-    uiSchemaGroup: uiSchemaGroup$n
-  };
-  const uiSchemaGroup$m = (resource, context) => {
-    const i18n = "r3.nl_core_patient.contact";
-    const ui = context.ui;
-    const telecom = map(
-      resource.telecom,
-      (x) => nlCoreContactpoint.uiSchemaGroup(x, context),
-      true
-    ).flat();
-    return {
-      label: i18n,
-      children: [
-        ...nlCoreHumanname.uiSchemaGroup(resource.name, context).children,
-        ...ui.helpers.getChildren(telecom),
-        ...nlCoreAddress.uiSchemaGroup(resource.address, context).children,
-        ui.string(`${i18n}.gender`, resource.gender),
-        ui.reference(`${i18n}.organization`, resource.organization),
-        ...ui.period(`${i18n}.period`, resource.period)
-      ].filter(isNonNullish)
-    };
-  };
-  function parseContact(value2) {
-    return {
-      relationship: map(value2?.relationship, codeableConcept$1, true),
-      name: nlCoreHumanname.parse(value2?.name),
-      telecom: map(value2?.telecom, nlCoreContactpoint.parse, true),
-      address: nlCoreAddress.parse(value2?.address),
-      gender: code$1(value2?.gender),
-      organization: reference$1(value2?.organization),
-      period: period$1(value2?.period)
-    };
-  }
-  const contact = {
-    parse: parseContact,
-    uiSchemaGroup: uiSchemaGroup$m
-  };
-  const uiSchemaGroup$l = (resource, context) => {
-    const i18n = "r3.nl_core_patient.link";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.reference(`${i18n}.other`, resource.other),
-        ui.code(`${i18n}.type`, resource.type)
-      ]
-    };
-  };
-  function parseLink(value2) {
-    return {
-      other: reference$1(value2?.other),
-      type: code$1(value2?.type)
-    };
-  }
-  const link = {
-    parse: parseLink,
-    uiSchemaGroup: uiSchemaGroup$l
-  };
-  const uiSchema$E = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.nl_core_patient";
-    const address = map(resource.address, (x) => nlCoreAddress.uiSchemaGroup(x, context), true);
-    const communication2 = map(
-      resource.communication,
-      (x) => uiSchemaGroup$n(x, context),
-      true
-    );
-    const contact2 = map(resource.contact, (x) => uiSchemaGroup$m(x, context), true);
-    const link2 = map(resource.link, (x) => uiSchemaGroup$l(x, context), true);
-    const name = map(resource.name, (x) => nlCoreHumanname.uiSchemaGroup(x, context), true);
-    const photo = map(resource.photo, (x) => uiSchemaGroup$o(x, context), true);
-    const telecom = map(
-      resource.telecom,
-      (x) => nlCoreContactpoint.uiSchemaGroup(x, context),
-      true
-    );
-    return {
-      label: resource.name?.at(0)?.text,
-      children: [
-        {
-          label: `${i18n}.group_details`,
-          children: [
-            ui.boolean(`${i18n}.active`, resource.active),
-            ui.date(`${i18n}.birth_date`, resource.birthDate),
-            ui.boolean(`${i18n}.deceased`, resource.deceased),
-            ui.dateTime(`${i18n}.deceased_date_time`, resource.deceasedDateTime),
-            ui.code(`${i18n}.gender`, resource.gender),
-            ui.reference(`${i18n}.general_practitioner`, resource.generalPractitioner),
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.reference(`${i18n}.managing_organization`, resource.managingOrganization),
-            ui.codeableConcept(`${i18n}.marital_status`, resource.maritalStatus),
-            ui.boolean(`${i18n}.multiple_birth`, resource.multipleBirth),
-            ui.integer(`${i18n}.multiple_birth_integer`, resource.multipleBirthInteger)
-          ]
-        },
-        ...address,
-        ...communication2,
-        ...contact2,
-        ...link2,
-        ...name,
-        ...photo,
-        ...telecom
-      ]
-    };
-  };
-  const profile$E = "http://fhir.nl/fhir/StructureDefinition/nl-core-patient";
-  function parseNlCorePatient$1(resource) {
-    return {
-      ...resourceMeta(resource, profile$E, FhirVersion.R3),
-      active: boolean$1(resource.active),
-      address: map(resource.address, nlCoreAddress.parse),
-      birthDate: date$4(resource.birthDate),
-      communication: map(resource.communication, communication.parse),
-      contact: map(resource.contact, contact.parse),
-      deceased: boolean$1(resource.deceasedBoolean),
-      deceasedDateTime: dateTime$3(resource.deceasedDateTime),
-      gender: code$1(resource.gender),
-      generalPractitioner: map(resource.generalPractitioner, reference$1),
-      identifier: map(resource.identifier, identifier$1),
-      link: map(resource.link, link.parse),
-      managingOrganization: reference$1(resource.managingOrganization),
-      maritalStatus: codeableConcept$1(resource.maritalStatus),
-      multipleBirth: boolean$1(resource.multipleBirthBoolean),
-      multipleBirthInteger: integer$1(resource.multipleBirthInteger),
-      name: map(resource.name, nlCoreHumanname.parse),
-      photo: map(resource.photo, attachment.parse),
-      telecom: map(resource.telecom, nlCoreContactpoint.parse)
-    };
-  }
-  const nlCorePatient = {
-    profile: profile$E,
-    parse: parseNlCorePatient$1,
-    uiSchema: uiSchema$E
-  };
-  const uiSchema$D = (resource, context) => {
+  const uiSchema$H = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.nl_core_organization";
     const address = map(
@@ -48534,10 +48376,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const profile$D = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization";
+  const profile$H = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization";
   function parseNlCoreOrganization(resource) {
     return {
-      ...resourceMeta(resource, profile$D, FhirVersion.R3),
+      ...resourceMeta(resource, profile$H, FhirVersion.R3),
       identifier: map(resource.identifier, identifier$1),
       name: string$1(resource.name),
       departmentSpecialty: map(
@@ -48560,11 +48402,164 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const nlCoreOrganization = {
-    profile: profile$D,
+    profile: profile$H,
     parse: parseNlCoreOrganization,
-    uiSchema: uiSchema$D
+    uiSchema: uiSchema$H
   };
-  const uiSchema$C = (resource, context) => {
+  const uiSchemaGroup$p = (resource, context) => {
+    const i18n2 = "r3.nl_core_patient.communication";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.codeableConcept(`${i18n2}.language`, resource.language),
+        ui.boolean(`${i18n2}.preferred`, resource.preferred)
+      ]
+    };
+  };
+  function parseCommunication(value2) {
+    return {
+      language: codeableConcept$1(value2?.language),
+      preferred: boolean$1(value2?.preferred)
+    };
+  }
+  const communication = {
+    parse: parseCommunication,
+    uiSchemaGroup: uiSchemaGroup$p
+  };
+  const uiSchemaGroup$o = (resource, context) => {
+    const i18n2 = "r3.nl_core_patient.contact";
+    const ui = context.ui;
+    const telecom = map(
+      resource.telecom,
+      (x) => nlCoreContactpoint.uiSchemaGroup(x, context),
+      true
+    ).flat();
+    return {
+      label: i18n2,
+      children: [
+        ...nlCoreHumanname.uiSchemaGroup(resource.name, context).children,
+        ...ui.helpers.getChildren(telecom),
+        ...nlCoreAddress.uiSchemaGroup(resource.address, context).children,
+        ui.code(`${i18n2}.gender`, resource.gender),
+        ui.reference(`${i18n2}.organization`, resource.organization),
+        ...ui.period(`${i18n2}.period`, resource.period)
+      ].filter(isNonNullish)
+    };
+  };
+  function parseContact(value2) {
+    return {
+      relationship: map(value2?.relationship, codeableConcept$1, true),
+      name: nlCoreHumanname.parse(value2?.name),
+      telecom: map(value2?.telecom, nlCoreContactpoint.parse, true),
+      address: nlCoreAddress.parse(value2?.address),
+      gender: code$1(value2?.gender),
+      organization: reference$1(value2?.organization),
+      period: period$1(value2?.period)
+    };
+  }
+  const contact = {
+    parse: parseContact,
+    uiSchemaGroup: uiSchemaGroup$o
+  };
+  const uiSchemaGroup$n = (resource, context) => {
+    const i18n2 = "r3.nl_core_patient.link";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.reference(`${i18n2}.other`, resource.other),
+        ui.code(`${i18n2}.type`, resource.type)
+      ]
+    };
+  };
+  function parseLink(value2) {
+    return {
+      other: reference$1(value2?.other),
+      type: code$1(value2?.type)
+    };
+  }
+  const link = {
+    parse: parseLink,
+    uiSchemaGroup: uiSchemaGroup$n
+  };
+  const uiSchema$G = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.nl_core_patient";
+    const address = map(resource.address, (x) => nlCoreAddress.uiSchemaGroup(x, context), true);
+    const communication2 = map(
+      resource.communication,
+      (x) => uiSchemaGroup$p(x, context),
+      true
+    );
+    const contact2 = map(resource.contact, (x) => uiSchemaGroup$o(x, context), true);
+    const link2 = map(resource.link, (x) => uiSchemaGroup$n(x, context), true);
+    const name = map(resource.name, (x) => nlCoreHumanname.uiSchemaGroup(x, context), true);
+    const photo = map(resource.photo, (x) => uiSchemaGroup$x(x, context), true);
+    const telecom = map(
+      resource.telecom,
+      (x) => nlCoreContactpoint.uiSchemaGroup(x, context),
+      true
+    );
+    return {
+      label: resource.name?.at(0)?.text,
+      children: [
+        {
+          label: `${i18n2}.group_details`,
+          children: [
+            ui.boolean(`${i18n2}.active`, resource.active),
+            ui.date(`${i18n2}.birth_date`, resource.birthDate),
+            ui.boolean(`${i18n2}.deceased`, resource.deceased),
+            ui.dateTime(`${i18n2}.deceased_date_time`, resource.deceasedDateTime),
+            ui.code(`${i18n2}.gender`, resource.gender),
+            ui.reference(`${i18n2}.general_practitioner`, resource.generalPractitioner),
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.reference(`${i18n2}.managing_organization`, resource.managingOrganization),
+            ui.codeableConcept(`${i18n2}.marital_status`, resource.maritalStatus),
+            ui.boolean(`${i18n2}.multiple_birth`, resource.multipleBirth),
+            ui.integer(`${i18n2}.multiple_birth_integer`, resource.multipleBirthInteger)
+          ]
+        },
+        ...address,
+        ...communication2,
+        ...contact2,
+        ...link2,
+        ...name,
+        ...photo,
+        ...telecom
+      ]
+    };
+  };
+  const profile$G = "http://fhir.nl/fhir/StructureDefinition/nl-core-patient";
+  function parseNlCorePatient$1(resource) {
+    return {
+      ...resourceMeta(resource, profile$G, FhirVersion.R3),
+      active: boolean$1(resource.active),
+      address: map(resource.address, nlCoreAddress.parse),
+      birthDate: date$3(resource.birthDate),
+      communication: map(resource.communication, communication.parse),
+      contact: map(resource.contact, contact.parse),
+      deceased: boolean$1(resource.deceasedBoolean),
+      deceasedDateTime: dateTime$1(resource.deceasedDateTime),
+      gender: code$1(resource.gender),
+      generalPractitioner: map(resource.generalPractitioner, reference$1),
+      identifier: map(resource.identifier, identifier$1),
+      link: map(resource.link, link.parse),
+      managingOrganization: reference$1(resource.managingOrganization),
+      maritalStatus: codeableConcept$1(resource.maritalStatus),
+      multipleBirth: boolean$1(resource.multipleBirthBoolean),
+      multipleBirthInteger: integer$1(resource.multipleBirthInteger),
+      name: map(resource.name, nlCoreHumanname.parse),
+      photo: map(resource.photo, attachment$1.parse),
+      telecom: map(resource.telecom, nlCoreContactpoint.parse)
+    };
+  }
+  const nlCorePatient = {
+    profile: profile$G,
+    parse: parseNlCorePatient$1,
+    uiSchema: uiSchema$G
+  };
+  const uiSchema$F = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.nl_core_practitioner";
     const address = map(resource.address, (x) => nlCoreAddress.uiSchemaGroup(x, context), true);
@@ -48587,10 +48582,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const profile$C = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner";
+  const profile$F = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner";
   function parseNlCorePractitioner(resource) {
     return {
-      ...resourceMeta(resource, profile$C, FhirVersion.R3),
+      ...resourceMeta(resource, profile$F, FhirVersion.R3),
       identifier: map(resource.identifier, identifier$1),
       name: map(resource.name, nlCoreHumanname.parse),
       address: map(resource.address, nlCoreAddress.parse),
@@ -48598,11 +48593,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const nlCorePractitioner = {
-    profile: profile$C,
+    profile: profile$F,
     parse: parseNlCorePractitioner,
-    uiSchema: uiSchema$C
+    uiSchema: uiSchema$F
   };
-  const uiSchema$B = (resource, context) => {
+  const uiSchema$E = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.nl_core_practitionerrole";
     const telecom = map(
@@ -48625,10 +48620,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const profile$B = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitionerrole";
+  const profile$E = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitionerrole";
   function parseNlCorePractitionerRole(resource) {
     return {
-      ...resourceMeta(resource, profile$B, FhirVersion.R3),
+      ...resourceMeta(resource, profile$E, FhirVersion.R3),
       identifier: map(resource.identifier, identifier$1),
       organization: reference$1(resource.organization),
       specialty: map(resource.specialty, codeableConcept$1),
@@ -48636,94 +48631,148 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const nlCorePractitionerRole = {
-    profile: profile$B,
+    profile: profile$E,
     parse: parseNlCorePractitionerRole,
-    uiSchema: uiSchema$B
+    uiSchema: uiSchema$E
   };
-  const uiSchema$A = (resource, context) => {
+  const uiSchema$D = (resource, context) => {
     const ui = context.ui;
-    const i18n = "r3.zib_alert";
+    const profile2 = "r3.e_afspraak_appointment";
     return {
-      label: i18n,
+      label: resource.description,
       children: [
         {
-          label: `${i18n}.group_general_information`,
+          label: `${profile2}`,
           children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.status`, resource.status),
-            ui.codeableConcept(`${i18n}.category`, resource.category),
-            ui.codeableConcept(`${i18n}.code`, resource.code),
-            ui.reference(`${i18n}.subject`, resource.subject),
-            ...ui.period(`${i18n}.period`, resource.period),
-            ui.reference(`${i18n}.encounter`, resource.encounter),
-            ui.reference(`${i18n}.author`, resource.author)
+            ui.string(`${profile2}.status.order_status`, resource.status),
+            ui.codeableConcept(`${profile2}.specialty`, resource.specialty),
+            ui.string(`${profile2}.description`, resource.description),
+            ui.dateTime(`${profile2}.start`, resource.start),
+            ui.dateTime(`${profile2}.end`, resource.end),
+            ui.reference(
+              `${profile2}.participant`,
+              resource.participant?.flatMap((x) => x.actor).filter(isNonNullish)
+            )
           ]
         }
       ]
     };
   };
-  const profile$A = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert";
-  function parseZibAlert(resource) {
+  const profile$D = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment";
+  function parseEAfspraakAppointment(resource) {
     return {
-      ...resourceMeta(resource, profile$A, FhirVersion.R3),
-      identifier: map(resource.identifier, identifier$1),
-      status: code$1(resource.status),
-      category: codeableConcept$1(resource.category),
-      code: codeableConcept$1(resource.code),
-      subject: reference$1(resource.subject),
-      period: period$1(resource.period),
-      encounter: reference$1(resource.encounter),
-      author: reference$1(resource.author)
+      ...resourceMeta(resource, profile$D, FhirVersion.R3),
+      status: string$1(resource.status),
+      specialty: map(resource.specialty, codeableConcept$1),
+      description: string$1(resource.description),
+      start: dateTime$1(resource.start),
+      end: dateTime$1(resource.end),
+      participant: map(resource.participant, (x) => ({ actor: reference$1(x.actor) }))
     };
   }
-  const zibAlert = {
-    profile: profile$A,
-    parse: parseZibAlert,
-    uiSchema: uiSchema$A
+  const eAfspraakAppointment = {
+    profile: profile$D,
+    parse: parseEAfspraakAppointment,
+    uiSchema: uiSchema$D
   };
-  const uiSchema$z = (resource, context) => {
+  const uiSchema$C = (resource, context) => {
     const ui = context.ui;
-    const i18n = "r3.zib_administration_agreement";
+    const i18n2 = "r3.nl_core_observation";
+    return {
+      label: resource.identifier?.[0]?.value,
+      children: [
+        {
+          label: `${i18n2}.group_details`,
+          children: [
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.status`, resource.status),
+            ui.codeableConcept(`${i18n2}.category`, resource.category),
+            ui.reference(`${i18n2}.subject`, resource.subject),
+            ui.reference(`${i18n2}.context`, resource.context),
+            Object.prototype.hasOwnProperty.call(resource, "effectiveDateTime") ? ui.dateTime(
+              `${i18n2}.effective_date_time`,
+              resource.effectiveDateTime
+            ) : void 0,
+            ...ui.period(`${i18n2}.effective_period`, resource.effectivePeriod),
+            ui.codeableConcept(`${i18n2}.data_absent_reason`, resource.dataAbsentReason),
+            ui.string(`${i18n2}.comment`, resource.comment),
+            ui.codeableConcept(`${i18n2}.body_site`, resource.bodySite)
+          ].filter(isNonNullish)
+        }
+      ]
+    };
+  };
+  const profile$C = "http://fhir.nl/fhir/StructureDefinition/nl-core-observation";
+  function parseNlCoreObservationBase(resource) {
+    return {
+      identifier: map(resource.identifier, identifier$1),
+      status: code$1(resource.status),
+      category: map(resource.category, codeableConcept$1),
+      subject: reference$1(resource.subject),
+      context: reference$1(resource.context),
+      valueQuantity: quantity$1(resource.valueQuantity),
+      effectivePeriod: period$1(resource.effectivePeriod),
+      dataAbsentReason: codeableConcept$1(resource.dataAbsentReason),
+      method: codeableConcept$1(resource.method),
+      bodySite: codeableConcept$1(resource.bodySite),
+      effectiveDateTime: dateTime$1(resource.effectiveDateTime),
+      comment: string$1(resource.comment)
+    };
+  }
+  function parseNlCoreObservation(resource) {
+    return {
+      ...resourceMeta(resource, profile$C, FhirVersion.R3),
+      ...parseNlCoreObservationBase(resource)
+    };
+  }
+  const nlCoreObservation = {
+    profile: profile$C,
+    parse: parseNlCoreObservation,
+    uiSchema: uiSchema$C
+  };
+  const uiSchema$B = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_administration_agreement";
     const instructionsForUse = map(
       resource.dossageInstruction,
-      (x) => uiSchemaGroup$u(x, context),
+      (x) => uiSchemaGroup$s(x, context),
       true
     ).flat();
     return {
       label: resource.medicationReference?.display,
       children: [
         {
-          label: `${i18n}.group_general_information`,
+          label: `${i18n2}.group_general_information`,
           children: [
-            ui.dateTime(`${i18n}.authored_on`, resource.authoredOn),
-            ui.string(`${i18n}.agreement_reason`, resource.agreementReason),
-            ui.duration(`${i18n}.usage_duration`, resource.usageDuration),
+            ui.dateTime(`${i18n2}.authored_on`, resource.authoredOn),
+            ui.string(`${i18n2}.agreement_reason`, resource.agreementReason),
+            ui.duration(`${i18n2}.usage_duration`, resource.usageDuration),
             ui.codeableConcept(
-              `${i18n}.additional_information`,
+              `${i18n2}.additional_information`,
               resource.additionalInformation
             ),
-            ui.identifier(`${i18n}.medication_treatment`, resource.medicationTreatment),
-            ui.codeableConcept(`${i18n}.stop_type`, resource.stopType),
+            ui.identifier(`${i18n2}.medication_treatment`, resource.medicationTreatment),
+            ui.codeableConcept(`${i18n2}.stop_type`, resource.stopType),
             ui.duration(
-              `${i18n}.repeat_period_cyclical_schedule`,
+              `${i18n2}.repeat_period_cyclical_schedule`,
               resource.repeatPeriodCyclicalSchedule
             ),
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.status`, resource.status),
-            ui.codeableConcept(`${i18n}.category`, resource.category),
-            ui.quantity(`${i18n}.quantity`, resource.quantity),
-            ui.quantity(`${i18n}.days_supply`, resource.daysSupply),
-            ui.annotation(`${i18n}.note`, resource.note)
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.status`, resource.status),
+            ui.codeableConcept(`${i18n2}.category`, resource.category),
+            ui.quantity(`${i18n2}.quantity`, resource.quantity),
+            ui.quantity(`${i18n2}.days_supply`, resource.daysSupply),
+            ui.annotation(`${i18n2}.note`, resource.note)
           ]
         },
         ...instructionsForUse
       ]
     };
   };
-  const profile$z = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement";
+  const profile$B = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement";
   function parseZibAdministrationAgreement(resource) {
     return {
-      ...resourceMeta(resource, profile$z, FhirVersion.R3),
+      ...resourceMeta(resource, profile$B, FhirVersion.R3),
       authoredOn: extensionNictiz(resource, "zib-AdministrationAgreement-AuthoredOn"),
       agreementReason: extensionNictiz(
         resource,
@@ -48751,95 +48800,126 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const zibAdministrationAgreement = {
-    profile: profile$z,
+    profile: profile$B,
     parse: parseZibAdministrationAgreement,
+    uiSchema: uiSchema$B
+  };
+  const uiSchema$A = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.zib_advance_directive";
+    const attachment2 = uiSchemaGroup$x(resource.source.attachment, context);
+    return {
+      label: resource.dateTime,
+      children: [
+        {
+          label: `${profile2}.group_details`,
+          children: [
+            ui.codeableConcept(`${profile2}.type_of_living_will`, resource.category),
+            ui.dateTime(`${profile2}.date_time`, resource.dateTime),
+            ui.reference(`${profile2}.disorder`, resource.disorder),
+            ui.reference(`${profile2}.consenting_party`, resource.consentingParty),
+            ui.string(`${profile2}.comment`, resource.comment)
+          ]
+        },
+        attachment2
+      ]
+    };
+  };
+  const profile$A = "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective";
+  function parseZibAdvanceDirective(resource) {
+    return {
+      ...resourceMeta(resource, profile$A, FhirVersion.R3),
+      category: map(resource.category, codeableConcept$1),
+      dateTime: dateTime$1(resource.dateTime),
+      disorder: extensionNictiz(resource, "zib-AdvanceDirective-Disorder"),
+      consentingParty: map(resource.consentingParty, reference$1),
+      source: {
+        attachment: attachment$1.parse(resource.sourceAttachment),
+        identifier: identifier$1(resource.sourceIdentifier),
+        reference: reference$1(resource.sourceReference)
+      },
+      comment: extensionNictiz(resource, "Comment")
+    };
+  }
+  const zibAdvanceDirective = {
+    profile: profile$A,
+    parse: parseZibAdvanceDirective,
+    uiSchema: uiSchema$A
+  };
+  const uiSchema$z = (resource, context) => {
+    return nlCoreObservation.uiSchema(resource, context);
+  };
+  const profile$z = "http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse";
+  function parseZibAlcoholUse(resource) {
+    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
+    return {
+      ...rest,
+      ...resourceMeta(resource, profile$z, FhirVersion.R3)
+    };
+  }
+  const zibAlcoholUse = {
+    profile: profile$z,
+    parse: parseZibAlcoholUse,
     uiSchema: uiSchema$z
   };
   const uiSchema$y = (resource, context) => {
     const ui = context.ui;
-    const i18n = "r3.zib_medication_agreement";
-    const instructionsForUse = map(
-      resource.dossageInstruction,
-      (x) => uiSchemaGroup$u(x, context),
-      true
-    ).flat();
+    const i18n2 = "r3.zib_alert";
     return {
-      label: resource.medicationReference?.display,
+      label: i18n2,
       children: [
         {
-          label: `${i18n}.group_general_information`,
+          label: `${i18n2}.group_general_information`,
           children: [
-            ...ui.period(`${i18n}.period_of_use`, resource.periodOfUse),
-            ui.duration(`${i18n}.usage_duration`, resource.usageDuration),
-            ui.identifier(`${i18n}.medication_treatment`, resource.medicationTreatment),
-            ui.codeableConcept(`${i18n}.stop_type`, resource.stopType),
-            ui.duration(
-              `${i18n}.repeat_period_cyclical_schedule`,
-              resource.repeatPeriodCyclicalSchedule
-            ),
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.reference(`${i18n}.definition`, resource.definition),
-            ui.reference(`${i18n}.basedOn`, resource.basedOn),
-            ui.identifier(`${i18n}.group_identifier`, resource.groupIdentifier),
-            ui.code(`${i18n}.status`, resource.status),
-            ui.code(`${i18n}.intent`, resource.intent),
-            ui.codeableConcept(`${i18n}.category`, resource.category),
-            ui.code(`${i18n}.priority`, resource.priority),
-            ui.reference(`${i18n}.medication_reference`, resource.medicationReference),
-            ui.annotation(`${i18n}.note`, resource.note)
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.status`, resource.status),
+            ui.codeableConcept(`${i18n2}.category`, resource.category),
+            ui.codeableConcept(`${i18n2}.code`, resource.code),
+            ui.reference(`${i18n2}.subject`, resource.subject),
+            ...ui.period(`${i18n2}.period`, resource.period),
+            ui.reference(`${i18n2}.encounter`, resource.encounter),
+            ui.reference(`${i18n2}.author`, resource.author)
           ]
-        },
-        ...instructionsForUse
+        }
       ]
     };
   };
-  const profile$y = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement";
-  function parseZibMedicationAgreement(resource) {
+  const profile$y = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert";
+  function parseZibAlert(resource) {
     return {
       ...resourceMeta(resource, profile$y, FhirVersion.R3),
-      periodOfUse: extensionNictiz(resource, "zib-Medication-PeriodOfUse"),
-      usageDuration: extensionNictiz(resource, "zib-MedicationUse-Duration"),
-      medicationTreatment: extensionNictiz(resource, "zib-Medication-MedicationTreatment"),
-      stopType: extensionNictiz(resource, "zib-Medication-StopType"),
-      repeatPeriodCyclicalSchedule: extensionNictiz(
-        resource,
-        "zib-Medication-RepeatPeriodCyclicalSchedule"
-      ),
       identifier: map(resource.identifier, identifier$1),
-      definition: map(resource.definition, reference$1),
-      basedOn: map(resource.basedOn, reference$1),
-      groupIdentifier: identifier$1(resource.groupIdentifier),
       status: code$1(resource.status),
-      intent: code$1(resource.intent),
       category: codeableConcept$1(resource.category),
-      priority: code$1(resource.priority),
-      medicationReference: reference$1(resource.medicationReference),
-      note: map(resource.note, annotation$1),
-      dossageInstruction: map(resource.dosageInstruction, zibInstructionsForUse.parse)
+      code: codeableConcept$1(resource.code),
+      subject: reference$1(resource.subject),
+      period: period$1(resource.period),
+      encounter: reference$1(resource.encounter),
+      author: reference$1(resource.author)
     };
   }
-  const zibMedicationAgreement = {
+  const zibAlert = {
     profile: profile$y,
-    parse: parseZibMedicationAgreement,
+    parse: parseZibAlert,
     uiSchema: uiSchema$y
   };
   const uiSchema$x = (resource, context) => {
     const ui = context.ui;
-    const i18n = "r3.zib_allergy_intolerance";
+    const i18n2 = "r3.zib_allergy_intolerance";
     return {
       label: resource.identifier?.at(0)?.value,
       children: [
         {
-          label: `${i18n}.group_details`,
+          label: `${i18n2}.group_details`,
           children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.clinical_status`, resource.clinicalStatus),
-            ui.code(`${i18n}.verification_status`, resource.verificationStatus),
-            ui.code(`${i18n}.type`, resource.type),
-            ui.code(`${i18n}.category`, resource.category),
-            ui.code(`${i18n}.criticality`, resource.criticality),
-            ui.codeableConcept(`${i18n}.code`, resource.code),
-            ui.reference(`${i18n}.patient`, resource.patient)
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.clinical_status`, resource.clinicalStatus),
+            ui.code(`${i18n2}.verification_status`, resource.verificationStatus),
+            ui.code(`${i18n2}.type`, resource.type),
+            ui.code(`${i18n2}.category`, resource.category),
+            ui.code(`${i18n2}.criticality`, resource.criticality),
+            ui.codeableConcept(`${i18n2}.code`, resource.code),
+            ui.reference(`${i18n2}.patient`, resource.patient)
           ]
         }
       ]
@@ -48865,926 +48945,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     uiSchema: uiSchema$x
   };
   const uiSchema$w = (resource, context) => {
-    const i18n = "r3.zib_medication_use";
-    const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
-    const hcimMedicationUse2 = {
-      AsAgreedIndicator: ui.boolean(`${i18n}.as_agreed_indicator`, resource.asAgreedIndicator),
-      Prescriber: ui.reference(`${i18n}.prescriber`, resource.prescriber),
-      ReasonForChangeOrDiscontinuationOfUse: ui.codeableConcept(
-        `${i18n}.reason_for_change_or_discontinuation_of_use`,
-        resource.reasonForChangeOrDiscontinuationOfUse
-      ),
-      MedicationUseStopType: ui.code(`${i18n}.status`, resource.status),
-      ProductUsed: ui.reference(`${i18n}.medication_reference`, resource.medicationReference),
-      PeriodOfUsePeriod: ui.period(`${i18n}.effective_period`, resource.effectivePeriod),
-      PeriodOfUseDuration: ui.duration(
-        `${i18n}.effective_period.duration`,
-        resource.effectiveDuration
-      ),
-      MedicationUseDateTime: ui.dateTime(`${i18n}.date_asserted`, resource.dateAsserted),
-      UseIndicator: ui.code(`${i18n}.taken`, resource.taken),
-      ReasonForUse: ui.codeableConcept(`${i18n}.reason_code.text`, resource.reasonCode),
-      Comment: ui.annotation(`${i18n}.note`, resource.note)
-    };
-    const hcimInstructionsForUse = {
-      InstructionsForUse: map(
-        resource.dosage,
-        (x) => uiSchemaGroup$u(x, context),
-        true
-      ).flat(),
-      RepeatPeriodCyclicalSchedule: ui.duration(
-        `${i18n}.repeat_period_cyclical_schedule`,
-        resource.repeatPeriodCyclicalSchedule
-      )
-    };
-    return setEmptyEntries2({
-      label: resource.medicationReference?.display,
-      children: [
-        {
-          label: formatMessage2(`fhir.group_general_info`),
-          children: [
-            hcimMedicationUse2.ProductUsed,
-            hcimMedicationUse2.MedicationUseDateTime,
-            ...hcimMedicationUse2.PeriodOfUsePeriod,
-            hcimMedicationUse2.PeriodOfUseDuration,
-            hcimMedicationUse2.Prescriber,
-            hcimMedicationUse2.ReasonForUse,
-            hcimMedicationUse2.AsAgreedIndicator,
-            hcimMedicationUse2.UseIndicator,
-            hcimMedicationUse2.MedicationUseStopType,
-            hcimMedicationUse2.ReasonForChangeOrDiscontinuationOfUse,
-            hcimInstructionsForUse.RepeatPeriodCyclicalSchedule,
-            ui.identifier(`${i18n}.medication_treatment`, resource.medicationTreatment),
-            hcimMedicationUse2.Comment
-          ]
-        },
-        ...hcimInstructionsForUse.InstructionsForUse.flat()
-      ]
-    });
-  };
-  const profile$w = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse";
-  function parseZibMedicationUse(resource) {
-    return {
-      ...resourceMeta(resource, profile$w, FhirVersion.R3),
-      asAgreedIndicator: extensionNictiz(resource, "zib-MedicationUse-AsAgreedIndicator"),
-      prescriber: extensionNictiz(resource, "zib-MedicationUse-Prescriber"),
-      author: extensionNictiz(resource, "zib-MedicationUse-Author"),
-      medicationTreatment: extensionNictiz(resource, "zib-Medication-MedicationTreatment"),
-      reasonForChangeOrDiscontinuationOfUse: extensionNictiz(
-        resource,
-        "zib-MedicationUse-ReasonForChangeOrDiscontinuationOfUse"
-      ),
-      repeatPeriodCyclicalSchedule: extensionNictiz(
-        resource,
-        "zib-Medication-RepeatPeriodCyclicalSchedule"
-      ),
-      identifier: map(resource.identifier, identifier$1),
-      status: code$1(resource.status),
-      category: codeableConcept$1(resource.category),
-      medicationReference: reference$1(resource.medicationReference),
-      effectivePeriod: period$1(resource.effectivePeriod),
-      effectiveDuration: extensionNictiz(
-        resource.effectivePeriod,
-        "zib-MedicationUse-Duration"
-      ),
-      dateAsserted: dateTime$3(resource.dateAsserted),
-      informationSource: reference$1(resource.informationSource),
-      subject: reference$1(resource.subject),
-      taken: code$1(resource.taken),
-      reasonCode: map(resource.reasonCode, codeableConcept$1),
-      note: map(resource.note, annotation$1),
-      dosage: map(resource.dosage, zibInstructionsForUse.parse)
-    };
-  }
-  const zibMedicationUse = {
-    profile: profile$w,
-    parse: parseZibMedicationUse,
-    uiSchema: uiSchema$w
-  };
-  const uiSchema$v = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_medical_device";
-    return {
-      label: resource.device?.display,
-      children: [
-        {
-          label: `${i18n}.group_product`,
-          children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.clinical_status`, resource.status),
-            ui.reference(`${i18n}.device`, resource.device),
-            ...ui.period(`${i18n}.whenUsed`, resource.whenUsed),
-            ui.dateTime(`${i18n}.recordedOn`, resource.recordedOn)
-          ]
-        },
-        {
-          label: `${i18n}.group_indication`,
-          children: [
-            ui.annotation(`${i18n}.note`, resource.note),
-            ui.codeableConcept(`${i18n}.bodySite`, resource.bodySite),
-            ui.codeableConcept(`${i18n}.laterality`, resource.laterality),
-            ui.reference(`${i18n}.reason`, resource.reason)
-          ]
-        },
-        {
-          label: `${i18n}.group_general`,
-          children: [
-            ui.reference(`${i18n}.patient`, resource.patient),
-            ui.reference(`${i18n}.source`, resource.source),
-            ui.reference(`${i18n}.organization`, resource.organization),
-            ui.reference(`${i18n}.practitioner`, resource.practitioner)
-          ]
-        }
-      ]
-    };
-  };
-  const profile$v = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice";
-  function parseZibMedicalDevice(resource) {
-    return {
-      ...resourceMeta(resource, profile$v, FhirVersion.R3),
-      identifier: map(resource.identifier, identifier$1),
-      organization: extensionNictiz(resource, "zib-MedicalDevice-Organization"),
-      practitioner: extensionNictiz(resource, "zib-MedicalDevice-Practitioner"),
-      reason: extensionNictiz(resource, "deviceUseStatement-reasonReferenceSTU3"),
-      status: code$1(resource.status),
-      patient: reference$1(resource.subject),
-      whenUsed: period$1(resource.whenUsed),
-      // timing
-      recordedOn: dateTime$3(resource.recordedOn),
-      source: reference$1(resource.source),
-      device: reference$1(resource.device),
-      // indication
-      bodySite: codeableConcept$1(resource.bodySite),
-      laterality: extensionNictiz(resource.bodySite, "BodySite-Qualifier"),
-      note: map(resource.note, annotation$1)
-    };
-  }
-  const zibMedicalDevice = {
-    profile: profile$v,
-    parse: parseZibMedicalDevice,
-    uiSchema: uiSchema$v
-  };
-  const uiSchemaGroup$k = (resource, context) => {
-    const i18n = "r3.zib_payer.grouping";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.string(`${i18n}.group`, resource.groupDisplay),
-        ui.string(`${i18n}.sub_group`, resource.subGroupDisplay),
-        ui.string(`${i18n}.plan`, resource.planDisplay),
-        ui.string(`${i18n}.sub_plan`, resource.subPlanDisplay),
-        ui.string(`${i18n}.class`, resource.classDisplay),
-        ui.string(`${i18n}.sub_class`, resource.subClassDisplay)
-      ]
-    };
-  };
-  function parseGrouping(value2) {
-    return {
-      group: string$1(value2?.group),
-      groupDisplay: string$1(value2?.groupDisplay),
-      subGroup: string$1(value2?.subGroup),
-      subGroupDisplay: string$1(value2?.subGroupDisplay),
-      plan: string$1(value2?.plan),
-      planDisplay: string$1(value2?.planDisplay),
-      subPlan: string$1(value2?.subPlan),
-      subPlanDisplay: string$1(value2?.subPlanDisplay),
-      class: string$1(value2?.class),
-      classDisplay: string$1(value2?.classDisplay),
-      subClass: string$1(value2?.subClass),
-      subClassDisplay: string$1(value2?.subClassDisplay)
-    };
-  }
-  const grouping = {
-    parse: parseGrouping,
-    uiSchemaGroup: uiSchemaGroup$k
-  };
-  const uiSchema$u = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_payer";
-    return {
-      label: resource.identifier?.at(0)?.value,
-      children: [
-        {
-          label: `${i18n}.group_details`,
-          children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.status`, resource.status),
-            ui.codeableConcept(`${i18n}.type`, resource.type),
-            ui.reference(`${i18n}.policy_holder`, resource.policyHolder),
-            ui.reference(`${i18n}.subscriber`, resource.subscriber),
-            ui.string(`${i18n}.subscriber_id`, resource.subscriberId),
-            ui.reference(`${i18n}.beneficiary`, resource.beneficiary),
-            ui.codeableConcept(`${i18n}.relationship`, resource.relationship),
-            ...ui.period(`${i18n}.period`, resource.period),
-            ui.reference(`${i18n}.payor`, resource.payor),
-            ui.string(`${i18n}.dependent`, resource.dependent),
-            ui.string(`${i18n}.sequence`, resource.sequence),
-            ui.positiveInt(`${i18n}.order`, resource.order),
-            ui.string(`${i18n}.network`, resource.network),
-            ui.reference(`${i18n}.contract`, resource.contract)
-          ]
-        },
-        uiSchemaGroup$k(resource.grouping, context)
-      ]
-    };
-  };
-  const profile$u = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer";
-  function parseZibPayer(resource) {
-    return {
-      ...resourceMeta(resource, profile$u, FhirVersion.R3),
-      identifier: map(resource.identifier, identifier$1),
-      status: code$1(resource.status),
-      type: codeableConcept$1(resource.type),
-      policyHolder: reference$1(resource.policyHolder),
-      subscriber: reference$1(resource.subscriber),
-      subscriberId: string$1(resource.subscriberId),
-      beneficiary: reference$1(resource.beneficiary),
-      relationship: codeableConcept$1(resource.relationship),
-      period: period$1(resource.period),
-      payor: map(resource.payor, reference$1),
-      grouping: grouping.parse(resource.grouping),
-      dependent: string$1(resource.dependent),
-      sequence: string$1(resource.sequence),
-      order: positiveInt$1(resource.order),
-      network: string$1(resource.network),
-      contract: map(resource.contract, reference$1)
-    };
-  }
-  const zibPayer = {
-    profile: profile$u,
-    parse: parseZibPayer,
-    uiSchema: uiSchema$u
-  };
-  const uiSchemaGroup$j = (resource, context) => {
-    const i18n = "r3.evidence";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.codeableConcept(`${i18n}.code`, resource.code),
-        ui.reference(`${i18n}.detail`, resource.detail)
-      ]
-    };
-  };
-  function parseEvidence(value2) {
-    return {
-      code: map(value2?.code, codeableConcept$1),
-      detail: map(value2?.detail, reference$1)
-    };
-  }
-  const evidence = {
-    parse: parseEvidence,
-    uiSchemaGroup: uiSchemaGroup$j
-  };
-  const uiSchemaGroup$i = (resource, context) => {
-    const i18n = "r3.stage";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.codeableConcept(`${i18n}.summary`, resource.summary),
-        ui.reference(`${i18n}.assessment`, resource.assessment)
-      ]
-    };
-  };
-  function parseStage(value2) {
-    return {
-      summary: codeableConcept$1(value2?.summary),
-      assessment: map(value2?.assessment, reference$1)
-    };
-  }
-  const stage = {
-    parse: parseStage,
-    uiSchemaGroup: uiSchemaGroup$i
-  };
-  const uiSchema$t = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_problem";
-    const stage2 = uiSchemaGroup$i(resource.stage, context);
-    const evidence2 = map(resource.evidence, (x) => uiSchemaGroup$j(x, context), true);
-    return {
-      label: resource.code?.coding?.at(0)?.display,
-      children: [
-        {
-          label: `${i18n}.group_general_information`,
-          children: [
-            ui.code(`${i18n}.clinicalStatus`, resource.clinicalStatus),
-            ui.codeableConcept(`${i18n}.category`, resource.category),
-            ui.dateTime(`${i18n}.onsetDateTime`, resource.onsetDateTime),
-            ui.dateTime(`${i18n}.abatementDateTime`, resource.abatementDateTime),
-            ui.codeableConcept(`${i18n}.bodySite`, resource.bodySite),
-            ui.annotation(`${i18n}.note`, resource.note)
-          ]
-        },
-        {
-          label: `${i18n}.group_others`,
-          children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.verificationStatus`, resource.verificationStatus),
-            ui.codeableConcept(`${i18n}.severity`, resource.severity),
-            ui.codeableConcept(`${i18n}.code`, resource.code),
-            ui.reference(`${i18n}.subject`, resource.subject),
-            ui.reference(`${i18n}.context`, resource.context),
-            ui.dateTime(`${i18n}.assertedDate`, resource.assertedDate),
-            ui.reference(`${i18n}.asserter`, resource.asserter)
-          ]
-        },
-        stage2,
-        ...evidence2
-      ]
-    };
-  };
-  const profile$t = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem";
-  function parseZibProblem(resource) {
-    return {
-      ...resourceMeta(resource, profile$t, FhirVersion.R3),
-      identifier: map(resource.identifier, identifier$1),
-      clinicalStatus: code$1(resource.clinicalStatus),
-      verificationStatus: code$1(resource.verificationStatus),
-      category: map(resource.category, codeableConcept$1),
-      severity: codeableConcept$1(resource.severity),
-      code: codeableConcept$1(resource.code),
-      bodySite: map(resource.bodySite, codeableConcept$1),
-      subject: reference$1(resource.subject),
-      context: reference$1(resource.context),
-      onsetDateTime: dateTime$3(resource.onsetDateTime),
-      abatementDateTime: dateTime$3(resource.abatementDateTime),
-      assertedDate: dateTime$3(resource.assertedDate),
-      asserter: reference$1(resource.asserter),
-      stage: stage.parse(resource.stage),
-      evidence: map(resource.evidence, evidence.parse),
-      note: map(resource.note, annotation$1)
-    };
-  }
-  const zibProblem = {
-    profile: profile$t,
-    parse: parseZibProblem,
-    uiSchema: uiSchema$t
-  };
-  const uiSchema$s = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_product";
-    const productPackage = zibProductPackage.uiSchemaGroup(resource.package, context);
-    const ingredients = map(
-      resource.ingredient,
-      (x) => zibProductIngredient.uiSchemaGroup(x, context),
-      true
-    );
-    return {
-      label: resource.description,
-      children: [
-        {
-          label: `${i18n}.group_general_information`,
-          children: [
-            ui.codeableConcept(`${i18n}.code`, resource.code),
-            ui.codeableConcept(`${i18n}.form`, resource.form)
-          ]
-        },
-        {
-          label: `${i18n}.group_ingredients`,
-          children: ui.helpers.getChildren(ingredients)
-        },
-        productPackage
-      ]
-    };
-  };
-  const profile$s = "http://nictiz.nl/fhir/StructureDefinition/zib-Product";
-  function parseZibProduct(resource) {
-    return {
-      ...resourceMeta(resource, profile$s, FhirVersion.R3),
-      description: extensionNictiz(resource, "zib-Product-Description"),
-      code: codeableConcept$1(resource.code),
-      form: codeableConcept$1(resource.form),
-      ingredient: map(resource.ingredient, zibProductIngredient.parse),
-      package: zibProductPackage.parse(resource.package)
-    };
-  }
-  const zibProduct = {
-    profile: profile$s,
-    parse: parseZibProduct,
-    uiSchema: uiSchema$s
-  };
-  const uiSchemaGroup$h = (resource, context) => {
-    const i18n = "r3.zib_treatment_directive.actor";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.codeableConcept(`${i18n}.role`, resource.role),
-        ui.reference(`${i18n}.reference`, resource.reference)
-      ]
-    };
-  };
-  function parseActor$1(value2) {
-    return {
-      role: codeableConcept$1(value2?.role),
-      reference: reference$1(value2?.reference)
-    };
-  }
-  const actor$1 = {
-    parse: parseActor$1,
-    uiSchemaGroup: uiSchemaGroup$h
-  };
-  const uiSchemaGroup$g = (resource, context) => {
-    const i18n = "r3.zib_treatment_directive.data";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.code(`${i18n}.meaning`, resource.meaning),
-        ui.reference(`${i18n}.reference`, resource.reference)
-      ]
-    };
-  };
-  function parseData(value2) {
-    return {
-      meaning: code$1(value2?.meaning),
-      reference: reference$1(value2?.reference)
-    };
-  }
-  const data = {
-    parse: parseData,
-    uiSchemaGroup: uiSchemaGroup$g
-  };
-  const uiSchemaGroup$f = (resource, context) => {
-    const i18n = "r3.zib_treatment_directive.except";
-    const ui = context.ui;
-    const actor2 = map(resource.actor, (x) => uiSchemaGroup$h(x, context));
-    const data2 = map(resource.data, (x) => uiSchemaGroup$g(x, context));
-    return {
-      label: i18n,
-      children: [
-        ui.code(`${i18n}.type`, resource.type),
-        ...ui.period(`${i18n}.period`, resource.period),
-        ui.codeableConcept(`${i18n}.action`, resource.action),
-        ui.coding(`${i18n}.security_label`, resource.securityLabel),
-        ui.coding(`${i18n}.purpose`, resource.purpose),
-        ui.coding(`${i18n}.class`, resource.class),
-        ui.coding(`${i18n}.code`, resource.code),
-        ...ui.period(`${i18n}.plan`, resource.dataPeriod),
-        ...ui.helpers.getChildren(actor2),
-        ...ui.helpers.getChildren(data2)
-      ]
-    };
-  };
-  function parseExcept(value2) {
-    return {
-      type: code$1(value2?.type),
-      period: period$1(value2?.period),
-      actor: map(value2?.actor, actor$1.parse),
-      action: map(value2?.action, codeableConcept$1),
-      securityLabel: map(value2?.securityLabel, coding$1),
-      purpose: map(value2?.purpose, coding$1),
-      class: map(value2?.class, coding$1),
-      code: map(value2?.code, coding$1),
-      dataPeriod: period$1(value2?.dataPeriod),
-      data: map(value2?.data, data.parse)
-    };
-  }
-  const except = {
-    parse: parseExcept,
-    uiSchemaGroup: uiSchemaGroup$f
-  };
-  const uiSchemaGroup$e = (resource, context) => {
-    const i18n = "r3.zib_treatment_directive.policy";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.string(`${i18n}.id`, resource.id),
-        ui.string(`${i18n}.authority`, resource.authority),
-        ui.string(`${i18n}.uri`, resource.uri)
-      ]
-    };
-  };
-  function parsePolicy(value2) {
-    return {
-      id: string$1(value2?.id),
-      authority: string$1(value2?.authority),
-      uri: string$1(value2?.uri)
-    };
-  }
-  const policy = {
-    parse: parsePolicy,
-    uiSchemaGroup: uiSchemaGroup$e
-  };
-  const uiSchema$r = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_treatment_directive";
-    const actor2 = map(resource.actor, (x) => uiSchemaGroup$h(x, context), true);
-    const data2 = map(resource.data, (x) => uiSchemaGroup$g(x, context), true);
-    const except2 = map(resource.except, (x) => uiSchemaGroup$f(x, context), true);
-    const policy2 = map(resource.policy, (x) => uiSchemaGroup$e(x, context), true);
-    return {
-      label: resource.identifier?.value,
-      children: [
-        {
-          label: `${i18n}.group_details`,
-          children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.status`, resource.status),
-            ui.codeableConcept(`${i18n}.category`, resource.category),
-            ui.reference(`${i18n}.patient`, resource.patient),
-            ...ui.period(`${i18n}.period`, resource.period),
-            ui.dateTime(`${i18n}.date_time`, resource.dateTime),
-            ui.reference(`${i18n}.consenting_party`, resource.consentingParty),
-            ui.codeableConcept(`${i18n}.action`, resource.action),
-            ui.reference(`${i18n}.organization`, resource.organization),
-            ui.identifier(`${i18n}.source_identifier`, resource.sourceIdentifier),
-            ui.reference(`${i18n}.source_reference`, resource.sourceReference),
-            ui.string(`${i18n}.policy_rule`, resource.policyRule),
-            ui.coding(`${i18n}.security_label`, resource.securityLabel),
-            ui.coding(`${i18n}.purpose`, resource.purpose),
-            ...ui.period(`${i18n}.data_period`, resource.dataPeriod)
-          ]
-        },
-        uiSchemaGroup$o(resource.sourceAttachment, context),
-        ...actor2,
-        ...data2,
-        ...except2,
-        ...policy2
-      ]
-    };
-  };
-  const profile$r = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective";
-  function parseZibTreatmentDirective(resource) {
-    return {
-      ...resourceMeta(resource, profile$r, FhirVersion.R3),
-      identifier: identifier$1(resource.identifier),
-      status: code$1(resource.status),
-      category: map(resource.category, codeableConcept$1),
-      patient: reference$1(resource.patient),
-      period: period$1(resource.period),
-      dateTime: dateTime$3(resource.dateTime),
-      consentingParty: map(resource.consentingParty, reference$1),
-      actor: map(resource.actor, actor$1.parse),
-      action: map(resource.action, codeableConcept$1),
-      organization: map(resource.organization, reference$1),
-      sourceAttachment: attachment.parse(resource.sourceAttachment),
-      sourceIdentifier: identifier$1(resource.sourceIdentifier),
-      sourceReference: reference$1(resource.sourceReference),
-      policy: map(resource.policy, policy.parse),
-      policyRule: string$1(resource.policyRule),
-      securityLabel: map(resource.securityLabel, coding$1),
-      purpose: map(resource.purpose, coding$1),
-      dataPeriod: period$1(resource.dataPeriod),
-      data: map(resource.data, data.parse),
-      except: map(resource.except, except.parse)
-    };
-  }
-  const zibTreatmentDirective = {
-    profile: profile$r,
-    parse: parseZibTreatmentDirective,
-    uiSchema: uiSchema$r
-  };
-  const uiSchema$q = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.nl_core_observation";
-    return {
-      label: resource.identifier?.[0]?.value,
-      children: [
-        {
-          label: `${i18n}.group_details`,
-          children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.status`, resource.status),
-            ui.codeableConcept(`${i18n}.category`, resource.category),
-            ui.reference(`${i18n}.subject`, resource.subject),
-            ui.reference(`${i18n}.context`, resource.context),
-            Object.prototype.hasOwnProperty.call(resource, "effectiveDateTime") ? ui.dateTime(
-              `${i18n}.effective_date_time`,
-              resource.effectiveDateTime
-            ) : void 0,
-            ...ui.period(`${i18n}.effective_period`, resource.effectivePeriod),
-            ui.codeableConcept(`${i18n}.data_absent_reason`, resource.dataAbsentReason),
-            ui.string(`${i18n}.comment`, resource.comment),
-            ui.codeableConcept(`${i18n}.body_site`, resource.bodySite)
-          ].filter(isNonNullish)
-        }
-      ]
-    };
-  };
-  const profile$q = "http://fhir.nl/fhir/StructureDefinition/nl-core-observation";
-  function parseNlCoreObservationBase(resource) {
-    return {
-      identifier: map(resource.identifier, identifier$1),
-      status: code$1(resource.status),
-      category: map(resource.category, codeableConcept$1),
-      subject: reference$1(resource.subject),
-      context: reference$1(resource.context),
-      valueQuantity: quantity$1(resource.valueQuantity),
-      effectivePeriod: period$1(resource.effectivePeriod),
-      dataAbsentReason: codeableConcept$1(resource.dataAbsentReason),
-      method: codeableConcept$1(resource.method),
-      bodySite: codeableConcept$1(resource.bodySite),
-      effectiveDateTime: dateTime$3(resource.effectiveDateTime),
-      comment: string$1(resource.comment)
-    };
-  }
-  function parseNlCoreObservation(resource) {
-    return {
-      ...resourceMeta(resource, profile$q, FhirVersion.R3),
-      ...parseNlCoreObservationBase(resource)
-    };
-  }
-  const nlCoreObservation = {
-    profile: profile$q,
-    parse: parseNlCoreObservation,
-    uiSchema: uiSchema$q
-  };
-  const uiSchema$p = (resource, context) => {
-    return nlCoreObservation.uiSchema(resource, context);
-  };
-  const profile$p = "http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation";
-  const parseZibLivingSituation = (resource) => {
-    return {
-      ...parseNlCoreObservationBase(resource),
-      ...resourceMeta(resource, profile$p, FhirVersion.R3)
-    };
-  };
-  const zibLivingSituation = {
-    profile: profile$p,
-    parse: parseZibLivingSituation,
-    uiSchema: uiSchema$p
-  };
-  const uiSchema$o = (resource, context) => {
-    return nlCoreObservation.uiSchema(resource, context);
-  };
-  const profile$o = "http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse";
-  function parseZibAlcoholUse(resource) {
-    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
-    return {
-      ...rest,
-      ...resourceMeta(resource, profile$o, FhirVersion.R3)
-    };
-  }
-  const zibAlcoholUse = {
-    profile: profile$o,
-    parse: parseZibAlcoholUse,
-    uiSchema: uiSchema$o
-  };
-  const uiSchema$n = (resource, context) => {
-    return nlCoreObservation.uiSchema(resource, context);
-  };
-  const profile$n = "http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse";
-  function parseZibDrugUse(resource) {
-    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
-    return {
-      ...rest,
-      ...resourceMeta(resource, profile$n, FhirVersion.R3)
-    };
-  }
-  const zibDrugUse = {
-    profile: profile$n,
-    parse: parseZibDrugUse,
-    uiSchema: uiSchema$n
-  };
-  const uiSchema$m = (resource, context) => {
-    return nlCoreObservation.uiSchema(resource, context);
-  };
-  const profile$m = "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus";
-  function parseZibFunctionalOrMentalStatus(resource) {
-    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
-    return {
-      ...rest,
-      ...resourceMeta(resource, profile$m, FhirVersion.R3)
-    };
-  }
-  const zibFunctionalOrMentalStatus = {
-    profile: profile$m,
-    parse: parseZibFunctionalOrMentalStatus,
-    uiSchema: uiSchema$m
-  };
-  const uiSchema$l = (resource, context) => {
-    return nlCoreObservation.uiSchema(resource, context);
-  };
-  const profile$l = "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse";
-  function parseZibTobaccoUse(resource) {
-    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
-    return {
-      ...rest,
-      ...resourceMeta(resource, profile$l, FhirVersion.R3)
-    };
-  }
-  const zibTobaccoUse = {
-    profile: profile$l,
-    parse: parseZibTobaccoUse,
-    uiSchema: uiSchema$l
-  };
-  const uiSchema$k = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_nutrition_advice";
-    return {
-      label: resource.identifier?.at(0)?.value,
-      children: [
-        {
-          label: `${i18n}.group_details`,
-          children: [
-            ui.string(`${i18n}.comment`, resource.comment),
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.code(`${i18n}.status`, resource.status),
-            ui.reference(`${i18n}.patient`, resource.patient),
-            ui.dateTime(`${i18n}.dateTime`, resource.dateTime),
-            ui.codeableConcept(
-              `${i18n}.food_preference_modifier`,
-              resource.foodPreferenceModifier
-            )
-          ]
-        }
-      ]
-    };
-  };
-  const profile$k = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice";
-  function parseZibNutritionAdvice(resource) {
-    return {
-      ...resourceMeta(resource, profile$k, FhirVersion.R3),
-      comment: extensionNictiz(resource, "zib-NutritionAdvice-Explanation"),
-      identifier: map(resource.identifier, identifier$1),
-      status: code$1(resource.status),
-      patient: reference$1(resource.patient),
-      dateTime: dateTime$3(resource.dateTime),
-      foodPreferenceModifier: map(resource.foodPreferenceModifier, codeableConcept$1)
-    };
-  }
-  const zibNutritionAdvice = {
-    profile: profile$k,
-    parse: parseZibNutritionAdvice,
-    uiSchema: uiSchema$k
-  };
-  const uiSchema$j = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_medical_device_product";
-    return {
-      label: resource.id,
-      children: [
-        {
-          label: `${i18n}.group_general_information`,
-          children: [
-            ui.reference(`${i18n}.patient`, resource.patient),
-            ui.annotation(`${i18n}.note`, resource.note),
-            ui.dateTime(`${i18n}.expiration_date`, resource.expirationDate)
-          ]
-        }
-      ]
-    };
-  };
-  const profile$j = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct";
-  function parseZibMedicalDeviceProduct(resource) {
-    return {
-      ...resourceMeta(resource, profile$j, FhirVersion.R3),
-      note: map(resource.note, annotation$1),
-      patient: reference$1(resource.patient),
-      expirationDate: dateTime$3(resource.expirationDate)
-    };
-  }
-  const zibMedicalDeviceProduct = {
-    profile: profile$j,
-    parse: parseZibMedicalDeviceProduct,
-    uiSchema: uiSchema$j
-  };
-  const uiSchemaGroup$d = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "r3.immunization.practitioner.actor",
-      children: [ui.reference(`r3.immunization.practitioner.actor`, resource.actor)]
-    };
-  };
-  const uiSchema$i = (resource, context) => {
-    const ui = context.ui;
-    const practitioners = map(resource.practitioner, (x) => uiSchemaGroup$d(x, context), true);
-    return {
-      label: resource.vaccineCode?.coding?.[0]?.display ?? "",
-      children: [
-        {
-          label: `Immunization`,
-          children: [
-            ui.codeableConcept("Immunization.vaccineCode", resource.vaccineCode),
-            ui.quantity("Immunization.doseQuantity", resource.dose),
-            ui.dateTime("Immunization.date", resource.vaccinationDate),
-            ui.annotation(`Immunization.note.text`, resource.note),
-            ...ui.helpers.getChildren(practitioners)
-          ]
-        }
-      ]
-    };
-  };
-  function parseActor(value2) {
-    return {
-      actor: reference$1(value2?.actor)
-    };
-  }
-  const actor = {
-    parse: parseActor,
-    uiSchemaGroup: uiSchemaGroup$d
-  };
-  const profile$i = "http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination";
-  function parseZibVaccination(resource) {
-    return {
-      ...resourceMeta(resource, profile$i, FhirVersion.R3),
-      identifier: map(resource.identifier, identifier$1),
-      patient: reference$1(resource.patient),
-      vaccineCode: codeableConcept$1(resource.vaccineCode),
-      dose: quantity$1(resource.doseQuantity),
-      vaccinationDate: date$4(resource.date),
-      practitioner: map(resource.practitioner, actor.parse),
-      note: map(resource.note, annotation$1)
-    };
-  }
-  const zibVaccination = {
-    profile: profile$i,
-    parse: parseZibVaccination,
-    uiSchema: uiSchema$i
-  };
-  const uiSchemaGroup$c = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "Encounter.diagnosis",
-      children: [ui.reference(`Encounter.diagnosis.condition`, resource.condition)]
-    };
-  };
-  function parseDiagnosis(value2) {
-    return {
-      condition: reference$1(value2?.condition),
-      role: codeableConcept$1(value2?.role),
-      rank: positiveInt$1(value2?.rank)
-    };
-  }
-  const diagnosis = {
-    parse: parseDiagnosis,
-    uiSchemaGroup: uiSchemaGroup$c
-  };
-  const uiSchemaGroup$b = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "Encounter.hospitalization",
-      children: [
-        ui.codeableConcept(`Encounter.hospitalization.admitSource`, resource.admitSource),
-        ui.codeableConcept(
-          `Encounter.hospitalization.dischargeDisposition`,
-          resource.dischargeDisposition
-        )
-      ]
-    };
-  };
-  function parseHospitalization(value2) {
-    return {
-      admitSource: codeableConcept$1(value2?.admitSource),
-      dischargeDisposition: codeableConcept$1(value2?.dischargeDisposition)
-    };
-  }
-  const hospitalization = {
-    parse: parseHospitalization,
-    uiSchemaGroup: uiSchemaGroup$b
-  };
-  const uiSchema$h = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.Encounter";
-    const diagnosis2 = map(resource.diagnosis, (x) => uiSchemaGroup$c(x, context), true);
-    const participants = map(
-      resource.participant,
-      (x) => uiSchemaGroup$x(x, context),
-      true
-    );
-    return {
-      label: resource.serviceProvider?.display,
-      children: [
-        {
-          label: `${profile2}`,
-          children: [
-            ui.coding(`${profile2}.class`, resource.class),
-            ...ui.helpers.getChildren(participants),
-            ui.reference(`${profile2}.serviceProvider`, resource.serviceProvider),
-            ...ui.period(`${profile2}.period`, resource.period),
-            ...ui.helpers.getChildren(diagnosis2),
-            ui.codeableConcept(`${profile2}.reason`, resource.reason),
-            ...ui.helpers.getChildren(
-              uiSchemaGroup$b(resource.hospitalization, context)
-            )
-          ]
-        }
-      ]
-    };
-  };
-  const profile$h = "http://nictiz.nl/fhir/StructureDefinition/zib-Encounter";
-  function parseZibEncounter(resource) {
-    return {
-      ...resourceMeta(resource, profile$h, FhirVersion.R3),
-      class: coding$1(resource.class),
-      participant: map(resource.participant, encounterParticipant.parse),
-      serviceProvider: reference$1(resource.serviceProvider),
-      period: period$1(resource.period),
-      diagnosis: map(resource.diagnosis, diagnosis.parse),
-      reason: map(resource.reason, codeableConcept$1),
-      hospitalization: hospitalization.parse(resource.hospitalization)
-    };
-  }
-  const zibEncounter = {
-    profile: profile$h,
-    parse: parseZibEncounter,
-    uiSchema: uiSchema$h
-  };
-  const uiSchema$g = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.zib_blood_pressure";
     return {
@@ -49832,7 +48992,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const profile$g = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure";
+  const profile$w = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure";
   function parseZibBloodPressure(resource) {
     const cuffTypeLOINC = findComponentByCode(resource.component, "8358-4");
     const cuffTypeSNOMED = findComponentByCode(resource.component, "70665002");
@@ -49845,7 +49005,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     const positionLOINC = findComponentByCode(resource.component, "8361-8");
     return {
       ...parseNlCoreObservationBase(resource),
-      ...resourceMeta(resource, profile$g, FhirVersion.R3),
+      ...resourceMeta(resource, profile$w, FhirVersion.R3),
       cuffTypeLOINC: {
         valueCodeableConcept: codeableConcept$1(cuffTypeLOINC?.valueCodeableConcept)
       },
@@ -49876,11 +49036,40 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const zibBloodPressure = {
-    profile: profile$g,
+    profile: profile$w,
     parse: parseZibBloodPressure,
-    uiSchema: uiSchema$g
+    uiSchema: uiSchema$w
   };
-  const uiSchema$f = (resource, context) => {
+  const uiSchema$v = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.zib_body_height";
+    return {
+      label: resource.effectiveDateTime,
+      children: [
+        {
+          label: `${profile2}`,
+          children: [
+            ui.quantity(profile2, resource.valueQuantity),
+            ui.dateTime(`${profile2}.effective`, resource.effectiveDateTime),
+            ui.string(`${profile2}.comment`, resource.comment)
+          ]
+        }
+      ]
+    };
+  };
+  const profile$v = "http://nictiz.nl/fhir/StructureDefinition/zib-BodyHeight";
+  function parseZibBodyHeight(resource) {
+    return {
+      ...parseNlCoreObservationBase(resource),
+      ...resourceMeta(resource, profile$v, FhirVersion.R3)
+    };
+  }
+  const zibBodyHeight = {
+    profile: profile$v,
+    parse: parseZibBodyHeight,
+    uiSchema: uiSchema$v
+  };
+  const uiSchema$u = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.zib_body_weight";
     return {
@@ -49901,153 +49090,157 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const profile$f = "http://nictiz.nl/fhir/StructureDefinition/zib-BodyWeight";
+  const profile$u = "http://nictiz.nl/fhir/StructureDefinition/zib-BodyWeight";
   function parseZibBodyWeight(resource) {
     const clothing = findComponentByCode(resource.component, "8352-7");
     return {
       ...parseNlCoreObservationBase(resource),
-      ...resourceMeta(resource, profile$f, FhirVersion.R3),
+      ...resourceMeta(resource, profile$u, FhirVersion.R3),
       clothing: {
         valueCodeableConcept: codeableConcept$1(clothing?.valueCodeableConcept)
       }
     };
   }
   const zibBodyWeight = {
-    profile: profile$f,
+    profile: profile$u,
     parse: parseZibBodyWeight,
-    uiSchema: uiSchema$f
+    uiSchema: uiSchema$u
   };
-  const uiSchema$e = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.zib_body_height";
+  const uiSchema$t = (resource, context) => {
+    return nlCoreObservation.uiSchema(resource, context);
+  };
+  const profile$t = "http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse";
+  function parseZibDrugUse(resource) {
+    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
     return {
-      label: resource.effectiveDateTime,
+      ...rest,
+      ...resourceMeta(resource, profile$t, FhirVersion.R3)
+    };
+  }
+  const zibDrugUse = {
+    profile: profile$t,
+    parse: parseZibDrugUse,
+    uiSchema: uiSchema$t
+  };
+  const uiSchemaGroup$m = (resource, context) => {
+    const ui = context.ui;
+    return {
+      label: "Encounter.diagnosis",
+      children: [ui.reference(`Encounter.diagnosis.condition`, resource.condition)]
+    };
+  };
+  function parseDiagnosis(value2) {
+    return {
+      condition: reference$1(value2?.condition),
+      role: codeableConcept$1(value2?.role),
+      rank: positiveInt$1(value2?.rank)
+    };
+  }
+  const diagnosis = {
+    parse: parseDiagnosis,
+    uiSchemaGroup: uiSchemaGroup$m
+  };
+  const uiSchemaGroup$l = (resource, context) => {
+    const ui = context.ui;
+    return {
+      label: "Encounter.hospitalization",
+      children: [
+        ui.codeableConcept(`Encounter.hospitalization.admitSource`, resource.admitSource),
+        ui.codeableConcept(
+          `Encounter.hospitalization.dischargeDisposition`,
+          resource.dischargeDisposition
+        )
+      ]
+    };
+  };
+  function parseHospitalization(value2) {
+    return {
+      admitSource: codeableConcept$1(value2?.admitSource),
+      dischargeDisposition: codeableConcept$1(value2?.dischargeDisposition)
+    };
+  }
+  const hospitalization = {
+    parse: parseHospitalization,
+    uiSchemaGroup: uiSchemaGroup$l
+  };
+  const uiSchema$s = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.Encounter";
+    const diagnosis2 = map(resource.diagnosis, (x) => uiSchemaGroup$m(x, context), true);
+    const participants = map(
+      resource.participant,
+      (x) => uiSchemaGroup$B(x, context),
+      true
+    );
+    return {
+      label: resource.serviceProvider?.display,
       children: [
         {
           label: `${profile2}`,
           children: [
-            ui.quantity(profile2, resource.valueQuantity),
-            ui.dateTime(`${profile2}.effective`, resource.effectiveDateTime),
-            ui.string(`${profile2}.comment`, resource.comment)
+            ui.coding(`${profile2}.class`, resource.class),
+            ...ui.helpers.getChildren(participants),
+            ui.reference(`${profile2}.serviceProvider`, resource.serviceProvider),
+            ...ui.period(`${profile2}.period`, resource.period),
+            ...ui.helpers.getChildren(diagnosis2),
+            ui.codeableConcept(`${profile2}.reason`, resource.reason),
+            ...ui.helpers.getChildren(
+              uiSchemaGroup$l(resource.hospitalization, context)
+            )
           ]
         }
       ]
     };
   };
-  const profile$e = "http://nictiz.nl/fhir/StructureDefinition/zib-BodyHeight";
-  function parseZibBodyHeight(resource) {
+  const profile$s = "http://nictiz.nl/fhir/StructureDefinition/zib-Encounter";
+  function parseZibEncounter(resource) {
     return {
-      ...parseNlCoreObservationBase(resource),
-      ...resourceMeta(resource, profile$e, FhirVersion.R3)
+      ...resourceMeta(resource, profile$s, FhirVersion.R3),
+      class: coding$1(resource.class),
+      participant: map(resource.participant, encounterParticipant.parse),
+      serviceProvider: reference$1(resource.serviceProvider),
+      period: period$1(resource.period),
+      diagnosis: map(resource.diagnosis, diagnosis.parse),
+      reason: map(resource.reason, codeableConcept$1),
+      hospitalization: hospitalization.parse(resource.hospitalization)
     };
   }
-  const zibBodyHeight = {
-    profile: profile$e,
-    parse: parseZibBodyHeight,
-    uiSchema: uiSchema$e
+  const zibEncounter = {
+    profile: profile$s,
+    parse: parseZibEncounter,
+    uiSchema: uiSchema$s
   };
-  const uiSchemaGroup$a = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "zib_procedure.focal_device",
-      children: [ui.reference(`r3.zib_procedure.focal_device.manipulated`, resource.manipulated)]
-    };
+  const uiSchema$r = (resource, context) => {
+    return nlCoreObservation.uiSchema(resource, context);
   };
-  function parseFocalDevice(value2) {
+  const profile$r = "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus";
+  function parseZibFunctionalOrMentalStatus(resource) {
+    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
     return {
-      manipulated: reference$1(value2?.manipulated)
-    };
-  }
-  const focalDevice = {
-    parse: parseFocalDevice,
-    uiSchemaGroup: uiSchemaGroup$a
-  };
-  const uiSchemaGroup$9 = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "zib_procedure.performer",
-      children: [ui.reference(`r3.zib_procedure.performer`, resource.actor)]
-    };
-  };
-  function parsePerformer(value2) {
-    return {
-      actor: reference$1(value2?.actor)
+      ...rest,
+      ...resourceMeta(resource, profile$r, FhirVersion.R3)
     };
   }
-  const performer = {
-    parse: parsePerformer,
-    uiSchemaGroup: uiSchemaGroup$9
+  const zibFunctionalOrMentalStatus = {
+    profile: profile$r,
+    parse: parseZibFunctionalOrMentalStatus,
+    uiSchema: uiSchema$r
   };
-  const uiSchema$d = (resource, context) => {
+  const uiSchemaGroup$k = (resource, context) => {
     const ui = context.ui;
-    const profile2 = "r3.zib_procedure";
-    const focalDevices = map(resource.focalDevice, (x) => uiSchemaGroup$a(x, context), true);
-    const performers = map(resource.performer, (x) => uiSchemaGroup$9(x, context), true);
+    const i18n2 = "r3.zib_laboratory_test_result_specimen.container";
     return {
-      label: resource.code?.coding?.at(0)?.display,
+      label: `${i18n2}`,
       children: [
-        {
-          label: `${profile2}`,
-          children: [
-            ...ui.period(`${profile2}.performed_period`, resource.performedPeriod),
-            ui.codeableConcept(`${profile2}.body_site`, resource.bodySite),
-            ui.codeableConcept(
-              `${profile2}.bodySite.extension:ProcedureLaterality`,
-              resource.bodySiteQualifier
-            ),
-            ui.reference(`${profile2}.reason_reference`, resource.reasonReference),
-            ui.codeableConcept(`${profile2}.code`, resource.code),
-            ui.codeableConcept(`${profile2}.procedure_method`, resource.procedureMethod),
-            ...ui.helpers.getChildren(focalDevices),
-            ui.reference(`${profile2}.location`, resource.location),
-            ...ui.helpers.getChildren(performers),
-            ui.reference(`${profile2}.subject`, resource.subject)
-          ]
-        }
+        ui.identifier(`${i18n2}.identifier`, resource.identifier),
+        ui.codeableConcept(`${i18n2}.type`, resource.type)
       ]
     };
   };
-  const profile$d = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure";
-  function parseZibProcedure(resource) {
-    return {
-      ...resourceMeta(resource, profile$d, FhirVersion.R3),
-      performedPeriod: period$1(resource.performedPeriod),
-      bodySite: map(resource.bodySite, codeableConcept$1),
-      bodySiteQualifier: resource.bodySite?.map((x) => extensionNictiz(x, "BodySite-Qualifier")).filter(isNonNullish),
-      reasonReference: map(resource.reasonReference, reference$1),
-      code: codeableConcept$1(resource.code),
-      procedureMethod: extension(
-        resource,
-        "http://hl7.org/fhir/StructureDefinition/procedure-method",
-        // NOSONAR
-        "codeableConcept"
-      ),
-      focalDevice: map(resource.focalDevice, focalDevice.parse),
-      location: reference$1(resource.location),
-      performer: map(resource.performer, performer.parse),
-      subject: reference$1(resource.subject)
-    };
-  }
-  const zibProcedure = {
-    profile: profile$d,
-    parse: parseZibProcedure,
-    uiSchema: uiSchema$d
-  };
-  const uiSchemaGroup$8 = (resource, context) => {
-    const ui = context.ui;
-    const i18n = "r3.zib_laboratory_test_result_specimen.container";
-    return {
-      label: `${i18n}`,
-      children: [
-        ui.identifier(`${i18n}.identifier`, resource.identifier),
-        ui.codeableConcept(`${i18n}.type`, resource.type)
-      ]
-    };
-  };
-  const uiSchema$c = (resource, context) => {
+  const uiSchema$q = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.zib_laboratory_test_result_specimen";
-    const container2 = map(resource.container, (x) => uiSchemaGroup$8(x, context), true);
+    const container2 = map(resource.container, (x) => uiSchemaGroup$k(x, context), true);
     return {
       label: resource.type?.coding?.[0]?.display ?? `${profile2}`,
       children: [
@@ -50085,13 +49278,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const container$1 = {
     parse: parseContainer$1,
-    uiSchemaGroup: uiSchemaGroup$8
+    uiSchemaGroup: uiSchemaGroup$k
   };
-  const profile$c = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen";
+  const profile$q = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen";
   function parseZibLaboratoryTestResultSpecimen(resource) {
     const collection = resource.collection;
     return {
-      ...resourceMeta(resource, profile$c, FhirVersion.R3),
+      ...resourceMeta(resource, profile$q, FhirVersion.R3),
       identifier: map(resource.identifier, identifier$1),
       // NL-CM:13.1.15
       subject: reference$1(resource.subject),
@@ -50100,7 +49293,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       // NL-CM:13.1.20 & NL-CM:13.1.21
       type: codeableConcept$1(resource.type),
       // NL-CM:13.1.16
-      receivedTime: dateTime$3(resource.receivedTime),
+      receivedTime: dateTime$1(resource.receivedTime),
       // NL-CM:13.1.25
       collection: {
         quantity: quantity$1(collection?.quantity),
@@ -50123,25 +49316,25 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const zibLaboratoryTestResultSpecimen = {
-    profile: profile$c,
+    profile: profile$q,
     parse: parseZibLaboratoryTestResultSpecimen,
-    uiSchema: uiSchema$c
+    uiSchema: uiSchema$q
   };
-  const uiSchemaGroup$7 = (resource, context) => {
+  const uiSchemaGroup$j = (resource, context) => {
     const ui = context.ui;
-    const i18n = "r3.zib_laboratory_test_result_specimen_isolate.container";
+    const i18n2 = "r3.zib_laboratory_test_result_specimen_isolate.container";
     return {
-      label: `${i18n}`,
+      label: `${i18n2}`,
       children: [
-        ui.identifier(`${i18n}.identifier`, resource.identifier),
-        ui.codeableConcept(`${i18n}.type`, resource.type)
+        ui.identifier(`${i18n2}.identifier`, resource.identifier),
+        ui.codeableConcept(`${i18n2}.type`, resource.type)
       ]
     };
   };
-  const uiSchema$b = (resource, context) => {
+  const uiSchema$p = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.zib_laboratory_test_result_specimen_isolate";
-    const container2 = map(resource.container, (x) => uiSchemaGroup$7(x, context), true);
+    const container2 = map(resource.container, (x) => uiSchemaGroup$j(x, context), true);
     return {
       label: resource.type?.coding?.[0]?.display ?? `${profile2}`,
       children: [
@@ -50179,13 +49372,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const container = {
     parse: parseContainer,
-    uiSchemaGroup: uiSchemaGroup$7
+    uiSchemaGroup: uiSchemaGroup$j
   };
-  const profile$b = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate";
+  const profile$p = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate";
   function parseZibLaboratoryTestResultSpecimenIsolate(resource) {
     const collection = resource.collection;
     return {
-      ...resourceMeta(resource, profile$b, FhirVersion.R3),
+      ...resourceMeta(resource, profile$p, FhirVersion.R3),
       identifier: map(resource.identifier, identifier$1),
       // NL-CM:13.1.15
       subject: reference$1(resource.subject),
@@ -50194,7 +49387,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       // NL-CM:13.1.20 & NL-CM:13.1.21
       type: codeableConcept$1(resource.type),
       // NL-CM:13.1.22
-      receivedTime: dateTime$3(resource.receivedTime),
+      receivedTime: dateTime$1(resource.receivedTime),
       // NL-CM:13.1.25
       collection: {
         quantity: quantity$1(collection?.quantity),
@@ -50217,27 +49410,27 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const zibLaboratoryTestResultSpecimenIsolate = {
-    profile: profile$b,
+    profile: profile$p,
     parse: parseZibLaboratoryTestResultSpecimenIsolate,
-    uiSchema: uiSchema$b
+    uiSchema: uiSchema$p
   };
-  const uiSchema$a = (resource, context) => {
+  const uiSchema$o = (resource, context) => {
     const ui = context.ui;
-    const i18n = "r3.zib_laboratory_test_result_substance";
+    const i18n2 = "r3.zib_laboratory_test_result_substance";
     return {
-      label: `${i18n}`,
+      label: `${i18n2}`,
       children: [
         {
-          label: `${i18n}`,
-          children: [ui.codeableConcept(`${i18n}.code`, resource.code)]
+          label: `${i18n2}`,
+          children: [ui.codeableConcept(`${i18n2}.code`, resource.code)]
         }
       ]
     };
   };
-  const profile$a = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Substance";
+  const profile$o = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Substance";
   function parseZibLaboratoryTestResultSubstance(resource) {
     return {
-      ...resourceMeta(resource, profile$a, FhirVersion.R3),
+      ...resourceMeta(resource, profile$o, FhirVersion.R3),
       identifier: map(resource.identifier, identifier$1),
       status: string$1(resource?.status),
       category: map(resource.category, codeableConcept$1),
@@ -50247,89 +49440,120 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const zibLaboratoryTestResultSubstance = {
-    profile: profile$a,
+    profile: profile$o,
     parse: parseZibLaboratoryTestResultSubstance,
-    uiSchema: uiSchema$a
+    uiSchema: uiSchema$o
   };
-  const uiSchema$9 = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.zib_advance_directive";
-    const attachment2 = uiSchemaGroup$o(resource.source.attachment, context);
+  const uiSchema$n = (resource, context) => {
+    return nlCoreObservation.uiSchema(resource, context);
+  };
+  const profile$n = "http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation";
+  const parseZibLivingSituation = (resource) => {
     return {
-      label: resource.dateTime,
+      ...parseNlCoreObservationBase(resource),
+      ...resourceMeta(resource, profile$n, FhirVersion.R3)
+    };
+  };
+  const zibLivingSituation = {
+    profile: profile$n,
+    parse: parseZibLivingSituation,
+    uiSchema: uiSchema$n
+  };
+  const uiSchema$m = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_medical_device";
+    return {
+      label: resource.device?.display,
       children: [
         {
-          label: `${profile2}.group_details`,
+          label: `${i18n2}.group_product`,
           children: [
-            ui.codeableConcept(`${profile2}.type_of_living_will`, resource.category),
-            ui.dateTime(`${profile2}.date_time`, resource.dateTime),
-            ui.reference(`${profile2}.disorder`, resource.disorder),
-            ui.reference(`${profile2}.consenting_party`, resource.consentingParty),
-            ui.string(`${profile2}.comment`, resource.comment)
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.clinical_status`, resource.status),
+            ui.reference(`${i18n2}.device`, resource.device),
+            ...ui.period(`${i18n2}.whenUsed`, resource.whenUsed),
+            ui.dateTime(`${i18n2}.recordedOn`, resource.recordedOn)
           ]
         },
-        attachment2
-      ]
-    };
-  };
-  const profile$9 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective";
-  function parseZibAdvanceDirective(resource) {
-    return {
-      ...resourceMeta(resource, profile$9, FhirVersion.R3),
-      category: map(resource.category, codeableConcept$1),
-      dateTime: dateTime$3(resource.dateTime),
-      disorder: extensionNictiz(resource, "zib-AdvanceDirective-Disorder"),
-      consentingParty: map(resource.consentingParty, reference$1),
-      source: {
-        attachment: attachment.parse(resource.sourceAttachment),
-        identifier: identifier$1(resource.sourceIdentifier),
-        reference: reference$1(resource.sourceReference)
-      },
-      comment: extensionNictiz(resource, "Comment")
-    };
-  }
-  const zibAdvanceDirective = {
-    profile: profile$9,
-    parse: parseZibAdvanceDirective,
-    uiSchema: uiSchema$9
-  };
-  const uiSchema$8 = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.zib_procedure_request";
-    return {
-      label: resource.code?.coding?.at(0)?.display,
-      children: [
         {
-          label: `${profile2}`,
+          label: `${i18n2}.group_indication`,
           children: [
-            ui.string(`${profile2}.status.order_status`, resource.status),
-            ...ui.period(`${profile2}.occurrence_period`, resource.occurrence),
-            ui.codeableConcept(`${profile2}.code`, resource.code),
-            ui.reference(`${profile2}.perfomer`, resource.perfomer)
+            ui.annotation(`${i18n2}.note`, resource.note),
+            ui.codeableConcept(`${i18n2}.bodySite`, resource.bodySite),
+            ui.codeableConcept(`${i18n2}.laterality`, resource.laterality),
+            ui.reference(`${i18n2}.reason`, resource.reason)
+          ]
+        },
+        {
+          label: `${i18n2}.group_general`,
+          children: [
+            ui.reference(`${i18n2}.patient`, resource.patient),
+            ui.reference(`${i18n2}.source`, resource.source),
+            ui.reference(`${i18n2}.organization`, resource.organization),
+            ui.reference(`${i18n2}.practitioner`, resource.practitioner)
           ]
         }
       ]
     };
   };
-  const profile$8 = "http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest";
-  function parseZibProcedureRequest(resource) {
+  const profile$m = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice";
+  function parseZibMedicalDevice(resource) {
     return {
-      ...resourceMeta(resource, profile$8, FhirVersion.R3),
-      status: string$1(resource.status),
-      occurrence: period$1(resource.occurrencePeriod),
-      code: codeableConcept$1(resource.code),
-      intent: string$1(resource.intent),
-      subject: reference$1(resource.subject),
-      perfomer: reference$1(resource.performer),
-      reason: map(resource.reasonReference, reference$1)
+      ...resourceMeta(resource, profile$m, FhirVersion.R3),
+      identifier: map(resource.identifier, identifier$1),
+      organization: extensionNictiz(resource, "zib-MedicalDevice-Organization"),
+      practitioner: extensionNictiz(resource, "zib-MedicalDevice-Practitioner"),
+      reason: extensionNictiz(resource, "deviceUseStatement-reasonReferenceSTU3"),
+      status: code$1(resource.status),
+      patient: reference$1(resource.subject),
+      whenUsed: period$1(resource.whenUsed),
+      // timing
+      recordedOn: dateTime$1(resource.recordedOn),
+      source: reference$1(resource.source),
+      device: reference$1(resource.device),
+      // indication
+      bodySite: codeableConcept$1(resource.bodySite),
+      laterality: extensionNictiz(resource.bodySite, "BodySite-Qualifier"),
+      note: map(resource.note, annotation$1)
     };
   }
-  const zibProcedureRequest = {
-    profile: profile$8,
-    parse: parseZibProcedureRequest,
-    uiSchema: uiSchema$8
+  const zibMedicalDevice = {
+    profile: profile$m,
+    parse: parseZibMedicalDevice,
+    uiSchema: uiSchema$m
   };
-  const uiSchema$7 = (resource, context) => {
+  const uiSchema$l = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_medical_device_product";
+    return {
+      label: resource.id,
+      children: [
+        {
+          label: `${i18n2}.group_general_information`,
+          children: [
+            ui.reference(`${i18n2}.patient`, resource.patient),
+            ui.annotation(`${i18n2}.note`, resource.note),
+            ui.dateTime(`${i18n2}.expiration_date`, resource.expirationDate)
+          ]
+        }
+      ]
+    };
+  };
+  const profile$l = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct";
+  function parseZibMedicalDeviceProduct(resource) {
+    return {
+      ...resourceMeta(resource, profile$l, FhirVersion.R3),
+      note: map(resource.note, annotation$1),
+      patient: reference$1(resource.patient),
+      expirationDate: dateTime$1(resource.expirationDate)
+    };
+  }
+  const zibMedicalDeviceProduct = {
+    profile: profile$l,
+    parse: parseZibMedicalDeviceProduct,
+    uiSchema: uiSchema$l
+  };
+  const uiSchema$k = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.zib_medical_device_request";
     return {
@@ -50347,10 +49571,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const profile$7 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest";
+  const profile$k = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest";
   function parseZibMedicalDeviceRequest(resource) {
     return {
-      ...resourceMeta(resource, profile$7, FhirVersion.R3),
+      ...resourceMeta(resource, profile$k, FhirVersion.R3),
       status: string$1(resource.status),
       occurrence: period$1(resource.occurrencePeriod),
       ...oneOfValueX$1(resource, ["reference", "codeableConcept"], "code"),
@@ -50360,11 +49584,822 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const zibMedicalDeviceRequest = {
-    profile: profile$7,
+    profile: profile$k,
     parse: parseZibMedicalDeviceRequest,
-    uiSchema: uiSchema$7
+    uiSchema: uiSchema$k
   };
-  const uiSchemaGroup$6 = (resource, context) => {
+  const uiSchema$j = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_medication_agreement";
+    const instructionsForUse = map(
+      resource.dossageInstruction,
+      (x) => uiSchemaGroup$s(x, context),
+      true
+    ).flat();
+    return {
+      label: resource.medicationReference?.display,
+      children: [
+        {
+          label: `${i18n2}.group_general_information`,
+          children: [
+            ...ui.period(`${i18n2}.period_of_use`, resource.periodOfUse),
+            ui.duration(`${i18n2}.usage_duration`, resource.usageDuration),
+            ui.identifier(`${i18n2}.medication_treatment`, resource.medicationTreatment),
+            ui.codeableConcept(`${i18n2}.stop_type`, resource.stopType),
+            ui.duration(
+              `${i18n2}.repeat_period_cyclical_schedule`,
+              resource.repeatPeriodCyclicalSchedule
+            ),
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.reference(`${i18n2}.definition`, resource.definition),
+            ui.reference(`${i18n2}.basedOn`, resource.basedOn),
+            ui.identifier(`${i18n2}.group_identifier`, resource.groupIdentifier),
+            ui.code(`${i18n2}.status`, resource.status),
+            ui.code(`${i18n2}.intent`, resource.intent),
+            ui.codeableConcept(`${i18n2}.category`, resource.category),
+            ui.code(`${i18n2}.priority`, resource.priority),
+            ui.reference(`${i18n2}.medication_reference`, resource.medicationReference),
+            ui.annotation(`${i18n2}.note`, resource.note)
+          ]
+        },
+        ...instructionsForUse
+      ]
+    };
+  };
+  const profile$j = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement";
+  function parseZibMedicationAgreement(resource) {
+    return {
+      ...resourceMeta(resource, profile$j, FhirVersion.R3),
+      periodOfUse: extensionNictiz(resource, "zib-Medication-PeriodOfUse"),
+      usageDuration: extensionNictiz(resource, "zib-MedicationUse-Duration"),
+      medicationTreatment: extensionNictiz(resource, "zib-Medication-MedicationTreatment"),
+      stopType: extensionNictiz(resource, "zib-Medication-StopType"),
+      repeatPeriodCyclicalSchedule: extensionNictiz(
+        resource,
+        "zib-Medication-RepeatPeriodCyclicalSchedule"
+      ),
+      identifier: map(resource.identifier, identifier$1),
+      definition: map(resource.definition, reference$1),
+      basedOn: map(resource.basedOn, reference$1),
+      groupIdentifier: identifier$1(resource.groupIdentifier),
+      status: code$1(resource.status),
+      intent: code$1(resource.intent),
+      category: codeableConcept$1(resource.category),
+      priority: code$1(resource.priority),
+      medicationReference: reference$1(resource.medicationReference),
+      note: map(resource.note, annotation$1),
+      dossageInstruction: map(resource.dosageInstruction, zibInstructionsForUse.parse)
+    };
+  }
+  const zibMedicationAgreement = {
+    profile: profile$j,
+    parse: parseZibMedicationAgreement,
+    uiSchema: uiSchema$j
+  };
+  const uiSchema$i = (resource, context) => {
+    const i18n2 = "r3.zib_medication_use";
+    const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
+    const hcimMedicationUse2 = {
+      AsAgreedIndicator: ui.boolean(`${i18n2}.as_agreed_indicator`, resource.asAgreedIndicator),
+      Prescriber: ui.reference(`${i18n2}.prescriber`, resource.prescriber),
+      ReasonForChangeOrDiscontinuationOfUse: ui.codeableConcept(
+        `${i18n2}.reason_for_change_or_discontinuation_of_use`,
+        resource.reasonForChangeOrDiscontinuationOfUse
+      ),
+      MedicationUseStopType: ui.code(`${i18n2}.status`, resource.status),
+      ProductUsed: ui.reference(`${i18n2}.medication_reference`, resource.medicationReference),
+      PeriodOfUsePeriod: ui.period(`${i18n2}.effective_period`, resource.effectivePeriod),
+      PeriodOfUseDuration: ui.duration(
+        `${i18n2}.effective_period.duration`,
+        resource.effectiveDuration
+      ),
+      MedicationUseDateTime: ui.dateTime(`${i18n2}.date_asserted`, resource.dateAsserted),
+      UseIndicator: ui.code(`${i18n2}.taken`, resource.taken),
+      ReasonForUse: ui.codeableConcept(`${i18n2}.reason_code.text`, resource.reasonCode),
+      Comment: ui.annotation(`${i18n2}.note`, resource.note)
+    };
+    const hcimInstructionsForUse = {
+      InstructionsForUse: map(
+        resource.dosage,
+        (x) => uiSchemaGroup$s(x, context),
+        true
+      ).flat(),
+      RepeatPeriodCyclicalSchedule: ui.duration(
+        `${i18n2}.repeat_period_cyclical_schedule`,
+        resource.repeatPeriodCyclicalSchedule
+      )
+    };
+    return setEmptyEntries2({
+      label: resource.medicationReference?.display,
+      children: [
+        {
+          label: formatMessage2(`fhir.group_general_info`),
+          children: [
+            hcimMedicationUse2.ProductUsed,
+            hcimMedicationUse2.MedicationUseDateTime,
+            ...hcimMedicationUse2.PeriodOfUsePeriod,
+            hcimMedicationUse2.PeriodOfUseDuration,
+            hcimMedicationUse2.Prescriber,
+            hcimMedicationUse2.ReasonForUse,
+            hcimMedicationUse2.AsAgreedIndicator,
+            hcimMedicationUse2.UseIndicator,
+            hcimMedicationUse2.MedicationUseStopType,
+            hcimMedicationUse2.ReasonForChangeOrDiscontinuationOfUse,
+            hcimInstructionsForUse.RepeatPeriodCyclicalSchedule,
+            ui.identifier(`${i18n2}.medication_treatment`, resource.medicationTreatment),
+            hcimMedicationUse2.Comment
+          ]
+        },
+        ...hcimInstructionsForUse.InstructionsForUse.flat()
+      ]
+    });
+  };
+  const profile$i = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse";
+  function parseZibMedicationUse(resource) {
+    return {
+      ...resourceMeta(resource, profile$i, FhirVersion.R3),
+      asAgreedIndicator: extensionNictiz(resource, "zib-MedicationUse-AsAgreedIndicator"),
+      prescriber: extensionNictiz(resource, "zib-MedicationUse-Prescriber"),
+      author: extensionNictiz(resource, "zib-MedicationUse-Author"),
+      medicationTreatment: extensionNictiz(resource, "zib-Medication-MedicationTreatment"),
+      reasonForChangeOrDiscontinuationOfUse: extensionNictiz(
+        resource,
+        "zib-MedicationUse-ReasonForChangeOrDiscontinuationOfUse"
+      ),
+      repeatPeriodCyclicalSchedule: extensionNictiz(
+        resource,
+        "zib-Medication-RepeatPeriodCyclicalSchedule"
+      ),
+      identifier: map(resource.identifier, identifier$1),
+      status: code$1(resource.status),
+      category: codeableConcept$1(resource.category),
+      medicationReference: reference$1(resource.medicationReference),
+      effectivePeriod: period$1(resource.effectivePeriod),
+      effectiveDuration: extensionNictiz(
+        resource.effectivePeriod,
+        "zib-MedicationUse-Duration"
+      ),
+      dateAsserted: dateTime$1(resource.dateAsserted),
+      informationSource: reference$1(resource.informationSource),
+      subject: reference$1(resource.subject),
+      taken: code$1(resource.taken),
+      reasonCode: map(resource.reasonCode, codeableConcept$1),
+      note: map(resource.note, annotation$1),
+      dosage: map(resource.dosage, zibInstructionsForUse.parse)
+    };
+  }
+  const zibMedicationUse = {
+    profile: profile$i,
+    parse: parseZibMedicationUse,
+    uiSchema: uiSchema$i
+  };
+  const uiSchema$h = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_nutrition_advice";
+    return {
+      label: resource.identifier?.at(0)?.value,
+      children: [
+        {
+          label: `${i18n2}.group_details`,
+          children: [
+            ui.string(`${i18n2}.comment`, resource.comment),
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.status`, resource.status),
+            ui.reference(`${i18n2}.patient`, resource.patient),
+            ui.dateTime(`${i18n2}.dateTime`, resource.dateTime),
+            ui.codeableConcept(
+              `${i18n2}.food_preference_modifier`,
+              resource.foodPreferenceModifier
+            )
+          ]
+        }
+      ]
+    };
+  };
+  const profile$h = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice";
+  function parseZibNutritionAdvice(resource) {
+    return {
+      ...resourceMeta(resource, profile$h, FhirVersion.R3),
+      comment: extensionNictiz(resource, "zib-NutritionAdvice-Explanation"),
+      identifier: map(resource.identifier, identifier$1),
+      status: code$1(resource.status),
+      patient: reference$1(resource.patient),
+      dateTime: dateTime$1(resource.dateTime),
+      foodPreferenceModifier: map(resource.foodPreferenceModifier, codeableConcept$1)
+    };
+  }
+  const zibNutritionAdvice = {
+    profile: profile$h,
+    parse: parseZibNutritionAdvice,
+    uiSchema: uiSchema$h
+  };
+  const uiSchemaGroup$i = (resource, context) => {
+    const i18n2 = "r3.zib_payer.grouping";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.string(`${i18n2}.group`, resource.groupDisplay),
+        ui.string(`${i18n2}.sub_group`, resource.subGroupDisplay),
+        ui.string(`${i18n2}.plan`, resource.planDisplay),
+        ui.string(`${i18n2}.sub_plan`, resource.subPlanDisplay),
+        ui.string(`${i18n2}.class`, resource.classDisplay),
+        ui.string(`${i18n2}.sub_class`, resource.subClassDisplay)
+      ]
+    };
+  };
+  function parseGrouping(value2) {
+    return {
+      group: string$1(value2?.group),
+      groupDisplay: string$1(value2?.groupDisplay),
+      subGroup: string$1(value2?.subGroup),
+      subGroupDisplay: string$1(value2?.subGroupDisplay),
+      plan: string$1(value2?.plan),
+      planDisplay: string$1(value2?.planDisplay),
+      subPlan: string$1(value2?.subPlan),
+      subPlanDisplay: string$1(value2?.subPlanDisplay),
+      class: string$1(value2?.class),
+      classDisplay: string$1(value2?.classDisplay),
+      subClass: string$1(value2?.subClass),
+      subClassDisplay: string$1(value2?.subClassDisplay)
+    };
+  }
+  const grouping = {
+    parse: parseGrouping,
+    uiSchemaGroup: uiSchemaGroup$i
+  };
+  const uiSchema$g = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_payer";
+    return {
+      label: resource.identifier?.at(0)?.value,
+      children: [
+        {
+          label: `${i18n2}.group_details`,
+          children: [
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.status`, resource.status),
+            ui.codeableConcept(`${i18n2}.type`, resource.type),
+            ui.reference(`${i18n2}.policy_holder`, resource.policyHolder),
+            ui.reference(`${i18n2}.subscriber`, resource.subscriber),
+            ui.string(`${i18n2}.subscriber_id`, resource.subscriberId),
+            ui.reference(`${i18n2}.beneficiary`, resource.beneficiary),
+            ui.codeableConcept(`${i18n2}.relationship`, resource.relationship),
+            ...ui.period(`${i18n2}.period`, resource.period),
+            ui.reference(`${i18n2}.payor`, resource.payor),
+            ui.string(`${i18n2}.dependent`, resource.dependent),
+            ui.string(`${i18n2}.sequence`, resource.sequence),
+            ui.positiveInt(`${i18n2}.order`, resource.order),
+            ui.string(`${i18n2}.network`, resource.network),
+            ui.reference(`${i18n2}.contract`, resource.contract)
+          ]
+        },
+        uiSchemaGroup$i(resource.grouping, context)
+      ]
+    };
+  };
+  const profile$g = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer";
+  function parseZibPayer(resource) {
+    return {
+      ...resourceMeta(resource, profile$g, FhirVersion.R3),
+      identifier: map(resource.identifier, identifier$1),
+      status: code$1(resource.status),
+      type: codeableConcept$1(resource.type),
+      policyHolder: reference$1(resource.policyHolder),
+      subscriber: reference$1(resource.subscriber),
+      subscriberId: string$1(resource.subscriberId),
+      beneficiary: reference$1(resource.beneficiary),
+      relationship: codeableConcept$1(resource.relationship),
+      period: period$1(resource.period),
+      payor: map(resource.payor, reference$1),
+      grouping: grouping.parse(resource.grouping),
+      dependent: string$1(resource.dependent),
+      sequence: string$1(resource.sequence),
+      order: positiveInt$1(resource.order),
+      network: string$1(resource.network),
+      contract: map(resource.contract, reference$1)
+    };
+  }
+  const zibPayer = {
+    profile: profile$g,
+    parse: parseZibPayer,
+    uiSchema: uiSchema$g
+  };
+  const uiSchemaGroup$h = (resource, context) => {
+    const i18n2 = "r3.evidence";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.codeableConcept(`${i18n2}.code`, resource.code),
+        ui.reference(`${i18n2}.detail`, resource.detail)
+      ]
+    };
+  };
+  function parseEvidence(value2) {
+    return {
+      code: map(value2?.code, codeableConcept$1),
+      detail: map(value2?.detail, reference$1)
+    };
+  }
+  const evidence = {
+    parse: parseEvidence,
+    uiSchemaGroup: uiSchemaGroup$h
+  };
+  const uiSchemaGroup$g = (resource, context) => {
+    const i18n2 = "r3.stage";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.codeableConcept(`${i18n2}.summary`, resource.summary),
+        ui.reference(`${i18n2}.assessment`, resource.assessment)
+      ]
+    };
+  };
+  function parseStage(value2) {
+    return {
+      summary: codeableConcept$1(value2?.summary),
+      assessment: map(value2?.assessment, reference$1)
+    };
+  }
+  const stage = {
+    parse: parseStage,
+    uiSchemaGroup: uiSchemaGroup$g
+  };
+  const uiSchema$f = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_problem";
+    const stage2 = uiSchemaGroup$g(resource.stage, context);
+    const evidence2 = map(resource.evidence, (x) => uiSchemaGroup$h(x, context), true);
+    return {
+      label: resource.code?.coding?.at(0)?.display,
+      children: [
+        {
+          label: `${i18n2}.group_general_information`,
+          children: [
+            ui.code(`${i18n2}.clinicalStatus`, resource.clinicalStatus),
+            ui.codeableConcept(`${i18n2}.category`, resource.category),
+            ui.dateTime(`${i18n2}.onsetDateTime`, resource.onsetDateTime),
+            ui.dateTime(`${i18n2}.abatementDateTime`, resource.abatementDateTime),
+            ui.codeableConcept(`${i18n2}.bodySite`, resource.bodySite),
+            ui.annotation(`${i18n2}.note`, resource.note)
+          ]
+        },
+        {
+          label: `${i18n2}.group_others`,
+          children: [
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.verificationStatus`, resource.verificationStatus),
+            ui.codeableConcept(`${i18n2}.severity`, resource.severity),
+            ui.codeableConcept(`${i18n2}.code`, resource.code),
+            ui.reference(`${i18n2}.subject`, resource.subject),
+            ui.reference(`${i18n2}.context`, resource.context),
+            ui.dateTime(`${i18n2}.assertedDate`, resource.assertedDate),
+            ui.reference(`${i18n2}.asserter`, resource.asserter)
+          ]
+        },
+        stage2,
+        ...evidence2
+      ]
+    };
+  };
+  const profile$f = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem";
+  function parseZibProblem(resource) {
+    return {
+      ...resourceMeta(resource, profile$f, FhirVersion.R3),
+      identifier: map(resource.identifier, identifier$1),
+      clinicalStatus: code$1(resource.clinicalStatus),
+      verificationStatus: code$1(resource.verificationStatus),
+      category: map(resource.category, codeableConcept$1),
+      severity: codeableConcept$1(resource.severity),
+      code: codeableConcept$1(resource.code),
+      bodySite: map(resource.bodySite, codeableConcept$1),
+      subject: reference$1(resource.subject),
+      context: reference$1(resource.context),
+      onsetDateTime: dateTime$1(resource.onsetDateTime),
+      abatementDateTime: dateTime$1(resource.abatementDateTime),
+      assertedDate: dateTime$1(resource.assertedDate),
+      asserter: reference$1(resource.asserter),
+      stage: stage.parse(resource.stage),
+      evidence: map(resource.evidence, evidence.parse),
+      note: map(resource.note, annotation$1)
+    };
+  }
+  const zibProblem = {
+    profile: profile$f,
+    parse: parseZibProblem,
+    uiSchema: uiSchema$f
+  };
+  const uiSchemaGroup$f = (resource, context) => {
+    const ui = context.ui;
+    return {
+      label: "zib_procedure.focal_device",
+      children: [ui.reference(`r3.zib_procedure.focal_device.manipulated`, resource.manipulated)]
+    };
+  };
+  function parseFocalDevice(value2) {
+    return {
+      manipulated: reference$1(value2?.manipulated)
+    };
+  }
+  const focalDevice = {
+    parse: parseFocalDevice,
+    uiSchemaGroup: uiSchemaGroup$f
+  };
+  const uiSchemaGroup$e = (resource, context) => {
+    const ui = context.ui;
+    return {
+      label: "zib_procedure.performer",
+      children: [ui.reference(`r3.zib_procedure.performer`, resource.actor)]
+    };
+  };
+  function parsePerformer(value2) {
+    return {
+      actor: reference$1(value2?.actor)
+    };
+  }
+  const performer = {
+    parse: parsePerformer,
+    uiSchemaGroup: uiSchemaGroup$e
+  };
+  const uiSchema$e = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.zib_procedure";
+    const focalDevices = map(resource.focalDevice, (x) => uiSchemaGroup$f(x, context), true);
+    const performers = map(resource.performer, (x) => uiSchemaGroup$e(x, context), true);
+    return {
+      label: resource.code?.coding?.at(0)?.display,
+      children: [
+        {
+          label: `${profile2}`,
+          children: [
+            ...ui.period(`${profile2}.performed_period`, resource.performedPeriod),
+            ui.codeableConcept(`${profile2}.body_site`, resource.bodySite),
+            ui.codeableConcept(
+              `${profile2}.bodySite.extension:ProcedureLaterality`,
+              resource.bodySiteQualifier
+            ),
+            ui.reference(`${profile2}.reason_reference`, resource.reasonReference),
+            ui.codeableConcept(`${profile2}.code`, resource.code),
+            ui.codeableConcept(`${profile2}.procedure_method`, resource.procedureMethod),
+            ...ui.helpers.getChildren(focalDevices),
+            ui.reference(`${profile2}.location`, resource.location),
+            ...ui.helpers.getChildren(performers),
+            ui.reference(`${profile2}.subject`, resource.subject)
+          ]
+        }
+      ]
+    };
+  };
+  const profile$e = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure";
+  function parseZibProcedure(resource) {
+    return {
+      ...resourceMeta(resource, profile$e, FhirVersion.R3),
+      performedPeriod: period$1(resource.performedPeriod),
+      bodySite: map(resource.bodySite, codeableConcept$1),
+      bodySiteQualifier: resource.bodySite?.map((x) => extensionNictiz(x, "BodySite-Qualifier")).filter(isNonNullish),
+      reasonReference: map(resource.reasonReference, reference$1),
+      code: codeableConcept$1(resource.code),
+      procedureMethod: extension(
+        resource,
+        "http://hl7.org/fhir/StructureDefinition/procedure-method",
+        // NOSONAR
+        "codeableConcept"
+      ),
+      focalDevice: map(resource.focalDevice, focalDevice.parse),
+      location: reference$1(resource.location),
+      performer: map(resource.performer, performer.parse),
+      subject: reference$1(resource.subject)
+    };
+  }
+  const zibProcedure = {
+    profile: profile$e,
+    parse: parseZibProcedure,
+    uiSchema: uiSchema$e
+  };
+  const uiSchema$d = (resource, context) => {
+    const ui = context.ui;
+    const profile2 = "r3.zib_procedure_request";
+    return {
+      label: resource.code?.coding?.at(0)?.display,
+      children: [
+        {
+          label: `${profile2}`,
+          children: [
+            ui.string(`${profile2}.status.order_status`, resource.status),
+            ...ui.period(`${profile2}.occurrence_period`, resource.occurrence),
+            ui.codeableConcept(`${profile2}.code`, resource.code),
+            ui.reference(`${profile2}.perfomer`, resource.perfomer)
+          ]
+        }
+      ]
+    };
+  };
+  const profile$d = "http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest";
+  function parseZibProcedureRequest(resource) {
+    return {
+      ...resourceMeta(resource, profile$d, FhirVersion.R3),
+      status: string$1(resource.status),
+      occurrence: period$1(resource.occurrencePeriod),
+      code: codeableConcept$1(resource.code),
+      intent: string$1(resource.intent),
+      subject: reference$1(resource.subject),
+      perfomer: reference$1(resource.performer),
+      reason: map(resource.reasonReference, reference$1)
+    };
+  }
+  const zibProcedureRequest = {
+    profile: profile$d,
+    parse: parseZibProcedureRequest,
+    uiSchema: uiSchema$d
+  };
+  const uiSchema$c = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_product";
+    const productPackage = zibProductPackage.uiSchemaGroup(resource.package, context);
+    const ingredients = map(
+      resource.ingredient,
+      (x) => zibProductIngredient.uiSchemaGroup(x, context),
+      true
+    );
+    return {
+      label: resource.description,
+      children: [
+        {
+          label: `${i18n2}.group_general_information`,
+          children: [
+            ui.codeableConcept(`${i18n2}.code`, resource.code),
+            ui.codeableConcept(`${i18n2}.form`, resource.form)
+          ]
+        },
+        {
+          label: `${i18n2}.group_ingredients`,
+          children: ui.helpers.getChildren(ingredients)
+        },
+        productPackage
+      ]
+    };
+  };
+  const profile$c = "http://nictiz.nl/fhir/StructureDefinition/zib-Product";
+  function parseZibProduct(resource) {
+    return {
+      ...resourceMeta(resource, profile$c, FhirVersion.R3),
+      description: extensionNictiz(resource, "zib-Product-Description"),
+      code: codeableConcept$1(resource.code),
+      form: codeableConcept$1(resource.form),
+      ingredient: map(resource.ingredient, zibProductIngredient.parse),
+      package: zibProductPackage.parse(resource.package)
+    };
+  }
+  const zibProduct = {
+    profile: profile$c,
+    parse: parseZibProduct,
+    uiSchema: uiSchema$c
+  };
+  const uiSchema$b = (resource, context) => {
+    return nlCoreObservation.uiSchema(resource, context);
+  };
+  const profile$b = "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse";
+  function parseZibTobaccoUse(resource) {
+    const { effectiveDateTime: _, ...rest } = parseNlCoreObservationBase(resource);
+    return {
+      ...rest,
+      ...resourceMeta(resource, profile$b, FhirVersion.R3)
+    };
+  }
+  const zibTobaccoUse = {
+    profile: profile$b,
+    parse: parseZibTobaccoUse,
+    uiSchema: uiSchema$b
+  };
+  const uiSchemaGroup$d = (resource, context) => {
+    const i18n2 = "r3.zib_treatment_directive.actor";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.codeableConcept(`${i18n2}.role`, resource.role),
+        ui.reference(`${i18n2}.reference`, resource.reference)
+      ]
+    };
+  };
+  function parseActor$1(value2) {
+    return {
+      role: codeableConcept$1(value2?.role),
+      reference: reference$1(value2?.reference)
+    };
+  }
+  const actor$1 = {
+    parse: parseActor$1,
+    uiSchemaGroup: uiSchemaGroup$d
+  };
+  const uiSchemaGroup$c = (resource, context) => {
+    const i18n2 = "r3.zib_treatment_directive.data";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.code(`${i18n2}.meaning`, resource.meaning),
+        ui.reference(`${i18n2}.reference`, resource.reference)
+      ]
+    };
+  };
+  function parseData(value2) {
+    return {
+      meaning: code$1(value2?.meaning),
+      reference: reference$1(value2?.reference)
+    };
+  }
+  const data = {
+    parse: parseData,
+    uiSchemaGroup: uiSchemaGroup$c
+  };
+  const uiSchemaGroup$b = (resource, context) => {
+    const i18n2 = "r3.zib_treatment_directive.except";
+    const ui = context.ui;
+    const actor2 = map(resource.actor, (x) => uiSchemaGroup$d(x, context));
+    const data2 = map(resource.data, (x) => uiSchemaGroup$c(x, context));
+    return {
+      label: i18n2,
+      children: [
+        ui.code(`${i18n2}.type`, resource.type),
+        ...ui.period(`${i18n2}.period`, resource.period),
+        ui.codeableConcept(`${i18n2}.action`, resource.action),
+        ui.coding(`${i18n2}.security_label`, resource.securityLabel),
+        ui.coding(`${i18n2}.purpose`, resource.purpose),
+        ui.coding(`${i18n2}.class`, resource.class),
+        ui.coding(`${i18n2}.code`, resource.code),
+        ...ui.period(`${i18n2}.plan`, resource.dataPeriod),
+        ...ui.helpers.getChildren(actor2),
+        ...ui.helpers.getChildren(data2)
+      ]
+    };
+  };
+  function parseExcept(value2) {
+    return {
+      type: code$1(value2?.type),
+      period: period$1(value2?.period),
+      actor: map(value2?.actor, actor$1.parse),
+      action: map(value2?.action, codeableConcept$1),
+      securityLabel: map(value2?.securityLabel, coding$1),
+      purpose: map(value2?.purpose, coding$1),
+      class: map(value2?.class, coding$1),
+      code: map(value2?.code, coding$1),
+      dataPeriod: period$1(value2?.dataPeriod),
+      data: map(value2?.data, data.parse)
+    };
+  }
+  const except = {
+    parse: parseExcept,
+    uiSchemaGroup: uiSchemaGroup$b
+  };
+  const uiSchemaGroup$a = (resource, context) => {
+    const i18n2 = "r3.zib_treatment_directive.policy";
+    const ui = context.ui;
+    return {
+      label: i18n2,
+      children: [
+        ui.string(`${i18n2}.id`, resource.id),
+        ui.string(`${i18n2}.authority`, resource.authority),
+        ui.string(`${i18n2}.uri`, resource.uri)
+      ]
+    };
+  };
+  function parsePolicy(value2) {
+    return {
+      id: string$1(value2?.id),
+      authority: string$1(value2?.authority),
+      uri: string$1(value2?.uri)
+    };
+  }
+  const policy = {
+    parse: parsePolicy,
+    uiSchemaGroup: uiSchemaGroup$a
+  };
+  const uiSchema$a = (resource, context) => {
+    const ui = context.ui;
+    const i18n2 = "r3.zib_treatment_directive";
+    const actor2 = map(resource.actor, (x) => uiSchemaGroup$d(x, context), true);
+    const data2 = map(resource.data, (x) => uiSchemaGroup$c(x, context), true);
+    const except2 = map(resource.except, (x) => uiSchemaGroup$b(x, context), true);
+    const policy2 = map(resource.policy, (x) => uiSchemaGroup$a(x, context), true);
+    return {
+      label: resource.identifier?.value,
+      children: [
+        {
+          label: `${i18n2}.group_details`,
+          children: [
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.code(`${i18n2}.status`, resource.status),
+            ui.codeableConcept(`${i18n2}.category`, resource.category),
+            ui.reference(`${i18n2}.patient`, resource.patient),
+            ...ui.period(`${i18n2}.period`, resource.period),
+            ui.dateTime(`${i18n2}.date_time`, resource.dateTime),
+            ui.reference(`${i18n2}.consenting_party`, resource.consentingParty),
+            ui.codeableConcept(`${i18n2}.action`, resource.action),
+            ui.reference(`${i18n2}.organization`, resource.organization),
+            ui.identifier(`${i18n2}.source_identifier`, resource.sourceIdentifier),
+            ui.reference(`${i18n2}.source_reference`, resource.sourceReference),
+            ui.string(`${i18n2}.policy_rule`, resource.policyRule),
+            ui.coding(`${i18n2}.security_label`, resource.securityLabel),
+            ui.coding(`${i18n2}.purpose`, resource.purpose),
+            ...ui.period(`${i18n2}.data_period`, resource.dataPeriod)
+          ]
+        },
+        uiSchemaGroup$x(resource.sourceAttachment, context),
+        ...actor2,
+        ...data2,
+        ...except2,
+        ...policy2
+      ]
+    };
+  };
+  const profile$a = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective";
+  function parseZibTreatmentDirective(resource) {
+    return {
+      ...resourceMeta(resource, profile$a, FhirVersion.R3),
+      identifier: identifier$1(resource.identifier),
+      status: code$1(resource.status),
+      category: map(resource.category, codeableConcept$1),
+      patient: reference$1(resource.patient),
+      period: period$1(resource.period),
+      dateTime: dateTime$1(resource.dateTime),
+      consentingParty: map(resource.consentingParty, reference$1),
+      actor: map(resource.actor, actor$1.parse),
+      action: map(resource.action, codeableConcept$1),
+      organization: map(resource.organization, reference$1),
+      sourceAttachment: attachment$1.parse(resource.sourceAttachment),
+      sourceIdentifier: identifier$1(resource.sourceIdentifier),
+      sourceReference: reference$1(resource.sourceReference),
+      policy: map(resource.policy, policy.parse),
+      policyRule: string$1(resource.policyRule),
+      securityLabel: map(resource.securityLabel, coding$1),
+      purpose: map(resource.purpose, coding$1),
+      dataPeriod: period$1(resource.dataPeriod),
+      data: map(resource.data, data.parse),
+      except: map(resource.except, except.parse)
+    };
+  }
+  const zibTreatmentDirective = {
+    profile: profile$a,
+    parse: parseZibTreatmentDirective,
+    uiSchema: uiSchema$a
+  };
+  const uiSchemaGroup$9 = (resource, context) => {
+    const ui = context.ui;
+    return {
+      label: "r3.immunization.practitioner.actor",
+      children: [ui.reference(`r3.immunization.practitioner.actor`, resource.actor)]
+    };
+  };
+  const uiSchema$9 = (resource, context) => {
+    const ui = context.ui;
+    const practitioners = map(resource.practitioner, (x) => uiSchemaGroup$9(x, context), true);
+    return {
+      label: resource.vaccineCode?.coding?.[0]?.display ?? "",
+      children: [
+        {
+          label: `Immunization`,
+          children: [
+            ui.codeableConcept("Immunization.vaccineCode", resource.vaccineCode),
+            ui.quantity("Immunization.doseQuantity", resource.dose),
+            ui.dateTime("Immunization.date", resource.vaccinationDate),
+            ui.annotation(`Immunization.note.text`, resource.note),
+            ...ui.helpers.getChildren(practitioners)
+          ]
+        }
+      ]
+    };
+  };
+  function parseActor(value2) {
+    return {
+      actor: reference$1(value2?.actor)
+    };
+  }
+  const actor = {
+    parse: parseActor,
+    uiSchemaGroup: uiSchemaGroup$9
+  };
+  const profile$9 = "http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination";
+  function parseZibVaccination(resource) {
+    return {
+      ...resourceMeta(resource, profile$9, FhirVersion.R3),
+      identifier: map(resource.identifier, identifier$1),
+      patient: reference$1(resource.patient),
+      vaccineCode: codeableConcept$1(resource.vaccineCode),
+      dose: quantity$1(resource.doseQuantity),
+      vaccinationDate: date$3(resource.date),
+      practitioner: map(resource.practitioner, actor.parse),
+      note: map(resource.note, annotation$1)
+    };
+  }
+  const zibVaccination = {
+    profile: profile$9,
+    parse: parseZibVaccination,
+    uiSchema: uiSchema$9
+  };
+  const uiSchemaGroup$8 = (resource, context) => {
     const profile2 = "zib_vaccination_recommendation.recommendation";
     const ui = context.ui;
     return {
@@ -50378,21 +50413,21 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   };
   function parseRecommendation(value2) {
     return {
-      date: dateTime$3(value2?.date),
+      date: dateTime$1(value2?.date),
       code: codeableConcept$1(value2?.vaccineCode),
-      dateCriterion: map(value2?.dateCriterion, (x) => dateTime$3(x.value))
+      dateCriterion: map(value2?.dateCriterion, (x) => dateTime$1(x.value))
     };
   }
   const recommendation = {
     parse: parseRecommendation,
-    uiSchemaGroup: uiSchemaGroup$6
+    uiSchemaGroup: uiSchemaGroup$8
   };
-  const uiSchema$6 = (resource, context) => {
+  const uiSchema$8 = (resource, context) => {
     const ui = context.ui;
     const profile2 = "r3.zib_vaccination_recommendation";
     const recommendation2 = map(
       resource.recommendation,
-      (x) => uiSchemaGroup$6(x, context),
+      (x) => uiSchemaGroup$8(x, context),
       true
     );
     return {
@@ -50408,67 +50443,27 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const profile$6 = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation";
+  const profile$8 = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation";
   function parseZibVaccinationRecommendation(resource) {
     return {
-      ...resourceMeta(resource, profile$6, FhirVersion.R3),
+      ...resourceMeta(resource, profile$8, FhirVersion.R3),
       orderStatus: extensionNictiz(resource, "zib-VaccinationRecommendation-OrderStatus"),
       recommendation: map(resource.recommendation, recommendation.parse)
     };
   }
   const zibVaccinationRecommendation = {
-    profile: profile$6,
+    profile: profile$8,
     parse: parseZibVaccinationRecommendation,
-    uiSchema: uiSchema$6
-  };
-  const uiSchema$5 = (resource, context) => {
-    const ui = context.ui;
-    const profile2 = "r3.e_afspraak_appointment";
-    return {
-      label: resource.description,
-      children: [
-        {
-          label: `${profile2}`,
-          children: [
-            ui.string(`${profile2}.status.order_status`, resource.status),
-            ui.codeableConcept(`${profile2}.specialty`, resource.specialty),
-            ui.string(`${profile2}.description`, resource.description),
-            ui.dateTime(`${profile2}.start`, resource.start),
-            ui.dateTime(`${profile2}.end`, resource.end),
-            ui.reference(
-              `${profile2}.participant`,
-              resource.participant?.flatMap((x) => x.actor).filter(isNonNullish)
-            )
-          ]
-        }
-      ]
-    };
-  };
-  const profile$5 = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment";
-  function parseEAfspraakAppointment(resource) {
-    return {
-      ...resourceMeta(resource, profile$5, FhirVersion.R3),
-      status: string$1(resource.status),
-      specialty: map(resource.specialty, codeableConcept$1),
-      description: string$1(resource.description),
-      start: dateTime$3(resource.start),
-      end: dateTime$3(resource.end),
-      participant: map(resource.participant, (x) => ({ actor: reference$1(x.actor) }))
-    };
-  }
-  const eAfspraakAppointment = {
-    profile: profile$5,
-    parse: parseEAfspraakAppointment,
-    uiSchema: uiSchema$5
+    uiSchema: uiSchema$8
   };
   function parseContent(value2) {
     return {
-      attachment: value2?.attachment ? attachment.parse(value2.attachment) : void 0
+      attachment: value2?.attachment ? attachment$1.parse(value2.attachment) : void 0
     };
   }
-  const uiSchema$4 = (resource, context) => {
-    const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
-    const i18n = "r3.ihe_mhd_minimal_document_reference";
+  const i18n = "r3.ihe_mhd_minimal_document_reference";
+  const uiSchema$7 = (resource, context) => {
+    const { ui, formatMessage: formatMessage2 } = context;
     const generalInformation = {
       MasterIdentifier: ui.identifier(`${i18n}.master_identifier`, resource.masterIdentifier),
       Status: ui.code(`${i18n}.status`, resource.status),
@@ -50492,9 +50487,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         `${i18n}.content.attachment.language`,
         resource.content.attachment.language
       ),
-      Location: ui.downloadLink(resource.content.attachment)
+      Location: ui.attachment(resource.content.attachment)
     } : null;
-    return setEmptyEntries2({
+    return {
       label: content?.Title.display ?? formatMessage2("fhir.unknown"),
       children: [
         {
@@ -50509,7 +50504,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           ]
         },
         {
-          label: formatMessage2(`${i18n}.group_author`),
+          label: formatMessage2(`detail.${i18n}.group_author`),
           children: [generalInformation.Author]
         },
         ...content ? [
@@ -50518,7 +50513,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             children: [content.ContentType, content.Language]
           },
           {
-            label: formatMessage2(`${i18n}.group_attachment`),
+            label: formatMessage2(`detail.${i18n}.group_attachment`),
             children: [content.Location]
           }
         ] : [
@@ -50534,12 +50529,48 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
         ]
       ]
-    });
+    };
   };
-  const profile$4 = "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference";
+  function summaryOptions({ formatMessage: formatMessage2 }, i18n2, resource) {
+    return {
+      label: formatMessage2(`summary.options`),
+      children: [
+        {
+          type: "REFERENCE_LINK",
+          label: formatMessage2(`summary.${i18n2}.show_details`),
+          reference: resource.referenceId
+        }
+      ]
+    };
+  }
+  const summary = (resource, context) => {
+    const { ui, formatMessage: formatMessage2 } = context;
+    return {
+      label: resource.content.attachment?.title ?? formatMessage2("fhir.unknown"),
+      children: [
+        {
+          children: [
+            ui.instant(`${i18n}.indexed`, resource.indexed),
+            ui.reference(`${i18n}.subject`, resource.subject),
+            ui.codeableConcept(`${i18n}.type`, resource.type)
+          ]
+        },
+        {
+          label: formatMessage2(`summary.${i18n}.group_attachment`),
+          children: [ui.attachment(resource.content.attachment)]
+        },
+        {
+          label: formatMessage2(`summary.${i18n}.group_author`),
+          children: [ui.reference(`${i18n}.author`, resource.author)]
+        },
+        summaryOptions(context, i18n, resource)
+      ]
+    };
+  };
+  const profile$7 = "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference";
   function parseIheMhdMinimalDocumentReference(resource) {
     return {
-      ...resourceMeta(resource, profile$4, FhirVersion.R3),
+      ...resourceMeta(resource, profile$7, FhirVersion.R3),
       masterIdentifier: identifier$1(resource.masterIdentifier),
       status: code$1(resource.status),
       type: codeableConcept$1(resource.type),
@@ -50552,9 +50583,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   const iheMhdMinimalDocumentReference = {
-    profile: profile$4,
+    profile: profile$7,
     parse: parseIheMhdMinimalDocumentReference,
-    uiSchema: uiSchema$4
+    uiSchema: uiSchema$7,
+    summary
   };
   const resourcesR3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
@@ -50602,85 +50634,28 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     zibVaccination,
     zibVaccinationRecommendation
   }, Symbol.toStringTag, { value: "Module" }));
-  const uiSchemaGroup$5 = (resource, context) => {
-    const ui = context.ui;
-    if (resource?.use === "usual") {
-      const i18n2 = "nl_name_information_given_name";
-      return {
-        label: i18n2,
-        children: [ui.string(`${i18n2}.given`, resource.given)]
-      };
-    }
-    const i18n = "nl_name_information";
+  const uiSchemaGroup$7 = (resource, context) => {
+    const i18n2 = "r4.zib_address_information";
+    const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: i18n,
+      label: formatMessage2(i18n2),
       children: [
-        ui.string(`${i18n}.text`, resource?.text),
-        ui.string(`${i18n}.family`, resource?.family),
-        ui.string(`${i18n}.given`, resource?.given),
-        ui.string(`${i18n}.name_usage`, resource?.nameUsage),
-        ui.string(`${i18n}.prefix`, resource?.prefix),
-        ui.string(`${i18n}.suffix`, resource?.suffix)
-      ]
-    };
-  };
-  function parseNlCoreNameInformation(value2) {
-    if (value2?.use === "usual") {
-      return {
-        use: value2.use,
-        given: map(value2?.given, string$1),
-        period: period$1(value2?.period),
-        text: string$1(value2?.text)
-      };
-    }
-    const nameValues = filterPrimitiveByExtension(value2, "given", {
-      url: "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier",
-      // NOSONAR
-      valueCode: "BR"
-    });
-    const initialValues = filterPrimitiveByExtension(value2, "given", {
-      url: "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier",
-      // NOSONAR
-      valueCode: "IN"
-    });
-    return {
-      nameUsage: extension(
-        value2,
-        "http://hl7.org/fhir/StructureDefinition/humanname-assembly-order",
-        // NOSONAR
-        "code"
-      ),
-      family: string$1(value2?.family),
-      given: map(value2?.given, string$1),
-      givenNames: map(nameValues, string$1),
-      givenInitials: map(initialValues, string$1),
-      period: period$1(value2?.period),
-      prefix: map(value2?.prefix, string$1),
-      suffix: map(value2?.suffix, string$1),
-      text: string$1(value2?.text),
-      use: string$1(value2?.use)
-    };
-  }
-  const nlCoreNameInformation = {
-    parse: parseNlCoreNameInformation,
-    uiSchemaGroup: uiSchemaGroup$5
-  };
-  const uiSchemaGroup$4 = (resource, context) => {
-    const i18n = "nl_core_address_information";
-    const ui = context.ui;
-    return {
-      label: i18n,
-      children: [
-        ui.string(`${i18n}.streetName`, resource?.streetName),
-        ui.string(`${i18n}.houseNumber`, resource?.houseNumber),
-        ui.string(`${i18n}.houseNumberAddition`, resource?.houseNumberAddition),
-        ui.string(`${i18n}.houseNumberIndication`, resource?.houseNumberIndication),
-        ui.string(`${i18n}.additionalInformation`, resource?.additionalInformation),
-        ui.string(`${i18n}.city`, resource?.city),
-        ui.string(`${i18n}.district`, resource?.district),
-        ui.string(`${i18n}.postalCode`, resource?.postalCode),
-        ui.string(`${i18n}.country`, resource?.country),
-        ui.codeableConcept(`${i18n}.addressType`, resource?.addressType)
+        ui.string(`${i18n2}.line.street_name.value`, resource?.streetName),
+        ui.string(`${i18n2}.line.house_number.value`, resource?.houseNumber),
+        ui.string(
+          `${i18n2}.line.house_number_letter_house_number_addition.value`,
+          resource?.houseNumberAddition
+        ),
+        ui.string(
+          `${i18n2}.line.house_number_indication.value`,
+          resource?.houseNumberIndication
+        ),
+        ui.string(`${i18n2}.line.additional_information.value`, resource?.additionalInformation),
+        ui.string(`${i18n2}.city`, resource?.city),
+        ui.string(`${i18n2}.district`, resource?.district),
+        ui.string(`${i18n2}.postal_code`, resource?.postalCode),
+        ui.string(`${i18n2}.country.country_code.value`, resource?.country),
+        ui.codeableConcept(`${i18n2}.type`, resource?.addressType)
       ]
     };
   };
@@ -50746,16 +50721,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const nlCoreAddressInformation = {
     parse: parseNlCoreAddressInformation,
-    uiSchemaGroup: uiSchemaGroup$4
+    uiSchemaGroup: uiSchemaGroup$7
   };
-  const uiSchemaGroup$3 = (resource, context) => {
-    const i18n = "r4.nl_core_contact_information_email_addresses";
+  const uiSchemaGroup$6 = (resource, context) => {
+    const i18n2 = "r4.nl_core_contact_information_email_addresses";
     const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: formatMessage2(i18n),
+      label: formatMessage2(i18n2),
       children: [
-        ui.string(`${i18n}.value`, resource?.value),
-        ui.string(`${i18n}.use`, resource?.use)
+        ui.string(`${i18n2}.value`, resource?.value),
+        ui.code(`${i18n2}.use`, resource?.use)
       ]
     };
   };
@@ -50769,18 +50744,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const nlCoreContactInformationEmailAddresses = {
     parse: parseNlCoreContactInformationEmailAddresses,
-    uiSchemaGroup: uiSchemaGroup$3
+    uiSchemaGroup: uiSchemaGroup$6
   };
-  const uiSchemaGroup$2 = (resource, context) => {
-    const i18n = "r4.nl_core_contact_information_telephone_numbers";
+  const uiSchemaGroup$5 = (resource, context) => {
+    const i18n2 = "r4.nl_core_contact_information_telephone_numbers";
     const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: formatMessage2(i18n),
+      label: formatMessage2(i18n2),
       children: [
-        ui.string(`${i18n}.value`, resource?.value),
-        ui.string(`${i18n}.use`, resource?.use),
-        ui.string(`${i18n}.comment`, resource?.comment),
-        ui.codeableConcept(`${i18n}.telecom_type`, resource?.telecomType)
+        ui.string(`${i18n2}.value`, resource?.value),
+        ui.code(`${i18n2}.use`, resource?.use),
+        ui.string(`${i18n2}.comment`, resource?.comment),
+        ui.codeableConcept(`${i18n2}.telecom_type`, resource?.telecomType)
       ]
     };
   };
@@ -50806,73 +50781,79 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const nlCoreContactInformationTelephoneNumbers = {
     parse: parseNlCoreContactInformationTelephoneNumbers,
-    uiSchemaGroup: uiSchemaGroup$2
+    uiSchemaGroup: uiSchemaGroup$5
   };
-  const uiSchema$3 = (resource, context) => {
-    const i18n = "r4.nl_core_patient";
+  const uiSchemaGroup$4 = (resource, context) => {
     const ui = context.ui;
-    const name = map(resource.name, (x) => nlCoreNameInformation.uiSchemaGroup(x, context), true);
-    const addresses = map(
-      resource.address,
-      (x) => nlCoreAddressInformation.uiSchemaGroup(x, context),
-      true
-    );
+    if (resource?.use === "usual") {
+      const i18n22 = "nl_name_information_given_name";
+      return {
+        label: i18n22,
+        children: [ui.string(`${i18n22}.given`, resource.given)]
+      };
+    }
+    const i18n2 = "nl_name_information";
     return {
-      label: resource.name?.at(0)?.text,
+      label: i18n2,
       children: [
-        ...name,
-        {
-          label: `${i18n}.group_details`,
-          children: [
-            ui.identifier(`${i18n}.identifier`, resource.identifier),
-            ui.date(`${i18n}.birth_date`, resource.birthDate),
-            ui.boolean(`${i18n}.deceased`, resource.deceased),
-            ui.dateTime(`${i18n}.deceased_date_time`, resource.deceasedDateTime),
-            ui.code(`${i18n}.gender`, resource.gender),
-            ui.reference(`${i18n}.general_practitioner`, resource.generalPractitioner),
-            ui.reference(`${i18n}.managing_organization`, resource.managingOrganization),
-            ui.codeableConcept(`${i18n}.marital_status`, resource.maritalStatus),
-            ui.boolean(`${i18n}.multiple_birth`, resource.multipleBirth)
-          ]
-        },
-        ...addresses
+        ui.string(`${i18n2}.text`, resource?.text),
+        ui.string(`${i18n2}.family`, resource?.family),
+        ui.string(`${i18n2}.given`, resource?.given),
+        ui.string(`${i18n2}.name_usage`, resource?.nameUsage),
+        ui.string(`${i18n2}.prefix`, resource?.prefix),
+        ui.string(`${i18n2}.suffix`, resource?.suffix)
       ]
     };
   };
-  const profile$3 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient";
-  function parseNlCorePatient(resource) {
+  function parseNlCoreNameInformation(value2) {
+    if (value2?.use === "usual") {
+      return {
+        use: value2.use,
+        given: map(value2?.given, string$1),
+        period: period$1(value2?.period),
+        text: string$1(value2?.text)
+      };
+    }
+    const nameValues = filterPrimitiveByExtension(value2, "given", {
+      url: "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier",
+      // NOSONAR
+      valueCode: "BR"
+    });
+    const initialValues = filterPrimitiveByExtension(value2, "given", {
+      url: "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier",
+      // NOSONAR
+      valueCode: "IN"
+    });
     return {
-      ...resourceMeta(resource, profile$3, FhirVersion.R4),
-      name: map(resource.name, nlCoreNameInformation.parse),
-      identifier: map(resource.identifier, identifier$1),
-      // NL-CM:0.1.7
-      birthDate: date$4(resource.birthDate),
-      // NL-CM:0.1.10
-      gender: code$1(resource.gender),
-      // NL-CM:0.1.9
-      multipleBirth: boolean$1(resource.multipleBirthBoolean),
-      // NL-CM:0.1.31
-      deceased: boolean$1(resource.deceasedBoolean),
-      // NL-CM:0.1.32
-      deceasedDateTime: dateTime$3(resource.deceasedDateTime),
-      // NL-CM:0.1.33
-      address: map(resource?.address, nlCoreAddressInformation.parse),
-      generalPractitioner: map(resource.generalPractitioner, reference$1),
-      managingOrganization: reference$1(resource.managingOrganization),
-      maritalStatus: codeableConcept$1(resource.maritalStatus)
+      nameUsage: extension(
+        value2,
+        "http://hl7.org/fhir/StructureDefinition/humanname-assembly-order",
+        // NOSONAR
+        "code"
+      ),
+      family: string$1(value2?.family),
+      given: map(value2?.given, string$1),
+      givenNames: map(nameValues, string$1),
+      givenInitials: map(initialValues, string$1),
+      period: period$1(value2?.period),
+      prefix: map(value2?.prefix, string$1),
+      suffix: map(value2?.suffix, string$1),
+      text: string$1(value2?.text),
+      use: string$1(value2?.use)
     };
   }
-  const r4NlCorePatient = {
-    profile: profile$3,
-    parse: parseNlCorePatient,
-    uiSchema: uiSchema$3
+  const nlCoreNameInformation = {
+    parse: parseNlCoreNameInformation,
+    uiSchemaGroup: uiSchemaGroup$4
   };
-  const uiSchema$2 = (resource, context) => {
-    const profile2 = "r4.nl_core_health_professional_practitioner_role";
+  const uiSchema$6 = (resource, context) => {
+    const profile2 = "r4.nl_core_healtcare_provider";
     const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
-    const zibHealthProfessional = {
-      Organization: ui.reference(`${profile2}.organization`, resource.organization),
-      Speciality: ui.codeableConcept(`${profile2}.speciality`, resource.speciality)
+    const zibHealthcareProvider = {
+      LocationName: ui.string(`${profile2}.name`, resource.name),
+      AddressInformation: ui.helpers.getChildren(
+        nlCoreAddressInformation.uiSchemaGroup(resource.address, context)
+      )
     };
     const zibContactInformation = {
       TelephoneNumbers: map(
@@ -50887,35 +50868,38 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ).flat()
     };
     return setEmptyEntries2({
-      label: resource.speciality?.at(0)?.coding.at(0)?.display ?? formatMessage2(`${profile2}`),
+      label: resource.managingOrganization?.display ?? formatMessage2(profile2),
       children: [
         {
-          label: formatMessage2(`${profile2}`),
-          children: [zibHealthProfessional.Organization, zibHealthProfessional.Speciality]
+          label: formatMessage2(profile2),
+          children: [
+            zibHealthcareProvider.LocationName,
+            ...zibHealthcareProvider.AddressInformation
+          ]
         },
-        ...zibContactInformation.EmailAddresses,
-        ...zibContactInformation.TelephoneNumbers
+        ...zibContactInformation.TelephoneNumbers,
+        ...zibContactInformation.EmailAddresses
       ]
     });
   };
-  const profile$2 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole";
-  function parseNlCoreHealthProfessionalPractitionerRole(resource) {
+  const profile$6 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider";
+  function parseNlCoreHealtcareProvider(resource) {
     return {
-      ...resourceMeta(resource, profile$2, FhirVersion.R3),
-      practitioner: reference$1(resource.practitioner),
-      organization: reference$1(resource.organization),
-      location: map(resource.location, reference$1),
-      speciality: map(resource.specialty, codeableConcept$1),
+      ...resourceMeta(resource, profile$6, FhirVersion.R4),
+      identifier: map(resource.identifier, identifier$1),
+      name: string$1(resource.name),
       telephoneNumbers: map(resource.telecom, nlCoreContactInformationTelephoneNumbers.parse),
-      emailAddresses: map(resource.telecom, nlCoreContactInformationEmailAddresses.parse)
+      emailAddresses: map(resource.telecom, nlCoreContactInformationEmailAddresses.parse),
+      address: nlCoreAddressInformation.parse(resource.address),
+      managingOrganization: reference$1(resource.managingOrganization)
     };
   }
-  const nlCoreHealthProfessionalPractitionerRole = {
-    profile: profile$2,
-    parse: parseNlCoreHealthProfessionalPractitionerRole,
-    uiSchema: uiSchema$2
+  const nlCoreHealtcareProvider = {
+    profile: profile$6,
+    parse: parseNlCoreHealtcareProvider,
+    uiSchema: uiSchema$6
   };
-  const uiSchemaGroup$1 = (resource, context) => {
+  const uiSchemaGroup$3 = (resource, context) => {
     const profile2 = "nl_core_health_professional_practitioner.qualification";
     const ui = context.ui;
     return {
@@ -50928,7 +50912,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ]
     };
   };
-  const uiSchema$1 = (resource, context) => {
+  const uiSchema$5 = (resource, context) => {
     const profile2 = "r4.nl_core_health_professional_practitioner";
     const ui = context.ui;
     const address = map(
@@ -50949,7 +50933,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     );
     const qualification2 = map(
       resource.qualification,
-      (x) => uiSchemaGroup$1(x, context),
+      (x) => uiSchemaGroup$3(x, context),
       true
     );
     return {
@@ -50982,12 +50966,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const qualification = {
     parse: parseQualification,
-    uiSchemaGroup: uiSchemaGroup$1
+    uiSchemaGroup: uiSchemaGroup$3
   };
-  const profile$1 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner";
+  const profile$5 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner";
   function parseNlCoreHealthProfessionalPractitioner(resource) {
     return {
-      ...resourceMeta(resource, profile$1, FhirVersion.R4),
+      ...resourceMeta(resource, profile$5, FhirVersion.R4),
       identifier: map(resource.identifier, identifier$1),
       // NL-CM:17.1.2
       name: map(resource.name, nlCoreNameInformation.parse),
@@ -51000,14 +50984,278 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       // NL-CM:17.1.7
       gender: code$1(resource.gender),
       // NL-CM:17.1.9
-      birthDate: date$4(resource.birthDate),
+      birthDate: date$3(resource.birthDate),
       qualification: map(resource.qualification, qualification.parse),
       communication: map(resource.communication, codeableConcept$1)
     };
   }
   const r4NlCoreHealthProfessionalPractitioner = {
-    profile: profile$1,
+    profile: profile$5,
     parse: parseNlCoreHealthProfessionalPractitioner,
+    uiSchema: uiSchema$5
+  };
+  const uiSchema$4 = (resource, context) => {
+    const profile2 = "r4.nl_core_health_professional_practitioner_role";
+    const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
+    const zibHealthProfessional = {
+      Organization: ui.reference(`${profile2}.organization`, resource.organization),
+      Speciality: ui.codeableConcept(`${profile2}.speciality`, resource.speciality)
+    };
+    const zibContactInformation = {
+      TelephoneNumbers: map(
+        resource.telephoneNumbers,
+        (x) => nlCoreContactInformationTelephoneNumbers.uiSchemaGroup(x, context),
+        true
+      ).flat(),
+      EmailAddresses: map(
+        resource.emailAddresses,
+        (x) => nlCoreContactInformationEmailAddresses.uiSchemaGroup(x, context),
+        true
+      ).flat()
+    };
+    return setEmptyEntries2({
+      label: resource.speciality?.at(0)?.coding.at(0)?.display ?? formatMessage2(profile2),
+      children: [
+        {
+          label: formatMessage2(profile2),
+          children: [zibHealthProfessional.Organization, zibHealthProfessional.Speciality]
+        },
+        ...zibContactInformation.EmailAddresses,
+        ...zibContactInformation.TelephoneNumbers
+      ]
+    });
+  };
+  const profile$4 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole";
+  function parseNlCoreHealthProfessionalPractitionerRole(resource) {
+    return {
+      ...resourceMeta(resource, profile$4, FhirVersion.R4),
+      practitioner: reference$1(resource.practitioner),
+      organization: reference$1(resource.organization),
+      location: map(resource.location, reference$1),
+      speciality: map(resource.specialty, codeableConcept$1),
+      telephoneNumbers: map(resource.telecom, nlCoreContactInformationTelephoneNumbers.parse),
+      emailAddresses: map(resource.telecom, nlCoreContactInformationEmailAddresses.parse)
+    };
+  }
+  const nlCoreHealthProfessionalPractitionerRole = {
+    profile: profile$4,
+    parse: parseNlCoreHealthProfessionalPractitionerRole,
+    uiSchema: uiSchema$4
+  };
+  const uiSchema$3 = (resource, context) => {
+    const profile2 = "r4.nl_core_healthcare_provider_organization";
+    const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
+    const zibHealthcareProvider = {
+      HealthcareProviderIdentificationNumber: ui.identifier(
+        `${profile2}.identifier`,
+        resource.identifier
+      ),
+      DepartmentSpecialty: ui.codeableConcept(
+        `${profile2}.department_speciality`,
+        resource.departmentSpecialty
+      ),
+      OrganizationType: ui.codeableConcept(
+        `${profile2}.organization_type`,
+        resource.organizationType
+      ),
+      OrganizationName: ui.string(`${profile2}.name`, resource.name)
+    };
+    return setEmptyEntries2({
+      label: resource.name ?? formatMessage2(profile2),
+      children: [
+        {
+          label: formatMessage2(profile2),
+          children: [
+            zibHealthcareProvider.HealthcareProviderIdentificationNumber,
+            zibHealthcareProvider.DepartmentSpecialty,
+            zibHealthcareProvider.OrganizationType,
+            zibHealthcareProvider.OrganizationName
+          ]
+        }
+      ]
+    });
+  };
+  const profile$3 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider-Organization";
+  function parseNlCoreHealthcareProviderOrganization(resource) {
+    return {
+      ...resourceMeta(resource, profile$3, FhirVersion.R4),
+      identifier: map(resource.identifier, identifier$1),
+      departmentSpecialty: map(
+        filterCodeableConceptByCoding(
+          resource.type,
+          (x) => x.system === "urn:oid:2.16.840.1.113883.2.4.6.7"
+        ),
+        codeableConcept$1
+      ),
+      organizationType: map(
+        filterCodeableConceptByCoding(
+          resource.type,
+          (x) => x.system === "http://nictiz.nl/fhir/NamingSystem/organization-type"
+          // NOSONAR
+        ),
+        codeableConcept$1
+      ),
+      name: string$1(resource.name),
+      telephoneNumbers: map(resource.telecom, nlCoreContactInformationTelephoneNumbers.parse),
+      emailAddresses: map(resource.telecom, nlCoreContactInformationEmailAddresses.parse),
+      address: map(resource.address, nlCoreAddressInformation.parse)
+    };
+  }
+  const nlCoreHealthcareProviderOrganization = {
+    profile: profile$3,
+    parse: parseNlCoreHealthcareProviderOrganization,
+    uiSchema: uiSchema$3
+  };
+  const uiSchema$2 = (resource, context) => {
+    const i18n2 = "r4.nl_core_patient";
+    const ui = context.ui;
+    const name = map(resource.name, (x) => nlCoreNameInformation.uiSchemaGroup(x, context), true);
+    const addresses = map(
+      resource.address,
+      (x) => nlCoreAddressInformation.uiSchemaGroup(x, context),
+      true
+    );
+    return {
+      label: resource.name?.at(0)?.text,
+      children: [
+        ...name,
+        {
+          label: `${i18n2}.group_details`,
+          children: [
+            ui.identifier(`${i18n2}.identifier`, resource.identifier),
+            ui.date(`${i18n2}.birth_date`, resource.birthDate),
+            ui.boolean(`${i18n2}.deceased`, resource.deceased),
+            ui.dateTime(`${i18n2}.deceased_date_time`, resource.deceasedDateTime),
+            ui.code(`${i18n2}.gender`, resource.gender),
+            ui.reference(`${i18n2}.general_practitioner`, resource.generalPractitioner),
+            ui.reference(`${i18n2}.managing_organization`, resource.managingOrganization),
+            ui.codeableConcept(`${i18n2}.marital_status`, resource.maritalStatus),
+            ui.boolean(`${i18n2}.multiple_birth`, resource.multipleBirth)
+          ]
+        },
+        ...addresses
+      ]
+    };
+  };
+  const profile$2 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient";
+  function parseNlCorePatient(resource) {
+    return {
+      ...resourceMeta(resource, profile$2, FhirVersion.R4),
+      name: map(resource.name, nlCoreNameInformation.parse),
+      identifier: map(resource.identifier, identifier$1),
+      // NL-CM:0.1.7
+      birthDate: date$3(resource.birthDate),
+      // NL-CM:0.1.10
+      gender: code$1(resource.gender),
+      // NL-CM:0.1.9
+      multipleBirth: boolean$1(resource.multipleBirthBoolean),
+      // NL-CM:0.1.31
+      deceased: boolean$1(resource.deceasedBoolean),
+      // NL-CM:0.1.32
+      deceasedDateTime: dateTime$1(resource.deceasedDateTime),
+      // NL-CM:0.1.33
+      address: map(resource?.address, nlCoreAddressInformation.parse),
+      generalPractitioner: map(resource.generalPractitioner, reference$1),
+      managingOrganization: reference$1(resource.managingOrganization),
+      maritalStatus: codeableConcept$1(resource.maritalStatus)
+    };
+  }
+  const r4NlCorePatient = {
+    profile: profile$2,
+    parse: parseNlCorePatient,
+    uiSchema: uiSchema$2
+  };
+  const uiSchemaGroup$2 = (resource, context) => {
+    const profile2 = "r4.zib_pharmaceutical_product.batch";
+    const { ui, formatMessage: formatMessage2 } = context;
+    return {
+      label: formatMessage2(profile2),
+      children: [
+        ui.string(`${profile2}.lot_number`, resource.lotNumber),
+        ui.dateTime(`${profile2}.expiration_date`, resource.expirationDate)
+      ]
+    };
+  };
+  function parseBatch(value2) {
+    return {
+      lotNumber: string$1(value2?.lotNumber),
+      expirationDate: dateTime$1(value2?.expirationDate)
+    };
+  }
+  const batch = {
+    parse: parseBatch,
+    uiSchemaGroup: uiSchemaGroup$2
+  };
+  const uiSchemaGroup$1 = (resource, context) => {
+    const profile2 = "r4.zib_pharmaceutical_product.ingredient";
+    const { ui, formatMessage: formatMessage2 } = context;
+    return {
+      label: formatMessage2(profile2),
+      children: [
+        ...ui.oneOfValueX(`${profile2}.item`, resource, "item"),
+        ...ui.ratio(`${profile2}.strength`, resource.strength)
+      ]
+    };
+  };
+  function parseIngredient(value2) {
+    return {
+      ...oneOfValueX$1(value2, ["codeableConcept", "reference"], "item"),
+      strength: ratio$1(value2?.strength)
+    };
+  }
+  const ingredient = {
+    parse: parseIngredient,
+    uiSchemaGroup: uiSchemaGroup$1
+  };
+  const uiSchema$1 = (resource, context) => {
+    const i18n2 = "r4.zib_pharmaceutical_product";
+    const { ui, formatMessage: formatMessage2, setEmptyEntries: setEmptyEntries2 } = context;
+    const zibPharmaceuticalProduct = {
+      MedicationCode: ui.codeableConcept(`${i18n2}.code`, resource.code),
+      PharmaceuticalForm: ui.codeableConcept(`${i18n2}.form`, resource.form),
+      Ingredient: map(resource.ingredient, (x) => ingredient.uiSchemaGroup(x, context), true)
+    };
+    const artDECORDatasetVaccinationImmunization = {
+      SerialNumber: ui.identifier(`${i18n2}.identifier`, resource.identifier),
+      Batch: batch.uiSchemaGroup(resource.batch, context),
+      Description: ui.string(`${i18n2}.description`, resource.description)
+    };
+    return setEmptyEntries2({
+      label: resource.name ?? formatMessage2(i18n2),
+      children: [
+        {
+          label: formatMessage2(i18n2),
+          children: [
+            zibPharmaceuticalProduct.MedicationCode,
+            zibPharmaceuticalProduct.PharmaceuticalForm,
+            ...ui.helpers.getChildren(zibPharmaceuticalProduct.Ingredient),
+            artDECORDatasetVaccinationImmunization.SerialNumber,
+            ...ui.helpers.getChildren(artDECORDatasetVaccinationImmunization.Batch),
+            artDECORDatasetVaccinationImmunization.Description
+          ]
+        }
+      ]
+    });
+  };
+  const profile$1 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-PharmaceuticalProduct";
+  function parseNlCorePharmaceuticalProduct(resource) {
+    return {
+      ...resourceMeta(resource, profile$1, FhirVersion.R4),
+      description: extensionNictiz(resource, "ext-PharmaceuticalProduct.Description"),
+      code: codeableConcept$1(resource.code),
+      status: code$1(resource.status),
+      manufacturer: reference$1(resource.manufacturer),
+      form: codeableConcept$1(resource.form),
+      amount: ratio$1(resource.amount),
+      ingredient: map(resource.ingredient, ingredient.parse),
+      batch: batch.parse(resource.batch),
+      identifier: map(resource.identifier, identifier$1),
+      name: string$1(resource.code?.text)
+    };
+  }
+  const nlCorePharmaceuticalProductR4 = {
+    profile: profile$1,
+    parse: parseNlCorePharmaceuticalProduct,
     uiSchema: uiSchema$1
   };
   const uiSchemaGroup = (resource, context) => {
@@ -51145,7 +51393,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       // NL-CM:9.7.19927
       patient: reference$1(resource.patient),
       // NL-CM:0.1.1
-      occurrenceDateTime: dateTime$3(resource.occurrenceDateTime),
+      occurrenceDateTime: dateTime$1(resource.occurrenceDateTime),
       // NL-CM:11.1.3
       location: reference$1(resource.location),
       // NL-CM:17.2.1 | NL-CM:17.2.9
@@ -51173,7 +51421,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   };
   const resourcesR4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
+    nlCoreHealtcareProvider,
     nlCoreHealthProfessionalPractitionerRole,
+    nlCoreHealthcareProviderOrganization,
+    nlCorePharmaceuticalProductR4,
     r4NlCoreHealthProfessionalPractitioner,
     r4NlCorePatient,
     r4NlCoreVaccinationEvent
@@ -51184,3941 +51435,91 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   const resourcesMapR4 = Object.fromEntries(
     Object.entries(resourcesR4).map(([_name, config2]) => [config2.profile, config2])
   );
-  function getResourceConfig$1(resource, fhirVersion) {
-    const resourcesMap = fhirVersion === FhirVersion.R3 ? resourcesMapR3 : resourcesMapR4;
-    const profiles = resource.meta?.profile ?? [];
-    for (const profile2 of profiles) {
-      const config2 = resourcesMap[profile2];
-      if (config2) return config2;
+  function getResourceConfig(profile2, fhirVersion) {
+    const resourcesMap = FhirVersion[fhirVersion] === FhirVersion.R3 ? resourcesMapR3 : resourcesMapR4;
+    if (Array.isArray(profile2)) {
+      profile2 = profile2.find((x) => !!resourcesMap[x]) ?? profile2[0];
     }
-    console.error(
-      `No config found for fhir resourceType: "${resource.resourceType}" with profile: "${resource.meta?.profile}" for fhir version: "${fhirVersion}"`
-    );
+    if (resourcesMap[profile2]) {
+      return resourcesMap[profile2];
+    }
   }
-  function getMgoResource(resource, fhirVersion) {
-    const config2 = getResourceConfig$1(resource, fhirVersion);
-    if (!config2) return;
-    return config2.parse(resource);
-  }
-  function getMgoResourceJson(fhirResourceJson, fhirVersion = FhirVersion.R3) {
-    const fhirResource = losslessParse(fhirResourceJson);
-    if (!isFhirResource(fhirResource)) {
+  const defaultOptions = {
+    fhirVersion: FhirVersion.R3
+  };
+  function getMgoResource(resource, options = {}) {
+    const { fhirVersion } = { ...defaultOptions, ...options };
+    if (!isFhirResource(resource)) {
       throw new Error(
-        `input does not seem to be a valid Fhir Resource. Received resourceType: "${fhirResource?.resourceType}"`
+        `input does not seem to be a valid Fhir Resource. Received resourceType: "${resource?.resourceType}"`
       );
     }
-    const result = getMgoResource(fhirResource, fhirVersion);
-    return losslessStringify(result);
-  }
-  function isMgoResource(value2) {
-    const resourceTyped = value2;
-    return !!resourceTyped?.id && !!resourceTyped?.resourceType && !!resourceTyped?.profile;
-  }
-  function memoize(fn, options) {
-    var cache = options && options.cache ? options.cache : cacheDefault;
-    var serializer = options && options.serializer ? options.serializer : serializerDefault;
-    var strategy = options && options.strategy ? options.strategy : strategyDefault;
-    return strategy(fn, {
-      cache,
-      serializer
-    });
-  }
-  function isPrimitive(value2) {
-    return value2 == null || typeof value2 === "number" || typeof value2 === "boolean";
-  }
-  function monadic(fn, cache, serializer, arg) {
-    var cacheKey = isPrimitive(arg) ? arg : serializer(arg);
-    var computedValue = cache.get(cacheKey);
-    if (typeof computedValue === "undefined") {
-      computedValue = fn.call(this, arg);
-      cache.set(cacheKey, computedValue);
+    const config2 = getResourceConfig(resource.meta?.profile ?? [], fhirVersion);
+    if (!config2) {
+      console.error(
+        `No config found for fhir resourceType: "${resource.resourceType}" with profile: "${resource.meta?.profile}" for fhir version: "${fhirVersion}"`
+      );
+      return;
     }
-    return computedValue;
+    return config2.parse(resource);
   }
-  function variadic(fn, cache, serializer) {
-    var args = Array.prototype.slice.call(arguments, 3);
-    var cacheKey = serializer(args);
-    var computedValue = cache.get(cacheKey);
-    if (typeof computedValue === "undefined") {
-      computedValue = fn.apply(this, args);
-      cache.set(cacheKey, computedValue);
+  function getBundleResources(bundle) {
+    if (!isFhirResource(bundle, "Bundle")) {
+      throw new Error(
+        `input does not seem to be a Fhir Bundle. Received resourceType: "${bundle?.resourceType}"`
+      );
     }
-    return computedValue;
+    const resources = bundle.entry?.map((entry) => entry.resource).filter(isNonNullish);
+    if (!resources?.length) return [];
+    return resources;
   }
-  function assemble(fn, context, strategy, cache, serialize) {
-    return strategy.bind(context, fn, cache, serialize);
+  function numberToString(value2) {
+    if (isNullish(value2)) return;
+    return value2.toString();
   }
-  function strategyDefault(fn, options) {
-    var strategy = fn.length === 1 ? monadic : variadic;
-    return assemble(fn, this, strategy, options.cache.create(), options.serializer);
-  }
-  function strategyVariadic(fn, options) {
-    return assemble(fn, this, variadic, options.cache.create(), options.serializer);
-  }
-  function strategyMonadic(fn, options) {
-    return assemble(fn, this, monadic, options.cache.create(), options.serializer);
-  }
-  var serializerDefault = function() {
-    return JSON.stringify(arguments);
-  };
-  function ObjectWithoutPrototypeCache() {
-    this.cache = /* @__PURE__ */ Object.create(null);
-  }
-  ObjectWithoutPrototypeCache.prototype.get = function(key) {
-    return this.cache[key];
-  };
-  ObjectWithoutPrototypeCache.prototype.set = function(key, value2) {
-    this.cache[key] = value2;
-  };
-  var cacheDefault = {
-    create: function create() {
-      return new ObjectWithoutPrototypeCache();
+  function getChildren(value2) {
+    if (isNullish(value2)) return [];
+    if (Array.isArray(value2)) {
+      return value2.map((x) => x.children).flat();
     }
-  };
-  var strategies = {
-    variadic: strategyVariadic,
-    monadic: strategyMonadic
-  };
-  var ErrorKind;
-  (function(ErrorKind2) {
-    ErrorKind2[ErrorKind2["EXPECT_ARGUMENT_CLOSING_BRACE"] = 1] = "EXPECT_ARGUMENT_CLOSING_BRACE";
-    ErrorKind2[ErrorKind2["EMPTY_ARGUMENT"] = 2] = "EMPTY_ARGUMENT";
-    ErrorKind2[ErrorKind2["MALFORMED_ARGUMENT"] = 3] = "MALFORMED_ARGUMENT";
-    ErrorKind2[ErrorKind2["EXPECT_ARGUMENT_TYPE"] = 4] = "EXPECT_ARGUMENT_TYPE";
-    ErrorKind2[ErrorKind2["INVALID_ARGUMENT_TYPE"] = 5] = "INVALID_ARGUMENT_TYPE";
-    ErrorKind2[ErrorKind2["EXPECT_ARGUMENT_STYLE"] = 6] = "EXPECT_ARGUMENT_STYLE";
-    ErrorKind2[ErrorKind2["INVALID_NUMBER_SKELETON"] = 7] = "INVALID_NUMBER_SKELETON";
-    ErrorKind2[ErrorKind2["INVALID_DATE_TIME_SKELETON"] = 8] = "INVALID_DATE_TIME_SKELETON";
-    ErrorKind2[ErrorKind2["EXPECT_NUMBER_SKELETON"] = 9] = "EXPECT_NUMBER_SKELETON";
-    ErrorKind2[ErrorKind2["EXPECT_DATE_TIME_SKELETON"] = 10] = "EXPECT_DATE_TIME_SKELETON";
-    ErrorKind2[ErrorKind2["UNCLOSED_QUOTE_IN_ARGUMENT_STYLE"] = 11] = "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE";
-    ErrorKind2[ErrorKind2["EXPECT_SELECT_ARGUMENT_OPTIONS"] = 12] = "EXPECT_SELECT_ARGUMENT_OPTIONS";
-    ErrorKind2[ErrorKind2["EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE"] = 13] = "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE";
-    ErrorKind2[ErrorKind2["INVALID_PLURAL_ARGUMENT_OFFSET_VALUE"] = 14] = "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE";
-    ErrorKind2[ErrorKind2["EXPECT_SELECT_ARGUMENT_SELECTOR"] = 15] = "EXPECT_SELECT_ARGUMENT_SELECTOR";
-    ErrorKind2[ErrorKind2["EXPECT_PLURAL_ARGUMENT_SELECTOR"] = 16] = "EXPECT_PLURAL_ARGUMENT_SELECTOR";
-    ErrorKind2[ErrorKind2["EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT"] = 17] = "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT";
-    ErrorKind2[ErrorKind2["EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT"] = 18] = "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT";
-    ErrorKind2[ErrorKind2["INVALID_PLURAL_ARGUMENT_SELECTOR"] = 19] = "INVALID_PLURAL_ARGUMENT_SELECTOR";
-    ErrorKind2[ErrorKind2["DUPLICATE_PLURAL_ARGUMENT_SELECTOR"] = 20] = "DUPLICATE_PLURAL_ARGUMENT_SELECTOR";
-    ErrorKind2[ErrorKind2["DUPLICATE_SELECT_ARGUMENT_SELECTOR"] = 21] = "DUPLICATE_SELECT_ARGUMENT_SELECTOR";
-    ErrorKind2[ErrorKind2["MISSING_OTHER_CLAUSE"] = 22] = "MISSING_OTHER_CLAUSE";
-    ErrorKind2[ErrorKind2["INVALID_TAG"] = 23] = "INVALID_TAG";
-    ErrorKind2[ErrorKind2["INVALID_TAG_NAME"] = 25] = "INVALID_TAG_NAME";
-    ErrorKind2[ErrorKind2["UNMATCHED_CLOSING_TAG"] = 26] = "UNMATCHED_CLOSING_TAG";
-    ErrorKind2[ErrorKind2["UNCLOSED_TAG"] = 27] = "UNCLOSED_TAG";
-  })(ErrorKind || (ErrorKind = {}));
-  var TYPE;
-  (function(TYPE2) {
-    TYPE2[TYPE2["literal"] = 0] = "literal";
-    TYPE2[TYPE2["argument"] = 1] = "argument";
-    TYPE2[TYPE2["number"] = 2] = "number";
-    TYPE2[TYPE2["date"] = 3] = "date";
-    TYPE2[TYPE2["time"] = 4] = "time";
-    TYPE2[TYPE2["select"] = 5] = "select";
-    TYPE2[TYPE2["plural"] = 6] = "plural";
-    TYPE2[TYPE2["pound"] = 7] = "pound";
-    TYPE2[TYPE2["tag"] = 8] = "tag";
-  })(TYPE || (TYPE = {}));
-  var SKELETON_TYPE;
-  (function(SKELETON_TYPE2) {
-    SKELETON_TYPE2[SKELETON_TYPE2["number"] = 0] = "number";
-    SKELETON_TYPE2[SKELETON_TYPE2["dateTime"] = 1] = "dateTime";
-  })(SKELETON_TYPE || (SKELETON_TYPE = {}));
-  function isLiteralElement(el) {
-    return el.type === TYPE.literal;
+    return value2.children;
   }
-  function isArgumentElement(el) {
-    return el.type === TYPE.argument;
-  }
-  function isNumberElement(el) {
-    return el.type === TYPE.number;
-  }
-  function isDateElement(el) {
-    return el.type === TYPE.date;
-  }
-  function isTimeElement(el) {
-    return el.type === TYPE.time;
-  }
-  function isSelectElement(el) {
-    return el.type === TYPE.select;
-  }
-  function isPluralElement(el) {
-    return el.type === TYPE.plural;
-  }
-  function isPoundElement(el) {
-    return el.type === TYPE.pound;
-  }
-  function isTagElement(el) {
-    return el.type === TYPE.tag;
-  }
-  function isNumberSkeleton(el) {
-    return !!(el && typeof el === "object" && el.type === SKELETON_TYPE.number);
-  }
-  function isDateTimeSkeleton(el) {
-    return !!(el && typeof el === "object" && el.type === SKELETON_TYPE.dateTime);
-  }
-  var SPACE_SEPARATOR_REGEX = /[ \xA0\u1680\u2000-\u200A\u202F\u205F\u3000]/;
-  var DATE_TIME_REGEX = /(?:[Eec]{1,6}|G{1,5}|[Qq]{1,5}|(?:[yYur]+|U{1,5})|[ML]{1,5}|d{1,2}|D{1,3}|F{1}|[abB]{1,5}|[hkHK]{1,2}|w{1,2}|W{1}|m{1,2}|s{1,2}|[zZOvVxX]{1,4})(?=([^']*'[^']*')*[^']*$)/g;
-  function parseDateTimeSkeleton(skeleton2) {
-    var result = {};
-    skeleton2.replace(DATE_TIME_REGEX, function(match2) {
-      var len = match2.length;
-      switch (match2[0]) {
-        case "G":
-          result.era = len === 4 ? "long" : len === 5 ? "narrow" : "short";
-          break;
-        case "y":
-          result.year = len === 2 ? "2-digit" : "numeric";
-          break;
-        case "Y":
-        case "u":
-        case "U":
-        case "r":
-          throw new RangeError("`Y/u/U/r` (year) patterns are not supported, use `y` instead");
-        case "q":
-        case "Q":
-          throw new RangeError("`q/Q` (quarter) patterns are not supported");
-        case "M":
-        case "L":
-          result.month = ["numeric", "2-digit", "short", "long", "narrow"][len - 1];
-          break;
-        case "w":
-        case "W":
-          throw new RangeError("`w/W` (week) patterns are not supported");
-        case "d":
-          result.day = ["numeric", "2-digit"][len - 1];
-          break;
-        case "D":
-        case "F":
-        case "g":
-          throw new RangeError("`D/F/g` (day) patterns are not supported, use `d` instead");
-        case "E":
-          result.weekday = len === 4 ? "long" : len === 5 ? "narrow" : "short";
-          break;
-        case "e":
-          if (len < 4) {
-            throw new RangeError("`e..eee` (weekday) patterns are not supported");
-          }
-          result.weekday = ["short", "long", "narrow", "short"][len - 4];
-          break;
-        case "c":
-          if (len < 4) {
-            throw new RangeError("`c..ccc` (weekday) patterns are not supported");
-          }
-          result.weekday = ["short", "long", "narrow", "short"][len - 4];
-          break;
-        case "a":
-          result.hour12 = true;
-          break;
-        case "b":
-        case "B":
-          throw new RangeError("`b/B` (period) patterns are not supported, use `a` instead");
-        case "h":
-          result.hourCycle = "h12";
-          result.hour = ["numeric", "2-digit"][len - 1];
-          break;
-        case "H":
-          result.hourCycle = "h23";
-          result.hour = ["numeric", "2-digit"][len - 1];
-          break;
-        case "K":
-          result.hourCycle = "h11";
-          result.hour = ["numeric", "2-digit"][len - 1];
-          break;
-        case "k":
-          result.hourCycle = "h24";
-          result.hour = ["numeric", "2-digit"][len - 1];
-          break;
-        case "j":
-        case "J":
-        case "C":
-          throw new RangeError("`j/J/C` (hour) patterns are not supported, use `h/H/K/k` instead");
-        case "m":
-          result.minute = ["numeric", "2-digit"][len - 1];
-          break;
-        case "s":
-          result.second = ["numeric", "2-digit"][len - 1];
-          break;
-        case "S":
-        case "A":
-          throw new RangeError("`S/A` (second) patterns are not supported, use `s` instead");
-        case "z":
-          result.timeZoneName = len < 4 ? "short" : "long";
-          break;
-        case "Z":
-        case "O":
-        case "v":
-        case "V":
-        case "X":
-        case "x":
-          throw new RangeError("`Z/O/v/V/X/x` (timeZone) patterns are not supported, use `z` instead");
-      }
-      return "";
-    });
-    return result;
-  }
-  var WHITE_SPACE_REGEX = /[\t-\r \x85\u200E\u200F\u2028\u2029]/i;
-  function parseNumberSkeletonFromString(skeleton2) {
-    if (skeleton2.length === 0) {
-      throw new Error("Number skeleton cannot be empty");
-    }
-    var stringTokens = skeleton2.split(WHITE_SPACE_REGEX).filter(function(x) {
-      return x.length > 0;
-    });
-    var tokens = [];
-    for (var _i = 0, stringTokens_1 = stringTokens; _i < stringTokens_1.length; _i++) {
-      var stringToken = stringTokens_1[_i];
-      var stemAndOptions = stringToken.split("/");
-      if (stemAndOptions.length === 0) {
-        throw new Error("Invalid number skeleton");
-      }
-      var stem = stemAndOptions[0], options = stemAndOptions.slice(1);
-      for (var _a2 = 0, options_1 = options; _a2 < options_1.length; _a2++) {
-        var option = options_1[_a2];
-        if (option.length === 0) {
-          throw new Error("Invalid number skeleton");
-        }
-      }
-      tokens.push({ stem, options });
-    }
-    return tokens;
-  }
-  function icuUnitToEcma(unit) {
-    return unit.replace(/^(.*?)-/, "");
-  }
-  var FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\*)?|(#+)|(0+)(#+))$/g;
-  var SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?[rs]?$/g;
-  var INTEGER_WIDTH_REGEX = /(\*)(0+)|(#+)(0+)|(0+)/g;
-  var CONCISE_INTEGER_WIDTH_REGEX = /^(0+)$/;
-  function parseSignificantPrecision(str) {
-    var result = {};
-    if (str[str.length - 1] === "r") {
-      result.roundingPriority = "morePrecision";
-    } else if (str[str.length - 1] === "s") {
-      result.roundingPriority = "lessPrecision";
-    }
-    str.replace(SIGNIFICANT_PRECISION_REGEX, function(_, g1, g2) {
-      if (typeof g2 !== "string") {
-        result.minimumSignificantDigits = g1.length;
-        result.maximumSignificantDigits = g1.length;
-      } else if (g2 === "+") {
-        result.minimumSignificantDigits = g1.length;
-      } else if (g1[0] === "#") {
-        result.maximumSignificantDigits = g1.length;
-      } else {
-        result.minimumSignificantDigits = g1.length;
-        result.maximumSignificantDigits = g1.length + (typeof g2 === "string" ? g2.length : 0);
-      }
-      return "";
-    });
-    return result;
-  }
-  function parseSign(str) {
-    switch (str) {
-      case "sign-auto":
-        return {
-          signDisplay: "auto"
-        };
-      case "sign-accounting":
-      case "()":
-        return {
-          currencySign: "accounting"
-        };
-      case "sign-always":
-      case "+!":
-        return {
-          signDisplay: "always"
-        };
-      case "sign-accounting-always":
-      case "()!":
-        return {
-          signDisplay: "always",
-          currencySign: "accounting"
-        };
-      case "sign-except-zero":
-      case "+?":
-        return {
-          signDisplay: "exceptZero"
-        };
-      case "sign-accounting-except-zero":
-      case "()?":
-        return {
-          signDisplay: "exceptZero",
-          currencySign: "accounting"
-        };
-      case "sign-never":
-      case "+_":
-        return {
-          signDisplay: "never"
-        };
+  function isEmptyUiEntry(uiField) {
+    switch (uiField.type) {
+      case "REFERENCE_VALUE":
+      case "REFERENCE_LINK":
+        return isNullish(uiField.reference);
+      case "SINGLE_VALUE":
+        return isNullish(uiField.display);
+      case "MULTIPLE_VALUES":
+      case "MULTIPLE_GROUPED_VALUES":
+        return isNullish(uiField.display) || !uiField.display.flat().length;
+      case "DOWNLOAD_LINK":
+        return isNullish(uiField.url);
+      default:
+        throw new Error(`Unknown UI entry type: ${uiField.type}`);
     }
   }
-  function parseConciseScientificAndEngineeringStem(stem) {
-    var result;
-    if (stem[0] === "E" && stem[1] === "E") {
-      result = {
-        notation: "engineering"
-      };
-      stem = stem.slice(2);
-    } else if (stem[0] === "E") {
-      result = {
-        notation: "scientific"
-      };
-      stem = stem.slice(1);
-    }
-    if (result) {
-      var signDisplay = stem.slice(0, 2);
-      if (signDisplay === "+!") {
-        result.signDisplay = "always";
-        stem = stem.slice(2);
-      } else if (signDisplay === "+?") {
-        result.signDisplay = "exceptZero";
-        stem = stem.slice(2);
-      }
-      if (!CONCISE_INTEGER_WIDTH_REGEX.test(stem)) {
-        throw new Error("Malformed concise eng/scientific notation");
-      }
-      result.minimumIntegerDigits = stem.length;
-    }
-    return result;
-  }
-  function parseNotationOptions(opt) {
-    var result = {};
-    var signOpts = parseSign(opt);
-    if (signOpts) {
-      return signOpts;
-    }
-    return result;
-  }
-  function parseNumberSkeleton(tokens) {
-    var result = {};
-    for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
-      var token = tokens_1[_i];
-      switch (token.stem) {
-        case "percent":
-        case "%":
-          result.style = "percent";
-          continue;
-        case "%x100":
-          result.style = "percent";
-          result.scale = 100;
-          continue;
-        case "currency":
-          result.style = "currency";
-          result.currency = token.options[0];
-          continue;
-        case "group-off":
-        case ",_":
-          result.useGrouping = false;
-          continue;
-        case "precision-integer":
-        case ".":
-          result.maximumFractionDigits = 0;
-          continue;
-        case "measure-unit":
-        case "unit":
-          result.style = "unit";
-          result.unit = icuUnitToEcma(token.options[0]);
-          continue;
-        case "compact-short":
-        case "K":
-          result.notation = "compact";
-          result.compactDisplay = "short";
-          continue;
-        case "compact-long":
-        case "KK":
-          result.notation = "compact";
-          result.compactDisplay = "long";
-          continue;
-        case "scientific":
-          result = __assign(__assign(__assign({}, result), { notation: "scientific" }), token.options.reduce(function(all, opt2) {
-            return __assign(__assign({}, all), parseNotationOptions(opt2));
-          }, {}));
-          continue;
-        case "engineering":
-          result = __assign(__assign(__assign({}, result), { notation: "engineering" }), token.options.reduce(function(all, opt2) {
-            return __assign(__assign({}, all), parseNotationOptions(opt2));
-          }, {}));
-          continue;
-        case "notation-simple":
-          result.notation = "standard";
-          continue;
-        case "unit-width-narrow":
-          result.currencyDisplay = "narrowSymbol";
-          result.unitDisplay = "narrow";
-          continue;
-        case "unit-width-short":
-          result.currencyDisplay = "code";
-          result.unitDisplay = "short";
-          continue;
-        case "unit-width-full-name":
-          result.currencyDisplay = "name";
-          result.unitDisplay = "long";
-          continue;
-        case "unit-width-iso-code":
-          result.currencyDisplay = "symbol";
-          continue;
-        case "scale":
-          result.scale = parseFloat(token.options[0]);
-          continue;
-        case "rounding-mode-floor":
-          result.roundingMode = "floor";
-          continue;
-        case "rounding-mode-ceiling":
-          result.roundingMode = "ceil";
-          continue;
-        case "rounding-mode-down":
-          result.roundingMode = "trunc";
-          continue;
-        case "rounding-mode-up":
-          result.roundingMode = "expand";
-          continue;
-        case "rounding-mode-half-even":
-          result.roundingMode = "halfEven";
-          continue;
-        case "rounding-mode-half-down":
-          result.roundingMode = "halfTrunc";
-          continue;
-        case "rounding-mode-half-up":
-          result.roundingMode = "halfExpand";
-          continue;
-        case "integer-width":
-          if (token.options.length > 1) {
-            throw new RangeError("integer-width stems only accept a single optional option");
-          }
-          token.options[0].replace(INTEGER_WIDTH_REGEX, function(_, g1, g2, g3, g4, g5) {
-            if (g1) {
-              result.minimumIntegerDigits = g2.length;
-            } else if (g3 && g4) {
-              throw new Error("We currently do not support maximum integer digits");
-            } else if (g5) {
-              throw new Error("We currently do not support exact integer digits");
-            }
-            return "";
-          });
-          continue;
-      }
-      if (CONCISE_INTEGER_WIDTH_REGEX.test(token.stem)) {
-        result.minimumIntegerDigits = token.stem.length;
-        continue;
-      }
-      if (FRACTION_PRECISION_REGEX.test(token.stem)) {
-        if (token.options.length > 1) {
-          throw new RangeError("Fraction-precision stems only accept a single optional option");
-        }
-        token.stem.replace(FRACTION_PRECISION_REGEX, function(_, g1, g2, g3, g4, g5) {
-          if (g2 === "*") {
-            result.minimumFractionDigits = g1.length;
-          } else if (g3 && g3[0] === "#") {
-            result.maximumFractionDigits = g3.length;
-          } else if (g4 && g5) {
-            result.minimumFractionDigits = g4.length;
-            result.maximumFractionDigits = g4.length + g5.length;
-          } else {
-            result.minimumFractionDigits = g1.length;
-            result.maximumFractionDigits = g1.length;
-          }
-          return "";
-        });
-        var opt = token.options[0];
-        if (opt === "w") {
-          result = __assign(__assign({}, result), { trailingZeroDisplay: "stripIfInteger" });
-        } else if (opt) {
-          result = __assign(__assign({}, result), parseSignificantPrecision(opt));
-        }
-        continue;
-      }
-      if (SIGNIFICANT_PRECISION_REGEX.test(token.stem)) {
-        result = __assign(__assign({}, result), parseSignificantPrecision(token.stem));
-        continue;
-      }
-      var signOpts = parseSign(token.stem);
-      if (signOpts) {
-        result = __assign(__assign({}, result), signOpts);
-      }
-      var conciseScientificAndEngineeringOpts = parseConciseScientificAndEngineeringStem(token.stem);
-      if (conciseScientificAndEngineeringOpts) {
-        result = __assign(__assign({}, result), conciseScientificAndEngineeringOpts);
-      }
-    }
-    return result;
-  }
-  var timeData = {
-    "001": [
-      "H",
-      "h"
-    ],
-    "419": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "AC": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "AD": [
-      "H",
-      "hB"
-    ],
-    "AE": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "AF": [
-      "H",
-      "hb",
-      "hB",
-      "h"
-    ],
-    "AG": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "AI": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "AL": [
-      "h",
-      "H",
-      "hB"
-    ],
-    "AM": [
-      "H",
-      "hB"
-    ],
-    "AO": [
-      "H",
-      "hB"
-    ],
-    "AR": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "AS": [
-      "h",
-      "H"
-    ],
-    "AT": [
-      "H",
-      "hB"
-    ],
-    "AU": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "AW": [
-      "H",
-      "hB"
-    ],
-    "AX": [
-      "H"
-    ],
-    "AZ": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "BA": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "BB": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "BD": [
-      "h",
-      "hB",
-      "H"
-    ],
-    "BE": [
-      "H",
-      "hB"
-    ],
-    "BF": [
-      "H",
-      "hB"
-    ],
-    "BG": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "BH": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "BI": [
-      "H",
-      "h"
-    ],
-    "BJ": [
-      "H",
-      "hB"
-    ],
-    "BL": [
-      "H",
-      "hB"
-    ],
-    "BM": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "BN": [
-      "hb",
-      "hB",
-      "h",
-      "H"
-    ],
-    "BO": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "BQ": [
-      "H"
-    ],
-    "BR": [
-      "H",
-      "hB"
-    ],
-    "BS": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "BT": [
-      "h",
-      "H"
-    ],
-    "BW": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "BY": [
-      "H",
-      "h"
-    ],
-    "BZ": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "CA": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "CC": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "CD": [
-      "hB",
-      "H"
-    ],
-    "CF": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "CG": [
-      "H",
-      "hB"
-    ],
-    "CH": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "CI": [
-      "H",
-      "hB"
-    ],
-    "CK": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "CL": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "CM": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "CN": [
-      "H",
-      "hB",
-      "hb",
-      "h"
-    ],
-    "CO": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "CP": [
-      "H"
-    ],
-    "CR": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "CU": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "CV": [
-      "H",
-      "hB"
-    ],
-    "CW": [
-      "H",
-      "hB"
-    ],
-    "CX": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "CY": [
-      "h",
-      "H",
-      "hb",
-      "hB"
-    ],
-    "CZ": [
-      "H"
-    ],
-    "DE": [
-      "H",
-      "hB"
-    ],
-    "DG": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "DJ": [
-      "h",
-      "H"
-    ],
-    "DK": [
-      "H"
-    ],
-    "DM": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "DO": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "DZ": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "EA": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "EC": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "EE": [
-      "H",
-      "hB"
-    ],
-    "EG": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "EH": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "ER": [
-      "h",
-      "H"
-    ],
-    "ES": [
-      "H",
-      "hB",
-      "h",
-      "hb"
-    ],
-    "ET": [
-      "hB",
-      "hb",
-      "h",
-      "H"
-    ],
-    "FI": [
-      "H"
-    ],
-    "FJ": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "FK": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "FM": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "FO": [
-      "H",
-      "h"
-    ],
-    "FR": [
-      "H",
-      "hB"
-    ],
-    "GA": [
-      "H",
-      "hB"
-    ],
-    "GB": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "GD": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "GE": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "GF": [
-      "H",
-      "hB"
-    ],
-    "GG": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "GH": [
-      "h",
-      "H"
-    ],
-    "GI": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "GL": [
-      "H",
-      "h"
-    ],
-    "GM": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "GN": [
-      "H",
-      "hB"
-    ],
-    "GP": [
-      "H",
-      "hB"
-    ],
-    "GQ": [
-      "H",
-      "hB",
-      "h",
-      "hb"
-    ],
-    "GR": [
-      "h",
-      "H",
-      "hb",
-      "hB"
-    ],
-    "GT": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "GU": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "GW": [
-      "H",
-      "hB"
-    ],
-    "GY": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "HK": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "HN": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "HR": [
-      "H",
-      "hB"
-    ],
-    "HU": [
-      "H",
-      "h"
-    ],
-    "IC": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "ID": [
-      "H"
-    ],
-    "IE": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "IL": [
-      "H",
-      "hB"
-    ],
-    "IM": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "IN": [
-      "h",
-      "H"
-    ],
-    "IO": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "IQ": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "IR": [
-      "hB",
-      "H"
-    ],
-    "IS": [
-      "H"
-    ],
-    "IT": [
-      "H",
-      "hB"
-    ],
-    "JE": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "JM": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "JO": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "JP": [
-      "H",
-      "K",
-      "h"
-    ],
-    "KE": [
-      "hB",
-      "hb",
-      "H",
-      "h"
-    ],
-    "KG": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "KH": [
-      "hB",
-      "h",
-      "H",
-      "hb"
-    ],
-    "KI": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "KM": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "KN": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "KP": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "KR": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "KW": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "KY": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "KZ": [
-      "H",
-      "hB"
-    ],
-    "LA": [
-      "H",
-      "hb",
-      "hB",
-      "h"
-    ],
-    "LB": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "LC": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "LI": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "LK": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "LR": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "LS": [
-      "h",
-      "H"
-    ],
-    "LT": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "LU": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "LV": [
-      "H",
-      "hB",
-      "hb",
-      "h"
-    ],
-    "LY": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "MA": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "MC": [
-      "H",
-      "hB"
-    ],
-    "MD": [
-      "H",
-      "hB"
-    ],
-    "ME": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "MF": [
-      "H",
-      "hB"
-    ],
-    "MG": [
-      "H",
-      "h"
-    ],
-    "MH": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "MK": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "ML": [
-      "H"
-    ],
-    "MM": [
-      "hB",
-      "hb",
-      "H",
-      "h"
-    ],
-    "MN": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "MO": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "MP": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "MQ": [
-      "H",
-      "hB"
-    ],
-    "MR": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "MS": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "MT": [
-      "H",
-      "h"
-    ],
-    "MU": [
-      "H",
-      "h"
-    ],
-    "MV": [
-      "H",
-      "h"
-    ],
-    "MW": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "MX": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "MY": [
-      "hb",
-      "hB",
-      "h",
-      "H"
-    ],
-    "MZ": [
-      "H",
-      "hB"
-    ],
-    "NA": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "NC": [
-      "H",
-      "hB"
-    ],
-    "NE": [
-      "H"
-    ],
-    "NF": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "NG": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "NI": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "NL": [
-      "H",
-      "hB"
-    ],
-    "NO": [
-      "H",
-      "h"
-    ],
-    "NP": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "NR": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "NU": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "NZ": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "OM": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "PA": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "PE": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "PF": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "PG": [
-      "h",
-      "H"
-    ],
-    "PH": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "PK": [
-      "h",
-      "hB",
-      "H"
-    ],
-    "PL": [
-      "H",
-      "h"
-    ],
-    "PM": [
-      "H",
-      "hB"
-    ],
-    "PN": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "PR": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "PS": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "PT": [
-      "H",
-      "hB"
-    ],
-    "PW": [
-      "h",
-      "H"
-    ],
-    "PY": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "QA": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "RE": [
-      "H",
-      "hB"
-    ],
-    "RO": [
-      "H",
-      "hB"
-    ],
-    "RS": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "RU": [
-      "H"
-    ],
-    "RW": [
-      "H",
-      "h"
-    ],
-    "SA": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "SB": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "SC": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "SD": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "SE": [
-      "H"
-    ],
-    "SG": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "SH": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "SI": [
-      "H",
-      "hB"
-    ],
-    "SJ": [
-      "H"
-    ],
-    "SK": [
-      "H"
-    ],
-    "SL": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "SM": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "SN": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "SO": [
-      "h",
-      "H"
-    ],
-    "SR": [
-      "H",
-      "hB"
-    ],
-    "SS": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "ST": [
-      "H",
-      "hB"
-    ],
-    "SV": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "SX": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "SY": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "SZ": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "TA": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "TC": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "TD": [
-      "h",
-      "H",
-      "hB"
-    ],
-    "TF": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "TG": [
-      "H",
-      "hB"
-    ],
-    "TH": [
-      "H",
-      "h"
-    ],
-    "TJ": [
-      "H",
-      "h"
-    ],
-    "TL": [
-      "H",
-      "hB",
-      "hb",
-      "h"
-    ],
-    "TM": [
-      "H",
-      "h"
-    ],
-    "TN": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "TO": [
-      "h",
-      "H"
-    ],
-    "TR": [
-      "H",
-      "hB"
-    ],
-    "TT": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "TW": [
-      "hB",
-      "hb",
-      "h",
-      "H"
-    ],
-    "TZ": [
-      "hB",
-      "hb",
-      "H",
-      "h"
-    ],
-    "UA": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "UG": [
-      "hB",
-      "hb",
-      "H",
-      "h"
-    ],
-    "UM": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "US": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "UY": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "UZ": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "VA": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "VC": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "VE": [
-      "h",
-      "H",
-      "hB",
-      "hb"
-    ],
-    "VG": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "VI": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "VN": [
-      "H",
-      "h"
-    ],
-    "VU": [
-      "h",
-      "H"
-    ],
-    "WF": [
-      "H",
-      "hB"
-    ],
-    "WS": [
-      "h",
-      "H"
-    ],
-    "XK": [
-      "H",
-      "hB",
-      "h"
-    ],
-    "YE": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "YT": [
-      "H",
-      "hB"
-    ],
-    "ZA": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "ZM": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "ZW": [
-      "H",
-      "h"
-    ],
-    "af-ZA": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "ar-001": [
-      "h",
-      "hB",
-      "hb",
-      "H"
-    ],
-    "ca-ES": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "en-001": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "en-HK": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "en-IL": [
-      "H",
-      "h",
-      "hb",
-      "hB"
-    ],
-    "en-MY": [
-      "h",
-      "hb",
-      "H",
-      "hB"
-    ],
-    "es-BR": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "es-ES": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "es-GQ": [
-      "H",
-      "h",
-      "hB",
-      "hb"
-    ],
-    "fr-CA": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "gl-ES": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "gu-IN": [
-      "hB",
-      "hb",
-      "h",
-      "H"
-    ],
-    "hi-IN": [
-      "hB",
-      "h",
-      "H"
-    ],
-    "it-CH": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "it-IT": [
-      "H",
-      "h",
-      "hB"
-    ],
-    "kn-IN": [
-      "hB",
-      "h",
-      "H"
-    ],
-    "ml-IN": [
-      "hB",
-      "h",
-      "H"
-    ],
-    "mr-IN": [
-      "hB",
-      "hb",
-      "h",
-      "H"
-    ],
-    "pa-IN": [
-      "hB",
-      "hb",
-      "h",
-      "H"
-    ],
-    "ta-IN": [
-      "hB",
-      "h",
-      "hb",
-      "H"
-    ],
-    "te-IN": [
-      "hB",
-      "h",
-      "H"
-    ],
-    "zu-ZA": [
-      "H",
-      "hB",
-      "hb",
-      "h"
-    ]
-  };
-  function getBestPattern(skeleton2, locale) {
-    var skeletonCopy = "";
-    for (var patternPos = 0; patternPos < skeleton2.length; patternPos++) {
-      var patternChar = skeleton2.charAt(patternPos);
-      if (patternChar === "j") {
-        var extraLength = 0;
-        while (patternPos + 1 < skeleton2.length && skeleton2.charAt(patternPos + 1) === patternChar) {
-          extraLength++;
-          patternPos++;
-        }
-        var hourLen = 1 + (extraLength & 1);
-        var dayPeriodLen = extraLength < 2 ? 1 : 3 + (extraLength >> 1);
-        var dayPeriodChar = "a";
-        var hourChar = getDefaultHourSymbolFromLocale(locale);
-        if (hourChar == "H" || hourChar == "k") {
-          dayPeriodLen = 0;
-        }
-        while (dayPeriodLen-- > 0) {
-          skeletonCopy += dayPeriodChar;
-        }
-        while (hourLen-- > 0) {
-          skeletonCopy = hourChar + skeletonCopy;
-        }
-      } else if (patternChar === "J") {
-        skeletonCopy += "H";
-      } else {
-        skeletonCopy += patternChar;
-      }
-    }
-    return skeletonCopy;
-  }
-  function getDefaultHourSymbolFromLocale(locale) {
-    var hourCycle = locale.hourCycle;
-    if (hourCycle === void 0 && // @ts-ignore hourCycle(s) is not identified yet
-    locale.hourCycles && // @ts-ignore
-    locale.hourCycles.length) {
-      hourCycle = locale.hourCycles[0];
-    }
-    if (hourCycle) {
-      switch (hourCycle) {
-        case "h24":
-          return "k";
-        case "h23":
-          return "H";
-        case "h12":
-          return "h";
-        case "h11":
-          return "K";
-        default:
-          throw new Error("Invalid hourCycle");
-      }
-    }
-    var languageTag = locale.language;
-    var regionTag;
-    if (languageTag !== "root") {
-      regionTag = locale.maximize().region;
-    }
-    var hourCycles = timeData[regionTag || ""] || timeData[languageTag || ""] || timeData["".concat(languageTag, "-001")] || timeData["001"];
-    return hourCycles[0];
-  }
-  var _a;
-  var SPACE_SEPARATOR_START_REGEX = new RegExp("^".concat(SPACE_SEPARATOR_REGEX.source, "*"));
-  var SPACE_SEPARATOR_END_REGEX = new RegExp("".concat(SPACE_SEPARATOR_REGEX.source, "*$"));
-  function createLocation(start, end) {
-    return { start, end };
-  }
-  var hasNativeStartsWith = !!String.prototype.startsWith && "_a".startsWith("a", 1);
-  var hasNativeFromCodePoint = !!String.fromCodePoint;
-  var hasNativeFromEntries = !!Object.fromEntries;
-  var hasNativeCodePointAt = !!String.prototype.codePointAt;
-  var hasTrimStart = !!String.prototype.trimStart;
-  var hasTrimEnd = !!String.prototype.trimEnd;
-  var hasNativeIsSafeInteger = !!Number.isSafeInteger;
-  var isSafeInteger = hasNativeIsSafeInteger ? Number.isSafeInteger : function(n) {
-    return typeof n === "number" && isFinite(n) && Math.floor(n) === n && Math.abs(n) <= 9007199254740991;
-  };
-  var REGEX_SUPPORTS_U_AND_Y = true;
-  try {
-    var re = RE("([^\\p{White_Space}\\p{Pattern_Syntax}]*)", "yu");
-    REGEX_SUPPORTS_U_AND_Y = ((_a = re.exec("a")) === null || _a === void 0 ? void 0 : _a[0]) === "a";
-  } catch (_) {
-    REGEX_SUPPORTS_U_AND_Y = false;
-  }
-  var startsWith = hasNativeStartsWith ? (
-    // Native
-    function startsWith2(s, search, position) {
-      return s.startsWith(search, position);
-    }
-  ) : (
-    // For IE11
-    function startsWith2(s, search, position) {
-      return s.slice(position, position + search.length) === search;
-    }
-  );
-  var fromCodePoint = hasNativeFromCodePoint ? String.fromCodePoint : (
-    // IE11
-    function fromCodePoint2() {
-      var codePoints = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        codePoints[_i] = arguments[_i];
-      }
-      var elements = "";
-      var length = codePoints.length;
-      var i = 0;
-      var code2;
-      while (length > i) {
-        code2 = codePoints[i++];
-        if (code2 > 1114111)
-          throw RangeError(code2 + " is not a valid code point");
-        elements += code2 < 65536 ? String.fromCharCode(code2) : String.fromCharCode(((code2 -= 65536) >> 10) + 55296, code2 % 1024 + 56320);
-      }
-      return elements;
-    }
-  );
-  var fromEntries = (
-    // native
-    hasNativeFromEntries ? Object.fromEntries : (
-      // Ponyfill
-      function fromEntries2(entries) {
-        var obj = {};
-        for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
-          var _a2 = entries_1[_i], k = _a2[0], v = _a2[1];
-          obj[k] = v;
-        }
-        return obj;
-      }
-    )
-  );
-  var codePointAt = hasNativeCodePointAt ? (
-    // Native
-    function codePointAt2(s, index) {
-      return s.codePointAt(index);
-    }
-  ) : (
-    // IE 11
-    function codePointAt2(s, index) {
-      var size = s.length;
-      if (index < 0 || index >= size) {
-        return void 0;
-      }
-      var first = s.charCodeAt(index);
-      var second;
-      return first < 55296 || first > 56319 || index + 1 === size || (second = s.charCodeAt(index + 1)) < 56320 || second > 57343 ? first : (first - 55296 << 10) + (second - 56320) + 65536;
-    }
-  );
-  var trimStart = hasTrimStart ? (
-    // Native
-    function trimStart2(s) {
-      return s.trimStart();
-    }
-  ) : (
-    // Ponyfill
-    function trimStart2(s) {
-      return s.replace(SPACE_SEPARATOR_START_REGEX, "");
-    }
-  );
-  var trimEnd = hasTrimEnd ? (
-    // Native
-    function trimEnd2(s) {
-      return s.trimEnd();
-    }
-  ) : (
-    // Ponyfill
-    function trimEnd2(s) {
-      return s.replace(SPACE_SEPARATOR_END_REGEX, "");
-    }
-  );
-  function RE(s, flag) {
-    return new RegExp(s, flag);
-  }
-  var matchIdentifierAtIndex;
-  if (REGEX_SUPPORTS_U_AND_Y) {
-    var IDENTIFIER_PREFIX_RE_1 = RE("([^\\p{White_Space}\\p{Pattern_Syntax}]*)", "yu");
-    matchIdentifierAtIndex = function matchIdentifierAtIndex2(s, index) {
-      var _a2;
-      IDENTIFIER_PREFIX_RE_1.lastIndex = index;
-      var match2 = IDENTIFIER_PREFIX_RE_1.exec(s);
-      return (_a2 = match2[1]) !== null && _a2 !== void 0 ? _a2 : "";
-    };
-  } else {
-    matchIdentifierAtIndex = function matchIdentifierAtIndex2(s, index) {
-      var match2 = [];
-      while (true) {
-        var c = codePointAt(s, index);
-        if (c === void 0 || _isWhiteSpace(c) || _isPatternSyntax(c)) {
-          break;
-        }
-        match2.push(c);
-        index += c >= 65536 ? 2 : 1;
-      }
-      return fromCodePoint.apply(void 0, match2);
-    };
-  }
-  var Parser = (
-    /** @class */
-    function() {
-      function Parser2(message, options) {
-        if (options === void 0) {
-          options = {};
-        }
-        this.message = message;
-        this.position = { offset: 0, line: 1, column: 1 };
-        this.ignoreTag = !!options.ignoreTag;
-        this.locale = options.locale;
-        this.requiresOtherClause = !!options.requiresOtherClause;
-        this.shouldParseSkeletons = !!options.shouldParseSkeletons;
-      }
-      Parser2.prototype.parse = function() {
-        if (this.offset() !== 0) {
-          throw Error("parser can only be used once");
-        }
-        return this.parseMessage(0, "", false);
-      };
-      Parser2.prototype.parseMessage = function(nestingLevel, parentArgType, expectingCloseTag) {
-        var elements = [];
-        while (!this.isEOF()) {
-          var char = this.char();
-          if (char === 123) {
-            var result = this.parseArgument(nestingLevel, expectingCloseTag);
-            if (result.err) {
-              return result;
-            }
-            elements.push(result.val);
-          } else if (char === 125 && nestingLevel > 0) {
-            break;
-          } else if (char === 35 && (parentArgType === "plural" || parentArgType === "selectordinal")) {
-            var position = this.clonePosition();
-            this.bump();
-            elements.push({
-              type: TYPE.pound,
-              location: createLocation(position, this.clonePosition())
-            });
-          } else if (char === 60 && !this.ignoreTag && this.peek() === 47) {
-            if (expectingCloseTag) {
-              break;
-            } else {
-              return this.error(ErrorKind.UNMATCHED_CLOSING_TAG, createLocation(this.clonePosition(), this.clonePosition()));
-            }
-          } else if (char === 60 && !this.ignoreTag && _isAlpha(this.peek() || 0)) {
-            var result = this.parseTag(nestingLevel, parentArgType);
-            if (result.err) {
-              return result;
-            }
-            elements.push(result.val);
-          } else {
-            var result = this.parseLiteral(nestingLevel, parentArgType);
-            if (result.err) {
-              return result;
-            }
-            elements.push(result.val);
-          }
-        }
-        return { val: elements, err: null };
-      };
-      Parser2.prototype.parseTag = function(nestingLevel, parentArgType) {
-        var startPosition = this.clonePosition();
-        this.bump();
-        var tagName = this.parseTagName();
-        this.bumpSpace();
-        if (this.bumpIf("/>")) {
-          return {
-            val: {
-              type: TYPE.literal,
-              value: "<".concat(tagName, "/>"),
-              location: createLocation(startPosition, this.clonePosition())
-            },
-            err: null
-          };
-        } else if (this.bumpIf(">")) {
-          var childrenResult = this.parseMessage(nestingLevel + 1, parentArgType, true);
-          if (childrenResult.err) {
-            return childrenResult;
-          }
-          var children = childrenResult.val;
-          var endTagStartPosition = this.clonePosition();
-          if (this.bumpIf("</")) {
-            if (this.isEOF() || !_isAlpha(this.char())) {
-              return this.error(ErrorKind.INVALID_TAG, createLocation(endTagStartPosition, this.clonePosition()));
-            }
-            var closingTagNameStartPosition = this.clonePosition();
-            var closingTagName = this.parseTagName();
-            if (tagName !== closingTagName) {
-              return this.error(ErrorKind.UNMATCHED_CLOSING_TAG, createLocation(closingTagNameStartPosition, this.clonePosition()));
-            }
-            this.bumpSpace();
-            if (!this.bumpIf(">")) {
-              return this.error(ErrorKind.INVALID_TAG, createLocation(endTagStartPosition, this.clonePosition()));
-            }
-            return {
-              val: {
-                type: TYPE.tag,
-                value: tagName,
-                children,
-                location: createLocation(startPosition, this.clonePosition())
-              },
-              err: null
-            };
-          } else {
-            return this.error(ErrorKind.UNCLOSED_TAG, createLocation(startPosition, this.clonePosition()));
-          }
-        } else {
-          return this.error(ErrorKind.INVALID_TAG, createLocation(startPosition, this.clonePosition()));
-        }
-      };
-      Parser2.prototype.parseTagName = function() {
-        var startOffset = this.offset();
-        this.bump();
-        while (!this.isEOF() && _isPotentialElementNameChar(this.char())) {
-          this.bump();
-        }
-        return this.message.slice(startOffset, this.offset());
-      };
-      Parser2.prototype.parseLiteral = function(nestingLevel, parentArgType) {
-        var start = this.clonePosition();
-        var value2 = "";
-        while (true) {
-          var parseQuoteResult = this.tryParseQuote(parentArgType);
-          if (parseQuoteResult) {
-            value2 += parseQuoteResult;
-            continue;
-          }
-          var parseUnquotedResult = this.tryParseUnquoted(nestingLevel, parentArgType);
-          if (parseUnquotedResult) {
-            value2 += parseUnquotedResult;
-            continue;
-          }
-          var parseLeftAngleResult = this.tryParseLeftAngleBracket();
-          if (parseLeftAngleResult) {
-            value2 += parseLeftAngleResult;
-            continue;
-          }
-          break;
-        }
-        var location = createLocation(start, this.clonePosition());
-        return {
-          val: { type: TYPE.literal, value: value2, location },
-          err: null
-        };
-      };
-      Parser2.prototype.tryParseLeftAngleBracket = function() {
-        if (!this.isEOF() && this.char() === 60 && (this.ignoreTag || // If at the opening tag or closing tag position, bail.
-        !_isAlphaOrSlash(this.peek() || 0))) {
-          this.bump();
-          return "<";
-        }
-        return null;
-      };
-      Parser2.prototype.tryParseQuote = function(parentArgType) {
-        if (this.isEOF() || this.char() !== 39) {
-          return null;
-        }
-        switch (this.peek()) {
-          case 39:
-            this.bump();
-            this.bump();
-            return "'";
-          case 123:
-          case 60:
-          case 62:
-          case 125:
-            break;
-          case 35:
-            if (parentArgType === "plural" || parentArgType === "selectordinal") {
-              break;
-            }
-            return null;
-          default:
-            return null;
-        }
-        this.bump();
-        var codePoints = [this.char()];
-        this.bump();
-        while (!this.isEOF()) {
-          var ch = this.char();
-          if (ch === 39) {
-            if (this.peek() === 39) {
-              codePoints.push(39);
-              this.bump();
-            } else {
-              this.bump();
-              break;
-            }
-          } else {
-            codePoints.push(ch);
-          }
-          this.bump();
-        }
-        return fromCodePoint.apply(void 0, codePoints);
-      };
-      Parser2.prototype.tryParseUnquoted = function(nestingLevel, parentArgType) {
-        if (this.isEOF()) {
-          return null;
-        }
-        var ch = this.char();
-        if (ch === 60 || ch === 123 || ch === 35 && (parentArgType === "plural" || parentArgType === "selectordinal") || ch === 125 && nestingLevel > 0) {
-          return null;
-        } else {
-          this.bump();
-          return fromCodePoint(ch);
-        }
-      };
-      Parser2.prototype.parseArgument = function(nestingLevel, expectingCloseTag) {
-        var openingBracePosition = this.clonePosition();
-        this.bump();
-        this.bumpSpace();
-        if (this.isEOF()) {
-          return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
-        }
-        if (this.char() === 125) {
-          this.bump();
-          return this.error(ErrorKind.EMPTY_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
-        }
-        var value2 = this.parseIdentifierIfPossible().value;
-        if (!value2) {
-          return this.error(ErrorKind.MALFORMED_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
-        }
-        this.bumpSpace();
-        if (this.isEOF()) {
-          return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
-        }
-        switch (this.char()) {
-          case 125: {
-            this.bump();
-            return {
-              val: {
-                type: TYPE.argument,
-                // value does not include the opening and closing braces.
-                value: value2,
-                location: createLocation(openingBracePosition, this.clonePosition())
-              },
-              err: null
-            };
-          }
-          case 44: {
-            this.bump();
-            this.bumpSpace();
-            if (this.isEOF()) {
-              return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
-            }
-            return this.parseArgumentOptions(nestingLevel, expectingCloseTag, value2, openingBracePosition);
-          }
-          default:
-            return this.error(ErrorKind.MALFORMED_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
-        }
-      };
-      Parser2.prototype.parseIdentifierIfPossible = function() {
-        var startingPosition = this.clonePosition();
-        var startOffset = this.offset();
-        var value2 = matchIdentifierAtIndex(this.message, startOffset);
-        var endOffset = startOffset + value2.length;
-        this.bumpTo(endOffset);
-        var endPosition = this.clonePosition();
-        var location = createLocation(startingPosition, endPosition);
-        return { value: value2, location };
-      };
-      Parser2.prototype.parseArgumentOptions = function(nestingLevel, expectingCloseTag, value2, openingBracePosition) {
-        var _a2;
-        var typeStartPosition = this.clonePosition();
-        var argType = this.parseIdentifierIfPossible().value;
-        var typeEndPosition = this.clonePosition();
-        switch (argType) {
-          case "":
-            return this.error(ErrorKind.EXPECT_ARGUMENT_TYPE, createLocation(typeStartPosition, typeEndPosition));
-          case "number":
-          case "date":
-          case "time": {
-            this.bumpSpace();
-            var styleAndLocation = null;
-            if (this.bumpIf(",")) {
-              this.bumpSpace();
-              var styleStartPosition = this.clonePosition();
-              var result = this.parseSimpleArgStyleIfPossible();
-              if (result.err) {
-                return result;
-              }
-              var style = trimEnd(result.val);
-              if (style.length === 0) {
-                return this.error(ErrorKind.EXPECT_ARGUMENT_STYLE, createLocation(this.clonePosition(), this.clonePosition()));
-              }
-              var styleLocation = createLocation(styleStartPosition, this.clonePosition());
-              styleAndLocation = { style, styleLocation };
-            }
-            var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
-            if (argCloseResult.err) {
-              return argCloseResult;
-            }
-            var location_1 = createLocation(openingBracePosition, this.clonePosition());
-            if (styleAndLocation && startsWith(styleAndLocation === null || styleAndLocation === void 0 ? void 0 : styleAndLocation.style, "::", 0)) {
-              var skeleton2 = trimStart(styleAndLocation.style.slice(2));
-              if (argType === "number") {
-                var result = this.parseNumberSkeletonFromString(skeleton2, styleAndLocation.styleLocation);
-                if (result.err) {
-                  return result;
-                }
-                return {
-                  val: { type: TYPE.number, value: value2, location: location_1, style: result.val },
-                  err: null
-                };
-              } else {
-                if (skeleton2.length === 0) {
-                  return this.error(ErrorKind.EXPECT_DATE_TIME_SKELETON, location_1);
-                }
-                var dateTimePattern = skeleton2;
-                if (this.locale) {
-                  dateTimePattern = getBestPattern(skeleton2, this.locale);
-                }
-                var style = {
-                  type: SKELETON_TYPE.dateTime,
-                  pattern: dateTimePattern,
-                  location: styleAndLocation.styleLocation,
-                  parsedOptions: this.shouldParseSkeletons ? parseDateTimeSkeleton(dateTimePattern) : {}
-                };
-                var type = argType === "date" ? TYPE.date : TYPE.time;
-                return {
-                  val: { type, value: value2, location: location_1, style },
-                  err: null
-                };
-              }
-            }
-            return {
-              val: {
-                type: argType === "number" ? TYPE.number : argType === "date" ? TYPE.date : TYPE.time,
-                value: value2,
-                location: location_1,
-                style: (_a2 = styleAndLocation === null || styleAndLocation === void 0 ? void 0 : styleAndLocation.style) !== null && _a2 !== void 0 ? _a2 : null
-              },
-              err: null
-            };
-          }
-          case "plural":
-          case "selectordinal":
-          case "select": {
-            var typeEndPosition_1 = this.clonePosition();
-            this.bumpSpace();
-            if (!this.bumpIf(",")) {
-              return this.error(ErrorKind.EXPECT_SELECT_ARGUMENT_OPTIONS, createLocation(typeEndPosition_1, __assign({}, typeEndPosition_1)));
-            }
-            this.bumpSpace();
-            var identifierAndLocation = this.parseIdentifierIfPossible();
-            var pluralOffset = 0;
-            if (argType !== "select" && identifierAndLocation.value === "offset") {
-              if (!this.bumpIf(":")) {
-                return this.error(ErrorKind.EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE, createLocation(this.clonePosition(), this.clonePosition()));
-              }
-              this.bumpSpace();
-              var result = this.tryParseDecimalInteger(ErrorKind.EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE, ErrorKind.INVALID_PLURAL_ARGUMENT_OFFSET_VALUE);
-              if (result.err) {
-                return result;
-              }
-              this.bumpSpace();
-              identifierAndLocation = this.parseIdentifierIfPossible();
-              pluralOffset = result.val;
-            }
-            var optionsResult = this.tryParsePluralOrSelectOptions(nestingLevel, argType, expectingCloseTag, identifierAndLocation);
-            if (optionsResult.err) {
-              return optionsResult;
-            }
-            var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
-            if (argCloseResult.err) {
-              return argCloseResult;
-            }
-            var location_2 = createLocation(openingBracePosition, this.clonePosition());
-            if (argType === "select") {
-              return {
-                val: {
-                  type: TYPE.select,
-                  value: value2,
-                  options: fromEntries(optionsResult.val),
-                  location: location_2
-                },
-                err: null
-              };
-            } else {
-              return {
-                val: {
-                  type: TYPE.plural,
-                  value: value2,
-                  options: fromEntries(optionsResult.val),
-                  offset: pluralOffset,
-                  pluralType: argType === "plural" ? "cardinal" : "ordinal",
-                  location: location_2
-                },
-                err: null
-              };
-            }
-          }
-          default:
-            return this.error(ErrorKind.INVALID_ARGUMENT_TYPE, createLocation(typeStartPosition, typeEndPosition));
-        }
-      };
-      Parser2.prototype.tryParseArgumentClose = function(openingBracePosition) {
-        if (this.isEOF() || this.char() !== 125) {
-          return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
-        }
-        this.bump();
-        return { val: true, err: null };
-      };
-      Parser2.prototype.parseSimpleArgStyleIfPossible = function() {
-        var nestedBraces = 0;
-        var startPosition = this.clonePosition();
-        while (!this.isEOF()) {
-          var ch = this.char();
-          switch (ch) {
-            case 39: {
-              this.bump();
-              var apostrophePosition = this.clonePosition();
-              if (!this.bumpUntil("'")) {
-                return this.error(ErrorKind.UNCLOSED_QUOTE_IN_ARGUMENT_STYLE, createLocation(apostrophePosition, this.clonePosition()));
-              }
-              this.bump();
-              break;
-            }
-            case 123: {
-              nestedBraces += 1;
-              this.bump();
-              break;
-            }
-            case 125: {
-              if (nestedBraces > 0) {
-                nestedBraces -= 1;
-              } else {
-                return {
-                  val: this.message.slice(startPosition.offset, this.offset()),
-                  err: null
-                };
-              }
-              break;
-            }
-            default:
-              this.bump();
-              break;
-          }
-        }
-        return {
-          val: this.message.slice(startPosition.offset, this.offset()),
-          err: null
-        };
-      };
-      Parser2.prototype.parseNumberSkeletonFromString = function(skeleton2, location) {
-        var tokens = [];
-        try {
-          tokens = parseNumberSkeletonFromString(skeleton2);
-        } catch (e) {
-          return this.error(ErrorKind.INVALID_NUMBER_SKELETON, location);
-        }
-        return {
-          val: {
-            type: SKELETON_TYPE.number,
-            tokens,
-            location,
-            parsedOptions: this.shouldParseSkeletons ? parseNumberSkeleton(tokens) : {}
-          },
-          err: null
-        };
-      };
-      Parser2.prototype.tryParsePluralOrSelectOptions = function(nestingLevel, parentArgType, expectCloseTag, parsedFirstIdentifier) {
-        var _a2;
-        var hasOtherClause = false;
-        var options = [];
-        var parsedSelectors = /* @__PURE__ */ new Set();
-        var selector = parsedFirstIdentifier.value, selectorLocation = parsedFirstIdentifier.location;
-        while (true) {
-          if (selector.length === 0) {
-            var startPosition = this.clonePosition();
-            if (parentArgType !== "select" && this.bumpIf("=")) {
-              var result = this.tryParseDecimalInteger(ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR, ErrorKind.INVALID_PLURAL_ARGUMENT_SELECTOR);
-              if (result.err) {
-                return result;
-              }
-              selectorLocation = createLocation(startPosition, this.clonePosition());
-              selector = this.message.slice(startPosition.offset, this.offset());
-            } else {
-              break;
-            }
-          }
-          if (parsedSelectors.has(selector)) {
-            return this.error(parentArgType === "select" ? ErrorKind.DUPLICATE_SELECT_ARGUMENT_SELECTOR : ErrorKind.DUPLICATE_PLURAL_ARGUMENT_SELECTOR, selectorLocation);
-          }
-          if (selector === "other") {
-            hasOtherClause = true;
-          }
-          this.bumpSpace();
-          var openingBracePosition = this.clonePosition();
-          if (!this.bumpIf("{")) {
-            return this.error(parentArgType === "select" ? ErrorKind.EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT : ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT, createLocation(this.clonePosition(), this.clonePosition()));
-          }
-          var fragmentResult = this.parseMessage(nestingLevel + 1, parentArgType, expectCloseTag);
-          if (fragmentResult.err) {
-            return fragmentResult;
-          }
-          var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
-          if (argCloseResult.err) {
-            return argCloseResult;
-          }
-          options.push([
-            selector,
-            {
-              value: fragmentResult.val,
-              location: createLocation(openingBracePosition, this.clonePosition())
-            }
-          ]);
-          parsedSelectors.add(selector);
-          this.bumpSpace();
-          _a2 = this.parseIdentifierIfPossible(), selector = _a2.value, selectorLocation = _a2.location;
-        }
-        if (options.length === 0) {
-          return this.error(parentArgType === "select" ? ErrorKind.EXPECT_SELECT_ARGUMENT_SELECTOR : ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR, createLocation(this.clonePosition(), this.clonePosition()));
-        }
-        if (this.requiresOtherClause && !hasOtherClause) {
-          return this.error(ErrorKind.MISSING_OTHER_CLAUSE, createLocation(this.clonePosition(), this.clonePosition()));
-        }
-        return { val: options, err: null };
-      };
-      Parser2.prototype.tryParseDecimalInteger = function(expectNumberError, invalidNumberError) {
-        var sign2 = 1;
-        var startingPosition = this.clonePosition();
-        if (this.bumpIf("+")) ;
-        else if (this.bumpIf("-")) {
-          sign2 = -1;
-        }
-        var hasDigits = false;
-        var decimal2 = 0;
-        while (!this.isEOF()) {
-          var ch = this.char();
-          if (ch >= 48 && ch <= 57) {
-            hasDigits = true;
-            decimal2 = decimal2 * 10 + (ch - 48);
-            this.bump();
-          } else {
-            break;
-          }
-        }
-        var location = createLocation(startingPosition, this.clonePosition());
-        if (!hasDigits) {
-          return this.error(expectNumberError, location);
-        }
-        decimal2 *= sign2;
-        if (!isSafeInteger(decimal2)) {
-          return this.error(invalidNumberError, location);
-        }
-        return { val: decimal2, err: null };
-      };
-      Parser2.prototype.offset = function() {
-        return this.position.offset;
-      };
-      Parser2.prototype.isEOF = function() {
-        return this.offset() === this.message.length;
-      };
-      Parser2.prototype.clonePosition = function() {
-        return {
-          offset: this.position.offset,
-          line: this.position.line,
-          column: this.position.column
-        };
-      };
-      Parser2.prototype.char = function() {
-        var offset = this.position.offset;
-        if (offset >= this.message.length) {
-          throw Error("out of bound");
-        }
-        var code2 = codePointAt(this.message, offset);
-        if (code2 === void 0) {
-          throw Error("Offset ".concat(offset, " is at invalid UTF-16 code unit boundary"));
-        }
-        return code2;
-      };
-      Parser2.prototype.error = function(kind, location) {
-        return {
-          val: null,
-          err: {
-            kind,
-            message: this.message,
-            location
-          }
-        };
-      };
-      Parser2.prototype.bump = function() {
-        if (this.isEOF()) {
-          return;
-        }
-        var code2 = this.char();
-        if (code2 === 10) {
-          this.position.line += 1;
-          this.position.column = 1;
-          this.position.offset += 1;
-        } else {
-          this.position.column += 1;
-          this.position.offset += code2 < 65536 ? 1 : 2;
-        }
-      };
-      Parser2.prototype.bumpIf = function(prefix) {
-        if (startsWith(this.message, prefix, this.offset())) {
-          for (var i = 0; i < prefix.length; i++) {
-            this.bump();
-          }
-          return true;
-        }
-        return false;
-      };
-      Parser2.prototype.bumpUntil = function(pattern) {
-        var currentOffset = this.offset();
-        var index = this.message.indexOf(pattern, currentOffset);
-        if (index >= 0) {
-          this.bumpTo(index);
-          return true;
-        } else {
-          this.bumpTo(this.message.length);
-          return false;
-        }
-      };
-      Parser2.prototype.bumpTo = function(targetOffset) {
-        if (this.offset() > targetOffset) {
-          throw Error("targetOffset ".concat(targetOffset, " must be greater than or equal to the current offset ").concat(this.offset()));
-        }
-        targetOffset = Math.min(targetOffset, this.message.length);
-        while (true) {
-          var offset = this.offset();
-          if (offset === targetOffset) {
-            break;
-          }
-          if (offset > targetOffset) {
-            throw Error("targetOffset ".concat(targetOffset, " is at invalid UTF-16 code unit boundary"));
-          }
-          this.bump();
-          if (this.isEOF()) {
-            break;
-          }
-        }
-      };
-      Parser2.prototype.bumpSpace = function() {
-        while (!this.isEOF() && _isWhiteSpace(this.char())) {
-          this.bump();
-        }
-      };
-      Parser2.prototype.peek = function() {
-        if (this.isEOF()) {
-          return null;
-        }
-        var code2 = this.char();
-        var offset = this.offset();
-        var nextCode = this.message.charCodeAt(offset + (code2 >= 65536 ? 2 : 1));
-        return nextCode !== null && nextCode !== void 0 ? nextCode : null;
-      };
-      return Parser2;
-    }()
-  );
-  function _isAlpha(codepoint) {
-    return codepoint >= 97 && codepoint <= 122 || codepoint >= 65 && codepoint <= 90;
-  }
-  function _isAlphaOrSlash(codepoint) {
-    return _isAlpha(codepoint) || codepoint === 47;
-  }
-  function _isPotentialElementNameChar(c) {
-    return c === 45 || c === 46 || c >= 48 && c <= 57 || c === 95 || c >= 97 && c <= 122 || c >= 65 && c <= 90 || c == 183 || c >= 192 && c <= 214 || c >= 216 && c <= 246 || c >= 248 && c <= 893 || c >= 895 && c <= 8191 || c >= 8204 && c <= 8205 || c >= 8255 && c <= 8256 || c >= 8304 && c <= 8591 || c >= 11264 && c <= 12271 || c >= 12289 && c <= 55295 || c >= 63744 && c <= 64975 || c >= 65008 && c <= 65533 || c >= 65536 && c <= 983039;
-  }
-  function _isWhiteSpace(c) {
-    return c >= 9 && c <= 13 || c === 32 || c === 133 || c >= 8206 && c <= 8207 || c === 8232 || c === 8233;
-  }
-  function _isPatternSyntax(c) {
-    return c >= 33 && c <= 35 || c === 36 || c >= 37 && c <= 39 || c === 40 || c === 41 || c === 42 || c === 43 || c === 44 || c === 45 || c >= 46 && c <= 47 || c >= 58 && c <= 59 || c >= 60 && c <= 62 || c >= 63 && c <= 64 || c === 91 || c === 92 || c === 93 || c === 94 || c === 96 || c === 123 || c === 124 || c === 125 || c === 126 || c === 161 || c >= 162 && c <= 165 || c === 166 || c === 167 || c === 169 || c === 171 || c === 172 || c === 174 || c === 176 || c === 177 || c === 182 || c === 187 || c === 191 || c === 215 || c === 247 || c >= 8208 && c <= 8213 || c >= 8214 && c <= 8215 || c === 8216 || c === 8217 || c === 8218 || c >= 8219 && c <= 8220 || c === 8221 || c === 8222 || c === 8223 || c >= 8224 && c <= 8231 || c >= 8240 && c <= 8248 || c === 8249 || c === 8250 || c >= 8251 && c <= 8254 || c >= 8257 && c <= 8259 || c === 8260 || c === 8261 || c === 8262 || c >= 8263 && c <= 8273 || c === 8274 || c === 8275 || c >= 8277 && c <= 8286 || c >= 8592 && c <= 8596 || c >= 8597 && c <= 8601 || c >= 8602 && c <= 8603 || c >= 8604 && c <= 8607 || c === 8608 || c >= 8609 && c <= 8610 || c === 8611 || c >= 8612 && c <= 8613 || c === 8614 || c >= 8615 && c <= 8621 || c === 8622 || c >= 8623 && c <= 8653 || c >= 8654 && c <= 8655 || c >= 8656 && c <= 8657 || c === 8658 || c === 8659 || c === 8660 || c >= 8661 && c <= 8691 || c >= 8692 && c <= 8959 || c >= 8960 && c <= 8967 || c === 8968 || c === 8969 || c === 8970 || c === 8971 || c >= 8972 && c <= 8991 || c >= 8992 && c <= 8993 || c >= 8994 && c <= 9e3 || c === 9001 || c === 9002 || c >= 9003 && c <= 9083 || c === 9084 || c >= 9085 && c <= 9114 || c >= 9115 && c <= 9139 || c >= 9140 && c <= 9179 || c >= 9180 && c <= 9185 || c >= 9186 && c <= 9254 || c >= 9255 && c <= 9279 || c >= 9280 && c <= 9290 || c >= 9291 && c <= 9311 || c >= 9472 && c <= 9654 || c === 9655 || c >= 9656 && c <= 9664 || c === 9665 || c >= 9666 && c <= 9719 || c >= 9720 && c <= 9727 || c >= 9728 && c <= 9838 || c === 9839 || c >= 9840 && c <= 10087 || c === 10088 || c === 10089 || c === 10090 || c === 10091 || c === 10092 || c === 10093 || c === 10094 || c === 10095 || c === 10096 || c === 10097 || c === 10098 || c === 10099 || c === 10100 || c === 10101 || c >= 10132 && c <= 10175 || c >= 10176 && c <= 10180 || c === 10181 || c === 10182 || c >= 10183 && c <= 10213 || c === 10214 || c === 10215 || c === 10216 || c === 10217 || c === 10218 || c === 10219 || c === 10220 || c === 10221 || c === 10222 || c === 10223 || c >= 10224 && c <= 10239 || c >= 10240 && c <= 10495 || c >= 10496 && c <= 10626 || c === 10627 || c === 10628 || c === 10629 || c === 10630 || c === 10631 || c === 10632 || c === 10633 || c === 10634 || c === 10635 || c === 10636 || c === 10637 || c === 10638 || c === 10639 || c === 10640 || c === 10641 || c === 10642 || c === 10643 || c === 10644 || c === 10645 || c === 10646 || c === 10647 || c === 10648 || c >= 10649 && c <= 10711 || c === 10712 || c === 10713 || c === 10714 || c === 10715 || c >= 10716 && c <= 10747 || c === 10748 || c === 10749 || c >= 10750 && c <= 11007 || c >= 11008 && c <= 11055 || c >= 11056 && c <= 11076 || c >= 11077 && c <= 11078 || c >= 11079 && c <= 11084 || c >= 11085 && c <= 11123 || c >= 11124 && c <= 11125 || c >= 11126 && c <= 11157 || c === 11158 || c >= 11159 && c <= 11263 || c >= 11776 && c <= 11777 || c === 11778 || c === 11779 || c === 11780 || c === 11781 || c >= 11782 && c <= 11784 || c === 11785 || c === 11786 || c === 11787 || c === 11788 || c === 11789 || c >= 11790 && c <= 11798 || c === 11799 || c >= 11800 && c <= 11801 || c === 11802 || c === 11803 || c === 11804 || c === 11805 || c >= 11806 && c <= 11807 || c === 11808 || c === 11809 || c === 11810 || c === 11811 || c === 11812 || c === 11813 || c === 11814 || c === 11815 || c === 11816 || c === 11817 || c >= 11818 && c <= 11822 || c === 11823 || c >= 11824 && c <= 11833 || c >= 11834 && c <= 11835 || c >= 11836 && c <= 11839 || c === 11840 || c === 11841 || c === 11842 || c >= 11843 && c <= 11855 || c >= 11856 && c <= 11857 || c === 11858 || c >= 11859 && c <= 11903 || c >= 12289 && c <= 12291 || c === 12296 || c === 12297 || c === 12298 || c === 12299 || c === 12300 || c === 12301 || c === 12302 || c === 12303 || c === 12304 || c === 12305 || c >= 12306 && c <= 12307 || c === 12308 || c === 12309 || c === 12310 || c === 12311 || c === 12312 || c === 12313 || c === 12314 || c === 12315 || c === 12316 || c === 12317 || c >= 12318 && c <= 12319 || c === 12320 || c === 12336 || c === 64830 || c === 64831 || c >= 65093 && c <= 65094;
-  }
-  function pruneLocation(els) {
-    els.forEach(function(el) {
-      delete el.location;
-      if (isSelectElement(el) || isPluralElement(el)) {
-        for (var k in el.options) {
-          delete el.options[k].location;
-          pruneLocation(el.options[k].value);
-        }
-      } else if (isNumberElement(el) && isNumberSkeleton(el.style)) {
-        delete el.style.location;
-      } else if ((isDateElement(el) || isTimeElement(el)) && isDateTimeSkeleton(el.style)) {
-        delete el.style.location;
-      } else if (isTagElement(el)) {
-        pruneLocation(el.children);
-      }
-    });
-  }
-  function parse(message, opts) {
-    if (opts === void 0) {
-      opts = {};
-    }
-    opts = __assign({ shouldParseSkeletons: true, requiresOtherClause: true }, opts);
-    var result = new Parser(message, opts).parse();
-    if (result.err) {
-      var error = SyntaxError(ErrorKind[result.err.kind]);
-      error.location = result.err.location;
-      error.originalMessage = result.err.message;
-      throw error;
-    }
-    if (!(opts === null || opts === void 0 ? void 0 : opts.captureLocation)) {
-      pruneLocation(result.val);
-    }
-    return result.val;
-  }
-  var ErrorCode;
-  (function(ErrorCode2) {
-    ErrorCode2["MISSING_VALUE"] = "MISSING_VALUE";
-    ErrorCode2["INVALID_VALUE"] = "INVALID_VALUE";
-    ErrorCode2["MISSING_INTL_API"] = "MISSING_INTL_API";
-  })(ErrorCode || (ErrorCode = {}));
-  var FormatError = (
-    /** @class */
-    function(_super) {
-      __extends(FormatError2, _super);
-      function FormatError2(msg, code2, originalMessage) {
-        var _this = _super.call(this, msg) || this;
-        _this.code = code2;
-        _this.originalMessage = originalMessage;
-        return _this;
-      }
-      FormatError2.prototype.toString = function() {
-        return "[formatjs Error: ".concat(this.code, "] ").concat(this.message);
-      };
-      return FormatError2;
-    }(Error)
-  );
-  var InvalidValueError = (
-    /** @class */
-    function(_super) {
-      __extends(InvalidValueError2, _super);
-      function InvalidValueError2(variableId, value2, options, originalMessage) {
-        return _super.call(this, 'Invalid values for "'.concat(variableId, '": "').concat(value2, '". Options are "').concat(Object.keys(options).join('", "'), '"'), ErrorCode.INVALID_VALUE, originalMessage) || this;
-      }
-      return InvalidValueError2;
-    }(FormatError)
-  );
-  var InvalidValueTypeError = (
-    /** @class */
-    function(_super) {
-      __extends(InvalidValueTypeError2, _super);
-      function InvalidValueTypeError2(value2, type, originalMessage) {
-        return _super.call(this, 'Value for "'.concat(value2, '" must be of type ').concat(type), ErrorCode.INVALID_VALUE, originalMessage) || this;
-      }
-      return InvalidValueTypeError2;
-    }(FormatError)
-  );
-  var MissingValueError = (
-    /** @class */
-    function(_super) {
-      __extends(MissingValueError2, _super);
-      function MissingValueError2(variableId, originalMessage) {
-        return _super.call(this, 'The intl string context variable "'.concat(variableId, '" was not provided to the string "').concat(originalMessage, '"'), ErrorCode.MISSING_VALUE, originalMessage) || this;
-      }
-      return MissingValueError2;
-    }(FormatError)
-  );
-  var PART_TYPE;
-  (function(PART_TYPE2) {
-    PART_TYPE2[PART_TYPE2["literal"] = 0] = "literal";
-    PART_TYPE2[PART_TYPE2["object"] = 1] = "object";
-  })(PART_TYPE || (PART_TYPE = {}));
-  function mergeLiteral(parts) {
-    if (parts.length < 2) {
-      return parts;
-    }
-    return parts.reduce(function(all, part) {
-      var lastPart = all[all.length - 1];
-      if (!lastPart || lastPart.type !== PART_TYPE.literal || part.type !== PART_TYPE.literal) {
-        all.push(part);
-      } else {
-        lastPart.value += part.value;
-      }
-      return all;
-    }, []);
-  }
-  function isFormatXMLElementFn(el) {
-    return typeof el === "function";
-  }
-  function formatToParts(els, locales, formatters, formats, values, currentPluralValue, originalMessage) {
-    if (els.length === 1 && isLiteralElement(els[0])) {
-      return [
-        {
-          type: PART_TYPE.literal,
-          value: els[0].value
-        }
-      ];
-    }
-    var result = [];
-    for (var _i = 0, els_1 = els; _i < els_1.length; _i++) {
-      var el = els_1[_i];
-      if (isLiteralElement(el)) {
-        result.push({
-          type: PART_TYPE.literal,
-          value: el.value
-        });
-        continue;
-      }
-      if (isPoundElement(el)) {
-        if (typeof currentPluralValue === "number") {
-          result.push({
-            type: PART_TYPE.literal,
-            value: formatters.getNumberFormat(locales).format(currentPluralValue)
-          });
-        }
-        continue;
-      }
-      var varName = el.value;
-      if (!(values && varName in values)) {
-        throw new MissingValueError(varName, originalMessage);
-      }
-      var value2 = values[varName];
-      if (isArgumentElement(el)) {
-        if (!value2 || typeof value2 === "string" || typeof value2 === "number") {
-          value2 = typeof value2 === "string" || typeof value2 === "number" ? String(value2) : "";
-        }
-        result.push({
-          type: typeof value2 === "string" ? PART_TYPE.literal : PART_TYPE.object,
-          value: value2
-        });
-        continue;
-      }
-      if (isDateElement(el)) {
-        var style = typeof el.style === "string" ? formats.date[el.style] : isDateTimeSkeleton(el.style) ? el.style.parsedOptions : void 0;
-        result.push({
-          type: PART_TYPE.literal,
-          value: formatters.getDateTimeFormat(locales, style).format(value2)
-        });
-        continue;
-      }
-      if (isTimeElement(el)) {
-        var style = typeof el.style === "string" ? formats.time[el.style] : isDateTimeSkeleton(el.style) ? el.style.parsedOptions : formats.time.medium;
-        result.push({
-          type: PART_TYPE.literal,
-          value: formatters.getDateTimeFormat(locales, style).format(value2)
-        });
-        continue;
-      }
-      if (isNumberElement(el)) {
-        var style = typeof el.style === "string" ? formats.number[el.style] : isNumberSkeleton(el.style) ? el.style.parsedOptions : void 0;
-        if (style && style.scale) {
-          value2 = value2 * (style.scale || 1);
-        }
-        result.push({
-          type: PART_TYPE.literal,
-          value: formatters.getNumberFormat(locales, style).format(value2)
-        });
-        continue;
-      }
-      if (isTagElement(el)) {
-        var children = el.children, value_1 = el.value;
-        var formatFn = values[value_1];
-        if (!isFormatXMLElementFn(formatFn)) {
-          throw new InvalidValueTypeError(value_1, "function", originalMessage);
-        }
-        var parts = formatToParts(children, locales, formatters, formats, values, currentPluralValue);
-        var chunks = formatFn(parts.map(function(p) {
-          return p.value;
-        }));
-        if (!Array.isArray(chunks)) {
-          chunks = [chunks];
-        }
-        result.push.apply(result, chunks.map(function(c) {
-          return {
-            type: typeof c === "string" ? PART_TYPE.literal : PART_TYPE.object,
-            value: c
-          };
-        }));
-      }
-      if (isSelectElement(el)) {
-        var opt = el.options[value2] || el.options.other;
-        if (!opt) {
-          throw new InvalidValueError(el.value, value2, Object.keys(el.options), originalMessage);
-        }
-        result.push.apply(result, formatToParts(opt.value, locales, formatters, formats, values));
-        continue;
-      }
-      if (isPluralElement(el)) {
-        var opt = el.options["=".concat(value2)];
-        if (!opt) {
-          if (!Intl.PluralRules) {
-            throw new FormatError('Intl.PluralRules is not available in this environment.\nTry polyfilling it using "@formatjs/intl-pluralrules"\n', ErrorCode.MISSING_INTL_API, originalMessage);
-          }
-          var rule = formatters.getPluralRules(locales, { type: el.pluralType }).select(value2 - (el.offset || 0));
-          opt = el.options[rule] || el.options.other;
-        }
-        if (!opt) {
-          throw new InvalidValueError(el.value, value2, Object.keys(el.options), originalMessage);
-        }
-        result.push.apply(result, formatToParts(opt.value, locales, formatters, formats, values, value2 - (el.offset || 0)));
-        continue;
-      }
-    }
-    return mergeLiteral(result);
-  }
-  function mergeConfig(c1, c2) {
-    if (!c2) {
-      return c1;
-    }
-    return __assign(__assign(__assign({}, c1 || {}), c2 || {}), Object.keys(c1).reduce(function(all, k) {
-      all[k] = __assign(__assign({}, c1[k]), c2[k] || {});
-      return all;
-    }, {}));
-  }
-  function mergeConfigs(defaultConfig, configs) {
-    if (!configs) {
-      return defaultConfig;
-    }
-    return Object.keys(defaultConfig).reduce(function(all, k) {
-      all[k] = mergeConfig(defaultConfig[k], configs[k]);
-      return all;
-    }, __assign({}, defaultConfig));
-  }
-  function createFastMemoizeCache$1(store) {
+  function processGroup(group, { formatMessage: formatMessage2 }) {
     return {
-      create: function() {
-        return {
-          get: function(key) {
-            return store[key];
-          },
-          set: function(key, value2) {
-            store[key] = value2;
-          }
-        };
-      }
-    };
-  }
-  function createDefaultFormatters(cache) {
-    if (cache === void 0) {
-      cache = {
-        number: {},
-        dateTime: {},
-        pluralRules: {}
-      };
-    }
-    return {
-      getNumberFormat: memoize(function() {
-        var _a2;
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-        return new ((_a2 = Intl.NumberFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
-      }, {
-        cache: createFastMemoizeCache$1(cache.number),
-        strategy: strategies.variadic
-      }),
-      getDateTimeFormat: memoize(function() {
-        var _a2;
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-        return new ((_a2 = Intl.DateTimeFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
-      }, {
-        cache: createFastMemoizeCache$1(cache.dateTime),
-        strategy: strategies.variadic
-      }),
-      getPluralRules: memoize(function() {
-        var _a2;
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-        return new ((_a2 = Intl.PluralRules).bind.apply(_a2, __spreadArray([void 0], args, false)))();
-      }, {
-        cache: createFastMemoizeCache$1(cache.pluralRules),
-        strategy: strategies.variadic
+      ...group,
+      children: group.children.map((entry) => {
+        return isEmptyUiEntry(entry) && entry.type !== "DOWNLOAD_LINK" ? {
+          type: "SINGLE_VALUE",
+          label: entry.label,
+          display: formatMessage2("schema.empty_entry_display")
+        } : entry;
       })
     };
   }
-  var IntlMessageFormat = (
-    /** @class */
-    function() {
-      function IntlMessageFormat2(message, locales, overrideFormats, opts) {
-        if (locales === void 0) {
-          locales = IntlMessageFormat2.defaultLocale;
-        }
-        var _this = this;
-        this.formatterCache = {
-          number: {},
-          dateTime: {},
-          pluralRules: {}
-        };
-        this.format = function(values) {
-          var parts = _this.formatToParts(values);
-          if (parts.length === 1) {
-            return parts[0].value;
-          }
-          var result = parts.reduce(function(all, part) {
-            if (!all.length || part.type !== PART_TYPE.literal || typeof all[all.length - 1] !== "string") {
-              all.push(part.value);
-            } else {
-              all[all.length - 1] += part.value;
-            }
-            return all;
-          }, []);
-          if (result.length <= 1) {
-            return result[0] || "";
-          }
-          return result;
-        };
-        this.formatToParts = function(values) {
-          return formatToParts(_this.ast, _this.locales, _this.formatters, _this.formats, values, void 0, _this.message);
-        };
-        this.resolvedOptions = function() {
-          var _a3;
-          return {
-            locale: ((_a3 = _this.resolvedLocale) === null || _a3 === void 0 ? void 0 : _a3.toString()) || Intl.NumberFormat.supportedLocalesOf(_this.locales)[0]
-          };
-        };
-        this.getAst = function() {
-          return _this.ast;
-        };
-        this.locales = locales;
-        this.resolvedLocale = IntlMessageFormat2.resolveLocale(locales);
-        if (typeof message === "string") {
-          this.message = message;
-          if (!IntlMessageFormat2.__parse) {
-            throw new TypeError("IntlMessageFormat.__parse must be set to process `message` of type `string`");
-          }
-          var _a2 = opts || {};
-          _a2.formatters;
-          var parseOpts = __rest(_a2, ["formatters"]);
-          this.ast = IntlMessageFormat2.__parse(message, __assign(__assign({}, parseOpts), { locale: this.resolvedLocale }));
-        } else {
-          this.ast = message;
-        }
-        if (!Array.isArray(this.ast)) {
-          throw new TypeError("A message must be provided as a String or AST.");
-        }
-        this.formats = mergeConfigs(IntlMessageFormat2.formats, overrideFormats);
-        this.formatters = opts && opts.formatters || createDefaultFormatters(this.formatterCache);
-      }
-      Object.defineProperty(IntlMessageFormat2, "defaultLocale", {
-        get: function() {
-          if (!IntlMessageFormat2.memoizedDefaultLocale) {
-            IntlMessageFormat2.memoizedDefaultLocale = new Intl.NumberFormat().resolvedOptions().locale;
-          }
-          return IntlMessageFormat2.memoizedDefaultLocale;
-        },
-        enumerable: false,
-        configurable: true
-      });
-      IntlMessageFormat2.memoizedDefaultLocale = null;
-      IntlMessageFormat2.resolveLocale = function(locales) {
-        if (typeof Intl.Locale === "undefined") {
-          return;
-        }
-        var supportedLocales = Intl.NumberFormat.supportedLocalesOf(locales);
-        if (supportedLocales.length > 0) {
-          return new Intl.Locale(supportedLocales[0]);
-        }
-        return new Intl.Locale(typeof locales === "string" ? locales : locales[0]);
+  const setEmptyEntries = (context) => {
+    return (schema) => {
+      return {
+        ...schema,
+        children: schema.children.map((x) => processGroup(x, context))
       };
-      IntlMessageFormat2.__parse = parse;
-      IntlMessageFormat2.formats = {
-        number: {
-          integer: {
-            maximumFractionDigits: 0
-          },
-          currency: {
-            style: "currency"
-          },
-          percent: {
-            style: "percent"
-          }
-        },
-        date: {
-          short: {
-            month: "numeric",
-            day: "numeric",
-            year: "2-digit"
-          },
-          medium: {
-            month: "short",
-            day: "numeric",
-            year: "numeric"
-          },
-          long: {
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-          },
-          full: {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-          }
-        },
-        time: {
-          short: {
-            hour: "numeric",
-            minute: "numeric"
-          },
-          medium: {
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric"
-          },
-          long: {
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            timeZoneName: "short"
-          },
-          full: {
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            timeZoneName: "short"
-          }
-        }
-      };
-      return IntlMessageFormat2;
-    }()
-  );
-  var IntlErrorCode;
-  (function(IntlErrorCode2) {
-    IntlErrorCode2["FORMAT_ERROR"] = "FORMAT_ERROR";
-    IntlErrorCode2["UNSUPPORTED_FORMATTER"] = "UNSUPPORTED_FORMATTER";
-    IntlErrorCode2["INVALID_CONFIG"] = "INVALID_CONFIG";
-    IntlErrorCode2["MISSING_DATA"] = "MISSING_DATA";
-    IntlErrorCode2["MISSING_TRANSLATION"] = "MISSING_TRANSLATION";
-  })(IntlErrorCode || (IntlErrorCode = {}));
-  var IntlError = (
-    /** @class */
-    function(_super) {
-      __extends(IntlError2, _super);
-      function IntlError2(code2, message, exception) {
-        var _this = this;
-        var err = exception ? exception instanceof Error ? exception : new Error(String(exception)) : void 0;
-        _this = _super.call(this, "[@formatjs/intl Error ".concat(code2, "] ").concat(message, "\n").concat(err ? "\n".concat(err.message, "\n").concat(err.stack) : "")) || this;
-        _this.code = code2;
-        if (typeof Error.captureStackTrace === "function") {
-          Error.captureStackTrace(_this, IntlError2);
-        }
-        return _this;
-      }
-      return IntlError2;
-    }(Error)
-  );
-  var UnsupportedFormatterError = (
-    /** @class */
-    function(_super) {
-      __extends(UnsupportedFormatterError2, _super);
-      function UnsupportedFormatterError2(message, exception) {
-        return _super.call(this, IntlErrorCode.UNSUPPORTED_FORMATTER, message, exception) || this;
-      }
-      return UnsupportedFormatterError2;
-    }(IntlError)
-  );
-  var InvalidConfigError = (
-    /** @class */
-    function(_super) {
-      __extends(InvalidConfigError2, _super);
-      function InvalidConfigError2(message, exception) {
-        return _super.call(this, IntlErrorCode.INVALID_CONFIG, message, exception) || this;
-      }
-      return InvalidConfigError2;
-    }(IntlError)
-  );
-  var MissingDataError = (
-    /** @class */
-    function(_super) {
-      __extends(MissingDataError2, _super);
-      function MissingDataError2(message, exception) {
-        return _super.call(this, IntlErrorCode.MISSING_DATA, message, exception) || this;
-      }
-      return MissingDataError2;
-    }(IntlError)
-  );
-  var IntlFormatError = (
-    /** @class */
-    function(_super) {
-      __extends(IntlFormatError2, _super);
-      function IntlFormatError2(message, locale, exception) {
-        var _this = _super.call(this, IntlErrorCode.FORMAT_ERROR, "".concat(message, "\nLocale: ").concat(locale, "\n"), exception) || this;
-        _this.locale = locale;
-        return _this;
-      }
-      return IntlFormatError2;
-    }(IntlError)
-  );
-  var MessageFormatError = (
-    /** @class */
-    function(_super) {
-      __extends(MessageFormatError2, _super);
-      function MessageFormatError2(message, locale, descriptor, exception) {
-        var _this = _super.call(this, "".concat(message, "\nMessageID: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.id, "\nDefault Message: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.defaultMessage, "\nDescription: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.description, "\n"), locale, exception) || this;
-        _this.descriptor = descriptor;
-        _this.locale = locale;
-        return _this;
-      }
-      return MessageFormatError2;
-    }(IntlFormatError)
-  );
-  var MissingTranslationError = (
-    /** @class */
-    function(_super) {
-      __extends(MissingTranslationError2, _super);
-      function MissingTranslationError2(descriptor, locale) {
-        var _this = _super.call(this, IntlErrorCode.MISSING_TRANSLATION, 'Missing message: "'.concat(descriptor.id, '" for locale "').concat(locale, '", using ').concat(descriptor.defaultMessage ? "default message (".concat(typeof descriptor.defaultMessage === "string" ? descriptor.defaultMessage : descriptor.defaultMessage.map(function(e) {
-          var _a2;
-          return (_a2 = e.value) !== null && _a2 !== void 0 ? _a2 : JSON.stringify(e);
-        }).join(), ")") : "id", " as fallback.")) || this;
-        _this.descriptor = descriptor;
-        return _this;
-      }
-      return MissingTranslationError2;
-    }(IntlError)
-  );
-  function invariant(condition, message, Err) {
-    if (Err === void 0) {
-      Err = Error;
-    }
-    if (!condition) {
-      throw new Err(message);
-    }
-  }
-  function filterProps(props, allowlist, defaults2) {
-    if (defaults2 === void 0) {
-      defaults2 = {};
-    }
-    return allowlist.reduce(function(filtered, name) {
-      if (name in props) {
-        filtered[name] = props[name];
-      } else if (name in defaults2) {
-        filtered[name] = defaults2[name];
-      }
-      return filtered;
-    }, {});
-  }
-  var defaultErrorHandler = function(error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error(error);
-    }
-  };
-  var defaultWarnHandler = function(warning) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(warning);
-    }
-  };
-  var DEFAULT_INTL_CONFIG = {
-    formats: {},
-    messages: {},
-    timeZone: void 0,
-    defaultLocale: "en",
-    defaultFormats: {},
-    fallbackOnEmptyString: true,
-    onError: defaultErrorHandler,
-    onWarn: defaultWarnHandler
-  };
-  function createIntlCache() {
-    return {
-      dateTime: {},
-      number: {},
-      message: {},
-      relativeTime: {},
-      pluralRules: {},
-      list: {},
-      displayNames: {}
     };
-  }
-  function createFastMemoizeCache(store) {
-    return {
-      create: function() {
-        return {
-          get: function(key) {
-            return store[key];
-          },
-          set: function(key, value2) {
-            store[key] = value2;
-          }
-        };
-      }
-    };
-  }
-  function createFormatters(cache) {
-    if (cache === void 0) {
-      cache = createIntlCache();
-    }
-    var RelativeTimeFormat = Intl.RelativeTimeFormat;
-    var ListFormat = Intl.ListFormat;
-    var DisplayNames = Intl.DisplayNames;
-    var getDateTimeFormat = memoize(function() {
-      var _a2;
-      var args = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
-      return new ((_a2 = Intl.DateTimeFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
-    }, {
-      cache: createFastMemoizeCache(cache.dateTime),
-      strategy: strategies.variadic
-    });
-    var getNumberFormat = memoize(function() {
-      var _a2;
-      var args = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
-      return new ((_a2 = Intl.NumberFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
-    }, {
-      cache: createFastMemoizeCache(cache.number),
-      strategy: strategies.variadic
-    });
-    var getPluralRules = memoize(function() {
-      var _a2;
-      var args = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
-      return new ((_a2 = Intl.PluralRules).bind.apply(_a2, __spreadArray([void 0], args, false)))();
-    }, {
-      cache: createFastMemoizeCache(cache.pluralRules),
-      strategy: strategies.variadic
-    });
-    return {
-      getDateTimeFormat,
-      getNumberFormat,
-      getMessageFormat: memoize(function(message, locales, overrideFormats, opts) {
-        return new IntlMessageFormat(message, locales, overrideFormats, __assign({ formatters: {
-          getNumberFormat,
-          getDateTimeFormat,
-          getPluralRules
-        } }, opts || {}));
-      }, {
-        cache: createFastMemoizeCache(cache.message),
-        strategy: strategies.variadic
-      }),
-      getRelativeTimeFormat: memoize(function() {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-        return new (RelativeTimeFormat.bind.apply(RelativeTimeFormat, __spreadArray([void 0], args, false)))();
-      }, {
-        cache: createFastMemoizeCache(cache.relativeTime),
-        strategy: strategies.variadic
-      }),
-      getPluralRules,
-      getListFormat: memoize(function() {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-        return new (ListFormat.bind.apply(ListFormat, __spreadArray([void 0], args, false)))();
-      }, {
-        cache: createFastMemoizeCache(cache.list),
-        strategy: strategies.variadic
-      }),
-      getDisplayNames: memoize(function() {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-        return new (DisplayNames.bind.apply(DisplayNames, __spreadArray([void 0], args, false)))();
-      }, {
-        cache: createFastMemoizeCache(cache.displayNames),
-        strategy: strategies.variadic
-      })
-    };
-  }
-  function getNamedFormat(formats, type, name, onError) {
-    var formatType = formats && formats[type];
-    var format2;
-    if (formatType) {
-      format2 = formatType[name];
-    }
-    if (format2) {
-      return format2;
-    }
-    onError(new UnsupportedFormatterError("No ".concat(type, " format named: ").concat(name)));
-  }
-  function setTimeZoneInOptions(opts, timeZone) {
-    return Object.keys(opts).reduce(function(all, k) {
-      all[k] = __assign({ timeZone }, opts[k]);
-      return all;
-    }, {});
-  }
-  function deepMergeOptions(opts1, opts2) {
-    var keys = Object.keys(__assign(__assign({}, opts1), opts2));
-    return keys.reduce(function(all, k) {
-      all[k] = __assign(__assign({}, opts1[k] || {}), opts2[k] || {});
-      return all;
-    }, {});
-  }
-  function deepMergeFormatsAndSetTimeZone(f1, timeZone) {
-    if (!timeZone) {
-      return f1;
-    }
-    var mfFormats = IntlMessageFormat.formats;
-    return __assign(__assign(__assign({}, mfFormats), f1), { date: deepMergeOptions(setTimeZoneInOptions(mfFormats.date, timeZone), setTimeZoneInOptions(f1.date || {}, timeZone)), time: deepMergeOptions(setTimeZoneInOptions(mfFormats.time, timeZone), setTimeZoneInOptions(f1.time || {}, timeZone)) });
-  }
-  var formatMessage = function(_a2, state, messageDescriptor, values, opts) {
-    var locale = _a2.locale, formats = _a2.formats, messages = _a2.messages, defaultLocale2 = _a2.defaultLocale, defaultFormats = _a2.defaultFormats, fallbackOnEmptyString = _a2.fallbackOnEmptyString, onError = _a2.onError, timeZone = _a2.timeZone, defaultRichTextElements = _a2.defaultRichTextElements;
-    if (messageDescriptor === void 0) {
-      messageDescriptor = { id: "" };
-    }
-    var msgId = messageDescriptor.id, defaultMessage = messageDescriptor.defaultMessage;
-    invariant(!!msgId, "[@formatjs/intl] An `id` must be provided to format a message. You can either:\n1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.github.io/docs/tooling/babel-plugin)\nor [@formatjs/ts-transformer](https://formatjs.github.io/docs/tooling/ts-transformer) OR\n2. Configure your `eslint` config to include [eslint-plugin-formatjs](https://formatjs.github.io/docs/tooling/linter#enforce-id)\nto autofix this issue");
-    var id = String(msgId);
-    var message = (
-      // In case messages is Object.create(null)
-      // e.g import('foo.json') from webpack)
-      // See https://github.com/formatjs/formatjs/issues/1914
-      messages && Object.prototype.hasOwnProperty.call(messages, id) && messages[id]
-    );
-    if (Array.isArray(message) && message.length === 1 && message[0].type === TYPE.literal) {
-      return message[0].value;
-    }
-    if (!values && message && typeof message === "string" && !defaultRichTextElements) {
-      return message.replace(/'\{(.*?)\}'/gi, "{$1}");
-    }
-    values = __assign(__assign({}, defaultRichTextElements), values || {});
-    formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
-    defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
-    if (!message) {
-      if (fallbackOnEmptyString === false && message === "") {
-        return message;
-      }
-      if (!defaultMessage || locale && locale.toLowerCase() !== defaultLocale2.toLowerCase()) {
-        onError(new MissingTranslationError(messageDescriptor, locale));
-      }
-      if (defaultMessage) {
-        try {
-          var formatter = state.getMessageFormat(defaultMessage, defaultLocale2, defaultFormats, opts);
-          return formatter.format(values);
-        } catch (e) {
-          onError(new MessageFormatError('Error formatting default message for: "'.concat(id, '", rendering default message verbatim'), locale, messageDescriptor, e));
-          return typeof defaultMessage === "string" ? defaultMessage : id;
-        }
-      }
-      return id;
-    }
-    try {
-      var formatter = state.getMessageFormat(message, locale, formats, __assign({ formatters: state }, opts || {}));
-      return formatter.format(values);
-    } catch (e) {
-      onError(new MessageFormatError('Error formatting message: "'.concat(id, '", using ').concat(defaultMessage ? "default message" : "id", " as fallback."), locale, messageDescriptor, e));
-    }
-    if (defaultMessage) {
-      try {
-        var formatter = state.getMessageFormat(defaultMessage, defaultLocale2, defaultFormats, opts);
-        return formatter.format(values);
-      } catch (e) {
-        onError(new MessageFormatError('Error formatting the default message for: "'.concat(id, '", rendering message verbatim'), locale, messageDescriptor, e));
-      }
-    }
-    if (typeof message === "string") {
-      return message;
-    }
-    if (typeof defaultMessage === "string") {
-      return defaultMessage;
-    }
-    return id;
   };
-  var DATE_TIME_FORMAT_OPTIONS = [
-    "formatMatcher",
-    "timeZone",
-    "hour12",
-    "weekday",
-    "era",
-    "year",
-    "month",
-    "day",
-    "hour",
-    "minute",
-    "second",
-    "timeZoneName",
-    "hourCycle",
-    "dateStyle",
-    "timeStyle",
-    "calendar",
-    // 'dayPeriod',
-    "numberingSystem",
-    "fractionalSecondDigits"
-  ];
-  function getFormatter$2(_a2, type, getDateTimeFormat, options) {
-    var locale = _a2.locale, formats = _a2.formats, onError = _a2.onError, timeZone = _a2.timeZone;
-    if (options === void 0) {
-      options = {};
-    }
-    var format2 = options.format;
-    var defaults2 = __assign(__assign({}, timeZone && { timeZone }), format2 && getNamedFormat(formats, type, format2, onError));
-    var filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults2);
-    if (type === "time" && !filteredOptions.hour && !filteredOptions.minute && !filteredOptions.second && !filteredOptions.timeStyle && !filteredOptions.dateStyle) {
-      filteredOptions = __assign(__assign({}, filteredOptions), { hour: "numeric", minute: "numeric" });
-    }
-    return getDateTimeFormat(locale, filteredOptions);
-  }
-  function formatDate(config2, getDateTimeFormat) {
-    var _a2 = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-      _a2[_i - 2] = arguments[_i];
-    }
-    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
-    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
-    try {
-      return getFormatter$2(config2, "date", getDateTimeFormat, options).format(date2);
-    } catch (e) {
-      config2.onError(new IntlFormatError("Error formatting date.", config2.locale, e));
-    }
-    return String(date2);
-  }
-  function formatTime(config2, getDateTimeFormat) {
-    var _a2 = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-      _a2[_i - 2] = arguments[_i];
-    }
-    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
-    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
-    try {
-      return getFormatter$2(config2, "time", getDateTimeFormat, options).format(date2);
-    } catch (e) {
-      config2.onError(new IntlFormatError("Error formatting time.", config2.locale, e));
-    }
-    return String(date2);
-  }
-  function formatDateTimeRange(config2, getDateTimeFormat) {
-    var _a2 = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-      _a2[_i - 2] = arguments[_i];
-    }
-    var from = _a2[0], to = _a2[1], _b = _a2[2], options = _b === void 0 ? {} : _b;
-    var timeZone = config2.timeZone, locale = config2.locale, onError = config2.onError;
-    var filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, timeZone ? { timeZone } : {});
-    try {
-      return getDateTimeFormat(locale, filteredOptions).formatRange(from, to);
-    } catch (e) {
-      onError(new IntlFormatError("Error formatting date time range.", config2.locale, e));
-    }
-    return String(from);
-  }
-  function formatDateToParts(config2, getDateTimeFormat) {
-    var _a2 = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-      _a2[_i - 2] = arguments[_i];
-    }
-    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
-    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
-    try {
-      return getFormatter$2(config2, "date", getDateTimeFormat, options).formatToParts(date2);
-    } catch (e) {
-      config2.onError(new IntlFormatError("Error formatting date.", config2.locale, e));
-    }
-    return [];
-  }
-  function formatTimeToParts(config2, getDateTimeFormat) {
-    var _a2 = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-      _a2[_i - 2] = arguments[_i];
-    }
-    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
-    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
-    try {
-      return getFormatter$2(config2, "time", getDateTimeFormat, options).formatToParts(date2);
-    } catch (e) {
-      config2.onError(new IntlFormatError("Error formatting time.", config2.locale, e));
-    }
-    return [];
-  }
-  var DISPLAY_NAMES_OPTONS = [
-    "style",
-    "type",
-    "fallback",
-    "languageDisplay"
-  ];
-  function formatDisplayName(_a2, getDisplayNames, value2, options) {
-    var locale = _a2.locale, onError = _a2.onError;
-    var DisplayNames = Intl.DisplayNames;
-    if (!DisplayNames) {
-      onError(new FormatError('Intl.DisplayNames is not available in this environment.\nTry polyfilling it using "@formatjs/intl-displaynames"\n', ErrorCode.MISSING_INTL_API));
-    }
-    var filteredOptions = filterProps(options, DISPLAY_NAMES_OPTONS);
-    try {
-      return getDisplayNames(locale, filteredOptions).of(value2);
-    } catch (e) {
-      onError(new IntlFormatError("Error formatting display name.", locale, e));
-    }
-  }
-  var LIST_FORMAT_OPTIONS = [
-    "type",
-    "style"
-  ];
-  var now = Date.now();
-  function generateToken(i) {
-    return "".concat(now, "_").concat(i, "_").concat(now);
-  }
-  function formatList(opts, getListFormat, values, options) {
-    if (options === void 0) {
-      options = {};
-    }
-    var results = formatListToParts(opts, getListFormat, values, options).reduce(function(all, el) {
-      var val = el.value;
-      if (typeof val !== "string") {
-        all.push(val);
-      } else if (typeof all[all.length - 1] === "string") {
-        all[all.length - 1] += val;
-      } else {
-        all.push(val);
-      }
-      return all;
-    }, []);
-    return results.length === 1 ? results[0] : results.length === 0 ? "" : results;
-  }
-  function formatListToParts(_a2, getListFormat, values, options) {
-    var locale = _a2.locale, onError = _a2.onError;
-    if (options === void 0) {
-      options = {};
-    }
-    var ListFormat = Intl.ListFormat;
-    if (!ListFormat) {
-      onError(new FormatError('Intl.ListFormat is not available in this environment.\nTry polyfilling it using "@formatjs/intl-listformat"\n', ErrorCode.MISSING_INTL_API));
-    }
-    var filteredOptions = filterProps(options, LIST_FORMAT_OPTIONS);
-    try {
-      var richValues_1 = {};
-      var serializedValues = values.map(function(v, i) {
-        if (typeof v === "object") {
-          var id = generateToken(i);
-          richValues_1[id] = v;
-          return id;
-        }
-        return String(v);
-      });
-      return getListFormat(locale, filteredOptions).formatToParts(serializedValues).map(function(part) {
-        return part.type === "literal" ? part : __assign(__assign({}, part), { value: richValues_1[part.value] || part.value });
-      });
-    } catch (e) {
-      onError(new IntlFormatError("Error formatting list.", locale, e));
-    }
-    return values;
-  }
-  var PLURAL_FORMAT_OPTIONS = ["type"];
-  function formatPlural(_a2, getPluralRules, value2, options) {
-    var locale = _a2.locale, onError = _a2.onError;
-    if (options === void 0) {
-      options = {};
-    }
-    if (!Intl.PluralRules) {
-      onError(new FormatError('Intl.PluralRules is not available in this environment.\nTry polyfilling it using "@formatjs/intl-pluralrules"\n', ErrorCode.MISSING_INTL_API));
-    }
-    var filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
-    try {
-      return getPluralRules(locale, filteredOptions).select(value2);
-    } catch (e) {
-      onError(new IntlFormatError("Error formatting plural.", locale, e));
-    }
-    return "other";
-  }
-  var RELATIVE_TIME_FORMAT_OPTIONS = ["numeric", "style"];
-  function getFormatter$1(_a2, getRelativeTimeFormat, options) {
-    var locale = _a2.locale, formats = _a2.formats, onError = _a2.onError;
-    if (options === void 0) {
-      options = {};
-    }
-    var format2 = options.format;
-    var defaults2 = !!format2 && getNamedFormat(formats, "relative", format2, onError) || {};
-    var filteredOptions = filterProps(options, RELATIVE_TIME_FORMAT_OPTIONS, defaults2);
-    return getRelativeTimeFormat(locale, filteredOptions);
-  }
-  function formatRelativeTime(config2, getRelativeTimeFormat, value2, unit, options) {
-    if (options === void 0) {
-      options = {};
-    }
-    if (!unit) {
-      unit = "second";
-    }
-    var RelativeTimeFormat = Intl.RelativeTimeFormat;
-    if (!RelativeTimeFormat) {
-      config2.onError(new FormatError('Intl.RelativeTimeFormat is not available in this environment.\nTry polyfilling it using "@formatjs/intl-relativetimeformat"\n', ErrorCode.MISSING_INTL_API));
-    }
-    try {
-      return getFormatter$1(config2, getRelativeTimeFormat, options).format(value2, unit);
-    } catch (e) {
-      config2.onError(new IntlFormatError("Error formatting relative time.", config2.locale, e));
-    }
-    return String(value2);
-  }
-  var NUMBER_FORMAT_OPTIONS = [
-    "style",
-    "currency",
-    "unit",
-    "unitDisplay",
-    "useGrouping",
-    "minimumIntegerDigits",
-    "minimumFractionDigits",
-    "maximumFractionDigits",
-    "minimumSignificantDigits",
-    "maximumSignificantDigits",
-    // ES2020 NumberFormat
-    "compactDisplay",
-    "currencyDisplay",
-    "currencySign",
-    "notation",
-    "signDisplay",
-    "unit",
-    "unitDisplay",
-    "numberingSystem",
-    // ES2023 NumberFormat
-    // @ts-expect-error: TypeScript doesn't know about this yet
-    "trailingZeroDisplay",
-    // @ts-expect-error: TypeScript doesn't know about this yet
-    "roundingPriority",
-    // @ts-expect-error: TypeScript doesn't know about this yet
-    "roundingIncrement",
-    // @ts-expect-error: TypeScript doesn't know about this yet
-    "roundingMode"
-  ];
-  function getFormatter(_a2, getNumberFormat, options) {
-    var locale = _a2.locale, formats = _a2.formats, onError = _a2.onError;
-    if (options === void 0) {
-      options = {};
-    }
-    var format2 = options.format;
-    var defaults2 = format2 && getNamedFormat(formats, "number", format2, onError) || {};
-    var filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults2);
-    return getNumberFormat(locale, filteredOptions);
-  }
-  function formatNumber(config2, getNumberFormat, value2, options) {
-    if (options === void 0) {
-      options = {};
-    }
-    try {
-      return getFormatter(config2, getNumberFormat, options).format(value2);
-    } catch (e) {
-      config2.onError(new IntlFormatError("Error formatting number.", config2.locale, e));
-    }
-    return String(value2);
-  }
-  function formatNumberToParts(config2, getNumberFormat, value2, options) {
-    if (options === void 0) {
-      options = {};
-    }
-    try {
-      return getFormatter(config2, getNumberFormat, options).formatToParts(value2);
-    } catch (e) {
-      config2.onError(new IntlFormatError("Error formatting number.", config2.locale, e));
-    }
-    return [];
-  }
-  function messagesContainString(messages) {
-    var firstMessage = messages ? messages[Object.keys(messages)[0]] : void 0;
-    return typeof firstMessage === "string";
-  }
-  function verifyConfigMessages(config2) {
-    if (config2.onWarn && config2.defaultRichTextElements && messagesContainString(config2.messages || {})) {
-      config2.onWarn('[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. \nPlease consider using "@formatjs/cli" to pre-compile your messages for performance.\nFor more details see https://formatjs.github.io/docs/getting-started/message-distribution');
-    }
-  }
-  function createIntl(config2, cache) {
-    var formatters = createFormatters(cache);
-    var resolvedConfig = __assign(__assign({}, DEFAULT_INTL_CONFIG), config2);
-    var locale = resolvedConfig.locale, defaultLocale2 = resolvedConfig.defaultLocale, onError = resolvedConfig.onError;
-    if (!locale) {
-      if (onError) {
-        onError(new InvalidConfigError('"locale" was not configured, using "'.concat(defaultLocale2, '" as fallback. See https://formatjs.github.io/docs/react-intl/api#intlshape for more details')));
-      }
-      resolvedConfig.locale = resolvedConfig.defaultLocale || "en";
-    } else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
-      onError(new MissingDataError('Missing locale data for locale: "'.concat(locale, '" in Intl.NumberFormat. Using default locale: "').concat(defaultLocale2, '" as fallback. See https://formatjs.github.io/docs/react-intl#runtime-requirements for more details')));
-    } else if (!Intl.DateTimeFormat.supportedLocalesOf(locale).length && onError) {
-      onError(new MissingDataError('Missing locale data for locale: "'.concat(locale, '" in Intl.DateTimeFormat. Using default locale: "').concat(defaultLocale2, '" as fallback. See https://formatjs.github.io/docs/react-intl#runtime-requirements for more details')));
-    }
-    verifyConfigMessages(resolvedConfig);
-    return __assign(__assign({}, resolvedConfig), { formatters, formatNumber: formatNumber.bind(null, resolvedConfig, formatters.getNumberFormat), formatNumberToParts: formatNumberToParts.bind(null, resolvedConfig, formatters.getNumberFormat), formatRelativeTime: formatRelativeTime.bind(null, resolvedConfig, formatters.getRelativeTimeFormat), formatDate: formatDate.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateToParts: formatDateToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTime: formatTime.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateTimeRange: formatDateTimeRange.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTimeToParts: formatTimeToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatPlural: formatPlural.bind(null, resolvedConfig, formatters.getPluralRules), formatMessage: formatMessage.bind(null, resolvedConfig, formatters), $t: formatMessage.bind(null, resolvedConfig, formatters), formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat), formatListToParts: formatListToParts.bind(null, resolvedConfig, formatters.getListFormat), formatDisplayName: formatDisplayName.bind(null, resolvedConfig, formatters.getDisplayNames) });
-  }
   const fhirMessages = {
     "fhir.boolean.false": [
       {
@@ -55235,6 +51636,108 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       {
         type: 0,
         value: "G-Standaard Toedieningswegen (tabel 7)"
+      }
+    ]
+  };
+  const summaryLabels = {
+    "summary.options": [
+      {
+        type: 0,
+        value: "Opties"
+      }
+    ],
+    "summary.r3.ihe_mhd_minimal_document_reference.group_attachment": [
+      {
+        type: 0,
+        value: "Bijlage"
+      }
+    ],
+    "summary.r3.ihe_mhd_minimal_document_reference.group_author": [
+      {
+        type: 0,
+        value: "Opgesteld door"
+      }
+    ],
+    "summary.r3.ihe_mhd_minimal_document_reference.show_details": [
+      {
+        type: 0,
+        value: "Bekijk alle documentgegevens"
+      }
+    ],
+    "summary.r3.zib_medication_use.show_details": [
+      {
+        type: 0,
+        value: "Bekijk alle medicijngegevens"
+      }
+    ]
+  };
+  const codeLabels$1 = {
+    "codes.r3.observation.status.amended": [
+      {
+        type: 0,
+        value: "Gewijzigd"
+      }
+    ],
+    "codes.r3.observation.status.cancelled": [
+      {
+        type: 0,
+        value: "Geannuleerd"
+      }
+    ],
+    "codes.r3.observation.status.corrected": [
+      {
+        type: 0,
+        value: "Gecorrigeerd"
+      }
+    ],
+    "codes.r3.observation.status.entered-in-error": [
+      {
+        type: 0,
+        value: "Foutief ingevoerd"
+      }
+    ],
+    "codes.r3.observation.status.final": [
+      {
+        type: 0,
+        value: "Definitief"
+      }
+    ],
+    "codes.r3.observation.status.preliminary": [
+      {
+        type: 0,
+        value: "Inleidend"
+      }
+    ],
+    "codes.r3.observation.status.registered": [
+      {
+        type: 0,
+        value: "Geregistreerd"
+      }
+    ],
+    "codes.r3.observation.status.unknown": [
+      {
+        type: 0,
+        value: "Onbekend"
+      }
+    ]
+  };
+  const detailLabels = {
+    "detail.options": [
+      {
+        type: 0,
+        value: "Opties"
+      }
+    ],
+    "detail.r3.ihe_mhd_minimal_document_reference.group_attachment": [
+      {
+        type: 0,
+        value: "Inhoud"
+      }
+    ],
+    "detail.r3.ihe_mhd_minimal_document_reference.group_author": [
+      {
+        type: 0,
+        value: "Opgesteld door"
       }
     ]
   };
@@ -60254,7 +56757,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     "r3.ihe_mhd_minimal_document_reference.author": [
       {
         type: 0,
-        value: "Auteur"
+        value: "Specialist"
       }
     ],
     "r3.ihe_mhd_minimal_document_reference.class": [
@@ -60299,22 +56802,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         value: "Url"
       }
     ],
-    "r3.ihe_mhd_minimal_document_reference.group_attachment": [
-      {
-        type: 0,
-        value: "Inhoud"
-      }
-    ],
-    "r3.ihe_mhd_minimal_document_reference.group_author": [
-      {
-        type: 0,
-        value: "Opgesteld door"
-      }
-    ],
     "r3.ihe_mhd_minimal_document_reference.indexed": [
       {
         type: 0,
-        value: "Gecreëerd"
+        value: "Aangemaakt op"
       }
     ],
     "r3.ihe_mhd_minimal_document_reference.master_identifier": [
@@ -65535,6 +62026,30 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         value: "Telefoonnummer"
       }
     ],
+    "r4.nl_core_healtcare_provider": [
+      {
+        type: 0,
+        value: "Zorgverlener"
+      }
+    ],
+    "r4.nl_core_healtcare_provider.identifier": [
+      {
+        type: 0,
+        value: "Identifier"
+      }
+    ],
+    "r4.nl_core_healtcare_provider.managing_organization": [
+      {
+        type: 0,
+        value: "Beherende organisatie"
+      }
+    ],
+    "r4.nl_core_healtcare_provider.name": [
+      {
+        type: 0,
+        value: "Zorgverlener naam"
+      }
+    ],
     "r4.nl_core_health_professional_practitioner_role": [
       {
         type: 0,
@@ -65563,6 +62078,36 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       {
         type: 0,
         value: "Specialiteit"
+      }
+    ],
+    "r4.nl_core_healthcare_provider_organization": [
+      {
+        type: 0,
+        value: "Zorgverlener organisatie"
+      }
+    ],
+    "r4.nl_core_healthcare_provider_organization.department_speciality": [
+      {
+        type: 0,
+        value: "Zorgverlener organisatie afdelings specialiteit"
+      }
+    ],
+    "r4.nl_core_healthcare_provider_organization.identifier": [
+      {
+        type: 0,
+        value: "Zorgverlener organisatie identifier"
+      }
+    ],
+    "r4.nl_core_healthcare_provider_organization.name": [
+      {
+        type: 0,
+        value: "Zorgverlener organisatie naam"
+      }
+    ],
+    "r4.nl_core_healthcare_provider_organization.organization_type": [
+      {
+        type: 0,
+        value: "Zorgverlener organisatie type"
       }
     ],
     "r4.nl_core_vaccination_event.dose_quantity": [
@@ -65666,21 +62211,3965 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         type: 0,
         value: "Uniek nummer"
       }
+    ],
+    "r4.zib_pharmaceutical_product.batch": [
+      {
+        type: 0,
+        value: "Batch"
+      }
+    ],
+    "r4.zib_pharmaceutical_product.batch.expiration_date": [
+      {
+        type: 0,
+        value: "Batch vervaldatum"
+      }
+    ],
+    "r4.zib_pharmaceutical_product.batch.lot_number": [
+      {
+        type: 0,
+        value: "Batch lotnummer"
+      }
+    ],
+    "r4.zib_pharmaceutical_product.description": [
+      {
+        type: 0,
+        value: "Omschrijving"
+      }
+    ],
+    "r4.zib_pharmaceutical_product.identifier": [
+      {
+        type: 0,
+        value: "Serienummer"
+      }
+    ],
+    "r4.zib_pharmaceutical_product.ingredient.item": [
+      {
+        type: 0,
+        value: "Medicatie ingredient item"
+      }
     ]
-  };
-  const messagesNL = {
-    ...r3ResourceLabels,
-    ...r3ResourceLabelsCustom,
-    ...r4ResourceLabels,
-    ...r4ResourceLabelsCustom,
-    ...fhirMessages
   };
   var Locale = /* @__PURE__ */ ((Locale2) => {
     Locale2["NL_NL"] = "nl-NL";
     return Locale2;
   })(Locale || {});
+  const messagesNL = {
+    ...r3ResourceLabels,
+    ...r3ResourceLabelsCustom,
+    ...r4ResourceLabels,
+    ...r4ResourceLabelsCustom,
+    ...summaryLabels,
+    ...detailLabels,
+    ...codeLabels$1,
+    ...fhirMessages
+  };
+  function memoize(fn, options) {
+    var cache = options && options.cache ? options.cache : cacheDefault;
+    var serializer = options && options.serializer ? options.serializer : serializerDefault;
+    var strategy = options && options.strategy ? options.strategy : strategyDefault;
+    return strategy(fn, {
+      cache,
+      serializer
+    });
+  }
+  function isPrimitive(value2) {
+    return value2 == null || typeof value2 === "number" || typeof value2 === "boolean";
+  }
+  function monadic(fn, cache, serializer, arg) {
+    var cacheKey = isPrimitive(arg) ? arg : serializer(arg);
+    var computedValue = cache.get(cacheKey);
+    if (typeof computedValue === "undefined") {
+      computedValue = fn.call(this, arg);
+      cache.set(cacheKey, computedValue);
+    }
+    return computedValue;
+  }
+  function variadic(fn, cache, serializer) {
+    var args = Array.prototype.slice.call(arguments, 3);
+    var cacheKey = serializer(args);
+    var computedValue = cache.get(cacheKey);
+    if (typeof computedValue === "undefined") {
+      computedValue = fn.apply(this, args);
+      cache.set(cacheKey, computedValue);
+    }
+    return computedValue;
+  }
+  function assemble(fn, context, strategy, cache, serialize) {
+    return strategy.bind(context, fn, cache, serialize);
+  }
+  function strategyDefault(fn, options) {
+    var strategy = fn.length === 1 ? monadic : variadic;
+    return assemble(fn, this, strategy, options.cache.create(), options.serializer);
+  }
+  function strategyVariadic(fn, options) {
+    return assemble(fn, this, variadic, options.cache.create(), options.serializer);
+  }
+  function strategyMonadic(fn, options) {
+    return assemble(fn, this, monadic, options.cache.create(), options.serializer);
+  }
+  var serializerDefault = function() {
+    return JSON.stringify(arguments);
+  };
+  function ObjectWithoutPrototypeCache() {
+    this.cache = /* @__PURE__ */ Object.create(null);
+  }
+  ObjectWithoutPrototypeCache.prototype.get = function(key) {
+    return this.cache[key];
+  };
+  ObjectWithoutPrototypeCache.prototype.set = function(key, value2) {
+    this.cache[key] = value2;
+  };
+  var cacheDefault = {
+    create: function create() {
+      return new ObjectWithoutPrototypeCache();
+    }
+  };
+  var strategies = {
+    variadic: strategyVariadic,
+    monadic: strategyMonadic
+  };
+  var ErrorKind;
+  (function(ErrorKind2) {
+    ErrorKind2[ErrorKind2["EXPECT_ARGUMENT_CLOSING_BRACE"] = 1] = "EXPECT_ARGUMENT_CLOSING_BRACE";
+    ErrorKind2[ErrorKind2["EMPTY_ARGUMENT"] = 2] = "EMPTY_ARGUMENT";
+    ErrorKind2[ErrorKind2["MALFORMED_ARGUMENT"] = 3] = "MALFORMED_ARGUMENT";
+    ErrorKind2[ErrorKind2["EXPECT_ARGUMENT_TYPE"] = 4] = "EXPECT_ARGUMENT_TYPE";
+    ErrorKind2[ErrorKind2["INVALID_ARGUMENT_TYPE"] = 5] = "INVALID_ARGUMENT_TYPE";
+    ErrorKind2[ErrorKind2["EXPECT_ARGUMENT_STYLE"] = 6] = "EXPECT_ARGUMENT_STYLE";
+    ErrorKind2[ErrorKind2["INVALID_NUMBER_SKELETON"] = 7] = "INVALID_NUMBER_SKELETON";
+    ErrorKind2[ErrorKind2["INVALID_DATE_TIME_SKELETON"] = 8] = "INVALID_DATE_TIME_SKELETON";
+    ErrorKind2[ErrorKind2["EXPECT_NUMBER_SKELETON"] = 9] = "EXPECT_NUMBER_SKELETON";
+    ErrorKind2[ErrorKind2["EXPECT_DATE_TIME_SKELETON"] = 10] = "EXPECT_DATE_TIME_SKELETON";
+    ErrorKind2[ErrorKind2["UNCLOSED_QUOTE_IN_ARGUMENT_STYLE"] = 11] = "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE";
+    ErrorKind2[ErrorKind2["EXPECT_SELECT_ARGUMENT_OPTIONS"] = 12] = "EXPECT_SELECT_ARGUMENT_OPTIONS";
+    ErrorKind2[ErrorKind2["EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE"] = 13] = "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE";
+    ErrorKind2[ErrorKind2["INVALID_PLURAL_ARGUMENT_OFFSET_VALUE"] = 14] = "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE";
+    ErrorKind2[ErrorKind2["EXPECT_SELECT_ARGUMENT_SELECTOR"] = 15] = "EXPECT_SELECT_ARGUMENT_SELECTOR";
+    ErrorKind2[ErrorKind2["EXPECT_PLURAL_ARGUMENT_SELECTOR"] = 16] = "EXPECT_PLURAL_ARGUMENT_SELECTOR";
+    ErrorKind2[ErrorKind2["EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT"] = 17] = "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT";
+    ErrorKind2[ErrorKind2["EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT"] = 18] = "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT";
+    ErrorKind2[ErrorKind2["INVALID_PLURAL_ARGUMENT_SELECTOR"] = 19] = "INVALID_PLURAL_ARGUMENT_SELECTOR";
+    ErrorKind2[ErrorKind2["DUPLICATE_PLURAL_ARGUMENT_SELECTOR"] = 20] = "DUPLICATE_PLURAL_ARGUMENT_SELECTOR";
+    ErrorKind2[ErrorKind2["DUPLICATE_SELECT_ARGUMENT_SELECTOR"] = 21] = "DUPLICATE_SELECT_ARGUMENT_SELECTOR";
+    ErrorKind2[ErrorKind2["MISSING_OTHER_CLAUSE"] = 22] = "MISSING_OTHER_CLAUSE";
+    ErrorKind2[ErrorKind2["INVALID_TAG"] = 23] = "INVALID_TAG";
+    ErrorKind2[ErrorKind2["INVALID_TAG_NAME"] = 25] = "INVALID_TAG_NAME";
+    ErrorKind2[ErrorKind2["UNMATCHED_CLOSING_TAG"] = 26] = "UNMATCHED_CLOSING_TAG";
+    ErrorKind2[ErrorKind2["UNCLOSED_TAG"] = 27] = "UNCLOSED_TAG";
+  })(ErrorKind || (ErrorKind = {}));
+  var TYPE;
+  (function(TYPE2) {
+    TYPE2[TYPE2["literal"] = 0] = "literal";
+    TYPE2[TYPE2["argument"] = 1] = "argument";
+    TYPE2[TYPE2["number"] = 2] = "number";
+    TYPE2[TYPE2["date"] = 3] = "date";
+    TYPE2[TYPE2["time"] = 4] = "time";
+    TYPE2[TYPE2["select"] = 5] = "select";
+    TYPE2[TYPE2["plural"] = 6] = "plural";
+    TYPE2[TYPE2["pound"] = 7] = "pound";
+    TYPE2[TYPE2["tag"] = 8] = "tag";
+  })(TYPE || (TYPE = {}));
+  var SKELETON_TYPE;
+  (function(SKELETON_TYPE2) {
+    SKELETON_TYPE2[SKELETON_TYPE2["number"] = 0] = "number";
+    SKELETON_TYPE2[SKELETON_TYPE2["dateTime"] = 1] = "dateTime";
+  })(SKELETON_TYPE || (SKELETON_TYPE = {}));
+  function isLiteralElement(el) {
+    return el.type === TYPE.literal;
+  }
+  function isArgumentElement(el) {
+    return el.type === TYPE.argument;
+  }
+  function isNumberElement(el) {
+    return el.type === TYPE.number;
+  }
+  function isDateElement(el) {
+    return el.type === TYPE.date;
+  }
+  function isTimeElement(el) {
+    return el.type === TYPE.time;
+  }
+  function isSelectElement(el) {
+    return el.type === TYPE.select;
+  }
+  function isPluralElement(el) {
+    return el.type === TYPE.plural;
+  }
+  function isPoundElement(el) {
+    return el.type === TYPE.pound;
+  }
+  function isTagElement(el) {
+    return el.type === TYPE.tag;
+  }
+  function isNumberSkeleton(el) {
+    return !!(el && typeof el === "object" && el.type === SKELETON_TYPE.number);
+  }
+  function isDateTimeSkeleton(el) {
+    return !!(el && typeof el === "object" && el.type === SKELETON_TYPE.dateTime);
+  }
+  var SPACE_SEPARATOR_REGEX = /[ \xA0\u1680\u2000-\u200A\u202F\u205F\u3000]/;
+  var DATE_TIME_REGEX = /(?:[Eec]{1,6}|G{1,5}|[Qq]{1,5}|(?:[yYur]+|U{1,5})|[ML]{1,5}|d{1,2}|D{1,3}|F{1}|[abB]{1,5}|[hkHK]{1,2}|w{1,2}|W{1}|m{1,2}|s{1,2}|[zZOvVxX]{1,4})(?=([^']*'[^']*')*[^']*$)/g;
+  function parseDateTimeSkeleton(skeleton2) {
+    var result = {};
+    skeleton2.replace(DATE_TIME_REGEX, function(match2) {
+      var len = match2.length;
+      switch (match2[0]) {
+        case "G":
+          result.era = len === 4 ? "long" : len === 5 ? "narrow" : "short";
+          break;
+        case "y":
+          result.year = len === 2 ? "2-digit" : "numeric";
+          break;
+        case "Y":
+        case "u":
+        case "U":
+        case "r":
+          throw new RangeError("`Y/u/U/r` (year) patterns are not supported, use `y` instead");
+        case "q":
+        case "Q":
+          throw new RangeError("`q/Q` (quarter) patterns are not supported");
+        case "M":
+        case "L":
+          result.month = ["numeric", "2-digit", "short", "long", "narrow"][len - 1];
+          break;
+        case "w":
+        case "W":
+          throw new RangeError("`w/W` (week) patterns are not supported");
+        case "d":
+          result.day = ["numeric", "2-digit"][len - 1];
+          break;
+        case "D":
+        case "F":
+        case "g":
+          throw new RangeError("`D/F/g` (day) patterns are not supported, use `d` instead");
+        case "E":
+          result.weekday = len === 4 ? "long" : len === 5 ? "narrow" : "short";
+          break;
+        case "e":
+          if (len < 4) {
+            throw new RangeError("`e..eee` (weekday) patterns are not supported");
+          }
+          result.weekday = ["short", "long", "narrow", "short"][len - 4];
+          break;
+        case "c":
+          if (len < 4) {
+            throw new RangeError("`c..ccc` (weekday) patterns are not supported");
+          }
+          result.weekday = ["short", "long", "narrow", "short"][len - 4];
+          break;
+        case "a":
+          result.hour12 = true;
+          break;
+        case "b":
+        case "B":
+          throw new RangeError("`b/B` (period) patterns are not supported, use `a` instead");
+        case "h":
+          result.hourCycle = "h12";
+          result.hour = ["numeric", "2-digit"][len - 1];
+          break;
+        case "H":
+          result.hourCycle = "h23";
+          result.hour = ["numeric", "2-digit"][len - 1];
+          break;
+        case "K":
+          result.hourCycle = "h11";
+          result.hour = ["numeric", "2-digit"][len - 1];
+          break;
+        case "k":
+          result.hourCycle = "h24";
+          result.hour = ["numeric", "2-digit"][len - 1];
+          break;
+        case "j":
+        case "J":
+        case "C":
+          throw new RangeError("`j/J/C` (hour) patterns are not supported, use `h/H/K/k` instead");
+        case "m":
+          result.minute = ["numeric", "2-digit"][len - 1];
+          break;
+        case "s":
+          result.second = ["numeric", "2-digit"][len - 1];
+          break;
+        case "S":
+        case "A":
+          throw new RangeError("`S/A` (second) patterns are not supported, use `s` instead");
+        case "z":
+          result.timeZoneName = len < 4 ? "short" : "long";
+          break;
+        case "Z":
+        case "O":
+        case "v":
+        case "V":
+        case "X":
+        case "x":
+          throw new RangeError("`Z/O/v/V/X/x` (timeZone) patterns are not supported, use `z` instead");
+      }
+      return "";
+    });
+    return result;
+  }
+  var WHITE_SPACE_REGEX = /[\t-\r \x85\u200E\u200F\u2028\u2029]/i;
+  function parseNumberSkeletonFromString(skeleton2) {
+    if (skeleton2.length === 0) {
+      throw new Error("Number skeleton cannot be empty");
+    }
+    var stringTokens = skeleton2.split(WHITE_SPACE_REGEX).filter(function(x) {
+      return x.length > 0;
+    });
+    var tokens = [];
+    for (var _i = 0, stringTokens_1 = stringTokens; _i < stringTokens_1.length; _i++) {
+      var stringToken = stringTokens_1[_i];
+      var stemAndOptions = stringToken.split("/");
+      if (stemAndOptions.length === 0) {
+        throw new Error("Invalid number skeleton");
+      }
+      var stem = stemAndOptions[0], options = stemAndOptions.slice(1);
+      for (var _a2 = 0, options_1 = options; _a2 < options_1.length; _a2++) {
+        var option = options_1[_a2];
+        if (option.length === 0) {
+          throw new Error("Invalid number skeleton");
+        }
+      }
+      tokens.push({ stem, options });
+    }
+    return tokens;
+  }
+  function icuUnitToEcma(unit) {
+    return unit.replace(/^(.*?)-/, "");
+  }
+  var FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\*)?|(#+)|(0+)(#+))$/g;
+  var SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?[rs]?$/g;
+  var INTEGER_WIDTH_REGEX = /(\*)(0+)|(#+)(0+)|(0+)/g;
+  var CONCISE_INTEGER_WIDTH_REGEX = /^(0+)$/;
+  function parseSignificantPrecision(str) {
+    var result = {};
+    if (str[str.length - 1] === "r") {
+      result.roundingPriority = "morePrecision";
+    } else if (str[str.length - 1] === "s") {
+      result.roundingPriority = "lessPrecision";
+    }
+    str.replace(SIGNIFICANT_PRECISION_REGEX, function(_, g1, g2) {
+      if (typeof g2 !== "string") {
+        result.minimumSignificantDigits = g1.length;
+        result.maximumSignificantDigits = g1.length;
+      } else if (g2 === "+") {
+        result.minimumSignificantDigits = g1.length;
+      } else if (g1[0] === "#") {
+        result.maximumSignificantDigits = g1.length;
+      } else {
+        result.minimumSignificantDigits = g1.length;
+        result.maximumSignificantDigits = g1.length + (typeof g2 === "string" ? g2.length : 0);
+      }
+      return "";
+    });
+    return result;
+  }
+  function parseSign(str) {
+    switch (str) {
+      case "sign-auto":
+        return {
+          signDisplay: "auto"
+        };
+      case "sign-accounting":
+      case "()":
+        return {
+          currencySign: "accounting"
+        };
+      case "sign-always":
+      case "+!":
+        return {
+          signDisplay: "always"
+        };
+      case "sign-accounting-always":
+      case "()!":
+        return {
+          signDisplay: "always",
+          currencySign: "accounting"
+        };
+      case "sign-except-zero":
+      case "+?":
+        return {
+          signDisplay: "exceptZero"
+        };
+      case "sign-accounting-except-zero":
+      case "()?":
+        return {
+          signDisplay: "exceptZero",
+          currencySign: "accounting"
+        };
+      case "sign-never":
+      case "+_":
+        return {
+          signDisplay: "never"
+        };
+    }
+  }
+  function parseConciseScientificAndEngineeringStem(stem) {
+    var result;
+    if (stem[0] === "E" && stem[1] === "E") {
+      result = {
+        notation: "engineering"
+      };
+      stem = stem.slice(2);
+    } else if (stem[0] === "E") {
+      result = {
+        notation: "scientific"
+      };
+      stem = stem.slice(1);
+    }
+    if (result) {
+      var signDisplay = stem.slice(0, 2);
+      if (signDisplay === "+!") {
+        result.signDisplay = "always";
+        stem = stem.slice(2);
+      } else if (signDisplay === "+?") {
+        result.signDisplay = "exceptZero";
+        stem = stem.slice(2);
+      }
+      if (!CONCISE_INTEGER_WIDTH_REGEX.test(stem)) {
+        throw new Error("Malformed concise eng/scientific notation");
+      }
+      result.minimumIntegerDigits = stem.length;
+    }
+    return result;
+  }
+  function parseNotationOptions(opt) {
+    var result = {};
+    var signOpts = parseSign(opt);
+    if (signOpts) {
+      return signOpts;
+    }
+    return result;
+  }
+  function parseNumberSkeleton(tokens) {
+    var result = {};
+    for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
+      var token = tokens_1[_i];
+      switch (token.stem) {
+        case "percent":
+        case "%":
+          result.style = "percent";
+          continue;
+        case "%x100":
+          result.style = "percent";
+          result.scale = 100;
+          continue;
+        case "currency":
+          result.style = "currency";
+          result.currency = token.options[0];
+          continue;
+        case "group-off":
+        case ",_":
+          result.useGrouping = false;
+          continue;
+        case "precision-integer":
+        case ".":
+          result.maximumFractionDigits = 0;
+          continue;
+        case "measure-unit":
+        case "unit":
+          result.style = "unit";
+          result.unit = icuUnitToEcma(token.options[0]);
+          continue;
+        case "compact-short":
+        case "K":
+          result.notation = "compact";
+          result.compactDisplay = "short";
+          continue;
+        case "compact-long":
+        case "KK":
+          result.notation = "compact";
+          result.compactDisplay = "long";
+          continue;
+        case "scientific":
+          result = __assign(__assign(__assign({}, result), { notation: "scientific" }), token.options.reduce(function(all, opt2) {
+            return __assign(__assign({}, all), parseNotationOptions(opt2));
+          }, {}));
+          continue;
+        case "engineering":
+          result = __assign(__assign(__assign({}, result), { notation: "engineering" }), token.options.reduce(function(all, opt2) {
+            return __assign(__assign({}, all), parseNotationOptions(opt2));
+          }, {}));
+          continue;
+        case "notation-simple":
+          result.notation = "standard";
+          continue;
+        case "unit-width-narrow":
+          result.currencyDisplay = "narrowSymbol";
+          result.unitDisplay = "narrow";
+          continue;
+        case "unit-width-short":
+          result.currencyDisplay = "code";
+          result.unitDisplay = "short";
+          continue;
+        case "unit-width-full-name":
+          result.currencyDisplay = "name";
+          result.unitDisplay = "long";
+          continue;
+        case "unit-width-iso-code":
+          result.currencyDisplay = "symbol";
+          continue;
+        case "scale":
+          result.scale = parseFloat(token.options[0]);
+          continue;
+        case "rounding-mode-floor":
+          result.roundingMode = "floor";
+          continue;
+        case "rounding-mode-ceiling":
+          result.roundingMode = "ceil";
+          continue;
+        case "rounding-mode-down":
+          result.roundingMode = "trunc";
+          continue;
+        case "rounding-mode-up":
+          result.roundingMode = "expand";
+          continue;
+        case "rounding-mode-half-even":
+          result.roundingMode = "halfEven";
+          continue;
+        case "rounding-mode-half-down":
+          result.roundingMode = "halfTrunc";
+          continue;
+        case "rounding-mode-half-up":
+          result.roundingMode = "halfExpand";
+          continue;
+        case "integer-width":
+          if (token.options.length > 1) {
+            throw new RangeError("integer-width stems only accept a single optional option");
+          }
+          token.options[0].replace(INTEGER_WIDTH_REGEX, function(_, g1, g2, g3, g4, g5) {
+            if (g1) {
+              result.minimumIntegerDigits = g2.length;
+            } else if (g3 && g4) {
+              throw new Error("We currently do not support maximum integer digits");
+            } else if (g5) {
+              throw new Error("We currently do not support exact integer digits");
+            }
+            return "";
+          });
+          continue;
+      }
+      if (CONCISE_INTEGER_WIDTH_REGEX.test(token.stem)) {
+        result.minimumIntegerDigits = token.stem.length;
+        continue;
+      }
+      if (FRACTION_PRECISION_REGEX.test(token.stem)) {
+        if (token.options.length > 1) {
+          throw new RangeError("Fraction-precision stems only accept a single optional option");
+        }
+        token.stem.replace(FRACTION_PRECISION_REGEX, function(_, g1, g2, g3, g4, g5) {
+          if (g2 === "*") {
+            result.minimumFractionDigits = g1.length;
+          } else if (g3 && g3[0] === "#") {
+            result.maximumFractionDigits = g3.length;
+          } else if (g4 && g5) {
+            result.minimumFractionDigits = g4.length;
+            result.maximumFractionDigits = g4.length + g5.length;
+          } else {
+            result.minimumFractionDigits = g1.length;
+            result.maximumFractionDigits = g1.length;
+          }
+          return "";
+        });
+        var opt = token.options[0];
+        if (opt === "w") {
+          result = __assign(__assign({}, result), { trailingZeroDisplay: "stripIfInteger" });
+        } else if (opt) {
+          result = __assign(__assign({}, result), parseSignificantPrecision(opt));
+        }
+        continue;
+      }
+      if (SIGNIFICANT_PRECISION_REGEX.test(token.stem)) {
+        result = __assign(__assign({}, result), parseSignificantPrecision(token.stem));
+        continue;
+      }
+      var signOpts = parseSign(token.stem);
+      if (signOpts) {
+        result = __assign(__assign({}, result), signOpts);
+      }
+      var conciseScientificAndEngineeringOpts = parseConciseScientificAndEngineeringStem(token.stem);
+      if (conciseScientificAndEngineeringOpts) {
+        result = __assign(__assign({}, result), conciseScientificAndEngineeringOpts);
+      }
+    }
+    return result;
+  }
+  var timeData = {
+    "001": [
+      "H",
+      "h"
+    ],
+    "419": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "AC": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "AD": [
+      "H",
+      "hB"
+    ],
+    "AE": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "AF": [
+      "H",
+      "hb",
+      "hB",
+      "h"
+    ],
+    "AG": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "AI": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "AL": [
+      "h",
+      "H",
+      "hB"
+    ],
+    "AM": [
+      "H",
+      "hB"
+    ],
+    "AO": [
+      "H",
+      "hB"
+    ],
+    "AR": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "AS": [
+      "h",
+      "H"
+    ],
+    "AT": [
+      "H",
+      "hB"
+    ],
+    "AU": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "AW": [
+      "H",
+      "hB"
+    ],
+    "AX": [
+      "H"
+    ],
+    "AZ": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "BA": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "BB": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "BD": [
+      "h",
+      "hB",
+      "H"
+    ],
+    "BE": [
+      "H",
+      "hB"
+    ],
+    "BF": [
+      "H",
+      "hB"
+    ],
+    "BG": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "BH": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "BI": [
+      "H",
+      "h"
+    ],
+    "BJ": [
+      "H",
+      "hB"
+    ],
+    "BL": [
+      "H",
+      "hB"
+    ],
+    "BM": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "BN": [
+      "hb",
+      "hB",
+      "h",
+      "H"
+    ],
+    "BO": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "BQ": [
+      "H"
+    ],
+    "BR": [
+      "H",
+      "hB"
+    ],
+    "BS": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "BT": [
+      "h",
+      "H"
+    ],
+    "BW": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "BY": [
+      "H",
+      "h"
+    ],
+    "BZ": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "CA": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "CC": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "CD": [
+      "hB",
+      "H"
+    ],
+    "CF": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "CG": [
+      "H",
+      "hB"
+    ],
+    "CH": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "CI": [
+      "H",
+      "hB"
+    ],
+    "CK": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "CL": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "CM": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "CN": [
+      "H",
+      "hB",
+      "hb",
+      "h"
+    ],
+    "CO": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "CP": [
+      "H"
+    ],
+    "CR": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "CU": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "CV": [
+      "H",
+      "hB"
+    ],
+    "CW": [
+      "H",
+      "hB"
+    ],
+    "CX": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "CY": [
+      "h",
+      "H",
+      "hb",
+      "hB"
+    ],
+    "CZ": [
+      "H"
+    ],
+    "DE": [
+      "H",
+      "hB"
+    ],
+    "DG": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "DJ": [
+      "h",
+      "H"
+    ],
+    "DK": [
+      "H"
+    ],
+    "DM": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "DO": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "DZ": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "EA": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "EC": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "EE": [
+      "H",
+      "hB"
+    ],
+    "EG": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "EH": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "ER": [
+      "h",
+      "H"
+    ],
+    "ES": [
+      "H",
+      "hB",
+      "h",
+      "hb"
+    ],
+    "ET": [
+      "hB",
+      "hb",
+      "h",
+      "H"
+    ],
+    "FI": [
+      "H"
+    ],
+    "FJ": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "FK": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "FM": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "FO": [
+      "H",
+      "h"
+    ],
+    "FR": [
+      "H",
+      "hB"
+    ],
+    "GA": [
+      "H",
+      "hB"
+    ],
+    "GB": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "GD": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "GE": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "GF": [
+      "H",
+      "hB"
+    ],
+    "GG": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "GH": [
+      "h",
+      "H"
+    ],
+    "GI": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "GL": [
+      "H",
+      "h"
+    ],
+    "GM": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "GN": [
+      "H",
+      "hB"
+    ],
+    "GP": [
+      "H",
+      "hB"
+    ],
+    "GQ": [
+      "H",
+      "hB",
+      "h",
+      "hb"
+    ],
+    "GR": [
+      "h",
+      "H",
+      "hb",
+      "hB"
+    ],
+    "GT": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "GU": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "GW": [
+      "H",
+      "hB"
+    ],
+    "GY": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "HK": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "HN": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "HR": [
+      "H",
+      "hB"
+    ],
+    "HU": [
+      "H",
+      "h"
+    ],
+    "IC": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "ID": [
+      "H"
+    ],
+    "IE": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "IL": [
+      "H",
+      "hB"
+    ],
+    "IM": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "IN": [
+      "h",
+      "H"
+    ],
+    "IO": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "IQ": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "IR": [
+      "hB",
+      "H"
+    ],
+    "IS": [
+      "H"
+    ],
+    "IT": [
+      "H",
+      "hB"
+    ],
+    "JE": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "JM": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "JO": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "JP": [
+      "H",
+      "K",
+      "h"
+    ],
+    "KE": [
+      "hB",
+      "hb",
+      "H",
+      "h"
+    ],
+    "KG": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "KH": [
+      "hB",
+      "h",
+      "H",
+      "hb"
+    ],
+    "KI": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "KM": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "KN": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "KP": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "KR": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "KW": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "KY": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "KZ": [
+      "H",
+      "hB"
+    ],
+    "LA": [
+      "H",
+      "hb",
+      "hB",
+      "h"
+    ],
+    "LB": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "LC": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "LI": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "LK": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "LR": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "LS": [
+      "h",
+      "H"
+    ],
+    "LT": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "LU": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "LV": [
+      "H",
+      "hB",
+      "hb",
+      "h"
+    ],
+    "LY": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "MA": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "MC": [
+      "H",
+      "hB"
+    ],
+    "MD": [
+      "H",
+      "hB"
+    ],
+    "ME": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "MF": [
+      "H",
+      "hB"
+    ],
+    "MG": [
+      "H",
+      "h"
+    ],
+    "MH": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "MK": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "ML": [
+      "H"
+    ],
+    "MM": [
+      "hB",
+      "hb",
+      "H",
+      "h"
+    ],
+    "MN": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "MO": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "MP": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "MQ": [
+      "H",
+      "hB"
+    ],
+    "MR": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "MS": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "MT": [
+      "H",
+      "h"
+    ],
+    "MU": [
+      "H",
+      "h"
+    ],
+    "MV": [
+      "H",
+      "h"
+    ],
+    "MW": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "MX": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "MY": [
+      "hb",
+      "hB",
+      "h",
+      "H"
+    ],
+    "MZ": [
+      "H",
+      "hB"
+    ],
+    "NA": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "NC": [
+      "H",
+      "hB"
+    ],
+    "NE": [
+      "H"
+    ],
+    "NF": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "NG": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "NI": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "NL": [
+      "H",
+      "hB"
+    ],
+    "NO": [
+      "H",
+      "h"
+    ],
+    "NP": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "NR": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "NU": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "NZ": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "OM": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "PA": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "PE": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "PF": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "PG": [
+      "h",
+      "H"
+    ],
+    "PH": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "PK": [
+      "h",
+      "hB",
+      "H"
+    ],
+    "PL": [
+      "H",
+      "h"
+    ],
+    "PM": [
+      "H",
+      "hB"
+    ],
+    "PN": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "PR": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "PS": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "PT": [
+      "H",
+      "hB"
+    ],
+    "PW": [
+      "h",
+      "H"
+    ],
+    "PY": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "QA": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "RE": [
+      "H",
+      "hB"
+    ],
+    "RO": [
+      "H",
+      "hB"
+    ],
+    "RS": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "RU": [
+      "H"
+    ],
+    "RW": [
+      "H",
+      "h"
+    ],
+    "SA": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "SB": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "SC": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "SD": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "SE": [
+      "H"
+    ],
+    "SG": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "SH": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "SI": [
+      "H",
+      "hB"
+    ],
+    "SJ": [
+      "H"
+    ],
+    "SK": [
+      "H"
+    ],
+    "SL": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "SM": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "SN": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "SO": [
+      "h",
+      "H"
+    ],
+    "SR": [
+      "H",
+      "hB"
+    ],
+    "SS": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "ST": [
+      "H",
+      "hB"
+    ],
+    "SV": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "SX": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "SY": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "SZ": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "TA": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "TC": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "TD": [
+      "h",
+      "H",
+      "hB"
+    ],
+    "TF": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "TG": [
+      "H",
+      "hB"
+    ],
+    "TH": [
+      "H",
+      "h"
+    ],
+    "TJ": [
+      "H",
+      "h"
+    ],
+    "TL": [
+      "H",
+      "hB",
+      "hb",
+      "h"
+    ],
+    "TM": [
+      "H",
+      "h"
+    ],
+    "TN": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "TO": [
+      "h",
+      "H"
+    ],
+    "TR": [
+      "H",
+      "hB"
+    ],
+    "TT": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "TW": [
+      "hB",
+      "hb",
+      "h",
+      "H"
+    ],
+    "TZ": [
+      "hB",
+      "hb",
+      "H",
+      "h"
+    ],
+    "UA": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "UG": [
+      "hB",
+      "hb",
+      "H",
+      "h"
+    ],
+    "UM": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "US": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "UY": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "UZ": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "VA": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "VC": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "VE": [
+      "h",
+      "H",
+      "hB",
+      "hb"
+    ],
+    "VG": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "VI": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "VN": [
+      "H",
+      "h"
+    ],
+    "VU": [
+      "h",
+      "H"
+    ],
+    "WF": [
+      "H",
+      "hB"
+    ],
+    "WS": [
+      "h",
+      "H"
+    ],
+    "XK": [
+      "H",
+      "hB",
+      "h"
+    ],
+    "YE": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "YT": [
+      "H",
+      "hB"
+    ],
+    "ZA": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "ZM": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "ZW": [
+      "H",
+      "h"
+    ],
+    "af-ZA": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "ar-001": [
+      "h",
+      "hB",
+      "hb",
+      "H"
+    ],
+    "ca-ES": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "en-001": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "en-HK": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "en-IL": [
+      "H",
+      "h",
+      "hb",
+      "hB"
+    ],
+    "en-MY": [
+      "h",
+      "hb",
+      "H",
+      "hB"
+    ],
+    "es-BR": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "es-ES": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "es-GQ": [
+      "H",
+      "h",
+      "hB",
+      "hb"
+    ],
+    "fr-CA": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "gl-ES": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "gu-IN": [
+      "hB",
+      "hb",
+      "h",
+      "H"
+    ],
+    "hi-IN": [
+      "hB",
+      "h",
+      "H"
+    ],
+    "it-CH": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "it-IT": [
+      "H",
+      "h",
+      "hB"
+    ],
+    "kn-IN": [
+      "hB",
+      "h",
+      "H"
+    ],
+    "ml-IN": [
+      "hB",
+      "h",
+      "H"
+    ],
+    "mr-IN": [
+      "hB",
+      "hb",
+      "h",
+      "H"
+    ],
+    "pa-IN": [
+      "hB",
+      "hb",
+      "h",
+      "H"
+    ],
+    "ta-IN": [
+      "hB",
+      "h",
+      "hb",
+      "H"
+    ],
+    "te-IN": [
+      "hB",
+      "h",
+      "H"
+    ],
+    "zu-ZA": [
+      "H",
+      "hB",
+      "hb",
+      "h"
+    ]
+  };
+  function getBestPattern(skeleton2, locale) {
+    var skeletonCopy = "";
+    for (var patternPos = 0; patternPos < skeleton2.length; patternPos++) {
+      var patternChar = skeleton2.charAt(patternPos);
+      if (patternChar === "j") {
+        var extraLength = 0;
+        while (patternPos + 1 < skeleton2.length && skeleton2.charAt(patternPos + 1) === patternChar) {
+          extraLength++;
+          patternPos++;
+        }
+        var hourLen = 1 + (extraLength & 1);
+        var dayPeriodLen = extraLength < 2 ? 1 : 3 + (extraLength >> 1);
+        var dayPeriodChar = "a";
+        var hourChar = getDefaultHourSymbolFromLocale(locale);
+        if (hourChar == "H" || hourChar == "k") {
+          dayPeriodLen = 0;
+        }
+        while (dayPeriodLen-- > 0) {
+          skeletonCopy += dayPeriodChar;
+        }
+        while (hourLen-- > 0) {
+          skeletonCopy = hourChar + skeletonCopy;
+        }
+      } else if (patternChar === "J") {
+        skeletonCopy += "H";
+      } else {
+        skeletonCopy += patternChar;
+      }
+    }
+    return skeletonCopy;
+  }
+  function getDefaultHourSymbolFromLocale(locale) {
+    var hourCycle = locale.hourCycle;
+    if (hourCycle === void 0 && // @ts-ignore hourCycle(s) is not identified yet
+    locale.hourCycles && // @ts-ignore
+    locale.hourCycles.length) {
+      hourCycle = locale.hourCycles[0];
+    }
+    if (hourCycle) {
+      switch (hourCycle) {
+        case "h24":
+          return "k";
+        case "h23":
+          return "H";
+        case "h12":
+          return "h";
+        case "h11":
+          return "K";
+        default:
+          throw new Error("Invalid hourCycle");
+      }
+    }
+    var languageTag = locale.language;
+    var regionTag;
+    if (languageTag !== "root") {
+      regionTag = locale.maximize().region;
+    }
+    var hourCycles = timeData[regionTag || ""] || timeData[languageTag || ""] || timeData["".concat(languageTag, "-001")] || timeData["001"];
+    return hourCycles[0];
+  }
+  var _a;
+  var SPACE_SEPARATOR_START_REGEX = new RegExp("^".concat(SPACE_SEPARATOR_REGEX.source, "*"));
+  var SPACE_SEPARATOR_END_REGEX = new RegExp("".concat(SPACE_SEPARATOR_REGEX.source, "*$"));
+  function createLocation(start, end) {
+    return { start, end };
+  }
+  var hasNativeStartsWith = !!String.prototype.startsWith && "_a".startsWith("a", 1);
+  var hasNativeFromCodePoint = !!String.fromCodePoint;
+  var hasNativeFromEntries = !!Object.fromEntries;
+  var hasNativeCodePointAt = !!String.prototype.codePointAt;
+  var hasTrimStart = !!String.prototype.trimStart;
+  var hasTrimEnd = !!String.prototype.trimEnd;
+  var hasNativeIsSafeInteger = !!Number.isSafeInteger;
+  var isSafeInteger = hasNativeIsSafeInteger ? Number.isSafeInteger : function(n) {
+    return typeof n === "number" && isFinite(n) && Math.floor(n) === n && Math.abs(n) <= 9007199254740991;
+  };
+  var REGEX_SUPPORTS_U_AND_Y = true;
+  try {
+    var re = RE("([^\\p{White_Space}\\p{Pattern_Syntax}]*)", "yu");
+    REGEX_SUPPORTS_U_AND_Y = ((_a = re.exec("a")) === null || _a === void 0 ? void 0 : _a[0]) === "a";
+  } catch (_) {
+    REGEX_SUPPORTS_U_AND_Y = false;
+  }
+  var startsWith = hasNativeStartsWith ? (
+    // Native
+    function startsWith2(s, search, position) {
+      return s.startsWith(search, position);
+    }
+  ) : (
+    // For IE11
+    function startsWith2(s, search, position) {
+      return s.slice(position, position + search.length) === search;
+    }
+  );
+  var fromCodePoint = hasNativeFromCodePoint ? String.fromCodePoint : (
+    // IE11
+    function fromCodePoint2() {
+      var codePoints = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        codePoints[_i] = arguments[_i];
+      }
+      var elements = "";
+      var length = codePoints.length;
+      var i = 0;
+      var code2;
+      while (length > i) {
+        code2 = codePoints[i++];
+        if (code2 > 1114111)
+          throw RangeError(code2 + " is not a valid code point");
+        elements += code2 < 65536 ? String.fromCharCode(code2) : String.fromCharCode(((code2 -= 65536) >> 10) + 55296, code2 % 1024 + 56320);
+      }
+      return elements;
+    }
+  );
+  var fromEntries = (
+    // native
+    hasNativeFromEntries ? Object.fromEntries : (
+      // Ponyfill
+      function fromEntries2(entries) {
+        var obj = {};
+        for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+          var _a2 = entries_1[_i], k = _a2[0], v = _a2[1];
+          obj[k] = v;
+        }
+        return obj;
+      }
+    )
+  );
+  var codePointAt = hasNativeCodePointAt ? (
+    // Native
+    function codePointAt2(s, index) {
+      return s.codePointAt(index);
+    }
+  ) : (
+    // IE 11
+    function codePointAt2(s, index) {
+      var size = s.length;
+      if (index < 0 || index >= size) {
+        return void 0;
+      }
+      var first = s.charCodeAt(index);
+      var second;
+      return first < 55296 || first > 56319 || index + 1 === size || (second = s.charCodeAt(index + 1)) < 56320 || second > 57343 ? first : (first - 55296 << 10) + (second - 56320) + 65536;
+    }
+  );
+  var trimStart = hasTrimStart ? (
+    // Native
+    function trimStart2(s) {
+      return s.trimStart();
+    }
+  ) : (
+    // Ponyfill
+    function trimStart2(s) {
+      return s.replace(SPACE_SEPARATOR_START_REGEX, "");
+    }
+  );
+  var trimEnd = hasTrimEnd ? (
+    // Native
+    function trimEnd2(s) {
+      return s.trimEnd();
+    }
+  ) : (
+    // Ponyfill
+    function trimEnd2(s) {
+      return s.replace(SPACE_SEPARATOR_END_REGEX, "");
+    }
+  );
+  function RE(s, flag) {
+    return new RegExp(s, flag);
+  }
+  var matchIdentifierAtIndex;
+  if (REGEX_SUPPORTS_U_AND_Y) {
+    var IDENTIFIER_PREFIX_RE_1 = RE("([^\\p{White_Space}\\p{Pattern_Syntax}]*)", "yu");
+    matchIdentifierAtIndex = function matchIdentifierAtIndex2(s, index) {
+      var _a2;
+      IDENTIFIER_PREFIX_RE_1.lastIndex = index;
+      var match2 = IDENTIFIER_PREFIX_RE_1.exec(s);
+      return (_a2 = match2[1]) !== null && _a2 !== void 0 ? _a2 : "";
+    };
+  } else {
+    matchIdentifierAtIndex = function matchIdentifierAtIndex2(s, index) {
+      var match2 = [];
+      while (true) {
+        var c = codePointAt(s, index);
+        if (c === void 0 || _isWhiteSpace(c) || _isPatternSyntax(c)) {
+          break;
+        }
+        match2.push(c);
+        index += c >= 65536 ? 2 : 1;
+      }
+      return fromCodePoint.apply(void 0, match2);
+    };
+  }
+  var Parser = (
+    /** @class */
+    function() {
+      function Parser2(message, options) {
+        if (options === void 0) {
+          options = {};
+        }
+        this.message = message;
+        this.position = { offset: 0, line: 1, column: 1 };
+        this.ignoreTag = !!options.ignoreTag;
+        this.locale = options.locale;
+        this.requiresOtherClause = !!options.requiresOtherClause;
+        this.shouldParseSkeletons = !!options.shouldParseSkeletons;
+      }
+      Parser2.prototype.parse = function() {
+        if (this.offset() !== 0) {
+          throw Error("parser can only be used once");
+        }
+        return this.parseMessage(0, "", false);
+      };
+      Parser2.prototype.parseMessage = function(nestingLevel, parentArgType, expectingCloseTag) {
+        var elements = [];
+        while (!this.isEOF()) {
+          var char = this.char();
+          if (char === 123) {
+            var result = this.parseArgument(nestingLevel, expectingCloseTag);
+            if (result.err) {
+              return result;
+            }
+            elements.push(result.val);
+          } else if (char === 125 && nestingLevel > 0) {
+            break;
+          } else if (char === 35 && (parentArgType === "plural" || parentArgType === "selectordinal")) {
+            var position = this.clonePosition();
+            this.bump();
+            elements.push({
+              type: TYPE.pound,
+              location: createLocation(position, this.clonePosition())
+            });
+          } else if (char === 60 && !this.ignoreTag && this.peek() === 47) {
+            if (expectingCloseTag) {
+              break;
+            } else {
+              return this.error(ErrorKind.UNMATCHED_CLOSING_TAG, createLocation(this.clonePosition(), this.clonePosition()));
+            }
+          } else if (char === 60 && !this.ignoreTag && _isAlpha(this.peek() || 0)) {
+            var result = this.parseTag(nestingLevel, parentArgType);
+            if (result.err) {
+              return result;
+            }
+            elements.push(result.val);
+          } else {
+            var result = this.parseLiteral(nestingLevel, parentArgType);
+            if (result.err) {
+              return result;
+            }
+            elements.push(result.val);
+          }
+        }
+        return { val: elements, err: null };
+      };
+      Parser2.prototype.parseTag = function(nestingLevel, parentArgType) {
+        var startPosition = this.clonePosition();
+        this.bump();
+        var tagName = this.parseTagName();
+        this.bumpSpace();
+        if (this.bumpIf("/>")) {
+          return {
+            val: {
+              type: TYPE.literal,
+              value: "<".concat(tagName, "/>"),
+              location: createLocation(startPosition, this.clonePosition())
+            },
+            err: null
+          };
+        } else if (this.bumpIf(">")) {
+          var childrenResult = this.parseMessage(nestingLevel + 1, parentArgType, true);
+          if (childrenResult.err) {
+            return childrenResult;
+          }
+          var children = childrenResult.val;
+          var endTagStartPosition = this.clonePosition();
+          if (this.bumpIf("</")) {
+            if (this.isEOF() || !_isAlpha(this.char())) {
+              return this.error(ErrorKind.INVALID_TAG, createLocation(endTagStartPosition, this.clonePosition()));
+            }
+            var closingTagNameStartPosition = this.clonePosition();
+            var closingTagName = this.parseTagName();
+            if (tagName !== closingTagName) {
+              return this.error(ErrorKind.UNMATCHED_CLOSING_TAG, createLocation(closingTagNameStartPosition, this.clonePosition()));
+            }
+            this.bumpSpace();
+            if (!this.bumpIf(">")) {
+              return this.error(ErrorKind.INVALID_TAG, createLocation(endTagStartPosition, this.clonePosition()));
+            }
+            return {
+              val: {
+                type: TYPE.tag,
+                value: tagName,
+                children,
+                location: createLocation(startPosition, this.clonePosition())
+              },
+              err: null
+            };
+          } else {
+            return this.error(ErrorKind.UNCLOSED_TAG, createLocation(startPosition, this.clonePosition()));
+          }
+        } else {
+          return this.error(ErrorKind.INVALID_TAG, createLocation(startPosition, this.clonePosition()));
+        }
+      };
+      Parser2.prototype.parseTagName = function() {
+        var startOffset = this.offset();
+        this.bump();
+        while (!this.isEOF() && _isPotentialElementNameChar(this.char())) {
+          this.bump();
+        }
+        return this.message.slice(startOffset, this.offset());
+      };
+      Parser2.prototype.parseLiteral = function(nestingLevel, parentArgType) {
+        var start = this.clonePosition();
+        var value2 = "";
+        while (true) {
+          var parseQuoteResult = this.tryParseQuote(parentArgType);
+          if (parseQuoteResult) {
+            value2 += parseQuoteResult;
+            continue;
+          }
+          var parseUnquotedResult = this.tryParseUnquoted(nestingLevel, parentArgType);
+          if (parseUnquotedResult) {
+            value2 += parseUnquotedResult;
+            continue;
+          }
+          var parseLeftAngleResult = this.tryParseLeftAngleBracket();
+          if (parseLeftAngleResult) {
+            value2 += parseLeftAngleResult;
+            continue;
+          }
+          break;
+        }
+        var location = createLocation(start, this.clonePosition());
+        return {
+          val: { type: TYPE.literal, value: value2, location },
+          err: null
+        };
+      };
+      Parser2.prototype.tryParseLeftAngleBracket = function() {
+        if (!this.isEOF() && this.char() === 60 && (this.ignoreTag || // If at the opening tag or closing tag position, bail.
+        !_isAlphaOrSlash(this.peek() || 0))) {
+          this.bump();
+          return "<";
+        }
+        return null;
+      };
+      Parser2.prototype.tryParseQuote = function(parentArgType) {
+        if (this.isEOF() || this.char() !== 39) {
+          return null;
+        }
+        switch (this.peek()) {
+          case 39:
+            this.bump();
+            this.bump();
+            return "'";
+          case 123:
+          case 60:
+          case 62:
+          case 125:
+            break;
+          case 35:
+            if (parentArgType === "plural" || parentArgType === "selectordinal") {
+              break;
+            }
+            return null;
+          default:
+            return null;
+        }
+        this.bump();
+        var codePoints = [this.char()];
+        this.bump();
+        while (!this.isEOF()) {
+          var ch = this.char();
+          if (ch === 39) {
+            if (this.peek() === 39) {
+              codePoints.push(39);
+              this.bump();
+            } else {
+              this.bump();
+              break;
+            }
+          } else {
+            codePoints.push(ch);
+          }
+          this.bump();
+        }
+        return fromCodePoint.apply(void 0, codePoints);
+      };
+      Parser2.prototype.tryParseUnquoted = function(nestingLevel, parentArgType) {
+        if (this.isEOF()) {
+          return null;
+        }
+        var ch = this.char();
+        if (ch === 60 || ch === 123 || ch === 35 && (parentArgType === "plural" || parentArgType === "selectordinal") || ch === 125 && nestingLevel > 0) {
+          return null;
+        } else {
+          this.bump();
+          return fromCodePoint(ch);
+        }
+      };
+      Parser2.prototype.parseArgument = function(nestingLevel, expectingCloseTag) {
+        var openingBracePosition = this.clonePosition();
+        this.bump();
+        this.bumpSpace();
+        if (this.isEOF()) {
+          return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        if (this.char() === 125) {
+          this.bump();
+          return this.error(ErrorKind.EMPTY_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        var value2 = this.parseIdentifierIfPossible().value;
+        if (!value2) {
+          return this.error(ErrorKind.MALFORMED_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        this.bumpSpace();
+        if (this.isEOF()) {
+          return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        switch (this.char()) {
+          case 125: {
+            this.bump();
+            return {
+              val: {
+                type: TYPE.argument,
+                // value does not include the opening and closing braces.
+                value: value2,
+                location: createLocation(openingBracePosition, this.clonePosition())
+              },
+              err: null
+            };
+          }
+          case 44: {
+            this.bump();
+            this.bumpSpace();
+            if (this.isEOF()) {
+              return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+            }
+            return this.parseArgumentOptions(nestingLevel, expectingCloseTag, value2, openingBracePosition);
+          }
+          default:
+            return this.error(ErrorKind.MALFORMED_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
+        }
+      };
+      Parser2.prototype.parseIdentifierIfPossible = function() {
+        var startingPosition = this.clonePosition();
+        var startOffset = this.offset();
+        var value2 = matchIdentifierAtIndex(this.message, startOffset);
+        var endOffset = startOffset + value2.length;
+        this.bumpTo(endOffset);
+        var endPosition = this.clonePosition();
+        var location = createLocation(startingPosition, endPosition);
+        return { value: value2, location };
+      };
+      Parser2.prototype.parseArgumentOptions = function(nestingLevel, expectingCloseTag, value2, openingBracePosition) {
+        var _a2;
+        var typeStartPosition = this.clonePosition();
+        var argType = this.parseIdentifierIfPossible().value;
+        var typeEndPosition = this.clonePosition();
+        switch (argType) {
+          case "":
+            return this.error(ErrorKind.EXPECT_ARGUMENT_TYPE, createLocation(typeStartPosition, typeEndPosition));
+          case "number":
+          case "date":
+          case "time": {
+            this.bumpSpace();
+            var styleAndLocation = null;
+            if (this.bumpIf(",")) {
+              this.bumpSpace();
+              var styleStartPosition = this.clonePosition();
+              var result = this.parseSimpleArgStyleIfPossible();
+              if (result.err) {
+                return result;
+              }
+              var style = trimEnd(result.val);
+              if (style.length === 0) {
+                return this.error(ErrorKind.EXPECT_ARGUMENT_STYLE, createLocation(this.clonePosition(), this.clonePosition()));
+              }
+              var styleLocation = createLocation(styleStartPosition, this.clonePosition());
+              styleAndLocation = { style, styleLocation };
+            }
+            var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
+            if (argCloseResult.err) {
+              return argCloseResult;
+            }
+            var location_1 = createLocation(openingBracePosition, this.clonePosition());
+            if (styleAndLocation && startsWith(styleAndLocation === null || styleAndLocation === void 0 ? void 0 : styleAndLocation.style, "::", 0)) {
+              var skeleton2 = trimStart(styleAndLocation.style.slice(2));
+              if (argType === "number") {
+                var result = this.parseNumberSkeletonFromString(skeleton2, styleAndLocation.styleLocation);
+                if (result.err) {
+                  return result;
+                }
+                return {
+                  val: { type: TYPE.number, value: value2, location: location_1, style: result.val },
+                  err: null
+                };
+              } else {
+                if (skeleton2.length === 0) {
+                  return this.error(ErrorKind.EXPECT_DATE_TIME_SKELETON, location_1);
+                }
+                var dateTimePattern = skeleton2;
+                if (this.locale) {
+                  dateTimePattern = getBestPattern(skeleton2, this.locale);
+                }
+                var style = {
+                  type: SKELETON_TYPE.dateTime,
+                  pattern: dateTimePattern,
+                  location: styleAndLocation.styleLocation,
+                  parsedOptions: this.shouldParseSkeletons ? parseDateTimeSkeleton(dateTimePattern) : {}
+                };
+                var type = argType === "date" ? TYPE.date : TYPE.time;
+                return {
+                  val: { type, value: value2, location: location_1, style },
+                  err: null
+                };
+              }
+            }
+            return {
+              val: {
+                type: argType === "number" ? TYPE.number : argType === "date" ? TYPE.date : TYPE.time,
+                value: value2,
+                location: location_1,
+                style: (_a2 = styleAndLocation === null || styleAndLocation === void 0 ? void 0 : styleAndLocation.style) !== null && _a2 !== void 0 ? _a2 : null
+              },
+              err: null
+            };
+          }
+          case "plural":
+          case "selectordinal":
+          case "select": {
+            var typeEndPosition_1 = this.clonePosition();
+            this.bumpSpace();
+            if (!this.bumpIf(",")) {
+              return this.error(ErrorKind.EXPECT_SELECT_ARGUMENT_OPTIONS, createLocation(typeEndPosition_1, __assign({}, typeEndPosition_1)));
+            }
+            this.bumpSpace();
+            var identifierAndLocation = this.parseIdentifierIfPossible();
+            var pluralOffset = 0;
+            if (argType !== "select" && identifierAndLocation.value === "offset") {
+              if (!this.bumpIf(":")) {
+                return this.error(ErrorKind.EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE, createLocation(this.clonePosition(), this.clonePosition()));
+              }
+              this.bumpSpace();
+              var result = this.tryParseDecimalInteger(ErrorKind.EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE, ErrorKind.INVALID_PLURAL_ARGUMENT_OFFSET_VALUE);
+              if (result.err) {
+                return result;
+              }
+              this.bumpSpace();
+              identifierAndLocation = this.parseIdentifierIfPossible();
+              pluralOffset = result.val;
+            }
+            var optionsResult = this.tryParsePluralOrSelectOptions(nestingLevel, argType, expectingCloseTag, identifierAndLocation);
+            if (optionsResult.err) {
+              return optionsResult;
+            }
+            var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
+            if (argCloseResult.err) {
+              return argCloseResult;
+            }
+            var location_2 = createLocation(openingBracePosition, this.clonePosition());
+            if (argType === "select") {
+              return {
+                val: {
+                  type: TYPE.select,
+                  value: value2,
+                  options: fromEntries(optionsResult.val),
+                  location: location_2
+                },
+                err: null
+              };
+            } else {
+              return {
+                val: {
+                  type: TYPE.plural,
+                  value: value2,
+                  options: fromEntries(optionsResult.val),
+                  offset: pluralOffset,
+                  pluralType: argType === "plural" ? "cardinal" : "ordinal",
+                  location: location_2
+                },
+                err: null
+              };
+            }
+          }
+          default:
+            return this.error(ErrorKind.INVALID_ARGUMENT_TYPE, createLocation(typeStartPosition, typeEndPosition));
+        }
+      };
+      Parser2.prototype.tryParseArgumentClose = function(openingBracePosition) {
+        if (this.isEOF() || this.char() !== 125) {
+          return this.error(ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        this.bump();
+        return { val: true, err: null };
+      };
+      Parser2.prototype.parseSimpleArgStyleIfPossible = function() {
+        var nestedBraces = 0;
+        var startPosition = this.clonePosition();
+        while (!this.isEOF()) {
+          var ch = this.char();
+          switch (ch) {
+            case 39: {
+              this.bump();
+              var apostrophePosition = this.clonePosition();
+              if (!this.bumpUntil("'")) {
+                return this.error(ErrorKind.UNCLOSED_QUOTE_IN_ARGUMENT_STYLE, createLocation(apostrophePosition, this.clonePosition()));
+              }
+              this.bump();
+              break;
+            }
+            case 123: {
+              nestedBraces += 1;
+              this.bump();
+              break;
+            }
+            case 125: {
+              if (nestedBraces > 0) {
+                nestedBraces -= 1;
+              } else {
+                return {
+                  val: this.message.slice(startPosition.offset, this.offset()),
+                  err: null
+                };
+              }
+              break;
+            }
+            default:
+              this.bump();
+              break;
+          }
+        }
+        return {
+          val: this.message.slice(startPosition.offset, this.offset()),
+          err: null
+        };
+      };
+      Parser2.prototype.parseNumberSkeletonFromString = function(skeleton2, location) {
+        var tokens = [];
+        try {
+          tokens = parseNumberSkeletonFromString(skeleton2);
+        } catch (e) {
+          return this.error(ErrorKind.INVALID_NUMBER_SKELETON, location);
+        }
+        return {
+          val: {
+            type: SKELETON_TYPE.number,
+            tokens,
+            location,
+            parsedOptions: this.shouldParseSkeletons ? parseNumberSkeleton(tokens) : {}
+          },
+          err: null
+        };
+      };
+      Parser2.prototype.tryParsePluralOrSelectOptions = function(nestingLevel, parentArgType, expectCloseTag, parsedFirstIdentifier) {
+        var _a2;
+        var hasOtherClause = false;
+        var options = [];
+        var parsedSelectors = /* @__PURE__ */ new Set();
+        var selector = parsedFirstIdentifier.value, selectorLocation = parsedFirstIdentifier.location;
+        while (true) {
+          if (selector.length === 0) {
+            var startPosition = this.clonePosition();
+            if (parentArgType !== "select" && this.bumpIf("=")) {
+              var result = this.tryParseDecimalInteger(ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR, ErrorKind.INVALID_PLURAL_ARGUMENT_SELECTOR);
+              if (result.err) {
+                return result;
+              }
+              selectorLocation = createLocation(startPosition, this.clonePosition());
+              selector = this.message.slice(startPosition.offset, this.offset());
+            } else {
+              break;
+            }
+          }
+          if (parsedSelectors.has(selector)) {
+            return this.error(parentArgType === "select" ? ErrorKind.DUPLICATE_SELECT_ARGUMENT_SELECTOR : ErrorKind.DUPLICATE_PLURAL_ARGUMENT_SELECTOR, selectorLocation);
+          }
+          if (selector === "other") {
+            hasOtherClause = true;
+          }
+          this.bumpSpace();
+          var openingBracePosition = this.clonePosition();
+          if (!this.bumpIf("{")) {
+            return this.error(parentArgType === "select" ? ErrorKind.EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT : ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT, createLocation(this.clonePosition(), this.clonePosition()));
+          }
+          var fragmentResult = this.parseMessage(nestingLevel + 1, parentArgType, expectCloseTag);
+          if (fragmentResult.err) {
+            return fragmentResult;
+          }
+          var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
+          if (argCloseResult.err) {
+            return argCloseResult;
+          }
+          options.push([
+            selector,
+            {
+              value: fragmentResult.val,
+              location: createLocation(openingBracePosition, this.clonePosition())
+            }
+          ]);
+          parsedSelectors.add(selector);
+          this.bumpSpace();
+          _a2 = this.parseIdentifierIfPossible(), selector = _a2.value, selectorLocation = _a2.location;
+        }
+        if (options.length === 0) {
+          return this.error(parentArgType === "select" ? ErrorKind.EXPECT_SELECT_ARGUMENT_SELECTOR : ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR, createLocation(this.clonePosition(), this.clonePosition()));
+        }
+        if (this.requiresOtherClause && !hasOtherClause) {
+          return this.error(ErrorKind.MISSING_OTHER_CLAUSE, createLocation(this.clonePosition(), this.clonePosition()));
+        }
+        return { val: options, err: null };
+      };
+      Parser2.prototype.tryParseDecimalInteger = function(expectNumberError, invalidNumberError) {
+        var sign2 = 1;
+        var startingPosition = this.clonePosition();
+        if (this.bumpIf("+")) ;
+        else if (this.bumpIf("-")) {
+          sign2 = -1;
+        }
+        var hasDigits = false;
+        var decimal2 = 0;
+        while (!this.isEOF()) {
+          var ch = this.char();
+          if (ch >= 48 && ch <= 57) {
+            hasDigits = true;
+            decimal2 = decimal2 * 10 + (ch - 48);
+            this.bump();
+          } else {
+            break;
+          }
+        }
+        var location = createLocation(startingPosition, this.clonePosition());
+        if (!hasDigits) {
+          return this.error(expectNumberError, location);
+        }
+        decimal2 *= sign2;
+        if (!isSafeInteger(decimal2)) {
+          return this.error(invalidNumberError, location);
+        }
+        return { val: decimal2, err: null };
+      };
+      Parser2.prototype.offset = function() {
+        return this.position.offset;
+      };
+      Parser2.prototype.isEOF = function() {
+        return this.offset() === this.message.length;
+      };
+      Parser2.prototype.clonePosition = function() {
+        return {
+          offset: this.position.offset,
+          line: this.position.line,
+          column: this.position.column
+        };
+      };
+      Parser2.prototype.char = function() {
+        var offset = this.position.offset;
+        if (offset >= this.message.length) {
+          throw Error("out of bound");
+        }
+        var code2 = codePointAt(this.message, offset);
+        if (code2 === void 0) {
+          throw Error("Offset ".concat(offset, " is at invalid UTF-16 code unit boundary"));
+        }
+        return code2;
+      };
+      Parser2.prototype.error = function(kind, location) {
+        return {
+          val: null,
+          err: {
+            kind,
+            message: this.message,
+            location
+          }
+        };
+      };
+      Parser2.prototype.bump = function() {
+        if (this.isEOF()) {
+          return;
+        }
+        var code2 = this.char();
+        if (code2 === 10) {
+          this.position.line += 1;
+          this.position.column = 1;
+          this.position.offset += 1;
+        } else {
+          this.position.column += 1;
+          this.position.offset += code2 < 65536 ? 1 : 2;
+        }
+      };
+      Parser2.prototype.bumpIf = function(prefix) {
+        if (startsWith(this.message, prefix, this.offset())) {
+          for (var i = 0; i < prefix.length; i++) {
+            this.bump();
+          }
+          return true;
+        }
+        return false;
+      };
+      Parser2.prototype.bumpUntil = function(pattern) {
+        var currentOffset = this.offset();
+        var index = this.message.indexOf(pattern, currentOffset);
+        if (index >= 0) {
+          this.bumpTo(index);
+          return true;
+        } else {
+          this.bumpTo(this.message.length);
+          return false;
+        }
+      };
+      Parser2.prototype.bumpTo = function(targetOffset) {
+        if (this.offset() > targetOffset) {
+          throw Error("targetOffset ".concat(targetOffset, " must be greater than or equal to the current offset ").concat(this.offset()));
+        }
+        targetOffset = Math.min(targetOffset, this.message.length);
+        while (true) {
+          var offset = this.offset();
+          if (offset === targetOffset) {
+            break;
+          }
+          if (offset > targetOffset) {
+            throw Error("targetOffset ".concat(targetOffset, " is at invalid UTF-16 code unit boundary"));
+          }
+          this.bump();
+          if (this.isEOF()) {
+            break;
+          }
+        }
+      };
+      Parser2.prototype.bumpSpace = function() {
+        while (!this.isEOF() && _isWhiteSpace(this.char())) {
+          this.bump();
+        }
+      };
+      Parser2.prototype.peek = function() {
+        if (this.isEOF()) {
+          return null;
+        }
+        var code2 = this.char();
+        var offset = this.offset();
+        var nextCode = this.message.charCodeAt(offset + (code2 >= 65536 ? 2 : 1));
+        return nextCode !== null && nextCode !== void 0 ? nextCode : null;
+      };
+      return Parser2;
+    }()
+  );
+  function _isAlpha(codepoint) {
+    return codepoint >= 97 && codepoint <= 122 || codepoint >= 65 && codepoint <= 90;
+  }
+  function _isAlphaOrSlash(codepoint) {
+    return _isAlpha(codepoint) || codepoint === 47;
+  }
+  function _isPotentialElementNameChar(c) {
+    return c === 45 || c === 46 || c >= 48 && c <= 57 || c === 95 || c >= 97 && c <= 122 || c >= 65 && c <= 90 || c == 183 || c >= 192 && c <= 214 || c >= 216 && c <= 246 || c >= 248 && c <= 893 || c >= 895 && c <= 8191 || c >= 8204 && c <= 8205 || c >= 8255 && c <= 8256 || c >= 8304 && c <= 8591 || c >= 11264 && c <= 12271 || c >= 12289 && c <= 55295 || c >= 63744 && c <= 64975 || c >= 65008 && c <= 65533 || c >= 65536 && c <= 983039;
+  }
+  function _isWhiteSpace(c) {
+    return c >= 9 && c <= 13 || c === 32 || c === 133 || c >= 8206 && c <= 8207 || c === 8232 || c === 8233;
+  }
+  function _isPatternSyntax(c) {
+    return c >= 33 && c <= 35 || c === 36 || c >= 37 && c <= 39 || c === 40 || c === 41 || c === 42 || c === 43 || c === 44 || c === 45 || c >= 46 && c <= 47 || c >= 58 && c <= 59 || c >= 60 && c <= 62 || c >= 63 && c <= 64 || c === 91 || c === 92 || c === 93 || c === 94 || c === 96 || c === 123 || c === 124 || c === 125 || c === 126 || c === 161 || c >= 162 && c <= 165 || c === 166 || c === 167 || c === 169 || c === 171 || c === 172 || c === 174 || c === 176 || c === 177 || c === 182 || c === 187 || c === 191 || c === 215 || c === 247 || c >= 8208 && c <= 8213 || c >= 8214 && c <= 8215 || c === 8216 || c === 8217 || c === 8218 || c >= 8219 && c <= 8220 || c === 8221 || c === 8222 || c === 8223 || c >= 8224 && c <= 8231 || c >= 8240 && c <= 8248 || c === 8249 || c === 8250 || c >= 8251 && c <= 8254 || c >= 8257 && c <= 8259 || c === 8260 || c === 8261 || c === 8262 || c >= 8263 && c <= 8273 || c === 8274 || c === 8275 || c >= 8277 && c <= 8286 || c >= 8592 && c <= 8596 || c >= 8597 && c <= 8601 || c >= 8602 && c <= 8603 || c >= 8604 && c <= 8607 || c === 8608 || c >= 8609 && c <= 8610 || c === 8611 || c >= 8612 && c <= 8613 || c === 8614 || c >= 8615 && c <= 8621 || c === 8622 || c >= 8623 && c <= 8653 || c >= 8654 && c <= 8655 || c >= 8656 && c <= 8657 || c === 8658 || c === 8659 || c === 8660 || c >= 8661 && c <= 8691 || c >= 8692 && c <= 8959 || c >= 8960 && c <= 8967 || c === 8968 || c === 8969 || c === 8970 || c === 8971 || c >= 8972 && c <= 8991 || c >= 8992 && c <= 8993 || c >= 8994 && c <= 9e3 || c === 9001 || c === 9002 || c >= 9003 && c <= 9083 || c === 9084 || c >= 9085 && c <= 9114 || c >= 9115 && c <= 9139 || c >= 9140 && c <= 9179 || c >= 9180 && c <= 9185 || c >= 9186 && c <= 9254 || c >= 9255 && c <= 9279 || c >= 9280 && c <= 9290 || c >= 9291 && c <= 9311 || c >= 9472 && c <= 9654 || c === 9655 || c >= 9656 && c <= 9664 || c === 9665 || c >= 9666 && c <= 9719 || c >= 9720 && c <= 9727 || c >= 9728 && c <= 9838 || c === 9839 || c >= 9840 && c <= 10087 || c === 10088 || c === 10089 || c === 10090 || c === 10091 || c === 10092 || c === 10093 || c === 10094 || c === 10095 || c === 10096 || c === 10097 || c === 10098 || c === 10099 || c === 10100 || c === 10101 || c >= 10132 && c <= 10175 || c >= 10176 && c <= 10180 || c === 10181 || c === 10182 || c >= 10183 && c <= 10213 || c === 10214 || c === 10215 || c === 10216 || c === 10217 || c === 10218 || c === 10219 || c === 10220 || c === 10221 || c === 10222 || c === 10223 || c >= 10224 && c <= 10239 || c >= 10240 && c <= 10495 || c >= 10496 && c <= 10626 || c === 10627 || c === 10628 || c === 10629 || c === 10630 || c === 10631 || c === 10632 || c === 10633 || c === 10634 || c === 10635 || c === 10636 || c === 10637 || c === 10638 || c === 10639 || c === 10640 || c === 10641 || c === 10642 || c === 10643 || c === 10644 || c === 10645 || c === 10646 || c === 10647 || c === 10648 || c >= 10649 && c <= 10711 || c === 10712 || c === 10713 || c === 10714 || c === 10715 || c >= 10716 && c <= 10747 || c === 10748 || c === 10749 || c >= 10750 && c <= 11007 || c >= 11008 && c <= 11055 || c >= 11056 && c <= 11076 || c >= 11077 && c <= 11078 || c >= 11079 && c <= 11084 || c >= 11085 && c <= 11123 || c >= 11124 && c <= 11125 || c >= 11126 && c <= 11157 || c === 11158 || c >= 11159 && c <= 11263 || c >= 11776 && c <= 11777 || c === 11778 || c === 11779 || c === 11780 || c === 11781 || c >= 11782 && c <= 11784 || c === 11785 || c === 11786 || c === 11787 || c === 11788 || c === 11789 || c >= 11790 && c <= 11798 || c === 11799 || c >= 11800 && c <= 11801 || c === 11802 || c === 11803 || c === 11804 || c === 11805 || c >= 11806 && c <= 11807 || c === 11808 || c === 11809 || c === 11810 || c === 11811 || c === 11812 || c === 11813 || c === 11814 || c === 11815 || c === 11816 || c === 11817 || c >= 11818 && c <= 11822 || c === 11823 || c >= 11824 && c <= 11833 || c >= 11834 && c <= 11835 || c >= 11836 && c <= 11839 || c === 11840 || c === 11841 || c === 11842 || c >= 11843 && c <= 11855 || c >= 11856 && c <= 11857 || c === 11858 || c >= 11859 && c <= 11903 || c >= 12289 && c <= 12291 || c === 12296 || c === 12297 || c === 12298 || c === 12299 || c === 12300 || c === 12301 || c === 12302 || c === 12303 || c === 12304 || c === 12305 || c >= 12306 && c <= 12307 || c === 12308 || c === 12309 || c === 12310 || c === 12311 || c === 12312 || c === 12313 || c === 12314 || c === 12315 || c === 12316 || c === 12317 || c >= 12318 && c <= 12319 || c === 12320 || c === 12336 || c === 64830 || c === 64831 || c >= 65093 && c <= 65094;
+  }
+  function pruneLocation(els) {
+    els.forEach(function(el) {
+      delete el.location;
+      if (isSelectElement(el) || isPluralElement(el)) {
+        for (var k in el.options) {
+          delete el.options[k].location;
+          pruneLocation(el.options[k].value);
+        }
+      } else if (isNumberElement(el) && isNumberSkeleton(el.style)) {
+        delete el.style.location;
+      } else if ((isDateElement(el) || isTimeElement(el)) && isDateTimeSkeleton(el.style)) {
+        delete el.style.location;
+      } else if (isTagElement(el)) {
+        pruneLocation(el.children);
+      }
+    });
+  }
+  function parse(message, opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    opts = __assign({ shouldParseSkeletons: true, requiresOtherClause: true }, opts);
+    var result = new Parser(message, opts).parse();
+    if (result.err) {
+      var error = SyntaxError(ErrorKind[result.err.kind]);
+      error.location = result.err.location;
+      error.originalMessage = result.err.message;
+      throw error;
+    }
+    if (!(opts === null || opts === void 0 ? void 0 : opts.captureLocation)) {
+      pruneLocation(result.val);
+    }
+    return result.val;
+  }
+  var ErrorCode;
+  (function(ErrorCode2) {
+    ErrorCode2["MISSING_VALUE"] = "MISSING_VALUE";
+    ErrorCode2["INVALID_VALUE"] = "INVALID_VALUE";
+    ErrorCode2["MISSING_INTL_API"] = "MISSING_INTL_API";
+  })(ErrorCode || (ErrorCode = {}));
+  var FormatError = (
+    /** @class */
+    function(_super) {
+      __extends(FormatError2, _super);
+      function FormatError2(msg, code2, originalMessage) {
+        var _this = _super.call(this, msg) || this;
+        _this.code = code2;
+        _this.originalMessage = originalMessage;
+        return _this;
+      }
+      FormatError2.prototype.toString = function() {
+        return "[formatjs Error: ".concat(this.code, "] ").concat(this.message);
+      };
+      return FormatError2;
+    }(Error)
+  );
+  var InvalidValueError = (
+    /** @class */
+    function(_super) {
+      __extends(InvalidValueError2, _super);
+      function InvalidValueError2(variableId, value2, options, originalMessage) {
+        return _super.call(this, 'Invalid values for "'.concat(variableId, '": "').concat(value2, '". Options are "').concat(Object.keys(options).join('", "'), '"'), ErrorCode.INVALID_VALUE, originalMessage) || this;
+      }
+      return InvalidValueError2;
+    }(FormatError)
+  );
+  var InvalidValueTypeError = (
+    /** @class */
+    function(_super) {
+      __extends(InvalidValueTypeError2, _super);
+      function InvalidValueTypeError2(value2, type, originalMessage) {
+        return _super.call(this, 'Value for "'.concat(value2, '" must be of type ').concat(type), ErrorCode.INVALID_VALUE, originalMessage) || this;
+      }
+      return InvalidValueTypeError2;
+    }(FormatError)
+  );
+  var MissingValueError = (
+    /** @class */
+    function(_super) {
+      __extends(MissingValueError2, _super);
+      function MissingValueError2(variableId, originalMessage) {
+        return _super.call(this, 'The intl string context variable "'.concat(variableId, '" was not provided to the string "').concat(originalMessage, '"'), ErrorCode.MISSING_VALUE, originalMessage) || this;
+      }
+      return MissingValueError2;
+    }(FormatError)
+  );
+  var PART_TYPE;
+  (function(PART_TYPE2) {
+    PART_TYPE2[PART_TYPE2["literal"] = 0] = "literal";
+    PART_TYPE2[PART_TYPE2["object"] = 1] = "object";
+  })(PART_TYPE || (PART_TYPE = {}));
+  function mergeLiteral(parts) {
+    if (parts.length < 2) {
+      return parts;
+    }
+    return parts.reduce(function(all, part) {
+      var lastPart = all[all.length - 1];
+      if (!lastPart || lastPart.type !== PART_TYPE.literal || part.type !== PART_TYPE.literal) {
+        all.push(part);
+      } else {
+        lastPart.value += part.value;
+      }
+      return all;
+    }, []);
+  }
+  function isFormatXMLElementFn(el) {
+    return typeof el === "function";
+  }
+  function formatToParts(els, locales, formatters, formats, values, currentPluralValue, originalMessage) {
+    if (els.length === 1 && isLiteralElement(els[0])) {
+      return [
+        {
+          type: PART_TYPE.literal,
+          value: els[0].value
+        }
+      ];
+    }
+    var result = [];
+    for (var _i = 0, els_1 = els; _i < els_1.length; _i++) {
+      var el = els_1[_i];
+      if (isLiteralElement(el)) {
+        result.push({
+          type: PART_TYPE.literal,
+          value: el.value
+        });
+        continue;
+      }
+      if (isPoundElement(el)) {
+        if (typeof currentPluralValue === "number") {
+          result.push({
+            type: PART_TYPE.literal,
+            value: formatters.getNumberFormat(locales).format(currentPluralValue)
+          });
+        }
+        continue;
+      }
+      var varName = el.value;
+      if (!(values && varName in values)) {
+        throw new MissingValueError(varName, originalMessage);
+      }
+      var value2 = values[varName];
+      if (isArgumentElement(el)) {
+        if (!value2 || typeof value2 === "string" || typeof value2 === "number") {
+          value2 = typeof value2 === "string" || typeof value2 === "number" ? String(value2) : "";
+        }
+        result.push({
+          type: typeof value2 === "string" ? PART_TYPE.literal : PART_TYPE.object,
+          value: value2
+        });
+        continue;
+      }
+      if (isDateElement(el)) {
+        var style = typeof el.style === "string" ? formats.date[el.style] : isDateTimeSkeleton(el.style) ? el.style.parsedOptions : void 0;
+        result.push({
+          type: PART_TYPE.literal,
+          value: formatters.getDateTimeFormat(locales, style).format(value2)
+        });
+        continue;
+      }
+      if (isTimeElement(el)) {
+        var style = typeof el.style === "string" ? formats.time[el.style] : isDateTimeSkeleton(el.style) ? el.style.parsedOptions : formats.time.medium;
+        result.push({
+          type: PART_TYPE.literal,
+          value: formatters.getDateTimeFormat(locales, style).format(value2)
+        });
+        continue;
+      }
+      if (isNumberElement(el)) {
+        var style = typeof el.style === "string" ? formats.number[el.style] : isNumberSkeleton(el.style) ? el.style.parsedOptions : void 0;
+        if (style && style.scale) {
+          value2 = value2 * (style.scale || 1);
+        }
+        result.push({
+          type: PART_TYPE.literal,
+          value: formatters.getNumberFormat(locales, style).format(value2)
+        });
+        continue;
+      }
+      if (isTagElement(el)) {
+        var children = el.children, value_1 = el.value;
+        var formatFn = values[value_1];
+        if (!isFormatXMLElementFn(formatFn)) {
+          throw new InvalidValueTypeError(value_1, "function", originalMessage);
+        }
+        var parts = formatToParts(children, locales, formatters, formats, values, currentPluralValue);
+        var chunks = formatFn(parts.map(function(p) {
+          return p.value;
+        }));
+        if (!Array.isArray(chunks)) {
+          chunks = [chunks];
+        }
+        result.push.apply(result, chunks.map(function(c) {
+          return {
+            type: typeof c === "string" ? PART_TYPE.literal : PART_TYPE.object,
+            value: c
+          };
+        }));
+      }
+      if (isSelectElement(el)) {
+        var opt = el.options[value2] || el.options.other;
+        if (!opt) {
+          throw new InvalidValueError(el.value, value2, Object.keys(el.options), originalMessage);
+        }
+        result.push.apply(result, formatToParts(opt.value, locales, formatters, formats, values));
+        continue;
+      }
+      if (isPluralElement(el)) {
+        var opt = el.options["=".concat(value2)];
+        if (!opt) {
+          if (!Intl.PluralRules) {
+            throw new FormatError('Intl.PluralRules is not available in this environment.\nTry polyfilling it using "@formatjs/intl-pluralrules"\n', ErrorCode.MISSING_INTL_API, originalMessage);
+          }
+          var rule = formatters.getPluralRules(locales, { type: el.pluralType }).select(value2 - (el.offset || 0));
+          opt = el.options[rule] || el.options.other;
+        }
+        if (!opt) {
+          throw new InvalidValueError(el.value, value2, Object.keys(el.options), originalMessage);
+        }
+        result.push.apply(result, formatToParts(opt.value, locales, formatters, formats, values, value2 - (el.offset || 0)));
+        continue;
+      }
+    }
+    return mergeLiteral(result);
+  }
+  function mergeConfig(c1, c2) {
+    if (!c2) {
+      return c1;
+    }
+    return __assign(__assign(__assign({}, c1 || {}), c2 || {}), Object.keys(c1).reduce(function(all, k) {
+      all[k] = __assign(__assign({}, c1[k]), c2[k] || {});
+      return all;
+    }, {}));
+  }
+  function mergeConfigs(defaultConfig, configs) {
+    if (!configs) {
+      return defaultConfig;
+    }
+    return Object.keys(defaultConfig).reduce(function(all, k) {
+      all[k] = mergeConfig(defaultConfig[k], configs[k]);
+      return all;
+    }, __assign({}, defaultConfig));
+  }
+  function createFastMemoizeCache$1(store) {
+    return {
+      create: function() {
+        return {
+          get: function(key) {
+            return store[key];
+          },
+          set: function(key, value2) {
+            store[key] = value2;
+          }
+        };
+      }
+    };
+  }
+  function createDefaultFormatters(cache) {
+    if (cache === void 0) {
+      cache = {
+        number: {},
+        dateTime: {},
+        pluralRules: {}
+      };
+    }
+    return {
+      getNumberFormat: memoize(function() {
+        var _a2;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+        }
+        return new ((_a2 = Intl.NumberFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
+      }, {
+        cache: createFastMemoizeCache$1(cache.number),
+        strategy: strategies.variadic
+      }),
+      getDateTimeFormat: memoize(function() {
+        var _a2;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+        }
+        return new ((_a2 = Intl.DateTimeFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
+      }, {
+        cache: createFastMemoizeCache$1(cache.dateTime),
+        strategy: strategies.variadic
+      }),
+      getPluralRules: memoize(function() {
+        var _a2;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+        }
+        return new ((_a2 = Intl.PluralRules).bind.apply(_a2, __spreadArray([void 0], args, false)))();
+      }, {
+        cache: createFastMemoizeCache$1(cache.pluralRules),
+        strategy: strategies.variadic
+      })
+    };
+  }
+  var IntlMessageFormat = (
+    /** @class */
+    function() {
+      function IntlMessageFormat2(message, locales, overrideFormats, opts) {
+        if (locales === void 0) {
+          locales = IntlMessageFormat2.defaultLocale;
+        }
+        var _this = this;
+        this.formatterCache = {
+          number: {},
+          dateTime: {},
+          pluralRules: {}
+        };
+        this.format = function(values) {
+          var parts = _this.formatToParts(values);
+          if (parts.length === 1) {
+            return parts[0].value;
+          }
+          var result = parts.reduce(function(all, part) {
+            if (!all.length || part.type !== PART_TYPE.literal || typeof all[all.length - 1] !== "string") {
+              all.push(part.value);
+            } else {
+              all[all.length - 1] += part.value;
+            }
+            return all;
+          }, []);
+          if (result.length <= 1) {
+            return result[0] || "";
+          }
+          return result;
+        };
+        this.formatToParts = function(values) {
+          return formatToParts(_this.ast, _this.locales, _this.formatters, _this.formats, values, void 0, _this.message);
+        };
+        this.resolvedOptions = function() {
+          var _a3;
+          return {
+            locale: ((_a3 = _this.resolvedLocale) === null || _a3 === void 0 ? void 0 : _a3.toString()) || Intl.NumberFormat.supportedLocalesOf(_this.locales)[0]
+          };
+        };
+        this.getAst = function() {
+          return _this.ast;
+        };
+        this.locales = locales;
+        this.resolvedLocale = IntlMessageFormat2.resolveLocale(locales);
+        if (typeof message === "string") {
+          this.message = message;
+          if (!IntlMessageFormat2.__parse) {
+            throw new TypeError("IntlMessageFormat.__parse must be set to process `message` of type `string`");
+          }
+          var _a2 = opts || {};
+          _a2.formatters;
+          var parseOpts = __rest(_a2, ["formatters"]);
+          this.ast = IntlMessageFormat2.__parse(message, __assign(__assign({}, parseOpts), { locale: this.resolvedLocale }));
+        } else {
+          this.ast = message;
+        }
+        if (!Array.isArray(this.ast)) {
+          throw new TypeError("A message must be provided as a String or AST.");
+        }
+        this.formats = mergeConfigs(IntlMessageFormat2.formats, overrideFormats);
+        this.formatters = opts && opts.formatters || createDefaultFormatters(this.formatterCache);
+      }
+      Object.defineProperty(IntlMessageFormat2, "defaultLocale", {
+        get: function() {
+          if (!IntlMessageFormat2.memoizedDefaultLocale) {
+            IntlMessageFormat2.memoizedDefaultLocale = new Intl.NumberFormat().resolvedOptions().locale;
+          }
+          return IntlMessageFormat2.memoizedDefaultLocale;
+        },
+        enumerable: false,
+        configurable: true
+      });
+      IntlMessageFormat2.memoizedDefaultLocale = null;
+      IntlMessageFormat2.resolveLocale = function(locales) {
+        if (typeof Intl.Locale === "undefined") {
+          return;
+        }
+        var supportedLocales = Intl.NumberFormat.supportedLocalesOf(locales);
+        if (supportedLocales.length > 0) {
+          return new Intl.Locale(supportedLocales[0]);
+        }
+        return new Intl.Locale(typeof locales === "string" ? locales : locales[0]);
+      };
+      IntlMessageFormat2.__parse = parse;
+      IntlMessageFormat2.formats = {
+        number: {
+          integer: {
+            maximumFractionDigits: 0
+          },
+          currency: {
+            style: "currency"
+          },
+          percent: {
+            style: "percent"
+          }
+        },
+        date: {
+          short: {
+            month: "numeric",
+            day: "numeric",
+            year: "2-digit"
+          },
+          medium: {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+          },
+          long: {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+          },
+          full: {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+          }
+        },
+        time: {
+          short: {
+            hour: "numeric",
+            minute: "numeric"
+          },
+          medium: {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric"
+          },
+          long: {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            timeZoneName: "short"
+          },
+          full: {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            timeZoneName: "short"
+          }
+        }
+      };
+      return IntlMessageFormat2;
+    }()
+  );
+  var IntlErrorCode;
+  (function(IntlErrorCode2) {
+    IntlErrorCode2["FORMAT_ERROR"] = "FORMAT_ERROR";
+    IntlErrorCode2["UNSUPPORTED_FORMATTER"] = "UNSUPPORTED_FORMATTER";
+    IntlErrorCode2["INVALID_CONFIG"] = "INVALID_CONFIG";
+    IntlErrorCode2["MISSING_DATA"] = "MISSING_DATA";
+    IntlErrorCode2["MISSING_TRANSLATION"] = "MISSING_TRANSLATION";
+  })(IntlErrorCode || (IntlErrorCode = {}));
+  var IntlError = (
+    /** @class */
+    function(_super) {
+      __extends(IntlError2, _super);
+      function IntlError2(code2, message, exception) {
+        var _this = this;
+        var err = exception ? exception instanceof Error ? exception : new Error(String(exception)) : void 0;
+        _this = _super.call(this, "[@formatjs/intl Error ".concat(code2, "] ").concat(message, "\n").concat(err ? "\n".concat(err.message, "\n").concat(err.stack) : "")) || this;
+        _this.code = code2;
+        if (typeof Error.captureStackTrace === "function") {
+          Error.captureStackTrace(_this, IntlError2);
+        }
+        return _this;
+      }
+      return IntlError2;
+    }(Error)
+  );
+  var UnsupportedFormatterError = (
+    /** @class */
+    function(_super) {
+      __extends(UnsupportedFormatterError2, _super);
+      function UnsupportedFormatterError2(message, exception) {
+        return _super.call(this, IntlErrorCode.UNSUPPORTED_FORMATTER, message, exception) || this;
+      }
+      return UnsupportedFormatterError2;
+    }(IntlError)
+  );
+  var InvalidConfigError = (
+    /** @class */
+    function(_super) {
+      __extends(InvalidConfigError2, _super);
+      function InvalidConfigError2(message, exception) {
+        return _super.call(this, IntlErrorCode.INVALID_CONFIG, message, exception) || this;
+      }
+      return InvalidConfigError2;
+    }(IntlError)
+  );
+  var MissingDataError = (
+    /** @class */
+    function(_super) {
+      __extends(MissingDataError2, _super);
+      function MissingDataError2(message, exception) {
+        return _super.call(this, IntlErrorCode.MISSING_DATA, message, exception) || this;
+      }
+      return MissingDataError2;
+    }(IntlError)
+  );
+  var IntlFormatError = (
+    /** @class */
+    function(_super) {
+      __extends(IntlFormatError2, _super);
+      function IntlFormatError2(message, locale, exception) {
+        var _this = _super.call(this, IntlErrorCode.FORMAT_ERROR, "".concat(message, "\nLocale: ").concat(locale, "\n"), exception) || this;
+        _this.locale = locale;
+        return _this;
+      }
+      return IntlFormatError2;
+    }(IntlError)
+  );
+  var MessageFormatError = (
+    /** @class */
+    function(_super) {
+      __extends(MessageFormatError2, _super);
+      function MessageFormatError2(message, locale, descriptor, exception) {
+        var _this = _super.call(this, "".concat(message, "\nMessageID: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.id, "\nDefault Message: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.defaultMessage, "\nDescription: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.description, "\n"), locale, exception) || this;
+        _this.descriptor = descriptor;
+        _this.locale = locale;
+        return _this;
+      }
+      return MessageFormatError2;
+    }(IntlFormatError)
+  );
+  var MissingTranslationError = (
+    /** @class */
+    function(_super) {
+      __extends(MissingTranslationError2, _super);
+      function MissingTranslationError2(descriptor, locale) {
+        var _this = _super.call(this, IntlErrorCode.MISSING_TRANSLATION, 'Missing message: "'.concat(descriptor.id, '" for locale "').concat(locale, '", using ').concat(descriptor.defaultMessage ? "default message (".concat(typeof descriptor.defaultMessage === "string" ? descriptor.defaultMessage : descriptor.defaultMessage.map(function(e) {
+          var _a2;
+          return (_a2 = e.value) !== null && _a2 !== void 0 ? _a2 : JSON.stringify(e);
+        }).join(), ")") : "id", " as fallback.")) || this;
+        _this.descriptor = descriptor;
+        return _this;
+      }
+      return MissingTranslationError2;
+    }(IntlError)
+  );
+  function invariant(condition, message, Err) {
+    if (Err === void 0) {
+      Err = Error;
+    }
+    if (!condition) {
+      throw new Err(message);
+    }
+  }
+  function filterProps(props, allowlist, defaults2) {
+    if (defaults2 === void 0) {
+      defaults2 = {};
+    }
+    return allowlist.reduce(function(filtered, name) {
+      if (name in props) {
+        filtered[name] = props[name];
+      } else if (name in defaults2) {
+        filtered[name] = defaults2[name];
+      }
+      return filtered;
+    }, {});
+  }
+  var defaultErrorHandler = function(error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error(error);
+    }
+  };
+  var defaultWarnHandler = function(warning) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(warning);
+    }
+  };
+  var DEFAULT_INTL_CONFIG = {
+    formats: {},
+    messages: {},
+    timeZone: void 0,
+    defaultLocale: "en",
+    defaultFormats: {},
+    fallbackOnEmptyString: true,
+    onError: defaultErrorHandler,
+    onWarn: defaultWarnHandler
+  };
+  function createIntlCache() {
+    return {
+      dateTime: {},
+      number: {},
+      message: {},
+      relativeTime: {},
+      pluralRules: {},
+      list: {},
+      displayNames: {}
+    };
+  }
+  function createFastMemoizeCache(store) {
+    return {
+      create: function() {
+        return {
+          get: function(key) {
+            return store[key];
+          },
+          set: function(key, value2) {
+            store[key] = value2;
+          }
+        };
+      }
+    };
+  }
+  function createFormatters(cache) {
+    if (cache === void 0) {
+      cache = createIntlCache();
+    }
+    var RelativeTimeFormat = Intl.RelativeTimeFormat;
+    var ListFormat = Intl.ListFormat;
+    var DisplayNames = Intl.DisplayNames;
+    var getDateTimeFormat = memoize(function() {
+      var _a2;
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+      return new ((_a2 = Intl.DateTimeFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
+    }, {
+      cache: createFastMemoizeCache(cache.dateTime),
+      strategy: strategies.variadic
+    });
+    var getNumberFormat = memoize(function() {
+      var _a2;
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+      return new ((_a2 = Intl.NumberFormat).bind.apply(_a2, __spreadArray([void 0], args, false)))();
+    }, {
+      cache: createFastMemoizeCache(cache.number),
+      strategy: strategies.variadic
+    });
+    var getPluralRules = memoize(function() {
+      var _a2;
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+      return new ((_a2 = Intl.PluralRules).bind.apply(_a2, __spreadArray([void 0], args, false)))();
+    }, {
+      cache: createFastMemoizeCache(cache.pluralRules),
+      strategy: strategies.variadic
+    });
+    return {
+      getDateTimeFormat,
+      getNumberFormat,
+      getMessageFormat: memoize(function(message, locales, overrideFormats, opts) {
+        return new IntlMessageFormat(message, locales, overrideFormats, __assign({ formatters: {
+          getNumberFormat,
+          getDateTimeFormat,
+          getPluralRules
+        } }, opts || {}));
+      }, {
+        cache: createFastMemoizeCache(cache.message),
+        strategy: strategies.variadic
+      }),
+      getRelativeTimeFormat: memoize(function() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+        }
+        return new (RelativeTimeFormat.bind.apply(RelativeTimeFormat, __spreadArray([void 0], args, false)))();
+      }, {
+        cache: createFastMemoizeCache(cache.relativeTime),
+        strategy: strategies.variadic
+      }),
+      getPluralRules,
+      getListFormat: memoize(function() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+        }
+        return new (ListFormat.bind.apply(ListFormat, __spreadArray([void 0], args, false)))();
+      }, {
+        cache: createFastMemoizeCache(cache.list),
+        strategy: strategies.variadic
+      }),
+      getDisplayNames: memoize(function() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+        }
+        return new (DisplayNames.bind.apply(DisplayNames, __spreadArray([void 0], args, false)))();
+      }, {
+        cache: createFastMemoizeCache(cache.displayNames),
+        strategy: strategies.variadic
+      })
+    };
+  }
+  function getNamedFormat(formats, type, name, onError) {
+    var formatType = formats && formats[type];
+    var format2;
+    if (formatType) {
+      format2 = formatType[name];
+    }
+    if (format2) {
+      return format2;
+    }
+    onError(new UnsupportedFormatterError("No ".concat(type, " format named: ").concat(name)));
+  }
+  function setTimeZoneInOptions(opts, timeZone) {
+    return Object.keys(opts).reduce(function(all, k) {
+      all[k] = __assign({ timeZone }, opts[k]);
+      return all;
+    }, {});
+  }
+  function deepMergeOptions(opts1, opts2) {
+    var keys = Object.keys(__assign(__assign({}, opts1), opts2));
+    return keys.reduce(function(all, k) {
+      all[k] = __assign(__assign({}, opts1[k] || {}), opts2[k] || {});
+      return all;
+    }, {});
+  }
+  function deepMergeFormatsAndSetTimeZone(f1, timeZone) {
+    if (!timeZone) {
+      return f1;
+    }
+    var mfFormats = IntlMessageFormat.formats;
+    return __assign(__assign(__assign({}, mfFormats), f1), { date: deepMergeOptions(setTimeZoneInOptions(mfFormats.date, timeZone), setTimeZoneInOptions(f1.date || {}, timeZone)), time: deepMergeOptions(setTimeZoneInOptions(mfFormats.time, timeZone), setTimeZoneInOptions(f1.time || {}, timeZone)) });
+  }
+  var formatMessage = function(_a2, state, messageDescriptor, values, opts) {
+    var locale = _a2.locale, formats = _a2.formats, messages = _a2.messages, defaultLocale2 = _a2.defaultLocale, defaultFormats = _a2.defaultFormats, fallbackOnEmptyString = _a2.fallbackOnEmptyString, onError = _a2.onError, timeZone = _a2.timeZone, defaultRichTextElements = _a2.defaultRichTextElements;
+    if (messageDescriptor === void 0) {
+      messageDescriptor = { id: "" };
+    }
+    var msgId = messageDescriptor.id, defaultMessage = messageDescriptor.defaultMessage;
+    invariant(!!msgId, "[@formatjs/intl] An `id` must be provided to format a message. You can either:\n1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.github.io/docs/tooling/babel-plugin)\nor [@formatjs/ts-transformer](https://formatjs.github.io/docs/tooling/ts-transformer) OR\n2. Configure your `eslint` config to include [eslint-plugin-formatjs](https://formatjs.github.io/docs/tooling/linter#enforce-id)\nto autofix this issue");
+    var id = String(msgId);
+    var message = (
+      // In case messages is Object.create(null)
+      // e.g import('foo.json') from webpack)
+      // See https://github.com/formatjs/formatjs/issues/1914
+      messages && Object.prototype.hasOwnProperty.call(messages, id) && messages[id]
+    );
+    if (Array.isArray(message) && message.length === 1 && message[0].type === TYPE.literal) {
+      return message[0].value;
+    }
+    if (!values && message && typeof message === "string" && !defaultRichTextElements) {
+      return message.replace(/'\{(.*?)\}'/gi, "{$1}");
+    }
+    values = __assign(__assign({}, defaultRichTextElements), values || {});
+    formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
+    defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
+    if (!message) {
+      if (fallbackOnEmptyString === false && message === "") {
+        return message;
+      }
+      if (!defaultMessage || locale && locale.toLowerCase() !== defaultLocale2.toLowerCase()) {
+        onError(new MissingTranslationError(messageDescriptor, locale));
+      }
+      if (defaultMessage) {
+        try {
+          var formatter = state.getMessageFormat(defaultMessage, defaultLocale2, defaultFormats, opts);
+          return formatter.format(values);
+        } catch (e) {
+          onError(new MessageFormatError('Error formatting default message for: "'.concat(id, '", rendering default message verbatim'), locale, messageDescriptor, e));
+          return typeof defaultMessage === "string" ? defaultMessage : id;
+        }
+      }
+      return id;
+    }
+    try {
+      var formatter = state.getMessageFormat(message, locale, formats, __assign({ formatters: state }, opts || {}));
+      return formatter.format(values);
+    } catch (e) {
+      onError(new MessageFormatError('Error formatting message: "'.concat(id, '", using ').concat(defaultMessage ? "default message" : "id", " as fallback."), locale, messageDescriptor, e));
+    }
+    if (defaultMessage) {
+      try {
+        var formatter = state.getMessageFormat(defaultMessage, defaultLocale2, defaultFormats, opts);
+        return formatter.format(values);
+      } catch (e) {
+        onError(new MessageFormatError('Error formatting the default message for: "'.concat(id, '", rendering message verbatim'), locale, messageDescriptor, e));
+      }
+    }
+    if (typeof message === "string") {
+      return message;
+    }
+    if (typeof defaultMessage === "string") {
+      return defaultMessage;
+    }
+    return id;
+  };
+  var DATE_TIME_FORMAT_OPTIONS = [
+    "formatMatcher",
+    "timeZone",
+    "hour12",
+    "weekday",
+    "era",
+    "year",
+    "month",
+    "day",
+    "hour",
+    "minute",
+    "second",
+    "timeZoneName",
+    "hourCycle",
+    "dateStyle",
+    "timeStyle",
+    "calendar",
+    // 'dayPeriod',
+    "numberingSystem",
+    "fractionalSecondDigits"
+  ];
+  function getFormatter$2(_a2, type, getDateTimeFormat, options) {
+    var locale = _a2.locale, formats = _a2.formats, onError = _a2.onError, timeZone = _a2.timeZone;
+    if (options === void 0) {
+      options = {};
+    }
+    var format2 = options.format;
+    var defaults2 = __assign(__assign({}, timeZone && { timeZone }), format2 && getNamedFormat(formats, type, format2, onError));
+    var filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults2);
+    if (type === "time" && !filteredOptions.hour && !filteredOptions.minute && !filteredOptions.second && !filteredOptions.timeStyle && !filteredOptions.dateStyle) {
+      filteredOptions = __assign(__assign({}, filteredOptions), { hour: "numeric", minute: "numeric" });
+    }
+    return getDateTimeFormat(locale, filteredOptions);
+  }
+  function formatDate(config2, getDateTimeFormat) {
+    var _a2 = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+      _a2[_i - 2] = arguments[_i];
+    }
+    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
+    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
+    try {
+      return getFormatter$2(config2, "date", getDateTimeFormat, options).format(date2);
+    } catch (e) {
+      config2.onError(new IntlFormatError("Error formatting date.", config2.locale, e));
+    }
+    return String(date2);
+  }
+  function formatTime(config2, getDateTimeFormat) {
+    var _a2 = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+      _a2[_i - 2] = arguments[_i];
+    }
+    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
+    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
+    try {
+      return getFormatter$2(config2, "time", getDateTimeFormat, options).format(date2);
+    } catch (e) {
+      config2.onError(new IntlFormatError("Error formatting time.", config2.locale, e));
+    }
+    return String(date2);
+  }
+  function formatDateTimeRange(config2, getDateTimeFormat) {
+    var _a2 = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+      _a2[_i - 2] = arguments[_i];
+    }
+    var from = _a2[0], to = _a2[1], _b = _a2[2], options = _b === void 0 ? {} : _b;
+    var timeZone = config2.timeZone, locale = config2.locale, onError = config2.onError;
+    var filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, timeZone ? { timeZone } : {});
+    try {
+      return getDateTimeFormat(locale, filteredOptions).formatRange(from, to);
+    } catch (e) {
+      onError(new IntlFormatError("Error formatting date time range.", config2.locale, e));
+    }
+    return String(from);
+  }
+  function formatDateToParts(config2, getDateTimeFormat) {
+    var _a2 = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+      _a2[_i - 2] = arguments[_i];
+    }
+    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
+    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
+    try {
+      return getFormatter$2(config2, "date", getDateTimeFormat, options).formatToParts(date2);
+    } catch (e) {
+      config2.onError(new IntlFormatError("Error formatting date.", config2.locale, e));
+    }
+    return [];
+  }
+  function formatTimeToParts(config2, getDateTimeFormat) {
+    var _a2 = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+      _a2[_i - 2] = arguments[_i];
+    }
+    var value2 = _a2[0], _b = _a2[1], options = _b === void 0 ? {} : _b;
+    var date2 = typeof value2 === "string" ? new Date(value2 || 0) : value2;
+    try {
+      return getFormatter$2(config2, "time", getDateTimeFormat, options).formatToParts(date2);
+    } catch (e) {
+      config2.onError(new IntlFormatError("Error formatting time.", config2.locale, e));
+    }
+    return [];
+  }
+  var DISPLAY_NAMES_OPTONS = [
+    "style",
+    "type",
+    "fallback",
+    "languageDisplay"
+  ];
+  function formatDisplayName(_a2, getDisplayNames, value2, options) {
+    var locale = _a2.locale, onError = _a2.onError;
+    var DisplayNames = Intl.DisplayNames;
+    if (!DisplayNames) {
+      onError(new FormatError('Intl.DisplayNames is not available in this environment.\nTry polyfilling it using "@formatjs/intl-displaynames"\n', ErrorCode.MISSING_INTL_API));
+    }
+    var filteredOptions = filterProps(options, DISPLAY_NAMES_OPTONS);
+    try {
+      return getDisplayNames(locale, filteredOptions).of(value2);
+    } catch (e) {
+      onError(new IntlFormatError("Error formatting display name.", locale, e));
+    }
+  }
+  var LIST_FORMAT_OPTIONS = [
+    "type",
+    "style"
+  ];
+  var now = Date.now();
+  function generateToken(i) {
+    return "".concat(now, "_").concat(i, "_").concat(now);
+  }
+  function formatList(opts, getListFormat, values, options) {
+    if (options === void 0) {
+      options = {};
+    }
+    var results = formatListToParts(opts, getListFormat, values, options).reduce(function(all, el) {
+      var val = el.value;
+      if (typeof val !== "string") {
+        all.push(val);
+      } else if (typeof all[all.length - 1] === "string") {
+        all[all.length - 1] += val;
+      } else {
+        all.push(val);
+      }
+      return all;
+    }, []);
+    return results.length === 1 ? results[0] : results.length === 0 ? "" : results;
+  }
+  function formatListToParts(_a2, getListFormat, values, options) {
+    var locale = _a2.locale, onError = _a2.onError;
+    if (options === void 0) {
+      options = {};
+    }
+    var ListFormat = Intl.ListFormat;
+    if (!ListFormat) {
+      onError(new FormatError('Intl.ListFormat is not available in this environment.\nTry polyfilling it using "@formatjs/intl-listformat"\n', ErrorCode.MISSING_INTL_API));
+    }
+    var filteredOptions = filterProps(options, LIST_FORMAT_OPTIONS);
+    try {
+      var richValues_1 = {};
+      var serializedValues = values.map(function(v, i) {
+        if (typeof v === "object") {
+          var id = generateToken(i);
+          richValues_1[id] = v;
+          return id;
+        }
+        return String(v);
+      });
+      return getListFormat(locale, filteredOptions).formatToParts(serializedValues).map(function(part) {
+        return part.type === "literal" ? part : __assign(__assign({}, part), { value: richValues_1[part.value] || part.value });
+      });
+    } catch (e) {
+      onError(new IntlFormatError("Error formatting list.", locale, e));
+    }
+    return values;
+  }
+  var PLURAL_FORMAT_OPTIONS = ["type"];
+  function formatPlural(_a2, getPluralRules, value2, options) {
+    var locale = _a2.locale, onError = _a2.onError;
+    if (options === void 0) {
+      options = {};
+    }
+    if (!Intl.PluralRules) {
+      onError(new FormatError('Intl.PluralRules is not available in this environment.\nTry polyfilling it using "@formatjs/intl-pluralrules"\n', ErrorCode.MISSING_INTL_API));
+    }
+    var filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
+    try {
+      return getPluralRules(locale, filteredOptions).select(value2);
+    } catch (e) {
+      onError(new IntlFormatError("Error formatting plural.", locale, e));
+    }
+    return "other";
+  }
+  var RELATIVE_TIME_FORMAT_OPTIONS = ["numeric", "style"];
+  function getFormatter$1(_a2, getRelativeTimeFormat, options) {
+    var locale = _a2.locale, formats = _a2.formats, onError = _a2.onError;
+    if (options === void 0) {
+      options = {};
+    }
+    var format2 = options.format;
+    var defaults2 = !!format2 && getNamedFormat(formats, "relative", format2, onError) || {};
+    var filteredOptions = filterProps(options, RELATIVE_TIME_FORMAT_OPTIONS, defaults2);
+    return getRelativeTimeFormat(locale, filteredOptions);
+  }
+  function formatRelativeTime(config2, getRelativeTimeFormat, value2, unit, options) {
+    if (options === void 0) {
+      options = {};
+    }
+    if (!unit) {
+      unit = "second";
+    }
+    var RelativeTimeFormat = Intl.RelativeTimeFormat;
+    if (!RelativeTimeFormat) {
+      config2.onError(new FormatError('Intl.RelativeTimeFormat is not available in this environment.\nTry polyfilling it using "@formatjs/intl-relativetimeformat"\n', ErrorCode.MISSING_INTL_API));
+    }
+    try {
+      return getFormatter$1(config2, getRelativeTimeFormat, options).format(value2, unit);
+    } catch (e) {
+      config2.onError(new IntlFormatError("Error formatting relative time.", config2.locale, e));
+    }
+    return String(value2);
+  }
+  var NUMBER_FORMAT_OPTIONS = [
+    "style",
+    "currency",
+    "unit",
+    "unitDisplay",
+    "useGrouping",
+    "minimumIntegerDigits",
+    "minimumFractionDigits",
+    "maximumFractionDigits",
+    "minimumSignificantDigits",
+    "maximumSignificantDigits",
+    // ES2020 NumberFormat
+    "compactDisplay",
+    "currencyDisplay",
+    "currencySign",
+    "notation",
+    "signDisplay",
+    "unit",
+    "unitDisplay",
+    "numberingSystem",
+    // ES2023 NumberFormat
+    // @ts-expect-error: TypeScript doesn't know about this yet
+    "trailingZeroDisplay",
+    // @ts-expect-error: TypeScript doesn't know about this yet
+    "roundingPriority",
+    // @ts-expect-error: TypeScript doesn't know about this yet
+    "roundingIncrement",
+    // @ts-expect-error: TypeScript doesn't know about this yet
+    "roundingMode"
+  ];
+  function getFormatter(_a2, getNumberFormat, options) {
+    var locale = _a2.locale, formats = _a2.formats, onError = _a2.onError;
+    if (options === void 0) {
+      options = {};
+    }
+    var format2 = options.format;
+    var defaults2 = format2 && getNamedFormat(formats, "number", format2, onError) || {};
+    var filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults2);
+    return getNumberFormat(locale, filteredOptions);
+  }
+  function formatNumber(config2, getNumberFormat, value2, options) {
+    if (options === void 0) {
+      options = {};
+    }
+    try {
+      return getFormatter(config2, getNumberFormat, options).format(value2);
+    } catch (e) {
+      config2.onError(new IntlFormatError("Error formatting number.", config2.locale, e));
+    }
+    return String(value2);
+  }
+  function formatNumberToParts(config2, getNumberFormat, value2, options) {
+    if (options === void 0) {
+      options = {};
+    }
+    try {
+      return getFormatter(config2, getNumberFormat, options).formatToParts(value2);
+    } catch (e) {
+      config2.onError(new IntlFormatError("Error formatting number.", config2.locale, e));
+    }
+    return [];
+  }
+  function messagesContainString(messages) {
+    var firstMessage = messages ? messages[Object.keys(messages)[0]] : void 0;
+    return typeof firstMessage === "string";
+  }
+  function verifyConfigMessages(config2) {
+    if (config2.onWarn && config2.defaultRichTextElements && messagesContainString(config2.messages || {})) {
+      config2.onWarn('[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. \nPlease consider using "@formatjs/cli" to pre-compile your messages for performance.\nFor more details see https://formatjs.github.io/docs/getting-started/message-distribution');
+    }
+  }
+  function createIntl$1(config2, cache) {
+    var formatters = createFormatters(cache);
+    var resolvedConfig = __assign(__assign({}, DEFAULT_INTL_CONFIG), config2);
+    var locale = resolvedConfig.locale, defaultLocale2 = resolvedConfig.defaultLocale, onError = resolvedConfig.onError;
+    if (!locale) {
+      if (onError) {
+        onError(new InvalidConfigError('"locale" was not configured, using "'.concat(defaultLocale2, '" as fallback. See https://formatjs.github.io/docs/react-intl/api#intlshape for more details')));
+      }
+      resolvedConfig.locale = resolvedConfig.defaultLocale || "en";
+    } else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
+      onError(new MissingDataError('Missing locale data for locale: "'.concat(locale, '" in Intl.NumberFormat. Using default locale: "').concat(defaultLocale2, '" as fallback. See https://formatjs.github.io/docs/react-intl#runtime-requirements for more details')));
+    } else if (!Intl.DateTimeFormat.supportedLocalesOf(locale).length && onError) {
+      onError(new MissingDataError('Missing locale data for locale: "'.concat(locale, '" in Intl.DateTimeFormat. Using default locale: "').concat(defaultLocale2, '" as fallback. See https://formatjs.github.io/docs/react-intl#runtime-requirements for more details')));
+    }
+    verifyConfigMessages(resolvedConfig);
+    return __assign(__assign({}, resolvedConfig), { formatters, formatNumber: formatNumber.bind(null, resolvedConfig, formatters.getNumberFormat), formatNumberToParts: formatNumberToParts.bind(null, resolvedConfig, formatters.getNumberFormat), formatRelativeTime: formatRelativeTime.bind(null, resolvedConfig, formatters.getRelativeTimeFormat), formatDate: formatDate.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateToParts: formatDateToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTime: formatTime.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateTimeRange: formatDateTimeRange.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTimeToParts: formatTimeToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatPlural: formatPlural.bind(null, resolvedConfig, formatters.getPluralRules), formatMessage: formatMessage.bind(null, resolvedConfig, formatters), $t: formatMessage.bind(null, resolvedConfig, formatters), formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat), formatListToParts: formatListToParts.bind(null, resolvedConfig, formatters.getListFormat), formatDisplayName: formatDisplayName.bind(null, resolvedConfig, formatters.getDisplayNames) });
+  }
   const intlCache = {};
-  function getIntl(options) {
+  function createIntl(options) {
     const { locale, ignoreMissingTranslations, ignoreIntlCache } = options;
     let intl = ignoreIntlCache ? void 0 : intlCache[locale];
     const onError = (error) => {
@@ -65695,7 +66184,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
     if (!intl) {
       const cache = createIntlCache();
-      intl = createIntl(
+      intl = createIntl$1(
         {
           locale,
           /**
@@ -65712,67 +66201,205 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return intl;
   }
-  function toString(value2) {
-    if (isNullish(value2)) return;
-    return `${value2}`;
-  }
-  function numberToString(value2) {
-    if (isNullish(value2)) return;
-    return value2.toString();
-  }
-  function getChildren(value2) {
-    if (isNullish(value2)) return [];
-    if (Array.isArray(value2)) {
-      return value2.map((x) => x.children).flat();
-    }
-    return value2.children;
-  }
-  function isEmptyUiEntry(uiField) {
-    switch (uiField.type) {
-      case "REFERENCE_VALUE":
-        return isNullish(uiField.reference);
-      case "SINGLE_VALUE":
-        return isNullish(uiField.display);
-      case "MULTIPLE_VALUES":
-      case "MULTIPLE_GROUPED_VALUES":
-        return isNullish(uiField.display) || !uiField.display.flat().length;
-      case "DOWNLOAD_LINK":
-        return isNullish(uiField.url);
-      default:
-        throw new Error(`Unknown UI entry type: ${uiField.type}`);
-    }
-  }
-  function processGroup(group, { formatMessage: formatMessage2 }) {
+  function createI18nContext(options) {
+    const intl = createIntl(options);
+    const formatMessage2 = (id, values) => intl.formatMessage({ id }, values);
+    const hasMessage = (id) => isNonNullish(intl.messages[id]);
     return {
-      ...group,
-      children: group.children.map((entry) => {
-        return isEmptyUiEntry(entry) ? {
-          type: "SINGLE_VALUE",
-          label: entry.label,
-          display: formatMessage2("schema.empty_entry_display")
-        } : entry;
-      })
+      intl,
+      formatMessage: formatMessage2,
+      hasMessage
     };
   }
-  const setEmptyEntries = (context) => {
-    return (schema) => {
-      return {
-        ...schema,
-        children: schema.children.map((x) => processGroup(x, context))
-      };
+  const attachment = ({ formatMessage: formatMessage2 }) => (value2) => {
+    return {
+      type: "DOWNLOAD_LINK",
+      label: value2?.title ?? formatMessage2("fhir.unknown"),
+      url: value2?.url
     };
   };
-  const multipleValues = ({ intl }) => (label, value2, parse2, options) => {
-    let display = void 0;
-    if (isNonNullish(value2)) {
-      const entries = value2.map((x) => parse2(label, x));
-      display = entries.map((x) => x.display).filter(isNonNullish);
+  const annotationDisplay = (value2) => {
+    return value2?.text;
+  };
+  const annotation = ({ intl }) => (label, value2) => {
+    if (Array.isArray(value2)) {
+      return {
+        label: intl.formatMessage({ id: label }),
+        type: "MULTIPLE_VALUES",
+        display: value2.map(annotationDisplay).filter(isNonNullish)
+      };
     }
     return {
       label: intl.formatMessage({ id: label }),
-      type: Array.isArray(display?.[0]) ? "MULTIPLE_GROUPED_VALUES" : "MULTIPLE_VALUES",
-      display,
-      ...options
+      display: annotationDisplay(value2),
+      type: "SINGLE_VALUE"
+    };
+  };
+  const boolean = ({ formatMessage: formatMessage2 }) => (label, value2) => {
+    const truthyString = value2 ? formatMessage2("fhir.boolean.true") : formatMessage2("fhir.boolean.false");
+    return {
+      label: formatMessage2(label),
+      type: "SINGLE_VALUE",
+      display: isNonNullish(value2) ? truthyString : void 0
+    };
+  };
+  function code(context) {
+    const { hasMessage, formatMessage: formatMessage2 } = context;
+    return function(label, value2, options) {
+      const { i18nCode } = options ?? {};
+      function translateCode(code2) {
+        const i18nKey = `codes.${i18nCode}.${code2}`;
+        if (isNullish(code2)) {
+          return;
+        }
+        if (i18nCode && hasMessage(i18nKey)) {
+          return formatMessage2(i18nKey);
+        }
+        return code2;
+      }
+      if (Array.isArray(value2)) {
+        return {
+          label: formatMessage2(label),
+          type: "MULTIPLE_VALUES",
+          display: value2.map(translateCode).filter(isNonNullish)
+        };
+      }
+      return {
+        label: formatMessage2(label),
+        type: "SINGLE_VALUE",
+        display: translateCode(value2)
+      };
+    };
+  }
+  const codingDisplay = ({ hasMessage, formatMessage: formatMessage2, isSummary }) => (value2) => {
+    const { display, code: code2, system } = value2 ?? {};
+    if (isSummary && display) {
+      return display;
+    }
+    let displayString = display ?? "";
+    if (code2) {
+      const systemI18n = `system.${system}`;
+      const systemString = hasMessage(systemI18n) ? formatMessage2(systemI18n) : system;
+      const codeInSystemString = formatMessage2("format.code_in_system", {
+        code: code2,
+        system: systemString
+      });
+      displayString = `${displayString} (${system ? codeInSystemString : code2})`.trim();
+    }
+    return displayString === "" ? void 0 : displayString;
+  };
+  const coding = (context) => (label, value2) => {
+    const { formatMessage: formatMessage2 } = context;
+    const display = codingDisplay(context);
+    if (Array.isArray(value2)) {
+      return {
+        label: formatMessage2(label),
+        type: "MULTIPLE_VALUES",
+        display: value2.map(display).filter(isNonNullish)
+      };
+    }
+    return {
+      label: formatMessage2(label),
+      type: "SINGLE_VALUE",
+      display: display(value2)
+    };
+  };
+  const codeableDisplay = (context) => (value2) => {
+    if (value2?.text?.length) {
+      return [value2.text];
+    }
+    const coding2 = codingDisplay(context);
+    return value2?.coding.map(coding2).filter(isNonNullish) ?? [];
+  };
+  const codeableConcept = (context) => (label, value2) => {
+    const { formatMessage: formatMessage2 } = context;
+    const display = codeableDisplay(context);
+    if (Array.isArray(value2)) {
+      return {
+        label: formatMessage2(label),
+        type: "MULTIPLE_GROUPED_VALUES",
+        display: value2.map(display)
+      };
+    }
+    return {
+      label: formatMessage2(label),
+      type: "MULTIPLE_VALUES",
+      display: display(value2)
+    };
+  };
+  const milliseconds = /T\d\d:\d\d:\d\d\.\d+/i;
+  const seconds = /T\d\d:\d\d:\d\d/i;
+  const minutes = /T\d\d:\d\d/i;
+  const hours = /T\d\d/i;
+  const dateRegexp = /^\d\d\d\d-\d\d-\d\d/;
+  const month = /^\d\d\d\d-\d\d/;
+  const year = /^\d\d\d\d/;
+  const timezone = /(([+-][\d:]+)|Z)$/i;
+  function getDateFormatOptions(dateString, isSummary = false) {
+    const hasMilliseconds = milliseconds.test(dateString);
+    const hasSeconds = hasMilliseconds || seconds.test(dateString);
+    const hasMinutes = hasSeconds || minutes.test(dateString);
+    const hasHours = hasMinutes || hours.test(dateString);
+    const hasDate = dateRegexp.test(dateString);
+    const hasMonth = hasDate || month.test(dateString);
+    const hasYear = hasMonth || year.test(dateString);
+    const hasTimezone = hasHours && timezone.test(dateString);
+    return {
+      year: hasYear ? "numeric" : void 0,
+      month: hasMonth ? "long" : void 0,
+      day: hasDate ? "numeric" : void 0,
+      hour: hasHours ? "numeric" : void 0,
+      minute: hasMinutes ? "numeric" : void 0,
+      ...!isSummary && {
+        second: hasSeconds ? "numeric" : void 0,
+        fractionalSecondDigits: hasMilliseconds ? 3 : void 0,
+        timeZoneName: hasTimezone ? "shortOffset" : void 0
+      }
+    };
+  }
+  const date$1 = ({ intl: { locale }, isSummary }) => (value2) => {
+    if (isNullish(value2)) return;
+    const date2 = new Date(value2);
+    const dateTimeFormat = new Intl.DateTimeFormat(
+      locale,
+      getDateFormatOptions(value2, isSummary)
+    );
+    try {
+      return dateTimeFormat.format(date2);
+    } catch (_error) {
+      return `${value2}`;
+    }
+  };
+  const date$2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    date: date$1
+  }, Symbol.toStringTag, { value: "Module" }));
+  const date = (i18nContext) => (label, value2) => {
+    return {
+      label: i18nContext.formatMessage(label),
+      type: "SINGLE_VALUE",
+      display: date$1(i18nContext)(value2)
+    };
+  };
+  const dateTime = (context) => (label, value2) => {
+    if (Array.isArray(value2)) {
+      return {
+        label: context.formatMessage(label),
+        type: "MULTIPLE_VALUES",
+        display: value2.map(date$1(context)).filter(isNonNullish)
+      };
+    }
+    return {
+      label: context.formatMessage(label),
+      type: "SINGLE_VALUE",
+      display: date$1(context)(value2)
+    };
+  };
+  const decimal = ({ intl }) => (label, value2) => {
+    return {
+      label: intl.formatMessage({ id: label }),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2)
     };
   };
   function valueWithUnit$1(value2, unit) {
@@ -65792,268 +66419,89 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     valueWithMaxValue,
     valueWithUnit: valueWithUnit$1
   }, Symbol.toStringTag, { value: "Module" }));
-  const milliseconds = /T\d\d:\d\d:\d\d\.\d+/i;
-  const seconds = /T\d\d:\d\d:\d\d/i;
-  const minutes = /T\d\d:\d\d/i;
-  const hours = /T\d\d/i;
-  const date$3 = /^\d\d\d\d-\d\d-\d\d/;
-  const month = /^\d\d\d\d-\d\d/;
-  const year = /^\d\d\d\d/;
-  const timezone = /(([+-][\d:]+)|Z)$/i;
-  function getDateFormatOptions(dateString) {
-    const hasMilliseconds = milliseconds.test(dateString);
-    const hasSeconds = hasMilliseconds || seconds.test(dateString);
-    const hasMinutes = hasSeconds || minutes.test(dateString);
-    const hasHours = hasMinutes || hours.test(dateString);
-    const hasDate = date$3.test(dateString);
-    const hasMonth = hasDate || month.test(dateString);
-    const hasYear = hasMonth || year.test(dateString);
-    const hasTimezone = hasHours && timezone.test(dateString);
-    return {
-      year: hasYear ? "numeric" : void 0,
-      month: hasMonth ? "long" : void 0,
-      day: hasDate ? "numeric" : void 0,
-      hour: hasHours ? "numeric" : void 0,
-      minute: hasMinutes ? "numeric" : void 0,
-      second: hasSeconds ? "numeric" : void 0,
-      fractionalSecondDigits: hasMilliseconds ? 3 : void 0,
-      timeZoneName: hasTimezone ? "shortOffset" : void 0
-    };
-  }
-  function dateTime$1(value2) {
-    if (isNullish(value2)) return;
-    const date2 = new Date(value2);
-    const dateTimeFormat = new Intl.DateTimeFormat("nl-NL", getDateFormatOptions(value2));
-    try {
-      return dateTimeFormat.format(date2);
-    } catch (_error) {
-      return `${value2}`;
-    }
-  }
-  const dateTime$2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-    __proto__: null,
-    dateTime: dateTime$1
-  }, Symbol.toStringTag, { value: "Module" }));
-  function date$1(value2) {
-    return dateTime$1(value2);
-  }
-  const date$2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-    __proto__: null,
-    date: date$1
-  }, Symbol.toStringTag, { value: "Module" }));
   const format = {
     ...value,
-    ...date$2,
-    ...dateTime$2
-  };
-  const valueWithMax = ({ intl }) => (label, value2, max2, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      display: format.valueWithMaxValue(value2, max2),
-      type: "SINGLE_VALUE",
-      ...options
-    };
-  };
-  const valueWithUnit = ({ intl }) => (label, value2, unit, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      display: format.valueWithUnit(value2, unit),
-      type: "SINGLE_VALUE",
-      ...options
-    };
-  };
-  const annotationDisplay = (value2) => {
-    return value2?.text;
-  };
-  const annotation = ({ intl }) => (label, value2, options) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: intl.formatMessage({ id: label }),
-        type: "MULTIPLE_VALUES",
-        display: value2.map(annotationDisplay).filter(isNonNullish),
-        ...options
-      };
-    }
-    return {
-      label: intl.formatMessage({ id: label }),
-      display: annotationDisplay(value2),
-      type: "SINGLE_VALUE",
-      ...options
-    };
-  };
-  const boolean = ({ formatMessage: formatMessage2 }) => (label, value2, options) => {
-    const truthyString = value2 ? formatMessage2("fhir.boolean.true") : formatMessage2("fhir.boolean.false");
-    return {
-      label: formatMessage2(label),
-      type: "SINGLE_VALUE",
-      display: isNonNullish(value2) ? truthyString : void 0,
-      ...options
-    };
-  };
-  const code = ({ formatMessage: formatMessage2 }) => (label, value2, options) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: formatMessage2(label),
-        type: "MULTIPLE_VALUES",
-        display: value2.map(toString).filter(isNonNullish),
-        ...options
-      };
-    }
-    return {
-      label: formatMessage2(label),
-      type: "SINGLE_VALUE",
-      display: toString(value2),
-      ...options
-    };
-  };
-  const codingDisplay = ({ hasMessage, formatMessage: formatMessage2 }) => (value2) => {
-    const { display, code: code2, system } = value2 ?? {};
-    let displayString = display ?? "";
-    if (code2) {
-      const systemI18n = `system.${system}`;
-      const systemString = hasMessage(systemI18n) ? formatMessage2(systemI18n) : system;
-      const codeInSystemString = formatMessage2("format.code_in_system", {
-        code: code2,
-        system: systemString
-      });
-      displayString = `${displayString} (${system ? codeInSystemString : code2})`.trim();
-    }
-    return displayString === "" ? void 0 : displayString;
-  };
-  const coding = (context) => (label, value2, options) => {
-    const { formatMessage: formatMessage2 } = context;
-    const display = codingDisplay(context);
-    if (Array.isArray(value2)) {
-      return {
-        label: formatMessage2(label),
-        type: "MULTIPLE_VALUES",
-        display: value2.map(display).filter(isNonNullish),
-        ...options
-      };
-    }
-    return {
-      label: formatMessage2(label),
-      type: "SINGLE_VALUE",
-      display: display(value2),
-      ...options
-    };
-  };
-  const codeableDisplay = (context) => (value2) => {
-    if (value2?.text?.length) {
-      return [value2.text];
-    }
-    const coding2 = codingDisplay(context);
-    return value2?.coding.map(coding2).filter(isNonNullish) ?? [];
-  };
-  const codeableConcept = (context) => (label, value2, options) => {
-    const { formatMessage: formatMessage2 } = context;
-    const display = codeableDisplay(context);
-    if (Array.isArray(value2)) {
-      return {
-        label: formatMessage2(label),
-        type: "MULTIPLE_GROUPED_VALUES",
-        display: value2.map(display),
-        ...options
-      };
-    }
-    return {
-      label: formatMessage2(label),
-      type: "MULTIPLE_VALUES",
-      display: display(value2),
-      ...options
-    };
-  };
-  const date = ({ intl }) => (label, value2, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: format.date(value2),
-      ...options
-    };
-  };
-  const dateTime = ({ intl }) => (label, value2, options) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: intl.formatMessage({ id: label }),
-        type: "MULTIPLE_VALUES",
-        display: value2.map(format.dateTime).filter(isNonNullish),
-        ...options
-      };
-    }
-    return {
-      label: intl.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: format.dateTime(value2),
-      ...options
-    };
-  };
-  const instant = ({ intl }) => (label, value2, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: format.dateTime(value2),
-      ...options
-    };
+    ...date$2
   };
   const codeLabels = {
     "http://unitsofmeasure.org|d": "fhir.duration_days"
     // NOSONAR
   };
-  const duration = ({ formatMessage: formatMessage2 }) => (label, value2, options) => {
+  const duration = ({ formatMessage: formatMessage2 }) => (label, value2) => {
     const { value: quantityValue, unit, system, code: code2 } = value2 ?? {};
     const codeLabel = codeLabels[`${system}|${code2}`];
     const display = codeLabel ? formatMessage2(codeLabel, { count: quantityValue }) : format.valueWithUnit(quantityValue, unit);
     return {
       label: formatMessage2(label),
       type: `SINGLE_VALUE`,
-      display,
-      ...options
+      display
     };
   };
-  const identifier = ({ intl }) => (label, value2, options) => {
+  const identifier = ({ intl }) => (label, value2) => {
     if (Array.isArray(value2)) {
       return {
         label: intl.formatMessage({ id: label }),
         type: "MULTIPLE_VALUES",
-        display: value2?.map((x) => x?.value).filter(isNonNullish),
-        ...options
+        display: value2?.map((x) => x?.value).filter(isNonNullish)
       };
     }
     return {
       label: intl.formatMessage({ id: label }),
       type: "SINGLE_VALUE",
-      display: value2?.value,
-      ...options
+      display: value2?.value
     };
   };
-  const period = ({ formatMessage: formatMessage2, hasMessage }) => (label, value2, options) => {
+  const instant = (i18nContext) => (label, value2) => {
+    return dateTime(i18nContext)(label, value2);
+  };
+  const integer = ({ intl }) => (label, value2) => {
+    return {
+      label: intl.formatMessage({ id: label }),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2)
+    };
+  };
+  const integer64 = ({ intl }) => (label, value2) => {
+    return {
+      label: intl.formatMessage({ id: label }),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2)
+    };
+  };
+  const period = (i18nContext) => (label, value2) => {
+    const { formatMessage: formatMessage2, hasMessage } = i18nContext;
     const startLabel = `${label}.start`;
     const endLabel = `${label}.end`;
+    const formatDate2 = date$1(i18nContext);
     return [
       {
         label: formatMessage2(hasMessage(startLabel) ? startLabel : `fhir.period.start`),
         type: `SINGLE_VALUE`,
-        display: format.dateTime(value2?.start),
-        ...options
+        display: formatDate2(value2?.start)
       },
       {
         label: formatMessage2(hasMessage(endLabel) ? endLabel : `fhir.period.end`),
         type: `SINGLE_VALUE`,
-        display: format.dateTime(value2?.end),
-        ...options
+        display: formatDate2(value2?.end)
       }
     ];
   };
-  const quantity = ({ formatMessage: formatMessage2 }) => (label, value2, options) => {
+  const positiveInt = ({ intl }) => (label, value2) => {
+    return {
+      label: intl.formatMessage({ id: label }),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2)
+    };
+  };
+  const quantity = ({ formatMessage: formatMessage2 }) => (label, value2) => {
     const { value: quantityValue, unit } = value2 ?? {};
     return {
       label: formatMessage2(label),
       type: `SINGLE_VALUE`,
-      display: format.valueWithUnit(quantityValue, unit),
-      ...options
+      display: format.valueWithUnit(quantityValue, unit)
     };
   };
-  const range = (context) => (label, value2, options) => {
+  const range = (context) => (label, value2) => {
     const { hasMessage, formatMessage: formatMessage2 } = context;
     const lowLabel = `${label}.low`;
     const highLabel = `${label}.high`;
@@ -66061,18 +66509,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       {
         label: formatMessage2(hasMessage(lowLabel) ? lowLabel : `fhir.range.low`),
         type: `SINGLE_VALUE`,
-        display: format.valueWithUnit(value2?.low?.value, value2?.low?.unit),
-        ...options
+        display: format.valueWithUnit(value2?.low?.value, value2?.low?.unit)
       },
       {
         label: formatMessage2(hasMessage(highLabel) ? highLabel : `fhir.range.high`),
         type: `SINGLE_VALUE`,
-        display: format.valueWithUnit(value2?.high?.value, value2?.high?.unit),
-        ...options
+        display: format.valueWithUnit(value2?.high?.value, value2?.high?.unit)
       }
     ];
   };
-  const ratio = (context) => (label, value2, options) => {
+  const ratio = (context) => (label, value2) => {
     const { hasMessage, formatMessage: formatMessage2 } = context;
     const numeratorLabel = `${label}.numerator`;
     const denominatorLabel = `${label}.denominator`;
@@ -66082,90 +66528,51 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           hasMessage(numeratorLabel) ? numeratorLabel : `fhir.ratio.numerator`
         ),
         type: `SINGLE_VALUE`,
-        display: format.valueWithUnit(value2?.numerator?.value, value2?.numerator?.unit),
-        ...options
+        display: format.valueWithUnit(value2?.numerator?.value, value2?.numerator?.unit)
       },
       {
         label: formatMessage2(
           hasMessage(denominatorLabel) ? denominatorLabel : `fhir.ratio.denominator`
         ),
         type: `SINGLE_VALUE`,
-        display: format.valueWithUnit(value2?.denominator?.value, value2?.denominator?.unit),
-        ...options
+        display: format.valueWithUnit(value2?.denominator?.value, value2?.denominator?.unit)
       }
     ];
   };
-  const reference = ({ intl }) => (label, value2, options) => {
+  const reference = ({ intl }) => (label, value2) => {
     if (Array.isArray(value2)) {
       return {
         label: intl.formatMessage({ id: label }),
         type: "MULTIPLE_VALUES",
-        display: value2.map((x) => x.display).filter(isNonNullish),
-        ...options
+        display: value2.map((x) => x.display).filter(isNonNullish)
       };
     }
     return {
       label: intl.formatMessage({ id: label }),
       type: "REFERENCE_VALUE",
       display: value2?.display,
-      reference: value2?.reference,
-      ...options
+      reference: value2?.reference
     };
   };
-  const string = ({ intl }) => (label, value2, options) => {
+  const string = ({ intl }) => (label, value2) => {
     if (Array.isArray(value2)) {
       return {
         label: intl.formatMessage({ id: label }),
         type: "MULTIPLE_VALUES",
-        display: value2.map(toString).filter(isNonNullish),
-        ...options
+        display: value2.filter(isNonNullish)
       };
     }
     return {
       label: intl.formatMessage({ id: label }),
       type: "SINGLE_VALUE",
-      display: toString(value2),
-      ...options
+      display: value2
     };
   };
-  const decimal = ({ intl }) => (label, value2, options) => {
+  const unsignedInt = ({ intl }) => (label, value2) => {
     return {
       label: intl.formatMessage({ id: label }),
       type: "SINGLE_VALUE",
-      display: numberToString(value2),
-      ...options
-    };
-  };
-  const integer = ({ intl }) => (label, value2, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2),
-      ...options
-    };
-  };
-  const integer64 = ({ intl }) => (label, value2, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2),
-      ...options
-    };
-  };
-  const unsignedInt = ({ intl }) => (label, value2, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2),
-      ...options
-    };
-  };
-  const positiveInt = ({ intl }) => (label, value2, options) => {
-    return {
-      label: intl.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2),
-      ...options
+      display: numberToString(value2)
     };
   };
   function getTypes(context) {
@@ -66193,7 +66600,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       positiveInt: positiveInt(context)
     };
   }
-  const oneOfValueX = (context) => (label, value2, prefix = "value", options) => {
+  const oneOfValueX = (context) => (label, value2, prefix = "value") => {
     if (isNullish(value2)) {
       return [];
     }
@@ -66202,27 +66609,32 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     for (type in typeUiFunctions) {
       const key = `${prefix}${capitalizeFirstLetter(type)}`;
       if (key in value2 && isNonNullish(value2[key])) {
-        const uiValue = typeUiFunctions[type](label, value2[key], options);
+        const uiValue = typeUiFunctions[type](label, value2[key]);
         return Array.isArray(uiValue) ? uiValue : [uiValue];
       }
     }
     return [];
   };
-  const downloadLink = (_context) => (value2, options) => {
+  const valueWithMax = ({ intl }) => (label, value2, max2) => {
     return {
-      type: "DOWNLOAD_LINK",
-      label: value2?.title ?? "",
-      url: value2?.url ?? "",
-      ...options
+      label: intl.formatMessage({ id: label }),
+      display: format.valueWithMaxValue(value2, max2),
+      type: "SINGLE_VALUE"
+    };
+  };
+  const valueWithUnit = ({ intl }) => (label, value2, unit) => {
+    return {
+      label: intl.formatMessage({ id: label }),
+      display: format.valueWithUnit(value2, unit),
+      type: "SINGLE_VALUE"
     };
   };
   function getSpecial(context) {
     return {
-      multipleValues: multipleValues(context),
       valueWithMax: valueWithMax(context),
       valueWithUnit: valueWithUnit(context),
       oneOfValueX: oneOfValueX(context),
-      downloadLink: downloadLink()
+      attachment: attachment(context)
     };
   }
   function getUi(context) {
@@ -66235,55 +66647,89 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
   }
   function createUiSchemaContext(options) {
-    const intl = getIntl(options);
-    const formatMessage2 = (id, values) => intl.formatMessage({ id }, values);
-    const hasMessage = (id) => isNonNullish(intl.messages[id]);
+    const { locale, ignoreMissingTranslations, ignoreIntlCache, resources, isSummary } = options;
     const uiHelperContext = {
-      intl,
-      formatMessage: formatMessage2,
-      hasMessage
+      ...createI18nContext({
+        locale: locale ?? Locale.NL_NL,
+        ignoreMissingTranslations,
+        ignoreIntlCache
+      }),
+      isSummary
     };
     return {
       ...uiHelperContext,
       ui: getUi(uiHelperContext),
-      setEmptyEntries: setEmptyEntries(uiHelperContext)
+      setEmptyEntries: setEmptyEntries(uiHelperContext),
+      resources: resources ?? []
     };
   }
-  function getResourceConfig(resource) {
-    const { profile: profile2, fhirVersion } = resource;
-    let config2;
-    if (fhirVersion === FhirVersion.R3) {
-      config2 = resourcesMapR3[profile2];
-    } else if (fhirVersion === FhirVersion.R4) {
-      config2 = resourcesMapR4[profile2];
-    }
-    if (!config2) {
-      throw new Error(
-        `No config found for MGO Resource with profile: "${profile2}" and fhir version: "${fhirVersion}"`
-      );
-    }
-    return config2;
+  function isMgoResource(value2) {
+    const resourceTyped = value2;
+    return !!resourceTyped?.resourceType && !!resourceTyped?.profile;
   }
   function getUiSchema(resource, options) {
-    const config2 = getResourceConfig(resource);
-    const uiSchemaContext = createUiSchemaContext({
-      ignoreMissingTranslations: true,
-      locale: Locale.NL_NL
-    });
-    return config2.uiSchema(resource, uiSchemaContext);
-  }
-  function getUiSchemaJson(mgoResourceJson, formatResponse = false) {
-    const mgoResource = losslessParse(mgoResourceJson);
-    if (!isMgoResource(mgoResource)) {
+    if (!isMgoResource(resource)) {
       throw new Error(
-        `input does not seem to be a valid MGO Resource. Received MGO resource profile: "${mgoResource?.profile}"`
+        `input does not seem to be a valid MGO Resource. Received MGO resource profile: "${resource?.profile}"`
       );
     }
-    const uiSchema2 = getUiSchema(mgoResource);
-    return losslessStringify(uiSchema2, formatResponse);
+    const config2 = getResourceConfig(resource.profile, resource.fhirVersion);
+    if (!config2) {
+      throw new Error(
+        `No config found for MGO Resource with profile: "${resource.profile}" and fhir version: "${resource.fhirVersion}"`
+      );
+    }
+    const context = createUiSchemaContext({
+      ignoreMissingTranslations: true,
+      ...options
+    });
+    const uiSchema2 = config2.uiSchema(resource, context);
+    return context.setEmptyEntries(uiSchema2);
   }
+  function getSummaryUiSchema(resource, options) {
+    if (!isMgoResource(resource)) {
+      throw new Error(
+        `input does not seem to be a valid MGO Resource. Received MGO resource profile: "${resource?.profile}"`
+      );
+    }
+    const config2 = getResourceConfig(resource.profile, resource.fhirVersion);
+    if (!config2) {
+      throw new Error(
+        `No config found for MGO Resource with profile: "${resource.profile}" and fhir version: "${resource.fhirVersion}"`
+      );
+    }
+    if (!config2.summary) {
+      return {
+        label: resource.id,
+        children: [
+          {
+            label: "Opties",
+            children: [
+              {
+                type: "REFERENCE_LINK",
+                label: "Bekijk alle gegevens",
+                reference: resource.referenceId
+              }
+            ]
+          }
+        ]
+      };
+    }
+    const context = createUiSchemaContext({
+      ignoreMissingTranslations: true,
+      isSummary: true,
+      ...options
+    });
+    const summaryUiSchema = config2.summary(resource, context);
+    return context.setEmptyEntries(summaryUiSchema);
+  }
+  const getBundleResourcesJson = createJsonApi(getBundleResources);
+  const getMgoResourceJson = createJsonApi(getMgoResource);
+  const getUiSchemaJson = createJsonApi(getUiSchema);
+  const getSummaryUiSchemaJson = createJsonApi(getSummaryUiSchema);
   exports.getBundleResourcesJson = getBundleResourcesJson;
   exports.getMgoResourceJson = getMgoResourceJson;
+  exports.getSummaryUiSchemaJson = getSummaryUiSchemaJson;
   exports.getUiSchemaJson = getUiSchemaJson;
   Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
   return exports;

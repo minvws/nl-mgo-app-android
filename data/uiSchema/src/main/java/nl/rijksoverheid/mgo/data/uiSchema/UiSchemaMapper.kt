@@ -1,9 +1,13 @@
 package nl.rijksoverheid.mgo.data.uiSchema
 
 interface UiSchemaMapper {
-    fun getUiSchema(
-        fhirBundleJson: String,
-        fhirVersion: FhirVersion,
+    fun getSummary(
+        resources: List<String>,
+        profiles: List<String>,
+    ): List<UISchema>
+
+    fun getDetail(
+        resources: List<String>,
         profiles: List<String>,
     ): List<UISchema>
 }

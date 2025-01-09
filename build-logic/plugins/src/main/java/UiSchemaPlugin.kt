@@ -188,8 +188,8 @@ import kotlinx.parcelize.Parcelize
 
         for (line in lines) {
             val trimmedLine = line.trim()
-            if (trimmedLine.startsWith("val display: UIEntryDisplay? = null")) {
-                updatedLines.add("@Serializable(with = UIEntryDisplaySerializer::class)")
+            if (trimmedLine.startsWith("val display: UIElementDisplay? = null")) {
+                updatedLines.add("@Serializable(with = UIElementDisplaySerializer::class)")
             }
             updatedLines.add(line)
         }

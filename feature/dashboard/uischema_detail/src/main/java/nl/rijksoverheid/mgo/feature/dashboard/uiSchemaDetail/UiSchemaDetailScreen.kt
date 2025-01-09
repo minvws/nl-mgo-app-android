@@ -24,9 +24,9 @@ import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntryDisplay
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntryType
+import nl.rijksoverheid.mgo.data.uiSchema.UIElement
+import nl.rijksoverheid.mgo.data.uiSchema.UIElementDisplay
+import nl.rijksoverheid.mgo.data.uiSchema.UIElementType
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -58,8 +58,8 @@ fun UiSchemaDetailScreen(
 private fun UiSchemaDetailScreenContent(
     toolbarTitle: String,
     uiSchema: UISchema,
-    attachmentsState: Map<UIEntry, AttachmentState>,
-    onDownloadAttachment: (entry: UIEntry) -> Unit,
+    attachmentsState: Map<UIElement, AttachmentState>,
+    onDownloadAttachment: (entry: UIElement) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
@@ -84,13 +84,13 @@ private fun UiSchemaDetailScreenContent(
 @Composable
 private fun UiSchemaSection(
     group: UISchemaGroup,
-    attachmentsState: Map<UIEntry, AttachmentState>,
-    onDownloadAttachment: (entry: UIEntry) -> Unit,
+    attachmentsState: Map<UIElement, AttachmentState>,
+    onDownloadAttachment: (entry: UIElement) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Text(
-            text = group.label,
+            text = group.label ?: "",
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
         )
@@ -103,7 +103,7 @@ private fun UiSchemaSection(
             Column {
                 group.children.forEachIndexed { index, entry ->
                     when (entry.type) {
-                        UIEntryType.DownloadLink -> {
+                        UIElementType.DownloadLink -> {
                             val attachmentState = attachmentsState[entry]
                             if (attachmentState != null) {
                                 UiSchemaAttachmentListItem(
@@ -129,7 +129,7 @@ private fun UiSchemaSection(
 
 @Composable
 private fun UiSchemaLabelWithValueListItem(
-    entry: UIEntry,
+    entry: UIElement,
     hasDivider: Boolean,
 ) {
     Column {
@@ -158,10 +158,10 @@ private fun UiSchemaLabelWithValueListItem(
 }
 
 @Composable
-private fun UIEntryDisplay?.getStringOrUnknown(): String {
+private fun UIElementDisplay?.getStringOrUnknown(): String {
     return when (this) {
-        is UIEntryDisplay.StringValue -> this.value
-        is UIEntryDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
+        is UIElementDisplay.StringValue -> this.value
+        is UIElementDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
         else -> ""
     }
 }

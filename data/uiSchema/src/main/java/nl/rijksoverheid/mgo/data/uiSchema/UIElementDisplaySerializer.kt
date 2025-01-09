@@ -16,27 +16,27 @@ import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 
-object UIEntryDisplaySerializer : KSerializer<UIEntryDisplay> {
+object UIElementDisplaySerializer : KSerializer<UIElementDisplay> {
     override val descriptor: SerialDescriptor
         get() = PrimitiveSerialDescriptor("ChildDisplay", PrimitiveKind.STRING)
 
-    override fun deserialize(decoder: Decoder): UIEntryDisplay {
+    override fun deserialize(decoder: Decoder): UIElementDisplay {
         val input = decoder as? JsonDecoder ?: error("This serializer only works with JSON format")
         return when (val element = input.decodeJsonElement()) {
-            is JsonPrimitive -> UIEntryDisplay.StringValue(element.content) // If it's a single string
-            is JsonArray -> UIEntryDisplay.UnionArrayValue(element.mapNotNull { jsonElement -> jsonElement.toDisplayElement() })
+            is JsonPrimitive -> UIElementDisplay.StringValue(element.content) // If it's a single string
+            is JsonArray -> UIElementDisplay.UnionArrayValue(element.mapNotNull { jsonElement -> jsonElement.toDisplayElement() })
             else -> throw SerializationException("Unexpected JSON element type: ${element::class}")
         }
     }
 
     override fun serialize(
         encoder: Encoder,
-        value: UIEntryDisplay,
+        value: UIElementDisplay,
     ) {
         val output = encoder as? JsonEncoder ?: error("This serializer only works with JSON format")
         when (value) {
-            is UIEntryDisplay.StringValue -> output.encodeString(value.value)
-            is UIEntryDisplay.UnionArrayValue -> {
+            is UIElementDisplay.StringValue -> output.encodeString(value.value)
+            is UIElementDisplay.UnionArrayValue -> {
                 val stringValues = value.value.map { displayElement -> displayElement.toStrings() }.flatten()
                 output.encodeSerializableValue(ListSerializer(String.serializer()), stringValues)
             }

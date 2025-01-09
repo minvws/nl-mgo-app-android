@@ -9,8 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntryType
+import nl.rijksoverheid.mgo.data.uiSchema.UIElement
+import nl.rijksoverheid.mgo.data.uiSchema.UIElementType
 import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import timber.log.Timber
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,7 @@ internal class UiSchemaDetailScreenViewModel
             ): UiSchemaDetailScreenViewModel
         }
 
-        private val _attachmentsState = MutableStateFlow<Map<UIEntry, AttachmentState>>(mapOf())
+        private val _attachmentsState = MutableStateFlow<Map<UIElement, AttachmentState>>(mapOf())
         val attachmentsState = _attachmentsState.asStateFlow()
 
         init {
@@ -43,13 +43,13 @@ internal class UiSchemaDetailScreenViewModel
                 uiSchema.children
                     .map { group -> group.children }
                     .flatten()
-                    .filter { entry -> entry.type == UIEntryType.DownloadLink }
+                    .filter { entry -> entry.type == UIElementType.DownloadLink }
                     .associateWith {
                         AttachmentState.NotDownloaded
                     }
         }
 
-        fun onDownloadAttachment(entry: UIEntry) {
+        fun onDownloadAttachment(entry: UIElement) {
             viewModelScope.launch {
                 val resourceEndpoint =
                     organization.dataServices.firstOrNull { service ->
@@ -89,7 +89,7 @@ internal class UiSchemaDetailScreenViewModel
         }
 
         private fun updateAttachmentState(
-            uiEntry: UIEntry,
+            uiEntry: UIElement,
             state: AttachmentState,
         ) {
             _attachmentsState.update { states ->

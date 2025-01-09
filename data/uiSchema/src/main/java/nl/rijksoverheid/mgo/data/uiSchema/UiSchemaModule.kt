@@ -18,4 +18,12 @@ object UiSchemaModule {
     ): UiSchemaMapper {
         return DefaultUiSchemaMapper(context)
     }
+
+    @Provides
+    @Singleton
+    fun provideHealthCareResourceMapper(
+        @ApplicationContext context: Context,
+    ): HealthCareResourceMapper {
+        return DefaultHealthCareResourceMapper(context)
+    }
 }

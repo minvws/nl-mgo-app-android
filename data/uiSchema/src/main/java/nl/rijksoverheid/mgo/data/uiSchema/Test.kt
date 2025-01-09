@@ -9,19 +9,19 @@ val TEST_UI_SCHEMA_MEDICATION =
                     label = "Algemeen",
                     children =
                         listOf(
-                            UIEntry(
+                            UIElement(
                                 label = "Gebruiksaanwijzing",
                                 display =
-                                    UIEntryDisplay.StringValue(
+                                    UIElementDisplay.StringValue(
                                         "1 keer per dag 1 capsule een half uur voor het ontbijt heel " +
                                             "doorslikken, niet kauwen",
                                     ),
-                                type = UIEntryType.SingleValue,
+                                type = UIElementType.SingleValue,
                             ),
-                            UIEntry(
+                            UIElement(
                                 label = "Reden",
-                                display = UIEntryDisplay.StringValue("Boezemfibrilleren/-fladderen"),
-                                type = UIEntryType.SingleValue,
+                                display = UIElementDisplay.StringValue("Boezemfibrilleren/-fladderen"),
+                                type = UIElementType.SingleValue,
                             ),
                         ),
                 ),
@@ -29,15 +29,15 @@ val TEST_UI_SCHEMA_MEDICATION =
                     label = "Periode van gebruik",
                     children =
                         listOf(
-                            UIEntry(
+                            UIElement(
                                 label = "Startdatum",
-                                display = UIEntryDisplay.StringValue("9 maart 2022"),
-                                type = UIEntryType.SingleValue,
+                                display = UIElementDisplay.StringValue("9 maart 2022"),
+                                type = UIElementType.SingleValue,
                             ),
-                            UIEntry(
+                            UIElement(
                                 label = "Einddatum",
-                                display = UIEntryDisplay.StringValue("Niet bekend"),
-                                type = UIEntryType.SingleValue,
+                                display = UIElementDisplay.StringValue("Niet bekend"),
+                                type = UIElementType.SingleValue,
                             ),
                         ),
                 ),
@@ -45,16 +45,16 @@ val TEST_UI_SCHEMA_MEDICATION =
     )
 
 val TEST_UI_ENTRY =
-    UIEntry(
+    UIElement(
         label = "UI Entry Label",
-        display = UIEntryDisplay.StringValue("Display"),
-        type = UIEntryType.SingleValue,
+        display = UIElementDisplay.StringValue("Display"),
+        type = UIElementType.SingleValue,
     )
 
 val TEST_UI_ENTRY_DOWNLOAD_LINK =
     TEST_UI_ENTRY.copy(
         url = "example.pdf",
-        type = UIEntryType.DownloadLink,
+        type = UIElementType.DownloadLink,
     )
 
 val TEST_UI_SCHEMA_GROUP =

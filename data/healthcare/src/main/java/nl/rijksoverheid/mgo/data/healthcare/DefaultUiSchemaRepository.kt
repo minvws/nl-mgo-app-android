@@ -4,8 +4,7 @@ import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
 import nl.rijksoverheid.mgo.data.healthcare.util.HealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.uiSchema.HealthCareResourceMapper
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
@@ -15,7 +14,7 @@ import javax.inject.Singleton
 internal class DefaultUiSchemaRepository
     @Inject
     constructor(
-        private val uiSchemaMapper: UiSchemaMapper,
+        private val healthCareResourceMapper: HealthCareResourceMapper,
         private val dvaApi: DvaApi,
         private val urlCreator: HealthCareUrlCreator,
         @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
@@ -23,7 +22,7 @@ internal class DefaultUiSchemaRepository
         override suspend fun getUiSchema(
             organization: MgoOrganization,
             category: HealthCareCategory,
-        ): List<Result<List<UISchema>>> {
+        ): List<Result<List<String>>> {
             val requests = category.getRequests()
             return requests.mapNotNull { request ->
                 val resourceEndpoint =
@@ -40,10 +39,9 @@ internal class DefaultUiSchemaRepository
                     }
                 requestResult
                     .mapCatching { responseBody ->
-                        uiSchemaMapper.getUiSchema(
+                        healthCareResourceMapper.getResources(
                             fhirBundleJson = responseBody.string(),
                             fhirVersion = request.fhirVersion,
-                            profiles = category.getProfiles(),
                         )
                     }
                     .onFailure { error ->

@@ -36,16 +36,16 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinary
 import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_ENTRY
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
+import nl.rijksoverheid.mgo.data.uiSchema.UIElement
 import java.io.File
 import java.lang.IllegalStateException
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 internal fun UiSchemaAttachmentListItem(
-    entry: UIEntry,
+    entry: UIElement,
     state: AttachmentState,
-    onDownloadAttachment: (entry: UIEntry) -> Unit,
+    onDownloadAttachment: (entry: UIElement) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -87,7 +87,7 @@ internal fun UiSchemaAttachmentListItem(
 
 @Composable
 private fun UiSchemaAttachmentNotDownloadedListItem(
-    entry: UIEntry,
+    entry: UIElement,
     modifier: Modifier = Modifier,
 ) {
     Row(

@@ -72,6 +72,7 @@ android {
             productFlavors.getByName("tst").signingConfig = signingConfigs.getByName("release")
             productFlavors.getByName("acc").signingConfig = signingConfigs.getByName("release")
             productFlavors.getByName("prod").signingConfig = signingConfigs.getByName("release")
+            productFlavors.getByName("demo").signingConfig = signingConfigs.getByName("release")
         }
     }
 }

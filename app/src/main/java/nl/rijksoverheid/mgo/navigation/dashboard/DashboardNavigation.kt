@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory as HealthCareCategoryModel
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory as HealthCareCategoryModel
 
 sealed class DashboardNavigation {
     @Serializable

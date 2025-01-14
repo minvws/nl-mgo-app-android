@@ -1,11 +1,12 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.util.TestHealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_BGZ_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.uiSchema.TestUiSchemaMapper
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.TestServerRule

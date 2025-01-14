@@ -45,7 +45,7 @@ import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
 import nl.rijksoverheid.mgo.component.theme.supportVerloskundige
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
 import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem

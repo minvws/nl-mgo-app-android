@@ -39,9 +39,9 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 

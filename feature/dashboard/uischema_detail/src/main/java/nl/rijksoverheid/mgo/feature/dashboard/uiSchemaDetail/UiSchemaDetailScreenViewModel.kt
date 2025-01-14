@@ -6,12 +6,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
-import nl.rijksoverheid.mgo.data.uiSchema.UIElement
-import nl.rijksoverheid.mgo.data.uiSchema.UIElementType
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import timber.log.Timber
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

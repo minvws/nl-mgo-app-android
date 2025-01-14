@@ -2,8 +2,8 @@ package nl.rijksoverheid.mgo
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
-import nl.rijksoverheid.mgo.data.uiSchema.javascript.JsRuntimeRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import timber.log.Timber

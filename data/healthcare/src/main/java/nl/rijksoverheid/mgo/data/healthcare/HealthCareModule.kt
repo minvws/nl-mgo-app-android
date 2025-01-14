@@ -6,8 +6,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.healthcare.binary.DefaultHealthCareBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
-import nl.rijksoverheid.mgo.data.healthcare.util.DefaultHealthCareUrlCreator
-import nl.rijksoverheid.mgo.data.healthcare.util.HealthCareUrlCreator
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.DefaultHealthCareDataRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareDataRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.urlCreator.DefaultHealthCareUrlCreator
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.urlCreator.HealthCareUrlCreator
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.DefaultHealthCareDataStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.DefaultHealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import javax.inject.Singleton
 
 @Module
@@ -15,7 +21,7 @@ import javax.inject.Singleton
 internal abstract class HealthCareModule {
     @Binds
     @Singleton
-    abstract fun provideUiSchemaRepository(default: DefaultUiSchemaRepository): UiSchemaRepository
+    abstract fun provideHealthCareDataRepository(default: DefaultHealthCareDataRepository): HealthCareDataRepository
 
     @Binds
     @Singleton

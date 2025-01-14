@@ -16,8 +16,8 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import kotlin.reflect.typeOf
 
 const val SCREEN_TRANSITION_DURATION_MILLIS = 250

@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.healthcare.CollectHealthCareDataStates
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.CollectHealthCareDataStates
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher

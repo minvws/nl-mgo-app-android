@@ -34,9 +34,9 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinary
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_ENTRY
-import nl.rijksoverheid.mgo.data.uiSchema.UIElement
 import java.io.File
 import java.lang.IllegalStateException
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR

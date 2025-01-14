@@ -1,8 +1,11 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import app.cash.turbine.test
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.DefaultHealthCareDataStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
@@ -30,7 +33,15 @@ class DefaultHealthCareDataStateRepositoryTest {
         runTest {
             // Given: UI Schema returns result
             val uiSchemaRepository = TestUiSchemaRepository()
-            uiSchemaRepository.setUiSchemaResult(listOf(Result.success(listOf(TEST_UI_SCHEMA_MEDICATION))))
+            uiSchemaRepository.setUiSchemaResult(
+                listOf(
+                    Result.success(
+                        listOf(
+                            TEST_UI_SCHEMA_MEDICATION,
+                        ),
+                    ),
+                ),
+            )
             val repository = DefaultHealthCareDataStateRepository(uiSchemaRepository)
 
             // When: Calling get

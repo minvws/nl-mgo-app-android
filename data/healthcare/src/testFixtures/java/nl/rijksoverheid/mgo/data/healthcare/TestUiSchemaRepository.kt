@@ -1,12 +1,13 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
+import nl.rijksoverheid.mgo.data.fhirParser.UISchema
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 
 class TestUiSchemaRepository : UiSchemaRepository {
-    private val uiSchemaResult = mutableListOf<Result<List<UISchema>>>()
+    private val uiSchemaResult = mutableListOf<Result<List<nl.rijksoverheid.mgo.data.fhirParser.UISchema>>>()
 
-    fun setUiSchemaResult(result: List<Result<List<UISchema>>>) {
+    fun setUiSchemaResult(result: List<Result<List<nl.rijksoverheid.mgo.data.fhirParser.UISchema>>>) {
         uiSchemaResult.clear()
         uiSchemaResult.addAll(result)
     }
@@ -14,7 +15,7 @@ class TestUiSchemaRepository : UiSchemaRepository {
     override suspend fun getUiSchema(
         organization: MgoOrganization,
         category: HealthCareCategory,
-    ): List<Result<List<UISchema>>> {
+    ): List<Result<List<nl.rijksoverheid.mgo.data.fhirParser.UISchema>>> {
         return uiSchemaResult
     }
 }

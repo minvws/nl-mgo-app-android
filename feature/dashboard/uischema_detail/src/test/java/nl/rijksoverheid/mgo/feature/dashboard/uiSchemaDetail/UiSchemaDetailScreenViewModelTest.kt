@@ -1,15 +1,15 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
 import app.cash.turbine.test
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY_DOWNLOAD_LINK
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_GROUP
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinary
 import nl.rijksoverheid.mgo.data.healthcare.binary.TestHealthCareBinaryRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_ENTRY_DOWNLOAD_LINK
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_GROUP
 import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
@@ -50,14 +50,14 @@ internal class UiSchemaDetailScreenViewModelTest {
         return UiSchemaDetailScreenViewModel(
             organization = organization,
             uiSchema =
-                TEST_UI_SCHEMA.copy(
+                nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA.copy(
                     children =
                         listOf(
-                            TEST_UI_SCHEMA_GROUP.copy(
+                            nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_GROUP.copy(
                                 children =
                                     listOf(
                                         uiEntry,
-                                        TEST_UI_ENTRY_DOWNLOAD_LINK.copy(
+                                        nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY_DOWNLOAD_LINK.copy(
                                             label = "UI Entry Label #2",
                                         ),
                                     ),
@@ -92,7 +92,7 @@ internal class UiSchemaDetailScreenViewModelTest {
     fun testDownloadAttachmentUiEntryWithUrl() =
         runTest {
             // Given: ui entry with url
-            val uiEntry = TEST_UI_ENTRY_DOWNLOAD_LINK
+            val uiEntry = nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY_DOWNLOAD_LINK
 
             // Given: Mock download to be success
             healthCareBinaryRepository.setDownloadResult(Result.success(HealthCareBinary(file = File(""), contentType = "")))
@@ -117,7 +117,7 @@ internal class UiSchemaDetailScreenViewModelTest {
     fun testDownloadAttachmentNoDocumentDataServiceType() =
         runTest {
             // Given: ui entry with url
-            val uiEntry = TEST_UI_ENTRY_DOWNLOAD_LINK
+            val uiEntry = nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY_DOWNLOAD_LINK
 
             // Given: Mock download to be success
             healthCareBinaryRepository.setDownloadResult(Result.success(HealthCareBinary(file = File(""), contentType = "")))
@@ -140,7 +140,7 @@ internal class UiSchemaDetailScreenViewModelTest {
     fun testDownloadAttachmentUiEntryWithoutUrl() =
         runTest {
             // Given: ui entry with empty url
-            val uiEntry = TEST_UI_ENTRY_DOWNLOAD_LINK.copy(url = "")
+            val uiEntry = nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY_DOWNLOAD_LINK.copy(url = "")
 
             // Given: Mock download to be success
             healthCareBinaryRepository.setDownloadResult(Result.success(HealthCareBinary(file = File(""), contentType = "")))
@@ -165,7 +165,7 @@ internal class UiSchemaDetailScreenViewModelTest {
     fun testDownloadAttachmentUiEntryNullUrl() =
         runTest {
             // Given: ui entry with null url
-            val uiEntry = TEST_UI_ENTRY_DOWNLOAD_LINK.copy(url = null)
+            val uiEntry = nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY_DOWNLOAD_LINK.copy(url = null)
 
             // Given: Mock download to be success
             healthCareBinaryRepository.setDownloadResult(Result.success(HealthCareBinary(file = File(""), contentType = "")))
@@ -188,7 +188,7 @@ internal class UiSchemaDetailScreenViewModelTest {
     fun testDownloadAttachmentFailed() =
         runTest {
             // Given: ui entry with url
-            val uiEntry = TEST_UI_ENTRY_DOWNLOAD_LINK
+            val uiEntry = nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY_DOWNLOAD_LINK
 
             // Given: Mock download to fail
             val error = IllegalStateException("Something went wrong")

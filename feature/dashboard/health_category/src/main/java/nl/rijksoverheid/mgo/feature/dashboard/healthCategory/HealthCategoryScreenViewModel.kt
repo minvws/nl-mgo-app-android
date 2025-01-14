@@ -6,13 +6,13 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.getProfiles
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.healthCareData.getProfiles
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.UiSchemaMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -29,7 +29,7 @@ internal class HealthCategoryScreenViewModel
         @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
         private val organizationRepository: OrganizationRepository,
         private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
-        private val uiSchemaMapper: UiSchemaMapper,
+        private val uiSchemaRepository: UiSchemaRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -100,8 +100,8 @@ internal class HealthCategoryScreenViewModel
             category: HealthCareCategory,
         ): List<HealthCategoryScreenListItem> {
             return if (this is HealthCareDataState.Loaded) {
-                this.results.map { it.getOrNull() ?: listOf() }.flatten().let { jsons ->
-                    uiSchemaMapper.getSummary(resources = jsons, profiles = category.getProfiles())
+                this.results.map { it.getOrNull() ?: listOf() }.flatten().let { mgoResources ->
+                    uiSchemaRepository.getSummary(mgoResources = mgoResources, profiles = category.getProfiles())
                 }.map { uiSchema ->
                     HealthCategoryScreenListItem(
                         title = uiSchema.label ?: "",

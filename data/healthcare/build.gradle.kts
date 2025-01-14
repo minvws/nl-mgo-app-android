@@ -10,16 +10,16 @@ android {
 }
 
 dependencies {
+    api(projects.data.fhirParser)
     implementation(projects.data.localisation)
-    implementation(projects.data.uiSchema)
+    implementation(projects.data.fhirParser)
     implementation(projects.data.api.dva)
     implementation(projects.framework.copy)
     implementation(projects.framework.storage)
-    implementation(projects.data.fhirParser)
     testImplementation(testFixtures(projects.data.localisation))
-    testImplementation(testFixtures(projects.data.uiSchema))
+    testImplementation(testFixtures(projects.data.fhirParser))
     testImplementation(testFixtures(projects.framework.test))
     testImplementation(testFixtures(projects.framework.storage))
     testFixturesImplementation(projects.data.localisation)
-    testFixturesImplementation(projects.data.uiSchema)
+    testFixturesImplementation(projects.data.fhirParser)
 }

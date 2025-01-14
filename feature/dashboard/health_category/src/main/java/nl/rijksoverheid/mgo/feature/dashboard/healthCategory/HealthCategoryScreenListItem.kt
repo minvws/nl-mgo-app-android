@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 
 data class HealthCategoryScreenListItem(
     val title: String,

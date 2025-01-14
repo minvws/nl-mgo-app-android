@@ -21,14 +21,14 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.data.fhirParser.shared.DisplayElement
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementDisplay
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchemaGroup
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
-import nl.rijksoverheid.mgo.data.uiSchema.UIElement
-import nl.rijksoverheid.mgo.data.uiSchema.UIElementDisplay
-import nl.rijksoverheid.mgo.data.uiSchema.UIElementType
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable

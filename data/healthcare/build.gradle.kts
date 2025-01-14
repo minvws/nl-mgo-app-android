@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.data.api.dva)
     implementation(projects.framework.copy)
     implementation(projects.framework.storage)
+    implementation(projects.data.fhirParser)
     testImplementation(testFixtures(projects.data.localisation))
     testImplementation(testFixtures(projects.data.uiSchema))
     testImplementation(testFixtures(projects.framework.test))

@@ -4,10 +4,8 @@ import android.content.Context
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Array
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow

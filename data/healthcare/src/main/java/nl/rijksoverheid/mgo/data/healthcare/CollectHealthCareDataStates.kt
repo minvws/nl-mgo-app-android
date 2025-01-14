@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Entry point to fetch data for all stored health care providers. Listens to changes in stored health care providers
+ * and updates the health care data in [HealthCareDataStatesRepository].
+ */
 @Singleton
 class CollectHealthCareDataStates
     @Inject

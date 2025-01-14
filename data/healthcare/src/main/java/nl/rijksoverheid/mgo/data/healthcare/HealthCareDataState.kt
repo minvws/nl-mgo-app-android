@@ -3,16 +3,38 @@ package nl.rijksoverheid.mgo.data.healthcare
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 
+/**
+ * State of retrieved health care data.
+ * @param organization The organization of the health care data.
+ * @param category The category of the health care data.
+ */
 sealed class HealthCareDataState(open val organization: MgoOrganization, open val category: HealthCareCategory) {
+    /**
+     * Represents that the health care data is currently loading.
+     * @param organization The organization of the health care data.
+     * @param category The category of the health care data.
+     */
     data class Loading(override val organization: MgoOrganization, override val category: HealthCareCategory) :
         HealthCareDataState(organization, category)
 
+    /**
+     * Represents that the health care data is successfully retrieved.
+     * @param results The fetched results in our own json format. This can be used in [UiSchemaRepository] to transform into
+     * presentable data.
+     * @param organization The organization of the health care data.
+     * @param category The category of the health care data.
+     */
     data class Loaded(
         val results: List<Result<List<String>>>,
         override val organization: MgoOrganization,
         override val category: HealthCareCategory,
     ) : HealthCareDataState(organization, category)
 
+    /**
+     * Represents fetched health care data that does not contain anything to present.
+     * @param organization The organization of the health care data.
+     * @param category The category of the health care data.
+     */
     data class Empty(override val organization: MgoOrganization, override val category: HealthCareCategory) :
         HealthCareDataState(organization, category)
 }

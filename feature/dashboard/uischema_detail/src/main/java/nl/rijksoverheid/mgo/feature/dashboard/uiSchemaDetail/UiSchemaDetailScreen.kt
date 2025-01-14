@@ -109,6 +109,9 @@ private fun UiSchemaSection(
             Column {
                 group.children.forEachIndexed { index, entry ->
                     when (entry.type) {
+                        UIElementType.ReferenceLink -> {
+                            UiSchemaReference(entry)
+                        }
                         UIElementType.DownloadLink -> {
                             val attachmentState = attachmentsState[entry]
                             if (attachmentState != null) {
@@ -131,6 +134,15 @@ private fun UiSchemaSection(
             }
         }
     }
+}
+
+@Composable
+private fun UiSchemaReference(entry: UIElement) {
+    Text(
+        modifier = Modifier.padding(16.dp),
+        text = entry.label,
+        style = MaterialTheme.typography.bodySmall,
+    )
 }
 
 @Composable

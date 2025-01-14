@@ -6,6 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.healthCareData.getProfiles
@@ -29,6 +30,7 @@ internal class HealthCategoryScreenViewModel
         @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
         private val organizationRepository: OrganizationRepository,
         private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
+        private val mgoResourceRepository: MgoResourceRepository,
         private val uiSchemaRepository: UiSchemaRepository,
     ) : ViewModel() {
         @AssistedFactory
@@ -100,13 +102,14 @@ internal class HealthCategoryScreenViewModel
             category: HealthCareCategory,
         ): List<HealthCategoryScreenListItem> {
             return if (this is HealthCareDataState.Loaded) {
-                this.results.map { it.getOrNull() ?: listOf() }.flatten().let { mgoResources ->
-                    uiSchemaRepository.getSummary(mgoResources = mgoResources, profiles = category.getProfiles())
-                }.map { uiSchema ->
+                val mgoResources = this.results.mapNotNull { result -> result.getOrNull() }.flatten()
+                val mgoResourceToDisplay = mgoResourceRepository.filter(resources = mgoResources, profiles = category.getProfiles())
+                mgoResourceToDisplay.map { mgoResource ->
+                    val uiSchema = uiSchemaRepository.getSummary(mgoResource)
                     HealthCategoryScreenListItem(
                         title = uiSchema.label ?: "",
                         subtitle = organization.name,
-                        uiSchema = uiSchema,
+                        mgoResource = mgoResource,
                         organization = organization,
                     )
                 }

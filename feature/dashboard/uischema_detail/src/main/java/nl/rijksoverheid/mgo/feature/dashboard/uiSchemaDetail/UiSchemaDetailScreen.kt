@@ -21,6 +21,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
 import nl.rijksoverheid.mgo.data.fhirParser.shared.DisplayElement
 import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
@@ -35,23 +36,28 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun UiSchemaDetailScreen(
     toolbarTitle: String,
     organization: MgoOrganization,
-    uiSchema: UISchema,
+    mgoResource: MgoResourceJson,
+    isSummary: Boolean,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
         hiltViewModel<UiSchemaDetailScreenViewModel, UiSchemaDetailScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(organization = organization, uiSchema = uiSchema) },
+            creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
         )
+    val uiSchema by viewModel.uiSchema.collectAsStateWithLifecycle()
     val attachmentsState by viewModel.attachmentsState.collectAsStateWithLifecycle()
-    UiSchemaDetailScreenContent(
-        toolbarTitle = toolbarTitle,
-        uiSchema = uiSchema,
-        attachmentsState = attachmentsState,
-        onDownloadAttachment = { entry ->
-            viewModel.onDownloadAttachment(entry)
-        },
-        onNavigateBack = onNavigateBack,
-    )
+
+    uiSchema?.let {
+        UiSchemaDetailScreenContent(
+            toolbarTitle = toolbarTitle,
+            uiSchema = it,
+            attachmentsState = attachmentsState,
+            onDownloadAttachment = { entry ->
+                viewModel.onDownloadAttachment(entry)
+            },
+            onNavigateBack = onNavigateBack,
+        )
+    }
 }
 
 @Composable

@@ -6,9 +6,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
@@ -23,30 +25,46 @@ internal class UiSchemaDetailScreenViewModel
     @AssistedInject
     constructor(
         @Assisted private val organization: MgoOrganization,
-        @Assisted private val uiSchema: UISchema,
+        @Assisted private val mgoResource: MgoResourceJson,
+        @Assisted private val isSummary: Boolean,
         private val healthCareBinaryRepository: HealthCareBinaryRepository,
+        private val uiSchemaRepository: UiSchemaRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
             fun create(
                 organization: MgoOrganization,
-                uiSchema: UISchema,
+                mgoResource: MgoResourceJson,
+                isSummary: Boolean,
             ): UiSchemaDetailScreenViewModel
         }
+
+        private val _uiSchema = MutableStateFlow<UISchema?>(null)
+        val uiSchema = _uiSchema.asStateFlow()
 
         private val _attachmentsState = MutableStateFlow<Map<UIElement, AttachmentState>>(mapOf())
         val attachmentsState = _attachmentsState.asStateFlow()
 
         init {
-            // Set initial attachment states
-            _attachmentsState.value =
-                uiSchema.children
-                    .map { group -> group.children }
-                    .flatten()
-                    .filter { entry -> entry.type == UIElementType.DownloadLink }
-                    .associateWith {
-                        AttachmentState.NotDownloaded
+            viewModelScope.launch {
+                val uiSchema =
+                    if (isSummary) {
+                        uiSchemaRepository.getSummary(mgoResource)
+                    } else {
+                        uiSchemaRepository.getDetail(mgoResource)
                     }
+                _uiSchema.value = uiSchema
+
+                // Set initial attachment states
+                _attachmentsState.value =
+                    uiSchema.children
+                        .map { group -> group.children }
+                        .flatten()
+                        .filter { entry -> entry.type == UIElementType.DownloadLink }
+                        .associateWith {
+                            AttachmentState.NotDownloaded
+                        }
+            }
         }
 
         fun onDownloadAttachment(entry: UIElement) {

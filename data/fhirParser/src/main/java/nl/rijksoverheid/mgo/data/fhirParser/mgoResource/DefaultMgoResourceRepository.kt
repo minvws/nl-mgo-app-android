@@ -45,4 +45,19 @@ internal class DefaultMgoResourceRepository
             }
             return mgoResources
         }
+
+        /**
+         * Filters mgo resources based on the profile property.
+         * @param resources The mgo resources to filter.
+         * @param profiles If the mgo resource contains a profile that exists in this array, it will be returned.
+         */
+        override suspend fun filter(
+            resources: List<MgoResourceJson>,
+            profiles: List<String>,
+        ): List<MgoResourceJson> {
+            return resources.filter { resource ->
+                val resourceJsonObject = JSONObject(resource)
+                profiles.contains(resourceJsonObject.getString("profile"))
+            }
+        }
     }

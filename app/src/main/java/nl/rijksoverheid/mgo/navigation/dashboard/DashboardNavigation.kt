@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
-import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.serialization.Serializable
 import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory as HealthCareCategoryModel
@@ -24,7 +24,8 @@ sealed class DashboardNavigation {
         data class HealthCareCategory(val category: HealthCareCategoryModel) : Overview()
 
         @Serializable
-        data class UISchemaDetail(val toolbarTitle: String, val organization: MgoOrganization, val uiSchema: UISchema) : Overview()
+        data class UISchemaDetail(val toolbarTitle: String, val organization: MgoOrganization, val mgoResource: MgoResourceJson) :
+            Overview()
     }
 
     @Serializable
@@ -42,7 +43,8 @@ sealed class DashboardNavigation {
         data class HealthCareCategory(val category: HealthCareCategoryModel, val filterOrganization: MgoOrganization) : Organizations()
 
         @Serializable
-        data class UISchemaDetail(val toolbarTitle: String, val organization: MgoOrganization, val uiSchema: UISchema) : Organizations()
+        data class UISchemaDetail(val toolbarTitle: String, val organization: MgoOrganization, val mgoResource: MgoResourceJson) :
+            Organizations()
 
         @Serializable
         data class RemoveOrganization(val organizationId: String, val organizationName: String) : Organizations()

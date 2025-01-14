@@ -4,7 +4,6 @@ import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
-import org.json.JSONObject
 import javax.inject.Inject
 import kotlinx.serialization.json.Json
 
@@ -18,49 +17,31 @@ internal class DefaultUiSchemaRepository
 
         /**
          * Get a summary of most important health care data to display for a user.
-         * @param mgoResources The mgo resources created in [MgoResourceRepository].
-         * @param profiles Each [MgoResourceJson] has a profile field. If this field exists in this array, it will be parsed to a UISchema.
+         * @param mgoResource The mgo resource created in [MgoResourceRepository].
          */
-        override suspend fun getSummary(
-            mgoResources: List<MgoResourceJson>,
-            profiles: List<String>,
-        ): List<UISchema> {
+        override suspend fun getSummary(mgoResource: MgoResourceJson): UISchema {
             return getUiSchemas(
-                mgoResources = mgoResources,
-                profiles = profiles,
+                mgoResource = mgoResource,
                 jsFunctionName = "getSummaryUiSchemaJson",
             )
         }
 
         /**
          * Get all health care data to display for a user.
-         * @param mgoResources The mgo resources created in [MgoResourceRepository].
-         * @param profiles Each [MgoResourceJson] has a profile field. If this field exists in this array, it will be parsed to a UISchema.
+         * @param mgoResource The mgo resource created in [MgoResourceRepository].
          */
-        override suspend fun getDetail(
-            mgoResources: List<MgoResourceJson>,
-            profiles: List<String>,
-        ): List<UISchema> {
+        override suspend fun getDetail(mgoResource: MgoResourceJson): UISchema {
             return getUiSchemas(
-                mgoResources = mgoResources,
-                profiles = profiles,
+                mgoResource = mgoResource,
                 jsFunctionName = "getUiSchemaJson",
             )
         }
 
         private suspend fun getUiSchemas(
-            mgoResources: List<MgoResourceJson>,
-            profiles: List<String>,
+            mgoResource: MgoResourceJson,
             jsFunctionName: String,
-        ): List<UISchema> {
-            return mgoResources.mapNotNull { mgoResource ->
-                val mgoResourceJsonObject = JSONObject(mgoResource)
-                if (profiles.contains(mgoResourceJsonObject.getString("profile"))) {
-                    val uiSchemaJson = jsRuntimeRepository.executeStringFunction(jsFunctionName, listOf(mgoResource))
-                    json.decodeFromString<UISchema>(uiSchemaJson)
-                } else {
-                    null
-                }
-            }
+        ): UISchema {
+            val uiSchemaJson = jsRuntimeRepository.executeStringFunction(jsFunctionName, listOf(mgoResource))
+            return json.decodeFromString<UISchema>(uiSchemaJson)
         }
     }

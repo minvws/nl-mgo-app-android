@@ -6,12 +6,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.getProfiles
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +31,7 @@ internal class HealthCategoryScreenViewModel
         private val organizationRepository: OrganizationRepository,
         private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
         private val mgoResourceRepository: MgoResourceRepository,
-        private val uiSchemaRepository: UiSchemaRepository,
+        private val uiSchemaMapper: UiSchemaMapper,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -105,7 +105,7 @@ internal class HealthCategoryScreenViewModel
                 val mgoResources = this.results.mapNotNull { result -> result.getOrNull() }.flatten()
                 val mgoResourceToDisplay = mgoResourceRepository.filter(resources = mgoResources, profiles = category.getProfiles())
                 mgoResourceToDisplay.map { mgoResource ->
-                    val uiSchema = uiSchemaRepository.getSummary(mgoResource)
+                    val uiSchema = uiSchemaMapper.getSummary(mgoResource)
                     HealthCategoryScreenListItem(
                         title = uiSchema.label ?: "",
                         subtitle = organization.name,

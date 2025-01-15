@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.data.fhirParser.uiSchema
 
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceRepository
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceMapper
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import javax.inject.Inject
 import kotlinx.serialization.json.Json
@@ -10,14 +10,14 @@ import kotlinx.serialization.json.Json
 /**
  * Creates [UISchema] based on [MgoResourceJson].
  */
-internal class DefaultUiSchemaRepository
+internal class DefaultUiSchemaMapper
     @Inject
-    constructor(private val jsRuntimeRepository: JsRuntimeRepository) : UiSchemaRepository {
+    constructor(private val jsRuntimeRepository: JsRuntimeRepository) : UiSchemaMapper {
         private val json = Json { ignoreUnknownKeys = true }
 
         /**
          * Get a summary of most important health care data to display for a user.
-         * @param mgoResource The mgo resource created in [MgoResourceRepository].
+         * @param mgoResource The mgo resource created in [MgoResourceMapper].
          */
         override suspend fun getSummary(mgoResource: MgoResourceJson): UISchema {
             return getUiSchemas(
@@ -28,7 +28,7 @@ internal class DefaultUiSchemaRepository
 
         /**
          * Get all health care data to display for a user.
-         * @param mgoResource The mgo resource created in [MgoResourceRepository].
+         * @param mgoResource The mgo resource created in [MgoResourceMapper].
          */
         override suspend fun getDetail(mgoResource: MgoResourceJson): UISchema {
             return getUiSchemas(

@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.navigation.dashboard
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory as HealthCareCategoryModel
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory as HealthCareCategoryModel
 
 sealed class DashboardNavigation {
     @Serializable

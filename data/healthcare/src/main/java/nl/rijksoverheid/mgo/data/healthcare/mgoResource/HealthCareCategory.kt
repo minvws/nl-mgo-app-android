@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.healthcare.healthCareData
+package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
 import nl.rijksoverheid.mgo.data.fhirParser.shared.GpLaboratoryResultProfile
 import nl.rijksoverheid.mgo.data.fhirParser.shared.IheMhdMinimalDocumentReferenceProfile
@@ -9,10 +9,10 @@ import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationAgreementProfile
 import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationUseProfile
 import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationProfile
 import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationRecommendationProfile
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequest.Bgz
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequest.Documents
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequest.Gp
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequest.Vaccination
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Documents
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Gp
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Vaccination
 
 enum class HealthCareCategory(val id: String) {
     MEDICATIONS("medication"),

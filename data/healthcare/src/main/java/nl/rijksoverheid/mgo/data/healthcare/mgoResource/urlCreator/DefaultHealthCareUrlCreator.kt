@@ -1,7 +1,7 @@
-package nl.rijksoverheid.mgo.data.healthcare.healthCareData.urlCreator
+package nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator
 
 import android.net.Uri
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequest
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
 import javax.inject.Inject
 
 internal class DefaultHealthCareUrlCreator

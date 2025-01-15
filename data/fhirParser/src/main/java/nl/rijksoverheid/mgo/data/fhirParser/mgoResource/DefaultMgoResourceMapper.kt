@@ -1,20 +1,20 @@
 package nl.rijksoverheid.mgo.data.fhirParser.mgoResource
 
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 
 /**
- * Created [MgoResourceJson] based on a FHIR Response (https://hl7.org/fhir/).
+ * Creates [MgoResourceJson] based on a FHIR Response (https://hl7.org/fhir/).
  */
-internal class DefaultMgoResourceRepository
+internal class DefaultMgoResourceMapper
     @Inject
     constructor(private val jsRuntimeRepository: JsRuntimeRepository) :
-    MgoResourceRepository {
+    MgoResourceMapper {
         /**
-         * Parses the fhir response, and returns a list of [MgoResourceJson] that can then be used in [UiSchemaRepository]
+         * Parses the fhir response, and returns a list of [MgoResourceJson] that can then be used in [UiSchemaMapper]
          */
         override suspend fun get(
             fhirBundleJson: String,
@@ -44,20 +44,5 @@ internal class DefaultMgoResourceRepository
                 mgoResources.add(mgoResource)
             }
             return mgoResources
-        }
-
-        /**
-         * Filters mgo resources based on the profile property.
-         * @param resources The mgo resources to filter.
-         * @param profiles If the mgo resource contains a profile that exists in this array, it will be returned.
-         */
-        override suspend fun filter(
-            resources: List<MgoResourceJson>,
-            profiles: List<String>,
-        ): List<MgoResourceJson> {
-            return resources.filter { resource ->
-                val resourceJsonObject = JSONObject(resource)
-                profiles.contains(resourceJsonObject.getString("profile"))
-            }
         }
     }

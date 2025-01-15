@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 
 data class HealthCategoryScreenViewState(
     val category: HealthCareCategory,

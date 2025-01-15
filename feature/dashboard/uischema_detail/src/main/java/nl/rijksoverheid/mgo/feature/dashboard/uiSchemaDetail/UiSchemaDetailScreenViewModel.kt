@@ -10,9 +10,9 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import timber.log.Timber
@@ -20,8 +20,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -33,8 +31,8 @@ internal class UiSchemaDetailScreenViewModel
         @Assisted private val mgoResource: MgoResourceJson,
         @Assisted private val isSummary: Boolean,
         private val healthCareBinaryRepository: HealthCareBinaryRepository,
-        private val uiSchemaRepository: UiSchemaRepository,
-        private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
+        private val uiSchemaMapper: UiSchemaMapper,
+        private val mgoResourceRepository: MgoResourceRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -58,9 +56,9 @@ internal class UiSchemaDetailScreenViewModel
             viewModelScope.launch {
                 val uiSchema =
                     if (isSummary) {
-                        uiSchemaRepository.getSummary(mgoResource)
+                        uiSchemaMapper.getSummary(mgoResource)
                     } else {
-                        uiSchemaRepository.getDetail(mgoResource)
+                        uiSchemaMapper.getDetail(mgoResource)
                     }
                 _uiSchema.value = uiSchema
 
@@ -78,11 +76,12 @@ internal class UiSchemaDetailScreenViewModel
 
         fun getMgoResource(referenceId: String) {
             viewModelScope.launch {
-                healthCareDataStatesRepository
-                    .observe(referenceId)
-                    .filterNotNull()
-                    .collectLatest { mgoResource ->
+                mgoResourceRepository.get(referenceId)
+                    .onSuccess { mgoResource ->
                         _navigate.tryEmit(mgoResource)
+                    }
+                    .onFailure { error ->
+                        Timber.e(error, "Failed to get mgo resource")
                     }
             }
         }

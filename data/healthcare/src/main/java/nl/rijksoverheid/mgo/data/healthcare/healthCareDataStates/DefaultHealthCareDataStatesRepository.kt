@@ -1,19 +1,16 @@
 package nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates
 
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataStateRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.store.HealthCareDataStatesStore
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.update
 
 /**
  * Holds state of fetched health care data. The health care data is linked to both [MgoOrganization] and [HealthCareCategory].
@@ -24,10 +21,15 @@ internal class DefaultHealthCareDataStatesRepository
     @Inject
     constructor(
         private val healthCareDataStateRepository: HealthCareDataStateRepository,
+        private val healthCareDataStatesStore: HealthCareDataStatesStore,
     ) : HealthCareDataStatesRepository {
         private data class StateKey(val organization: MgoOrganization, val category: HealthCareCategory)
 
         private val statesFlow = MutableStateFlow<Map<StateKey, HealthCareDataState>>(mapOf())
+
+        override fun get(): List<HealthCareDataState> {
+            return statesFlow.value.map { it.value }
+        }
 
         /**
          * Refreshes health care data.
@@ -38,9 +40,8 @@ internal class DefaultHealthCareDataStatesRepository
             organization: MgoOrganization,
             category: HealthCareCategory,
         ) {
-            val stateKey = StateKey(organization = organization, category = category)
             healthCareDataStateRepository.get(organization = organization, category = category).collectLatest { state ->
-                statesFlow.update { states -> states.toMutableMap().apply { put(stateKey, state) } }
+                healthCareDataStatesStore.add(organization = organization, category = category, state = state)
             }
         }
 
@@ -53,50 +54,14 @@ internal class DefaultHealthCareDataStatesRepository
             category: HealthCareCategory,
             filterOrganization: MgoOrganization?,
         ): Flow<List<HealthCareDataState>> {
-            if (filterOrganization == null) {
-                return statesFlow.mapNotNull { states ->
-                    states.keys
-                        .filter { key -> key.category == category }
-                        .mapNotNull { key -> states[key] }
-                }
-            } else {
-                val stateKey = StateKey(organization = filterOrganization, category = category)
-                return statesFlow.mapNotNull { states ->
-                    val state = states[stateKey] ?: return@mapNotNull null
-                    listOf(state)
-                }
-            }
-        }
-
-        override fun observe(referenceId: String): Flow<MgoResourceJson?> {
-            return statesFlow.map { states ->
-                states
-                    .asSequence()
-                    .map { it.value }
-                    .filterIsInstance<HealthCareDataState.Loaded>()
-                    .map { state -> state.results }
-                    .flatten()
-                    .mapNotNull { result -> result.getOrNull() }
-                    .flatten()
-                    .firstOrNull { mgoResource ->
-                        val json = JSONObject(mgoResource)
-                        json.get("referenceId") == referenceId
-                    }
-            }
+            return healthCareDataStatesStore.observe(category = category, filterOrganization = filterOrganization)
         }
 
         /**
          * Delete health care data states. Will delete all data (all categories) for a particular organization.
          * @param organization The organization to delete.
          */
-        override fun delete(organization: MgoOrganization) {
-            val stateKeys = statesFlow.value.keys.filter { key -> key.organization == organization }
-            statesFlow.update { states ->
-                states.toMutableMap().apply {
-                    for (stateKey in stateKeys) {
-                        remove(stateKey)
-                    }
-                }
-            }
+        override suspend fun delete(organization: MgoOrganization) {
+            return healthCareDataStatesStore.delete(organization)
         }
     }

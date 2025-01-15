@@ -1,12 +1,12 @@
-package nl.rijksoverheid.mgo.data.healthcare.healthCareData
+package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
 import android.net.Uri
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.FhirVersion
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequestQueryKey.CATEGORY
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequestQueryKey.CODE
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequestQueryKey.DATE
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequestQueryKey.INCLUDE
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequestQueryKey.STATUS
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CATEGORY
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CODE
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.DATE
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.INCLUDE
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.STATUS
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 
 // ================
@@ -22,8 +22,7 @@ sealed class HealthCareRequest(
 ) {
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
     sealed class Bgz(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
-        HealthCareRequest
-        (path, queryParameters, MgoOrganizationDataServiceType.BGZ, FhirVersion.R3) {
+        HealthCareRequest(path, queryParameters, MgoOrganizationDataServiceType.BGZ, FhirVersion.R3) {
         data object MedicationUse : Bgz(
             path = "MedicationStatement",
             queryParameters =

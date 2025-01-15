@@ -31,7 +31,7 @@ import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.iconsSecondary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR

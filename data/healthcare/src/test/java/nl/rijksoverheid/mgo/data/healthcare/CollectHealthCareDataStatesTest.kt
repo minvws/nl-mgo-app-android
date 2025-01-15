@@ -3,9 +3,9 @@ package nl.rijksoverheid.mgo.data.healthcare
 import app.cash.turbine.turbineScope
 import io.mockk.coVerify
 import io.mockk.mockk
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.CollectHealthCareDataStates
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Test

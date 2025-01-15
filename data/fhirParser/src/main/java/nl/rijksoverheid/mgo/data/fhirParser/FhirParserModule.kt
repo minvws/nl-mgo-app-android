@@ -6,10 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nl.rijksoverheid.mgo.data.fhirParser.js.DefaultJsRuntimeRepository
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.DefaultMgoResourceRepository
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.DefaultUiSchemaRepository
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.DefaultMgoResourceMapper
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceMapper
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.DefaultUiSchemaMapper
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import javax.inject.Singleton
 
 @Module
@@ -21,9 +21,9 @@ internal abstract class FhirParserModule {
 
     @Binds
     @Singleton
-    abstract fun bindMgoResourceRepository(default: DefaultMgoResourceRepository): MgoResourceRepository
+    abstract fun bindMgoResourceRepository(default: DefaultMgoResourceMapper): MgoResourceMapper
 
     @Binds
     @Singleton
-    abstract fun bindUiSchemaRepository(default: DefaultUiSchemaRepository): UiSchemaRepository
+    abstract fun bindUiSchemaRepository(default: DefaultUiSchemaMapper): UiSchemaMapper
 }

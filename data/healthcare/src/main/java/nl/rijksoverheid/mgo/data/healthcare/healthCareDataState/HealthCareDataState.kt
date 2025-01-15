@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.healthcare.healthCareDataState
 
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
+import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 
@@ -22,7 +22,7 @@ sealed class HealthCareDataState(open val organization: MgoOrganization, open va
 
     /**
      * Represents that the health care data is successfully retrieved.
-     * @param results The fetched results in our own json format. This can be used in [UiSchemaRepository] to transform into
+     * @param results The fetched results in our own json format. This can be used in [UiSchemaMapper] to transform into
      * presentable data.
      * @param organization The organization of the health care data.
      * @param category The category of the health care data.

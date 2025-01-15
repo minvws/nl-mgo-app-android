@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates
 
 import androidx.annotation.VisibleForTesting
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject

@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare.util
 
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareRequest
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.urlCreator.HealthCareUrlCreator
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.HealthCareUrlCreator
 
 class TestHealthCareUrlCreator : HealthCareUrlCreator {
     private var url: String = ""

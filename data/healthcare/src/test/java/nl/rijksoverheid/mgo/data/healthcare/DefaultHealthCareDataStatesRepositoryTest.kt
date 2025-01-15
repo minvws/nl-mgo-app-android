@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.DefaultHealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import org.junit.Assert.assertEquals
 import org.junit.Test

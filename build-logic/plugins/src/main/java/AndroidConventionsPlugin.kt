@@ -74,7 +74,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 dependsOn("test${sourceName.capitalized()}UnitTest")
 
                 // Execute instrumented test (only if the folder exists to save time)
-                val androidTestModules = listOf("storage")
+                val androidTestModules = listOf("storage", "healthcare")
                 if (androidTestModules.contains(project.name)) {
                     dependsOn("connected${sourceName.capitalized()}AndroidTest")
                 }

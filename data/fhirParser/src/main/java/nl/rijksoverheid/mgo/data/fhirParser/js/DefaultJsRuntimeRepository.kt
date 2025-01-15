@@ -21,6 +21,7 @@ import kotlinx.coroutines.withContext
  * This class wraps some function from it to make sure they work with coroutines,
  * and everything is executed on the same thread (which is a requirement of j2v8).
  */
+@SuppressWarnings("all")
 @Singleton
 internal class DefaultJsRuntimeRepository
     @Inject

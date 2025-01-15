@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -87,7 +86,7 @@ private fun UiSchemaDetailScreenContent(
         appBarTitle = toolbarTitle,
         onNavigateBack = onNavigateBack,
         content = {
-            LazyColumn(contentPadding = PaddingValues(top = 8.dp)) {
+            LazyColumn {
                 items(uiSchema.children.size) { position ->
                     val uiSchemaGroup = uiSchema.children[position]
                     UiSchemaSection(
@@ -112,11 +111,14 @@ private fun UiSchemaSection(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        Text(
-            text = group.label ?: "",
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Bold,
-        )
+        group.label?.let {
+            Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = it,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+            )
+        }
         MgoCard(
             modifier =
                 Modifier

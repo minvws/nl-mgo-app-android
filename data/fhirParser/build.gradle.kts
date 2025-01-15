@@ -12,4 +12,5 @@ android {
 
 dependencies {
     implementation(libs.j2v8) { artifact { type = "aar" } }
+    testImplementation(libs.json)
 }

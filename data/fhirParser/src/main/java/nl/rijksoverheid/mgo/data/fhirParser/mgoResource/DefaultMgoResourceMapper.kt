@@ -14,7 +14,7 @@ internal class DefaultMgoResourceMapper
     constructor(private val jsRuntimeRepository: JsRuntimeRepository) :
     MgoResourceMapper {
         /**
-         * Parses the fhir response, and returns a list of [MgoResourceJson] that can then be used in [UiSchemaMapper]
+         * Parses the fhir response, and returns a list of [MgoResource] that can then be used in [UiSchemaMapper]
          */
         override suspend fun get(
             fhirBundleJson: String,

@@ -19,7 +19,7 @@ internal class DefaultMgoResourceMapper
         override suspend fun get(
             fhirBundleJson: String,
             fhirVersion: FhirVersion,
-        ): List<MgoResourceJson> {
+        ): List<MgoResource> {
             // Get bundles as json array
             val bundleResources =
                 JSONArray(
@@ -30,10 +30,10 @@ internal class DefaultMgoResourceMapper
                 )
 
             // Convert bundles to mgo resource json
-            val mgoResources = mutableListOf<MgoResourceJson>()
+            val mgoResources = mutableListOf<MgoResource>()
             for (i in 0 until bundleResources.length()) {
                 val bundleResource = bundleResources.getJSONObject(i)
-                val mgoResource =
+                val mgoResourceJsonString =
                     jsRuntimeRepository.executeStringFunction(
                         "getMgoResourceJson",
                         listOf(
@@ -41,6 +41,7 @@ internal class DefaultMgoResourceMapper
                             JSONObject().apply { put("fhirVersion", fhirVersion.toString()) }.toString(),
                         ),
                     )
+                val mgoResource = mgoResourceJsonString.toMgoResource()
                 mgoResources.add(mgoResource)
             }
             return mgoResources

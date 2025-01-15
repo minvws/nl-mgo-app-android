@@ -25,7 +25,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.shared.DisplayElement
 import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
@@ -40,9 +40,9 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun UiSchemaDetailScreen(
     organization: MgoOrganization,
-    mgoResource: MgoResourceJson,
+    mgoResource: MgoResource,
     isSummary: Boolean,
-    onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
+    onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =

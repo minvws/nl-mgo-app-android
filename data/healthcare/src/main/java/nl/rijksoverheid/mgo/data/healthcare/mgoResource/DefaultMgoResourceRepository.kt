@@ -2,14 +2,15 @@ package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceMapper
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceProfile
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.store.HealthCareDataStatesStore
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.HealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
@@ -27,13 +28,13 @@ internal class DefaultMgoResourceRepository
             endpoint: String,
             request: HealthCareRequest,
             organization: MgoOrganization,
-        ): Result<List<MgoResourceJson>> {
+        ): Result<List<MgoResource>> {
             return executeRequest(request = request, endpoint = endpoint)
                 .mapCatching { requestBody -> requestBody.toMgoResource(request) }
                 .onFailure { error -> Timber.e(error, "Failed to fetch health care data") }
         }
 
-        override suspend fun get(referenceId: String): Result<MgoResourceJson> {
+        override suspend fun get(referenceId: MgoResourceReferenceId): Result<MgoResource> {
             val states = healthCareDataStatesStore.get()
             val mgoResource =
                 states
@@ -44,8 +45,7 @@ internal class DefaultMgoResourceRepository
                     .mapNotNull { result -> result.getOrNull() }
                     .flatten()
                     .firstOrNull { mgoResource ->
-                        val json = JSONObject(mgoResource)
-                        json.get("referenceId") == referenceId
+                        mgoResource.referenceId == referenceId
                     }
             return if (mgoResource == null) {
                 // Currently we only support getting mgo resources when it is already fetched before.
@@ -62,12 +62,11 @@ internal class DefaultMgoResourceRepository
          * @param profiles If the mgo resource contains a profile that exists in this array, it will be returned.
          */
         override suspend fun filter(
-            resources: List<MgoResourceJson>,
-            profiles: List<String>,
-        ): List<MgoResourceJson> {
+            resources: List<MgoResource>,
+            profiles: List<MgoResourceProfile>,
+        ): List<MgoResource> {
             return resources.filter { resource ->
-                val resourceJsonObject = JSONObject(resource)
-                profiles.contains(resourceJsonObject.getString("profile"))
+                profiles.contains(resource.profile)
             }
         }
 
@@ -83,7 +82,7 @@ internal class DefaultMgoResourceRepository
             }
         }
 
-        private suspend fun ResponseBody.toMgoResource(request: HealthCareRequest): List<MgoResourceJson> {
+        private suspend fun ResponseBody.toMgoResource(request: HealthCareRequest): List<MgoResource> {
             return mgoResourceMapper.get(
                 fhirBundleJson = string(),
                 fhirVersion = request.fhirVersion,

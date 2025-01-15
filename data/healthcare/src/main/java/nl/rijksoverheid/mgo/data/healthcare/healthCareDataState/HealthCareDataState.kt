@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare.healthCareDataState
 
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -28,7 +29,7 @@ sealed class HealthCareDataState(open val organization: MgoOrganization, open va
      * @param category The category of the health care data.
      */
     data class Loaded(
-        val results: List<Result<List<MgoResourceJson>>>,
+        val results: List<Result<List<MgoResource>>>,
         override val organization: MgoOrganization,
         override val category: HealthCareCategory,
     ) : HealthCareDataState(organization, category)
@@ -56,7 +57,7 @@ val TEST_HEALTH_CARE_DATA_STATE_EMPTY =
 
 val TEST_HEALTH_CARE_DATA_STATE_LOADED =
     HealthCareDataState.Loaded(
-        results = listOf(Result.success(listOf(""))),
+        results = listOf(Result.success(listOf(TEST_MGO_RESOURCE))),
         organization = TEST_MGO_ORGANIZATION,
         category = HealthCareCategory.MEDICATIONS,
     )

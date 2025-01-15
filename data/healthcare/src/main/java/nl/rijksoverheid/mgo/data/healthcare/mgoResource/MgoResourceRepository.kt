@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 interface MgoResourceRepository {
@@ -8,12 +8,12 @@ interface MgoResourceRepository {
         endpoint: String,
         request: HealthCareRequest,
         organization: MgoOrganization,
-    ): Result<List<MgoResourceJson>>
+    ): Result<List<MgoResource>>
 
-    suspend fun get(referenceId: String): Result<MgoResourceJson>
+    suspend fun get(referenceId: String): Result<MgoResource>
 
     suspend fun filter(
-        resources: List<MgoResourceJson>,
+        resources: List<MgoResource>,
         profiles: List<String>,
-    ): List<MgoResourceJson>
+    ): List<MgoResource>
 }

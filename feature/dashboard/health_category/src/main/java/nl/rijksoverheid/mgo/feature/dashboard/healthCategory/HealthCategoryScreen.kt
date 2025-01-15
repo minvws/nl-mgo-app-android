@@ -40,7 +40,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
@@ -49,7 +49,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun HealthCategoryScreen(
     category: HealthCareCategory,
-    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
+    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     onNavigateBack: () -> Unit,
     filterOrganization: MgoOrganization? = null,
 ) {
@@ -72,7 +72,7 @@ fun HealthCategoryScreen(
 private fun HealthCategoryScreenContent(
     viewState: HealthCategoryScreenViewState,
     onRetry: () -> Unit,
-    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
+    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
@@ -130,7 +130,7 @@ private fun ColumnScope.LoadingContent() {
 @Composable
 private fun ListItemsContent(
     listItems: List<HealthCategoryScreenListItem>,
-    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
+    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     showErrorBanner: Boolean,
     onRetryClick: () -> Unit,
     onDismissErrorBanner: () -> Unit,

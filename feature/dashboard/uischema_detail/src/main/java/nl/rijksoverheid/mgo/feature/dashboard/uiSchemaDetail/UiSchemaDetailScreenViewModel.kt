@@ -6,7 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
@@ -28,7 +28,7 @@ internal class UiSchemaDetailScreenViewModel
     @AssistedInject
     constructor(
         @Assisted val organization: MgoOrganization,
-        @Assisted private val mgoResource: MgoResourceJson,
+        @Assisted private val mgoResource: MgoResource,
         @Assisted private val isSummary: Boolean,
         private val healthCareBinaryRepository: HealthCareBinaryRepository,
         private val uiSchemaMapper: UiSchemaMapper,
@@ -38,7 +38,7 @@ internal class UiSchemaDetailScreenViewModel
         interface Factory {
             fun create(
                 organization: MgoOrganization,
-                mgoResource: MgoResourceJson,
+                mgoResource: MgoResource,
                 isSummary: Boolean,
             ): UiSchemaDetailScreenViewModel
         }
@@ -46,7 +46,7 @@ internal class UiSchemaDetailScreenViewModel
         private val _uiSchema = MutableStateFlow<UISchema?>(null)
         val uiSchema = _uiSchema.asStateFlow()
 
-        private val _navigate = MutableSharedFlow<MgoResourceJson>(extraBufferCapacity = 1)
+        private val _navigate = MutableSharedFlow<MgoResource>(extraBufferCapacity = 1)
         val navigate = _navigate.asSharedFlow()
 
         private val _attachmentsState = MutableStateFlow<Map<UIElement, AttachmentState>>(mapOf())

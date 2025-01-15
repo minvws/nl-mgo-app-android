@@ -4,5 +4,5 @@ interface MgoResourceMapper {
     suspend fun get(
         fhirBundleJson: String,
         fhirVersion: FhirVersion,
-    ): List<MgoResourceJson>
+    ): List<MgoResource>
 }

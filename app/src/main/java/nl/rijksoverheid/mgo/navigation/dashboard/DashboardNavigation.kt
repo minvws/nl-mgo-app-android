@@ -25,7 +25,6 @@ sealed class DashboardNavigation {
 
         @Serializable
         data class UISchemaDetail(
-            val toolbarTitle: String,
             val organization: MgoOrganization,
             val mgoResource: MgoResourceJson,
             val isSummary: Boolean,
@@ -48,7 +47,6 @@ sealed class DashboardNavigation {
 
         @Serializable
         data class UISchemaDetail(
-            val toolbarTitle: String,
             val organization: MgoOrganization,
             val mgoResource: MgoResourceJson,
             val isSummary: Boolean,

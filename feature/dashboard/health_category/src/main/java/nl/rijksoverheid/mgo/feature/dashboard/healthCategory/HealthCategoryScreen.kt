@@ -49,7 +49,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun HealthCategoryScreen(
     category: HealthCareCategory,
-    onClickListItem: (toolbarTitle: String, organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
+    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
     onNavigateBack: () -> Unit,
     filterOrganization: MgoOrganization? = null,
 ) {
@@ -58,11 +58,10 @@ fun HealthCategoryScreen(
             creationCallback = { factory -> factory.create(category = category, filterOrganization = filterOrganization) },
         )
     val viewState by viewModel.viewState.collectAsState()
-    val uiSchemaDetailScreenToolbarTitle = stringResource(id = category.getUiSchemaToolbarTitle())
     HealthCategoryScreenContent(
         viewState = viewState,
         onClickListItem = { organization, mgoResource ->
-            onClickListItem(uiSchemaDetailScreenToolbarTitle, organization, mgoResource)
+            onClickListItem(organization, mgoResource)
         },
         onRetry = { viewModel.retry() },
         onNavigateBack = onNavigateBack,
@@ -259,16 +258,6 @@ private fun HealthCategoryCard(
 @StringRes
 private fun HealthCareCategory.getTitle(): Int {
     val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading")
-    if (stringResource == 0) {
-        return CopyR.string.common_unknown
-    }
-    return stringResource
-}
-
-@Composable
-@StringRes
-private fun HealthCareCategory.getUiSchemaToolbarTitle(): Int {
-    val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading_detail")
     if (stringResource == 0) {
         return CopyR.string.common_unknown
     }

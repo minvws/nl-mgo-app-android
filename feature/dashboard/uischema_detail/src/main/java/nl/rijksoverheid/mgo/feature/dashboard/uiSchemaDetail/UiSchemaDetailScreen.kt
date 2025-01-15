@@ -39,11 +39,10 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun UiSchemaDetailScreen(
-    toolbarTitle: String,
     organization: MgoOrganization,
     mgoResource: MgoResourceJson,
     isSummary: Boolean,
-    onNavigateToUiSchema: (toolbarTitle: String, organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
+    onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResourceJson) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
@@ -55,13 +54,13 @@ fun UiSchemaDetailScreen(
 
     LaunchedEffect(Unit) {
         viewModel.navigate.collectLatest { mgoResource ->
-            onNavigateToUiSchema(toolbarTitle, organization, mgoResource)
+            onNavigateToUiSchema(organization, mgoResource)
         }
     }
 
     uiSchema?.let {
         UiSchemaDetailScreenContent(
-            toolbarTitle = toolbarTitle,
+            toolbarTitle = it.label ?: "",
             uiSchema = it,
             attachmentsState = attachmentsState,
             onClickReference = { referenceId ->

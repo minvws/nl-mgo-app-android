@@ -8,7 +8,7 @@ import javax.inject.Inject
 import kotlinx.serialization.json.Json
 
 /**
- * Creates [UISchema] based on [MgoResourceJson].
+ * Creates [UISchema] based on [MgoResource].
  */
 internal class DefaultUiSchemaMapper
     @Inject

@@ -7,7 +7,7 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 /**
- * Creates [MgoResourceJson] based on a FHIR Response (https://hl7.org/fhir/).
+ * Creates [MgoResource] based on a FHIR Response (https://hl7.org/fhir/).
  */
 internal class DefaultMgoResourceMapper
     @Inject

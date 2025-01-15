@@ -12,11 +12,16 @@ import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaRepository
 import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import timber.log.Timber
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,11 +29,12 @@ import kotlinx.coroutines.launch
 internal class UiSchemaDetailScreenViewModel
     @AssistedInject
     constructor(
-        @Assisted private val organization: MgoOrganization,
+        @Assisted val organization: MgoOrganization,
         @Assisted private val mgoResource: MgoResourceJson,
         @Assisted private val isSummary: Boolean,
         private val healthCareBinaryRepository: HealthCareBinaryRepository,
         private val uiSchemaRepository: UiSchemaRepository,
+        private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     ) : ViewModel() {
         @AssistedFactory
         interface Factory {
@@ -41,6 +47,9 @@ internal class UiSchemaDetailScreenViewModel
 
         private val _uiSchema = MutableStateFlow<UISchema?>(null)
         val uiSchema = _uiSchema.asStateFlow()
+
+        private val _navigate = MutableSharedFlow<MgoResourceJson>(extraBufferCapacity = 1)
+        val navigate = _navigate.asSharedFlow()
 
         private val _attachmentsState = MutableStateFlow<Map<UIElement, AttachmentState>>(mapOf())
         val attachmentsState = _attachmentsState.asStateFlow()
@@ -64,6 +73,17 @@ internal class UiSchemaDetailScreenViewModel
                         .associateWith {
                             AttachmentState.NotDownloaded
                         }
+            }
+        }
+
+        fun getMgoResource(referenceId: String) {
+            viewModelScope.launch {
+                healthCareDataStatesRepository
+                    .observe(referenceId)
+                    .filterNotNull()
+                    .collectLatest { mgoResource ->
+                        _navigate.tryEmit(mgoResource)
+                    }
             }
         }
 

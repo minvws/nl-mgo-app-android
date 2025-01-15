@@ -69,6 +69,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
                             toolbarTitle = toolbarTitle,
                             organization = organization,
                             mgoResource = mgoResource,
+                            isSummary = true,
                         ),
                     )
                 },
@@ -84,7 +85,17 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
                 toolbarTitle = route.toolbarTitle,
                 organization = route.organization,
                 mgoResource = route.mgoResource,
-                isSummary = true,
+                isSummary = route.isSummary,
+                onNavigateToUiSchema = { toolbarTitle, organization, mgoResource ->
+                    val uiSchemaDetail =
+                        DashboardNavigation.Overview.UISchemaDetail(
+                            toolbarTitle = toolbarTitle,
+                            organization = organization,
+                            mgoResource = mgoResource,
+                            isSummary = false,
+                        )
+                    navController.navigate(uiSchemaDetail)
+                },
                 onNavigateBack = {
                     navController.popBackStack()
                 },

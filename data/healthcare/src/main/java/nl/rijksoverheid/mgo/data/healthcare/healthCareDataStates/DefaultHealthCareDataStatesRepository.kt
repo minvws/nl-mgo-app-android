@@ -1,14 +1,17 @@
 package nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates
 
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceJson
 import nl.rijksoverheid.mgo.data.healthcare.healthCareData.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataStateRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 
@@ -62,6 +65,23 @@ internal class DefaultHealthCareDataStatesRepository
                     val state = states[stateKey] ?: return@mapNotNull null
                     listOf(state)
                 }
+            }
+        }
+
+        override fun observe(referenceId: String): Flow<MgoResourceJson?> {
+            return statesFlow.map { states ->
+                states
+                    .asSequence()
+                    .map { it.value }
+                    .filterIsInstance<HealthCareDataState.Loaded>()
+                    .map { state -> state.results }
+                    .flatten()
+                    .mapNotNull { result -> result.getOrNull() }
+                    .flatten()
+                    .firstOrNull { mgoResource ->
+                        val json = JSONObject(mgoResource)
+                        json.get("referenceId") == referenceId
+                    }
             }
         }
 

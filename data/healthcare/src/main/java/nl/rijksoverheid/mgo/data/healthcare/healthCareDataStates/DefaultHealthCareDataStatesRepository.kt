@@ -8,9 +8,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 
 /**
  * Holds state of fetched health care data. The health care data is linked to both [MgoOrganization] and [HealthCareCategory].
@@ -23,12 +21,8 @@ internal class DefaultHealthCareDataStatesRepository
         private val healthCareDataStateRepository: HealthCareDataStateRepository,
         private val healthCareDataStatesStore: HealthCareDataStatesStore,
     ) : HealthCareDataStatesRepository {
-        private data class StateKey(val organization: MgoOrganization, val category: HealthCareCategory)
-
-        private val statesFlow = MutableStateFlow<Map<StateKey, HealthCareDataState>>(mapOf())
-
         override fun get(): List<HealthCareDataState> {
-            return statesFlow.value.map { it.value }
+            return healthCareDataStatesStore.get()
         }
 
         /**

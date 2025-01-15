@@ -20,6 +20,7 @@ dependencies {
     testImplementation(testFixtures(projects.data.fhirParser))
     testImplementation(testFixtures(projects.framework.test))
     testImplementation(testFixtures(projects.framework.storage))
+    testImplementation(testFixtures(projects.data.healthcare))
     testFixturesImplementation(projects.data.localisation)
     testFixturesImplementation(projects.data.fhirParser)
 }

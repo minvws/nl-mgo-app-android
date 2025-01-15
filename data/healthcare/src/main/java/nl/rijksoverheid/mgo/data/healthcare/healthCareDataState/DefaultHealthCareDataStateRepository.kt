@@ -43,7 +43,8 @@ internal class DefaultHealthCareDataStateRepository
                         mgoResourceRepository.get(endpoint = endpoint, request = request, organization = organization)
                     }
 
-                if (results.isEmpty()) {
+                val isEmpty = results.mapNotNull { result -> result.getOrNull() }.flatten().isEmpty()
+                if (isEmpty) {
                     // If there are no results, emit empty state
                     emit(
                         HealthCareDataState.Empty(

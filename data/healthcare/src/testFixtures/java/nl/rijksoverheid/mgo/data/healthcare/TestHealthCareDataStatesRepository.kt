@@ -17,6 +17,10 @@ class TestHealthCareDataStatesRepository(initialData: List<HealthCareDataState>)
         this.refreshData.addAll(data)
     }
 
+    override fun get(): List<HealthCareDataState> {
+        return stateFlow.value
+    }
+
     override suspend fun refresh(
         organization: MgoOrganization,
         category: HealthCareCategory,
@@ -31,7 +35,7 @@ class TestHealthCareDataStatesRepository(initialData: List<HealthCareDataState>)
         return stateFlow
     }
 
-    override fun delete(organization: MgoOrganization) {
+    override suspend fun delete(organization: MgoOrganization) {
         stateFlow.value = listOf()
         refreshData.clear()
     }

@@ -12,6 +12,5 @@ dependencies {
     implementation(projects.framework.storage)
     testImplementation(testFixtures((projects.data.localisation)))
     testImplementation(testFixtures(projects.data.healthcare))
-    testImplementation(testFixtures(projects.data.uiSchema))
     testImplementation(testFixtures(projects.framework.storage))
 }

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -39,16 +40,16 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
 import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun HealthCategoryScreen(
     category: HealthCareCategory,
-    onClickUiSchema: (toolbarTitle: String, organization: MgoOrganization, uiSchema: UISchema) -> Unit,
+    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     onNavigateBack: () -> Unit,
     filterOrganization: MgoOrganization? = null,
 ) {
@@ -57,11 +58,10 @@ fun HealthCategoryScreen(
             creationCallback = { factory -> factory.create(category = category, filterOrganization = filterOrganization) },
         )
     val viewState by viewModel.viewState.collectAsState()
-    val uiSchemaDetailScreenToolbarTitle = stringResource(id = category.getUiSchemaToolbarTitle())
     HealthCategoryScreenContent(
         viewState = viewState,
-        onClickUiSchema = { organization, uiSchema ->
-            onClickUiSchema(uiSchemaDetailScreenToolbarTitle, organization, uiSchema)
+        onClickListItem = { organization, mgoResource ->
+            onClickListItem(organization, mgoResource)
         },
         onRetry = { viewModel.retry() },
         onNavigateBack = onNavigateBack,
@@ -72,11 +72,11 @@ fun HealthCategoryScreen(
 private fun HealthCategoryScreenContent(
     viewState: HealthCategoryScreenViewState,
     onRetry: () -> Unit,
-    onClickUiSchema: (organization: MgoOrganization, uiSchema: UISchema) -> Unit,
+    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(viewState.category.getTitle()),
         onNavigateBack = onNavigateBack,
         content = {
@@ -84,16 +84,14 @@ private fun HealthCategoryScreenContent(
                 is HealthCategoryScreenViewState.ListItemsState.Loaded ->
                     ListItemsContent(
                         listItems = viewState.listItemsState.listItems,
-                        onClickUiSchema = onClickUiSchema,
+                        onClickListItem = onClickListItem,
                         showErrorBanner = showErrorBanner,
                         onRetryClick = onRetry,
                         onDismissErrorBanner = { showErrorBanner = false },
                     )
 
                 HealthCategoryScreenViewState.ListItemsState.Loading ->
-                    LoadingContent(
-                        title = viewState.category.getTitle(),
-                    )
+                    LoadingContent()
 
                 is HealthCategoryScreenViewState.ListItemsState.NoData ->
                     NoDataContent(
@@ -107,10 +105,7 @@ private fun HealthCategoryScreenContent(
 }
 
 @Composable
-private fun ColumnScope.LoadingContent(
-    @StringRes title: Int,
-    modifier: Modifier = Modifier,
-) {
+private fun ColumnScope.LoadingContent() {
     Box(
         modifier =
             Modifier
@@ -135,7 +130,7 @@ private fun ColumnScope.LoadingContent(
 @Composable
 private fun ListItemsContent(
     listItems: List<HealthCategoryScreenListItem>,
-    onClickUiSchema: (organization: MgoOrganization, uiSchema: UISchema) -> Unit,
+    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     showErrorBanner: Boolean,
     onRetryClick: () -> Unit,
     onDismissErrorBanner: () -> Unit,
@@ -168,7 +163,7 @@ private fun ListItemsContent(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .clickable { onClickUiSchema(listItem.organization, listItem.uiSchema) }
+                        .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
                         .padding(bottom = 16.dp),
                 title = listItem.title,
                 subtitle = listItem.subtitle,
@@ -269,16 +264,6 @@ private fun HealthCareCategory.getTitle(): Int {
     return stringResource
 }
 
-@Composable
-@StringRes
-private fun HealthCareCategory.getUiSchemaToolbarTitle(): Int {
-    val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading_detail")
-    if (stringResource == 0) {
-        return CopyR.string.common_unknown
-    }
-    return stringResource
-}
-
 @DefaultPreviews
 @Composable
 internal fun HealthCategoryScreenLoadingPreview() {
@@ -289,7 +274,7 @@ internal fun HealthCategoryScreenLoadingPreview() {
                     category = HealthCareCategory.MEDICATIONS,
                     listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
                 ),
-            onClickUiSchema = { _, _ -> },
+            onClickListItem = { _, _ -> },
             onRetry = {},
             onNavigateBack = {},
         )
@@ -314,7 +299,7 @@ internal fun HealthCategoryScreenListItemsPreview() {
                                 ),
                         ),
                 ),
-            onClickUiSchema = { _, _ -> },
+            onClickListItem = { _, _ -> },
             onRetry = {},
             onNavigateBack = {},
         )
@@ -340,7 +325,7 @@ internal fun HealthCategoryScreenListItemsWithErrorPreview() {
                         ),
                     showErrorBanner = true,
                 ),
-            onClickUiSchema = { _, _ -> },
+            onClickListItem = { _, _ -> },
             onRetry = {},
             onNavigateBack = {},
         )
@@ -357,7 +342,7 @@ internal fun HealthCategoryScreenNoDataPreview() {
                     category = HealthCareCategory.MEDICATIONS,
                     listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
                 ),
-            onClickUiSchema = { _, _ -> },
+            onClickListItem = { _, _ -> },
             onRetry = {},
             onNavigateBack = {},
         )
@@ -375,7 +360,7 @@ internal fun HealthCategoryScreenNoDataWithErrorPreview() {
                     listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
                     showErrorBanner = true,
                 ),
-            onClickUiSchema = { _, _ -> },
+            onClickListItem = { _, _ -> },
             onRetry = {},
             onNavigateBack = {},
         )

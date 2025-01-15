@@ -6,10 +6,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataState
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
+import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -41,7 +42,7 @@ internal class HealthCategoriesListItemViewModel
         val listItemState = _listItemState.stateIn(viewModelScope, SharingStarted.Lazily, HealthCategoriesListItemState.LOADING)
 
         init {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).distinctUntilChanged()
                     .collectLatest { states ->
                         if (states.isNotEmpty()) {

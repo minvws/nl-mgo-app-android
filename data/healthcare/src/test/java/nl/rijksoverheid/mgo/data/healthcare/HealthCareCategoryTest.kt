@@ -1,18 +1,22 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Bgz
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Documents
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Gp
-import nl.rijksoverheid.mgo.data.healthcare.HealthCareRequest.Vaccination
-import nl.rijksoverheid.mgo.data.uiSchema.GpLaboratoryResultProfile
-import nl.rijksoverheid.mgo.data.uiSchema.IheMhdMinimalDocumentReferenceProfile
-import nl.rijksoverheid.mgo.data.uiSchema.R4NlCoreVaccinationEventProfile
-import nl.rijksoverheid.mgo.data.uiSchema.ZibAdministrationAgreementProfile
-import nl.rijksoverheid.mgo.data.uiSchema.ZibLaboratoryTestResultObservationProfile
-import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationAgreementProfile
-import nl.rijksoverheid.mgo.data.uiSchema.ZibMedicationUseProfile
-import nl.rijksoverheid.mgo.data.uiSchema.ZibVaccinationProfile
-import nl.rijksoverheid.mgo.data.uiSchema.ZibVaccinationRecommendationProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.GpLaboratoryResultProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.IheMhdMinimalDocumentReferenceProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.R4NlCoreVaccinationEventProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibAdministrationAgreementProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibLaboratoryTestResultObservationProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationAgreementProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationUseProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationProfile
+import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationRecommendationProfile
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Documents
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Gp
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Vaccination
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getRequests
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

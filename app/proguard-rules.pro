@@ -31,4 +31,4 @@
 
 -keep class com.eclipsesource.v8.** { *; }
 -keep class nl.rijksoverheid.mgo.data.uiSchema.** {  *; }
--keep class nl.rijksoverheid.mgo.data.healthcare.HealthCareCategory { *; }
+-keep class nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory { *; }

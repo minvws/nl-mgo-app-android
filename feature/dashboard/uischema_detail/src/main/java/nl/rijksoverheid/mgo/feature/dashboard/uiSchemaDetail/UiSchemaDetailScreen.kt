@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +9,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,63 +17,83 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.fhirParser.shared.DisplayElement
+import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementDisplay
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchemaGroup
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.uiSchema.DisplayElement
-import nl.rijksoverheid.mgo.data.uiSchema.TEST_UI_SCHEMA_MEDICATION
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntry
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntryDisplay
-import nl.rijksoverheid.mgo.data.uiSchema.UIEntryType
-import nl.rijksoverheid.mgo.data.uiSchema.UISchema
-import nl.rijksoverheid.mgo.data.uiSchema.UISchemaGroup
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun UiSchemaDetailScreen(
-    toolbarTitle: String,
     organization: MgoOrganization,
-    uiSchema: UISchema,
+    mgoResource: MgoResource,
+    isSummary: Boolean,
+    onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel =
         hiltViewModel<UiSchemaDetailScreenViewModel, UiSchemaDetailScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(organization = organization, uiSchema = uiSchema) },
+            creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
         )
+    val uiSchema by viewModel.uiSchema.collectAsStateWithLifecycle()
     val attachmentsState by viewModel.attachmentsState.collectAsStateWithLifecycle()
-    UiSchemaDetailScreenContent(
-        toolbarTitle = toolbarTitle,
-        uiSchema = uiSchema,
-        attachmentsState = attachmentsState,
-        onDownloadAttachment = { entry ->
-            viewModel.onDownloadAttachment(entry)
-        },
-        onNavigateBack = onNavigateBack,
-    )
+
+    LaunchedEffect(Unit) {
+        viewModel.navigate.collectLatest { mgoResource ->
+            onNavigateToUiSchema(organization, mgoResource)
+        }
+    }
+
+    uiSchema?.let {
+        UiSchemaDetailScreenContent(
+            toolbarTitle = it.label ?: "",
+            uiSchema = it,
+            attachmentsState = attachmentsState,
+            onClickReference = { referenceId ->
+                viewModel.getMgoResource(referenceId)
+            },
+            onDownloadAttachment = { entry ->
+                viewModel.onDownloadAttachment(entry)
+            },
+            onNavigateBack = onNavigateBack,
+        )
+    }
 }
 
 @Composable
 private fun UiSchemaDetailScreenContent(
     toolbarTitle: String,
     uiSchema: UISchema,
-    attachmentsState: Map<UIEntry, AttachmentState>,
-    onDownloadAttachment: (entry: UIEntry) -> Unit,
+    attachmentsState: Map<UIElement, AttachmentState>,
+    onClickReference: (referenceId: String) -> Unit,
+    onDownloadAttachment: (entry: UIElement) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = toolbarTitle,
         onNavigateBack = onNavigateBack,
         content = {
-            LazyColumn(contentPadding = PaddingValues(top = 8.dp)) {
+            LazyColumn {
                 items(uiSchema.children.size) { position ->
                     val uiSchemaGroup = uiSchema.children[position]
                     UiSchemaSection(
                         modifier = Modifier.padding(bottom = 24.dp),
                         group = uiSchemaGroup,
                         attachmentsState = attachmentsState,
+                        onClickReference = onClickReference,
                         onDownloadAttachment = onDownloadAttachment,
                     )
                 }
@@ -84,17 +105,21 @@ private fun UiSchemaDetailScreenContent(
 @Composable
 private fun UiSchemaSection(
     group: UISchemaGroup,
-    attachmentsState: Map<UIEntry, AttachmentState>,
-    onDownloadAttachment: (entry: UIEntry) -> Unit,
+    attachmentsState: Map<UIElement, AttachmentState>,
+    onClickReference: (referenceId: String) -> Unit,
+    onDownloadAttachment: (entry: UIElement) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        Text(
-            text = group.label,
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Bold,
-        )
-        nl.rijksoverheid.mgo.component.mgo.MgoCard(
+        group.label?.let {
+            Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = it,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+        MgoCard(
             modifier =
                 Modifier
                     .fillMaxWidth()
@@ -103,7 +128,13 @@ private fun UiSchemaSection(
             Column {
                 group.children.forEachIndexed { index, entry ->
                     when (entry.type) {
-                        UIEntryType.DownloadLink -> {
+                        UIElementType.ReferenceLink -> {
+                            UiSchemaReference(
+                                entry = entry,
+                                onClick = onClickReference,
+                            )
+                        }
+                        UIElementType.DownloadLink -> {
                             val attachmentState = attachmentsState[entry]
                             if (attachmentState != null) {
                                 UiSchemaAttachmentListItem(
@@ -128,8 +159,20 @@ private fun UiSchemaSection(
 }
 
 @Composable
+private fun UiSchemaReference(
+    entry: UIElement,
+    onClick: (referenceId: String) -> Unit,
+) {
+    Text(
+        modifier = Modifier.padding(16.dp).clickable { onClick(entry.reference ?: "") },
+        text = entry.label,
+        style = MaterialTheme.typography.bodySmall,
+    )
+}
+
+@Composable
 private fun UiSchemaLabelWithValueListItem(
-    entry: UIEntry,
+    entry: UIElement,
     hasDivider: Boolean,
 ) {
     Column {
@@ -158,10 +201,10 @@ private fun UiSchemaLabelWithValueListItem(
 }
 
 @Composable
-private fun UIEntryDisplay?.getStringOrUnknown(): String {
+private fun UIElementDisplay?.getStringOrUnknown(): String {
     return when (this) {
-        is UIEntryDisplay.StringValue -> this.value
-        is UIEntryDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
+        is UIElementDisplay.StringValue -> this.value
+        is UIElementDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
         else -> ""
     }
 }
@@ -181,6 +224,7 @@ internal fun UiSchemaDetailScreenPreview() {
             toolbarTitle = stringResource(id = CopyR.string.hc_medication_heading_detail),
             uiSchema = TEST_UI_SCHEMA_MEDICATION,
             attachmentsState = mapOf(),
+            onClickReference = {},
             onDownloadAttachment = {},
             onNavigateBack = {},
         )

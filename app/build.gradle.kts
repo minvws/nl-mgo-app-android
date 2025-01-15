@@ -140,7 +140,7 @@ dependencies {
     implementation(projects.data.onboarding)
     implementation(projects.data.config)
     implementation(projects.data.localisation)
-    implementation(projects.data.uiSchema)
+    implementation(projects.data.fhirParser)
     implementation(projects.data.healthcare)
     implementation(projects.data.pincode)
     implementation(projects.data.digid)

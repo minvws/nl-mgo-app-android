@@ -56,7 +56,8 @@ sonar {
             add("framework/util/src/main/java/nl/rijksoverheid/mgo/framework/util/**") // Exclude util module
 
             // Experimental or temporary modules
-            add("data/uiSchema/src/main/**")
+            add("data/fhirParser/src/main/**")
+            add("data/healthcare/src/main/**")
             add("framework/featuretoggle/src/main/**")
             add("feature/dashboard/settings/src/main/**")
 

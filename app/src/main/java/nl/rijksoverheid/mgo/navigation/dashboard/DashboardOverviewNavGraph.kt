@@ -37,12 +37,12 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
             val route = backStackEntry.toRoute<DashboardNavigation.Overview.HealthCareCategory>()
             HealthCategoryScreen(
                 category = route.category,
-                onClickUiSchema = { toolbarTitle, organization, uiSchema ->
+                onClickListItem = { organization, uiSchema ->
                     navController.navigate(
                         DashboardNavigation.Overview.UISchemaDetail(
-                            toolbarTitle = toolbarTitle,
                             organization = organization,
-                            uiSchema = uiSchema,
+                            mgoResource = uiSchema,
+                            isSummary = true,
                         ),
                     )
                 },
@@ -55,9 +55,18 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
         mgoComposable<DashboardNavigation.Overview.UISchemaDetail> { backStackEntry ->
             val route = backStackEntry.toRoute<DashboardNavigation.Overview.UISchemaDetail>()
             UiSchemaDetailScreen(
-                toolbarTitle = route.toolbarTitle,
                 organization = route.organization,
-                uiSchema = route.uiSchema,
+                mgoResource = route.mgoResource,
+                isSummary = route.isSummary,
+                onNavigateToUiSchema = { organization, mgoResource ->
+                    val uiSchemaDetail =
+                        DashboardNavigation.Overview.UISchemaDetail(
+                            organization = organization,
+                            mgoResource = mgoResource,
+                            isSummary = false,
+                        )
+                    navController.navigate(uiSchemaDetail)
+                },
                 onNavigateBack = {
                     navController.popBackStack()
                 },

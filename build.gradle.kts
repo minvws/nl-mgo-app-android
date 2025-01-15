@@ -57,6 +57,7 @@ sonar {
 
             // Experimental or temporary modules
             add("data/fhirParser/src/main/**")
+            add("data/healthcare/src/main/**")
             add("framework/featuretoggle/src/main/**")
             add("feature/dashboard/settings/src/main/**")
 

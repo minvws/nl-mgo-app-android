@@ -1,6 +1,5 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.utils.`is`
 import java.io.File
 
 /**
@@ -10,15 +9,15 @@ import java.io.File
  * These types are generated via https://quicktype.io/, but the output is not really what we want.
  * This plugin also changes that Types.kt, so that the entire process of updating the shared code is completely automated.
  */
-class UiSchemaPlugin : Plugin<Project> {
+class FhirParserPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.tasks.register("updateUiSchema") {
+        project.tasks.register("updateFhirParser") {
 
             // TODO Download mgo-fhir-data.life.js
             // TODO Download Types.kt
 
-            val typesFile = File(project.rootDir, "data/uiSchema/src/main/java/nl/rijksoverheid/mgo/data/uiSchema/Types.kt")
+            val typesFile = File(project.rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/shared/Types.kt")
             val typesFileText = typesFile.readText()
             val updatedTypesFileText =
                 typesFileText.updatePackageName().also { println("Update package name in Types.kt") }
@@ -46,7 +45,7 @@ class UiSchemaPlugin : Plugin<Project> {
      * Quicktype exports to a default package, we change that to our own
      */
     private fun String.updatePackageName(): String {
-        return this.replace("package quicktype", "package nl.rijksoverheid.mgo.data.uiSchema")
+        return this.replace("package quicktype", "package nl.rijksoverheid.mgo.data.fhirParser.shared")
     }
 
     /**

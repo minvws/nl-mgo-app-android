@@ -24,7 +24,7 @@ sealed class DashboardNavigation {
         data class HealthCareCategory(val category: HealthCareCategoryModel) : Overview()
 
         @Serializable
-        data class UISchemaDetail(
+        data class UiSchema(
             val organization: MgoOrganization,
             val mgoResource: MgoResource,
             val isSummary: Boolean,
@@ -46,7 +46,7 @@ sealed class DashboardNavigation {
         data class HealthCareCategory(val category: HealthCareCategoryModel, val filterOrganization: MgoOrganization) : Organizations()
 
         @Serializable
-        data class UISchemaDetail(
+        data class UiSchema(
             val organization: MgoOrganization,
             val mgoResource: MgoResource,
             val isSummary: Boolean,

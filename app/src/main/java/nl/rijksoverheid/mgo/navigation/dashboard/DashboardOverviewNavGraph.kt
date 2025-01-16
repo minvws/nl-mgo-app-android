@@ -7,7 +7,7 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.UiSchemaDetailScreen
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaScreen
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
@@ -39,7 +39,7 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
                 category = route.category,
                 onClickListItem = { organization, uiSchema ->
                     navController.navigate(
-                        DashboardNavigation.Overview.UISchemaDetail(
+                        DashboardNavigation.Overview.UiSchema(
                             organization = organization,
                             mgoResource = uiSchema,
                             isSummary = true,
@@ -52,20 +52,20 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
             )
         }
 
-        mgoComposable<DashboardNavigation.Overview.UISchemaDetail> { backStackEntry ->
-            val route = backStackEntry.toRoute<DashboardNavigation.Overview.UISchemaDetail>()
-            UiSchemaDetailScreen(
+        mgoComposable<DashboardNavigation.Overview.UiSchema> { backStackEntry ->
+            val route = backStackEntry.toRoute<DashboardNavigation.Overview.UiSchema>()
+            UiSchemaScreen(
                 organization = route.organization,
                 mgoResource = route.mgoResource,
                 isSummary = route.isSummary,
                 onNavigateToUiSchema = { organization, mgoResource ->
-                    val uiSchemaDetail =
-                        DashboardNavigation.Overview.UISchemaDetail(
+                    val uiSchema =
+                        DashboardNavigation.Overview.UiSchema(
                             organization = organization,
                             mgoResource = mgoResource,
                             isSummary = false,
                         )
-                    navController.navigate(uiSchemaDetail)
+                    navController.navigate(uiSchema)
                 },
                 onNavigateBack = {
                     navController.popBackStack()

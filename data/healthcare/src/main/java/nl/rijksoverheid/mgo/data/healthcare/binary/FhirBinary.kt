@@ -6,3 +6,9 @@ data class FhirBinary(
     val file: File,
     val contentType: String,
 )
+
+val TEST_FHIR_BINARY =
+    FhirBinary(
+        file = File(""),
+        contentType = "application/pdf",
+    )

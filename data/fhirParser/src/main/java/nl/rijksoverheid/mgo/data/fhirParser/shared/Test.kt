@@ -53,7 +53,7 @@ val TEST_UI_ENTRY =
 
 val TEST_UI_ENTRY_DOWNLOAD_LINK =
     TEST_UI_ENTRY.copy(
-        url = "example.pdf",
+        url = "fhir",
         type = UIElementType.DownloadLink,
     )
 

@@ -42,7 +42,7 @@ internal class HealthCategoriesListItemViewModel
         val listItemState = _listItemState.stateIn(viewModelScope, SharingStarted.Lazily, HealthCategoriesListItemState.LOADING)
 
         init {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).distinctUntilChanged()
                     .collectLatest { states ->
                         if (states.isNotEmpty()) {

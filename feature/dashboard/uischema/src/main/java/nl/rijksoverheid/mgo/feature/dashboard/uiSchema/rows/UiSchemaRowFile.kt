@@ -24,11 +24,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
+import nl.rijksoverheid.mgo.data.healthcare.binary.TEST_FHIR_BINARY
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
 import nl.rijksoverheid.mgo.framework.util.shareFile
@@ -164,5 +167,60 @@ private fun UISchemaRowError(
                 )
             }
         }
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaRowFileIdlePreview() {
+    MgoTheme {
+        UiSchemaRowFile(
+            row = UISchemaRow.File.NotDownloaded.Idle(heading = "Heading", value = "Value", binary = ""),
+            onClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaRowFileLoadingPreview() {
+    MgoTheme {
+        UiSchemaRowFile(
+            row = UISchemaRow.File.Loading(heading = "Heading", value = "Value"),
+            onClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaRowFileDownloadedPreview() {
+    MgoTheme {
+        UiSchemaRowFile(
+            row = UISchemaRow.File.Downloaded(heading = "Heading", value = "Value", binary = TEST_FHIR_BINARY),
+            onClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaRowFileEmptyPreview() {
+    MgoTheme {
+        UiSchemaRowFile(
+            row = UISchemaRow.File.Empty(heading = "Heading", value = "Value"),
+            onClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaRowFileErrorPreview() {
+    MgoTheme {
+        UiSchemaRowFile(
+            row = UISchemaRow.File.NotDownloaded.Error(heading = "Heading", value = "Value", binary = ""),
+            onClick = {},
+        )
     }
 }

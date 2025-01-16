@@ -16,11 +16,11 @@ import retrofit2.Response
 import java.io.File
 import kotlinx.coroutines.test.runTest
 
-internal class DefaultHealthCareBinaryRepositoryTest {
+internal class DefaultFhirBinaryRepositoryTest {
     private val cacheFileStore = TestCacheFileStore()
     private val dvaApi: DvaApi = mockk<DvaApi>()
     private val repository =
-        DefaultHealthCareBinaryRepository(
+        DefaultFhirBinaryRepository(
             cacheFileStore = cacheFileStore,
             dvaApi = dvaApi,
         )
@@ -44,8 +44,8 @@ internal class DefaultHealthCareBinaryRepositoryTest {
             assertTrue(cacheFileStore.assertFileSaved())
 
             // Then: Correct binary is returned
-            val expectedHealthCareBinary = HealthCareBinary(file = File(""), contentType = "application/pdf")
-            assertEquals(Result.success(expectedHealthCareBinary), healthCareBinary)
+            val expectedFhirBinary = FhirBinary(file = File(""), contentType = "application/pdf")
+            assertEquals(Result.success(expectedFhirBinary), healthCareBinary)
         }
 
     @Test
@@ -61,7 +61,7 @@ internal class DefaultHealthCareBinaryRepositoryTest {
             val healthCareBinary = repository.download(resourceEndpoint = "", fhirBinary = "")
 
             // Then: Correct binary is returned
-            assertEquals(Result.failure<HealthCareBinary>(error), healthCareBinary)
+            assertEquals(Result.failure<FhirBinary>(error), healthCareBinary)
         }
 
     @Test

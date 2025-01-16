@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.TestUiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.binary.TestHealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.binary.TestFhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.TestMgoResourceRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
@@ -35,7 +35,7 @@ internal class UiSchemaDetailScreenViewModelTest {
                 ),
         )
 
-    private val healthCareBinaryRepository = TestHealthCareBinaryRepository()
+    private val healthCareBinaryRepository = TestFhirBinaryRepository()
 
     @Test
     fun testUiSchema() =
@@ -53,7 +53,7 @@ internal class UiSchemaDetailScreenViewModelTest {
         return UiSchemaDetailScreenViewModel(
             organization = TEST_MGO_ORGANIZATION,
             mgoResource = TEST_MGO_RESOURCE,
-            healthCareBinaryRepository = healthCareBinaryRepository,
+            fhirBinaryRepository = healthCareBinaryRepository,
             isSummary = false,
             uiSchemaMapper = TestUiSchemaMapper(),
             mgoResourceRepository = TestMgoResourceRepository(),

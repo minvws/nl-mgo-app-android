@@ -36,7 +36,7 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_ENTRY
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
-import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinary
+import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinary
 import java.io.File
 import java.lang.IllegalStateException
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -208,7 +208,7 @@ internal fun UiSchemaAttachmentListItemDownloadedPreview() {
             state =
                 AttachmentState.Downloaded(
                     binary =
-                        HealthCareBinary(
+                        FhirBinary(
                             file = File(""),
                             contentType = "",
                         ),

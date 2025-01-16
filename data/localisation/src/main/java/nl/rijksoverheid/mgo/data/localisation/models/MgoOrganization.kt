@@ -22,6 +22,10 @@ data class MgoOrganization(
     val dataServices: List<MgoOrganizationDataService>,
 ) : Parcelable
 
+fun MgoOrganization.getDocumentsResourceEndpoint(): String? {
+    return dataServices.firstOrNull { service -> service.type == MgoOrganizationDataServiceType.DOCUMENTS }?.resourceEndpoint
+}
+
 val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
 val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)
 val TEST_DOCUMENTS_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.DOCUMENTS)

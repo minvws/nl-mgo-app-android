@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail
 
-import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinary
+import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinary
 
 internal sealed class AttachmentState {
     data object NotDownloaded : AttachmentState()
@@ -11,5 +11,5 @@ internal sealed class AttachmentState {
 
     data class Error(val error: Throwable) : AttachmentState()
 
-    data class Downloaded(val binary: HealthCareBinary) : AttachmentState()
+    data class Downloaded(val binary: FhirBinary) : AttachmentState()
 }

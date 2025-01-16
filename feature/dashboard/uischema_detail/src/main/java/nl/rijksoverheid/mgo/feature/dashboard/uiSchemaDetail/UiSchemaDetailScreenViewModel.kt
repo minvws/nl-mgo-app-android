@@ -8,16 +8,16 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.shared.DisplayElement
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ReferenceLink
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementDisplay
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
+import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaRow
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaSection
 import timber.log.Timber
@@ -35,7 +35,7 @@ internal class UiSchemaDetailScreenViewModel
         @Assisted val organization: MgoOrganization,
         @Assisted private val mgoResource: MgoResource,
         @Assisted private val isSummary: Boolean,
-        private val healthCareBinaryRepository: HealthCareBinaryRepository,
+        private val fhirBinaryRepository: FhirBinaryRepository,
         private val uiSchemaMapper: UiSchemaMapper,
         private val mgoResourceRepository: MgoResourceRepository,
     ) : ViewModel() {
@@ -99,7 +99,12 @@ internal class UiSchemaDetailScreenViewModel
                 }
 
                 UIElementType.DownloadLink -> {
-                    UISchemaRow.File.NotDownloaded.Idle(heading = null, value = this.label, binary = this.url ?: "")
+                    val url = this.url
+                    if (url == null) {
+                        UISchemaRow.File.Empty(heading = null, value = this.label)
+                    } else {
+                        UISchemaRow.File.NotDownloaded.Idle(heading = null, value = this.label, binary = url)
+                    }
                 }
 
                 else -> {
@@ -141,9 +146,25 @@ internal class UiSchemaDetailScreenViewModel
 
         fun onClickFileRow(row: UISchemaRow.File.NotDownloaded) {
             viewModelScope.launch {
+                // This organization should have a document resource endpoint to get the binary from
+                val endpoint = organization.getDocumentsResourceEndpoint() ?: return@launch
+
                 // Set loading state
-                val loadingRow = UISchemaRow.File.NotDownloaded.Loading(heading = row.heading, value = row.value)
+                val loadingRow = UISchemaRow.File.Loading(heading = row.heading, value = row.value)
                 updateRow(loadingRow)
+
+                // Download file
+                fhirBinaryRepository
+                    .download(resourceEndpoint = endpoint, fhirBinary = row.binary)
+                    .onSuccess { binary ->
+                        val downloadedRow = UISchemaRow.File.Downloaded(heading = row.heading, value = row.value, binary = binary)
+                        updateRow(downloadedRow)
+                    }
+                    .onFailure { error ->
+                        Timber.e(error, "Failed to download binary")
+                        val errorRow = UISchemaRow.File.NotDownloaded.Error(heading = row.heading, value = row.value, binary = row.binary)
+                        updateRow(errorRow)
+                    }
             }
         }
 
@@ -161,7 +182,7 @@ internal class UiSchemaDetailScreenViewModel
                 updateAttachmentState(uiEntry = entry, state = AttachmentState.Loading)
 
                 // Download attachment
-                healthCareBinaryRepository
+                fhirBinaryRepository
                     .download(resourceEndpoint = resourceEndpoint, fhirBinary = entryUrl)
                     .onSuccess { binary ->
                         if (entry.url.isNullOrEmpty()) {
@@ -210,6 +231,14 @@ internal class UiSchemaDetailScreenViewModel
                         rows = rows,
                     )
                 }
+            }
+        }
+
+        override fun onCleared() {
+            super.onCleared()
+            // Remove all downloaded files when leaving the screen
+            viewModelScope.launch {
+                fhirBinaryRepository.cleanup()
             }
         }
     }

@@ -17,6 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -113,12 +115,14 @@ private fun UiSchemaSection(
                         is UISchemaRow.Static -> {
                             UiSchemaRowStatic(row = row)
                         }
+
                         is UISchemaRow.Reference -> {
                             UiSchemaRowReference(
                                 row = row,
                                 onClick = onClickReference,
                             )
                         }
+
                         is UISchemaRow.File -> {
                             UiSchemaRowFile(
                                 row = row,
@@ -139,5 +143,70 @@ private fun UiSchemaSection(
                 }
             }
         }
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun UiSchemaScreenContentPreview() {
+    MgoTheme {
+        UiSchemaScreenContent(
+            viewState =
+                UiSchemaScreenViewState(
+                    toolbarTitle = "Titel",
+                    sections =
+                        listOf(
+                            UISchemaSection(
+                                heading = null,
+                                rows =
+                                    listOf(
+                                        UISchemaRow.Static(
+                                            heading = "Row Heading 1",
+                                            value = "Row Value 1",
+                                        ),
+                                        UISchemaRow.Static(
+                                            heading = "Row Heading 2",
+                                            value = "Row Value 2",
+                                        ),
+                                    ),
+                            ),
+                            UISchemaSection(
+                                heading = "Section Heading 1",
+                                rows =
+                                    listOf(
+                                        UISchemaRow.Static(
+                                            heading = "Row Heading 3",
+                                            value = "Row Value 3",
+                                        ),
+                                    ),
+                            ),
+                            UISchemaSection(
+                                heading = "Section Heading 2",
+                                rows =
+                                    listOf(
+                                        UISchemaRow.Reference(
+                                            heading = null,
+                                            value = "Reference",
+                                            referenceId = "1",
+                                        ),
+                                    ),
+                            ),
+                            UISchemaSection(
+                                heading = "Section Heading 3",
+                                rows =
+                                    listOf(
+                                        UISchemaRow.File.NotDownloaded.Idle(
+                                            heading = null,
+                                            value = "File",
+                                            binary = "",
+                                        ),
+                                    ),
+                            ),
+                        ),
+                ),
+            onClickReference = {},
+            onClickFile = {},
+            onNavigateBack = {},
+        )
     }
 }

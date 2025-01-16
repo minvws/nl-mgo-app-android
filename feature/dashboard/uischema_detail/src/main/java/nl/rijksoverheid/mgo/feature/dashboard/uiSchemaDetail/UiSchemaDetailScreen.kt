@@ -31,6 +31,9 @@ import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchemaGroup
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaRow
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaSection
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.rows.UiSchemaRowFile
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.rows.UiSchemaRowReference
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.rows.UiSchemaRowStatic
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -133,8 +136,11 @@ private fun NewUiSchemaSection(
                                 onClick = onClickReference,
                             )
                         }
-
-                        else -> {
+                        is UISchemaRow.File -> {
+                            UiSchemaRowFile(
+                                row = row,
+                                onClick = {},
+                            )
                         }
                     }
                     if (index != section.rows.lastIndex) {
@@ -151,44 +157,6 @@ private fun NewUiSchemaSection(
             }
         }
     }
-}
-
-@Composable
-private fun UiSchemaRowStatic(
-    row: UISchemaRow.Static,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier = modifier) {
-        if (row.heading != null) {
-            Text(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                text = row.heading,
-                style = MaterialTheme.typography.bodySmallMini,
-                color = MaterialTheme.colorScheme.contentTertiary(),
-            )
-        }
-        Text(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
-            text = row.value,
-            style = MaterialTheme.typography.bodySmall,
-        )
-    }
-}
-
-@Composable
-private fun UiSchemaRowReference(
-    row: UISchemaRow.Reference,
-    onClick: (reference: UISchemaRow.Reference) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        modifier =
-            modifier
-                .padding(16.dp)
-                .clickable { onClick(row) },
-        text = row.value,
-        style = MaterialTheme.typography.bodySmall,
-    )
 }
 
 @Composable

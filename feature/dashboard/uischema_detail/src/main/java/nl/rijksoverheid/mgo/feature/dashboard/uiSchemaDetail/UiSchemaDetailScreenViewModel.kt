@@ -99,7 +99,7 @@ internal class UiSchemaDetailScreenViewModel
                 }
 
                 UIElementType.DownloadLink -> {
-                    UISchemaRow.File.NotDownloaded.Idle(heading = this.label, value = this.display.getString(), binary = this.url ?: "")
+                    UISchemaRow.File.NotDownloaded.Idle(heading = null, value = this.label, binary = this.url ?: "")
                 }
 
                 else -> {

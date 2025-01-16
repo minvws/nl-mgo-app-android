@@ -7,7 +7,10 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.fhirParser.shared.DisplayElement
+import nl.rijksoverheid.mgo.data.fhirParser.shared.ReferenceLink
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
+import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementDisplay
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
@@ -15,6 +18,8 @@ import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaRow
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaSection
 import timber.log.Timber
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +54,9 @@ internal class UiSchemaDetailScreenViewModel
         private val _navigate = MutableSharedFlow<MgoResource>(extraBufferCapacity = 1)
         val navigate = _navigate.asSharedFlow()
 
+        private val _sections = MutableStateFlow<List<UISchemaSection>>(listOf())
+        val sections = _sections.asStateFlow()
+
         private val _attachmentsState = MutableStateFlow<Map<UIElement, AttachmentState>>(mapOf())
         val attachmentsState = _attachmentsState.asStateFlow()
 
@@ -60,6 +68,7 @@ internal class UiSchemaDetailScreenViewModel
                     } else {
                         uiSchemaMapper.getDetail(mgoResource)
                     }
+                _sections.value = uiSchema.toSections()
                 _uiSchema.value = uiSchema
 
                 // Set initial attachment states
@@ -72,6 +81,52 @@ internal class UiSchemaDetailScreenViewModel
                             AttachmentState.NotDownloaded
                         }
             }
+        }
+
+        private fun UISchema.toSections(): List<UISchemaSection> {
+            return this.children.map { uiSchemaChild ->
+                UISchemaSection(
+                    heading = uiSchemaChild.label,
+                    rows = uiSchemaChild.children.map { uiElement -> uiElement.toRow() },
+                )
+            }
+        }
+
+        private fun UIElement.toRow(): UISchemaRow {
+            return when (this.type) {
+                UIElementType.ReferenceLink -> {
+                    UISchemaRow.Reference(heading = this.label, value = this.display.getString(), referenceId = this.reference ?: "")
+                }
+                UIElementType.DownloadLink -> {
+                    UISchemaRow.File.NotDownloaded.Idle(heading = this.label, value = this.display.getString(), binary = this.url ?: "")
+                }
+                else -> {
+                    UISchemaRow.Static(heading = this.label, value = this.display.getString())
+                }
+            }
+        }
+
+        private fun UIElementDisplay?.getString(): String {
+            return when (this) {
+                is UIElementDisplay.StringValue -> this.value
+                is UIElementDisplay.UnionArrayValue -> this.value.joinToString(", ") { it.getString() }
+                else -> ""
+            }
+        }
+
+        private fun DisplayElement.getString(): String {
+            return when (this) {
+                is DisplayElement.StringValue -> this.value
+                is DisplayElement.StringArrayValue -> this.value.joinToString(", ")
+            }
+        }
+
+        fun onClickReferenceRow(reference: UISchemaRow.Reference) {
+            // TODO
+        }
+
+        fun onClickFileRow(reference: UISchemaRow.File.NotDownloaded) {
+            // TODO
         }
 
         fun getMgoResource(referenceId: String) {

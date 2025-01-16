@@ -12,29 +12,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
-import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.strokesPrimary
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.shared.DisplayElement
-import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA_MEDICATION
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementDisplay
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchemaGroup
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaRow
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaSection
 import kotlinx.coroutines.flow.collectLatest
-import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun UiSchemaDetailScreen(
@@ -48,6 +45,7 @@ fun UiSchemaDetailScreen(
         hiltViewModel<UiSchemaDetailScreenViewModel, UiSchemaDetailScreenViewModel.Factory>(
             creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
         )
+    val sections by viewModel.sections.collectAsStateWithLifecycle()
     val uiSchema by viewModel.uiSchema.collectAsStateWithLifecycle()
     val attachmentsState by viewModel.attachmentsState.collectAsStateWithLifecycle()
 
@@ -61,6 +59,7 @@ fun UiSchemaDetailScreen(
         UiSchemaDetailScreenContent(
             toolbarTitle = it.label ?: "",
             uiSchema = it,
+            sections = sections,
             attachmentsState = attachmentsState,
             onClickReference = { referenceId ->
                 viewModel.getMgoResource(referenceId)
@@ -77,6 +76,7 @@ fun UiSchemaDetailScreen(
 private fun UiSchemaDetailScreenContent(
     toolbarTitle: String,
     uiSchema: UISchema,
+    sections: List<UISchemaSection>,
     attachmentsState: Map<UIElement, AttachmentState>,
     onClickReference: (referenceId: String) -> Unit,
     onDownloadAttachment: (entry: UIElement) -> Unit,
@@ -87,19 +87,84 @@ private fun UiSchemaDetailScreenContent(
         onNavigateBack = onNavigateBack,
         content = {
             LazyColumn {
-                items(uiSchema.children.size) { position ->
-                    val uiSchemaGroup = uiSchema.children[position]
-                    UiSchemaSection(
+                items(sections.size) { position ->
+                    val section = sections[position]
+                    NewUiSchemaSection(
+                        section = section,
                         modifier = Modifier.padding(bottom = 24.dp),
-                        group = uiSchemaGroup,
-                        attachmentsState = attachmentsState,
-                        onClickReference = onClickReference,
-                        onDownloadAttachment = onDownloadAttachment,
                     )
                 }
             }
         },
     )
+}
+
+@Composable
+private fun NewUiSchemaSection(
+    section: UISchemaSection,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        section.heading?.let {
+            Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = it,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+        MgoCard(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+        ) {
+            Column {
+                section.rows.forEachIndexed { index, row ->
+                    when (row) {
+                        is UISchemaRow.Static -> {
+                            UiSchemaRowStatic(row = row, hasDivider = index != section.rows.lastIndex)
+                        }
+                        else -> {
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun UiSchemaRowStatic(
+    row: UISchemaRow.Static,
+    hasDivider: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        if (row.heading != null) {
+            Text(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                text = row.heading,
+                style = MaterialTheme.typography.bodySmallMini,
+                color = MaterialTheme.colorScheme.contentTertiary(),
+            )
+        }
+        Text(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
+            text = row.value,
+            style = MaterialTheme.typography.bodySmall,
+        )
+        if (hasDivider) {
+            HorizontalDivider(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp),
+                color = MaterialTheme.colorScheme.strokesPrimary(),
+                thickness = 0.33.dp,
+            )
+        }
+    }
 }
 
 @Composable
@@ -213,20 +278,5 @@ private fun DisplayElement.getString(): String {
     return when (this) {
         is DisplayElement.StringValue -> this.value
         is DisplayElement.StringArrayValue -> this.value.joinToString(", ")
-    }
-}
-
-@DefaultPreviews
-@Composable
-internal fun UiSchemaDetailScreenPreview() {
-    MgoTheme {
-        UiSchemaDetailScreenContent(
-            toolbarTitle = stringResource(id = CopyR.string.hc_medication_heading_detail),
-            uiSchema = TEST_UI_SCHEMA_MEDICATION,
-            attachmentsState = mapOf(),
-            onClickReference = {},
-            onDownloadAttachment = {},
-            onNavigateBack = {},
-        )
     }
 }

@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nl.rijksoverheid.mgo.data.healthcare.binary.DefaultHealthCareBinaryRepository
-import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.binary.DefaultFhirBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.DefaultHealthCareDataStateRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataStateRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.DefaultHealthCareDataStatesRepository
@@ -31,7 +31,7 @@ internal abstract class HealthCareModule {
 
     @Binds
     @Singleton
-    abstract fun provideHealthCareBinaryRepository(default: DefaultHealthCareBinaryRepository): HealthCareBinaryRepository
+    abstract fun provideFhirBinaryRepository(default: DefaultFhirBinaryRepository): FhirBinaryRepository
 
     @Binds
     @Singleton

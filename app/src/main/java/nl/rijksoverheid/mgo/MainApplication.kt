@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
-import nl.rijksoverheid.mgo.data.healthcare.binary.HealthCareBinaryRepository
+import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import timber.log.Timber
@@ -27,7 +27,7 @@ class MainApplication : Application() {
     lateinit var featureToggleLocalDataSource: FeatureToggleLocalDataSource
 
     @Inject
-    lateinit var healthCareBinaryRepository: HealthCareBinaryRepository
+    lateinit var fhirBinaryRepository: FhirBinaryRepository
 
     @Inject
     lateinit var jsRuntimeRepository: JsRuntimeRepository
@@ -50,8 +50,8 @@ class MainApplication : Application() {
         coroutineScope.launch(ioDispatcher) {
             jsRuntimeRepository.load()
 
-            // Check if we need to clean up cached attachments
-            launch { healthCareBinaryRepository.cleanup() }
+            // Remove any left over downloaded files on each app launch
+            launch { fhirBinaryRepository.cleanup() }
         }
     }
 

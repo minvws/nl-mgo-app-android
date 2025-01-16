@@ -104,7 +104,7 @@ dependencies {
     implementation(projects.feature.dashboard.organizations)
     implementation(projects.feature.dashboard.healthCategories)
     implementation(projects.feature.dashboard.healthCategory)
-    implementation(projects.feature.dashboard.uischemaDetail)
+    implementation(projects.feature.dashboard.uischema)
     implementation(projects.feature.dashboard.removeOrganization)
     implementation(projects.feature.dashboard.settings)
 

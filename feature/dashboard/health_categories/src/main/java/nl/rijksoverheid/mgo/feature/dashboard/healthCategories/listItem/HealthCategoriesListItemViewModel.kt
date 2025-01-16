@@ -10,7 +10,6 @@ import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataSt
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -42,7 +41,7 @@ internal class HealthCategoriesListItemViewModel
         val listItemState = _listItemState.stateIn(viewModelScope, SharingStarted.Lazily, HealthCategoriesListItemState.LOADING)
 
         init {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).distinctUntilChanged()
                     .collectLatest { states ->
                         if (states.isNotEmpty()) {

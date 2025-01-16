@@ -61,8 +61,8 @@ fun UiSchemaDetailScreen(
             uiSchema = it,
             sections = sections,
             attachmentsState = attachmentsState,
-            onClickReference = { referenceId ->
-                viewModel.getMgoResource(referenceId)
+            onClickReference = { reference ->
+                viewModel.onClickReferenceRow(reference)
             },
             onDownloadAttachment = { entry ->
                 viewModel.onDownloadAttachment(entry)
@@ -78,7 +78,7 @@ private fun UiSchemaDetailScreenContent(
     uiSchema: UISchema,
     sections: List<UISchemaSection>,
     attachmentsState: Map<UIElement, AttachmentState>,
-    onClickReference: (referenceId: String) -> Unit,
+    onClickReference: (reference: UISchemaRow.Reference) -> Unit,
     onDownloadAttachment: (entry: UIElement) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -91,6 +91,7 @@ private fun UiSchemaDetailScreenContent(
                     val section = sections[position]
                     NewUiSchemaSection(
                         section = section,
+                        onClickReference = onClickReference,
                         modifier = Modifier.padding(bottom = 24.dp),
                     )
                 }
@@ -102,6 +103,7 @@ private fun UiSchemaDetailScreenContent(
 @Composable
 private fun NewUiSchemaSection(
     section: UISchemaSection,
+    onClickReference: (reference: UISchemaRow.Reference) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -123,10 +125,27 @@ private fun NewUiSchemaSection(
                 section.rows.forEachIndexed { index, row ->
                     when (row) {
                         is UISchemaRow.Static -> {
-                            UiSchemaRowStatic(row = row, hasDivider = index != section.rows.lastIndex)
+                            UiSchemaRowStatic(row = row)
                         }
+                        is UISchemaRow.Reference -> {
+                            UiSchemaRowReference(
+                                row = row,
+                                onClick = onClickReference,
+                            )
+                        }
+
                         else -> {
                         }
+                    }
+                    if (index != section.rows.lastIndex) {
+                        HorizontalDivider(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                            color = MaterialTheme.colorScheme.strokesPrimary(),
+                            thickness = 0.33.dp,
+                        )
                     }
                 }
             }
@@ -137,7 +156,6 @@ private fun NewUiSchemaSection(
 @Composable
 private fun UiSchemaRowStatic(
     row: UISchemaRow.Static,
-    hasDivider: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -154,17 +172,23 @@ private fun UiSchemaRowStatic(
             text = row.value,
             style = MaterialTheme.typography.bodySmall,
         )
-        if (hasDivider) {
-            HorizontalDivider(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp),
-                color = MaterialTheme.colorScheme.strokesPrimary(),
-                thickness = 0.33.dp,
-            )
-        }
     }
+}
+
+@Composable
+private fun UiSchemaRowReference(
+    row: UISchemaRow.Reference,
+    onClick: (reference: UISchemaRow.Reference) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        modifier =
+            modifier
+                .padding(16.dp)
+                .clickable { onClick(row) },
+        text = row.value,
+        style = MaterialTheme.typography.bodySmall,
+    )
 }
 
 @Composable
@@ -199,6 +223,7 @@ private fun UiSchemaSection(
                                 onClick = onClickReference,
                             )
                         }
+
                         UIElementType.DownloadLink -> {
                             val attachmentState = attachmentsState[entry]
                             if (attachmentState != null) {
@@ -229,7 +254,10 @@ private fun UiSchemaReference(
     onClick: (referenceId: String) -> Unit,
 ) {
     Text(
-        modifier = Modifier.padding(16.dp).clickable { onClick(entry.reference ?: "") },
+        modifier =
+            Modifier
+                .padding(16.dp)
+                .clickable { onClick(entry.reference ?: "") },
         text = entry.label,
         style = MaterialTheme.typography.bodySmall,
     )

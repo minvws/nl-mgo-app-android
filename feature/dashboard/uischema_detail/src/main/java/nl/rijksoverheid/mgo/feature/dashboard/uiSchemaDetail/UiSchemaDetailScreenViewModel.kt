@@ -95,11 +95,13 @@ internal class UiSchemaDetailScreenViewModel
         private fun UIElement.toRow(): UISchemaRow {
             return when (this.type) {
                 UIElementType.ReferenceLink -> {
-                    UISchemaRow.Reference(heading = this.label, value = this.display.getString(), referenceId = this.reference ?: "")
+                    UISchemaRow.Reference(heading = null, value = this.label, referenceId = this.reference ?: "")
                 }
+
                 UIElementType.DownloadLink -> {
                     UISchemaRow.File.NotDownloaded.Idle(heading = this.label, value = this.display.getString(), binary = this.url ?: "")
                 }
+
                 else -> {
                     UISchemaRow.Static(heading = this.label, value = this.display.getString())
                 }
@@ -121,17 +123,13 @@ internal class UiSchemaDetailScreenViewModel
             }
         }
 
+        /**
+         * When clicking on a reference, get the mgo resource and navigate to the UI Schema screen with that resource.
+         * @param reference The clicked reference row.
+         */
         fun onClickReferenceRow(reference: UISchemaRow.Reference) {
-            // TODO
-        }
-
-        fun onClickFileRow(reference: UISchemaRow.File.NotDownloaded) {
-            // TODO
-        }
-
-        fun getMgoResource(referenceId: String) {
             viewModelScope.launch {
-                mgoResourceRepository.get(referenceId)
+                mgoResourceRepository.get(reference.referenceId)
                     .onSuccess { mgoResource ->
                         _navigate.tryEmit(mgoResource)
                     }
@@ -139,6 +137,10 @@ internal class UiSchemaDetailScreenViewModel
                         Timber.e(error, "Failed to get mgo resource")
                     }
             }
+        }
+
+        fun onClickFileRow(reference: UISchemaRow.File.NotDownloaded) {
+            // TODO
         }
 
         fun onDownloadAttachment(entry: UIElement) {

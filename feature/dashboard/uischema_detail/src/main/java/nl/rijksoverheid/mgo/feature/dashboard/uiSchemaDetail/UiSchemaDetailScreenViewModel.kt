@@ -127,9 +127,9 @@ internal class UiSchemaDetailScreenViewModel
          * When clicking on a reference, get the mgo resource and navigate to the UI Schema screen with that resource.
          * @param reference The clicked reference row.
          */
-        fun onClickReferenceRow(reference: UISchemaRow.Reference) {
+        fun onClickReferenceRow(row: UISchemaRow.Reference) {
             viewModelScope.launch {
-                mgoResourceRepository.get(reference.referenceId)
+                mgoResourceRepository.get(row.referenceId)
                     .onSuccess { mgoResource ->
                         _navigate.tryEmit(mgoResource)
                     }
@@ -139,8 +139,12 @@ internal class UiSchemaDetailScreenViewModel
             }
         }
 
-        fun onClickFileRow(reference: UISchemaRow.File.NotDownloaded) {
-            // TODO
+        fun onClickFileRow(row: UISchemaRow.File.NotDownloaded) {
+            viewModelScope.launch {
+                // Set loading state
+                val loadingRow = UISchemaRow.File.NotDownloaded.Loading(heading = row.heading, value = row.value)
+                updateRow(loadingRow)
+            }
         }
 
         fun onDownloadAttachment(entry: UIElement) {
@@ -188,6 +192,24 @@ internal class UiSchemaDetailScreenViewModel
         ) {
             _attachmentsState.update { states ->
                 states.toMutableMap().also { it.put(uiEntry, state) }
+            }
+        }
+
+        private fun updateRow(newRow: UISchemaRow) {
+            _sections.update { sections ->
+                sections.map { section ->
+                    val rows =
+                        section.rows.map { oldRow ->
+                            if (oldRow.value == newRow.value) {
+                                newRow
+                            } else {
+                                oldRow
+                            }
+                        }
+                    section.copy(
+                        rows = rows,
+                    )
+                }
             }
         }
     }

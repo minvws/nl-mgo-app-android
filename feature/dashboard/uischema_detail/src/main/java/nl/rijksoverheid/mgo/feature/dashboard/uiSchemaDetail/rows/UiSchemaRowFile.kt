@@ -1,8 +1,11 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.rows
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.R
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchemaDetail.models.UISchemaRow
 
@@ -23,20 +27,25 @@ internal fun UiSchemaRowFile(
 ) {
     when (row) {
         is UISchemaRow.File.NotDownloaded.Idle -> {
-            UiSchemaRowFileIdle(row = row, modifier = modifier)
+            UiSchemaRowFile(row = row, loading = false, modifier = modifier.clickable { onClick(row) })
         }
+
         is UISchemaRow.File.NotDownloaded.Loading -> {
+            UiSchemaRowFile(row = row, loading = true, modifier = modifier.clickable { onClick(row) })
         }
+
         is UISchemaRow.File.NotDownloaded.Error -> {
         }
+
         is UISchemaRow.File.Downloaded -> {
         }
     }
 }
 
 @Composable
-private fun UiSchemaRowFileIdle(
-    row: UISchemaRow.File.NotDownloaded.Idle,
+private fun UiSchemaRowFile(
+    row: UISchemaRow,
+    loading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -55,10 +64,20 @@ private fun UiSchemaRowFileIdle(
             text = row.value,
             style = MaterialTheme.typography.bodySmall,
         )
-        Icon(
-            painter = painterResource(R.drawable.ic_attachment),
-            tint = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-            contentDescription = null,
-        )
+
+        if (loading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                strokeWidth = 3.dp,
+                trackColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                color = MaterialTheme.colorScheme.backgroundTertiary(),
+            )
+        } else {
+            Icon(
+                painter = painterResource(R.drawable.ic_attachment),
+                tint = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                contentDescription = null,
+            )
+        }
     }
 }

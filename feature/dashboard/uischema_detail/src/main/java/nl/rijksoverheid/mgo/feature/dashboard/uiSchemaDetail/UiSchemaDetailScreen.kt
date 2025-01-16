@@ -64,8 +64,11 @@ fun UiSchemaDetailScreen(
             uiSchema = it,
             sections = sections,
             attachmentsState = attachmentsState,
-            onClickReference = { reference ->
-                viewModel.onClickReferenceRow(reference)
+            onClickReference = { row ->
+                viewModel.onClickReferenceRow(row)
+            },
+            onClickFile = { row ->
+                viewModel.onClickFileRow(row)
             },
             onDownloadAttachment = { entry ->
                 viewModel.onDownloadAttachment(entry)
@@ -81,7 +84,8 @@ private fun UiSchemaDetailScreenContent(
     uiSchema: UISchema,
     sections: List<UISchemaSection>,
     attachmentsState: Map<UIElement, AttachmentState>,
-    onClickReference: (reference: UISchemaRow.Reference) -> Unit,
+    onClickReference: (row: UISchemaRow.Reference) -> Unit,
+    onClickFile: (row: UISchemaRow.File.NotDownloaded) -> Unit,
     onDownloadAttachment: (entry: UIElement) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -95,6 +99,7 @@ private fun UiSchemaDetailScreenContent(
                     NewUiSchemaSection(
                         section = section,
                         onClickReference = onClickReference,
+                        onClickFile = onClickFile,
                         modifier = Modifier.padding(bottom = 24.dp),
                     )
                 }
@@ -106,7 +111,8 @@ private fun UiSchemaDetailScreenContent(
 @Composable
 private fun NewUiSchemaSection(
     section: UISchemaSection,
-    onClickReference: (reference: UISchemaRow.Reference) -> Unit,
+    onClickReference: (row: UISchemaRow.Reference) -> Unit,
+    onClickFile: (row: UISchemaRow.File.NotDownloaded) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -139,7 +145,7 @@ private fun NewUiSchemaSection(
                         is UISchemaRow.File -> {
                             UiSchemaRowFile(
                                 row = row,
-                                onClick = {},
+                                onClick = onClickFile,
                             )
                         }
                     }

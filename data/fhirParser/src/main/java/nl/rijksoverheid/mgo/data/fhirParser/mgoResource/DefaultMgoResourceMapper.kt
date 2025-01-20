@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.fhirParser.mgoResource
 
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
@@ -11,7 +12,7 @@ import javax.inject.Inject
  */
 internal class DefaultMgoResourceMapper
     @Inject
-    constructor(private val jsRuntimeRepository: JsRuntimeRepository) :
+    constructor(private val jsRuntimeRepository: JsRuntimeRepository, private val base64Util: Base64Util) :
     MgoResourceMapper {
         /**
          * Parses the fhir response, and returns a list of [MgoResource] that can then be used in [UiSchemaMapper]
@@ -41,7 +42,7 @@ internal class DefaultMgoResourceMapper
                             JSONObject().apply { put("fhirVersion", fhirVersion.toString()) }.toString(),
                         ),
                     )
-                val mgoResource = mgoResourceJsonString.toMgoResource()
+                val mgoResource = mgoResourceJsonString.toMgoResource(base64Util.encode(mgoResourceJsonString))
                 mgoResources.add(mgoResource)
             }
             return mgoResources

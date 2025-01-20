@@ -13,21 +13,21 @@ typealias MgoResourceProfile = String
 data class MgoResource(
     val referenceId: MgoResourceReferenceId,
     val profile: MgoResourceProfile,
-    val json: String,
+    val jsonBase64: String,
 ) : Parcelable
 
 val TEST_MGO_RESOURCE =
     MgoResource(
         referenceId = "1",
         profile = "profile",
-        json = "",
+        jsonBase64 = "",
     )
 
-fun String.toMgoResource(): MgoResource {
+fun String.toMgoResource(jsonBase64: String): MgoResource {
     val json = JSONObject(this)
     return MgoResource(
         referenceId = json.getString("referenceId"),
         profile = json.getString("profile"),
-        json = this,
+        jsonBase64 = jsonBase64,
     )
 }

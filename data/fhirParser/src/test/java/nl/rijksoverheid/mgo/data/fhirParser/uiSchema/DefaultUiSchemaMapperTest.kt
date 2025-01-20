@@ -4,13 +4,15 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
+import nl.rijksoverheid.mgo.framework.util.base64.TestBase64Util
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
 class DefaultUiSchemaMapperTest {
+    private val base64Util = TestBase64Util()
     private val jsRuntimeRepository = mockk<JsRuntimeRepository>()
-    private val uiSchemaMapper = DefaultUiSchemaMapper(jsRuntimeRepository)
+    private val uiSchemaMapper = DefaultUiSchemaMapper(jsRuntimeRepository, base64Util)
 
     @Test
     fun testGetSummary() =

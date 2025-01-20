@@ -4,6 +4,7 @@ import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceMapper
 import nl.rijksoverheid.mgo.data.fhirParser.shared.UISchema
+import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import javax.inject.Inject
 import kotlinx.serialization.json.Json
 
@@ -12,7 +13,7 @@ import kotlinx.serialization.json.Json
  */
 internal class DefaultUiSchemaMapper
     @Inject
-    constructor(private val jsRuntimeRepository: JsRuntimeRepository) : UiSchemaMapper {
+    constructor(private val jsRuntimeRepository: JsRuntimeRepository, private val base64Util: Base64Util) : UiSchemaMapper {
         private val json = Json { ignoreUnknownKeys = true }
 
         /**
@@ -41,7 +42,8 @@ internal class DefaultUiSchemaMapper
             mgoResource: MgoResource,
             jsFunctionName: String,
         ): UISchema {
-            val uiSchemaJson = jsRuntimeRepository.executeStringFunction(jsFunctionName, listOf(mgoResource.json))
+            val mgoResourceJson = base64Util.decode(mgoResource.jsonBase64)
+            val uiSchemaJson = jsRuntimeRepository.executeStringFunction(jsFunctionName, listOf(mgoResourceJson))
             return json.decodeFromString<UISchema>(uiSchemaJson)
         }
     }

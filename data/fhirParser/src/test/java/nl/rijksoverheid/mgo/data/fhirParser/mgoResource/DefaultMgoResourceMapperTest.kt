@@ -3,13 +3,15 @@ package nl.rijksoverheid.mgo.data.fhirParser.mgoResource
 import io.mockk.coEvery
 import io.mockk.mockk
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
+import nl.rijksoverheid.mgo.framework.util.base64.TestBase64Util
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 
 class DefaultMgoResourceMapperTest {
+    private val base64Util = TestBase64Util()
     private val jsRuntimeRepository = mockk<JsRuntimeRepository>()
-    private val mgoResourceMapper = DefaultMgoResourceMapper(jsRuntimeRepository)
+    private val mgoResourceMapper = DefaultMgoResourceMapper(jsRuntimeRepository, base64Util)
 
     @Test
     fun testMapMgoResource() =

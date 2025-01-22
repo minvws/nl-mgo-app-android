@@ -55,6 +55,7 @@ sonar {
             add("component/theme/src/main/java/nl/rijksoverheid/mgo/component/theme/**") // Exclude theme module
             add("component/mgo/src/main/java/nl/rijksoverheid/mgo/component/mgo/**") // Exclude mgo module
             add("framework/util/src/main/java/nl/rijksoverheid/mgo/framework/util/**") // Exclude util module
+            add("**/DefaultJsRuntimeRepository.kt")
 
             // Experimental or temporary modules
             add("framework/featuretoggle/src/main/**")

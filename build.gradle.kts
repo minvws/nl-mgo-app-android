@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.serializable) apply false
+    alias(libs.plugins.kover) apply false
     alias(libs.plugins.sonarqube)
 }
 true // Needed to make the Suppress annotation work for the plugins block
@@ -38,7 +39,7 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "${project.projectDir}/**/build/reports/jacoco/runTests/runTests.xml",
+            "${project.projectDir}/app/build/reports/kover/reportTstDebug.xml",
         )
         val exclusions = buildList {
             add("**/*Application*.kt") // Application

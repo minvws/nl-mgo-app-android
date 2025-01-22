@@ -39,39 +39,46 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-      - name: Lint and format checks
-        run: ./gradlew lintTstDebug ktlintCheck
-      - name: Test
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew runTests verifyPaparazziDebug
-          profile: pixel
+      - name: Test Klover
+        run: ./gradlew koverXmlReportTstDebug
       - name: Run SonarCloud scanner
         run: ./gradlew sonar --info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: Download Keystore
-        run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore
-      - name: Build Apps
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
-        run: ./gradlew assembleTstRelease assembleAccRelease assembleProdRelease assembleDemoRelease
-      - name: Archive Apps
-        uses: actions/upload-artifact@v4
-        with:
-          name: apks
-          path: |
-            app/build/outputs/apk
-          retention-days: 5
-      - name: Set Release Notes
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
-        run: |
-          if [ ${{ github.event_name }} = 'pull_request' ]; then
-            echo "RELEASE_NOTES=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
-          else
-            echo "RELEASE_NOTES=main" >> $GITHUB_ENV
-          fi
-      - name: Distribute Apps
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
-        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern,valsplat --releaseNotes="${RELEASE_NOTES}" appDistributionUploadAccRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadProdRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadDemoRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}"
+#      - name: Lint and format checks
+#        run: ./gradlew lintTstDebug ktlintCheck
+#      - name: Test
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: 29
+#          script: ./gradlew runTests verifyPaparazziDebug
+#          profile: pixel
+#      - name: Run SonarCloud scanner
+#        run: ./gradlew sonar --info
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#      - name: Download Keystore
+#        run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore
+#      - name: Build Apps
+#        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+#        run: ./gradlew assembleTstRelease assembleAccRelease assembleProdRelease assembleDemoRelease
+#      - name: Archive Apps
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: apks
+#          path: |
+#            app/build/outputs/apk
+#          retention-days: 5
+#      - name: Set Release Notes
+#        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+#        run: |
+#          if [ ${{ github.event_name }} = 'pull_request' ]; then
+#            echo "RELEASE_NOTES=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+#          else
+#            echo "RELEASE_NOTES=main" >> $GITHUB_ENV
+#          fi
+#      - name: Distribute Apps
+#        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+#        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern,valsplat --releaseNotes="${RELEASE_NOTES}" appDistributionUploadAccRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadProdRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadDemoRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}"

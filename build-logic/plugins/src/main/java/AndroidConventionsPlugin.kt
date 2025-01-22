@@ -1,20 +1,10 @@
-import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.Test
-import org.gradle.configurationcache.extensions.capitalized
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.fileTree
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.register
-import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
-import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
-import org.gradle.testing.jacoco.tasks.JacocoReport
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 
 class AndroidConventionsPlugin : Plugin<Project> {
@@ -47,47 +37,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
                 // We use SonarCloud for code analysis on our CI. Unfortunately, SonarCloud currently only supports jacoco xml,
                 // so we need to fallback to jacoco reporting.
                 useJacoco()
-
-//                reports {
-//                    filters {
-//                        excludes {
-//                            annotatedBy("androidx.compose.ui.tooling.preview.Preview")
-//                            annotatedBy("androidx.compose.runtime.Composable")
-//                            classes(
-//                                "**/R.class",
-//                                "**/R$*.class",
-//                                "**/BuildConfig.*",
-//                                "**/Manifest*.*",
-//                                "**/*Test*.*",
-//                                "android/**/*.*",
-//                                "**/*_MembersInjector.class",
-//                                "**/Dagger*Component.class",
-//                                "**/*Module_*Factory.class",
-//                                "**/di/module/*",
-//                                "**/*_Factory*.*",
-//                                "**/*Module*.*",
-//                                "**/*Dagger*.*",
-//                                "**/*Hilt*.*",
-//                                "**/*MapperImpl*.*",
-//                                "**/BuildConfig.*",
-//                                "**/*Component*.*",
-//                                "**/*BR*.*",
-//                                "**/Manifest*.*",
-//                                "**/*Companion*.*",
-//                                "**/*Module*.*",
-//                                "**/*Dagger*.*",
-//                                "**/*Hilt*.*",
-//                                "**/*MembersInjector*.*",
-//                                "**/*_MembersInjector.class",
-//                                "**/*_Factory*.*",
-//                                "**/*_Provide*Factory*.*",
-//                                "**/*Extensions*.*",
-//                            )
-//                        }
-//                    }
-//                }
             }
-
         }
     }
 

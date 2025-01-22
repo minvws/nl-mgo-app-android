@@ -26,6 +26,8 @@ jobs:
       KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
       BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
       BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
@@ -39,23 +41,14 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-      - name: Lint and format checks
-        run: ./gradlew lintTstDebug ktlintCheck
-      - name: Snapshot tests
-        run: ./gradlew verifyPaparazziDebug
-      - name: JVM Tests
-        run: ./gradlew koverXmlReportTstDebug
+      - name: Run CI
+        run: ./gradlew runCI
 #      - name: Android Tests
 #        uses: reactivecircus/android-emulator-runner@v2
 #        with:
 #          api-level: 29
 #          script: ./gradlew runTests verifyPaparazziDebug
 #          profile: pixel
-      - name: Run SonarCloud scanner
-        run: ./gradlew sonar --info
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Download Keystore
         run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore
       - name: Build Apps

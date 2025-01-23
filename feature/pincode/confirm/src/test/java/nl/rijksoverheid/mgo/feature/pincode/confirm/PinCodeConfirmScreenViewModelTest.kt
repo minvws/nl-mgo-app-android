@@ -11,7 +11,7 @@ import kotlinx.coroutines.test.runTest
 
 internal class PinCodeConfirmScreenViewModelTest {
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
 
     @Test
     fun `Given pin code matches and phone has biometric support, When calling validatePinCode, Then navigate to biometric`() =

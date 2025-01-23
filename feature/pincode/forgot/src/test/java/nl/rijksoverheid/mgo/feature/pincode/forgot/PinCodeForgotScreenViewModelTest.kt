@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.runTest
 
 internal class PinCodeForgotScreenViewModelTest {
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
 
     @Test
     fun `Given pin code, When calling createAccount, Then clear pin code and navigate to pin code create`() =

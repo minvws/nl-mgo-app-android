@@ -39,19 +39,19 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-      - name: Lint and format checks
-        run: ./gradlew lintTstDebug ktlintCheck
-      - name: Test
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew runTests verifyPaparazziDebug
-          profile: pixel
-      - name: Run SonarCloud scanner
+      - name: Run CI
+        run: ./gradlew runCI
+      - name: Run Sonar Scanner
         run: ./gradlew sonar --info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#      - name: Android Tests
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: 29
+#          script: ./gradlew runTests verifyPaparazziDebug
+#          profile: pixel
       - name: Download Keystore
         run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore
       - name: Build Apps

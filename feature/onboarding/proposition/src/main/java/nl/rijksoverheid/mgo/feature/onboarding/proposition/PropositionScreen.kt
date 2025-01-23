@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.framework.navigation.launchBrowser
+import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable

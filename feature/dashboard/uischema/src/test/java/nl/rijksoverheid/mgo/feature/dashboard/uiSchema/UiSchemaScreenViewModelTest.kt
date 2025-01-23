@@ -22,7 +22,7 @@ import kotlinx.coroutines.test.runTest
 
 internal class UiSchemaScreenViewModelTest {
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
 
     private val uiSchemaMapper = TestUiSchemaMapper()
     private val mgoResourceRepository = TestMgoResourceRepository()

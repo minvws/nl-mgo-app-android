@@ -8,3 +8,7 @@ android {
         enable = true
     }
 }
+
+dependencies {
+    implementation(libs.androidx.browser)
+}

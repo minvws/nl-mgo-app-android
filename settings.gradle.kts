@@ -19,7 +19,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "MijnGezondheidsOverzicht"
 include(":app")
-include(":framework:navigation")
 include(":framework:copy")
 include(":framework:snapshots")
 include(":framework:network")

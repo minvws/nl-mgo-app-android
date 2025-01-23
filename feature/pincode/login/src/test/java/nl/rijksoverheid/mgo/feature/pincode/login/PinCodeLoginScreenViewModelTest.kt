@@ -11,7 +11,7 @@ import kotlinx.coroutines.test.runTest
 
 internal class PinCodeLoginScreenViewModelTest {
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
 
     @Test
     fun `Given stored pin is same as input pin, When calling validatePinCode, Then navigate to dashboard`() =

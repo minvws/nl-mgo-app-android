@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -74,7 +75,7 @@ private fun PinCodeLoginScreenContent(
         }
     }
 
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.pincode_validation_heading),
         appBarTitleAlign = TextAlign.Center,
         scrollStateProvider =

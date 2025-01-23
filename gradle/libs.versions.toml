@@ -37,8 +37,7 @@ androidx-test-runner = "1.6.2"
 okhttp-mockwebserver = "4.12.0"
 okio = "3.9.0"
 espresso-intents = "3.6.1"
-sonarqube = "5.0.0.4638"
-jacoco-tool = "0.8.12"
+sonarqube = "6.0.1.5171"
 lokalise = "5.2.0"
 json = "20210307"
 rootbeer = "0.1.0"
@@ -48,6 +47,8 @@ bcrypt = "0.4"
 biometric = "1.4.0-alpha02"
 security-crypto = "1.0.0"
 kotlinx-serialization-json = "1.6.3"
+kover = "0.9.1"
+robolectric = "4.14.1"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -99,6 +100,7 @@ biometric = { group = "androidx.biometric", name = "biometric-ktx", version.ref 
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -113,3 +115,4 @@ daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 serializable = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

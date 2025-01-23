@@ -8,7 +8,7 @@ import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TestHealthCareDa
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.TestHealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
-import nl.rijksoverheid.mgo.framework.test.TestServerRule
+import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule

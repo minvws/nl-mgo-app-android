@@ -29,6 +29,7 @@ dependencies {
     compileOnly(libs.ksp.gradle)
     implementation(libs.okhttp)
     implementation(libs.json)
+    implementation(libs.kover)
 }
 
 gradlePlugin {

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.framework.navigation
+package nl.rijksoverheid.mgo.framework.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context

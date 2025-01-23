@@ -10,11 +10,11 @@ android {
 }
 
 dependencies {
-    implementation(libs.junit)
-    implementation(libs.coroutines.test)
-    implementation(libs.okhttp)
-    api(libs.okhttp.mockwebserver)
-    implementation(libs.androidx.test.runner)
-    implementation(libs.androidx.test.core)
-    implementation(libs.dagger.hilt.testing)
+    testFixturesImplementation(libs.okhttp.mockwebserver)
+    testFixturesImplementation(libs.junit)
+    testFixturesImplementation(libs.coroutines.test)
+    testFixturesImplementation(libs.okhttp)
+    testFixturesImplementation(libs.androidx.test.runner)
+    testFixturesImplementation(libs.androidx.test.core)
+    testFixturesImplementation(libs.dagger.hilt.testing)
 }

@@ -33,7 +33,6 @@ sonar {
             add("**/*Prompt*.kt") // We exclude all prompts
             add("app/src/main/java/nl/rijksoverheid/mgo/navigation/**") // Exclude navigation module
             add("framework/navigation/src/main/java/nl/rijksoverheid/mgo/framework/navigation/**") // Exclude navigation module
-            add("framework/test/src/main/java/nl/rijksoverheid/mgo/framework/test/**") // Exclude test module
             add("**/DefaultJsRuntimeRepository.kt")
         }.joinToString(",")
         val excludeContentInFile = listOf(

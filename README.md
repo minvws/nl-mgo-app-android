@@ -33,17 +33,13 @@ compile it using the following gradle command:
 ./gradlew assemble[Flavor]Debug  
 ```  
 
-### Creating PR
+### Custom gradle tasks
 
-To create a PR, run the following command:
-
-```  
-./gradlew createPR  
-```  
-
-This is a custom gradle step for this project that checks if all criteria are met to create the PR,
-and will link you to the page to create the PR if the criteria are met.
-After creating the PR, the CI will perform the same checks.
+There are a couple of custom gradle tasks created to help with development. `./gradlew runCI` 
+runs all the steps locally that are done by the CI as well, except for the code coverage report 
+send to SonarQube. `./gradlew validateCodeCoverage` validates the code coverage report from 
+SonarQube. `./gradlew createPR` runs all the CI steps locally, validates the code coverage report
+and opens the browser to create the PR.
 
 ### Modules
 

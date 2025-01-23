@@ -19,9 +19,8 @@ class AndroidDataPlugin : Plugin<Project> {
     private fun Project.configureDependencies() {
         dependencies {
             add("implementation", project(":framework:network"))
-            add("implementation", project(":framework:test"))
-            add("testImplementation", project(":framework:test"))
-            add("androidTestImplementation", project(":framework:test"))
+            add("implementation", testFixtures(project(":framework:test")))
+            add("testImplementation", testFixtures(project(":framework:test")))
         }
     }
 }

@@ -1,6 +1,6 @@
 package nl.nl.rijksoverheid.mgo.framework.network
 
-import nl.rijksoverheid.mgo.framework.test.TestServerRule
+import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.Credentials.basic
 import okhttp3.OkHttpClient
 import okhttp3.Request

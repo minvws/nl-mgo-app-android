@@ -23,9 +23,8 @@ class AndroidFeaturePlugin : Plugin<Project> {
             add("implementation", project(":component:theme"))
             add("implementation", project(":component:mgo"))
             add("implementation", project(":framework:copy"))
-            add("implementation", project(":framework:test"))
-            add("testImplementation", project(":framework:test"))
-            add("androidTestImplementation", project(":framework:test"))
+            add("implementation", testFixtures(project(":framework:test")))
+            add("testImplementation", testFixtures(project(":framework:test")))
             add("implementation", versionCatalog.findLibrary("compose.navigation").get())
         }
     }

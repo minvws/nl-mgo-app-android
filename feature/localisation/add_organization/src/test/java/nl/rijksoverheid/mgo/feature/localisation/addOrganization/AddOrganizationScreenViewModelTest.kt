@@ -11,7 +11,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 internal class AddOrganizationScreenViewModelTest {
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
 
     @Test
     fun `Given no name and city have been entered, When calling validate, Then emit error`() =

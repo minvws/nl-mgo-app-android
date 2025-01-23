@@ -5,6 +5,7 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.configurePlugins()
+        target.addDependencies()
     }
 
     private fun Project.configurePlugins() {
@@ -17,8 +18,19 @@ class AndroidApplicationPlugin : Plugin<Project> {
             apply(LintPlugin::class.java)
             apply(LokalisePlugin::class.java)
             apply(FhirParserPlugin::class.java)
-            apply(RunCiPlugin::class.java)
-            apply(CreatePrPlugin::class.java)
+            apply(CodeCoveragePlugin::class.java)
+            apply(CiPlugin::class.java)
+        }
+    }
+
+    private fun Project.addDependencies() {
+        dependencies {
+            // Add kover for test coverage for each module
+            rootProject.subprojects.forEach { project ->
+                if (project.subprojects.size == 0) {
+                    add("kover", project(project.path))
+                }
+            }
         }
     }
 }

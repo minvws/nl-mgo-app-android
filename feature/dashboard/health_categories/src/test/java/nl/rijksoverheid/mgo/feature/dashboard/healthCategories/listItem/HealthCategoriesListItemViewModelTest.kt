@@ -15,7 +15,7 @@ import kotlinx.coroutines.test.runTest
 
 internal class HealthCategoriesListItemViewModelTest {
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
 
     private val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf())
 

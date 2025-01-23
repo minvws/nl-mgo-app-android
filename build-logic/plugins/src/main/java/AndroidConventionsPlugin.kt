@@ -130,11 +130,7 @@ class AndroidConventionsPlugin : Plugin<Project> {
             add("testFixturesImplementation", versionCatalog.findLibrary("coroutines-core").get())
             add("testFixturesImplementation", versionCatalog.findLibrary("coroutines-android").get())
 
-            rootProject.subprojects.forEach { project ->
-                if (project.subprojects.size == 0) {
-                    add("kover", project(project.path))
-                }
-            }
+            add("kover", project(project.path))
         }
     }
 }

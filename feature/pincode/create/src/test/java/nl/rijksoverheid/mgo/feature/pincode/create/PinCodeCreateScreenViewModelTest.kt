@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 
 internal class PinCodeCreateScreenViewModelTest {
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
 
     @Test
     fun `Given valid pin code, When calling validatePinCode, Then navigate to confirm`() =

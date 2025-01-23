@@ -155,5 +155,5 @@ dependencies {
     testImplementation(testFixtures(projects.framework.storage))
     testImplementation(testFixtures(projects.data.digid))
     testImplementation(testFixtures(projects.framework.featuretoggle))
-    androidTestImplementation(testFixtures(projects.framework.environment))
+    testImplementation(testFixtures(projects.framework.test))
 }

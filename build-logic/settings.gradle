@@ -13,6 +13,7 @@ dependencyResolutionManagement {
             library("paparazzi-gradle", "app.cash.paparazzi", "paparazzi-gradle-plugin").versionRef("paparazzi")
             library("ksp-gradle", "com.google.devtools.ksp", "symbol-processing-gradle-plugin").versionRef("ksp")
             library("kover", "org.jetbrains.kotlinx", "kover-gradle-plugin").versionRef("kover")
+            library("sonarqube", "org.sonarsource.scanner.gradle", "sonarqube-gradle-plugin").versionRef("sonarqube")
         }
     }
 }

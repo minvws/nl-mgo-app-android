@@ -18,7 +18,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
             apply(LintPlugin::class.java)
             apply(LokalisePlugin::class.java)
             apply(FhirParserPlugin::class.java)
-            apply(CodeCoveragePlugin::class.java)
             apply(CiPlugin::class.java)
         }
     }

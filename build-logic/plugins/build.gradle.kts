@@ -30,7 +30,6 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.json)
     implementation(libs.kover)
-    implementation(libs.sonarqube)
 }
 
 gradlePlugin {

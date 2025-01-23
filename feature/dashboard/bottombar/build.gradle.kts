@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.framework.navigation)
     implementation(libs.kotlin.reflect)
     implementation(projects.data.localisation)
     implementation(projects.data.healthcare)

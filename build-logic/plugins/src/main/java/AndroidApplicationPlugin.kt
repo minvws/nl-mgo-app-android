@@ -5,7 +5,6 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.configurePlugins()
-        target.configureDependencies()
     }
 
     private fun Project.configurePlugins() {
@@ -20,12 +19,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
             apply(FhirParserPlugin::class.java)
             apply(RunCiPlugin::class.java)
             apply(CreatePrPlugin::class.java)
-        }
-    }
-
-    private fun Project.configureDependencies() {
-        dependencies {
-            add("implementation", project(":framework:navigation"))
         }
     }
 }

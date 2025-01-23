@@ -13,7 +13,6 @@ android {
 dependencies {
     implementation(projects.data.localisation)
     implementation(projects.framework.environment)
-    implementation(projects.framework.navigation)
     implementation(projects.data.healthcare)
     testImplementation(testFixtures(projects.data.localisation))
     testImplementation(testFixtures(projects.data.healthcare))

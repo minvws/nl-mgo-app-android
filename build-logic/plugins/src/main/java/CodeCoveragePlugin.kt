@@ -31,9 +31,10 @@ class CodeCoveragePlugin: Plugin<Project> {
         properties.property("sonar.projectKey", "nl-mgo-app-android-private")
         properties.property("sonar.projectName", "nl-mgo-app-android-private")
         properties.property("sonar.host.url", "https://sonarcloud.io")
+        properties.property("sonar.androidVariant", "tstDebug")
         properties.property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "${projectDir}/app/build/reports/kover/reportTstDebug.xml",
+            "${projectDir}/build/reports/kover/reportTstDebug.xml",
         )
         properties.property("sonar.exclusions", getExcludes())
     }

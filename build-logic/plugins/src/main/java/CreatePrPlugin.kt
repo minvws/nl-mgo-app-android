@@ -24,6 +24,7 @@ class CreatePrPlugin : Plugin<Project> {
                 if (codeCoverage < 80f) {
                     println("Code coverage of new code is less than 80%. See: https://sonarcloud" +
                         ".io/project/overview?id=nl-mgo-app-android-private and please fix.")
+                    return@doLast
                 }
                 println("Code coverage is ok (>= 80%).")
                 val openUrl = "https://github.com/minvws/nl-mgo-app-android-private/compare/${project.getCurrentGitBranch()}?expand=1"

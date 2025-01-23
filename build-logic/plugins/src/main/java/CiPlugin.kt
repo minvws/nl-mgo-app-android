@@ -44,7 +44,7 @@ class CiPlugin : Plugin<Project> {
         }
     }
 
-    private fun validateCodeCoverage(): Boolean {
+    private fun Project.validateCodeCoverage(): Boolean {
         // Wait 10 seconds to make sure sonar has the latest code coverage report
         Thread.sleep(10000)
 
@@ -53,7 +53,7 @@ class CiPlugin : Plugin<Project> {
         if (codeCoverage < 80f) {
             println(
                 "Code coverage of new code is less than 80%. See: https://sonarcloud" +
-                        ".io/project/overview?id=nl-mgo-app-android-private and please fix.",
+                    ".io/project/overview?id=nl-mgo-app-android-private and please fix.",
             )
             return false
         }
@@ -91,13 +91,13 @@ class CiPlugin : Plugin<Project> {
             .trim()
     }
 
-    private fun getCodeCoverageFromSonar(): Float {
+    private fun Project.getCodeCoverageFromSonar(): Float {
         val username = System.getenv("SONAR_TOKEN")
         val password = ""
 
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("https://sonarcloud.io/api/measures/component?component=nl-mgo-app-android-private&metricKeys=new_coverage")
+            .url("https://sonarcloud.io/api/measures/component?component=nl-mgo-app-android-private&metricKeys=new_coverage&branch=${getCurrentGitBranch()}")
             .header("Authorization", Credentials.basic(username, password))
             .build()
 

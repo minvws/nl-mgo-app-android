@@ -21,6 +21,7 @@ sonar {
         property("sonar.projectKey", "nl-mgo-app-android-private")
         property("sonar.projectName", "nl-mgo-app-android-private")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.branch.name", getCurrentGitBranch())
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
             "${projectDir}/app/build/reports/kover/reportTstDebug.xml",
@@ -45,6 +46,7 @@ private fun getExcludePaths(): String = buildList {
     add("**/*Module*.kt") // Dagger modules
     add("**/*NavGraph*.kt") // NavGraph classes
     add("app/src/main/java/nl/rijksoverheid/mgo/navigation/**") // Navigation classes
+    add("framework/util/src/main/java/nl/rijksoverheid/mgo/framework/util/**") // Util module
     add("**/DefaultJsRuntimeRepository.kt") // JS Runtime (can be tested with Android Tests)
 }.joinToString(",")
 
@@ -52,4 +54,16 @@ private fun getExcludeContents(): List<String> = buildList {
     add("import androidx.compose.runtime.Composable") // Exclude all files that contain composables
     add("data class") // Exclude all data classes
     add("sealed class") // Exclude all sealed classes
+}
+
+private fun Project.getCurrentGitBranch(): String {
+    return ProcessBuilder("git", "rev-parse", "--abbrev-ref", "HEAD")
+        .directory(rootDir)
+        .redirectOutput(ProcessBuilder.Redirect.PIPE)
+        .redirectError(ProcessBuilder.Redirect.PIPE)
+        .start()
+        .inputStream
+        .bufferedReader()
+        .readText()
+        .trim()
 }

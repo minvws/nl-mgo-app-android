@@ -19,6 +19,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
             apply(LokalisePlugin::class.java)
             apply(FhirParserPlugin::class.java)
             apply(RunCiPlugin::class.java)
+            apply(CreatePrPlugin::class.java)
         }
     }
 

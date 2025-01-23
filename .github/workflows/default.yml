@@ -26,8 +26,6 @@ jobs:
       KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
       BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
       BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
@@ -43,6 +41,11 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
       - name: Run CI
         run: ./gradlew runCI
+      - name: Run Sonar Scanner
+        run: ./gradlew sonar --info
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #      - name: Android Tests
 #        uses: reactivecircus/android-emulator-runner@v2
 #        with:

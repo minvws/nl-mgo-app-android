@@ -101,6 +101,7 @@ class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, render
                     screenHeight = screenSize.height,
                     nightMode = nightMode,
                     fontScale = fontScale,
+                    orientation = orientation,
                 ),
         )
     }

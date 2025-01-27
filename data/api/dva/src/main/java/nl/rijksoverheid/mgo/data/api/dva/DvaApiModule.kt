@@ -60,8 +60,8 @@ internal class DvaApiModule {
         return when (val environment = environmentRepository.getEnvironment()) {
             is Environment.Acc -> "https://dva.acc.mgo.irealisatie.nl"
             is Environment.Prod -> "https://dva.acc.mgo.irealisatie.nl"
-            is Environment.Tst -> "https://dva.test.mgo.irealisatie.nl/"
-            is Environment.Demo -> "https://dva.test.mgo.irealisatie.nl/"
+            is Environment.Tst -> "https://dva.test.mgo.irealisatie.nl"
+            is Environment.Demo -> "https://dva.acc.mgo.irealisatie.nl"
             is Environment.Custom -> environment.url
         }
     }

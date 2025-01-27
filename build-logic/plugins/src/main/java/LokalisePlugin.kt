@@ -34,10 +34,11 @@ class LokalisePlugin: Plugin<Project> {
             // Create the request to get the download link
             val requestJson = JSONObject().apply {
                 put("format", "xml")
-                put("original_filenames", true)
+                put("bundle_structure", "values-%LANG_ISO%/strings.xml")
                 put("replace_breaks", false)
                 put("export_empty_as", "base")
                 put("export_sort", "first_added")
+                put("original_filenames", false)
             }
 
             val requestBody = requestJson.toString().toRequestBody("application/json".toMediaTypeOrNull())

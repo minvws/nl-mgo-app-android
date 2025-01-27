@@ -1,16 +1,14 @@
 package nl.rijksoverheid.mgo.feature.digid
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,51 +16,55 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
+import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
-        appBarTitle = stringResource(id = CopyR.string.login_heading),
+    DigidLoginScreenContent(
+        onLoginClicked = onNavigateToDigidMock,
+    )
+}
+
+@Composable
+private fun DigidLoginScreenContent(onLoginClicked: () -> Unit) {
+    MgoScaffold(
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+            MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
+        primaryButtonText = stringResource(id = CopyR.string.login_digid),
+        primaryButtonTheme = MgoButtonTheme.DIGID,
+        onPrimaryButtonClick = onLoginClicked,
     ) {
-        Text(
-            text = stringResource(id = CopyR.string.login_subheading),
-            style = MaterialTheme.typography.bodySmall,
-        )
-
-        nl.rijksoverheid.mgo.component.mgo.MgoCard(
+        Image(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 24.dp),
-        ) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onNavigateToDigidMock() }
-                        .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    modifier = Modifier.size(32.dp),
-                    painter = painterResource(R.drawable.ic_digid),
-                    contentDescription = null,
-                )
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = stringResource(CopyR.string.login_digid),
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
-        }
+                    .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+                    .align(Alignment.CenterHorizontally),
+            painter = painterResource(id = R.drawable.illustration_login),
+            contentDescription = null,
+        )
+
+        Text(
+            modifier = Modifier.padding(top = 32.dp),
+            text = stringResource(id = CopyR.string.login_heading),
+            style = MaterialTheme.typography.headingLarge,
+            fontWeight = FontWeight.Bold,
+        )
+
+        MgoHtmlText(
+            modifier = Modifier.padding(top = 16.dp),
+            html = stringResource(id = CopyR.string.login_subheading),
+            style = MaterialTheme.typography.bodySmall,
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
     }

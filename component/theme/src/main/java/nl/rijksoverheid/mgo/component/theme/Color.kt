@@ -177,6 +177,8 @@ fun ColorScheme.supportThuiszorg(isSystemDarkTheme: Boolean = isSystemInDarkThem
 fun ColorScheme.supportKliniek(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFFEDA966) else Color(0xFFE17000)
 
+fun ColorScheme.digid() = Color(0xFFE17000)
+
 @Composable
 fun ColorScheme.supportOverige(isSystemDarkTheme: Boolean = isSystemInDarkTheme()) =
     if (isSystemDarkTheme) Color(0xFF999999) else Color(0xFF999999)

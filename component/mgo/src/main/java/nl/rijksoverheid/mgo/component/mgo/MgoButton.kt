@@ -1,16 +1,20 @@
 package nl.rijksoverheid.mgo.component.mgo
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
@@ -33,6 +37,7 @@ fun MgoButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     buttonTheme: MgoButtonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
+    buttonIcon: Int? = null,
 ) {
     val backgroundColor = buttonTheme.getBackgroundColor()
     val buttonColors =
@@ -44,7 +49,18 @@ fun MgoButton(
         TextButton(
             modifier = modifier.heightIn(min = 48.dp),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
-            content = { Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
+            content = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    buttonIcon?.let { buttonIcon ->
+                        Icon(
+                            modifier = Modifier.padding(end = 8.dp),
+                            painter = painterResource(buttonIcon),
+                            contentDescription = null
+                        )
+                    }
+                    Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                }
+            },
             onClick = onClick,
             colors = buttonColors,
         )
@@ -52,7 +68,18 @@ fun MgoButton(
         Button(
             modifier = modifier.heightIn(min = 48.dp),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
-            content = { Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold) },
+            content = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    buttonIcon?.let { buttonIcon ->
+                        Icon(
+                            modifier = Modifier.padding(end = 8.dp),
+                            painter = painterResource(buttonIcon),
+                            contentDescription = null
+                        )
+                    }
+                    Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                }
+            },
             onClick = onClick,
             colors = buttonColors,
         )
@@ -92,23 +119,25 @@ private fun MgoButtonTheme.getContentColor(): Color {
     }
 }
 
-@Composable
-private fun MgoButtonTheme.getElevation(): Dp {
-    return when (this) {
-        MgoButtonTheme.PRIMARY_DEFAULT -> 2.dp
-        MgoButtonTheme.PRIMARY_NEGATIVE -> 2.dp
-        MgoButtonTheme.SECONDARY_DEFAULT -> 2.dp
-        MgoButtonTheme.SECONDARY_NEGATIVE -> 2.dp
-        MgoButtonTheme.TERTIARY_DEFAULT -> 0.dp
-        MgoButtonTheme.TERTIARY_NEGATIVE -> 0.dp
-    }
-}
-
 @PreviewLightDark
 @Composable
 internal fun MgoButtonPrimaryDefaultPreview() {
     MgoTheme {
         MgoButton(modifier = Modifier.padding(16.dp), buttonText = "Click me", onClick = { }, buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT)
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoButtonPrimaryDefaultWithIconPreview() {
+    MgoTheme {
+        MgoButton(
+            modifier = Modifier.padding(16.dp),
+            buttonText = "Click me",
+            onClick = { },
+            buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
+            buttonIcon = R.drawable.ic_snackbar_info,
+        )
     }
 }
 
@@ -155,6 +184,20 @@ internal fun MgoButtonTertiaryDefaultPreview() {
             buttonText = "Click me",
             onClick = { },
             buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoButtonTertiaryDefaultWithIconPreview() {
+    MgoTheme {
+        MgoButton(
+            modifier = Modifier.padding(16.dp),
+            buttonText = "Click me",
+            onClick = { },
+            buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
+            buttonIcon = R.drawable.ic_snackbar_info,
         )
     }
 }

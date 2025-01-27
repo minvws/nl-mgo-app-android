@@ -21,7 +21,10 @@ sonar {
         property("sonar.projectKey", "nl-mgo-app-android-private")
         property("sonar.projectName", "nl-mgo-app-android-private")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.branch.name", getCurrentGitBranch())
+        // Only put a branch name if running locally. If running from GitHub, SonarQube will fill this in for us.
+        if (System.getenv("GITHUB_RUN_NUMBER") == null) {
+            property("sonar.branch.name", getCurrentGitBranch())
+        }
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
             "${projectDir}/app/build/reports/kover/reportTstDebug.xml",

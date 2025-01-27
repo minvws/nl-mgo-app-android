@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.component.mgo
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItemDefaults.contentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,6 +34,7 @@ import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeBackground
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
+import nl.rijksoverheid.mgo.component.theme.digid
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -43,7 +44,6 @@ fun MgoButton(
     modifier: Modifier = Modifier,
     buttonTheme: MgoButtonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
     isLoading: Boolean = false,
-    @DrawableRes buttonIcon: Int? = null,
 ) {
     val backgroundColor = buttonTheme.getBackgroundColor()
     val buttonColors =
@@ -60,7 +60,7 @@ fun MgoButton(
                     if (isLoading) {
                         LoadingButtonContent(contentColor)
                     } else {
-                        IdleButtonContent(buttonIcon, buttonText)
+                        IdleButtonContent(buttonTheme.getIcon(), buttonText)
                     }
                 }
             },
@@ -79,7 +79,7 @@ fun MgoButton(
                 if (isLoading) {
                     LoadingButtonContent(buttonTheme.getContentColor())
                 } else {
-                    IdleButtonContent(buttonIcon, buttonText)
+                    IdleButtonContent(buttonTheme.getIcon(), buttonText)
                 }
             },
             onClick = {
@@ -121,7 +121,7 @@ private fun IdleButtonContent(
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         if (buttonIcon != null) {
-            Icon(
+            Image(
                 modifier = Modifier.padding(end = 8.dp),
                 painter = painterResource(buttonIcon),
                 contentDescription = null,
@@ -138,6 +138,7 @@ enum class MgoButtonTheme {
     SECONDARY_NEGATIVE,
     TERTIARY_DEFAULT,
     TERTIARY_NEGATIVE,
+    DIGID,
 }
 
 @Composable
@@ -147,8 +148,17 @@ private fun MgoButtonTheme.getBackgroundColor(): Color {
         MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.actionPrimaryNegativeBackground()
         MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.actionSecondaryDefaultBackground()
         MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.actionSecondaryNegativeBackground()
+        MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.digid()
         MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
         MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
+    }
+}
+
+@DrawableRes
+private fun MgoButtonTheme.getIcon(): Int? {
+    return when (this) {
+        MgoButtonTheme.DIGID -> R.drawable.ic_digid
+        else -> null
     }
 }
 
@@ -161,6 +171,7 @@ private fun MgoButtonTheme.getContentColor(): Color {
         MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.actionSecondaryNegativeText()
         MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.actionTertiaryDefaultText()
         MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.actionTertiaryNegativeText()
+        MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.actionPrimaryDefaultText(true)
     }
 }
 
@@ -182,20 +193,6 @@ internal fun MgoButtonPrimaryDefaultLoadingPreview() {
             onClick = { },
             buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
             isLoading = true,
-        )
-    }
-}
-
-@PreviewLightDark
-@Composable
-internal fun MgoButtonPrimaryDefaultWithIconPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
-            buttonIcon = R.drawable.ic_snackbar_info,
         )
     }
 }
@@ -263,20 +260,6 @@ internal fun MgoButtonTertiaryDefaultLoadingPreview() {
 
 @PreviewLightDark
 @Composable
-internal fun MgoButtonTertiaryDefaultWithIconPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
-            buttonIcon = R.drawable.ic_snackbar_info,
-        )
-    }
-}
-
-@PreviewLightDark
-@Composable
 internal fun MgoButtonTertiaryNegativePreview() {
     MgoTheme {
         MgoButton(
@@ -284,6 +267,19 @@ internal fun MgoButtonTertiaryNegativePreview() {
             buttonText = "Click me",
             onClick = { },
             buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoButtonDigidPreview() {
+    MgoTheme {
+        MgoButton(
+            modifier = Modifier.padding(16.dp),
+            buttonText = "Click me",
+            onClick = { },
+            buttonTheme = MgoButtonTheme.DIGID,
         )
     }
 }

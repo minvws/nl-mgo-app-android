@@ -72,6 +72,7 @@ fun MgoScaffold(
     bottomBar: @Composable () -> Unit = {},
     scrollStateProvider: MgoScaffoldScrollStateProvider = MgoScaffoldScrollStateProvider.None,
     primaryButtonText: String? = null,
+    primaryButtonTheme: MgoButtonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
     onPrimaryButtonClick: (() -> Unit)? = null,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
@@ -211,6 +212,7 @@ fun MgoScaffold(
                     Buttons(
                         canScroll = canScroll,
                         primaryButtonText = primaryButtonText,
+                        primaryButtonTheme = primaryButtonTheme,
                         onPrimaryButtonClick = onPrimaryButtonClick,
                         secondaryButtonText = secondaryButtonText,
                         onSecondaryButtonClick = onSecondaryButtonClick,
@@ -252,6 +254,7 @@ private fun Buttons(
     horizontalPadding: Dp,
     canScroll: Boolean,
     primaryButtonText: String,
+    primaryButtonTheme: MgoButtonTheme,
     onPrimaryButtonClick: () -> Unit,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
@@ -290,6 +293,7 @@ private fun Buttons(
                     .fillMaxWidth(),
             buttonText = primaryButtonText,
             onClick = onPrimaryButtonClick,
+            buttonTheme = primaryButtonTheme,
         )
     }
 }

@@ -42,7 +42,7 @@ object VadApiModule {
     fun provideApi(
         okHttpClient: OkHttpClient,
         mgoAuthentication: MgoAuthentication,
-        @Named("vadApiBaseurl") baseUrl: String,
+        @Named("vadApiBaseUrl") baseUrl: String,
     ): VadApi {
         val okHttpClientBuilder = okHttpClient.newBuilder()
         if (mgoAuthentication is MgoAuthentication.Basic) {
@@ -55,13 +55,13 @@ object VadApiModule {
     // TODO Set urls for other environments when available.
     @Provides
     @Singleton
-    @Named("loadApiBaseUrl")
+    @Named("vadApiBaseUrl")
     fun provideBaseUrl(environmentRepository: EnvironmentRepository): String {
         return when (val environment = environmentRepository.getEnvironment()) {
-            is Environment.Acc -> "http://localhost:8801"
-            is Environment.Prod -> "http://localhost:8801"
-            is Environment.Tst -> "http://localhost:8801"
-            is Environment.Demo -> "http://localhost:8801"
+            is Environment.Acc -> "http://192.168.2.11:8801"
+            is Environment.Prod -> "http://192.168.2.11:8801"
+            is Environment.Tst -> "http://192.168.2.11:8801"
+            is Environment.Demo -> "http://192.168.2.11:8801"
             is Environment.Custom -> environment.url
         }
     }

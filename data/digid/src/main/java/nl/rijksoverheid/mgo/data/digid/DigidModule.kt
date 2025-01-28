@@ -16,4 +16,8 @@ internal abstract class DigidModule {
     @Binds
     @ViewModelScoped
     abstract fun provideSetDigidAuthenticated(default: DefaultSetDigidAuthenticated): SetDigidAuthenticated
+
+    @Binds
+    @ViewModelScoped
+    abstract fun provideDigidRepository(default: DefaultDigidRepository): DigidRepository
 }

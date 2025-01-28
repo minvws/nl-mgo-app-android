@@ -56,7 +56,7 @@ internal fun PropositionOverviewScreenContent(
             nl.rijksoverheid.mgo.component.mgo.MgoHtmlText(
                 html = stringResource(id = CopyR.string.proposition_subheading, url),
                 style = MaterialTheme.typography.bodySmall,
-                onLinkClicked = { url -> url.launchBrowser(context) },
+                onLinkClicked = { url -> context.launchBrowser(url) },
             )
             ListItem(
                 modifier = Modifier.padding(top = 16.dp),

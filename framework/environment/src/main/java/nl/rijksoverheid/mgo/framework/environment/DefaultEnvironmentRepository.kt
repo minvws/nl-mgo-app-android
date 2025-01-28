@@ -8,14 +8,15 @@ internal class DefaultEnvironmentRepository
     constructor(
         @Named("appFlavor") private val appFlavor: String,
         @Named("versionCode") private val versionCode: Int,
+        @Named("deeplinkHost") private val deeplinkHost: String,
     ) : EnvironmentRepository {
         override fun getEnvironment(): Environment {
             return when (appFlavor) {
-                "demo" -> Environment.Demo(versionCode)
-                "tst" -> Environment.Tst(versionCode)
-                "acc" -> Environment.Acc(versionCode)
-                "prod" -> Environment.Prod(versionCode)
-                else -> Environment.Tst(versionCode)
+                "demo" -> Environment.Demo(versionCode, deeplinkHost)
+                "tst" -> Environment.Tst(versionCode, deeplinkHost)
+                "acc" -> Environment.Acc(versionCode, deeplinkHost)
+                "prod" -> Environment.Prod(versionCode, deeplinkHost)
+                else -> Environment.Tst(versionCode, deeplinkHost)
             }
         }
     }

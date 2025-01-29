@@ -5,7 +5,7 @@ import androidx.security.crypto.EncryptedFile
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
+import io.mockk.mockkStatic
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -21,7 +21,7 @@ import kotlinx.serialization.json.Json
 @RunWith(RobolectricTestRunner::class)
 internal class DefaultEncryptedEncryptedFileStoreTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val fileStore = spyk(DefaultEncryptedEncryptedFileStore(context, "123"))
+    private val fileStore = DefaultEncryptedEncryptedFileStore(context, "123")
     private val dir = File(context.filesDir, "encrypted")
 
     private val json = Json
@@ -36,14 +36,15 @@ internal class DefaultEncryptedEncryptedFileStoreTest {
         fileName: String,
         testData: TestData,
     ) {
+        mockkStatic("nl.rijksoverheid.mgo.framework.storage.file.EncryptedFileKt")
         val file = File(dir, fileName)
         val mockEncryptedFile: EncryptedFile = mockk()
-        every { fileStore.createEncryptedFile(any()) } returns mockEncryptedFile
-        every { fileStore.readEncryptedFile(any()) } answers {
+        every { createEncryptedFile(any(), any(), any()) } returns mockEncryptedFile
+        every { readEncryptedFile(any()) } answers {
             val inputStream = FileInputStream(file)
             inputStream.bufferedReader().use { it.readText() }
         }
-        every { fileStore.writeEncryptedFile(any(), any()) } answers {
+        every { writeEncryptedFile(any(), any()) } answers {
             FileOutputStream(file).use { outputStream ->
                 val data = json.encodeToString(TestData.serializer(), testData)
                 outputStream.write(data.toByteArray())

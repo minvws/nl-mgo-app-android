@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import dagger.Module
 import dagger.Provides
@@ -43,10 +44,15 @@ internal object StorageModule {
     fun provideSecureKeyValueStore(
         @ApplicationContext context: Context,
     ): KeyValueStore {
-        return EncryptedSharedPreferencesSecureKeyValueStore(
-            context = context,
-            masterKeyAlias = masterKeyAlias,
-        )
+        val encryptedSharedPreferences =
+            EncryptedSharedPreferences.create(
+                "app_secure",
+                masterKeyAlias,
+                context,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+            )
+        return EncryptedSharedPreferencesSecureKeyValueStore(encryptedSharedPreferences)
     }
 
     @Provides

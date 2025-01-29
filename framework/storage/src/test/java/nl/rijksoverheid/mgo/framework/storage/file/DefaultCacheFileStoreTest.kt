@@ -1,20 +1,30 @@
 package nl.rijksoverheid.mgo.framework.storage.file
 
 import android.content.Context
+import android.webkit.MimeTypeMap
 import androidx.test.core.app.ApplicationProvider
-import org.junit.After
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import java.io.File
 
+@RunWith(RobolectricTestRunner::class)
 internal class DefaultCacheFileStoreTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private val fileStore = DefaultCacheFileStore(context)
 
-    @After
-    fun cleanUp() {
-        fileStore.deleteAll()
+    @Before
+    fun setup() {
+        mockkStatic(MimeTypeMap::class)
+        val mockMimeTypeMap = mockk<MimeTypeMap>()
+        every { MimeTypeMap.getSingleton() } returns mockMimeTypeMap
+        every { mockMimeTypeMap.getExtensionFromMimeType("application/pdf") } returns "pdf"
     }
 
     @Test

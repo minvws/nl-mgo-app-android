@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.framework.storage.file
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.security.crypto.EncryptedFile
 import java.io.File
 import kotlin.reflect.KClass
@@ -30,19 +31,11 @@ internal class DefaultEncryptedEncryptedFileStore(
         }
 
         // Encrypt file
-        val encryptedFile =
-            EncryptedFile.Builder(
-                file,
-                context,
-                masterKeyAlias,
-                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
-            ).build()
+        val encryptedFile = createEncryptedFile(file)
 
         // Write json string to file
         val jsonString = json.encodeToString(clazz.serializer(), value)
-        encryptedFile.openFileOutput().use { outputStream ->
-            outputStream.write(jsonString.toByteArray())
-        }
+        writeEncryptedFile(encryptedFile, jsonString.toByteArray())
     }
 
     @OptIn(InternalSerializationApi::class)
@@ -57,19 +50,10 @@ internal class DefaultEncryptedEncryptedFileStore(
         }
 
         // Get encrypted file
-        val encryptedFile =
-            EncryptedFile.Builder(
-                file,
-                context,
-                masterKeyAlias,
-                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
-            ).build()
+        val encryptedFile = createEncryptedFile(file)
 
         // Decrypt to json string
-        val jsonString =
-            encryptedFile.openFileInput().use { inputStream ->
-                inputStream.readBytes().toString(Charsets.UTF_8)
-            }
+        val jsonString = readEncryptedFile(encryptedFile)
 
         // Return object
         return json.decodeFromString(clazz.serializer(), jsonString)
@@ -79,6 +63,32 @@ internal class DefaultEncryptedEncryptedFileStore(
         val file = File(dir, name)
         if (file.exists()) {
             check(file.delete()) { "Could not delete file" }
+        }
+    }
+
+    @VisibleForTesting
+    internal fun createEncryptedFile(file: File): EncryptedFile {
+        return EncryptedFile.Builder(
+            file,
+            context,
+            masterKeyAlias,
+            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
+        ).build()
+    }
+
+    internal fun writeEncryptedFile(
+        file: EncryptedFile,
+        content: ByteArray,
+    ) {
+        file.openFileOutput().use { outputStream ->
+            outputStream.write(content)
+        }
+    }
+
+    @VisibleForTesting
+    internal fun readEncryptedFile(file: EncryptedFile): String {
+        return file.openFileInput().use { inputStream ->
+            inputStream.readBytes().toString(Charsets.UTF_8)
         }
     }
 }

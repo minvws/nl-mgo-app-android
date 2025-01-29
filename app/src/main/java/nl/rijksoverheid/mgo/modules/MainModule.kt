@@ -36,13 +36,6 @@ internal object MainModule {
 
     @Provides
     @Singleton
-    @Named("backgroundDispatcher")
-    fun provideBackgroundDispatcher(): CoroutineDispatcher {
-        return Dispatchers.IO
-    }
-
-    @Provides
-    @Singleton
     fun provideClock(): Clock {
         return Clock.systemUTC()
     }

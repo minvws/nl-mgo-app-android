@@ -128,7 +128,6 @@ dependencies {
 
     implementation(projects.framework.copy)
     implementation(projects.framework.environment)
-    implementation(projects.framework.test)
     implementation(projects.framework.storage)
     implementation(projects.framework.network)
     implementation(projects.framework.featuretoggle)
@@ -155,5 +154,4 @@ dependencies {
     testImplementation(testFixtures(projects.framework.storage))
     testImplementation(testFixtures(projects.data.digid))
     testImplementation(testFixtures(projects.framework.featuretoggle))
-    testImplementation(testFixtures(projects.framework.test))
 }

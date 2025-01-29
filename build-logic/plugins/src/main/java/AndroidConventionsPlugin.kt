@@ -105,23 +105,19 @@ class AndroidConventionsPlugin : Plugin<Project> {
             add("implementation", versionCatalog.findLibrary("coroutines.core").get())
             add("implementation", versionCatalog.findLibrary("coroutines.android").get())
             add("testImplementation", versionCatalog.findLibrary("coroutines.test").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("coroutines.test").get())
 
             // Dagger
             add("implementation", versionCatalog.findLibrary("dagger.hilt.android").get())
             add("ksp", versionCatalog.findLibrary("dagger.hilt.compiler").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("dagger.hilt.testing").get())
-            add("kspAndroidTest", versionCatalog.findLibrary("dagger.hilt.compiler").get())
 
             // Testing
             add("testImplementation", versionCatalog.findLibrary("junit").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("junit").get())
             add("testImplementation", versionCatalog.findLibrary("turbine").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("androidx.test.core").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("androidx.junit").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("androidx.test.runner").get())
+            add("testImplementation", versionCatalog.findLibrary("robolectric").get())
+            add("testImplementation", versionCatalog.findLibrary("androidx.test.core").get())
             add("testImplementation", versionCatalog.findLibrary("okhttp.mockwebserver").get())
             add("testImplementation", versionCatalog.findLibrary("mockk.android").get())
+            add("testImplementation", testFixtures(project(":framework:test")))
 
             // Logging
             add("implementation", versionCatalog.findLibrary("timber").get())

@@ -51,8 +51,6 @@ class AndroidUiPlugin : Plugin<Project> {
             add("implementation", versionCatalog.findLibrary("compose.lifecycle").get())
             add("debugImplementation", versionCatalog.findLibrary("compose.ui.tooling").get())
             add("debugImplementation", versionCatalog.findLibrary("compose.ui.test.manifest").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("compose.ui.test.junit4").get())
-            add("androidTestImplementation", versionCatalog.findLibrary("espresso.intents").get())
             add("implementation", versionCatalog.findLibrary("dagger.hilt.compose.navigation").get())
         }
     }

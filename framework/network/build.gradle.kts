@@ -13,7 +13,6 @@ android {
 dependencies {
     api(libs.retrofit)
     api(libs.okhttp)
-    testImplementation(testFixtures(projects.framework.test))
     debugImplementation(libs.chucker)
     releaseImplementation(libs.chucker.no.op)
 }

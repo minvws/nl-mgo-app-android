@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.framework.storage.file
 
 import android.content.Context
-import androidx.security.crypto.EncryptedFile
 import java.io.File
 import kotlin.reflect.KClass
 import kotlinx.serialization.InternalSerializationApi
@@ -30,19 +29,11 @@ internal class DefaultEncryptedEncryptedFileStore(
         }
 
         // Encrypt file
-        val encryptedFile =
-            EncryptedFile.Builder(
-                file,
-                context,
-                masterKeyAlias,
-                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
-            ).build()
+        val encryptedFile = createEncryptedFile(context, masterKeyAlias, file)
 
         // Write json string to file
         val jsonString = json.encodeToString(clazz.serializer(), value)
-        encryptedFile.openFileOutput().use { outputStream ->
-            outputStream.write(jsonString.toByteArray())
-        }
+        writeEncryptedFile(encryptedFile, jsonString.toByteArray())
     }
 
     @OptIn(InternalSerializationApi::class)
@@ -57,19 +48,10 @@ internal class DefaultEncryptedEncryptedFileStore(
         }
 
         // Get encrypted file
-        val encryptedFile =
-            EncryptedFile.Builder(
-                file,
-                context,
-                masterKeyAlias,
-                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB,
-            ).build()
+        val encryptedFile = createEncryptedFile(context, masterKeyAlias, file)
 
         // Decrypt to json string
-        val jsonString =
-            encryptedFile.openFileInput().use { inputStream ->
-                inputStream.readBytes().toString(Charsets.UTF_8)
-            }
+        val jsonString = readEncryptedFile(encryptedFile)
 
         // Return object
         return json.decodeFromString(clazz.serializer(), jsonString)

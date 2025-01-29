@@ -18,7 +18,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.framework.test) // Needed because we need a reference to the HiltTestRunner inside this gradle
     implementation(libs.androidx.security.crypto)
     api(libs.datastore.preference)
 }

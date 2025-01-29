@@ -13,5 +13,4 @@ dependencies {
     implementation(libs.retrofit.kotlinx.serialization.converter)
     implementation(projects.framework.environment)
     testImplementation(testFixtures(projects.framework.environment))
-    testImplementation(testFixtures(projects.framework.test))
 }

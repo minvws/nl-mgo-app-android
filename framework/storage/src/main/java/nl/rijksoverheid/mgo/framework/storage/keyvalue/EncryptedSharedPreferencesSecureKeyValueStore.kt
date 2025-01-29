@@ -1,10 +1,8 @@
 package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
-import android.content.Context
+import android.content.SharedPreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.security.crypto.EncryptedSharedPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 val KEY_PIN_CODE = stringPreferencesKey("pin_code")
@@ -12,18 +10,8 @@ val KEY_PIN_CODE = stringPreferencesKey("pin_code")
 internal class EncryptedSharedPreferencesSecureKeyValueStore
     @Inject
     constructor(
-        @ApplicationContext private val context: Context,
-        masterKeyAlias: String,
+        private val encryptedSharedPreferences: SharedPreferences,
     ) : KeyValueStore {
-        private val encryptedSharedPreferences =
-            EncryptedSharedPreferences.create(
-                "app_secure",
-                masterKeyAlias,
-                context,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
-            )
-
         override suspend fun setBoolean(
             key: Preferences.Key<Boolean>,
             value: Boolean,

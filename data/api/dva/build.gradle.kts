@@ -9,5 +9,4 @@ android {
 dependencies {
     implementation(projects.framework.environment)
     implementation(libs.retrofit.kotlinx.serialization.converter)
-    testImplementation(testFixtures(projects.framework.test))
 }

@@ -13,6 +13,5 @@ fun Project.addBillOfMaterials(bomAlias: String) {
         val bom = platform(bomDependency)
         add("implementation", bom)
         add("testImplementation", bom)
-        add("androidTestImplementation", bom)
     }
 }

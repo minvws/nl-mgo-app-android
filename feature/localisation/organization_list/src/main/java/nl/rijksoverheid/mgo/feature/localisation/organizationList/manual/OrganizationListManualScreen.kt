@@ -26,6 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
@@ -115,8 +117,27 @@ private fun OrganizationListManualScreenContent(
             }
         }
 
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
-        appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
+    val title =
+        when {
+            viewState.loading -> {
+                stringResource(CopyR.string.organization_search_heading)
+            }
+
+            viewState.error != null -> {
+                stringResource(CopyR.string.organization_search_no_results_found_heading)
+            }
+
+            viewState.results.isEmpty() -> {
+                stringResource(CopyR.string.organization_search_no_results_found_heading)
+            }
+
+            else -> {
+                stringResource(CopyR.string.organization_search_heading)
+            }
+        }
+
+    MgoScaffold(
+        appBarTitle = title,
         onNavigateBack = onNavigateBack,
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onPrimaryButtonClick,
@@ -208,7 +229,7 @@ private fun ColumnScope.EmptyContent(
         painter = painterResource(id = R.drawable.illustration_alert),
         contentDescription = null,
     )
-    nl.rijksoverheid.mgo.component.mgo.MgoHtmlText(
+    MgoHtmlText(
         modifier = Modifier.padding(top = 24.dp),
         html =
             stringResource(

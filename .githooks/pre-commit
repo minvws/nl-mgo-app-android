@@ -1,8 +1,0 @@
-#!/bin/sh
-
-./gradlew ktlintCheck
-
-if [ $? -ne 0 ]; then
-    echo "Ktlint errors detected. Commit operation blocked."
-    exit 1
-fi

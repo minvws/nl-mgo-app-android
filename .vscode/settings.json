@@ -1,6 +1,0 @@
-{
-    "sonarlint.connectedMode.project": {
-        "connectionId": "vws",
-        "projectKey": "nl-mgo-app-android-private"
-    }
-}

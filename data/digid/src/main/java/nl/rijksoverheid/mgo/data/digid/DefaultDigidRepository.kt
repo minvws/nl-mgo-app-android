@@ -15,9 +15,6 @@ internal class DefaultDigidRepository
         override suspend fun login(): Result<String> {
             val environment = environmentRepository.getEnvironment()
             val result = executeNetworkRequest { vadApi.start(StartRequestBody("${environment.deeplinkHost}://app/login")) }
-            return result.mapCatching {
-                    response ->
-                response.authUrl.replace("max", "192.168.2.11")
-            }
+            return result.mapCatching { response -> response.authUrl }
         }
     }

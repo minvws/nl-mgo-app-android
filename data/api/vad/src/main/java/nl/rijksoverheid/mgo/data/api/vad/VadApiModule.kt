@@ -58,10 +58,10 @@ object VadApiModule {
     @Named("vadApiBaseUrl")
     fun provideBaseUrl(environmentRepository: EnvironmentRepository): String {
         return when (val environment = environmentRepository.getEnvironment()) {
-            is Environment.Acc -> "http://192.168.2.11:8801"
-            is Environment.Prod -> "http://192.168.2.11:8801"
-            is Environment.Tst -> "http://192.168.2.11:8801"
-            is Environment.Demo -> "http://192.168.2.11:8801"
+            is Environment.Acc -> "https://dva.acc.mgo.irealisatie.nl"
+            is Environment.Prod -> "https://dva.acc.mgo.irealisatie.nl"
+            is Environment.Tst -> "https://dva.test.mgo.irealisatie.nl"
+            is Environment.Demo -> "https://dva.acc.mgo.irealisatie.nl"
             is Environment.Custom -> environment.url
         }
     }

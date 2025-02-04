@@ -22,6 +22,11 @@ class CiPlugin : Plugin<Project> {
 
     private fun Project.createValidateCodeCoverageTask() {
         tasks.register("validateCodeCoverage") {
+            val sonarToken = System.getenv("SONAR_TOKEN")
+            if (sonarToken == null) {
+                println("Missing SONAR_TOKEN")
+                return@register
+            }
             dependsOn("koverXmlReportTstDebug")
             doLast {
                 uploadCodeCoverageToSonar()

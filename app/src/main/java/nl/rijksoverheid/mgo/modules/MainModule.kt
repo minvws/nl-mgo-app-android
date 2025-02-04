@@ -62,6 +62,12 @@ internal object MainModule {
         return BuildConfig.VERSION_CODE
     }
 
+    @Named("deeplinkHost")
+    @Provides
+    fun provideDeeplinkHost(): String {
+        return BuildConfig.DEEPLINK_HOST
+    }
+
     @Provides
     fun provideMgoAuthentication(): MgoAuthentication {
         val basicAuthUser = BuildConfig.BASIC_AUTH_USER

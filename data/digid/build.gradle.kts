@@ -11,5 +11,8 @@ android {
 
 dependencies {
     implementation(projects.framework.storage)
+    implementation(projects.data.api.vad)
+    implementation(projects.framework.environment)
     testImplementation(testFixtures(projects.framework.storage))
+    testImplementation(testFixtures(projects.framework.environment))
 }

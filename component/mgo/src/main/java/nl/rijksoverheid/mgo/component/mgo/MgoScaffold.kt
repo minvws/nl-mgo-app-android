@@ -73,6 +73,7 @@ fun MgoScaffold(
     scrollStateProvider: MgoScaffoldScrollStateProvider = MgoScaffoldScrollStateProvider.None,
     primaryButtonText: String? = null,
     primaryButtonTheme: MgoButtonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
+    primaryButtonLoading: Boolean = false,
     onPrimaryButtonClick: (() -> Unit)? = null,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
@@ -213,6 +214,7 @@ fun MgoScaffold(
                         canScroll = canScroll,
                         primaryButtonText = primaryButtonText,
                         primaryButtonTheme = primaryButtonTheme,
+                        primaryButtonLoading = primaryButtonLoading,
                         onPrimaryButtonClick = onPrimaryButtonClick,
                         secondaryButtonText = secondaryButtonText,
                         onSecondaryButtonClick = onSecondaryButtonClick,
@@ -255,6 +257,7 @@ private fun Buttons(
     canScroll: Boolean,
     primaryButtonText: String,
     primaryButtonTheme: MgoButtonTheme,
+    primaryButtonLoading: Boolean,
     onPrimaryButtonClick: () -> Unit,
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
@@ -291,6 +294,7 @@ private fun Buttons(
             modifier =
                 Modifier
                     .fillMaxWidth(),
+            isLoading = primaryButtonLoading,
             buttonText = primaryButtonText,
             onClick = onPrimaryButtonClick,
             buttonTheme = primaryButtonTheme,

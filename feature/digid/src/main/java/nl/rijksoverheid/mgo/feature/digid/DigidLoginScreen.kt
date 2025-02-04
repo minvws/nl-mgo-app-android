@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.digid
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,12 +11,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.util.Consumer
+import androidx.fragment.app.FragmentActivity
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
@@ -23,17 +32,50 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.framework.util.launchBrowser
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
+    val activity = LocalContext.current as FragmentActivity
+    val viewModel: DigidLoginScreenViewModel = hiltViewModel()
+    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+
+    DisposableEffect(Unit) {
+        val listener =
+            Consumer<Intent> { intent ->
+                viewModel.handleDeeplink(intent.dataString)
+            }
+        activity.addOnNewIntentListener(listener)
+        onDispose { activity.removeOnNewIntentListener(listener) }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.navigateToUrl.collectLatest { url ->
+            activity.launchBrowser(url)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.loginFinished.collectLatest {
+            onNavigateToDigidMock()
+        }
+    }
+
     DigidLoginScreenContent(
-        onLoginClicked = onNavigateToDigidMock,
+        viewState = viewState,
+        onLoginClicked = {
+            viewModel.login()
+        },
     )
 }
 
 @Composable
-private fun DigidLoginScreenContent(onLoginClicked: () -> Unit) {
+private fun DigidLoginScreenContent(
+    viewState: DigidLoginScreenViewState,
+    onLoginClicked: () -> Unit,
+) {
     MgoScaffold(
         scrollStateProvider =
             MgoScaffoldScrollStateProvider.Column(
@@ -41,6 +83,7 @@ private fun DigidLoginScreenContent(onLoginClicked: () -> Unit) {
             ),
         primaryButtonText = stringResource(id = CopyR.string.login_digid),
         primaryButtonTheme = MgoButtonTheme.DIGID,
+        primaryButtonLoading = viewState.loading,
         onPrimaryButtonClick = onLoginClicked,
     ) {
         Image(
@@ -72,10 +115,22 @@ private fun DigidLoginScreenContent(onLoginClicked: () -> Unit) {
 
 @DefaultPreviews
 @Composable
-internal fun DigidLoginScreenPreview() {
+internal fun DigidLoginScreenIdlePreview() {
     MgoTheme {
-        DigidLoginScreen(
-            onNavigateToDigidMock = {},
+        DigidLoginScreenContent(
+            viewState = DigidLoginScreenViewState(false),
+            onLoginClicked = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun DigidLoginScreenLoadingPreview() {
+    MgoTheme {
+        DigidLoginScreenContent(
+            viewState = DigidLoginScreenViewState(true),
+            onLoginClicked = {},
         )
     }
 }

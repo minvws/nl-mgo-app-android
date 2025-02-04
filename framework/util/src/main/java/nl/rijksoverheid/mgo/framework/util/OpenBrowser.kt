@@ -10,13 +10,13 @@ import androidx.browser.customtabs.CustomTabsIntent
  * Launches the url in Chrome Custom Tabs (https://developer.chrome.com/docs/android/custom-tabs).
  * If it fails, will fallback to browser.
  */
-fun String.launchBrowser(context: Context) {
+fun Context.launchBrowser(url: String) {
     try {
         CustomTabsIntent.Builder().build().also { intent ->
-            intent.launchUrl(context, Uri.parse(this))
+            intent.launchUrl(this, Uri.parse(url))
         }
     } catch (exception: ActivityNotFoundException) {
         // if chrome app is disabled or not there, try an alternative
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(this)))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 }

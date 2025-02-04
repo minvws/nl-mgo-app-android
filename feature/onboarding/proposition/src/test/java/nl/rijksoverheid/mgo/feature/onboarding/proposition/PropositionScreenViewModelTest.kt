@@ -13,7 +13,7 @@ class PropositionScreenViewModelTest {
     fun `Given ViewModel, When setHasSeenOnboarding is called, Then use case is called`() {
         // Given
         val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Prod(1))
+        environmentRepository.setEnvironment(Environment.Prod(versionCode = 1, deeplinkHost = "mgo"))
         val viewModel =
             PropositionScreenViewModel(
                 environmentRepository = environmentRepository,

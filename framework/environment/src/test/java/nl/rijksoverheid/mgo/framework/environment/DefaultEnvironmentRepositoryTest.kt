@@ -10,10 +10,10 @@ internal class DefaultEnvironmentRepositoryTest {
         val appFlavor = "tst"
 
         // When
-        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1)
+        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1, deeplinkHost = "mgo")
 
         // Then
-        val environment = Environment.Tst(versionCode = 1)
+        val environment = Environment.Tst(versionCode = 1, deeplinkHost = "mgo")
         assertEquals(environment, repository.getEnvironment())
     }
 
@@ -23,10 +23,10 @@ internal class DefaultEnvironmentRepositoryTest {
         val appFlavor = "acc"
 
         // When
-        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1)
+        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1, deeplinkHost = "mgo")
 
         // Then
-        val environment = Environment.Acc(versionCode = 1)
+        val environment = Environment.Acc(versionCode = 1, deeplinkHost = "mgo")
         assertEquals(environment, repository.getEnvironment())
     }
 
@@ -36,10 +36,10 @@ internal class DefaultEnvironmentRepositoryTest {
         val appFlavor = "prod"
 
         // When
-        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1)
+        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1, deeplinkHost = "mgo")
 
         // Then
-        val environment = Environment.Prod(versionCode = 1)
+        val environment = Environment.Prod(versionCode = 1, deeplinkHost = "mgo")
         assertEquals(environment, repository.getEnvironment())
     }
 
@@ -49,10 +49,10 @@ internal class DefaultEnvironmentRepositoryTest {
         val appFlavor = "demo"
 
         // When
-        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1)
+        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1, deeplinkHost = "mgo")
 
         // Then
-        val environment = Environment.Demo(versionCode = 1)
+        val environment = Environment.Demo(versionCode = 1, deeplinkHost = "mgo")
         assertEquals(environment, repository.getEnvironment())
     }
 
@@ -62,10 +62,10 @@ internal class DefaultEnvironmentRepositoryTest {
         val appFlavor = "bla"
 
         // When
-        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1)
+        val repository = DefaultEnvironmentRepository(appFlavor = appFlavor, versionCode = 1, deeplinkHost = "mgo")
 
         // Then
-        val environment = Environment.Tst(versionCode = 1)
+        val environment = Environment.Tst(versionCode = 1, deeplinkHost = "mgo")
         assertEquals(environment, repository.getEnvironment())
     }
 }

@@ -23,28 +23,36 @@ android {
             applicationIdSuffix = ".demo"
             versionNameSuffix = "-demo"
             manifestPlaceholders["appLabel"] = "@string/app_name_demo"
+            manifestPlaceholders["deeplinkHost"] = "mgo-demo"
             buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
             buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"")
+            buildConfigField("String", "DEEPLINK_HOST", "\"${manifestPlaceholders["deeplinkHost"]}\"")
         }
         create("tst") {
             dimension = "environment"
             applicationIdSuffix = ".tst"
             versionNameSuffix = "-tst"
             manifestPlaceholders["appLabel"] = "@string/app_name_tst"
+            manifestPlaceholders["deeplinkHost"] = "mgo-tst"
             buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
             buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"")
+            buildConfigField("String", "DEEPLINK_HOST", "\"${manifestPlaceholders["deeplinkHost"]}\"")
         }
         create("acc") {
             dimension = "environment"
             applicationIdSuffix = ".acc"
             versionNameSuffix = "-acc"
             manifestPlaceholders["appLabel"] = "@string/app_name_acc"
+            manifestPlaceholders["deeplinkHost"] = "mgo-acc"
             buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
             buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"")
+            buildConfigField("String", "DEEPLINK_HOST", "\"${manifestPlaceholders["deeplinkHost"]}\"")
         }
         create("prod") {
             dimension = "environment"
             manifestPlaceholders["appLabel"] = "@string/app_name"
+            manifestPlaceholders["deeplinkHost"] = "mgo"
+            buildConfigField("String", "DEEPLINK_HOST", "\"${manifestPlaceholders["deeplinkHost"]}\"")
         }
     }
 

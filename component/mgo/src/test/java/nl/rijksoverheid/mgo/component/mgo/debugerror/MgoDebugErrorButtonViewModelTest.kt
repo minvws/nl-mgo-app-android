@@ -10,7 +10,7 @@ internal class MgoDebugErrorButtonViewModelTest {
     fun `Given production app flavor, When calling showButton, Then return false`() {
         // Given
         val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(environment = Environment.Prod(versionCode = 1))
+        environmentRepository.setEnvironment(environment = Environment.Prod(versionCode = 1, deeplinkHost = "mgo"))
 
         // When
         val viewModel =
@@ -27,7 +27,7 @@ internal class MgoDebugErrorButtonViewModelTest {
     fun `Given not production app flavor, When calling showButton, Then return true`() {
         // Given
         val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(environment = Environment.Acc(versionCode = 1))
+        environmentRepository.setEnvironment(environment = Environment.Acc(versionCode = 1, deeplinkHost = "mgo"))
 
         // When
         val viewModel =

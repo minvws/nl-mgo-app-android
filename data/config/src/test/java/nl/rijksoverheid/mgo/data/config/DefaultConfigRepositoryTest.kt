@@ -52,7 +52,7 @@ internal class DefaultConfigRepositoryTest {
         val okHttpClient = TEST_OKHTTP_CLIENT
         val configApi = createApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
         val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Tst(versionCode = appVersion))
+        environmentRepository.setEnvironment(Environment.Tst(versionCode = appVersion, deeplinkHost = "mgo"))
         return DefaultConfigRepository(environmentRepository = environmentRepository, configApi = configApi)
     }
 }

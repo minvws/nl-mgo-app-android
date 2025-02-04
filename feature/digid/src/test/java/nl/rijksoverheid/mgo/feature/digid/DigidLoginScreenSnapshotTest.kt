@@ -9,9 +9,16 @@ internal class DigidLoginScreenSnapshotTest {
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
-    fun preview() {
+    fun idle() {
         snapshotTestRule.snapshots {
-            DigidLoginScreenPreview()
+            DigidLoginScreenIdlePreview()
+        }
+    }
+
+    @Test
+    fun loading() {
+        snapshotTestRule.snapshots {
+            DigidLoginScreenLoadingPreview()
         }
     }
 }

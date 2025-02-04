@@ -115,10 +115,22 @@ private fun DigidLoginScreenContent(
 
 @DefaultPreviews
 @Composable
-internal fun DigidLoginScreenPreview() {
+internal fun DigidLoginScreenIdlePreview() {
     MgoTheme {
-        DigidLoginScreen(
-            onNavigateToDigidMock = {},
+        DigidLoginScreenContent(
+            viewState = DigidLoginScreenViewState(false),
+            onLoginClicked = {},
+        )
+    }
+}
+
+@DefaultPreviews
+@Composable
+internal fun DigidLoginScreenLoadingPreview() {
+    MgoTheme {
+        DigidLoginScreenContent(
+            viewState = DigidLoginScreenViewState(true),
+            onLoginClicked = {},
         )
     }
 }

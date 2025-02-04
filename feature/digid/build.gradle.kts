@@ -8,4 +8,6 @@ android {
 
 dependencies {
     implementation(projects.data.digid)
+    testImplementation(testFixtures(projects.data.digid))
+    testImplementation(testFixtures(projects.framework.util))
 }

@@ -18,7 +18,7 @@ import java.util.Locale
 fun DeviceRootedDialog(show: Boolean) {
     var showDialog by remember { mutableStateOf(show) }
     if (showDialog) {
-        nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog(
+        MgoAlertDialog(
             title = stringResource(id = R.string.launch_jailbreak_heading),
             text = stringResource(id = R.string.launch_jailbreak_subheading),
             onDismissRequest = { showDialog = false },

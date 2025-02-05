@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoButton
+import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
@@ -140,7 +141,7 @@ private fun SettingsScreenContent(
                 MgoButton(
                     modifier = Modifier.fillMaxWidth(),
                     buttonText = stringResource(CopyR.string.settings_reset_app_button),
-                    buttonTheme = nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme.PRIMARY_NEGATIVE,
+                    buttonTheme = MgoButtonTheme.PRIMARY_NEGATIVE,
                     onClick = { showResetAppDialog = true },
                 )
             }

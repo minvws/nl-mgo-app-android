@@ -23,6 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.mgo.MgoCheckbox
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -44,7 +46,7 @@ fun OrganizationListAutomaticCard(
             OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
             else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
         }
-    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = modifier) {
+    MgoCard(modifier = modifier) {
         Row(
             modifier =
                 Modifier
@@ -84,7 +86,7 @@ fun OrganizationListAutomaticCard(
                 }
             }
             if (cardState != OrganizationSearchCardState.NOT_SUPPORTED) {
-                nl.rijksoverheid.mgo.component.mgo.MgoCheckbox(
+                MgoCheckbox(
                     modifier = Modifier.align(Alignment.CenterVertically),
                     checked = cardState == OrganizationSearchCardState.ADDED,
                     onCheckedChange = onCheckedChange,

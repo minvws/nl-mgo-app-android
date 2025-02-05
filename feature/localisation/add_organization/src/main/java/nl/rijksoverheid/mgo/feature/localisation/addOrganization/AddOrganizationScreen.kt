@@ -17,6 +17,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoBasicTextField
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -66,17 +69,17 @@ private fun AddOrganizationScreenContent(
     LaunchedEffect(Unit) {
         nameFocusRequester.requestFocus()
     }
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.add_organization_heading),
         onNavigateBack = onNavigateBack,
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+            MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
         primaryButtonText = stringResource(id = CopyR.string.common_search),
         onPrimaryButtonClick = onSearch,
         content = {
-            nl.rijksoverheid.mgo.component.mgo.MgoBasicTextField(
+            MgoBasicTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -97,7 +100,7 @@ private fun AddOrganizationScreenContent(
                 textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
             )
 
-            nl.rijksoverheid.mgo.component.mgo.MgoBasicTextField(
+            MgoBasicTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()

@@ -23,6 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
@@ -66,10 +69,10 @@ private fun OrganizationsScreenContent(
                 null
             }
         }
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(CopyR.string.organizations_heading),
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+            MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
         primaryButtonText = primaryButtonText,
@@ -130,7 +133,7 @@ private fun WithOrganizations(
     onClickOrganization: (organization: MgoOrganization) -> Unit,
     onClickAddProvider: () -> Unit,
 ) {
-    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = Modifier.padding(top = 2.dp)) {
+    MgoCard(modifier = Modifier.padding(top = 2.dp)) {
         Column(modifier = Modifier.fillMaxWidth()) {
             organizations.forEachIndexed { index, organization ->
                 OrganizationCard(
@@ -145,7 +148,7 @@ private fun WithOrganizations(
         }
     }
 
-    nl.rijksoverheid.mgo.component.mgo.MgoCard(
+    MgoCard(
         modifier =
             Modifier
                 .padding(vertical = 16.dp)

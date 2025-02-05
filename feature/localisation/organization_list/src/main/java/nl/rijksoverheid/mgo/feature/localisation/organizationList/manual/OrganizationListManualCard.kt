@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
@@ -47,7 +48,7 @@ fun OrganizationListManualCard(
             OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
             else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
         }
-    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = modifier) {
+    MgoCard(modifier = modifier) {
         Row(
             modifier =
                 Modifier

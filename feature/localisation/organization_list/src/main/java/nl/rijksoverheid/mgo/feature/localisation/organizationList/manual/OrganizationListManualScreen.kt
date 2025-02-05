@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
@@ -295,7 +296,7 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
         style = MaterialTheme.typography.bodySmall,
     )
 
-    nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton(error = error)
+    MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

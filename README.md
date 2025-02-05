@@ -104,4 +104,4 @@ Copy is stored in [Lokalise](https://lokalise.com/).
 | runCI               | Runs validation steps that are present on the CI as well. These steps include: `android linting`, `ktlint`, `verifying snapshot tests`, `jvm tests` and exporting `jacoco xml test report`.
 | validateCodeCoverage | Exports `jacoco xml test report`, uploads the result to SonarQube and prints if our code coverage criteria is met (>=80%). Requires the `SONAR_TOKEN` environment variable.
 | createPR            | Runs both the `runCI` and `validateCodeCoverage` steps. If all checks are okay, the browser is opened to create a PR.
-| updateFhirParser    | Downloads the latest fhir parser release, moves and modifies it to run it in the Android project. 
+| updateFhirParser    | Downloads the latest fhir parser release, moves and modifies it to run it in the Android project. Requires `MGO_GITHUB_PAT` environment variable.

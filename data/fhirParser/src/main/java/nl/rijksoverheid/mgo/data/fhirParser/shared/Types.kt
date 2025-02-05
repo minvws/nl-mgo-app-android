@@ -11,10 +11,24 @@ import kotlinx.serialization.json.*
 
 @Serializable
 @Parcelize
+data class DownloadBinary(
+    val label: String,
+    val reference: String? = null,
+    val type: DownloadBinaryType,
+) : Parcelable
+
+@Serializable
+enum class DownloadBinaryType(val value: String) {
+    @SerialName("DOWNLOAD_BINARY")
+    DownloadBinary("DOWNLOAD_BINARY"),
+}
+
+@Serializable
+@Parcelize
 data class DownloadLink(
     val label: String,
     val type: DownloadLinkType,
-    val url: String,
+    val url: String? = null,
 ) : Parcelable
 
 @Serializable
@@ -1057,7 +1071,7 @@ enum class SingleValueType(val value: String) {
 @Parcelize
 data class UISchema(
     val children: List<UISchemaGroup>,
-    val label: String? = null,
+    val label: String,
 ) : Parcelable
 
 @Serializable
@@ -1100,6 +1114,9 @@ sealed class DisplayElement : Parcelable {
 
 @Serializable
 enum class UIElementType(val value: String) {
+    @SerialName("DOWNLOAD_BINARY")
+    DownloadBinary("DOWNLOAD_BINARY"),
+
     @SerialName("DOWNLOAD_LINK")
     DownloadLink("DOWNLOAD_LINK"),
 

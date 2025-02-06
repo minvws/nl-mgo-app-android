@@ -26,6 +26,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun Keyboard(
     onPressNumber: (number: Int) -> Unit,
     onPressBackspace: () -> Unit,
+    showBackSpace: Boolean,
     modifier: Modifier = Modifier,
     hasBiometric: Boolean = false,
     onPressBiometric: (() -> Unit)? = null,
@@ -57,7 +58,10 @@ fun Keyboard(
                 val biometricIconAlpha = if (hasBiometric) 1f else 0f
                 val biometricContentDescriptionLabel = stringResource(CopyR.string.pincode_biometric_voiceover)
                 KeyboardItemIconInstance(
-                    modifier = Modifier.alpha(biometricIconAlpha).semantics { contentDescription = biometricContentDescriptionLabel },
+                    modifier =
+                        Modifier
+                            .alpha(biometricIconAlpha)
+                            .semantics { contentDescription = biometricContentDescriptionLabel },
                     icon = R.drawable.ic_keyboard_fingerprint,
                     onPressIcon = { onPressBiometric?.invoke() },
                 )
@@ -65,9 +69,14 @@ fun Keyboard(
 
                 val backspaceContentDescriptionLabel = stringResource(CopyR.string.pincode_erase_voiceover)
                 KeyboardItemIconInstance(
-                    modifier = Modifier.semantics { contentDescription = backspaceContentDescriptionLabel },
+                    modifier =
+                        Modifier
+                            .semantics { contentDescription = backspaceContentDescriptionLabel }
+                            .alpha(
+                                if (showBackSpace) 1f else 0f,
+                            ),
                     icon = R.drawable.ic_keyboard_backspace,
-                    onPressIcon = onPressBackspace,
+                    onPressIcon = { if (showBackSpace) onPressBackspace() },
                 )
             }
         }
@@ -109,7 +118,7 @@ private fun RowScope.KeyboardItemIconInstance(
 @Composable
 internal fun KeyboardPreview() {
     MgoTheme {
-        Keyboard(onPressNumber = { }, onPressBackspace = {})
+        Keyboard(onPressNumber = { }, onPressBackspace = {}, showBackSpace = true)
     }
 }
 
@@ -117,6 +126,6 @@ internal fun KeyboardPreview() {
 @Composable
 internal fun KeyboardWithBiometricPreview() {
     MgoTheme {
-        Keyboard(onPressNumber = { }, onPressBackspace = {}, hasBiometric = true)
+        Keyboard(onPressNumber = { }, onPressBackspace = {}, hasBiometric = true, showBackSpace = true)
     }
 }

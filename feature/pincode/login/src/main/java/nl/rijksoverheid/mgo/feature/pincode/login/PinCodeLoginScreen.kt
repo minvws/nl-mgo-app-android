@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.login
 
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
@@ -95,7 +94,7 @@ private fun PinCodeLoginScreenContent(
                 style = MaterialTheme.typography.bodySmall,
             )
             PinCodeWithKeyboard(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f),
                 onPinCodeEntered = onPinCodeEntered,
                 onResetError = onResetError,
                 error = if (viewState.error) stringResource(id = CopyR.string.pincode_validation_wrong) else null,

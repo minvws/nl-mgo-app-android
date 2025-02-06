@@ -1,6 +1,8 @@
 package nl.rijksoverheid.mgo.component.pincode
 
 import android.content.Context
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
@@ -92,15 +95,42 @@ private fun PinCodeWithKeyboardContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        PinCode(
-            modifier = Modifier.padding(vertical = 32.dp),
-            pinCode = pinCode,
-            error = error != null,
-        )
-        if (error != null) {
-            PinCodeError(modifier = Modifier.padding(bottom = 32.dp), error = error)
+        BoxWithConstraints(modifier = Modifier) {
+            val boxWithConstraintsScope = this
+
+            if (boxWithConstraintsScope.maxHeight == Dp.Infinity) {
+                // If there is no room for the error message to show directly under the text, show it in a column
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    PinCode(
+                        modifier = Modifier.padding(top = 24.dp),
+                        pinCode = pinCode,
+                        error = error != null,
+                    )
+                    if (error != null) {
+                        PinCodeError(
+                            modifier = Modifier.padding(top = 16.dp),
+                            error = error,
+                        )
+                    }
+                }
+            } else {
+                // If there is room, show it on a fixed position so that the pin code circles do not move
+                Box(contentAlignment = Alignment.Center) {
+                    PinCode(
+                        pinCode = pinCode,
+                        error = error != null,
+                    )
+                    if (error != null) {
+                        PinCodeError(
+                            modifier = Modifier.padding(top = 96.dp),
+                            error = error,
+                        )
+                    }
+                }
+            }
         }
         Spacer(modifier = Modifier.weight(1f))
+
         if (hint != null) {
             TextButton(onClick = { onClickHint?.invoke() }) {
                 Text(
@@ -153,6 +183,7 @@ private fun PinCodeWithKeyboardContent(
             },
             hasBiometric = hasBiometric,
             onPressBiometric = onPressBiometric,
+            showBackSpace = pinCode.isNotEmpty(),
         )
     }
 }
@@ -166,7 +197,10 @@ private fun PinCodeError(
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
             Text(
-                modifier = Modifier.wrapContentWidth().padding(start = 6.dp),
+                modifier =
+                    Modifier
+                        .wrapContentWidth()
+                        .padding(start = 6.dp),
                 text = error ?: "",
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,

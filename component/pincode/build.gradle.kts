@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.component.mgo)
     implementation(projects.framework.copy)
     implementation(libs.biometric)
+    implementation(libs.compose.constraint.layout)
 }

@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.component.pincode
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -21,12 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -91,16 +92,35 @@ private fun PinCodeWithKeyboardContent(
                 .padding(bottom = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.weight(1f))
-        PinCode(
-            modifier = Modifier.padding(vertical = 32.dp),
-            pinCode = pinCode,
-            error = error != null,
-        )
-        if (error != null) {
-            PinCodeError(modifier = Modifier.padding(bottom = 32.dp), error = error)
+        ConstraintLayout(modifier = Modifier.weight(1f)) {
+            val (pinCodeCircles, errorText) = createRefs()
+            PinCode(
+                modifier =
+                    Modifier
+                        .padding(vertical = 32.dp)
+                        .constrainAs(pinCodeCircles) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        },
+                pinCode = pinCode,
+                error = error != null,
+            )
+            if (error != null) {
+                PinCodeError(
+                    modifier =
+                        Modifier
+                            .padding(bottom = 32.dp)
+                            .constrainAs(errorText) {
+                                top.linkTo(pinCodeCircles.bottom, margin = 8.dp)
+                                start.linkTo(pinCodeCircles.start)
+                                end.linkTo(pinCodeCircles.end)
+                            },
+                    error = error,
+                )
+            }
         }
-        Spacer(modifier = Modifier.weight(1f))
         if (hint != null) {
             TextButton(onClick = { onClickHint?.invoke() }) {
                 Text(
@@ -167,7 +187,10 @@ private fun PinCodeError(
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
             Text(
-                modifier = Modifier.wrapContentWidth().padding(start = 6.dp),
+                modifier =
+                    Modifier
+                        .wrapContentWidth()
+                        .padding(start = 6.dp),
                 text = error ?: "",
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,

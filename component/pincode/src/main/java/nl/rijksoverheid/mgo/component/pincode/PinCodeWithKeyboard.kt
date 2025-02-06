@@ -1,8 +1,11 @@
 package nl.rijksoverheid.mgo.component.pincode
 
 import android.content.Context
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -20,14 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -92,35 +94,43 @@ private fun PinCodeWithKeyboardContent(
                 .padding(bottom = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ConstraintLayout(modifier = Modifier.weight(1f)) {
-            val (pinCodeCircles, errorText) = createRefs()
-            PinCode(
-                modifier =
-                    Modifier
-                        .padding(vertical = 32.dp)
-                        .constrainAs(pinCodeCircles) {
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        },
-                pinCode = pinCode,
-                error = error != null,
-            )
-            if (error != null) {
-                PinCodeError(
-                    modifier =
-                        Modifier
-                            .padding(bottom = 32.dp)
-                            .constrainAs(errorText) {
-                                top.linkTo(pinCodeCircles.bottom, margin = 8.dp)
-                                start.linkTo(pinCodeCircles.start)
-                                end.linkTo(pinCodeCircles.end)
-                            },
-                    error = error,
-                )
+        Spacer(modifier = Modifier.weight(1f))
+        BoxWithConstraints(modifier = Modifier) {
+            val boxWithConstraintsScope = this
+
+            if (boxWithConstraintsScope.maxHeight == Dp.Infinity) {
+                // If there is no room for the error message to show directly under the text, show it in a column
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    PinCode(
+                        modifier = Modifier.padding(top = 24.dp),
+                        pinCode = pinCode,
+                        error = error != null,
+                    )
+                    if (error != null) {
+                        PinCodeError(
+                            modifier = Modifier.padding(top = 16.dp),
+                            error = error,
+                        )
+                    }
+                }
+            } else {
+                // If there is room, show it on a fixed position so that the pin code circles do not move
+                Box(contentAlignment = Alignment.Center) {
+                    PinCode(
+                        pinCode = pinCode,
+                        error = error != null,
+                    )
+                    if (error != null) {
+                        PinCodeError(
+                            modifier = Modifier.padding(top = 96.dp),
+                            error = error,
+                        )
+                    }
+                }
             }
         }
+        Spacer(modifier = Modifier.weight(1f))
+
         if (hint != null) {
             TextButton(onClick = { onClickHint?.invoke() }) {
                 Text(

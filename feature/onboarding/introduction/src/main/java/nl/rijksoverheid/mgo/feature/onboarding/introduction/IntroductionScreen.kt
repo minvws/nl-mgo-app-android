@@ -16,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.headingLarge
@@ -23,9 +25,9 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+            MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
         primaryButtonText = stringResource(id = CopyR.string.common_next),

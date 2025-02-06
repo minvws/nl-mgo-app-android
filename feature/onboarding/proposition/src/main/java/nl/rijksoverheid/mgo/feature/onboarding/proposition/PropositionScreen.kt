@@ -15,6 +15,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
@@ -43,17 +46,17 @@ internal fun PropositionOverviewScreenContent(
     onClickNext: () -> Unit,
 ) {
     val context = LocalContext.current
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.proposition_heading),
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+            MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
         onNavigateBack = onNavigateBack,
         primaryButtonText = stringResource(id = CopyR.string.common_next),
         onPrimaryButtonClick = onClickNext,
         content = {
-            nl.rijksoverheid.mgo.component.mgo.MgoHtmlText(
+            MgoHtmlText(
                 html = stringResource(id = CopyR.string.proposition_subheading, url),
                 style = MaterialTheme.typography.bodySmall,
                 onLinkClicked = { url -> context.launchBrowser(url) },
@@ -91,7 +94,7 @@ private fun ListItem(
 ) {
     Row(modifier = modifier) {
         Image(painter = painterResource(id = icon), contentDescription = null)
-        nl.rijksoverheid.mgo.component.mgo.MgoHtmlText(
+        MgoHtmlText(
             modifier = Modifier.padding(horizontal = 16.dp),
             html = text,
             style = MaterialTheme.typography.bodySmall,

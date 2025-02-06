@@ -16,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R
@@ -46,7 +49,7 @@ private fun PinCodeForgotScreenContent(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     if (showDialog) {
-        nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog(
+        MgoAlertDialog(
             title = stringResource(id = R.string.forgot_pincode_dialog_heading),
             text = stringResource(id = R.string.forgot_pincode_dialog_subheading),
             onDismissRequest = { showDialog = false },
@@ -62,10 +65,10 @@ private fun PinCodeForgotScreenContent(
         )
     }
 
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(CopyR.string.forgot_pincode_heading),
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+            MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
         onNavigateBack = onNavigateBack,

@@ -25,6 +25,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoButton
+import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
+import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
@@ -99,10 +104,10 @@ private fun HealthCategoriesScreenContent(
                 null
             }
         }
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = appBarTitle,
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.Column(
+            MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
         isRootScaffold = false,
@@ -170,7 +175,7 @@ private fun ColumnScope.WithProviders(
         text = subHeading,
         style = MaterialTheme.typography.bodySmall,
     )
-    nl.rijksoverheid.mgo.component.mgo.MgoCard(
+    MgoCard(
         modifier =
             modifier.padding(
                 top = 8.dp,
@@ -192,7 +197,7 @@ private fun ColumnScope.WithProviders(
     }
 
     if (filterOrganization != null) {
-        nl.rijksoverheid.mgo.component.mgo.MgoButton(
+        MgoButton(
             modifier =
                 Modifier
                     .padding(bottom = 16.dp)
@@ -201,7 +206,7 @@ private fun ColumnScope.WithProviders(
             onClick = {
                 onClickRemoveOrganization(filterOrganization)
             },
-            buttonTheme = nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme.TERTIARY_NEGATIVE,
+            buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
         )
     }
 }

@@ -26,6 +26,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
@@ -71,7 +72,7 @@ fun DashboardBottomBarScreenContent(
     val bottomBarItems = BottomBarItem.entries
     val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
 
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         horizontalPadding = 0.dp,
         content = {
             HorizontalPager(state = pagerState, userScrollEnabled = false) { position ->

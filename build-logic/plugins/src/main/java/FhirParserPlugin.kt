@@ -1,6 +1,15 @@
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.kotlin.org.apache.commons.compress.archivers.tar.TarArchiveEntry
+import org.jetbrains.kotlin.org.apache.commons.compress.archivers.tar.TarArchiveInputStream
+import org.jetbrains.kotlin.org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
+import org.json.JSONObject
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.util.zip.ZipInputStream
 
 /**
  * This plugin downloads shared code that we use for displaying information from FHIR resources.
@@ -11,13 +20,26 @@ import java.io.File
  */
 class FhirParserPlugin : Plugin<Project> {
 
+    private val client = OkHttpClient()
+
     override fun apply(project: Project) {
         project.tasks.register("updateFhirParser") {
+            val githubToken = System.getenv("MGO_GITHUB_PAT")
+            if (githubToken == null) {
+                println("Missing MGO_GITHUB_PAT")
+                return@register
+            }
 
-            // TODO Download mgo-fhir-data.life.js
-            // TODO Download Types.kt
+            // Location of the shared js codebase file
+            val jsFile = File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.js")
 
+            // Location of the exported types
             val typesFile = File(project.rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/shared/Types.kt")
+
+            // Download the latest fhir parser, and move the files to the correct modules
+            project.downloadFhirParser(githubToken = githubToken, jsFile = jsFile, typesFile = typesFile)
+
+            // We apply some modifications to the Types.kt file
             val typesFileText = typesFile.readText()
             val updatedTypesFileText =
                 typesFileText.updatePackageName().also { println("Update package name in Types.kt") }
@@ -38,6 +60,120 @@ class FhirParserPlugin : Plugin<Project> {
 
 
             typesFile.writeText(updatedTypesFileText)
+        }
+    }
+
+    private fun Project.downloadFhirParser(githubToken: String, jsFile: File, typesFile: File) {
+        val workingDir = File(rootDir, "tmp")
+        workingDir.mkdir()
+
+        // Get workflows
+        val workflowsRequest = Request.Builder()
+            .url("https://api.github.com/repos/minvws/nl-mgo-app-web-private/actions/workflows/114414377/runs?status=completed&branch=main")
+            .addHeader("Authorization", "Bearer $githubToken")
+            .addHeader("Accept", "application/vnd.github+json")
+            .build()
+
+        val workFlowsResponse = client.newCall(workflowsRequest).execute()
+        if (!workFlowsResponse.isSuccessful) {
+            println("Failed to download Fhir Parser: ${workFlowsResponse.body?.string()}")
+            return
+        }
+
+        val workflowResponseJson = JSONObject(workFlowsResponse.body!!.string())
+        val workflowId = workflowResponseJson.getJSONArray("workflow_runs").getJSONObject(0).getBigInteger("id")
+
+        // Get artifacts
+        val artifactsRequest = Request.Builder()
+            .url("https://api.github.com/repos/minvws/nl-mgo-app-web-private/actions/runs/${workflowId}/artifacts")
+            .addHeader("Authorization", "Bearer $githubToken")
+            .addHeader("Accept", "application/vnd.github+json")
+            .build()
+
+        val artifactsResponse = client.newCall(artifactsRequest).execute()
+        if (!artifactsResponse.isSuccessful) {
+            println("Failed to download Fhir Parser: ${artifactsResponse.body?.string()}")
+            return
+        }
+
+        val artifactsResponseJson = JSONObject(artifactsResponse.body!!.string())
+        val artifactId = artifactsResponseJson.getJSONArray("artifacts").getJSONObject(0).getBigInteger("id")
+
+        // Get first artifact zip
+        val artifactRequest = Request.Builder()
+            .url("https://api.github.com/repos/minvws/nl-mgo-app-web-private/actions/artifacts/${artifactId}/zip")
+            .addHeader("Authorization", "Bearer $githubToken")
+            .addHeader("Accept", "application/vnd.github+json")
+            .build()
+
+        val artifactResponse = client.newCall(artifactRequest).execute()
+        if (!artifactResponse.isSuccessful) {
+            println("Failed to download Fhir Parser: ${artifactResponse.body?.string()}")
+            return
+        }
+
+        // Unzip artifact
+        val zipFile = File(workingDir, "artifact.zip")
+        artifactResponse.body?.byteStream()?.use { inputStream ->
+            FileOutputStream(zipFile).use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+
+        unzip(zipFile, workingDir)
+        zipFile.delete()
+
+        // Extract tar
+        val tarFile = workingDir.listFiles()?.first { file -> file.extension == "gz" }!!
+        extractTarGz(tarFile, workingDir)
+        tarFile.delete()
+
+        // Move downloaded js to correct module
+        val downloadedJsFile = File(workingDir, "js/mgo-fhir-data.iife.js")
+        downloadedJsFile.renameTo(jsFile)
+
+        // Move downloaded schema to correct module
+        val downloadedSchemaFile = File(workingDir, "schema/kotlin/Types.kt")
+        downloadedSchemaFile.renameTo(typesFile)
+
+        // Clean up
+        workingDir.deleteRecursively()
+    }
+
+    private fun unzip(zipFile: File, targetDir: File) {
+        ZipInputStream(zipFile.inputStream()).use { zipInputStream ->
+            var entry = zipInputStream.nextEntry
+            while (entry != null) {
+                val file = File(targetDir, entry.name)
+                if (entry.isDirectory) {
+                    file.mkdirs()
+                } else {
+                    file.parentFile?.mkdirs()
+                    FileOutputStream(file).use { outputStream ->
+                        zipInputStream.copyTo(outputStream)
+                    }
+                }
+                zipInputStream.closeEntry()
+                entry = zipInputStream.nextEntry
+            }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun extractTarGz(tarGzFile: File, targetDir: File) {
+        GzipCompressorInputStream(FileInputStream(tarGzFile)).use { gis ->
+            TarArchiveInputStream(gis).use { tarInput ->
+                var entry: TarArchiveEntry? = tarInput.nextTarEntry
+                while (entry != null) {
+                    val filePath = "$targetDir/${entry.name}"
+                    if (entry.isDirectory) {
+                        File(filePath).mkdirs()
+                    } else {
+                        FileOutputStream(filePath).use { fos -> tarInput.copyTo(fos) }
+                    }
+                    entry = tarInput.nextTarEntry
+                }
+            }
         }
     }
 

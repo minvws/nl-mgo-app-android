@@ -26,6 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -82,12 +85,12 @@ private fun OrganizationListAutomaticSearchScreenContent(
         }
     val onPrimaryButtonClick = if (viewState.error == null) onUpdateOrganizations else onGetSearchResults
 
-    nl.rijksoverheid.mgo.component.mgo.MgoScaffold(
+    MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onPrimaryButtonClick,
         scrollStateProvider =
-            nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider.LazyColumn(
+            MgoScaffoldScrollStateProvider.LazyColumn(
                 lazyListState,
             ),
         onNavigateBack = onNavigateBack,
@@ -201,7 +204,7 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
         style = MaterialTheme.typography.bodySmall,
     )
 
-    nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton(error = error)
+    MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

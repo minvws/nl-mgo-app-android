@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
@@ -237,7 +238,7 @@ private fun HealthCategoryCard(
     subtitle: String,
     modifier: Modifier = Modifier,
 ) {
-    nl.rijksoverheid.mgo.component.mgo.MgoCard(modifier = modifier) {
+    MgoCard(modifier = modifier) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = title,

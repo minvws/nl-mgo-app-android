@@ -77,7 +77,7 @@ private fun PinCodeCreateScreenContent(
                 style = MaterialTheme.typography.bodySmall,
             )
             PinCodeWithKeyboard(
-                modifier = Modifier,
+                modifier = Modifier.weight(1f),
                 onPinCodeEntered = onPinCodeEntered,
                 onResetError = {
                     onResetError()

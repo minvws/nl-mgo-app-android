@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.confirm
 
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -79,7 +78,7 @@ private fun PinCodeConfirmScreenContent(
                 style = MaterialTheme.typography.bodySmall,
             )
             PinCodeWithKeyboard(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f),
                 onPinCodeEntered = onPinCodeEntered,
                 onResetError = {
                     onResetError()

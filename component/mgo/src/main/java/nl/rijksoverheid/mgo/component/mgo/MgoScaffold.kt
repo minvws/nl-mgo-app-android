@@ -52,6 +52,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
 import nl.rijksoverheid.mgo.component.theme.MgoVibrateDuration
 import nl.rijksoverheid.mgo.component.theme.headingLarge
+import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 import nl.rijksoverheid.mgo.component.theme.vibrate
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -159,6 +160,7 @@ fun MgoScaffold(
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                                         contentDescription = stringResource(CopyR.string.common_previous),
+                                        tint = MaterialTheme.colorScheme.iconsPrimary(),
                                     )
                                 }
                             }

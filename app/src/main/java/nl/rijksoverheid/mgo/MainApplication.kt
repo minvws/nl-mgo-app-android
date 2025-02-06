@@ -1,11 +1,14 @@
 package nl.rijksoverheid.mgo
 
 import android.app.Application
+import androidx.lifecycle.ProcessLifecycleOwner
 import dagger.hilt.android.HiltAndroidApp
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.lifecycle.AppLifecycleObserver
+import nl.rijksoverheid.mgo.lifecycle.AppLifecycleState
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
 import javax.inject.Inject
@@ -15,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -36,6 +40,7 @@ class MainApplication : Application() {
     @Named("ioDispatcher")
     lateinit var ioDispatcher: CoroutineDispatcher
 
+    val appLifecycleState = MutableSharedFlow<AppLifecycleState>(extraBufferCapacity = 1)
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate() {
@@ -43,6 +48,8 @@ class MainApplication : Application() {
         if (BuildConfig.DEBUG) {
             plant(Timber.DebugTree())
         }
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver(appLifecycleState))
 
         // Initialize feature toggles
         runBlocking { featureToggleLocalDataSource.init(featureToggleRepository.getAll()) }

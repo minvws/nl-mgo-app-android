@@ -10,11 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,6 +25,7 @@ import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
+import nl.rijksoverheid.mgo.lifecycle.AppLifecycleState
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.digid.addDigidNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
@@ -106,14 +108,18 @@ class MainActivity : FragmentActivity() {
 
     @Composable
     private fun CheckAppLock(viewModel: MainViewModel) {
-        // On every resume check if we need to lock the app
-        LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-            viewModel.checkAppLock()
-        }
-
-        // On every pause save the timestamp so we know when coming back if to lock the app
-        LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) {
-            viewModel.saveClosedAppTimestamp()
+        val application = (LocalContext.current.applicationContext as MainApplication)
+        LaunchedEffect(Unit) {
+            application.appLifecycleState.collectLatest { state ->
+                when (state) {
+                    AppLifecycleState.FromBackground -> {
+                        viewModel.checkAppLock()
+                    }
+                    AppLifecycleState.ToBackground -> {
+                        viewModel.saveClosedAppTimestamp()
+                    }
+                }
+            }
         }
     }
 

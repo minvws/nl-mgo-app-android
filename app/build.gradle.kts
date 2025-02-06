@@ -151,6 +151,7 @@ dependencies {
     implementation(projects.data.healthcare)
     implementation(projects.data.pincode)
     implementation(projects.data.digid)
+    implementation(libs.androidx.lifecycle.process)
 
     // ================================
     // TESTING

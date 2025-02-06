@@ -82,8 +82,9 @@ internal object MainModule {
     fun provideAppLocked(
         clock: Clock,
         @Named("keyValueStore") keyValueStore: KeyValueStore,
+        @Named("secureKeyValueStore") secureKeyValueStore: KeyValueStore,
     ): AppLocked {
-        return DefaultAppLocked(clock = clock, keyValueStore = keyValueStore)
+        return DefaultAppLocked(clock = clock, keyValueStore = keyValueStore, secureKeyValueStore = secureKeyValueStore)
     }
 
     @Provides

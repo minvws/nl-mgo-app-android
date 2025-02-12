@@ -1,14 +1,5 @@
 package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
-import nl.rijksoverheid.mgo.data.fhirParser.shared.GpLaboratoryResultProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.IheMhdMinimalDocumentReferenceProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.R4NlCoreVaccinationEventProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibAdministrationAgreementProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibLaboratoryTestResultObservationProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationAgreementProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationUseProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationRecommendationProfile
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Documents
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Gp
@@ -59,30 +50,30 @@ fun HealthCareCategory.getProfiles(): List<String> {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> {
             listOf(
-                ZibMedicationUseProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationUse.value,
-                ZibMedicationAgreementProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationAgreement.value,
-                ZibAdministrationAgreementProfile.HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement.value,
+                "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse",
+                "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement",
+                "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement",
             )
         }
 
         HealthCareCategory.LAB_RESULTS -> {
             listOf(
-                ZibLaboratoryTestResultObservationProfile.HTTPNictizNlFhirStructureDefinitionZibLaboratoryTestResultObservation.value,
-                GpLaboratoryResultProfile.HTTPNictizNlFhirStructureDefinitionGpLaboratoryResult.value,
+                "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation",
+                "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult",
             )
         }
 
         HealthCareCategory.DOCUMENTS -> {
             listOf(
-                IheMhdMinimalDocumentReferenceProfile.HTTPNictizNlFhirStructureDefinitionIHEMHDMinimalDocumentReference.value,
+                "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference",
             )
         }
 
         HealthCareCategory.VACCINATIONS -> {
             listOf(
-                ZibVaccinationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccination.value,
-                ZibVaccinationRecommendationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccinationRecommendation.value,
-                R4NlCoreVaccinationEventProfile.HTTPNictizNlFhirStructureDefinitionNlCoreVaccinationEvent.value,
+                "http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination",
+                "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation",
+                "http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event",
             )
         }
 

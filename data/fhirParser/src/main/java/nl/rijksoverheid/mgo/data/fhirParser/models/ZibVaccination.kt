@@ -15,18 +15,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibVaccination(
-    val identifier: List<MgoIdentifier>? = null,
-    val patient: MgoReference? = null,
-    val vaccineCode: MgoCodeableConcept? = null,
-    val dose: MgoQuantity? = null,
     val vaccinationDate: String? = null,
-    val practitioner: List<Practitioner>? = null,
+    val identifier: List<MgoIdentifier>? = null,
     val note: List<MgoAnnotation>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val dose: MgoQuantity? = null,
+    val practitioner: List<Practitioner>? = null,
+    val patient: MgoReference? = null,
     val profile: String,
-    val fhirVersion: String
+    val fhirVersion: String,
+    val id: String? = null,
+    val vaccineCode: MgoCodeableConcept? = null,
+    val referenceId: String,
+    val resourceType: String? = null
 ) {
 
     init {

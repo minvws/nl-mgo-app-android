@@ -15,6 +15,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoRange(
-    val low: MgoQuantity? = null,
-    val high: MgoQuantity? = null
+    val high: MgoQuantity? = null,
+    val low: MgoQuantity? = null
 )

@@ -15,18 +15,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibMedicalDeviceRequest(
-    val intent: MgoCodeableConcept? = null,
+    val codeReference: MgoReference? = null,
     val subject: MgoReference? = null,
     val perfomer: MgoReference? = null,
-    val codeReference: MgoReference? = null,
-    val codeCodeableConcept: MgoCodeableConcept? = null,
-    val status: String? = null,
+    val profile: String,
+    val fhirVersion: String,
     val occurrence: MgoPeriod? = null,
     val id: String? = null,
+    val intent: MgoCodeableConcept? = null,
+    val codeCodeableConcept: MgoCodeableConcept? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {

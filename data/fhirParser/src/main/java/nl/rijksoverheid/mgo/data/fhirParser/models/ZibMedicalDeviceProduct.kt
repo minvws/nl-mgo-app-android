@@ -17,12 +17,12 @@ import kotlinx.serialization.Serializable
 data class ZibMedicalDeviceProduct(
     val note: List<MgoAnnotation>? = null,
     val patient: MgoReference? = null,
-    val expirationDate: String? = null,
+    val profile: String,
+    val fhirVersion: String,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val expirationDate: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {

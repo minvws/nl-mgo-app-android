@@ -16,35 +16,35 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibAlert(
     val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
-    val category: MgoCodeableConcept? = null,
+    val period: MgoPeriod? = null,
     val code: MgoCodeableConcept? = null,
     val subject: MgoReference? = null,
-    val period: MgoPeriod? = null,
-    val encounter: MgoReference? = null,
     val author: MgoReference? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val encounter: MgoReference? = null,
+    val referenceId: String,
+    val fhirVersion: String,
+    val id: String? = null,
+    val category: MgoCodeableConcept? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
         if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert"
+        private const val cg_str1 = "R3"
+        private val cg_array2 = setOf(
             "active",
             "entered-in-error",
             "inactive"
         )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert"
-        private const val cg_str2 = "R3"
     }
 
 }

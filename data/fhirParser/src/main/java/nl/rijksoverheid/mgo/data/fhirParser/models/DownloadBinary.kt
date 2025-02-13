@@ -19,9 +19,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("DOWNLOAD_BINARY")
                 data class DownloadBinary(
-    val type: String,
+    val reference: String? = null,
     val label: String,
-    val reference: String? = null
+    val type: String
 ) : UiElement {
 
     init {

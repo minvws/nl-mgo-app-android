@@ -16,6 +16,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MgoCoding(
     val code: String? = null,
-    val display: String? = null,
-    val system: String? = null
+    val system: String? = null,
+    val display: String? = null
 )

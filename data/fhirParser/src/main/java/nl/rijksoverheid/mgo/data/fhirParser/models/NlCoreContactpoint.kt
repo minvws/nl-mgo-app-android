@@ -17,9 +17,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreContactpoint(
+    val period: MgoPeriod? = null,
     val system: String? = null,
-    val value: String? = null,
     val use: String? = null,
     val rank: Double? = null,
-    val period: MgoPeriod? = null
+    val value: String? = null
 )

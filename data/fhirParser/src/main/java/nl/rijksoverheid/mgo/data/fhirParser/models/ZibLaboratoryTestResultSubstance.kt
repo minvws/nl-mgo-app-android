@@ -16,15 +16,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibLaboratoryTestResultSubstance(
     val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
     val code: MgoCodeableConcept? = null,
+    val profile: String,
+    val fhirVersion: String,
     val description: String? = null,
     val id: String? = null,
+    val category: List<MgoCodeableConcept>? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {

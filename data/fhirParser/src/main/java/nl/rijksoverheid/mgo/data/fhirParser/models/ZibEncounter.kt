@@ -17,18 +17,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibEncounter(
+    val reason: List<MgoCodeableConcept>? = null,
+    val period: MgoPeriod? = null,
+    val hospitalization: Hospitalization,
+    val profile: String,
+    val fhirVersion: String,
+    val serviceProvider: MgoReference? = null,
+    val diagnosis: List<Diagnosi>? = null,
+    val id: String? = null,
     val `class`: MgoCoding? = null,
     val participant: List<EncounterParticipant>? = null,
-    val serviceProvider: MgoReference? = null,
-    val period: MgoPeriod? = null,
-    val diagnosis: List<Diagnosi>? = null,
-    val reason: List<MgoCodeableConcept>? = null,
-    val hospitalization: Hospitalization,
-    val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val resourceType: String? = null
 ) {
 
     init {
@@ -37,16 +37,16 @@ data class ZibEncounter(
     }
 
     @Serializable
+    data class Hospitalization(
+        val dischargeDisposition: MgoCodeableConcept? = null,
+        val admitSource: MgoCodeableConcept? = null
+    )
+
+    @Serializable
     data class Diagnosi(
         val condition: MgoReference? = null,
         val role: MgoCodeableConcept? = null,
         val rank: Double? = null
-    )
-
-    @Serializable
-    data class Hospitalization(
-        val admitSource: MgoCodeableConcept? = null,
-        val dischargeDisposition: MgoCodeableConcept? = null
     )
 
     companion object {

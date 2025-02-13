@@ -15,27 +15,27 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProblem(
-    val identifier: List<MgoIdentifier>? = null,
-    val clinicalStatus: ClinicalStatus? = null,
-    val verificationStatus: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
     val severity: MgoCodeableConcept? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val note: List<MgoAnnotation>? = null,
     val code: MgoCodeableConcept? = null,
-    val bodySite: List<MgoCodeableConcept>? = null,
+    val evidence: List<Evidence>? = null,
+    val verificationStatus: String? = null,
     val subject: MgoReference? = null,
-    val context: MgoReference? = null,
-    val onsetDateTime: String? = null,
     val abatementDateTime: String? = null,
+    val profile: String,
+    val clinicalStatus: ClinicalStatus? = null,
+    val onsetDateTime: String? = null,
     val assertedDate: String? = null,
+    val referenceId: String,
+    val bodySite: List<MgoCodeableConcept>? = null,
     val asserter: MgoReference? = null,
     val stage: Stage,
-    val evidence: List<Evidence>? = null,
-    val note: List<MgoAnnotation>? = null,
+    val fhirVersion: String,
+    val context: MgoReference? = null,
     val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val category: List<MgoCodeableConcept>? = null,
+    val resourceType: String? = null
 ) {
 
     init {
@@ -44,6 +44,12 @@ data class ZibProblem(
         require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
         require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
+
+    @Serializable
+    data class Evidence(
+        val code: List<MgoCodeableConcept>? = null,
+        val detail: List<MgoReference>? = null
+    )
 
     @Serializable
     enum class ClinicalStatus {
@@ -58,12 +64,6 @@ data class ZibProblem(
     data class Stage(
         val summary: MgoCodeableConcept? = null,
         val assessment: List<MgoReference>? = null
-    )
-
-    @Serializable
-    data class Evidence(
-        val code: List<MgoCodeableConcept>? = null,
-        val detail: List<MgoReference>? = null
     )
 
     companion object {

@@ -15,87 +15,89 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibTreatmentDirective(
-    val identifier: MgoIdentifier? = null,
-    val status: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val patient: MgoReference? = null,
-    val period: MgoPeriod? = null,
     val dateTime: String? = null,
-    val consentingParty: List<MgoReference>? = null,
-    val actor: List<Actor>? = null,
-    val action: List<MgoCodeableConcept>? = null,
-    val organization: List<MgoReference>? = null,
-    val sourceAttachment: Attachment,
-    val sourceIdentifier: MgoIdentifier? = null,
     val sourceReference: MgoReference? = null,
-    val policy: List<Policy>? = null,
-    val policyRule: String? = null,
-    val securityLabel: List<MgoCoding>? = null,
-    val purpose: List<MgoCoding>? = null,
-    val dataPeriod: MgoPeriod? = null,
+    val sourceIdentifier: MgoIdentifier? = null,
     val data: List<Data>? = null,
-    val except: List<Except>? = null,
-    val id: String? = null,
+    val purpose: List<MgoCoding>? = null,
+    val sourceAttachment: Attachment,
     val referenceId: String,
-    val resourceType: String? = null,
+    val patient: MgoReference? = null,
+    val fhirVersion: String,
+    val action: List<MgoCodeableConcept>? = null,
+    val id: String? = null,
+    val policy: List<Policy>? = null,
+    val dataPeriod: MgoPeriod? = null,
+    val identifier: MgoIdentifier? = null,
+    val period: MgoPeriod? = null,
+    val securityLabel: List<MgoCoding>? = null,
     val profile: String,
-    val fhirVersion: String
+    val actor: List<Actor>? = null,
+    val policyRule: String? = null,
+    val consentingParty: List<MgoReference>? = null,
+    val organization: List<MgoReference>? = null,
+    val except: List<Except>? = null,
+    val category: List<MgoCodeableConcept>? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
-        if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
+        require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
         require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        if (status != null)
+            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
-    data class Actor(
-        val role: MgoCodeableConcept? = null,
-        val reference: MgoReference? = null
+    data class Data(
+        val reference: MgoReference? = null,
+        val meaning: String? = null
     )
 
     @Serializable
     data class Policy(
-        val id: String? = null,
         val authority: String? = null,
+        val id: String? = null,
         val uri: String? = null
     )
 
     @Serializable
-    data class Data(
-        val meaning: String? = null,
-        val reference: MgoReference? = null
+    data class Actor(
+        val reference: MgoReference? = null,
+        val role: MgoCodeableConcept? = null
     )
 
     @Serializable
     data class Except(
-        val type: String? = null,
-        val period: MgoPeriod? = null,
         val actor: List<Actor1>? = null,
-        val action: List<MgoCodeableConcept>? = null,
-        val securityLabel: List<MgoCoding>? = null,
-        val purpose: List<MgoCoding>? = null,
-        val `class`: List<MgoCoding>? = null,
-        val code: List<MgoCoding>? = null,
         val dataPeriod: MgoPeriod? = null,
-        val data: List<Data1>? = null
+        val period: MgoPeriod? = null,
+        val code: List<MgoCoding>? = null,
+        val data: List<Data1>? = null,
+        val purpose: List<MgoCoding>? = null,
+        val securityLabel: List<MgoCoding>? = null,
+        val action: List<MgoCodeableConcept>? = null,
+        val type: String? = null,
+        val `class`: List<MgoCoding>? = null
     )
 
     @Serializable
     data class Actor1(
-        val role: MgoCodeableConcept? = null,
-        val reference: MgoReference? = null
+        val reference: MgoReference? = null,
+        val role: MgoCodeableConcept? = null
     )
 
     @Serializable
     data class Data1(
-        val meaning: String? = null,
-        val reference: MgoReference? = null
+        val reference: MgoReference? = null,
+        val meaning: String? = null
     )
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "R3"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"
+        private val cg_array2 = setOf(
             "active",
             "entered-in-error",
             "inactive",
@@ -103,8 +105,6 @@ data class ZibTreatmentDirective(
             "proposed",
             "rejected"
         )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"
-        private const val cg_str2 = "R3"
     }
 
 }

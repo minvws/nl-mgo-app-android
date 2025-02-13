@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoAnnotation(
+    val author: MgoReference? = null,
     val time: String? = null,
-    val text: String? = null,
-    val author: MgoReference? = null
+    val text: String? = null
 )

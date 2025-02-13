@@ -17,16 +17,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibInstructionsForUse(
-    val sequence: Double? = null,
-    val text: String? = null,
-    val additionalInstruction: List<MgoCodeableConcept>? = null,
     val asNeeded: MgoCodeableConcept? = null,
-    val route: MgoCodeableConcept? = null,
-    val doseQuantity: MgoQuantity? = null,
-    val doseRange: MgoRange? = null,
-    val maxDosePerPeriod: MgoRatio? = null,
-    val timing: ZibAdministrationSchedule,
+    val sequence: Double? = null,
+    val additionalInstruction: List<MgoCodeableConcept>? = null,
     val rateRatio: MgoRatio? = null,
+    val route: MgoCodeableConcept? = null,
     val rateRange: MgoRange? = null,
-    val rateQuantity: MgoQuantity? = null
+    val doseRange: MgoRange? = null,
+    val doseQuantity: MgoQuantity? = null,
+    val timing: ZibAdministrationSchedule,
+    val rateQuantity: MgoQuantity? = null,
+    val maxDosePerPeriod: MgoRatio? = null,
+    val text: String? = null
 )

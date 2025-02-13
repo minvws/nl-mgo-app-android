@@ -16,8 +16,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class R4NlCoreContactInformationEmailAddresses(
     val system: String,
-    val value: String? = null,
-    val use: String? = null
+    val use: String? = null,
+    val value: String? = null
 ) {
 
     init {

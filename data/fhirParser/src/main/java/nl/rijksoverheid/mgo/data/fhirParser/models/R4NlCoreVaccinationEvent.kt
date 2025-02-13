@@ -17,26 +17,26 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreVaccinationEvent(
-    val pharmaceuticalProduct: MgoReference? = null,
+    val vaccinationMotive: List<MgoCodeableConcept>? = null,
     val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
-    val vaccineCode: MgoCodeableConcept? = null,
-    val patient: MgoReference? = null,
-    val occurrenceDateTime: String? = null,
-    val location: MgoReference? = null,
-    val site: MgoCodeableConcept? = null,
-    val route: MgoCodeableConcept? = null,
-    val doseQuantity: MgoQuantity? = null,
-    val performer: List<MgoReference>? = null,
     val note: List<MgoAnnotation>? = null,
     val vaccinationIndication: List<MgoCodeableConcept>? = null,
-    val vaccinationMotive: List<MgoCodeableConcept>? = null,
-    val protocolApplied: List<ProtocolApplied>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val performer: List<MgoReference>? = null,
+    val doseQuantity: MgoQuantity? = null,
+    val pharmaceuticalProduct: MgoReference? = null,
     val profile: String,
-    val fhirVersion: String
+    val referenceId: String,
+    val site: MgoCodeableConcept? = null,
+    val route: MgoCodeableConcept? = null,
+    val patient: MgoReference? = null,
+    val fhirVersion: String,
+    val protocolApplied: List<ProtocolApplied>? = null,
+    val occurrenceDateTime: String? = null,
+    val location: MgoReference? = null,
+    val id: String? = null,
+    val vaccineCode: MgoCodeableConcept? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
@@ -46,11 +46,11 @@ data class R4NlCoreVaccinationEvent(
 
     @Serializable
     data class ProtocolApplied(
-        val authority: MgoReference? = null,
-        val targetDisease: List<MgoCodeableConcept>? = null,
-        val doseNumberPositiveInt: Double? = null,
         val doseNumberString: String? = null,
         val seriesDosesPositiveInt: Double? = null,
+        val authority: MgoReference? = null,
+        val doseNumberPositiveInt: Double? = null,
+        val targetDisease: List<MgoCodeableConcept>? = null,
         val seriesDosesString: String? = null
     )
 

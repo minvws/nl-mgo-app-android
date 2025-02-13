@@ -16,20 +16,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class R4NlCorePatient(
     val identifier: List<MgoIdentifier>? = null,
-    val birthDate: String? = null,
-    val gender: Gender? = null,
-    val multipleBirth: Boolean? = null,
     val deceased: Boolean? = null,
-    val deceasedDateTime: String? = null,
     val address: List<R4NlCoreAddressInformation>? = null,
-    val generalPractitioner: List<MgoReference>? = null,
-    val managingOrganization: MgoReference? = null,
-    val maritalStatus: MgoCodeableConcept? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val gender: Gender? = null,
     val profile: String,
-    val fhirVersion: String
+    val birthDate: String? = null,
+    val referenceId: String,
+    val multipleBirth: Boolean? = null,
+    val managingOrganization: MgoReference? = null,
+    val deceasedDateTime: String? = null,
+    val generalPractitioner: List<MgoReference>? = null,
+    val fhirVersion: String,
+    val name: List<R4NlCorePatientName>? = null,
+    val id: String? = null,
+    val maritalStatus: MgoCodeableConcept? = null,
+    val resourceType: String? = null
 ) {
 
     init {

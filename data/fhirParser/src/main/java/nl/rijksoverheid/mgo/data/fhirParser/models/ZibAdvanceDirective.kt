@@ -15,17 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibAdvanceDirective(
-    val category: List<MgoCodeableConcept>? = null,
     val dateTime: String? = null,
     val disorder: MgoReference? = null,
     val consentingParty: List<MgoReference>? = null,
-    val source: Source,
-    val comment: String? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val fhirVersion: String,
+    val comment: String? = null,
+    val source: Source,
+    val id: String? = null,
+    val category: List<MgoCodeableConcept>? = null,
+    val referenceId: String,
+    val resourceType: String? = null
 ) {
 
     init {
@@ -35,9 +35,9 @@ data class ZibAdvanceDirective(
 
     @Serializable
     data class Source(
-        val attachment: Attachment,
+        val reference: MgoReference? = null,
         val identifier: MgoIdentifier? = null,
-        val reference: MgoReference? = null
+        val attachment: Attachment
     )
 
     companion object {

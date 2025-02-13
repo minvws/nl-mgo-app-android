@@ -16,14 +16,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NlCorePractitionerRole(
     val identifier: List<MgoIdentifier>? = null,
-    val organization: MgoReference? = null,
     val specialty: List<MgoCodeableConcept>? = null,
+    val organization: MgoReference? = null,
+    val profile: String,
+    val fhirVersion: String,
     val telecom: List<NlCoreContactpoint>? = null,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val resourceType: String? = null
 ) {
 
     init {

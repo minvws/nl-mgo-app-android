@@ -15,18 +15,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreHealthcareProviderOrganization(
-    val identifier: List<MgoIdentifier>? = null,
-    val departmentSpecialty: List<MgoCodeableConcept>? = null,
     val organizationType: List<MgoCodeableConcept>? = null,
-    val name: String? = null,
-    val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
+    val identifier: List<MgoIdentifier>? = null,
     val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>? = null,
     val address: List<R4NlCoreAddressInformation>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val fhirVersion: String,
+    val name: String? = null,
+    val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
+    val id: String? = null,
+    val departmentSpecialty: List<MgoCodeableConcept>? = null,
+    val referenceId: String,
+    val resourceType: String? = null
 ) {
 
     init {

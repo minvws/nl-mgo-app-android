@@ -15,36 +15,36 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibMedicationAgreement(
+    val identifier: List<MgoIdentifier>? = null,
+    val note: List<MgoAnnotation>? = null,
+    val medicationTreatment: MgoIdentifier? = null,
+    val profile: String,
+    val stopType: MgoCodeableConcept? = null,
+    val priority: Priority? = null,
+    val intent: String? = null,
+    val dossageInstruction: List<ZibInstructionsForUse>? = null,
+    val referenceId: String,
+    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
+    val medicationReference: MgoReference? = null,
     val periodOfUse: MgoPeriod? = null,
     val usageDuration: MgoQuantity? = null,
-    val medicationTreatment: MgoIdentifier? = null,
-    val stopType: MgoCodeableConcept? = null,
-    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
-    val identifier: List<MgoIdentifier>? = null,
+    val fhirVersion: String,
     val definition: List<MgoReference>? = null,
-    val basedOn: List<MgoReference>? = null,
-    val groupIdentifier: MgoIdentifier? = null,
-    val status: String? = null,
-    val intent: String? = null,
-    val category: MgoCodeableConcept? = null,
-    val priority: Priority? = null,
-    val medicationReference: MgoReference? = null,
-    val note: List<MgoAnnotation>? = null,
-    val dossageInstruction: List<ZibInstructionsForUse>? = null,
     val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val groupIdentifier: MgoIdentifier? = null,
+    val category: MgoCodeableConcept? = null,
+    val basedOn: List<MgoReference>? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
-        if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         if (intent != null)
             require(intent in cg_array1) { "intent not in enumerated values - $intent" }
-        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
-        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        if (status != null)
+            require(status in cg_array3) { "status not in enumerated values - $status" }
     }
 
     @Serializable
@@ -56,7 +56,15 @@ data class ZibMedicationAgreement(
     }
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement"
+        private val cg_array1 = setOf(
+            "order",
+            "plan",
+            "proposal",
+            "instance-order"
+        )
+        private const val cg_str2 = "R3"
+        private val cg_array3 = setOf(
             "active",
             "cancelled",
             "entered-in-error",
@@ -66,14 +74,6 @@ data class ZibMedicationAgreement(
             "stopped",
             "draft"
         )
-        private val cg_array1 = setOf(
-            "order",
-            "plan",
-            "proposal",
-            "instance-order"
-        )
-        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement"
-        private const val cg_str3 = "R3"
     }
 
 }

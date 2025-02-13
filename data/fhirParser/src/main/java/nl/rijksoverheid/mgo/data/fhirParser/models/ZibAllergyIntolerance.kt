@@ -16,26 +16,26 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibAllergyIntolerance(
     val identifier: List<MgoIdentifier>? = null,
-    val clinicalStatus: ClinicalStatus? = null,
-    val verificationStatus: String? = null,
-    val type: Type? = null,
-    val category: List<String>? = null,
-    val criticality: String? = null,
     val code: MgoCodeableConcept? = null,
-    val patient: MgoReference? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val verificationStatus: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val criticality: String? = null,
+    val clinicalStatus: ClinicalStatus? = null,
+    val type: Type? = null,
+    val referenceId: String,
+    val patient: MgoReference? = null,
+    val fhirVersion: String,
+    val id: String? = null,
+    val category: List<String>? = null,
+    val resourceType: String? = null
 ) {
 
     init {
         if (verificationStatus != null)
             require(verificationStatus in cg_array0) { "verificationStatus not in enumerated values - $verificationStatus" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
         if (criticality != null)
-            require(criticality in cg_array1) { "criticality not in enumerated values - $criticality" }
-        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
+            require(criticality in cg_array2) { "criticality not in enumerated values - $criticality" }
         require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
     }
 
@@ -59,12 +59,12 @@ data class ZibAllergyIntolerance(
             "confirmed",
             "refuted"
         )
-        private val cg_array1 = setOf(
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
+        private val cg_array2 = setOf(
             "high",
             "low",
             "unable-to-assess"
         )
-        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
         private const val cg_str3 = "R3"
     }
 

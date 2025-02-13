@@ -16,33 +16,35 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NlCoreObservation(
     val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val subject: MgoReference? = null,
-    val context: MgoReference? = null,
-    val valueQuantity: MgoQuantity? = null,
-    val effectivePeriod: MgoPeriod? = null,
     val dataAbsentReason: MgoCodeableConcept? = null,
+    val effectivePeriod: MgoPeriod? = null,
     val method: MgoCodeableConcept? = null,
+    val subject: MgoReference? = null,
+    val profile: String,
+    val referenceId: String,
     val bodySite: MgoCodeableConcept? = null,
     val effectiveDateTime: String? = null,
+    val fhirVersion: String,
+    val context: MgoReference? = null,
     val comment: String? = null,
     val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val category: List<MgoCodeableConcept>? = null,
+    val status: String? = null,
+    val valueQuantity: MgoQuantity? = null,
+    val resourceType: String? = null
 ) {
 
     init {
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
         if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-observation"
+        private const val cg_str1 = "R3"
+        private val cg_array2 = setOf(
             "registered",
             "preliminary",
             "final",
@@ -52,8 +54,6 @@ data class NlCoreObservation(
             "entered-in-error",
             "unknown"
         )
-        private const val cg_str1 = "http://fhir.nl/fhir/StructureDefinition/nl-core-observation"
-        private const val cg_str2 = "R3"
     }
 
 }

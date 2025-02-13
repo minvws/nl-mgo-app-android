@@ -15,11 +15,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreNameInformationGiven(
-    val use: String,
-    val text: String? = null,
     val given: List<String>? = null,
-    val period: MgoPeriod? = null
-) {
+    val period: MgoPeriod? = null,
+    val use: String,
+    val text: String? = null
+) : R4NlCorePatientName, R4NlCoreHealthProfessionalPractitionerName {
 
     init {
         require(use == cg_str0) { "use not constant value $cg_str0 - $use" }

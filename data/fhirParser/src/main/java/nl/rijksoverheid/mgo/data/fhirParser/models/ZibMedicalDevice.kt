@@ -16,34 +16,36 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibMedicalDevice(
     val identifier: List<MgoIdentifier>? = null,
-    val organization: MgoReference? = null,
-    val practitioner: MgoReference? = null,
     val reason: MgoReference? = null,
-    val status: String? = null,
-    val patient: MgoReference? = null,
-    val whenUsed: MgoPeriod? = null,
-    val recordedOn: String? = null,
-    val source: MgoReference? = null,
-    val device: MgoReference? = null,
-    val bodySite: MgoCodeableConcept? = null,
-    val laterality: MgoCodeableConcept? = null,
     val note: List<MgoAnnotation>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val practitioner: MgoReference? = null,
     val profile: String,
-    val fhirVersion: String
+    val source: MgoReference? = null,
+    val laterality: MgoCodeableConcept? = null,
+    val referenceId: String,
+    val bodySite: MgoCodeableConcept? = null,
+    val whenUsed: MgoPeriod? = null,
+    val patient: MgoReference? = null,
+    val organization: MgoReference? = null,
+    val fhirVersion: String,
+    val recordedOn: String? = null,
+    val id: String? = null,
+    val device: MgoReference? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
         if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice"
+        private const val cg_str1 = "R3"
+        private val cg_array2 = setOf(
             "active",
             "entered-in-error",
             "on-hold",
@@ -51,8 +53,6 @@ data class ZibMedicalDevice(
             "stopped",
             "intended"
         )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice"
-        private const val cg_str2 = "R3"
     }
 
 }

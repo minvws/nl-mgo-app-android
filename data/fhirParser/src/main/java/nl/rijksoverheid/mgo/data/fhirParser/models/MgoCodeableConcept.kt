@@ -15,6 +15,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoCodeableConcept(
-    val text: String? = null,
-    val coding: List<MgoCoding>
+    val coding: List<MgoCoding>,
+    val text: String? = null
 )

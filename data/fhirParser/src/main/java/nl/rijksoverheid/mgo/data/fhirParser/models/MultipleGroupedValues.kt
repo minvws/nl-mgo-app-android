@@ -19,9 +19,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("MULTIPLE_GROUPED_VALUES")
                 data class MultipleGroupedValues(
-    val type: String,
+    val display: List<List<String>>? = null,
     val label: String,
-    val display: List<List<String>>? = null
+    val type: String
 ) : UiElement {
 
     init {

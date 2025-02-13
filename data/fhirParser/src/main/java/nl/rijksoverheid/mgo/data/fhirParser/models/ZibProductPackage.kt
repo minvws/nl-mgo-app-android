@@ -20,8 +20,8 @@ data class ZibProductPackage(
 
     @Serializable
     data class Content(
-        val item: MgoCodeableConcept? = null,
-        val reference: MgoReference? = null
+        val reference: MgoReference? = null,
+        val item: MgoCodeableConcept? = null
     )
 
 }

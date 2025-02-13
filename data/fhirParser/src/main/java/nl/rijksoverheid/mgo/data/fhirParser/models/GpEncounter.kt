@@ -15,16 +15,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpEncounter(
+    val reason: List<MgoCodeableConcept>? = null,
+    val period: MgoPeriod? = null,
+    val profile: String,
+    val fhirVersion: String,
+    val serviceProvider: MgoReference? = null,
+    val id: String? = null,
     val `class`: MgoCoding? = null,
     val participant: List<EncounterParticipant>? = null,
-    val serviceProvider: MgoReference? = null,
-    val period: MgoPeriod? = null,
-    val reason: List<MgoCodeableConcept>? = null,
-    val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val resourceType: String? = null
 ) {
 
     init {

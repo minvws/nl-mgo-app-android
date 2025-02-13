@@ -16,18 +16,19 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class R4NlCoreHealthProfessionalPractitioner(
     val identifier: List<MgoIdentifier>? = null,
-    val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
-    val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>? = null,
     val address: List<R4NlCoreAddressInformation>? = null,
     val gender: Gender? = null,
-    val birthDate: String? = null,
-    val qualification: List<Qualification>? = null,
-    val communication: List<MgoCodeableConcept>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val birthDate: String? = null,
+    val referenceId: String,
+    val qualification: List<Qualification>? = null,
+    val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>? = null,
+    val fhirVersion: String,
+    val name: List<R4NlCoreHealthProfessionalPractitionerName>? = null,
+    val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
+    val id: String? = null,
+    val communication: List<MgoCodeableConcept>? = null,
+    val resourceType: String? = null
 ) {
 
     init {
@@ -46,8 +47,8 @@ data class R4NlCoreHealthProfessionalPractitioner(
     @Serializable
     data class Qualification(
         val identifier: List<MgoIdentifier>? = null,
-        val code: MgoCodeableConcept? = null,
         val period: MgoPeriod? = null,
+        val code: MgoCodeableConcept? = null,
         val issuer: MgoReference? = null
     )
 

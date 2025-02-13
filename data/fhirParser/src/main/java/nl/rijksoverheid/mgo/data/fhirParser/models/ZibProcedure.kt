@@ -15,21 +15,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProcedure(
-    val performedPeriod: MgoPeriod? = null,
-    val bodySite: List<MgoCodeableConcept>? = null,
-    val bodySiteQualifier: List<MgoCodeableConcept>? = null,
-    val reasonReference: List<MgoReference>? = null,
     val code: MgoCodeableConcept? = null,
-    val procedureMethod: MgoCodeableConcept? = null,
-    val focalDevice: List<FocalDevice>? = null,
-    val location: MgoReference? = null,
     val performer: List<Performer>? = null,
     val subject: MgoReference? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val procedureMethod: MgoCodeableConcept? = null,
+    val reasonReference: List<MgoReference>? = null,
+    val focalDevice: List<FocalDevice>? = null,
+    val performedPeriod: MgoPeriod? = null,
+    val referenceId: String,
+    val bodySite: List<MgoCodeableConcept>? = null,
+    val bodySiteQualifier: List<MgoCodeableConcept>? = null,
+    val fhirVersion: String,
+    val location: MgoReference? = null,
+    val id: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
@@ -38,13 +38,13 @@ data class ZibProcedure(
     }
 
     @Serializable
-    data class FocalDevice(
-        val manipulated: MgoReference? = null
+    data class Performer(
+        val actor: MgoReference? = null
     )
 
     @Serializable
-    data class Performer(
-        val actor: MgoReference? = null
+    data class FocalDevice(
+        val manipulated: MgoReference? = null
     )
 
     companion object {

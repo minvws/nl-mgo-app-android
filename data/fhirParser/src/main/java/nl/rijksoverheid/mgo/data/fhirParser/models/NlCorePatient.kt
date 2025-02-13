@@ -17,52 +17,35 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCorePatient(
-    val active: Boolean? = null,
-    val address: List<NlCoreAddress>? = null,
-    val birthDate: String? = null,
-    val communication: List<Communication>? = null,
-    val contact: List<Contact>? = null,
-    val deceased: Boolean? = null,
-    val deceasedDateTime: String? = null,
-    val gender: Gender? = null,
-    val generalPractitioner: List<MgoReference>? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val address: List<NlCoreAddress>? = null,
+    val deceased: Boolean? = null,
+    val gender: Gender? = null,
+    val profile: String,
     val link: List<Link>? = null,
-    val managingOrganization: MgoReference? = null,
-    val maritalStatus: MgoCodeableConcept? = null,
-    val multipleBirth: Boolean? = null,
-    val multipleBirthInteger: Double? = null,
-    val name: List<NlCoreHumanname>? = null,
+    val active: Boolean? = null,
     val photo: List<Attachment>? = null,
+    val birthDate: String? = null,
+    val referenceId: String,
+    val multipleBirth: Boolean? = null,
+    val managingOrganization: MgoReference? = null,
+    val multipleBirthInteger: Double? = null,
+    val contact: List<Contact>? = null,
+    val deceasedDateTime: String? = null,
+    val generalPractitioner: List<MgoReference>? = null,
+    val fhirVersion: String,
+    val name: List<NlCoreHumanname>? = null,
     val telecom: List<NlCoreContactpoint>? = null,
     val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val communication: List<Communication>? = null,
+    val maritalStatus: MgoCodeableConcept? = null,
+    val resourceType: String? = null
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
-
-    @Serializable
-    data class Communication(
-        val language: MgoCodeableConcept? = null,
-        val preferred: Boolean? = null
-    )
-
-    @Serializable
-    data class Contact(
-        val relationship: List<MgoCodeableConcept>,
-        val name: NlCoreHumanname,
-        val telecom: List<NlCoreContactpoint>,
-        val address: NlCoreAddress,
-        val gender: String? = null,
-        val organization: MgoReference? = null,
-        val period: MgoPeriod? = null
-    )
 
     @Serializable
     enum class Gender {
@@ -76,6 +59,23 @@ data class NlCorePatient(
     data class Link(
         val other: MgoReference? = null,
         val type: String? = null
+    )
+
+    @Serializable
+    data class Contact(
+        val period: MgoPeriod? = null,
+        val address: NlCoreAddress,
+        val gender: String? = null,
+        val organization: MgoReference? = null,
+        val name: NlCoreHumanname,
+        val telecom: List<NlCoreContactpoint>,
+        val relationship: List<MgoCodeableConcept>
+    )
+
+    @Serializable
+    data class Communication(
+        val language: MgoCodeableConcept? = null,
+        val preferred: Boolean? = null
     )
 
     companion object {

@@ -15,27 +15,27 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpDiagnosticResult(
-    val comment: String? = null,
-    val method: MgoCodeableConcept? = null,
-    val valueQuantity: MgoQuantity? = null,
-    val valueCodeableConcept: MgoCodeableConcept? = null,
-    val valueString: String? = null,
     val valueBoolean: Boolean? = null,
-    val valueRange: MgoRange? = null,
-    val valueDateTime: String? = null,
-    val valuePeriod: MgoPeriod? = null,
     val identifier: List<MgoIdentifier>? = null,
-    val context: MgoReference? = null,
-    val subject: MgoReference? = null,
-    val effective: String? = null,
     val performer: List<MgoReference>? = null,
-    val status: String? = null,
     val code: MgoCodeableConcept? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val method: MgoCodeableConcept? = null,
+    val valueRange: MgoRange? = null,
+    val subject: MgoReference? = null,
     val profile: String,
-    val fhirVersion: String
+    val referenceId: String,
+    val valueCodeableConcept: MgoCodeableConcept? = null,
+    val effective: String? = null,
+    val valueString: String? = null,
+    val valuePeriod: MgoPeriod? = null,
+    val fhirVersion: String,
+    val context: MgoReference? = null,
+    val comment: String? = null,
+    val valueDateTime: String? = null,
+    val id: String? = null,
+    val valueQuantity: MgoQuantity? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {

@@ -17,9 +17,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoDuration(
-    val value: Double? = null,
     val comparator: String? = null,
     val unit: String? = null,
     val system: String? = null,
-    val code: String? = null
+    val code: String? = null,
+    val value: Double? = null
 )

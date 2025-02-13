@@ -23,17 +23,17 @@ data class ZibAdministrationSchedule(
     @Serializable
     data class Repeat(
         val boundsDuration: MgoDuration? = null,
-        val boundsPeriod: MgoPeriod? = null,
-        val boundsRange: MgoRange? = null,
         val duration: Double? = null,
-        val durationUnit: String? = null,
-        val frequency: Double? = null,
-        val frequencyMax: Double? = null,
+        val boundsRange: MgoRange? = null,
         val period: Double? = null,
-        val periodUnit: String? = null,
         val dayOfWeek: List<String>? = null,
-        val timeOfDay: List<String>? = null,
-        val `when`: List<String>? = null
+        val frequencyMax: Double? = null,
+        val boundsPeriod: MgoPeriod? = null,
+        val durationUnit: String? = null,
+        val periodUnit: String? = null,
+        val `when`: List<String>? = null,
+        val frequency: Double? = null,
+        val timeOfDay: List<String>? = null
     )
 
 }

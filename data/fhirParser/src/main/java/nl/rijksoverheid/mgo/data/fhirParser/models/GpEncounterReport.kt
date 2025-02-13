@@ -15,19 +15,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpEncounterReport(
-    val identifier: MgoIdentifier? = null,
-    val status: String? = null,
-    val type: List<MgoCoding>? = null,
-    val encounter: MgoReference? = null,
     val date: String? = null,
+    val identifier: MgoIdentifier? = null,
     val author: List<MgoReference>? = null,
-    val title: String? = null,
-    val section: List<Section>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val section: List<Section>? = null,
+    val encounter: MgoReference? = null,
+    val type: List<MgoCoding>? = null,
+    val title: String? = null,
+    val referenceId: String,
+    val fhirVersion: String,
+    val id: String? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
@@ -37,8 +37,8 @@ data class GpEncounterReport(
 
     @Serializable
     data class Section(
-        val code: MgoCodeableConcept? = null,
-        val entry: List<MgoReference>? = null
+        val entry: List<MgoReference>? = null,
+        val code: MgoCodeableConcept? = null
     )
 
     companion object {

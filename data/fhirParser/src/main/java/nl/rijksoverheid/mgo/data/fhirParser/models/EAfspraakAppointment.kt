@@ -15,17 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EAfspraakAppointment(
-    val status: String? = null,
     val specialty: List<MgoCodeableConcept>? = null,
-    val description: String? = null,
-    val start: String? = null,
-    val end: String? = null,
-    val participant: List<Participant>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val fhirVersion: String,
+    val start: String? = null,
+    val description: String? = null,
+    val end: String? = null,
+    val id: String? = null,
+    val participant: List<Participant>? = null,
+    val referenceId: String,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {

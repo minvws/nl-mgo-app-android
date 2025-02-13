@@ -15,27 +15,27 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class IheMhdMinimalDocumentReference(
-    val masterIdentifier: MgoIdentifier? = null,
-    val status: String? = null,
-    val type: MgoCodeableConcept? = null,
-    val `class`: MgoCodeableConcept? = null,
-    val subject: MgoReference? = null,
     val indexed: String? = null,
+    val subject: MgoReference? = null,
     val author: List<MgoReference>? = null,
-    val content: Content,
     val securityLabel: List<MgoCodeableConcept>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val masterIdentifier: MgoIdentifier? = null,
+    val type: MgoCodeableConcept? = null,
+    val content: Content,
+    val referenceId: String,
+    val fhirVersion: String,
+    val id: String? = null,
+    val `class`: MgoCodeableConcept? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
         if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
@@ -44,13 +44,13 @@ data class IheMhdMinimalDocumentReference(
     )
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference"
+        private const val cg_str1 = "R3"
+        private val cg_array2 = setOf(
             "entered-in-error",
             "current",
             "superseded"
         )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference"
-        private const val cg_str2 = "R3"
     }
 
 }

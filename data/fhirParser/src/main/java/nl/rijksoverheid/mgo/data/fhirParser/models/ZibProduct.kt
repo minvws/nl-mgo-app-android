@@ -15,16 +15,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProduct(
-    val description: String? = null,
     val code: MgoCodeableConcept? = null,
-    val form: MgoCodeableConcept? = null,
     val ingredient: List<ZibProductIngredient>? = null,
     val `package`: Package,
+    val form: MgoCodeableConcept? = null,
+    val profile: String,
+    val fhirVersion: String,
+    val description: String? = null,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val resourceType: String? = null
 ) {
 
     init {
@@ -39,8 +39,8 @@ data class ZibProduct(
 
     @Serializable
     data class Content(
-        val item: MgoCodeableConcept? = null,
-        val reference: MgoReference? = null
+        val reference: MgoReference? = null,
+        val item: MgoCodeableConcept? = null
     )
 
     companion object {

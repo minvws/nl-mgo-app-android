@@ -15,17 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreOrganization(
-    val identifier: List<MgoIdentifier>? = null,
-    val name: String? = null,
-    val departmentSpecialty: List<MgoCodeableConcept>? = null,
-    val telecom: List<NlCoreContactpoint>? = null,
-    val address: List<NlCoreAddress>? = null,
     val organizationType: List<MgoCodeableConcept>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val address: List<NlCoreAddress>? = null,
     val profile: String,
-    val fhirVersion: String
+    val fhirVersion: String,
+    val name: String? = null,
+    val telecom: List<NlCoreContactpoint>? = null,
+    val id: String? = null,
+    val departmentSpecialty: List<MgoCodeableConcept>? = null,
+    val referenceId: String,
+    val resourceType: String? = null
 ) {
 
     init {

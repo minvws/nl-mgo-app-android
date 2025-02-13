@@ -15,21 +15,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpJournalEntry(
-    val performer: List<MgoReference>? = null,
-    val valueString: String? = null,
-    val ICPC_S: ICPCS,
-    val ICPC_E: ICPCE,
-    val effectivePeriod: MgoPeriod? = null,
-    val effectiveDateTime: String? = null,
     val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
+    val performer: List<MgoReference>? = null,
     val code: MgoCodeableConcept? = null,
+    val effectivePeriod: MgoPeriod? = null,
+    val ICPC_S: ICPCS,
+    val profile: String,
+    val referenceId: String,
+    val valueString: String? = null,
+    val ICPC_E: ICPCE,
+    val effectiveDateTime: String? = null,
+    val fhirVersion: String,
     val context: MgoReference? = null,
     val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {

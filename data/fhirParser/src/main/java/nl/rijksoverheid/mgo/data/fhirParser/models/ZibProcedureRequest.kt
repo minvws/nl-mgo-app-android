@@ -15,18 +15,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProcedureRequest(
-    val status: String? = null,
-    val occurrence: MgoPeriod? = null,
+    val reason: List<MgoReference>? = null,
     val code: MgoCodeableConcept? = null,
-    val intent: String? = null,
     val subject: MgoReference? = null,
     val perfomer: MgoReference? = null,
-    val reason: List<MgoReference>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val fhirVersion: String,
+    val occurrence: MgoPeriod? = null,
+    val id: String? = null,
+    val intent: String? = null,
+    val referenceId: String,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {

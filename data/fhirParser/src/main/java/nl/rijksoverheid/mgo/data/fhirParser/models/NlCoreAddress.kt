@@ -15,14 +15,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreAddress(
-    val use: String? = null,
-    val type: String? = null,
-    val text: String? = null,
-    val line: List<String>? = null,
-    val city: String? = null,
-    val district: String? = null,
-    val state: String? = null,
-    val postalCode: String? = null,
     val country: String? = null,
-    val period: MgoPeriod? = null
+    val period: MgoPeriod? = null,
+    val city: String? = null,
+    val use: String? = null,
+    val line: List<String>? = null,
+    val district: String? = null,
+    val postalCode: String? = null,
+    val text: String? = null,
+    val state: String? = null,
+    val type: String? = null
 )

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
+import nl.rijksoverheid.mgo.data.fhirParser.models.Profiles
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Documents
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Gp
@@ -50,30 +51,30 @@ fun HealthCareCategory.getProfiles(): List<String> {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> {
             listOf(
-                "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse",
-                "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement",
-                "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement",
+                Profiles.zibMedicationUse,
+                Profiles.zibMedicationAgreement,
+                Profiles.zibAdministrationAgreement,
             )
         }
 
         HealthCareCategory.LAB_RESULTS -> {
             listOf(
-                "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation",
-                "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult",
+                Profiles.zibLaboratoryTestResultObservation,
+                Profiles.gpLaboratoryResult,
             )
         }
 
         HealthCareCategory.DOCUMENTS -> {
             listOf(
-                "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference",
+                Profiles.iHEMHDMinimalDocumentReference,
             )
         }
 
         HealthCareCategory.VACCINATIONS -> {
             listOf(
-                "http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination",
-                "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation",
-                "http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event",
+                Profiles.zibVaccination,
+                Profiles.zibVaccinationRecommendation,
+                Profiles.nlCoreVaccinationEvent,
             )
         }
 

@@ -15,11 +15,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreHumanname(
-    val family: String? = null,
     val given: List<String>? = null,
     val period: MgoPeriod? = null,
     val prefix: List<String>? = null,
-    val suffix: List<String>? = null,
+    val use: String? = null,
     val text: String? = null,
-    val use: String? = null
+    val family: String? = null,
+    val suffix: List<String>? = null
 )

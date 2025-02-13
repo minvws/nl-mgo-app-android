@@ -15,40 +15,50 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibBloodPressure(
-    val cuffTypeLOINC: CuffTypeLOINC,
-    val cuffTypeSNOMED: CuffTypeSNOMED,
-    val diastolicEndpoint: DiastolicEndpoint,
-    val systolicBP: SystolicBP,
-    val diastolicBP: DiastolicBP,
-    val averageBloodPressureLOINC: AverageBloodPressureLOINC,
-    val averageBloodPressureSNOMED: AverageBloodPressureSNOMED,
-    val positionSNOMED: PositionSNOMED,
-    val positionLOINC: PositionLOINC,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String,
-    val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val subject: MgoReference? = null,
-    val context: MgoReference? = null,
-    val valueQuantity: MgoQuantity? = null,
-    val effectivePeriod: MgoPeriod? = null,
     val dataAbsentReason: MgoCodeableConcept? = null,
+    val averageBloodPressureLOINC: AverageBloodPressureLOINC,
+    val diastolicEndpoint: DiastolicEndpoint,
+    val subject: MgoReference? = null,
+    val cuffTypeLOINC: CuffTypeLOINC,
+    val diastolicBP: DiastolicBP,
+    val referenceId: String,
+    val cuffTypeSNOMED: CuffTypeSNOMED,
+    val systolicBP: SystolicBP,
+    val fhirVersion: String,
+    val context: MgoReference? = null,
+    val id: String? = null,
+    val valueQuantity: MgoQuantity? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val effectivePeriod: MgoPeriod? = null,
     val method: MgoCodeableConcept? = null,
+    val profile: String,
+    val positionSNOMED: PositionSNOMED,
     val bodySite: MgoCodeableConcept? = null,
     val effectiveDateTime: String? = null,
-    val comment: String? = null
+    val comment: String? = null,
+    val averageBloodPressureSNOMED: AverageBloodPressureSNOMED,
+    val category: List<MgoCodeableConcept>? = null,
+    val positionLOINC: PositionLOINC,
+    val resourceType: String? = null,
+    val status: String? = null
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
         if (status != null)
             require(status in cg_array2) { "status not in enumerated values - $status" }
     }
+
+    @Serializable
+    data class AverageBloodPressureLOINC(
+        val valueQuantity: MgoQuantity? = null
+    )
+
+    @Serializable
+    data class DiastolicEndpoint(
+        val valueCodeableConcept: MgoCodeableConcept? = null
+    )
 
     @Serializable
     data class CuffTypeLOINC(
@@ -56,12 +66,12 @@ data class ZibBloodPressure(
     )
 
     @Serializable
-    data class CuffTypeSNOMED(
-        val valueCodeableConcept: MgoCodeableConcept? = null
+    data class DiastolicBP(
+        val valueQuantity: MgoQuantity? = null
     )
 
     @Serializable
-    data class DiastolicEndpoint(
+    data class CuffTypeSNOMED(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
@@ -71,13 +81,8 @@ data class ZibBloodPressure(
     )
 
     @Serializable
-    data class DiastolicBP(
-        val valueQuantity: MgoQuantity? = null
-    )
-
-    @Serializable
-    data class AverageBloodPressureLOINC(
-        val valueQuantity: MgoQuantity? = null
+    data class PositionSNOMED(
+        val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
     @Serializable
@@ -86,18 +91,13 @@ data class ZibBloodPressure(
     )
 
     @Serializable
-    data class PositionSNOMED(
-        val valueCodeableConcept: MgoCodeableConcept? = null
-    )
-
-    @Serializable
     data class PositionLOINC(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "R3"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure"
         private val cg_array2 = setOf(
             "registered",
             "preliminary",

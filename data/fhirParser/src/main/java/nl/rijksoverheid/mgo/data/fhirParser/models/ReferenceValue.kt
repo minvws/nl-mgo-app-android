@@ -19,10 +19,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("REFERENCE_VALUE")
                 data class ReferenceValue(
-    val type: String,
-    val label: String,
+    val reference: String? = null,
     val display: String? = null,
-    val reference: String? = null
+    val label: String,
+    val type: String
 ) : UiElement {
 
     init {

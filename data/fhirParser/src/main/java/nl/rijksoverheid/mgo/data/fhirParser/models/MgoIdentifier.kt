@@ -15,8 +15,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoIdentifier(
-    val use: String? = null,
     val system: String? = null,
-    val value: String? = null,
-    val type: MgoCodeableConcept? = null
+    val use: String? = null,
+    val type: MgoCodeableConcept? = null,
+    val value: String? = null
 )

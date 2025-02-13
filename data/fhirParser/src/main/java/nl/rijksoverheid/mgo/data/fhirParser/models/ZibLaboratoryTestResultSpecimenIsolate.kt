@@ -15,18 +15,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibLaboratoryTestResultSpecimenIsolate(
-    val identifier: List<MgoIdentifier>? = null,
-    val subject: MgoReference? = null,
     val container: List<Container>? = null,
-    val type: MgoCodeableConcept? = null,
-    val receivedTime: String? = null,
-    val collection: Collection,
+    val identifier: List<MgoIdentifier>? = null,
     val note: List<MgoAnnotation>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
+    val subject: MgoReference? = null,
+    val receivedTime: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val fhirVersion: String,
+    val collection: Collection,
+    val id: String? = null,
+    val type: MgoCodeableConcept? = null,
+    val referenceId: String,
+    val resourceType: String? = null
 ) {
 
     init {
@@ -42,18 +42,18 @@ data class ZibLaboratoryTestResultSpecimenIsolate(
 
     @Serializable
     data class Collection(
-        val method: MgoCodeableConcept? = null,
         val bodySite: BodySite,
+        val quantity: MgoQuantity? = null,
+        val method: MgoCodeableConcept? = null,
         val collectedPeriod: MgoPeriod? = null,
-        val collectedDateTime: String? = null,
-        val quantity: MgoQuantity? = null
+        val collectedDateTime: String? = null
     )
 
     @Serializable
     data class BodySite(
+        val morphology: MgoCodeableConcept? = null,
         val value: MgoCodeableConcept? = null,
-        val laterality: MgoCodeableConcept? = null,
-        val morphology: MgoCodeableConcept? = null
+        val laterality: MgoCodeableConcept? = null
     )
 
     companion object {

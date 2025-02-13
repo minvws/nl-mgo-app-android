@@ -18,60 +18,60 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibPayer(
     val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
-    val type: MgoCodeableConcept? = null,
-    val policyHolder: MgoReference? = null,
-    val subscriber: MgoReference? = null,
-    val subscriberId: String? = null,
-    val beneficiary: MgoReference? = null,
-    val relationship: MgoCodeableConcept? = null,
     val period: MgoPeriod? = null,
-    val payor: List<MgoReference>? = null,
-    val grouping: Grouping,
-    val dependent: String? = null,
-    val sequence: String? = null,
-    val order: Double? = null,
-    val network: String? = null,
+    val subscriber: MgoReference? = null,
     val contract: List<MgoReference>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val subscriberId: String? = null,
+    val type: MgoCodeableConcept? = null,
+    val grouping: Grouping,
+    val referenceId: String,
+    val network: String? = null,
+    val sequence: String? = null,
+    val payor: List<MgoReference>? = null,
+    val beneficiary: MgoReference? = null,
+    val fhirVersion: String,
+    val id: String? = null,
+    val relationship: MgoCodeableConcept? = null,
+    val dependent: String? = null,
+    val status: String? = null,
+    val policyHolder: MgoReference? = null,
+    val order: Double? = null,
+    val resourceType: String? = null
 ) {
 
     init {
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
         if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
     data class Grouping(
-        val group: String? = null,
-        val groupDisplay: String? = null,
-        val subGroup: String? = null,
         val subGroupDisplay: String? = null,
-        val plan: String? = null,
-        val planDisplay: String? = null,
+        val groupDisplay: String? = null,
+        val subClass: String? = null,
+        val subGroup: String? = null,
         val subPlan: String? = null,
         val subPlanDisplay: String? = null,
+        val subClassDisplay: String? = null,
+        val plan: String? = null,
         val `class`: String? = null,
         val classDisplay: String? = null,
-        val subClass: String? = null,
-        val subClassDisplay: String? = null
+        val group: String? = null,
+        val planDisplay: String? = null
     )
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer"
+        private const val cg_str1 = "R3"
+        private val cg_array2 = setOf(
             "active",
             "cancelled",
             "entered-in-error",
             "draft"
         )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer"
-        private const val cg_str2 = "R3"
     }
 
 }

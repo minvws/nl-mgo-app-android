@@ -15,17 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreAddressInformation(
+    val additionalInformation: String? = null,
+    val country: String? = null,
+    val period: MgoPeriod? = null,
+    val city: String? = null,
     val line: String? = null,
-    val streetName: String? = null,
+    val addressType: MgoCodeableConcept? = null,
+    val postalCode: String? = null,
     val houseNumber: String? = null,
     val houseNumberAddition: String? = null,
+    val streetName: String? = null,
     val houseNumberIndication: String? = null,
-    val additionalInformation: String? = null,
-    val city: String? = null,
-    val district: String? = null,
-    val postalCode: String? = null,
-    val country: String? = null,
     val countryCode: MgoCodeableConcept? = null,
-    val addressType: MgoCodeableConcept? = null,
-    val period: MgoPeriod? = null
+    val district: String? = null
 )

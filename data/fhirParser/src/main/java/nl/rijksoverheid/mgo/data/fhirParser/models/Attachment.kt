@@ -17,12 +17,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Attachment(
-    val contentType: String? = null,
-    val language: String? = null,
     val data: String? = null,
-    val url: String? = null,
     val size: Double? = null,
-    val hash: String? = null,
+    val language: String? = null,
     val title: String? = null,
+    val contentType: String? = null,
+    val url: String? = null,
+    val hash: String? = null,
     val creation: String? = null
 )

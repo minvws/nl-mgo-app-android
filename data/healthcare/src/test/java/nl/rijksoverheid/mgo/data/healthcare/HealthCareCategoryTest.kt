@@ -1,14 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
-import nl.rijksoverheid.mgo.data.fhirParser.shared.GpLaboratoryResultProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.IheMhdMinimalDocumentReferenceProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.R4NlCoreVaccinationEventProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibAdministrationAgreementProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibLaboratoryTestResultObservationProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationAgreementProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibMedicationUseProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationProfile
-import nl.rijksoverheid.mgo.data.fhirParser.shared.ZibVaccinationRecommendationProfile
+import nl.rijksoverheid.mgo.data.fhirParser.models.Profiles
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
@@ -64,9 +56,9 @@ class HealthCareCategoryTest {
         val medicationProfiles = HealthCareCategory.MEDICATIONS.getProfiles()
         assertEquals(
             listOf(
-                ZibMedicationUseProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationUse.value,
-                ZibMedicationAgreementProfile.HTTPNictizNlFhirStructureDefinitionZibMedicationAgreement.value,
-                ZibAdministrationAgreementProfile.HTTPNictizNlFhirStructureDefinitionZibAdministrationAgreement.value,
+                Profiles.zibMedicationUse,
+                Profiles.zibMedicationAgreement,
+                Profiles.zibAdministrationAgreement,
             ),
             medicationProfiles,
         )
@@ -75,8 +67,8 @@ class HealthCareCategoryTest {
         val labResultsProfiles = HealthCareCategory.LAB_RESULTS.getProfiles()
         assertEquals(
             listOf(
-                ZibLaboratoryTestResultObservationProfile.HTTPNictizNlFhirStructureDefinitionZibLaboratoryTestResultObservation.value,
-                GpLaboratoryResultProfile.HTTPNictizNlFhirStructureDefinitionGpLaboratoryResult.value,
+                Profiles.zibLaboratoryTestResultObservation,
+                Profiles.gpLaboratoryResult,
             ),
             labResultsProfiles,
         )
@@ -85,7 +77,7 @@ class HealthCareCategoryTest {
         val documentsProfiles = HealthCareCategory.DOCUMENTS.getProfiles()
         assertEquals(
             listOf(
-                IheMhdMinimalDocumentReferenceProfile.HTTPNictizNlFhirStructureDefinitionIHEMHDMinimalDocumentReference.value,
+                Profiles.iHEMHDMinimalDocumentReference,
             ),
             documentsProfiles,
         )
@@ -94,9 +86,9 @@ class HealthCareCategoryTest {
         val vaccinationsProfiles = HealthCareCategory.VACCINATIONS.getProfiles()
         assertEquals(
             listOf(
-                ZibVaccinationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccination.value,
-                ZibVaccinationRecommendationProfile.HTTPNictizNlFhirStructureDefinitionZibVaccinationRecommendation.value,
-                R4NlCoreVaccinationEventProfile.HTTPNictizNlFhirStructureDefinitionNlCoreVaccinationEvent.value,
+                Profiles.zibVaccination,
+                Profiles.zibVaccinationRecommendation,
+                Profiles.nlCoreVaccinationEvent,
             ),
             vaccinationsProfiles,
         )

@@ -1,16 +1,16 @@
 package nl.rijksoverheid.mgo.data.fhirParser.shared
 
 import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadLink
+import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiGroup
+import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
 import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
-import nl.rijksoverheid.mgo.data.fhirParser.models.UiSchema
-import nl.rijksoverheid.mgo.data.fhirParser.models.UiSchemaGroup
 
 val TEST_UI_SCHEMA_MEDICATION =
-    UiSchema(
+    HealthUiSchema(
         label = "Zestril tablet 10mg",
         children =
             listOf(
-                UiSchemaGroup(
+                HealthUiGroup(
                     label = "Algemeen",
                     children =
                         listOf(
@@ -28,7 +28,7 @@ val TEST_UI_SCHEMA_MEDICATION =
                             ),
                         ),
                 ),
-                UiSchemaGroup(
+                HealthUiGroup(
                     label = "Periode van gebruik",
                     children =
                         listOf(
@@ -62,7 +62,7 @@ val TEST_UI_ENTRY_DOWNLOAD_LINK =
     )
 
 val TEST_UI_SCHEMA_GROUP =
-    UiSchemaGroup(
+    HealthUiGroup(
         label = "UI Schema Group",
         children =
             listOf(
@@ -71,7 +71,7 @@ val TEST_UI_SCHEMA_GROUP =
     )
 
 val TEST_UI_SCHEMA =
-    UiSchema(
+    HealthUiSchema(
         label = "UI Schema Label",
         children = listOf(TEST_UI_SCHEMA_GROUP),
     )

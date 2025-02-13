@@ -15,37 +15,39 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibAdministrationAgreement(
-    val authoredOn: String? = null,
-    val agreementReason: String? = null,
-    val usageDuration: MgoQuantity? = null,
     val additionalInformation: MgoCodeableConcept? = null,
-    val medicationTreatment: MgoIdentifier? = null,
-    val stopType: MgoCodeableConcept? = null,
-    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
     val identifier: List<MgoIdentifier>? = null,
-    val status: String? = null,
-    val category: MgoCodeableConcept? = null,
-    val medicationReference: MgoReference? = null,
+    val note: List<MgoAnnotation>? = null,
+    val agreementReason: String? = null,
+    val medicationTreatment: MgoIdentifier? = null,
+    val authoredOn: String? = null,
     val quantity: MgoQuantity? = null,
     val daysSupply: MgoQuantity? = null,
-    val note: List<MgoAnnotation>? = null,
-    val dossageInstruction: List<ZibInstructionsForUse>? = null,
-    val id: String? = null,
-    val referenceId: String,
-    val resourceType: String? = null,
     val profile: String,
-    val fhirVersion: String
+    val stopType: MgoCodeableConcept? = null,
+    val dossageInstruction: List<ZibInstructionsForUse>? = null,
+    val referenceId: String,
+    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
+    val medicationReference: MgoReference? = null,
+    val usageDuration: MgoQuantity? = null,
+    val fhirVersion: String,
+    val id: String? = null,
+    val category: MgoCodeableConcept? = null,
+    val status: String? = null,
+    val resourceType: String? = null
 ) {
 
     init {
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
         if (status != null)
-            require(status in cg_array0) { "status not in enumerated values - $status" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     companion object {
-        private val cg_array0 = setOf(
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"
+        private const val cg_str1 = "R3"
+        private val cg_array2 = setOf(
             "entered-in-error",
             "preparation",
             "in-progress",
@@ -53,8 +55,6 @@ data class ZibAdministrationAgreement(
             "completed",
             "stopped"
         )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"
-        private const val cg_str2 = "R3"
     }
 
 }

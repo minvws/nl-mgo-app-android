@@ -15,13 +15,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibVaccinationRecommendation(
+    val profile: String,
+    val fhirVersion: String,
     val orderStatus: MgoCodeableConcept? = null,
     val recommendation: List<Recommendation>? = null,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null,
-    val profile: String,
-    val fhirVersion: String
+    val resourceType: String? = null
 ) {
 
     init {

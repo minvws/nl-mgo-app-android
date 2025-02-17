@@ -1,7 +1,13 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models
 
-import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElement
-import nl.rijksoverheid.mgo.data.fhirParser.shared.UIElementType
+import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadBinary
+import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadLink
+import nl.rijksoverheid.mgo.data.fhirParser.models.MultipleGroupedValues
+import nl.rijksoverheid.mgo.data.fhirParser.models.MultipleValues
+import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceLink
+import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceValue
+import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
+import nl.rijksoverheid.mgo.data.fhirParser.models.UiElement
 import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinary
 
 sealed class UISchemaRow(open val heading: String?, open val value: String) {
@@ -29,13 +35,12 @@ sealed class UISchemaRow(open val heading: String?, open val value: String) {
     }
 }
 
-internal fun UIElement.toRow(): UISchemaRow {
-    return when (this.type) {
-        UIElementType.ReferenceLink -> {
-            UISchemaRow.Reference(heading = null, value = this.label, referenceId = this.reference ?: "")
+internal fun UiElement.toRow(): UISchemaRow {
+    return when (this) {
+        is ReferenceLink -> {
+            UISchemaRow.Reference(heading = null, value = this.label, referenceId = this.reference)
         }
-
-        UIElementType.DownloadLink -> {
+        is DownloadLink -> {
             val url = this.url
             if (url == null) {
                 UISchemaRow.File.Empty(heading = null, value = this.label)
@@ -43,9 +48,20 @@ internal fun UIElement.toRow(): UISchemaRow {
                 UISchemaRow.File.NotDownloaded.Idle(heading = null, value = this.label, binary = url)
             }
         }
-
-        else -> {
-            UISchemaRow.Static(heading = this.label, value = this.display.getString())
+        is SingleValue -> {
+            UISchemaRow.Static(heading = this.label, value = this.display ?: "")
+        }
+        is MultipleValues -> {
+            UISchemaRow.Static(heading = this.label, value = this.display?.joinToString(", ") ?: "")
+        }
+        is MultipleGroupedValues -> {
+            UISchemaRow.Static(heading = this.label, value = this.display?.joinToString(", ") ?: "")
+        }
+        is ReferenceValue -> {
+            UISchemaRow.Static(heading = this.label, value = this.display ?: "")
+        }
+        is DownloadBinary -> {
+            UISchemaRow.Static(heading = this.label, value = this.label)
         }
     }
 }

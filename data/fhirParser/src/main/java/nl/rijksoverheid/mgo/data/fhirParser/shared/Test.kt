@@ -1,43 +1,46 @@
 package nl.rijksoverheid.mgo.data.fhirParser.shared
 
+import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadLink
+import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiGroup
+import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
+import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
+
 val TEST_UI_SCHEMA_MEDICATION =
-    UISchema(
+    HealthUiSchema(
         label = "Zestril tablet 10mg",
         children =
             listOf(
-                UISchemaGroup(
+                HealthUiGroup(
                     label = "Algemeen",
                     children =
                         listOf(
-                            UIElement(
+                            SingleValue(
                                 label = "Gebruiksaanwijzing",
                                 display =
-                                    UIElementDisplay.StringValue(
-                                        "1 keer per dag 1 capsule een half uur voor het ontbijt heel " +
-                                            "doorslikken, niet kauwen",
-                                    ),
-                                type = UIElementType.SingleValue,
+                                    "1 keer per dag 1 capsule een half uur voor het ontbijt heel " +
+                                        "doorslikken, niet kauwen",
+                                type = "SINGLE_VALUE",
                             ),
-                            UIElement(
+                            SingleValue(
                                 label = "Reden",
-                                display = UIElementDisplay.StringValue("Boezemfibrilleren/-fladderen"),
-                                type = UIElementType.SingleValue,
+                                display = "Boezemfibrilleren/-fladderen",
+                                type = "SINGLE_VALUE",
                             ),
                         ),
                 ),
-                UISchemaGroup(
+                HealthUiGroup(
                     label = "Periode van gebruik",
                     children =
                         listOf(
-                            UIElement(
+                            SingleValue(
                                 label = "Startdatum",
-                                display = UIElementDisplay.StringValue("9 maart 2022"),
-                                type = UIElementType.SingleValue,
+                                display = "9 maart 2022",
+                                type = "SINGLE_VALUE",
                             ),
-                            UIElement(
-                                label = "Einddatum",
-                                display = UIElementDisplay.StringValue("Niet bekend"),
-                                type = UIElementType.SingleValue,
+                            SingleValue(
+                                label = "Startdatum",
+                                display = "Niet bekend",
+                                type = "SINGLE_VALUE",
                             ),
                         ),
                 ),
@@ -45,20 +48,21 @@ val TEST_UI_SCHEMA_MEDICATION =
     )
 
 val TEST_UI_ENTRY =
-    UIElement(
+    SingleValue(
         label = "UI Entry Label",
-        display = UIElementDisplay.StringValue("Display"),
-        type = UIElementType.SingleValue,
+        display = "Display",
+        type = "SINGLE_VALUE",
     )
 
 val TEST_UI_ENTRY_DOWNLOAD_LINK =
-    TEST_UI_ENTRY.copy(
+    DownloadLink(
+        type = "DOWNLOAD_LINK",
+        label = "UI Entry Label",
         url = "fhir",
-        type = UIElementType.DownloadLink,
     )
 
 val TEST_UI_SCHEMA_GROUP =
-    UISchemaGroup(
+    HealthUiGroup(
         label = "UI Schema Group",
         children =
             listOf(
@@ -67,7 +71,7 @@ val TEST_UI_SCHEMA_GROUP =
     )
 
 val TEST_UI_SCHEMA =
-    UISchema(
+    HealthUiSchema(
         label = "UI Schema Label",
         children = listOf(TEST_UI_SCHEMA_GROUP),
     )

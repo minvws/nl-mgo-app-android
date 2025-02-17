@@ -51,7 +51,7 @@ private fun getExcludePaths(): String = buildList {
     add("app/src/main/java/nl/rijksoverheid/mgo/navigation/**") // Navigation classes
     add("app/src/main/java/nl/rijksoverheid/mgo/lifecycle/**") // Lifecycle classes
     add("framework/util/src/main/java/nl/rijksoverheid/mgo/framework/util/**") // Util module
-    add("**/DefaultJsRuntimeRepository.kt") // JS Runtime (can be tested with Android Tests)
+    add("data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/**") // Fhir parser module
     add("**/EncryptedFile.kt") // EncryptedFile (can be tested with Android Test)
 }.joinToString(",")
 

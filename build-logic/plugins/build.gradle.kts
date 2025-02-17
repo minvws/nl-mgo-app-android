@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.json)
     implementation(libs.kover)
+    implementation(libs.json.kotlin.schema.codegen)
 }
 
 gradlePlugin {

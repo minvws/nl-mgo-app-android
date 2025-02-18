@@ -10,7 +10,7 @@ data class HealthCategoryScreenViewState(
     sealed class ListItemsState {
         data object Loading : ListItemsState()
 
-        data class Loaded(val listItems: List<HealthCategoryScreenListItem>) : ListItemsState()
+        data class Loaded(val listItemsGroup: List<HealthCategoryScreenListItemsGroup>) : ListItemsState()
 
         data object NoData : ListItemsState()
     }

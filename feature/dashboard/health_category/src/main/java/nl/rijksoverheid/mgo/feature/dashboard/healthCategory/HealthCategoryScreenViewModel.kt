@@ -100,19 +100,24 @@ internal class HealthCategoryScreenViewModel
         private suspend fun HealthCareDataState.toListItems(
             organization: MgoOrganization,
             category: HealthCareCategory,
-        ): List<HealthCategoryScreenListItem> {
+        ): List<HealthCategoryScreenListItemsGroup> {
             return if (this is HealthCareDataState.Loaded) {
-                val mgoResources = this.results.mapNotNull { result -> result.getOrNull() }.flatten()
-                val mgoResourceToDisplay = mgoResourceRepository.filter(resources = mgoResources, profiles = category.getProfiles())
-                mgoResourceToDisplay.map { mgoResource ->
-                    val uiSchema = uiSchemaMapper.getSummary(mgoResource)
-                    HealthCategoryScreenListItem(
-                        title = uiSchema.label ?: "",
-                        subtitle = organization.name,
-                        mgoResource = mgoResource,
-                        organization = organization,
-                    )
-                }
+                // Get all the mgo resources as one big list
+                val mgoResources =
+                    this.results
+                        .mapNotNull { result -> result.getOrNull() }
+                        .flatten()
+
+                // Filter them to only display the onces we want to show
+                val filteredMgoResources = mgoResourceRepository.filter(resources = mgoResources, profiles = category.getProfiles())
+
+                // Group them by category
+                val groupedMgoResources =
+                    filteredMgoResources
+                        .groupBy { mgoResource -> mgoResource.getGroupHeading() }
+
+                // Map it to own list items group class
+                return groupedMgoResources.toListItemsGroup(uiSchemaMapper = uiSchemaMapper, organization = organization)
             } else {
                 listOf()
             }

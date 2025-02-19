@@ -28,7 +28,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
@@ -149,9 +148,7 @@ private fun OrganizationListManualScreenContent(
                 }
 
                 viewState.error != null -> {
-                    ErrorContent(
-                        error = viewState.error,
-                    )
+                    ErrorContent()
                 }
 
                 viewState.results.isEmpty() -> {
@@ -280,7 +277,7 @@ private fun EmptyListItem(
 }
 
 @Composable
-private fun ColumnScope.ErrorContent(error: Throwable) {
+private fun ColumnScope.ErrorContent() {
     Image(
         modifier =
             Modifier
@@ -295,8 +292,6 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
         text = stringResource(id = CopyR.string.common_error_subheading),
         style = MaterialTheme.typography.bodySmall,
     )
-
-    MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

@@ -51,7 +51,6 @@ kover = "0.9.1"
 robolectric = "4.14.1"
 lifecycle-process = "2.8.7"
 json-kotlin-schema-codegen = "0.115"
-dokka = "2.0.0"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -121,4 +120,3 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 serializable = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

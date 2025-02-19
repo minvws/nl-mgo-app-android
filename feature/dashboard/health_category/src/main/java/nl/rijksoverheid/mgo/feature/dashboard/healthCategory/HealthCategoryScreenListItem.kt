@@ -4,6 +4,7 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 data class HealthCategoryScreenListItem(
     val title: String,
@@ -34,4 +35,10 @@ val TEST_LIST_ITEM_3 =
         subtitle = "Huisartsenpraktijk De Haven",
         mgoResource = TEST_MGO_RESOURCE,
         organization = TEST_MGO_ORGANIZATION,
+    )
+
+val TEST_LIST_ITEM_GROUP_1 =
+    HealthCategoryScreenListItemsGroup(
+        heading = CopyR.string.zib_medication_use_heading,
+        items = listOf(TEST_LIST_ITEM_1, TEST_LIST_ITEM_2, TEST_LIST_ITEM_3),
     )

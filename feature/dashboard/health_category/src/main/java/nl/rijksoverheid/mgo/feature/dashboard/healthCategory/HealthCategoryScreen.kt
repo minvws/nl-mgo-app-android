@@ -84,7 +84,7 @@ private fun HealthCategoryScreenContent(
             when (viewState.listItemsState) {
                 is HealthCategoryScreenViewState.ListItemsState.Loaded ->
                     ListItemsContent(
-                        listItems = viewState.listItemsState.listItems,
+                        listItemsGroup = viewState.listItemsState.listItemsGroup,
                         onClickListItem = onClickListItem,
                         showErrorBanner = showErrorBanner,
                         onRetryClick = onRetry,
@@ -130,7 +130,7 @@ private fun ColumnScope.LoadingContent() {
 
 @Composable
 private fun ListItemsContent(
-    listItems: List<HealthCategoryScreenListItem>,
+    listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
     onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
     showErrorBanner: Boolean,
     onRetryClick: () -> Unit,
@@ -158,17 +158,27 @@ private fun ListItemsContent(
             }
         }
 
-        items(listItems.size) { position ->
-            val listItem = listItems[position]
-            HealthCategoryCard(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
-                        .padding(bottom = 16.dp),
-                title = listItem.title,
-                subtitle = listItem.subtitle,
-            )
+        for (listItemGroup in listItemsGroup) {
+            item {
+                Text(
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    text = stringResource(listItemGroup.heading),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            for (listItem in listItemGroup.items) {
+                item {
+                    HealthCategoryCard(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
+                                .padding(bottom = 16.dp),
+                        title = listItem.title,
+                        subtitle = listItem.subtitle,
+                    )
+                }
+            }
         }
     }
 }
@@ -292,12 +302,7 @@ internal fun HealthCategoryScreenListItemsPreview() {
                     category = HealthCareCategory.MEDICATIONS,
                     listItemsState =
                         HealthCategoryScreenViewState.ListItemsState.Loaded(
-                            listItems =
-                                listOf(
-                                    TEST_LIST_ITEM_1,
-                                    TEST_LIST_ITEM_2,
-                                    TEST_LIST_ITEM_3,
-                                ),
+                            listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
                         ),
                 ),
             onClickListItem = { _, _ -> },
@@ -317,12 +322,7 @@ internal fun HealthCategoryScreenListItemsWithErrorPreview() {
                     category = HealthCareCategory.MEDICATIONS,
                     listItemsState =
                         HealthCategoryScreenViewState.ListItemsState.Loaded(
-                            listItems =
-                                listOf(
-                                    TEST_LIST_ITEM_1,
-                                    TEST_LIST_ITEM_2,
-                                    TEST_LIST_ITEM_3,
-                                ),
+                            listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
                         ),
                     showErrorBanner = true,
                 ),

@@ -3,10 +3,13 @@ package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 import android.net.Uri
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.FhirVersion
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CATEGORY
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CLASS
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CODE
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.DATE
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.INCLUDE
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.PERIOD_OF_USE
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.STATUS
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.TYPE
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 
 // ================
@@ -32,6 +35,48 @@ sealed class HealthCareRequest(
                 ),
         )
 
+        data object MedicationAgreement : Bgz(
+            path = "MedicationRequest",
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "http://snomed.info/sct|16076005"),
+                    Pair(INCLUDE, "MedicationRequest:medication"),
+                ),
+        )
+
+        data object AdministrationAgreement : Bgz(
+            path = "MedicationDispense",
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "http://snomed.info/sct|422037009"),
+                    Pair(INCLUDE, "MedicationDispense:medication"),
+                ),
+        )
+
+        data object BloodPressure : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CODE, "http://loinc.org|85354-9"),
+                ),
+        )
+
+        data object BodyWeight : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CODE, "http://loinc.org|29463-7"),
+                ),
+        )
+
+        data object BodyHeight : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CODE, "http://loinc.org|8302-2,http://loinc.org|8306-3,http://loinc.org|8308-9"),
+                ),
+        )
+
         data object LaboratoryTestResult : Bgz(
             path = "Observation/\$lastn",
             queryParameters =
@@ -41,12 +86,172 @@ sealed class HealthCareRequest(
                     Pair(INCLUDE, "Observation:specimen"),
                 ),
         )
+
+        data object AllergyIntolerance : Bgz(
+            path = "AllergyIntolerance",
+            queryParameters = listOf(),
+        )
+
+        data object Procedure : Bgz(
+            path = "Procedure",
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "http://snomed.info/sct|387713003"),
+                ),
+        )
+
+        data object Encounter : Bgz(
+            path = "Encounter",
+            queryParameters =
+                listOf(
+                    Pair(
+                        CLASS,
+                        "http://hl7.org/fhir/v3/ActCode|IMP,http://hl7.org/fhir/v3/ActCode|ACUTE,http://hl7.org/fhir/v3/ActCode|NONAC",
+                    ),
+                ),
+        )
+
+        data object PlannedEncounters : Bgz(
+            path = "Appointment",
+            queryParameters =
+                listOf(
+                    Pair(STATUS, "booked,pending,proposed"),
+                ),
+        )
+
+        data object Vaccination : Bgz(
+            path = "Immunization",
+            queryParameters =
+                listOf(
+                    Pair(STATUS, "completed"),
+                ),
+        )
+
+        data object PlannedImmunization : Bgz(
+            path = "ImmunizationRecommendation",
+            queryParameters = listOf(),
+        )
+
+        data object Problem : Bgz(
+            path = "Condition",
+            queryParameters = listOf(),
+        )
+
+        data object Patient : Bgz(
+            path = "Patient",
+            queryParameters =
+                listOf(
+                    Pair(INCLUDE, "Patient:general-practitioner"),
+                ),
+        )
+
+        data object FunctionalOrMentalStatus : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "http://snomed.info/sct|118228005,http://snomed.info/sct|384821006"),
+                ),
+        )
+
+        data object Alert : Bgz(
+            path = "Flag",
+            queryParameters = listOf(),
+        )
+
+        data object LivingSituation : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CODE, "http://snomed.info/sct|365508006"),
+                ),
+        )
+
+        data object DrugUse : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CODE, "http://snomed.info/sct|228366006"),
+                ),
+        )
+
+        data object AlcoholUse : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CODE, "http://snomed.info/sct|228273003"),
+                ),
+        )
+
+        data object TabacoUse : Bgz(
+            path = "Observation",
+            queryParameters =
+                listOf(
+                    Pair(CODE, "http://snomed.info/sct|365980008"),
+                ),
+        )
+
+        data object NutritionAdvice : Bgz(
+            path = "NutritionOrder",
+            queryParameters = listOf(),
+        )
+
+        data object MedicalDevice : Bgz(
+            path = "DeviceUseStatement",
+            queryParameters =
+                listOf(
+                    Pair(INCLUDE, "DeviceUseStatement:device"),
+                ),
+        )
+
+        data object PlannedMedicalDevices : Bgz(
+            path = "DeviceRequest",
+            queryParameters =
+                listOf(
+                    Pair(STATUS, "active"),
+                    Pair(INCLUDE, "DeviceRequest:device"),
+                ),
+        )
+
+        data object TreatmentDirective : Bgz(
+            path = "Consent",
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "http://snomed.info/sct|11291000146105"),
+                ),
+        )
+
+        data object AdvanceDirective : Bgz(
+            path = "Consent",
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "http://snomed.info/sct|11341000146107"),
+                ),
+        )
+
+        data object Payer : Bgz(
+            path = "Coverage",
+            queryParameters =
+                listOf(
+                    Pair(INCLUDE, "Coverage:payor:Patient"),
+                    Pair(INCLUDE, "Coverage:payor:Organization"),
+                ),
+        )
     }
 
     // https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_GP_Data
     sealed class Gp(override val path: String, override val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>) :
         HealthCareRequest
         (path, queryParameters, MgoOrganizationDataServiceType.GP, FhirVersion.R3) {
+        data object CurrentMedication : Gp(
+            path = "MedicationRequest",
+            queryParameters =
+                listOf(
+                    Pair(PERIOD_OF_USE, "ge[today]"),
+                    Pair(CATEGORY, "http://snomed.info/sct|16076005"),
+                    Pair(INCLUDE, "MedicationRequest:medication"),
+                ),
+        )
+
         data object DiagnosticsAndLabResult : Gp(
             path = "Observation",
             queryParameters =
@@ -56,6 +261,48 @@ sealed class HealthCareRequest(
                     Pair(INCLUDE, "Observation:specimen"),
                     Pair(DATE, "ge2017-01-01"),
                 ),
+        )
+
+        data object AllergyIntolerance : Gp(
+            path = "AllergyIntolerance",
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "medication"),
+                ),
+        )
+
+        data object PlannedProcedure : Gp(
+            path = "ProcedureRequest",
+            queryParameters =
+                listOf(
+                    Pair(STATUS, "active"),
+                ),
+        )
+
+        data object Encounter : Gp(
+            path = "Encounter",
+            queryParameters = listOf(),
+        )
+
+        data object SoapEntries : Gp(
+            path = "Composition",
+            queryParameters =
+                listOf(
+                    Pair(TYPE, "http://loinc.org|67781-5"),
+                ),
+        )
+
+        data object Patient : Gp(
+            path = "Patient",
+            queryParameters =
+                listOf(
+                    Pair(INCLUDE, "Patient:general-practitioner"),
+                ),
+        )
+
+        data object Episodes : Gp(
+            path = "EpisodeOfCare",
+            queryParameters = listOf(),
         )
     }
 
@@ -92,6 +339,9 @@ enum class HealthCareRequestQueryKey(val value: String) {
     CODE("code"),
     DATE("date"),
     STATUS("status"),
+    PERIOD_OF_USE("periodofuse"),
+    CLASS("class"),
+    TYPE("type"),
 }
 
 fun HealthCareRequest.createUrl(baseUrl: String): String {

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import app.cash.turbine.test
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.TestUiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_ERROR
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_LOADED
@@ -19,17 +20,21 @@ import kotlinx.coroutines.test.runTest
 
 internal class HealthCategoryScreenViewModelTest {
     @get:Rule
-    val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf())
     private val organizationRepository =
         TestOrganizationRepository().apply {
             setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
         }
+    private val mgoResourceRepository = TestMgoResourceRepository()
 
     @Test
     fun testLoadedState() =
         runTest {
+            // Given: Show all mgo resources
+            mgoResourceRepository.setMgoResourcesFiltered(listOf(TEST_MGO_RESOURCE))
+
             // Given: Health care data state has loaded state
             healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
             healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
@@ -47,6 +52,9 @@ internal class HealthCategoryScreenViewModelTest {
     @Test
     fun testRetryForOrganizationAndCategory() =
         runTest {
+            // Given: Show all mgo resources
+            mgoResourceRepository.setMgoResourcesFiltered(listOf(TEST_MGO_RESOURCE))
+
             // Given: Health care data state has error state
             healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_ERROR))
             healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
@@ -67,6 +75,9 @@ internal class HealthCategoryScreenViewModelTest {
     @Test
     fun testRetryForOrganization() =
         runTest {
+            // Given: Show all mgo resources
+            mgoResourceRepository.setMgoResourcesFiltered(listOf(TEST_MGO_RESOURCE))
+
             // Given: Health care data state has error state
             healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_ERROR))
             healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
@@ -91,7 +102,7 @@ internal class HealthCategoryScreenViewModelTest {
             healthCareDataStatesRepository = healthCareDataStatesRepository,
             organizationRepository = organizationRepository,
             uiSchemaMapper = TestUiSchemaMapper(),
-            mgoResourceRepository = TestMgoResourceRepository(),
+            mgoResourceRepository = mgoResourceRepository,
         )
     }
 }

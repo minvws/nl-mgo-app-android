@@ -76,16 +76,16 @@ private fun SettingsScreenContent(
     var showResetAppDialog by remember { mutableStateOf(false) }
     if (showResetAppDialog) {
         MgoAlertDialog(
-            title = stringResource(CopyR.string.settings_reset_app_dialog_heading),
-            text = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
+            heading = stringResource(CopyR.string.settings_reset_app_dialog_heading),
+            subHeading = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
             onDismissRequest = { showResetAppDialog = false },
-            confirmButtonText = stringResource(CopyR.string.common_yes),
-            onClickConfirmButton = {
+            positiveButtonText = stringResource(CopyR.string.common_yes),
+            onClickPositiveButton = {
                 showResetAppDialog = false
                 onResetAppButtonClicked()
             },
-            dismissButtonText = stringResource(CopyR.string.common_no),
-            onClickDismissButton = {
+            negativeButtonText = stringResource(CopyR.string.common_no),
+            onClickNegativeButton = {
                 showResetAppDialog = false
             },
         )

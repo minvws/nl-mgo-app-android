@@ -19,17 +19,19 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 
 /**
- * Composable that displays HTML Text.
+ * Composable that shows HTML Text.
  * Currently supports: <b> and <a href>.
  * @param html The text to display. Make sure that the text provided has the HTML tags inside it. This means wrapping the string in CDATA
  * if coming from strings.xml.
+ * @param modifier the [Modifier] to be applied.
+ * @param style The text style. Defaults to [MaterialTheme.typography.bodySmall].
+ * @param linkColor The color of the (https) links in the text. Defaults to [MaterialTheme.colorScheme.actionTertiaryDefaultText].
  */
 @Composable
 fun MgoHtmlText(
     html: String,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodySmall,
-    onLinkClicked: (url: String) -> Unit = {},
     linkColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
 ) {
     val annotatedString =

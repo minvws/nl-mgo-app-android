@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
@@ -21,8 +19,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackbarPresenter
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackBarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.lifecycle.AppLifecycleState
@@ -48,7 +46,7 @@ class MainActivity : FragmentActivity() {
 
                 CheckFlagSecure(viewModel = viewModel)
 
-                CompositionLocalProvider(LocalSnackbarPresenter provides DefaultLocalSnackbarPresenter()) {
+                CompositionLocalProvider(LocalSnackBarPresenter provides DefaultLocalSnackBarPresenter()) {
                     RootNavigation(
                         navController = navController,
                         startDestination = startDestination,

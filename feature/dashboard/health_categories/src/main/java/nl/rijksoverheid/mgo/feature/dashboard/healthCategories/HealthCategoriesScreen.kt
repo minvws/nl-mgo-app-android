@@ -110,7 +110,6 @@ private fun HealthCategoriesScreenContent(
             MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
-        isRootScaffold = false,
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onClickAddProvider,
         onNavigateBack = onNavigateBack,

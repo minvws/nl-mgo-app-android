@@ -10,6 +10,9 @@ import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
 import nl.rijksoverheid.mgo.component.theme.notificationWarning
 
+/**
+ * Determines the appearance of a [MgoBanner].
+ */
 enum class MgoBannerType {
     INFO,
     SUCCESS,
@@ -17,6 +20,10 @@ enum class MgoBannerType {
     ERROR,
 }
 
+/**
+ * @receiver The [MgoBannerType] for which the icon is needed.
+ * @return The icon to show in [MgoBanner].
+ */
 @DrawableRes
 fun MgoBannerType.getIcon(): Int {
     return when (this) {
@@ -27,6 +34,10 @@ fun MgoBannerType.getIcon(): Int {
     }
 }
 
+/**
+ * @receiver The [MgoBannerType] for which the icon color is needed.
+ * @return The icon color to color the icon in [MgoBanner].
+ */
 @Composable
 fun MgoBannerType.getIconColor(): Color {
     return when (this) {

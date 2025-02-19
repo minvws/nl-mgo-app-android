@@ -24,10 +24,10 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.mgo.MgoVibrateDuration
+import nl.rijksoverheid.mgo.component.mgo.vibrate
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.MgoVibrateDuration
 import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.vibrate
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable

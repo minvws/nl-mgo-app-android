@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
@@ -40,7 +40,7 @@ fun RemoveOrganizationScreen(
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
-    val snackbarPresenter = LocalSnackbarPresenter.current
+    val snackbarPresenter = LocalSnackBarPresenter.current
     val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.providerDeleted.collectLatest {

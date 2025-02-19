@@ -85,7 +85,7 @@ private fun AddOrganizationScreenContent(
                         .fillMaxWidth()
                         .focusRequester(nameFocusRequester),
                 value = viewState.name,
-                header =
+                heading =
                     stringResource(
                         id = CopyR.string.add_organization_name,
                     ),
@@ -107,7 +107,7 @@ private fun AddOrganizationScreenContent(
                         .focusRequester(cityFocusRequester)
                         .padding(top = 16.dp),
                 value = viewState.city,
-                header =
+                heading =
                     stringResource(
                         id = CopyR.string.add_organization_city,
                     ),

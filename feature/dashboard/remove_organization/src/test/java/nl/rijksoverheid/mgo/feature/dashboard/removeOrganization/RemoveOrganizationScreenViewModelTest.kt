@@ -1,9 +1,8 @@
 package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import app.cash.turbine.turbineScope
-import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackBarPresenter
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -23,7 +22,7 @@ internal class RemoveOrganizationScreenViewModelTest {
         runTest {
             turbineScope {
                 // Given
-                val snackbarPresenter = DefaultLocalSnackbarPresenter()
+                val snackbarPresenter = DefaultLocalSnackBarPresenter()
                 organizationRepository.setStoredProviders(providers = listOf(TEST_MGO_ORGANIZATION))
                 val viewModel =
                     RemoveOrganizationScreenViewModel(

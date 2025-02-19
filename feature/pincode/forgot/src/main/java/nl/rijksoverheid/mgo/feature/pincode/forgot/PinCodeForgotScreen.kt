@@ -50,16 +50,16 @@ private fun PinCodeForgotScreenContent(
     var showDialog by remember { mutableStateOf(false) }
     if (showDialog) {
         MgoAlertDialog(
-            title = stringResource(id = R.string.forgot_pincode_dialog_heading),
-            text = stringResource(id = R.string.forgot_pincode_dialog_subheading),
+            heading = stringResource(id = R.string.forgot_pincode_dialog_heading),
+            subHeading = stringResource(id = R.string.forgot_pincode_dialog_subheading),
             onDismissRequest = { showDialog = false },
-            confirmButtonText = stringResource(id = R.string.common_yes),
-            onClickConfirmButton = {
+            positiveButtonText = stringResource(id = R.string.common_yes),
+            onClickPositiveButton = {
                 onCreateNewAccount()
                 showDialog = false
             },
-            dismissButtonText = stringResource(id = R.string.common_no),
-            onClickDismissButton = {
+            negativeButtonText = stringResource(id = R.string.common_no),
+            onClickNegativeButton = {
                 showDialog = false
             },
         )

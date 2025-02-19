@@ -15,49 +15,61 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 
+/**
+ * Composable that shows a alert dialog.
+ * @param onDismissRequest Called when the dialog has been dismissed.
+ * @param positiveButtonText The text of the positive button.
+ * @param positiveButtonTextColor The color of the positive button. Defaults to [MaterialTheme.colorScheme.actionTertiaryNegativeText].
+ * @param onClickPositiveButton Called when clicking on the positive button.
+ * @param negativeButtonText text of the negative button.
+ * @param negativeButtonTextColor The color of the positive button. Defaults to [MaterialTheme.colorScheme.actionTertiaryDefaultText].
+ * @param onClickPositiveButton Called when clicking on the negative button.
+ * @param heading The title of the dialog.
+ * @param subHeading The subheading of the dialog.
+ */
 @Composable
 fun MgoAlertDialog(
     onDismissRequest: () -> Unit,
-    confirmButtonText: String,
-    confirmButtonColor: Color = MaterialTheme.colorScheme.actionTertiaryNegativeText(),
-    onClickConfirmButton: () -> Unit,
-    dismissButtonText: String? = null,
-    dismissButtonColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-    onClickDismissButton: (() -> Unit)? = null,
-    title: String,
-    text: String,
+    positiveButtonText: String,
+    positiveButtonTextColor: Color = MaterialTheme.colorScheme.actionTertiaryNegativeText(),
+    onClickPositiveButton: () -> Unit,
+    negativeButtonText: String? = null,
+    negativeButtonTextColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+    onClickNegativeButton: (() -> Unit)? = null,
+    heading: String,
+    subHeading: String,
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(
-                colors = ButtonDefaults.textButtonColors(contentColor = confirmButtonColor),
-                onClick = onClickConfirmButton,
+                colors = ButtonDefaults.textButtonColors(contentColor = positiveButtonTextColor),
+                onClick = onClickPositiveButton,
             ) {
                 Text(
-                    text = confirmButtonText,
+                    text = positiveButtonText,
                     fontWeight = FontWeight.Bold,
                 )
             }
         },
         dismissButton = {
-            if (dismissButtonText != null && onClickDismissButton != null) {
+            if (negativeButtonText != null && onClickNegativeButton != null) {
                 TextButton(
-                    colors = ButtonDefaults.textButtonColors(contentColor = dismissButtonColor),
-                    onClick = onClickDismissButton,
+                    colors = ButtonDefaults.textButtonColors(contentColor = negativeButtonTextColor),
+                    onClick = onClickNegativeButton,
                 ) {
                     Text(
-                        text = dismissButtonText,
+                        text = negativeButtonText,
                         fontWeight = FontWeight.Bold,
                     )
                 }
             }
         },
         title = {
-            Text(title, style = MaterialTheme.typography.headingSmall)
+            Text(heading, style = MaterialTheme.typography.headingSmall)
         },
         text = {
-            Text(text, style = MaterialTheme.typography.bodySmall)
+            Text(subHeading, style = MaterialTheme.typography.bodySmall)
         },
         containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
     )
@@ -69,12 +81,12 @@ internal fun MgoAlertDialogPreview() {
     MgoTheme {
         MgoAlertDialog(
             onDismissRequest = {},
-            confirmButtonText = "Ok",
-            onClickConfirmButton = {},
-            dismissButtonText = "Cancel",
-            onClickDismissButton = {},
-            title = "Title",
-            text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            positiveButtonText = "Ok",
+            onClickPositiveButton = {},
+            negativeButtonText = "Cancel",
+            onClickNegativeButton = {},
+            heading = "Title",
+            subHeading = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         )
     }
 }

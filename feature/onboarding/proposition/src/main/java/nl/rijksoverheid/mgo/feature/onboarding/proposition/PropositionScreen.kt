@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,7 +19,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -45,7 +43,6 @@ internal fun PropositionOverviewScreenContent(
     onNavigateBack: () -> Unit,
     onClickNext: () -> Unit,
 ) {
-    val context = LocalContext.current
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.proposition_heading),
         scrollStateProvider =
@@ -59,7 +56,6 @@ internal fun PropositionOverviewScreenContent(
             MgoHtmlText(
                 html = stringResource(id = CopyR.string.proposition_subheading, url),
                 style = MaterialTheme.typography.bodySmall,
-                onLinkClicked = { url -> context.launchBrowser(url) },
             )
             ListItem(
                 modifier = Modifier.padding(top = 16.dp),

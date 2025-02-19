@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarType
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
@@ -23,7 +23,7 @@ class RemoveOrganizationScreenViewModel
         val providerDeleted = _providerDeleted.asSharedFlow()
 
         fun delete(
-            snackbarPresenter: DefaultLocalSnackbarPresenter,
+            snackbarPresenter: DefaultLocalSnackBarPresenter,
             organizationId: String,
         ) {
             viewModelScope.launch {

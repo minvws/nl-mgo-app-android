@@ -45,15 +45,13 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
-import nl.rijksoverheid.mgo.component.theme.MgoVibrateDuration
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
-import nl.rijksoverheid.mgo.component.theme.vibrate
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 sealed class MgoScaffoldScrollStateProvider {
@@ -66,6 +64,27 @@ sealed class MgoScaffoldScrollStateProvider {
     data class Preview(val canScrollForward: Boolean) : MgoScaffoldScrollStateProvider()
 }
 
+/**
+ * Composable that shows a [Scaffold] with some custom logic build in.
+ * Next to the functionality a  [Scaffold] has, this composable also supports:
+ * - Showing a snackbar via [LocalSnackBarPresenter].
+ * - Collapsable toolbar that has unlimited height (The default [MediumTopAppBar] only supports fixed heights).
+ * - Support for two buttons that are fixed on the bottom. If the content overlaps these buttons, these buttons
+ * will have a background color to let them stand from the content. If not, it will look like it's part of the content.
+ * @param appBarTitle The title of the [MediumTopAppBar].
+ * @param appBarTitleAlign The position of the title in the [MediumTopAppBar].
+ * @param bottomBar The bottom bar to display.
+ * @param scrollStateProvider Let's the Scaffold know if the content inside it is scrollable or not. This is used to determine
+ * if the bottom buttons should have a background color or not. Default to [MgoScaffoldScrollStateProvider.None].
+ * @param primaryButtonText If set, will show a primary button with this text. Default to null.
+ * @param primaryButtonTheme The theme of the primary button. Defaults to [MgoButtonTheme.PRIMARY_DEFAULT].
+ * @param primaryButtonLoading If set to true, will display a progress loader next to the primary button text. Default to false.
+ * @param onPrimaryButtonClick Called when clicking the primary button. Defaults to null.
+ * @param secondaryButtonText If set, will show a secondary button with this text. Default to null.
+ * @param onSecondaryButtonClick Called when clicking the secondary button. Defaults to null.
+ * @param onNavigateBack Called when clicking the back button. Default to null.
+ * @param horizontalPadding The horizontal padding of the content. Default to 16 dp.
+ */
 @Composable
 fun MgoScaffold(
     appBarTitle: String? = null,
@@ -79,7 +98,6 @@ fun MgoScaffold(
     secondaryButtonText: String? = null,
     onSecondaryButtonClick: (() -> Unit)? = null,
     onNavigateBack: (() -> Unit)? = null,
-    isRootScaffold: Boolean = true,
     horizontalPadding: Dp = 16.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -96,7 +114,7 @@ fun MgoScaffold(
         }
     val snackBarHostState = remember { SnackbarHostState() }
     if (!LocalInspectionMode.current) {
-        val snackbarPresenter = LocalSnackbarPresenter.current
+        val snackbarPresenter = LocalSnackBarPresenter.current
         LaunchedEffect(Unit) {
             val visuals = snackbarPresenter.consume()
             if (visuals != null) {
@@ -151,7 +169,6 @@ fun MgoScaffold(
                         expandedHeight =
                             calculateExpandedHeight(
                                 title = appBarTitle,
-                                horizontalPadding = horizontalPadding,
                             ),
                         // Add 16dp for some bottom padding
                         navigationIcon = {
@@ -178,14 +195,14 @@ fun MgoScaffold(
         bottomBar = bottomBar,
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState) {
-                MgoSnackBar(visuals = it.visuals as MgoSnackBarVisuals, dismiss = { snackBarHostState.currentSnackbarData?.dismiss() })
+                MgoSnackBar(visuals = it.visuals as MgoSnackBarVisuals, onDismiss = { snackBarHostState.currentSnackbarData?.dismiss() })
             }
         },
         content = { innerPadding ->
             Column(
                 modifier =
                     Modifier
-                        .then(if (isRootScaffold) Modifier.consumeWindowInsets(innerPadding) else Modifier)
+                        .consumeWindowInsets(innerPadding)
                         .padding(innerPadding),
             ) {
                 Column(
@@ -228,15 +245,10 @@ fun MgoScaffold(
     )
 }
 
-/**
- * A MediumTopAppBar expects an expandedHeight in dps. For this app we want it be a tall as the content (the title),
- * but the MediumTopAppBar composable does not support something like that out of the box
- */
+// A MediumTopAppBar expects an expandedHeight in dps. For this app we want it be a tall as the content (the title),
+// but the MediumTopAppBar composable does not support something like that out of the box
 @Composable
-private fun calculateExpandedHeight(
-    title: String,
-    horizontalPadding: Dp,
-): Dp {
+private fun calculateExpandedHeight(title: String): Dp {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val fontScale = density.fontScale

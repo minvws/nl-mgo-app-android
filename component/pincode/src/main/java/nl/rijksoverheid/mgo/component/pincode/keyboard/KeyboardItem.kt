@@ -21,6 +21,12 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 
+/**
+ * Composable that shows a number in a keyboard, to use in [Keyboard].
+ * @param number The number to show.
+ * @param onClick Called when number is clicked.
+ * @param modifier the [Modifier] to be applied.
+ */
 @Composable
 internal fun KeyboardItemNumber(
     number: Int,

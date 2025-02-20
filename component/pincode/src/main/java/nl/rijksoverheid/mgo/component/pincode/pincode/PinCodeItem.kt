@@ -30,8 +30,16 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a circle, to use in [PinCode].
+ * @param position The position of the circle, 1 being the first. Used for the screen reader.
+ * @param color The color of the circle.
+ * @param modifier the [Modifier] to be applied.
+ * @param error If this pin code number should be considered an error. Will vibrate once if true.
+ * @param fill If the circle should be filled. Will vibrate once if true.
+ */
 @Composable
-fun PinCodeItem(
+internal fun PinCodeItem(
     position: Int,
     color: Color,
     modifier: Modifier = Modifier,

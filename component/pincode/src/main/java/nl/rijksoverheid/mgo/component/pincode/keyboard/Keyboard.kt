@@ -22,8 +22,17 @@ import nl.rijksoverheid.mgo.component.pincode.R
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a keyboard.
+ * @param onPressNumber Called when a number has been clicked on the keyboard.
+ * @param onPressBackspace Called when the backspace has been clicked on the keyboard.
+ * @param showBackSpace If the backspace button should be visible.
+ * @param modifier the [Modifier] to be applied.
+ * @param hasBiometric If the biometric button should be visible.
+ * @param onPressBiometric Called when the biometric button is clicked.
+ */
 @Composable
-fun Keyboard(
+internal fun Keyboard(
     onPressNumber: (number: Int) -> Unit,
     onPressBackspace: () -> Unit,
     showBackSpace: Boolean,

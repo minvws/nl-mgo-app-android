@@ -38,6 +38,20 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import nl.rijksoverheid.mgo.framework.util.accessibilityAnnounce
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * A composable that shows both [Keyboard] and [PinCode] in a [Column].
+ * @param onPinCodeEntered Called when all five numbers for the pin code have been entered.
+ * @param onResetError Called when the error state should be reset. To do so, this composable should be updated
+ * with [error] set to null.
+ * @param modifier the [Modifier] to be applied.
+ * @param hint If set, shows a text right above the keyboard.
+ * @param onClickHint Called when clicking on the hint.
+ * @param hasBiometric If the biometric button should be visible.
+ * @param onPressBiometric Called when the biometric button is clicked.
+ * @param error If true, will represent a error happening. This means:
+ * - Circles will be red
+ * - Error text will be shown under pin code.
+ */
 @Composable
 fun PinCodeWithKeyboard(
     onPinCodeEntered: (pinCode: List<Int>) -> Unit,

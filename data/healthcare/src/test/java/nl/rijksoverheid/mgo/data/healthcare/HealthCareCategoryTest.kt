@@ -40,7 +40,7 @@ class HealthCareCategoryTest {
 
         val treatmentsRequests = HealthCareCategory.TREATMENTS.getRequests()
         assertEquals(
-            listOf(Bgz.Procedure, Gp.PlannedProcedure),
+            listOf(Bgz.Procedure, Bgz.PlannedProcedure),
             treatmentsRequests,
         )
 

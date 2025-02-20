@@ -100,6 +100,14 @@ sealed class HealthCareRequest(
                 ),
         )
 
+        data object PlannedProcedure : Bgz(
+            path = "ProcedureRequest",
+            queryParameters =
+                listOf(
+                    Pair(STATUS, "active"),
+                ),
+        )
+
         data object Encounter : Bgz(
             path = "Encounter",
             queryParameters =
@@ -268,14 +276,6 @@ sealed class HealthCareRequest(
             queryParameters =
                 listOf(
                     Pair(CATEGORY, "medication"),
-                ),
-        )
-
-        data object PlannedProcedure : Gp(
-            path = "ProcedureRequest",
-            queryParameters =
-                listOf(
-                    Pair(STATUS, "active"),
                 ),
         )
 

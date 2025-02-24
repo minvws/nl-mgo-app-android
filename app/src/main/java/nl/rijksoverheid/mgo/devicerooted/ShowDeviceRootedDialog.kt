@@ -5,10 +5,12 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_IS_ROOT_CHECKED
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Use case that checks if the device has been rooted.
+ */
 internal class ShowDeviceRootedDialog(private val rootBeer: RootBeer, private val keyValueStore: KeyValueStore) {
     /**
-     * Checks if the device has been rooted.
-     * @return True if device is rooted and never returned true before. False otherwise.
+     * @return True once if the device is rooted and never returned true before.
      */
     operator fun invoke(): Boolean {
         val isRooted = rootBeer.isRooted

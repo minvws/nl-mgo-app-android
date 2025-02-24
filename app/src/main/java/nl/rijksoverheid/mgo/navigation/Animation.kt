@@ -22,6 +22,9 @@ import kotlin.reflect.typeOf
 
 const val SCREEN_TRANSITION_DURATION_MILLIS = 250
 
+/**
+ * Use to show a dialog in a navigation.
+ */
 inline fun <reified T : Any> NavGraphBuilder.mgoComposableDialog(
     deepLinks: List<NavDeepLink> = emptyList(),
     crossinline content: @Composable (NavBackStackEntry) -> Unit,
@@ -42,6 +45,9 @@ inline fun <reified T : Any> NavGraphBuilder.mgoComposableDialog(
     )
 }
 
+/**
+ * Use to show a screen in a navigation.
+ */
 inline fun <reified T : Any> NavGraphBuilder.mgoComposable(
     deepLinks: List<NavDeepLink> = emptyList(),
     animate: Boolean = true,

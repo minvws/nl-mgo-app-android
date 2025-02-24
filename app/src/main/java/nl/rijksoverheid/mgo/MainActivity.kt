@@ -32,6 +32,9 @@ import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeCreateNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeLoginNavGraph
 import kotlinx.coroutines.flow.collectLatest
 
+/**
+ * The app has a single activity architecture, which means this is the entry point to the app and only activity.
+ */
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -5,6 +5,9 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.serialization.Serializable
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory as HealthCareCategoryModel
 
+/**
+ * Represents all navigation destinations in the dashboard (the screen that shows the bottom bar).
+ */
 sealed class DashboardNavigation {
     @Serializable
     data object Root

@@ -9,6 +9,12 @@ import javax.inject.Named
 
 private const val APP_LOCK_SECONDS = 120
 
+/**
+ * Use case that checks if the app should be locked.
+ * @param clock The clock used to determine if the time has elapsed to lock the app.
+ * @param keyValueStore The store to get the timestamp when the app has been closed.
+ * @param secureKeyValueStore The store to get the pin code. If there is no pin code, the app will never be locked.
+ */
 internal class DefaultAppLocked
     @Inject
     constructor(
@@ -16,6 +22,9 @@ internal class DefaultAppLocked
         @Named("keyValueStore") private val keyValueStore: KeyValueStore,
         @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
     ) : AppLocked {
+        /**
+         * @return True if the app should be locked.
+         */
         override suspend fun invoke(): Boolean {
             // Do not lock if there is no pin
             val hasPin = secureKeyValueStore.getString(KEY_PIN_CODE) != null

@@ -11,6 +11,10 @@ import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.navigation.mgoComposableDialog
 
+/**
+ * Adds all the navigation destinations that can be found when logging in with a pin code.
+ * @param navController The nav controller used in this navigation.
+ */
 fun NavGraphBuilder.addPinCodeLoginNavGraph(
     navController: NavController,
     activity: MainActivity,

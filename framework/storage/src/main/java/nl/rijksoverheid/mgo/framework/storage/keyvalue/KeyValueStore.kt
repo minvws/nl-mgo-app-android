@@ -2,6 +2,9 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import androidx.datastore.preferences.core.Preferences
 
+/**
+ * Store to save a key value pair into.
+ */
 interface KeyValueStore {
     suspend fun setBoolean(
         key: Preferences.Key<Boolean>,

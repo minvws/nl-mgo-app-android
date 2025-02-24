@@ -2,13 +2,16 @@ package nl.rijksoverheid.mgo.navigation.onboarding
 
 import kotlinx.serialization.Serializable
 
+/**
+ * Represents all navigation destinations when going through the onboarding.
+ */
 sealed class OnboardingNavigation {
     @Serializable
-    object Root : OnboardingNavigation()
+    data object Root : OnboardingNavigation()
 
     @Serializable
-    object Introduction : OnboardingNavigation()
+    data object Introduction : OnboardingNavigation()
 
     @Serializable
-    object Proposition : OnboardingNavigation()
+    data object Proposition : OnboardingNavigation()
 }

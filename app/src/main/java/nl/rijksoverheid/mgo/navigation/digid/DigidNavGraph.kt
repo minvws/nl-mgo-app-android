@@ -11,6 +11,11 @@ import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Adds all the navigation destinations that can be found when logging in with DigiD.
+ * @param navController The nav controller used in this navigation.
+ * @param keyValueStore The store to save if a user has been authenticated before with DigiD (temporary).
+ */
 fun NavGraphBuilder.addDigidNavGraph(
     navController: NavController,
     keyValueStore: KeyValueStore,

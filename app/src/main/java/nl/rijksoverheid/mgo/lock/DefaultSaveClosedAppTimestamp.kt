@@ -6,6 +6,11 @@ import java.time.Clock
 import javax.inject.Inject
 import javax.inject.Named
 
+/**
+ * Use case that saves locally saves a timestamp. The timestamp represents the last time the app was closed.
+ * @param clock The clock used to determine the current timestamp.
+ * @param keyValueStore The store to save the timestamp into.
+ */
 internal class DefaultSaveClosedAppTimestamp
     @Inject
     constructor(

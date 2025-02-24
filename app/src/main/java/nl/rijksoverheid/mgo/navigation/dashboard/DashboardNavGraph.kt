@@ -7,6 +7,11 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.MainActivity
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 
+/**
+ * Adds all the navigation destinations that can be found in the screen that contains the bottom bar.
+ * @param mainActivity The main activity of the app.
+ * @param rootNavController The top level nav controller.
+ */
 fun NavGraphBuilder.addDashboardNavGraph(
     mainActivity: MainActivity,
     rootNavController: NavController,

@@ -14,6 +14,10 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.framework.copy.R
 import java.util.Locale
 
+/**
+ * Composable that shows a dialog to inform the user the device has been rooted.
+ * @param show True if the dialog needs to be shown.
+ */
 @Composable
 fun DeviceRootedDialog(show: Boolean) {
     var showDialog by remember { mutableStateOf(show) }

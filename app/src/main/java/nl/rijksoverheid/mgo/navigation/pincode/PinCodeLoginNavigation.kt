@@ -2,6 +2,9 @@ package nl.rijksoverheid.mgo.navigation.pincode
 
 import kotlinx.serialization.Serializable
 
+/**
+ * Represents all navigation destinations when logging in with a pin code.
+ */
 sealed class PinCodeLoginNavigation {
     @Serializable
     data object Root : PinCodeLoginNavigation()

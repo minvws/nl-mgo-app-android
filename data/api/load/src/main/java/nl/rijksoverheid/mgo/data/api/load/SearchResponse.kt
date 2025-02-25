@@ -10,6 +10,9 @@ const val DATA_SERVICE_GP: DataServiceId = "49"
 const val DATA_SERVICE_DOCUMENTS: DataServiceId = "51"
 const val DATA_SERVICE_VACCINATION: DataServiceId = "63"
 
+/**
+ * Json returned from [LoadApi] when getting health care providers.
+ */
 @Serializable
 class SearchResponse(
     val organizations: List<Organization>,

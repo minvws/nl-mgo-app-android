@@ -11,6 +11,16 @@ import kotlinx.serialization.Serializable
 
 typealias MgoOrganizationId = String
 
+/**
+ * Represents a health care provider.
+ *
+ * @param id The id of the health care provider.
+ * @param name The name of the health care provider.
+ * @param address The address of the health care provider.
+ * @param category The category of the health care provider.
+ * @param added If this health care provider has been added.
+ * @param dataServices A list of [MgoOrganizationDataService] associated to the health care provider.
+ */
 @Parcelize
 @Serializable
 data class MgoOrganization(

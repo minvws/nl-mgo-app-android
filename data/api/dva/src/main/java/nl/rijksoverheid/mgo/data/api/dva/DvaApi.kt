@@ -7,7 +7,7 @@ import retrofit2.http.Path
 import retrofit2.http.Url
 
 /**
- * API interface for fetching FHIR resources from FHIR Server (https://fire.ly/products/firely-server/).
+ * API interface for fetching FHIR resources from FHIR Server (https://www.hl7.org/fhir/).
  * This acts as a proxy that communicates with multiple servers to retrieve FHIR resources.
  */
 interface DvaApi {

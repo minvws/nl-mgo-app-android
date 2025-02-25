@@ -8,6 +8,17 @@ import kotlinx.serialization.Serializable
 typealias MgoResourceReferenceId = String
 typealias MgoResourceProfile = String
 
+/**
+ * Represents a wrapper for FHIR resource data returned from the shared codebase.
+ *
+ * The shared codebase provides a JSON string, which is primarily used for passing data
+ * between functions rather than direct manipulation. This class allows FHIR resource data
+ * to be passed as arguments when navigating between screens in the UI.
+ *
+ * @param referenceId The unique identifier for the FHIR resource, extracted from [jsonBase64].
+ * @param profile The FHIR resource profile URL, also extracted from [jsonBase64].
+ * @param jsonBase64 A Base64-encoded JSON string containing the full FHIR resource data.
+ */
 @Serializable
 @Parcelize
 data class MgoResource(
@@ -16,6 +27,9 @@ data class MgoResource(
     val jsonBase64: String,
 ) : Parcelable
 
+/**
+ * A test instance of [MgoResource] containing sample data for development and testing purposes.
+ */
 val TEST_MGO_RESOURCE =
     MgoResource(
         referenceId = "1",
@@ -50,6 +64,17 @@ val TEST_MGO_RESOURCE =
                 "ImQifX19XX0=",
     )
 
+/**
+ * Extension function to convert a FHIR bundle JSON string into an instance of [MgoResource].
+ *
+ * The FHIR bundle format is defined in the HL7 FHIR standard:
+ * [FHIR Bundle Specification](https://www.hl7.org/fhir/bundle.html)
+ *
+ * @receiver A JSON string representing a FHIR bundle.
+ * @param jsonBase64 The Base64-encoded JSON string containing the full FHIR resource data.
+ * @return An instance of [MgoResource] populated with extracted data.
+ * @throws org.json.JSONException If the input JSON does not contain required fields.
+ */
 fun String.toMgoResource(jsonBase64: String): MgoResource {
     val json = JSONObject(this)
     return MgoResource(

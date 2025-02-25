@@ -9,13 +9,19 @@ import javax.inject.Inject
 
 /**
  * Creates [MgoResource] based on a FHIR Response (https://hl7.org/fhir/).
+ *
+ * @param jsRuntimeRepository Wrapper class for the V8 JavaScript runtime (J2V8) used to execute JavaScript code in the application.
+ * @param base64Util Util that handles encoding and decoding of Base64 strings.
  */
 internal class DefaultMgoResourceMapper
     @Inject
     constructor(private val jsRuntimeRepository: JsRuntimeRepository, private val base64Util: Base64Util) :
     MgoResourceMapper {
         /**
-         * Parses the fhir response, and returns a list of [MgoResource] that can then be used in [UiSchemaMapper]
+         * Maps a fhir response to a a list of [MgoResource] that can then be used in [UiSchemaMapper].
+         * @param fhirBundleJson The fhir bundle json (https://www.hl7.org/fhir/bundle.html).
+         * @param fhirVersion The [FhirVersion] of the [fhirBundleJson].
+         * @return A list of [MgoResource].
          */
         override suspend fun get(
             fhirBundleJson: String,

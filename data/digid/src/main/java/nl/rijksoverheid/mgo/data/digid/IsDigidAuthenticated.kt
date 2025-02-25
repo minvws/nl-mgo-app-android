@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.digid
 
 /**
- * Use case to check if the user has authenticated with DigiD.
+ * Use case that checks if the user has authenticated with DigiD.
  */
 interface IsDigidAuthenticated {
     /**

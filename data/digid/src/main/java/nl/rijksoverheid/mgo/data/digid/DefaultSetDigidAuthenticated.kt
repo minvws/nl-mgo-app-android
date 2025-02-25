@@ -6,6 +6,10 @@ import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Use case that sets if the user has authenticated with DigiD.
+ * @param keyValueStore Store to save a key value pair into.
+ */
 internal class DefaultSetDigidAuthenticated
     @Inject
     constructor(

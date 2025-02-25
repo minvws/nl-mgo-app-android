@@ -3,6 +3,12 @@ package nl.rijksoverheid.mgo.framework.environment
 import javax.inject.Inject
 import javax.inject.Named
 
+/**
+ * Repository for retrieving the current environment configuration.
+ * @param appFlavor The app flavor.
+ * @param versionCode The version code of the app.
+ * @param deeplinkHost The deeplink host that is specific to the [appFlavor].
+ */
 internal class DefaultEnvironmentRepository
     @Inject
     constructor(

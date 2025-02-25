@@ -6,12 +6,22 @@ import nl.rijksoverheid.mgo.data.api.vad.VadApi
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import javax.inject.Inject
 
+/**
+ * Repository that handles authenticating with DigiD.
+ * @param vadApi API interface that handles authentication with DigiD.
+ * @param environmentRepository Repository for retrieving the current environment configuration.
+ */
 internal class DefaultDigidRepository
     @Inject
     constructor(
         private val vadApi: VadApi,
         private val environmentRepository: EnvironmentRepository,
     ) : DigidRepository {
+        /**
+         * Start the authentication process with DigiD.
+         * @return [Result] containing the authentication URL if the request is successful,
+         * or an error if the process fails.
+         */
         override suspend fun login(): Result<String> {
             val environment = environmentRepository.getEnvironment()
             val result = executeNetworkRequest { vadApi.start(StartRequestBody("${environment.deeplinkHost}://app/login")) }

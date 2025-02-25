@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare.healthCareDataState
 
+import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getRequests
@@ -9,16 +10,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * Fetches health care data. Emits different states so the UI knows the state.
+ * Repository that handles getting of a [HealthCareDataState].
+ *
+ * @param [mgoResourceRepository] Repository that is responsible for handling [MgoResource].
  */
 internal class DefaultHealthCareDataStateRepository
     @Inject
     constructor(private val mgoResourceRepository: MgoResourceRepository) :
     HealthCareDataStateRepository {
         /**
-         * Fetches health care data state.
-         * @param organization The organization you want to fetch health care data from.
-         * @param category The category of health care data it should fetch.
+         * Emits multiple [HealthCareDataState] that represent the current state of fetching health care data.
+         *
+         * @param organization The [MgoOrganization] to fetch health care data from.
+         * @param category The [HealthCareCategory] to fetch health care data from.
+         * @return [Flow] emits the current state of the health care data.
          */
         override fun get(
             organization: MgoOrganization,
@@ -40,7 +45,7 @@ internal class DefaultHealthCareDataStateRepository
                                 dataService.type == request.dataServiceType
                             }?.resourceEndpoint ?: return@mapNotNull null
 
-                        mgoResourceRepository.get(endpoint = endpoint, request = request, organization = organization)
+                        mgoResourceRepository.get(endpoint = endpoint, request = request)
                     }
 
                 val isEmpty = results.mapNotNull { result -> result.getOrNull() }.flatten().isEmpty()

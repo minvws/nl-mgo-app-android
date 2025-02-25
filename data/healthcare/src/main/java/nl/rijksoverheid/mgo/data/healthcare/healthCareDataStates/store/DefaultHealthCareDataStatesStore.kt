@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 
+/**
+ * Store that handles [HealthCareDataState].
+ */
 internal class DefaultHealthCareDataStatesStore
     @Inject
     constructor() : HealthCareDataStatesStore {
@@ -16,10 +19,22 @@ internal class DefaultHealthCareDataStatesStore
 
         private val statesFlow = MutableStateFlow<Map<StateKey, HealthCareDataState>>(mapOf())
 
+        /**
+         * @return A list of [HealthCareDataState] that are stored in [statesFlow].
+         */
         override fun get(): List<HealthCareDataState> {
             return statesFlow.value.map { it.value }
         }
 
+        /**
+         * Observes changes to the stored [HealthCareDataState] based on the given parameters.
+         *
+         * @param category The [HealthCareCategory] to filter the observed states.
+         * @param filterOrganization If provided, only observes [HealthCareDataState] associated with this [MgoOrganization].
+         * @return A [Flow] that emits the latest list of [HealthCareDataState] objects matching the given criteria.
+         *         - If [filterOrganization] is null, it returns all states matching the specified [category].
+         *         - If [filterOrganization] is provided, it returns only the state associated with the given organization and category.
+         */
         override fun observe(
             category: HealthCareCategory,
             filterOrganization: MgoOrganization?,
@@ -43,6 +58,13 @@ internal class DefaultHealthCareDataStatesStore
             }
         }
 
+        /**
+         * Add a [HealthCareDataState] to the store.
+         *
+         * @param organization The [MgoOrganization] in [HealthCareDataState] used for caching purposes.
+         * @param category The [HealthCareCategory] in [HealthCareDataState] used for caching purposes.
+         * @param state The [HealthCareDataState] to add to the store.
+         */
         override suspend fun add(
             organization: MgoOrganization,
             category: HealthCareCategory,
@@ -52,6 +74,11 @@ internal class DefaultHealthCareDataStatesStore
             statesFlow.update { states -> states.toMutableMap().apply { put(stateKey, state) } }
         }
 
+        /**
+         * Deletes all [HealthCareDataState] in the store for a certain [MgoOrganization].
+         *
+         * @param organization The [MgoOrganization] to determine which [HealthCareDataState] objects need to be removed from the store.
+         */
         override suspend fun delete(organization: MgoOrganization) {
             val stateKeys = statesFlow.value.keys.filter { key -> key.organization == organization }
             statesFlow.update { states ->

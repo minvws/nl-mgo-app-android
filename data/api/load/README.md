@@ -3,6 +3,6 @@
 This module provides classes for interacting with the server to search for health care providers 
 (LOAD = Localisatie en Adressering).
 
-## Notable Files
+## Highlighted
 
 - **`LoadApi`** – Use this to communicate the server to fetch health care providers. 

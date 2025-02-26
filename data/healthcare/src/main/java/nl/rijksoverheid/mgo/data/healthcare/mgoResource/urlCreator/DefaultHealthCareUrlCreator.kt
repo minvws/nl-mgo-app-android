@@ -5,7 +5,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
 import javax.inject.Inject
 
 /**
- * Use case that creates an url based on a base url an a [HealthCareRequest].
+ * Create an url based on a base url an a [HealthCareRequest].
  */
 internal class DefaultHealthCareUrlCreator
     @Inject

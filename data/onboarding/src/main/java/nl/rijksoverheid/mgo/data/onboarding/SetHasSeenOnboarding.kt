@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.onboarding
 
 /**
- * Use case to set that the onboarding has been seen.
+ * Set if the onboarding has been seen.
  */
 interface SetHasSeenOnboarding {
     /**

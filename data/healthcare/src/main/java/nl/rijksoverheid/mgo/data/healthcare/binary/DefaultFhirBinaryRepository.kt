@@ -7,10 +7,10 @@ import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import javax.inject.Inject
 
 /**
- * Repository that handles downloading FHIR (https://www.hl7.org/fhir/) binaries.
+ * Handles downloading FHIR (https://www.hl7.org/fhir/) binaries.
  *
- * @param cacheFileStore Store that handles file in cache.
- * @param dvaApi API interface for fetching FHIR resources from FHIR Server (https://www.hl7.org/fhir/).
+ * @param cacheFileStore The [CacheFileStore] to save the binary in.
+ * @param dvaApi The [DvaApi] to communicate with the server.
  */
 internal class DefaultFhirBinaryRepository
     @Inject
@@ -23,7 +23,7 @@ internal class DefaultFhirBinaryRepository
          *
          * @param resourceEndpoint The document service resource endpoint from the [MgoOrganization].
          * @param fhirBinary The path to the binary on the FHIR server.
-         * @return [Result] that if successful, contains [FhirBinary] that has the content type and the file downloaded on disk.
+         * @return [Result] that if successful, contains [FhirBinary] that has the content type and the downloaded file.
          */
         override suspend fun download(
             resourceEndpoint: String,
@@ -52,7 +52,7 @@ internal class DefaultFhirBinaryRepository
         }
 
         /**
-         * Removes all downloaded binaries on disk.
+         * Removes all downloaded binaries from the store.
          */
         override suspend fun cleanup() {
             cacheFileStore.deleteAll()

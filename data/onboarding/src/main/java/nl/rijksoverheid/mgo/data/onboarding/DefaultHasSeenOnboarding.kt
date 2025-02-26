@@ -7,8 +7,9 @@ import javax.inject.Named
 import kotlinx.coroutines.runBlocking
 
 /**
- * Use case to check if the onboarding has been seen.
- * @param keyValueStore Store to save a key value pair into.
+ * Check if the onboarding has been seen.
+ *
+ * @param keyValueStore The [KeyValueStore] to get if the onboarding has been seen.
  */
 internal class DefaultHasSeenOnboarding
     @Inject

@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 
 /**
- * Repository that handles health care providers related actions (e.g. storing, searching, getting, removing).
+ * Handles various operations on [MgoOrganization].
  *
- * @param loadApi API interface that can search for health care providers. (LOAD = Localisatie & Adressering)
- * @param encryptedFileStore Store that handles encrypted files.
+ * @param loadApi The [LoadApi] to communicate with the server.
+ * @param encryptedFileStore The [EncryptedFileStore] to securely store organizations.
  */
 internal class DefaultOrganizationRepository(
     private val loadApi: LoadApi,

@@ -7,9 +7,10 @@ import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import javax.inject.Inject
 
 /**
- * Repository that handles authenticating with DigiD.
- * @param vadApi API interface that handles authentication with DigiD.
- * @param environmentRepository Repository for retrieving the current environment configuration.
+ * Handles authenticating with DigiD.
+ *
+ * @param vadApi The [VadApi] to communicate with the server.
+ * @param environmentRepository The [EnvironmentRepository] to get the deeplink host from.
  */
 internal class DefaultDigidRepository
     @Inject
@@ -19,6 +20,7 @@ internal class DefaultDigidRepository
     ) : DigidRepository {
         /**
          * Start the authentication process with DigiD.
+         *
          * @return [Result] containing the authentication URL if the request is successful,
          * or an error if the process fails.
          */

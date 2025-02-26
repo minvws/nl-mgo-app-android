@@ -4,7 +4,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Repository that handles health care providers related actions (e.g. storing, searching, getting, removing).
+ * Handles various operations on [MgoOrganization].
  */
 interface OrganizationRepository {
     val storedOrganizationsFlow: Flow<List<MgoOrganization>>

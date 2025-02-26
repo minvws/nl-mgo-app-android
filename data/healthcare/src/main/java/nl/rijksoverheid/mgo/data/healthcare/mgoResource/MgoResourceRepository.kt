@@ -4,7 +4,7 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceReferenceId
 
 /**
- * Repository that is responsible for handling [MgoResource].
+ * Handles various operations on [MgoResource].
  */
 interface MgoResourceRepository {
     /**

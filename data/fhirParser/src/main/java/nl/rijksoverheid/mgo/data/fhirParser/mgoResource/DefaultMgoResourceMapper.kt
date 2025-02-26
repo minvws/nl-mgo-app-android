@@ -10,8 +10,8 @@ import javax.inject.Inject
 /**
  * Creates [MgoResource] based on a FHIR Response (https://hl7.org/fhir/).
  *
- * @param jsRuntimeRepository Wrapper class for the V8 JavaScript runtime (J2V8) used to execute JavaScript code in the application.
- * @param base64Util Util that handles encoding and decoding of Base64 strings.
+ * @param jsRuntimeRepository The [JsRuntimeRepository] to handle javascript.
+ * @param base64Util The [Base64Util] to handle base64 encoding.
  */
 internal class DefaultMgoResourceMapper
     @Inject

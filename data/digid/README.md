@@ -2,6 +2,6 @@
 
 This module provides classes that handle authenticating with DigiD.
 
-## Notable Files
+## Highlighted
 
-- **`DigidRepository`** – Entry point to start authentication with DigiD.
+- **`DefaultDigidRepository`** – Entry point to start authentication with DigiD.

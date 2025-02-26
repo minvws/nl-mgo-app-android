@@ -9,12 +9,14 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 
 /**
  * State of retrieved health care data.
+ *
  * @param organization The organization of the health care data.
  * @param category The category of the health care data.
  */
 sealed class HealthCareDataState(open val organization: MgoOrganization, open val category: HealthCareCategory) {
     /**
-     * Represents that the health care data is currently loading.
+     * Represents that the health care data is loading.
+     *
      * @param organization The organization of the health care data.
      * @param category The category of the health care data.
      */
@@ -23,6 +25,7 @@ sealed class HealthCareDataState(open val organization: MgoOrganization, open va
 
     /**
      * Represents that the health care data is successfully retrieved.
+     *
      * @param results The fetched results in our own json format. This can be used in [UiSchemaMapper] to transform into
      * presentable data.
      * @param organization The organization of the health care data.
@@ -36,6 +39,7 @@ sealed class HealthCareDataState(open val organization: MgoOrganization, open va
 
     /**
      * Represents fetched health care data that does not contain anything to present.
+     *
      * @param organization The organization of the health care data.
      * @param category The category of the health care data.
      */

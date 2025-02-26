@@ -5,7 +5,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Repository that handles getting of a [HealthCareDataState].
+ * Handles various operations on [HealthCareDataState].
  */
 internal interface HealthCareDataStateRepository {
     /**

@@ -6,8 +6,9 @@ import javax.inject.Inject
 import javax.inject.Named
 
 /**
- * Use case that checks if the user has authenticated with DigiD.
- * @param keyValueStore Store to save a key value pair into.
+ * Check if the user has authenticated with DigiD.
+ *
+ * @param keyValueStore The [KeyValueStore] where is stored if has authenticated with DigiD.
  */
 internal class DefaultIsDigidAuthenticated
     @Inject

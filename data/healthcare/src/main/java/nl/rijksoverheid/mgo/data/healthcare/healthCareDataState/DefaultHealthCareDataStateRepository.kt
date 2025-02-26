@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * Repository that handles getting of a [HealthCareDataState].
+ * Handles various operations on [HealthCareDataState].
  *
- * @param [mgoResourceRepository] Repository that is responsible for handling [MgoResource].
+ * @param mgoResourceRepository The [MgoResourceRepository] for getting [MgoResource]s.
  */
 internal class DefaultHealthCareDataStateRepository
     @Inject

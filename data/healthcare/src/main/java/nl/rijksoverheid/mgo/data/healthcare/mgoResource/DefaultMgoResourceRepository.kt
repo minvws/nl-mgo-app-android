@@ -15,13 +15,13 @@ import javax.inject.Inject
 import javax.inject.Named
 
 /**
- * Repository that is responsible for handling [MgoResource].
+ * Handles various operations on [MgoResource].
  *
- * @param healthCareDataStatesStore Store that handles [HealthCareDataState].
- * @param dvaApi API interface for fetching FHIR resources from FHIR Server (https://www.hl7.org/fhir/).
- * @param urlCreator Use case that creates an url based on a base url an a [HealthCareRequest].
+ * @param healthCareDataStatesStore The [HealthCareDataStatesStore] to handle storage of [HealthCareDataState].
+ * @param dvaApi The [DvaApi] to communicate with the server.
+ * @param urlCreator The [HealthCareUrlCreator] to construct the url to communicate with [dvaApi].
  * @param dvaApiBaseUrl The base url of the call to make to the [DvaApi].
- * @param mgoResourceMapper Creates [MgoResource] based on a FHIR Response (https://hl7.org/fhir/).
+ * @param mgoResourceMapper The [MgoResourceMapper] to map [dvaApi] response to [MgoResource].
  */
 internal class DefaultMgoResourceRepository
     @Inject

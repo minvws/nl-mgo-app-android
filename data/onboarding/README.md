@@ -2,7 +2,7 @@
 
 This module manages data classes related to the onboarding.
 
-## Key Classes
+## Highlights
 
 - **DefaultSetHasSeenOnboarding** – Marks onboarding as completed.
 - **DefaultHasSeenOnboarding** – Checks if onboarding has been completed.

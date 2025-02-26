@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
 /**
- * Repository that is responsible for all [HealthCareDataState] related actions.
+ * Handles various operations on lists of [HealthCareDataState].
  *
- * @param healthCareDataStateRepository Repository that handles getting of a [HealthCareDataState].
- * @param healthCareDataStatesStore Store that handles [HealthCareDataState].
+ * @param healthCareDataStateRepository The [HealthCareDataStateRepository] to handle operations on [HealthCareDataState].
+ * @param healthCareDataStatesStore The [HealthCareDataStatesStore] to handle storage of [HealthCareDataState].
  */
 @Singleton
 internal class DefaultHealthCareDataStatesRepository

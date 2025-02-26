@@ -1,8 +1,8 @@
 # Data - Localisation
 
-This module manages data classes related to health care providers.
+This module provides classes for handling health care providers related data.
 
-## Notable Files
+## Highlights
 
 - **`DefaultOrganizationRepository`** Use to manage the health care providers. Can search, get, 
   save and delete health care providers.

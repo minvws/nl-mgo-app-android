@@ -7,7 +7,9 @@ import javax.inject.Named
 import kotlinx.coroutines.runBlocking
 
 /**
- * Use case to set that the onboarding has been seen.
+ * Set if the onboarding has been seen.
+ *
+ * @param keyValueStore The [KeyValueStore] to store if the onboarding has been seen.
  */
 internal class DefaultSetHasSeenOnboarding
     @Inject

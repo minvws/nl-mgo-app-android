@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
 
 /**
- * Use case that creates an url based on a base url an a [HealthCareRequest].
+ * Create an url based on a base url an a [HealthCareRequest].
  */
 interface HealthCareUrlCreator {
     /**

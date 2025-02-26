@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.data.onboarding
 
 /**
- * Use case to check if the onboarding has been seen.
+ * Check if the onboarding has been seen.
  */
 interface HasSeenOnboarding {
     /**

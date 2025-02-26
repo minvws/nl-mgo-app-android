@@ -1,8 +1,8 @@
 # Data - HealthCare
 
-This module provides classes that handle managing health care data.
+This module provides classes for handling health care related data.
 
-## Notable Files
+## Highlights
 
 - **`CollectHealthCareDataStates`** Use to initialize fetching the health care data states. Fetches
   health care data based on the organizations that you added.

@@ -2,7 +2,7 @@
 
 This module contains reusable UI components that are used in this project. It includes standalone components like buttons and banners that follow our design system.
 
-## Components
+## Highlighted
 
 - **MgoBanner**: Use to show banners.
 - **MgoSnackBar**: Use instead of androidx.compose.material3.SnackBar.

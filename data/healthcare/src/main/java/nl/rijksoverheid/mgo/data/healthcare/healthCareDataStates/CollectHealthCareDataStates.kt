@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates
 
 import androidx.annotation.VisibleForTesting
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -12,10 +11,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
 /**
- * Use case that serves as an entry point to start fetching health care data based on the organizations you added.
+ * Entry point to start fetching health care data based on the organizations you added.
  *
- * @param organizationRepository Repository that handles health care providers related actions (e.g. storing, searching, getting, removing).
- * @param healthCareDataStatesRepository Repository that is responsible for all [HealthCareDataState] related actions.
+ * @param organizationRepository The [OrganizationRepository] to observe organizations that are added or removed.
+ * @param healthCareDataStatesRepository The [HealthCareDataStatesRepository] to get or remove health care data based on the added
+ * organizations.
  */
 @Singleton
 class CollectHealthCareDataStates

@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo.data.onboarding
 
 /**
- * Use case that checks if the user has finished the onboarding.
+ * Use case to check if the onboarding has been seen.
  */
 interface HasSeenOnboarding {
     /**
-     * @return True if the user has finished the onboarding.
+     * @return True if the onboarding has been seen.
      */
     operator fun invoke(): Boolean
 }

@@ -1,6 +1,6 @@
 # Data - Localisation
 
-This module provides classes that handle health care providers.
+This module manages data classes related to health care providers.
 
 ## Notable Files
 

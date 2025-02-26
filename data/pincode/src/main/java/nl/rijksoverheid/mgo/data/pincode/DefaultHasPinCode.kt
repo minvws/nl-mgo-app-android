@@ -6,11 +6,19 @@ import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Check if a pin code is stored.
+ *
+ * @param keyValueStore The [KeyValueStore] where the pin code is stored.
+ */
 internal class DefaultHasPinCode
     @Inject
     constructor(
         @Named("secureKeyValueStore") private val keyValueStore: KeyValueStore,
     ) : HasPinCode {
+        /**
+         * @return True if a pin code is stored.
+         */
         override fun invoke(): Boolean {
             return runBlocking { keyValueStore.getString(KEY_PIN_CODE) } != null
         }

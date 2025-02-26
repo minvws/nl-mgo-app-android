@@ -1,6 +1,6 @@
-# Component - Onboarding
+# Data - Onboarding
 
-This module manages the onboarding state.
+This module manages data classes related to the onboarding.
 
 ## Key Classes
 

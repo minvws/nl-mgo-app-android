@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo.data.pincode
 
 /**
- * Use case that checks if the user has a pin code set.
+ * Check if a pin code is stored.
  */
 interface HasPinCode {
     /**
-     * @return True if the user has a pin code set.
+     * @return True if a pin code is stored.
      */
     operator fun invoke(): Boolean
 }

@@ -39,9 +39,9 @@ data class R4NlCoreHealthProfessionalPractitioner(
     @Serializable
     enum class Gender {
         unknown,
+        other,
         male,
-        female,
-        other
+        female
     }
 
     @Serializable

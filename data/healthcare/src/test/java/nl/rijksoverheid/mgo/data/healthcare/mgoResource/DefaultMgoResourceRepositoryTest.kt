@@ -32,7 +32,7 @@ class DefaultMgoResourceRepositoryTest {
             testServer.enqueue200(amount = 1)
 
             // When: Calling get
-            val result = repository.get(endpoint = "", request = HealthCareRequest.Bgz.MedicationUse, organization = TEST_MGO_ORGANIZATION)
+            val result = repository.get(endpoint = "", request = HealthCareRequest.Bgz.MedicationUse)
 
             // Then: Results are success
             assertTrue(result.isSuccess)
@@ -48,7 +48,7 @@ class DefaultMgoResourceRepositoryTest {
             testServer.enqueue500(amount = 1)
 
             // When: Calling get
-            val result = repository.get(endpoint = "", request = HealthCareRequest.Bgz.MedicationUse, organization = TEST_MGO_ORGANIZATION)
+            val result = repository.get(endpoint = "", request = HealthCareRequest.Bgz.MedicationUse)
 
             // Then: Results are success
             assertTrue(result.isFailure)

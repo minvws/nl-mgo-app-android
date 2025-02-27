@@ -50,9 +50,9 @@ data class NlCorePatient(
     @Serializable
     enum class Gender {
         unknown,
+        other,
         male,
-        female,
-        other
+        female
     }
 
     @Serializable

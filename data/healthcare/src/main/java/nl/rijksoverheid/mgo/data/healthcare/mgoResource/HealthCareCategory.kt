@@ -44,7 +44,7 @@ fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
         }
 
         HealthCareCategory.TREATMENTS -> {
-            listOf(Bgz.Procedure, Bgz.PlannedProcedure)
+            listOf(Bgz.Procedure, Bgz.PlannedProcedure, Gp.Episodes)
         }
 
         HealthCareCategory.APPOINTMENTS -> {
@@ -130,6 +130,7 @@ fun HealthCareCategory.getProfiles(): List<String> {
             listOf(
                 Profiles.zibProcedure,
                 Profiles.zibProcedureRequest,
+                Profiles.nlCoreEpisodeofcare,
             )
         }
 

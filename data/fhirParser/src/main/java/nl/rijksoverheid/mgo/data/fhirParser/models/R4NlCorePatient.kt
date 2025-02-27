@@ -41,9 +41,9 @@ data class R4NlCorePatient(
     @Serializable
     enum class Gender {
         unknown,
+        other,
         male,
-        female,
-        other
+        female
     }
 
     companion object {

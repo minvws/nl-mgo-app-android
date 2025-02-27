@@ -143,6 +143,9 @@ internal fun MgoResource.getGroupHeading(): Int {
         Profiles.zibPayer -> {
             R.string.zib_payer_heading
         }
+        Profiles.nlCoreEpisodeofcare -> {
+            R.string.zib_procedure_request_heading
+        }
         else -> R.string.common_error_heading
     }
 }

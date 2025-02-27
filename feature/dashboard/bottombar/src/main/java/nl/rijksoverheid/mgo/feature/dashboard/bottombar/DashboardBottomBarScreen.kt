@@ -38,6 +38,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Composable that shows the a screen with bottom bar. The dashboard screen is the root screen of the app that shows after inputting the
+ * local pin code (apart from if the user has not completed the initial onboarding, then that will be shown first).
+ */
 @Composable
 fun DashboardBottomBarScreen(
     overviewStartDestination: Any,
@@ -47,7 +51,7 @@ fun DashboardBottomBarScreen(
     settingsStartDestination: Any,
     settingsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
 ) {
-    val viewModel: DashboardBottomBarScreenViewModel = hiltViewModel()
+    hiltViewModel<DashboardBottomBarScreenViewModel>()
     DashboardBottomBarScreenContent(
         overviewStartDestination = overviewStartDestination,
         overviewNavGraph = overviewNavGraph,

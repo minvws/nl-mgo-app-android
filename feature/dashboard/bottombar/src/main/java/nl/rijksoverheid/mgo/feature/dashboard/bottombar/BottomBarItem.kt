@@ -5,6 +5,14 @@ import androidx.annotation.StringRes
 import nl.rijksoverheid.mgo.feature.bottombar.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Represents a bottom bar item in the dashboard.
+ *
+ * @param route The root navigation of the bottom bar item.
+ * @param titleId The string resource id of the title to show in the bottom bar item.
+ * @param deselectedIconId The drawable resource id of the not selected icon in the bottom bar item.
+ * @param selectedIconId The drawable resource id of the selected icon in the bottom bar item.
+ */
 internal enum class BottomBarItem(
     val route: BottomBarItemNavigation,
     @StringRes val titleId: Int,

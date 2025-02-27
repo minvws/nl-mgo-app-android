@@ -10,6 +10,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [DashboardBottomBarScreen].
+ * Since the [DashboardBottomBarScreen] is the root screen of our app, we want to fetch the health care data
+ * when this screen is shown. That is what this ViewModel is responsible for.
+ *
+ * @param collectHealthCareDataStates The [CollectHealthCareDataStates] to initialize getting the health care data.
+ * @param ioDispatcher The [CoroutineDispatcher] to indicate on which coroutine [CollectHealthCareDataStates] is executed.
+ */
 @HiltViewModel
 internal class DashboardBottomBarScreenViewModel
     @Inject

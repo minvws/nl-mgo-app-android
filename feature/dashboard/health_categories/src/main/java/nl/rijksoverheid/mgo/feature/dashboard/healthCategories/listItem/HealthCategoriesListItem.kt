@@ -36,6 +36,20 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a list item representing a health care category.
+ * The list item has it's own viewmodel that listens to the health care data
+ * for that category.
+ *
+ * @param icon The icon to show in the list item.
+ * @param iconColor The color of the icon to show in the list item.
+ * @param title The title to show in the list item.
+ * @Param filterOrganization If not null, will only show only health care data for this organization. If null will show for all added
+ * organizations.
+ * @param category The [HealthCareCategory] for this list item.
+ * @param modifier The modifier to be applied.
+ * @param hasDivider If the list item has a divider.
+ */
 @Composable
 internal fun HealthCategoriesListItem(
     @DrawableRes icon: Int,

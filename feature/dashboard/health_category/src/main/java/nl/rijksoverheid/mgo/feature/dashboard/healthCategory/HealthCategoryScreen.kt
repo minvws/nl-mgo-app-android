@@ -47,6 +47,15 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a list of all health care data for one [HealthCareCategory].
+ *
+ * @param category The [HealthCareCategory] to get the health cara data for.
+ * @param onClickListItem Called when a list item has been clicked.
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param filterOrganization If not null, will only show only health care data for this organization. If null will show for all added
+ * organizations.
+ */
 @Composable
 fun HealthCategoryScreen(
     category: HealthCareCategory,

@@ -14,6 +14,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 
+/**
+ * The [ViewModel] for [HealthCategoriesScreen].
+ * Observes added organizations that is used to show empty state or not.
+ *
+ * @param organizationRepository The [OrganizationRepository] to fetch the added organizations.
+ * @param keyValueStore The [KeyValueStore] to get if the automatic localisation feature is enabled.
+ */
 @HiltViewModel
 internal class HealthCategoriesScreenViewModel
     @Inject

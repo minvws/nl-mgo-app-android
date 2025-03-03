@@ -7,12 +7,20 @@ import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.copy.R
 
+/**
+ * Represents a group of [HealthCategoryScreenListItem] to show in [HealthCategoryScreen].
+ *
+ * @param heading The string resource to show as heading.
+ * @param items The list of [HealthCategoryScreenListItem] that fall under this group.
+ */
 data class HealthCategoryScreenListItemsGroup(
     @StringRes val heading: Int,
     val items: List<HealthCategoryScreenListItem>,
 )
 
-internal suspend fun Map<Int, List<MgoResource>>.toListItemsGroup(
+typealias MgoResourceGroupHeading = Int
+
+internal suspend fun Map<MgoResourceGroupHeading, List<MgoResource>>.toListItemsGroup(
     uiSchemaMapper: UiSchemaMapper,
     organization: MgoOrganization,
 ) = map {
@@ -32,8 +40,12 @@ internal suspend fun Map<Int, List<MgoResource>>.toListItemsGroup(
     )
 }
 
+/**
+ * @receiver The [MgoResource] to retrieve the heading for.
+ * @return The heading of the [MgoResource].
+ */
 @StringRes
-internal fun MgoResource.getGroupHeading(): Int {
+internal fun MgoResource.getGroupHeading(): MgoResourceGroupHeading {
     return when (profile) {
         Profiles.zibMedicationUse -> {
             R.string.zib_medication_use_heading

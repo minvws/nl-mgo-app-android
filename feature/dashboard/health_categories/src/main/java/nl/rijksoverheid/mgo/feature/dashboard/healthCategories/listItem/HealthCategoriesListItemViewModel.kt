@@ -18,6 +18,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [HealthCategoriesListItem].
+ * Observes health care data for the [HealthCareCategory].
+ *
+ * @param filterOrganization If not null, will observe health care data for this organization. If null will observe for all added
+ * organizations.
+ * @param category The [HealthCareCategory] to determine which health care data falls into this category.
+ * @param healthCareDataStatesRepository The [HealthCareDataStatesRepository] that is responsible for fetching the health care data.
+ */
 @HiltViewModel(assistedFactory = HealthCategoriesListItemViewModel.Factory::class)
 internal class HealthCategoriesListItemViewModel
     @AssistedInject

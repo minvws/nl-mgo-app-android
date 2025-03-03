@@ -6,6 +6,14 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Represents a list item to show in [HealthCategoryScreen].
+ *
+ * @param title The title of the list item.
+ * @param subtitle The sub title of the list item.
+ * @param mgoResource The [MgoResource] that is used to display health care data in the list item.
+ * @param organization The [MgoOrganization] that is used to display the organization in the list item.
+ */
 data class HealthCategoryScreenListItem(
     val title: String,
     val subtitle: String,

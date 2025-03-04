@@ -5,7 +5,7 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Repository that handles feature toggle actions.
+ * Handles various feature toggle actions.
  */
 interface FeatureToggleRepository {
     /**
@@ -15,6 +15,7 @@ interface FeatureToggleRepository {
 
     /**
      * Checks if a feature toggle is enabled.
+     *
      * @param id The id of the feature toggle.
      * @return True if the feature toggle is enabled.
      */
@@ -22,6 +23,7 @@ interface FeatureToggleRepository {
 
     /**
      * Flow that has a value if the feature toggle is enabled. Is updated whenever the state changes.
+     *
      * @param id The id of the feature toggle.
      * @return True in the flow if the feature toggle is enabled.
      */
@@ -29,6 +31,7 @@ interface FeatureToggleRepository {
 
     /**
      * Update a feature toggle.
+     *
      * @param toggle The feature toggle to update.
      * @param enabled True if the feature toggle is enabled.
      */

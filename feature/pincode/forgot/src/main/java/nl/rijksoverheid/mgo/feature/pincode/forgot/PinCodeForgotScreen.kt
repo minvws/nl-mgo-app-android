@@ -25,6 +25,13 @@ import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows the screen where you can reset the pin code if you forgot it. Resetting here means clearing locally stored data
+ * and restarting the app again.
+ *
+ * @param onNavigateToPinCodeCreate Called when requested to navigate to the screen where you can create a pin code.
+ * @param onNavigateBack Called when requested to navigate back.
+ */
 @Composable
 fun PinCodeForgotScreen(
     onNavigateToPinCodeCreate: () -> Unit,

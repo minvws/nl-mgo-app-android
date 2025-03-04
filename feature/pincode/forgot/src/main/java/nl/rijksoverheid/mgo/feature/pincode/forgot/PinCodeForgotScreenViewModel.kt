@@ -9,6 +9,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [PinCodeForgotScreen].
+ *
+ * @param resetPinCode The [ResetPinCode] that resets the pin code.
+ */
 @HiltViewModel
 internal class PinCodeForgotScreenViewModel
     @Inject
@@ -18,6 +23,10 @@ internal class PinCodeForgotScreenViewModel
         private val _navigateToPinCodeCreate = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigateToPinCodeCreate = _navigateToPinCodeCreate.asSharedFlow()
 
+        /**
+         * Call to reset the pin code. In the context of the app this means creating a new account.
+         * When the pin code is successfully reset, [navigateToPinCodeCreate] is updated.
+         */
         fun createNewAccount() {
             viewModelScope.launch {
                 resetPinCode.invoke()

@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * The [ViewModel] for [AddOrganizationScreen].
+ */
 @HiltViewModel
 class AddOrganizationScreenViewModel
     @Inject
@@ -23,14 +26,27 @@ class AddOrganizationScreenViewModel
         private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigation = _navigation.asSharedFlow()
 
+        /**
+         * Set the name of the health care provider to search for.
+         *
+         * @param name The name of the health care provider.
+         */
         fun setName(name: String) {
             _viewState.update { viewState -> viewState.copy(name = name) }
         }
 
+        /**
+         * Set the city of the health care provider to search for.
+         *
+         * @param city The city of the health care provider.
+         */
         fun setCity(city: String) {
             _viewState.update { viewState -> viewState.copy(city = city) }
         }
 
+        /**
+         * Validate if the inputted name and city are valid. Will update the UI reflecting if the input is valid or not.
+         */
         fun validate() {
             viewModelScope.launch {
                 val name = _viewState.value.name

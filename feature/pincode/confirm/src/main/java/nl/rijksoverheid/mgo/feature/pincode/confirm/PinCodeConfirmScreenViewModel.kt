@@ -13,6 +13,13 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+/**
+ * The [ViewModel] for [PinCodeConfirmScreen].
+ *
+ * @param pinCodeToMatch The pin code entered in a previous screen that should match the pin code entered here.
+ * @param storePinCode The [StorePinCode] that is used to store the pin code.
+ * @param deviceHasBiometric The [DeviceHasBiometric] so check if the device supports biometric login.
+ */
 @HiltViewModel(assistedFactory = PinCodeConfirmScreenViewModel.Factory::class)
 internal class PinCodeConfirmScreenViewModel
     @AssistedInject
@@ -35,6 +42,13 @@ internal class PinCodeConfirmScreenViewModel
         private val _navigate = MutableSharedFlow<PinCodeConfirmScreenNextNavigation>(extraBufferCapacity = 1)
         val navigate = _navigate.asSharedFlow()
 
+        /**
+         * Validates the supplied pin code with the [pinCodeToMatch] passed one.
+         * Navigates to another screen when successfully validated.
+         * Updates the UI with an error if failed to validate.
+         *
+         * @param pinCode The pin code that was entered in the screen.
+         */
         fun validatePinCode(pinCode: List<Int>) {
             if (pinCode == pinCodeToMatch) {
                 storePinCode.invoke(pinCodeToMatch)
@@ -50,6 +64,9 @@ internal class PinCodeConfirmScreenViewModel
             }
         }
 
+        /**
+         * Reset the error message in the UI.
+         */
         fun resetError() {
             _viewState.update { viewState ->
                 viewState.copy(error = false)

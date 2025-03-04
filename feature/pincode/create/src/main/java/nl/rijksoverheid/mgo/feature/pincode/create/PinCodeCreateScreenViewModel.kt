@@ -12,6 +12,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
+/**
+ * The [ViewModel] for [PinCodeCreateScreen].
+ *
+ * @param validator The [PinCodeStrengthValidator] to validate if the pin code is strong enough.
+ */
 @HiltViewModel
 internal class PinCodeCreateScreenViewModel
     @Inject
@@ -24,6 +29,12 @@ internal class PinCodeCreateScreenViewModel
         private val _navigateToConfirm = MutableSharedFlow<List<Int>>(extraBufferCapacity = 1)
         val navigateToConfirm = _navigateToConfirm.asSharedFlow()
 
+        /**
+         * Validates the entered pin code.
+         * Navigates when successfully validated. Shows error in the UI otherwise.
+         *
+         * @param pinCode The entered pin code.
+         */
         fun validatePinCode(pinCode: List<Int>) {
             val valid = validator.invoke(pinCode)
             if (valid) {
@@ -35,6 +46,9 @@ internal class PinCodeCreateScreenViewModel
             }
         }
 
+        /**
+         *
+         */
         fun resetError() {
             _viewState.update { viewState ->
                 viewState.copy(error = false)

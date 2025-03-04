@@ -9,6 +9,11 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 
+/**
+ * JUnit rule to set the main thread to a test dispatcher.
+ *
+ * @param testDispatcher The [TestDispatcher] to replace the main thread with.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainDispatcherRule(
     private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher(),

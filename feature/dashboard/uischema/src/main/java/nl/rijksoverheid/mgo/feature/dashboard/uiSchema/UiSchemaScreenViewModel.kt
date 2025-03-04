@@ -7,6 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
@@ -22,6 +23,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [UiSchemaScreen].
+ *
+ * @param organization The [MgoOrganization] for the health care data.
+ * @param mgoResource The [MgoResource] to get the health care data from.
+ * @param isSummary If this screen shows a summary of the health care data, or the complete set.
+ * @param fhirBinaryRepository The [FhirBinaryRepository] to download files.
+ * @param uiSchemaMapper The [UiSchemaMapper] to map [MgoResource] to [HealthUiSchema].
+ * @param mgoResourceRepository The [MgoResourceRepository] to get new [MgoResource] from.
+ */
 @HiltViewModel(assistedFactory = UiSchemaScreenViewModel.Factory::class)
 internal class UiSchemaScreenViewModel
     @AssistedInject
@@ -48,6 +59,9 @@ internal class UiSchemaScreenViewModel
         private val _viewState = MutableStateFlow(UiSchemaScreenViewState(toolbarTitle = "", sections = listOf()))
         val viewState = _viewState.asStateFlow()
 
+        /**
+         * Get the [HealthUiSchema] from a [MgoResource] to be able to display health care data.
+         */
         init {
             viewModelScope.launch {
                 val uiSchema =
@@ -57,13 +71,13 @@ internal class UiSchemaScreenViewModel
                         uiSchemaMapper.getDetail(mgoResource)
                     }
                 _viewState.update { viewState ->
-                    viewState.copy(toolbarTitle = uiSchema.label ?: "", sections = uiSchema.toSections())
+                    viewState.copy(toolbarTitle = uiSchema.label, sections = uiSchema.toSections())
                 }
             }
         }
 
         /**
-         * When clicking on a reference, get the mgo resource and navigate to the UI Schema screen with that resource.
+         * When clicking on a reference, get the [MgoResource] and navigate to the [UiSchemaScreen] to show the new health care data.
          * @param row The clicked reference row.
          */
         fun onClickReferenceRow(row: UISchemaRow.Reference) {
@@ -107,8 +121,8 @@ internal class UiSchemaScreenViewModel
         }
 
         /**
-         * Update a row in the view state. Matches based on the value of the row.
-         * @param newRow The new row.
+         * Update a row in the view state. Matches based on the value of the [UISchemaRow].
+         * @param newRow The row to be updated.
          */
         private fun updateRow(newRow: UISchemaRow) {
             _viewState.update { viewState ->

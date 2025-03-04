@@ -14,6 +14,12 @@ import nl.rijksoverheid.mgo.component.theme.bodySmallMini
 import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
 
+/**
+ * Composable that shows a list item that displays some data.
+ *
+ * @param row The [UISchemaRow.Static].
+ * @param modifier The [Modifier] to be applied.
+ */
 @Composable
 internal fun UiSchemaRowStatic(
     row: UISchemaRow.Static,

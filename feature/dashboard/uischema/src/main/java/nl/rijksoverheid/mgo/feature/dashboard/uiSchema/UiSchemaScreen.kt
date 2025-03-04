@@ -29,6 +29,16 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
 import kotlinx.coroutines.flow.collectLatest
 
+/**
+ * Composable that shows a screen that displays health care data.
+ * Health care data is showed via a list of [UISchemaRow].
+ *
+ * @param organization The [MgoOrganization] for the health care data.
+ * @param mgoResource The [MgoResource] to get the health care data from.
+ * @param isSummary If this screen shows a summary of the health care data, or the complete set.
+ * @param onNavigateToUiSchema Called when navigating to another [UiSchemaScreen].
+ * @param onNavigateBack Called when requested to navigate back.
+ */
 @Composable
 fun UiSchemaScreen(
     organization: MgoOrganization,

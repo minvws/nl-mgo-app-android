@@ -33,6 +33,14 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen where you can remove a health care provider.
+ *
+ * @param providerId The id of the health care provider.
+ * @param providerName The name of the health care provider.
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param onNavigateToDashboard Called when requested to navigate to the dashboard (root screen with bottombar).
+ */
 @Composable
 fun RemoveOrganizationScreen(
     providerId: String,

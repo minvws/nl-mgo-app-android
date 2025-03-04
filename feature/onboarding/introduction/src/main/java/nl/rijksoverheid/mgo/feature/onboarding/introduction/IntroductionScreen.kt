@@ -23,6 +23,11 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen that introduces the app.
+ *
+ * @param onNavigateToProposition Called when requested to navigate to the proposition screen.
+ */
 @Composable
 fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
     MgoScaffold(

@@ -39,6 +39,14 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TA
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen to display health care providers. These health care providers were found automatically, meaning that
+ * they were requested per data available.
+ *
+ * @param checkResults If all the checkboxes for the health care providers that are displayed checkboxes should be checked.
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param onNavigateToDashboard Called when requested to navigate to the dashboard (root bottom bar screen).
+ */
 @Composable
 fun OrganizationListAutomaticSearchScreen(
     checkResults: Boolean,

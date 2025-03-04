@@ -18,6 +18,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [OrganizationListManualScreen].
+ *
+ * @param name The name of the health care provider to search for.
+ * @param city The city of the health care provider to search for.
+ * @param organizationRepository The [OrganizationRepository] to get and update health care providers.
+ */
 @HiltViewModel(assistedFactory = OrganizationListManualScreenViewModel.Factory::class)
 internal class OrganizationListManualScreenViewModel
     @AssistedInject
@@ -46,6 +53,9 @@ internal class OrganizationListManualScreenViewModel
             getSearchResults()
         }
 
+        /**
+         * Search for health care providers based on provided [name] and [city]. Reflects the result in the UI.
+         */
         fun getSearchResults() {
             viewModelScope.launch {
                 _viewState.update { viewState -> viewState.copy(loading = true, results = listOf(), error = null) }
@@ -60,6 +70,11 @@ internal class OrganizationListManualScreenViewModel
             }
         }
 
+        /**
+         * Save this organization in the app. Updates [navigation] when completed.
+         *
+         * @param provider The [MgoOrganization] to save.
+         */
         fun addOrganization(provider: MgoOrganization) {
             viewModelScope.launch {
                 organizationRepository.save(provider)

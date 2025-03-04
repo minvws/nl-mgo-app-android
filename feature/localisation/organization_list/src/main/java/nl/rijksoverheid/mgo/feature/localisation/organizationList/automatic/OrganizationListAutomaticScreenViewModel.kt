@@ -16,6 +16,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [OrganizationListAutomaticSearchScreen].
+ *
+ * @param organizationRepository The [OrganizationRepository] to get and update health care providers.
+ */
 @HiltViewModel
 internal class OrganizationListAutomaticScreenViewModel
     @Inject
@@ -33,6 +38,9 @@ internal class OrganizationListAutomaticScreenViewModel
             getSearchResults()
         }
 
+        /**
+         * Get health care providers and reflect the result in the UI.
+         */
         fun getSearchResults() {
             viewModelScope.launch {
                 _viewState.value = _viewState.value.copy(loading = true, results = listOf(), error = null)
@@ -47,6 +55,12 @@ internal class OrganizationListAutomaticScreenViewModel
             }
         }
 
+        /**
+         * Call to change the checkbox state for a card displayed in the UI.
+         *
+         * @param organization The [MgoOrganization] to change the state for.
+         * @param added If the health care provider was added.
+         */
         fun updateOrganization(
             organization: MgoOrganization,
             added: Boolean,
@@ -65,6 +79,9 @@ internal class OrganizationListAutomaticScreenViewModel
             }
         }
 
+        /**
+         * Call to save or delete organizations based on if the checkbox was checked.
+         */
         fun updateOrganizations() {
             viewModelScope.launch {
                 val checkedOrganizations = _viewState.value.results.filter { organization -> organization.added }

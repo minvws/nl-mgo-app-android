@@ -10,19 +10,65 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Key indicating that the onboarding has been seen.
+ */
 val KEY_HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
+
+/**
+ * Key indicating that biometric login is enabled.
+ */
 val KEY_LOGIN_WITH_BIOMETRIC_ENABLED = booleanPreferencesKey("login_with_biometric_enabled")
+
+/**
+ * Key indicating that the app has checked if the device has been rooted.
+ */
 val KEY_IS_ROOT_CHECKED = booleanPreferencesKey("is_root_checked")
+
+/**
+ * Key indicating the timestamp the last time the app was closed (brought to background).
+ */
 val KEY_APP_CLOSED_TIMESTAMP = longPreferencesKey("app_closed_timestamp")
+
+/**
+ * Key indicating that the app cannot take screenshots.
+ */
 val KEY_FLAG_SECURE = booleanPreferencesKey("flag_secure")
+
+/**
+ * Key indicating that the app can skip the login pin code screen.
+ */
 val KEY_SKIP_PIN = booleanPreferencesKey("skip_pin")
+
+/**
+ * Key indicating that the app shows the automatic localisation flow instead of the manual one.
+ */
 val KEY_AUTOMATIC_LOCALISATION = booleanPreferencesKey("automatic_localisation")
+
+/**
+ * Key indicating that the initial values of the feature toggles have been stored.
+ */
 val KEY_LOCAL_FEATURE_TOGGLES_INITIALISED = booleanPreferencesKey("local_feature_toggles_initialised")
+
+/**
+ * Key indicating the the user has successfully authenticated with DigiD.
+ */
 val KEY_DIGID_AUTHENTICATED = booleanPreferencesKey("digid_authenticated")
 
+/**
+ * Key-value storage system that uses [Preferences] to store data.
+ *
+ * @param dataStore The [DataStore] to save key-values into [Preferences].
+ */
 internal class DataStoreKeyValueStore(
     private val dataStore: DataStore<Preferences>,
 ) : KeyValueStore {
+    /**
+     * Stores a boolean value in the key-value store.
+     *
+     * @param key The key associated with the boolean value.
+     * @param value The boolean value to store.
+     */
     override suspend fun setBoolean(
         key: Preferences.Key<Boolean>,
         value: Boolean,
@@ -32,6 +78,12 @@ internal class DataStoreKeyValueStore(
         }
     }
 
+    /**
+     * Retrieves a boolean value from the key-value store.
+     *
+     * @param key The key associated with the boolean value.
+     * @return The stored boolean value, or a default value if not found.
+     */
     override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
         return runBlocking {
             dataStore.data.map { preferences ->
@@ -40,12 +92,23 @@ internal class DataStoreKeyValueStore(
         }
     }
 
+    /**
+     * Removes a boolean value from the key-value store.
+     *
+     * @param key The key associated with the boolean value to remove.
+     */
     override suspend fun removeBoolean(key: Preferences.Key<Boolean>) {
         dataStore.edit { preferences ->
             preferences.remove(key)
         }
     }
 
+    /**
+     * Stores a string value in the key-value store.
+     *
+     * @param key The key associated with the string value.
+     * @param value The string value to store.
+     */
     override suspend fun setString(
         key: Preferences.Key<String>,
         value: String,
@@ -55,6 +118,12 @@ internal class DataStoreKeyValueStore(
         }
     }
 
+    /**
+     * Retrieves a string value from the key-value store.
+     *
+     * @param key The key associated with the string value.
+     * @return The stored string value, or null if not found.
+     */
     override fun getString(key: Preferences.Key<String>): String? {
         return runBlocking {
             dataStore.data.map { preferences ->
@@ -63,12 +132,23 @@ internal class DataStoreKeyValueStore(
         }
     }
 
+    /**
+     * Removes a string value from the key-value store.
+     *
+     * @param key The key associated with the string value to remove.
+     */
     override suspend fun removeString(key: Preferences.Key<String>) {
         dataStore.edit { preferences ->
             preferences.remove(key)
         }
     }
 
+    /**
+     * Stores a long value in the key-value store.
+     *
+     * @param key The key associated with the long value.
+     * @param value The long value to store.
+     */
     override suspend fun setLong(
         key: Preferences.Key<Long>,
         value: Long,
@@ -78,6 +158,12 @@ internal class DataStoreKeyValueStore(
         }
     }
 
+    /**
+     * Retrieves a long value from the key-value store.
+     *
+     * @param key The key associated with the long value.
+     * @return The stored long value, or null if not found.
+     */
     override fun getLong(key: Preferences.Key<Long>): Long? {
         return runBlocking {
             dataStore.data.map { preferences ->
@@ -86,12 +172,20 @@ internal class DataStoreKeyValueStore(
         }
     }
 
+    /**
+     * Removes a long value from the key-value store.
+     *
+     * @param key The key associated with the long value to remove.
+     */
     override suspend fun removeLong(key: Preferences.Key<Long>) {
         dataStore.edit { preferences ->
             preferences.remove(key)
         }
     }
 
+    /**
+     * Clears all stored key-value pairs in the store.
+     */
     override fun clear() {
         runBlocking {
             dataStore.edit {

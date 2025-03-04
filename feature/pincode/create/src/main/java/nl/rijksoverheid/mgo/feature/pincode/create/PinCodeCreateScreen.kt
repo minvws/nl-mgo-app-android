@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
- * Composable that shows a screen where you can enter a pin code.
+ * Composable that shows a screen where you can enter a pin code for storage.
  */
 @Composable
 fun PinCodeCreateScreen(

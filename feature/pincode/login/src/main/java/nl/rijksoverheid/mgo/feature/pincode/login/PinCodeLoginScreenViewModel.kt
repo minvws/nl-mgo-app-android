@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for the [PinCodeLoginScreen].
+ *
+ * @param validatePinCode The [ValidatePinCode] used to validate the pin code that is entered against the stored pin code.
+ * @param loginWithBiometricEnabled The [LoginWithBiometricEnabled] to check if login with biometric is enabled.
+ */
 @HiltViewModel
 internal class PinCodeLoginScreenViewModel
     @Inject
@@ -26,6 +32,12 @@ internal class PinCodeLoginScreenViewModel
         private val _navigateToDashboard = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val navigateToDashboard = _navigateToDashboard.asSharedFlow()
 
+        /**
+         * Validate the pin code that is entered against the pin code that is stored.
+         * Updates [navigateToDashboard] when validated, else shows error in the UI.
+         *
+         * @param pinCode The entered pin code.
+         */
         fun validatePinCode(pinCode: List<Int>) {
             viewModelScope.launch {
                 val validated = validatePinCode.invoke(pinCode)
@@ -39,6 +51,9 @@ internal class PinCodeLoginScreenViewModel
             }
         }
 
+        /**
+         * Reset the error message in the UI.
+         */
         fun resetError() {
             _viewState.update { viewState ->
                 viewState.copy(error = false)

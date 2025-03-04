@@ -47,7 +47,7 @@ internal class PinCodeCreateScreenViewModel
         }
 
         /**
-         *
+         * Reset the error message in the UI.
          */
         fun resetError() {
             _viewState.update { viewState ->

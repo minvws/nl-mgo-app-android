@@ -21,6 +21,12 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen displaying the privacy policy.
+ *
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param onOnboardingFinished Called when the onboarding is considered done.
+ */
 @Composable
 fun PropositionOverviewScreen(
     onNavigateBack: () -> Unit,
@@ -28,7 +34,7 @@ fun PropositionOverviewScreen(
 ) {
     val viewModel: PropositionScreenViewModel = hiltViewModel()
     PropositionOverviewScreenContent(
-        url = viewModel.getUrl(),
+        url = viewModel.getPrivacyUrl(),
         onNavigateBack = onNavigateBack,
         onClickNext = {
             viewModel.setHasSeenOnboarding()

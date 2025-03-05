@@ -28,6 +28,12 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 const val TEST_TAG_NAME_TEXT_FIELD = "NAME_TEXT_FIELD"
 const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
 
+/**
+ * Composable that shows a screen where you can add a health care provider.
+ *
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param onNavigateToOrganizationSearch Called when requested to navigate to the screen where to show the results.
+ */
 @Composable
 fun AddOrganizationScreen(
     onNavigateBack: (() -> Unit)?,
@@ -85,7 +91,7 @@ private fun AddOrganizationScreenContent(
                         .fillMaxWidth()
                         .focusRequester(nameFocusRequester),
                 value = viewState.name,
-                header =
+                heading =
                     stringResource(
                         id = CopyR.string.add_organization_name,
                     ),
@@ -107,7 +113,7 @@ private fun AddOrganizationScreenContent(
                         .focusRequester(cityFocusRequester)
                         .padding(top = 16.dp),
                 value = viewState.city,
-                header =
+                heading =
                     stringResource(
                         id = CopyR.string.add_organization_city,
                     ),

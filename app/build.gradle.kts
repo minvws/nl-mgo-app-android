@@ -145,7 +145,6 @@ dependencies {
     // ================================
 
     implementation(projects.data.onboarding)
-    implementation(projects.data.config)
     implementation(projects.data.localisation)
     implementation(projects.data.fhirParser)
     implementation(projects.data.healthcare)
@@ -159,7 +158,6 @@ dependencies {
 
     testImplementation(testFixtures(projects.data.onboarding))
     testImplementation(testFixtures(projects.data.pincode))
-    testImplementation(testFixtures(projects.data.config))
     testImplementation(testFixtures(projects.framework.storage))
     testImplementation(testFixtures(projects.data.digid))
     testImplementation(testFixtures(projects.framework.featuretoggle))

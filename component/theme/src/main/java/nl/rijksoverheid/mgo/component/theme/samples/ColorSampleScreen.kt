@@ -2,14 +2,14 @@ package nl.rijksoverheid.mgo.component.theme.samples
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,137 +62,50 @@ import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
 import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
 import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ColorSampleScreen() {
-    LazyVerticalGrid(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background).padding(16.dp),
-        columns = GridCells.Adaptive(minSize = 100.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.backgroundPrimary(), text = "Background Primary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.backgroundSecondary(), text = "Background Secondary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.backgroundTertiary(), text = "Background Tertiary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.contentPrimary(), text = "Content Primary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.contentSecondary(), text = "Content Secondary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.contentTertiary(), text = "Content Tertiary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.iconsPrimary(), text = "Icons Primary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.iconsSecondary(), text = "Icons Secondary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.strokesPrimary(), text = "Strokes Primary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.strokesPrimary(), text = "Strokes Secondary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.strokesTertiary(), text = "Strokes Tertiary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.linesPrimary(), text = "Lines Primary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.linesSecondary(), text = "Lines Secondary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.linesTertiary(), text = "Lines Tertiary")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.linesInput(), text = "Lines Input")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(), text = "Action Primary Default Background")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionPrimaryDefaultText(), text = "Action Primary Default Text")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionPrimaryNegativeBackground(), text = "Action Primary Negative Background")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionPrimaryNegativeText(), text = "Action Primary Negative Text")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(), text = "Action Secondary Default Background")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionSecondaryDefaultText(), text = "Action Secondary Default Text")
-        }
-        item {
-            ColorSample(
-                color = MaterialTheme.colorScheme.actionSecondaryNegativeBackground(),
-                text = "Action Secondary Negative Background",
-            )
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionSecondaryNegativeText(), text = "Action Secondary Negative Text")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionTertiaryDefaultText(), text = "Action Tertiary Default Text")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.actionTertiaryNegativeText(), text = "Action Tertiary Negative Text")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.notificationInformation(), text = "Notification Information")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.notificationSuccess(), text = "Notification Success")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.notificationWarning(), text = "Notification Warning")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.notificationError(), text = "Notification Error")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportApotheek(), text = "Support Apotheek")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportZiekenhuis(), text = "Support Ziekenhuis")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportHuisarts(), text = "Support Huisarts")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportTandarts(), text = "Support Tandarts")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportGgz(), text = "Support GGZ")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportFysiotherapeut(), text = "Support Fysiotherapeut")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportVerpleeghuis(), text = "Support Verpleeghuis")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportThuiszorg(), text = "Support Thuiszorg")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportKliniek(), text = "Support Kliniek")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportOverige(), text = "Support Overige")
-        }
-        item {
-            ColorSample(color = MaterialTheme.colorScheme.supportRijkslint(), text = "Support Rijkslint")
-        }
+    FlowRow {
+        ColorSample(color = MaterialTheme.colorScheme.backgroundPrimary(), text = "Background Primary")
+        ColorSample(color = MaterialTheme.colorScheme.backgroundSecondary(), text = "Background Secondary")
+        ColorSample(color = MaterialTheme.colorScheme.backgroundTertiary(), text = "Background Tertiary")
+        ColorSample(color = MaterialTheme.colorScheme.contentPrimary(), text = "Content Primary")
+        ColorSample(color = MaterialTheme.colorScheme.contentSecondary(), text = "Content Secondary")
+        ColorSample(color = MaterialTheme.colorScheme.contentTertiary(), text = "Content Tertiary")
+        ColorSample(color = MaterialTheme.colorScheme.iconsPrimary(), text = "Icons Primary")
+        ColorSample(color = MaterialTheme.colorScheme.iconsSecondary(), text = "Icons Secondary")
+        ColorSample(color = MaterialTheme.colorScheme.strokesPrimary(), text = "Strokes Primary")
+        ColorSample(color = MaterialTheme.colorScheme.strokesPrimary(), text = "Strokes Secondary")
+        ColorSample(color = MaterialTheme.colorScheme.strokesTertiary(), text = "Strokes Tertiary")
+        ColorSample(color = MaterialTheme.colorScheme.linesPrimary(), text = "Lines Primary")
+        ColorSample(color = MaterialTheme.colorScheme.linesSecondary(), text = "Lines Secondary")
+        ColorSample(color = MaterialTheme.colorScheme.linesTertiary(), text = "Lines Tertiary")
+        ColorSample(color = MaterialTheme.colorScheme.linesInput(), text = "Lines Input")
+        ColorSample(color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(), text = "Action Primary Default Background")
+        ColorSample(color = MaterialTheme.colorScheme.actionPrimaryDefaultText(), text = "Action Primary Default Text")
+        ColorSample(color = MaterialTheme.colorScheme.actionPrimaryNegativeBackground(), text = "Action Primary Negative Background")
+        ColorSample(color = MaterialTheme.colorScheme.actionPrimaryNegativeText(), text = "Action Primary Negative Text")
+        ColorSample(color = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(), text = "Action Secondary Default Background")
+        ColorSample(color = MaterialTheme.colorScheme.actionSecondaryDefaultText(), text = "Action Secondary Default Text")
+        ColorSample(color = MaterialTheme.colorScheme.actionSecondaryNegativeBackground(), text = "Action Secondary Negative Background")
+        ColorSample(color = MaterialTheme.colorScheme.actionSecondaryNegativeText(), text = "Action Secondary Negative Text")
+        ColorSample(color = MaterialTheme.colorScheme.actionTertiaryDefaultText(), text = "Action Tertiary Default Text")
+        ColorSample(color = MaterialTheme.colorScheme.actionTertiaryNegativeText(), text = "Action Tertiary Negative Text")
+        ColorSample(color = MaterialTheme.colorScheme.notificationInformation(), text = "Notification Information")
+        ColorSample(color = MaterialTheme.colorScheme.notificationSuccess(), text = "Notification Success")
+        ColorSample(color = MaterialTheme.colorScheme.notificationWarning(), text = "Notification Warning")
+        ColorSample(color = MaterialTheme.colorScheme.notificationError(), text = "Notification Error")
+        ColorSample(color = MaterialTheme.colorScheme.supportApotheek(), text = "Support Apotheek")
+        ColorSample(color = MaterialTheme.colorScheme.supportZiekenhuis(), text = "Support Ziekenhuis")
+        ColorSample(color = MaterialTheme.colorScheme.supportHuisarts(), text = "Support Huisarts")
+        ColorSample(color = MaterialTheme.colorScheme.supportTandarts(), text = "Support Tandarts")
+        ColorSample(color = MaterialTheme.colorScheme.supportGgz(), text = "Support GGZ")
+        ColorSample(color = MaterialTheme.colorScheme.supportFysiotherapeut(), text = "Support Fysiotherapeut")
+        ColorSample(color = MaterialTheme.colorScheme.supportVerpleeghuis(), text = "Support Verpleeghuis")
+        ColorSample(color = MaterialTheme.colorScheme.supportThuiszorg(), text = "Support Thuiszorg")
+        ColorSample(color = MaterialTheme.colorScheme.supportKliniek(), text = "Support Kliniek")
+        ColorSample(color = MaterialTheme.colorScheme.supportOverige(), text = "Support Overige")
+        ColorSample(color = MaterialTheme.colorScheme.supportRijkslint(), text = "Support Rijkslint")
     }
 }
 
@@ -201,18 +114,29 @@ private fun ColorSample(
     color: Color,
     text: String,
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier =
+            Modifier
+                .width(100.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+    ) {
         Box(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(50.dp)
                     .background(color)
                     .border(0.1.dp, Color(0xFFE6E6E6)),
         )
-        Box(modifier = Modifier.fillMaxWidth().height(36.dp).border(0.1.dp, Color(0xFFE6E6E6)), contentAlignment = Alignment.Center) {
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .border(0.1.dp, Color(0xFFE6E6E6)),
+            contentAlignment = Alignment.Center,
+        ) {
             Text(
-                modifier = Modifier.padding(4.dp),
+                modifier = Modifier.padding(8.dp),
                 text = text,
                 style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
                 fontWeight = FontWeight.Bold,
@@ -226,6 +150,8 @@ private fun ColorSample(
 @Composable
 internal fun ColorSampleScreenPreview() {
     MgoTheme {
-        ColorSampleScreen()
+        Box(modifier = Modifier.height(4000.dp)) {
+            ColorSampleScreen()
+        }
     }
 }

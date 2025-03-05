@@ -16,6 +16,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for the [SettingsScreen].
+ *
+ * @param featureToggleRepository The [FeatureToggleRepository] to get and change the feature toggles.
+ * @param environmentRepository The [EnvironmentRepository] to determine that the toggles should not be shown when demo environment.
+ */
 @HiltViewModel
 internal class SettingsScreenViewModel
     @Inject

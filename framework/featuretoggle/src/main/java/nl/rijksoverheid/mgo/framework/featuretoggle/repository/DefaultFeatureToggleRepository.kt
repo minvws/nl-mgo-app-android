@@ -12,7 +12,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Repository that handles feature toggles. It currently only has support for a local data source, but can be expanded upon to for example
+ * Handles various feature toggle actions. It currently only has support for a local data source, but can be expanded upon to for example
  * also support remote data sources (like firebase or an own http service).
  */
 internal class DefaultFeatureToggleRepository
@@ -24,6 +24,9 @@ internal class DefaultFeatureToggleRepository
     FeatureToggleRepository {
         private val dataSources = listOf(localDataSource)
 
+        /**
+         * @return Get a list of all feature toggles.
+         */
         override fun getAll(): List<FeatureToggle> {
             return listOf(
                 flagSkipPinFeatureToggle,
@@ -32,14 +35,32 @@ internal class DefaultFeatureToggleRepository
             )
         }
 
+        /**
+         * Checks if a feature toggle is enabled.
+         *
+         * @param id The id of the feature toggle.
+         * @return True if the feature toggle is enabled.
+         */
         override fun get(id: FeatureToggleId): Boolean {
             return dataSources.first().get(id)
         }
 
+        /**
+         * Flow that has a value if the feature toggle is enabled. Is updated whenever the state changes.
+         *
+         * @param id The id of the feature toggle.
+         * @return True in the flow if the feature toggle is enabled.
+         */
         override fun observe(id: FeatureToggleId): Flow<Boolean> {
             return dataSources.first().observe(id)
         }
 
+        /**
+         * Update a feature toggle.
+         *
+         * @param toggle The feature toggle to update.
+         * @param enabled True if the feature toggle is enabled.
+         */
         override suspend fun set(
             toggle: FeatureToggle,
             enabled: Boolean,

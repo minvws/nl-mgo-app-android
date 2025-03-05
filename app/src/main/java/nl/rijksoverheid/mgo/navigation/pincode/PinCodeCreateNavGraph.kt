@@ -12,6 +12,10 @@ import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
 import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
+/**
+ * Adds all the navigation destinations that can be found when creating a pin code.
+ * @param navController The nav controller used in this navigation.
+ */
 fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
     navigation<PinCodeCreateNavigation.Root>(PinCodeCreateNavigation.Create) {
         mgoComposable<PinCodeCreateNavigation.Create> {

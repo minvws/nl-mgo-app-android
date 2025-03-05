@@ -37,6 +37,12 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.organizations.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen with a list of added health care providers.
+ *
+ * @param onNavigateToHealthCategories Called when requested to navigate to the screen that shows health categories.
+ * @param onNavigateToLocalisation Called when requested to navigate to the start of navigation where to search for health care providers.
+ */
 @Composable
 fun OrganizationsScreen(
     onNavigateToHealthCategories: (organization: MgoOrganization) -> Unit,

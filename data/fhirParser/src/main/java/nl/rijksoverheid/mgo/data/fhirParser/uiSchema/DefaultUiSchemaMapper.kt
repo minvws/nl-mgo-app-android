@@ -9,7 +9,10 @@ import javax.inject.Inject
 import kotlinx.serialization.json.Json
 
 /**
- * Creates [UISchema] based on [MgoResource].
+ * Creates [HealthUiSchema] based on a [MgoResource].
+ *
+ * @param jsRuntimeRepository The [JsRuntimeRepository] to handle javascript.
+ * @param base64Util The [Base64Util] to handle base64 decoding.
  */
 internal class DefaultUiSchemaMapper
     @Inject
@@ -20,8 +23,10 @@ internal class DefaultUiSchemaMapper
             }
 
         /**
-         * Get a summary of most important health care data to display for a user.
-         * @param mgoResource The mgo resource created in [MgoResourceMapper].
+         * Retrieves a summarized version of the most important healthcare data from an [MgoResource].
+         *
+         * @param mgoResource The [MgoResource] created in [MgoResourceMapper].
+         * @return [HealthUiSchema].
          */
         override suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema {
             return getUiSchemas(
@@ -31,8 +36,10 @@ internal class DefaultUiSchemaMapper
         }
 
         /**
-         * Get all health care data to display for a user.
-         * @param mgoResource The mgo resource created in [MgoResourceMapper].
+         * Retrieves the complete set of healthcare data from an [MgoResource].
+         *
+         * @param mgoResource The [MgoResource] created in [MgoResourceMapper].
+         * @return [HealthUiSchema].
          */
         override suspend fun getDetail(mgoResource: MgoResource): HealthUiSchema {
             return getUiSchemas(
@@ -41,6 +48,17 @@ internal class DefaultUiSchemaMapper
             )
         }
 
+        /**
+         * Executes a JavaScript function to retrieve a UI schema based on an [MgoResource].
+         *
+         * The function extracts the Base64-encoded JSON data from [mgoResource], decodes it,
+         * and passes it as an argument to the specified JavaScript function in the V8 runtime.
+         * The returned JSON string is then deserialized into a [HealthUiSchema] object.
+         *
+         * @param mgoResource The FHIR resource containing Base64-encoded healthcare data.
+         * @param jsFunctionName The name of the JavaScript function to execute (e.g., "getSummaryJson" or "getDetailsJson").
+         * @return [HealthUiSchema].
+         */
         private suspend fun getUiSchemas(
             mgoResource: MgoResource,
             jsFunctionName: String,

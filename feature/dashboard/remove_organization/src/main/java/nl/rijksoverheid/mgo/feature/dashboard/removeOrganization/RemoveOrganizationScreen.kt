@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
@@ -33,6 +33,14 @@ import nl.rijksoverheid.mgo.component.theme.notificationError
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen where you can remove a health care provider.
+ *
+ * @param providerId The id of the health care provider.
+ * @param providerName The name of the health care provider.
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param onNavigateToDashboard Called when requested to navigate to the dashboard (root screen with bottombar).
+ */
 @Composable
 fun RemoveOrganizationScreen(
     providerId: String,
@@ -40,7 +48,7 @@ fun RemoveOrganizationScreen(
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
 ) {
-    val snackbarPresenter = LocalSnackbarPresenter.current
+    val snackbarPresenter = LocalSnackBarPresenter.current
     val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.providerDeleted.collectLatest {

@@ -23,10 +23,16 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a snackbar.
+ * @param visuals Contains information about the appearance of the snackbar.
+ * @param onDismiss Called when the action has been clicked.
+ * @param modifier the [Modifier] to be applied.
+ */
 @Composable
 internal fun MgoSnackBar(
     visuals: MgoSnackBarVisuals,
-    dismiss: () -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -62,7 +68,7 @@ internal fun MgoSnackBar(
                     modifier =
                         Modifier
                             .clickable(visuals.actionCallback != null) {
-                                dismiss()
+                                onDismiss()
                                 coroutineScope.launch { visuals.actionCallback?.invoke() }
                             }
                             .padding(start = 16.dp),
@@ -86,7 +92,7 @@ internal fun MgoSnackBarSuccess() {
                     type = MgoSnackBarType.SUCCESS,
                     title = CopyR.string.app_name,
                 ),
-            dismiss = {},
+            onDismiss = {},
         )
     }
 }
@@ -102,7 +108,7 @@ internal fun MgoSnackBarSuccessWithAction() {
                     title = CopyR.string.app_name,
                     action = CopyR.string.app_name,
                 ),
-            dismiss = {},
+            onDismiss = {},
         )
     }
 }
@@ -118,7 +124,7 @@ internal fun MgoSnackBarSuccessOverflow() {
                     title = CopyR.string.dialog_remove_organization_subheading,
                     action = CopyR.string.app_name,
                 ),
-            dismiss = {},
+            onDismiss = {},
         )
     }
 }
@@ -133,7 +139,7 @@ internal fun MgoSnackBarWarning() {
                     type = MgoSnackBarType.WARNING,
                     title = CopyR.string.app_name,
                 ),
-            dismiss = {},
+            onDismiss = {},
         )
     }
 }
@@ -149,7 +155,7 @@ internal fun MgoSnackBarWarningWithAction() {
                     title = CopyR.string.app_name,
                     action = CopyR.string.app_name,
                 ),
-            dismiss = {},
+            onDismiss = {},
         )
     }
 }
@@ -164,7 +170,7 @@ internal fun MgoSnackBarError() {
                     type = MgoSnackBarType.ERROR,
                     title = CopyR.string.app_name,
                 ),
-            dismiss = {},
+            onDismiss = {},
         )
     }
 }
@@ -179,7 +185,7 @@ internal fun MgoSnackBarInfo() {
                     type = MgoSnackBarType.INFO,
                     title = CopyR.string.app_name,
                 ),
-            dismiss = {},
+            onDismiss = {},
         )
     }
 }

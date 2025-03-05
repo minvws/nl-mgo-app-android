@@ -14,6 +14,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 
+/**
+ * The [ViewModel] for [OrganizationsScreen].
+ *
+ * @param organizationRepository The [OrganizationRepository] to get the stored health care providers from.
+ * @param keyValueStore The [KeyValueStore] in where is stored if automatic localisation has been enabled.
+ */
 @HiltViewModel
 internal class OrganizationsViewModel
     @Inject

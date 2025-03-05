@@ -12,6 +12,12 @@ import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.getViewModel
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
+/**
+ * Adds all the navigation destinations that can be found when searching for health care providers.
+ * @param navController The nav controller used in this navigation.
+ * @param automaticLocalisationEnabled If this nav graph should start with the automatic localisation, or the manual one.
+ * @param fromOnboarding If this navigation is shown directly after the onboarding, or from the dashboard.
+ */
 fun NavGraphBuilder.addLocalisationNavGraph(
     navController: NavController,
     automaticLocalisationEnabled: Boolean,

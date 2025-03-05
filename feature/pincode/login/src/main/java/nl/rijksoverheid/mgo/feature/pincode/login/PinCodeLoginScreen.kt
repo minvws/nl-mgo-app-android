@@ -27,6 +27,12 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen where you can enter a pin code that is validated against a saved pin code.
+ *
+ * @param onNavigateForgotPin Called when requested to navigate to the screen where you can reset the pin code.
+ * @param onPinValidated Called when the pin code has been successfully validated.
+ */
 @Composable
 fun PinCodeLoginScreen(
     onNavigateForgotPin: () -> Unit,

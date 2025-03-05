@@ -9,6 +9,12 @@ import java.net.URLEncoder
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
+/**
+ * Jetpack Compose Navigation currently only supports sending certain types like primitives. To be able to send
+ * data classes which itself includes other classes (non primitives), we need to make the class parcelable.
+ * This class needs to be mapped to this class in the typeMap when adding the navigation destination.
+ * See where this class is used for examples.
+ */
 class JsonNavType<T : Parcelable>(
     private val clazz: Class<T>,
     private val serializer: KSerializer<T>,

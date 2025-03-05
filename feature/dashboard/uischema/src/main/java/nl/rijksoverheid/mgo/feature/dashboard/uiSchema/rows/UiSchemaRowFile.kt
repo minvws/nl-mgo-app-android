@@ -37,6 +37,13 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
 import nl.rijksoverheid.mgo.framework.util.shareFile
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a list item that represents a file that can be downloaded or opened.
+ *
+ * @param row The [UISchemaRow.File].
+ * @param onClick Called when is requested to downloaded the file.
+ * @param modifier The [Modifier] to be applied.
+ */
 @Composable
 internal fun UiSchemaRowFile(
     row: UISchemaRow.File,

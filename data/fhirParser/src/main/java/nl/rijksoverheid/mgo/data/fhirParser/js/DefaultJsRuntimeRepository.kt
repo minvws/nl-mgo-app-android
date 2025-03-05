@@ -17,9 +17,11 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 
 /**
- * Wrapper class for the v8 javascript runtime we use to parse javascript (https://github.com/eclipsesource/J2V8).
- * This class wraps some function from it to make sure they work with coroutines,
- * and everything is executed on the same thread (which is a requirement of j2v8).
+ * Wrapper class for the V8 JavaScript runtime (J2V8) used to execute JavaScript code in the application.
+ * This class ensures that all interactions with the V8 engine occur on a single thread, as required by J2V8.
+ * It also integrates coroutine support for asynchronous execution.
+ *
+ * @param context The Android application context.
  */
 @SuppressWarnings("all")
 @Singleton
@@ -33,9 +35,9 @@ internal class DefaultJsRuntimeRepository
         private val jsRuntime: MutableStateFlow<V8?> = MutableStateFlow(null)
 
         /**
-         * Loads the javascript file we use to share code between the Web, iOS and Android clients.
-         * This is a pretty big file, so preferable load this during app launch.
-         * When loaded it will emit to [jsRuntime] so the runtime can be accessed.
+         * Loads the JavaScript file used for shared functionality across Web, iOS, and Android clients.
+         * Since this file is large, it should ideally be loaded during app launch for performance reasons.
+         * Once loaded, the [jsRuntime] emits the initialized V8 runtime instance.
          */
         override suspend fun load() {
             withContext(v8Dispatcher) {
@@ -48,9 +50,11 @@ internal class DefaultJsRuntimeRepository
         }
 
         /**
-         * Calls javascript function that returns a string.
-         * @param name The name of the javascript function.
-         * @param parameters List of parameters you want to send with the function.
+         * Executes a JavaScript function.
+         *
+         * @param name The name of the JavaScript function to call.
+         * @param parameters A list of string parameters to pass to the function.
+         * @return The string result of the function execution.
          */
         override suspend fun executeStringFunction(
             name: String,
@@ -64,6 +68,12 @@ internal class DefaultJsRuntimeRepository
             }
         }
 
+        /**
+         * Converts a list of string parameters into a V8Array, which can be passed to JavaScript functions.
+         *
+         * @param parameters A list of string values to be converted.
+         * @return A V8Array containing the provided parameters.
+         */
         private fun V8.createParameters(parameters: List<String>): V8Array {
             val array = V8Array(this)
             parameters.forEach { parameter ->
@@ -72,6 +82,12 @@ internal class DefaultJsRuntimeRepository
             return array
         }
 
+        /**
+         * Retrieves the initialized V8 runtime instance.
+         * Suspends execution until the runtime is available.
+         *
+         * @return The initialized V8 runtime instance.
+         */
         private suspend fun get(): V8 {
             return withContext(v8Dispatcher) {
                 jsRuntime.filterNotNull().first()

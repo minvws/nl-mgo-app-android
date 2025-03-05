@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Handles various operations on [MgoOrganization].
+ *
+ * @param loadApi The [LoadApi] to communicate with the server.
+ * @param encryptedFileStore The [EncryptedFileStore] to securely store organizations.
+ */
 internal class DefaultOrganizationRepository(
     private val loadApi: LoadApi,
     private val encryptedFileStore: EncryptedFileStore,
@@ -22,6 +28,13 @@ internal class DefaultOrganizationRepository(
 
     override val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(runBlocking { get() })
 
+    /**
+     * Search for health care providers.
+     *
+     * @param name The name of the health care provider to search for.
+     * @param city The city of the health care provider to search for.
+     * @return [Flow] containing a list of [MgoOrganization] representing a health care provider.
+     */
     override fun search(
         name: String,
         city: String,
@@ -40,6 +53,12 @@ internal class DefaultOrganizationRepository(
         }
     }
 
+    /**
+     * Temporary: search for health care providers based on if they have data for you.
+     * This talks to a api which returns hard coded data. It is for demo purposes only.
+     *
+     * @return [Flow] containing a list of [MgoOrganization] representing a health care provider.
+     */
     override suspend fun searchDemo(): Flow<List<MgoOrganization>> {
         val searchResponseFlow =
             flow {
@@ -53,11 +72,19 @@ internal class DefaultOrganizationRepository(
         }
     }
 
+    /**
+     * @return All the [MgoOrganization] that are stored.
+     */
     override suspend fun get(): List<MgoOrganization> {
         val localMgoOrganizations = encryptedFileStore.getFile(MgoOrganizations::class, fileName)
         return localMgoOrganizations?.providers ?: listOf()
     }
 
+    /**
+     * Save a [MgoOrganization].
+     *
+     * @param provider The [MgoOrganization] to save.
+     */
     override suspend fun save(provider: MgoOrganization) {
         // Get stored health care providers
         val storedMgoOrganizations = encryptedFileStore.getFile(MgoOrganizations::class, fileName) ?: MgoOrganizations(listOf())
@@ -77,6 +104,11 @@ internal class DefaultOrganizationRepository(
         storedOrganizationsFlow.value = newStoredOrganizations.providers
     }
 
+    /**
+     * Delete a [MgoOrganization].
+     *
+     * @param providerId The id of the [MgoOrganization] to delete.
+     */
     override suspend fun delete(providerId: String) {
         // Get stored health care providers
         val storedMgoOrganizations = encryptedFileStore.getFile(MgoOrganizations::class, fileName) ?: MgoOrganizations(listOf())
@@ -93,6 +125,9 @@ internal class DefaultOrganizationRepository(
         storedOrganizationsFlow.value = newStoredOrganizations.providers
     }
 
+    /**
+     * Deletes all [MgoOrganization] that are stored.
+     */
     override suspend fun deleteAll() {
         // Update flow
         storedOrganizationsFlow.value = listOf()

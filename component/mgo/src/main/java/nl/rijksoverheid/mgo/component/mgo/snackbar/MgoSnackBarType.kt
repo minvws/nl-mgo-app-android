@@ -12,6 +12,9 @@ import nl.rijksoverheid.mgo.component.theme.notificationInformation
 import nl.rijksoverheid.mgo.component.theme.notificationSuccess
 import nl.rijksoverheid.mgo.component.theme.notificationWarning
 
+/**
+ * Determines the appearance of a [MgoSnackBar].
+ */
 enum class MgoSnackBarType {
     SUCCESS,
     ERROR,
@@ -19,6 +22,10 @@ enum class MgoSnackBarType {
     INFO,
 }
 
+/**
+ * @receiver The [MgoSnackBarType] for which the icon is needed.
+ * @return The icon to show in [MgoSnackBar].
+ */
 @DrawableRes
 fun MgoSnackBarType.getIcon(): MgoSnackBarDataIcon {
     return when (this) {
@@ -29,6 +36,10 @@ fun MgoSnackBarType.getIcon(): MgoSnackBarDataIcon {
     }
 }
 
+/**
+ * @receiver The [MgoSnackBarType] for which the icon is needed.
+ * @return The background color for [MgoSnackBar].
+ */
 @Composable
 fun MgoSnackBarType.getBackgroundColor(): Color {
     return when (this) {
@@ -39,6 +50,10 @@ fun MgoSnackBarType.getBackgroundColor(): Color {
     }
 }
 
+/**
+ * @receiver The [MgoSnackBarType] for which the icon is needed.
+ * @return The content color for [MgoSnackBar].
+ */
 @Composable
 fun MgoSnackBarType.getContentColor(): Color {
     return when (this) {

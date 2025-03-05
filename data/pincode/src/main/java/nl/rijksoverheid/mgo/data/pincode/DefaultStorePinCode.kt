@@ -6,9 +6,18 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Stores a hashed pin code.
+ *
+ * @param secureKeyValueStore [KeyValueStore] to save the hashed pin code into.
+ * @param pinCodeHasher [PinCodeHasher] to hash the pin code.
+ */
 internal class DefaultStorePinCode
     @Inject
     constructor(private val secureKeyValueStore: KeyValueStore, private val pinCodeHasher: PinCodeHasher) : StorePinCode {
+        /**
+         * @param pinCode The pin code to store.
+         */
         override operator fun invoke(pinCode: List<Int>) {
             val pinCodeString = pinCode.joinToString(",")
             val hashedPinCode = pinCodeHasher.hash(pinCodeString)

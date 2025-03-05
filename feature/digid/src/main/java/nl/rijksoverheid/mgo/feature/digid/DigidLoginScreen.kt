@@ -36,6 +36,11 @@ import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen where you can start the authentication process with DigiD.
+ *
+ * @param onNavigateToDigidMock Called when requested to navigate to a DigiD mock screen (temporary).
+ */
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
     val activity = LocalContext.current as FragmentActivity

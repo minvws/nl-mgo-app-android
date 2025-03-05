@@ -25,6 +25,18 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Viewmodel that is attached to the only activity in the app. Handles functionality that is related to navigation when
+ * launching the app.
+ * @param showDeviceRootedDialog Use case that checks if the device has been rooted.
+ * @param appLocked Use case that checks if the app should be locked.
+ * @param saveClosedAppTimestamp Use case that saves locally saves a timestamp. The timestamp represents the last time the app was closed.
+ * @param hasPinCode Use case that checks if the user has a pin code set.
+ * @param hasSeenOnboarding Use case that checks if the user has finished the onboarding.
+ * @param featureToggleRepository Repository that handles feature toggle actions.
+ * @param keyValueStore Store to save a key value pair into.
+ * @param isDigidAuthenticated Use case to check if the user has authenticated with DigiD.
+ */
 @HiltViewModel
 internal class MainViewModel
     @Inject
@@ -45,6 +57,7 @@ internal class MainViewModel
         val navigateDialog = _navigateDialog.asSharedFlow()
 
         init {
+            // Check if the flag secure feature toggle is enabled.
             viewModelScope.launch {
                 featureToggleRepository.observe(FeatureToggleId.FlagSecure).collectLatest { enabled ->
                     _flagSecureFeatureToggle.tryEmit(enabled)
@@ -52,6 +65,9 @@ internal class MainViewModel
             }
         }
 
+        /**
+         * Get the first navigation destination to show when launching the app.
+         */
         fun getStartDestination(): Any {
             return when {
                 // If the user has not seen the onboarding, show the onboarding flow.
@@ -81,6 +97,9 @@ internal class MainViewModel
             }
         }
 
+        /**
+         * Check if the app needs to be locked.
+         */
         fun checkAppLock() {
             viewModelScope.launch {
                 val appLocked = appLocked.invoke()
@@ -90,12 +109,18 @@ internal class MainViewModel
             }
         }
 
+        /**
+         * Save the timestamp locally so we know if the app needs to be locked when coming back from the background.
+         */
         fun saveClosedAppTimestamp() {
             viewModelScope.launch {
                 saveClosedAppTimestamp.invoke()
             }
         }
 
+        /**
+         * @return True if the automatic localisation needs to be shown instead of the manual one.
+         */
         fun getAutomaticLocalisationEnabled(): Boolean {
             return keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
         }

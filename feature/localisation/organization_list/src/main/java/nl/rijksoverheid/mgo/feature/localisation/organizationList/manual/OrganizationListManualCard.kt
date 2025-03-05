@@ -32,12 +32,21 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
+import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 const val TEST_TAG_ORGANIZATION_SEARCH_CARD = "ORGANIZATION_SEARCH_CARD"
 
+/**
+ * Composable that shows a card to show in [OrganizationListAutomaticSearchScreen].
+ *
+ * @param searchResult The [MgoOrganization] to display in this card.
+ * @param cardState The [OrganizationSearchCardState] reflecting the state of this card.
+ * @param onClick Called when the card has been clicked and the organization has not been added yet.
+ * @param modifier The [Modifier] to be applied.
+ */
 @Composable
-fun OrganizationListManualCard(
+internal fun OrganizationListManualCard(
     searchResult: MgoOrganization,
     cardState: OrganizationSearchCardState,
     onClick: (searchResult: MgoOrganization) -> Unit,

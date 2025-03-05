@@ -7,7 +7,7 @@ import android.view.accessibility.AccessibilityManager
 
 /**
  * Will announce a string through accessibility, if accessibility is enabled.
- * @param announce The string to announce
+ * @param announce The string to announce.
  */
 fun Context.accessibilityAnnounce(announce: String) {
     val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager

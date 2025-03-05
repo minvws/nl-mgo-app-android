@@ -8,6 +8,10 @@ import nl.rijksoverheid.mgo.feature.onboarding.proposition.PropositionOverviewSc
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 
+/**
+ * Adds all the navigation destinations that can be found when going through the onboarding.
+ * @param navController The nav controller used in this navigation.
+ */
 fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
     navigation<OnboardingNavigation.Root>(OnboardingNavigation.Introduction) {
         mgoComposable<OnboardingNavigation.Introduction> {

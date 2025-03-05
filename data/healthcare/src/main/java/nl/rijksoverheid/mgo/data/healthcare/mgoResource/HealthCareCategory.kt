@@ -6,6 +6,9 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Docume
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Gp
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Vaccination
 
+/**
+ * Enum representing various categories of health care data.
+ */
 enum class HealthCareCategory(val id: String) {
     MEDICATIONS("medication"),
     LAB_RESULTS("lab_results"),
@@ -25,6 +28,13 @@ enum class HealthCareCategory(val id: String) {
     LIFESTYLE("lifestyle"),
 }
 
+/**
+ * Get a list of [HealthCareRequest] for a [HealthCareCategory].
+ * These requests should be made to fill the category with health care data.
+ *
+ * @receiver The health care category for which requests are retrieved.
+ * @return A list of [HealthCareRequest] objects corresponding to the category.
+ */
 fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> {
@@ -93,6 +103,13 @@ fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
     }
 }
 
+/**
+ * Get a list of profiles for a [HealthCareCategory].
+ * These profiles can be used to filter out which health care data to show for which category.
+ *
+ * @receiver The health care category for which profiles are retrieved.
+ * @return A list of profile identifier strings corresponding to the category.
+ */
 fun HealthCareCategory.getProfiles(): List<String> {
     return when (this) {
         HealthCareCategory.MEDICATIONS -> {

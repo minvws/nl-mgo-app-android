@@ -1,6 +1,13 @@
 package nl.rijksoverheid.mgo.data.pincode.strength
 
+/**
+ * Validates the strength of a pin code.
+ */
 internal class DefaultPinCodeStrengthStrengthValidator : PinCodeStrengthValidator {
+    /**
+     * @param pinCode The pin code to validate.
+     * @return True if pin code is validated.
+     */
     override fun invoke(pinCode: List<Int>): Boolean {
         val pinCodeString = pinCode.joinToString("")
 

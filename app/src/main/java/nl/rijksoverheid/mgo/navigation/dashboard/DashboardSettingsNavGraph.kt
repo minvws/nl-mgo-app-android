@@ -10,6 +10,11 @@ import nl.rijksoverheid.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import java.io.File
 
+/**
+ * Adds all the navigation destinations that can be found in the settings bottom bar tab in the dashboard.
+ * @param mainActivity: MainActivity,
+ * @param rootNavController The top level nav controller.
+ */
 fun NavGraphBuilder.addDashboardSettingsNavGraph(
     mainActivity: MainActivity,
     rootNavController: NavController,

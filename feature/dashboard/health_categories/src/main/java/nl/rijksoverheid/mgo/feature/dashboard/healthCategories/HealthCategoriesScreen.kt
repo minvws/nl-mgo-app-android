@@ -57,6 +57,19 @@ import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCa
 import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen with a list of health categories. These health categories are populated with either health cara data
+ * for all added health providers, or just a single one.
+ *
+ * @param appBarTitle The title of the app bar.
+ * @param subHeading Text under the app bar that contains a small explanation about this screen.
+ * @param onNavigateRemoveOrganization Called when requested to navigate to the screen where you can remove an organization.
+ * @param onNavigateToLocalisation Called when requested to navigate to the screen where you can search for organizations.
+ * @param onNavigateToHealthCategory Called when requested to navigate to the screen where you can view health care data.
+ * @param organization If not null, will only show only health care data for this organization. If null will show for all added
+ * organizations.
+ * @param onNavigateBack Called when requested to navigate back.
+ */
 @Composable
 fun HealthCategoriesScreen(
     appBarTitle: String,
@@ -110,7 +123,6 @@ private fun HealthCategoriesScreenContent(
             MgoScaffoldScrollStateProvider.Column(
                 rememberScrollState(),
             ),
-        isRootScaffold = false,
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onClickAddProvider,
         onNavigateBack = onNavigateBack,

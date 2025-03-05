@@ -34,8 +34,16 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TAG_ORGANIZATION_SEARCH_CARD
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a card to show in [OrganizationListAutomaticSearchScreen].
+ *
+ * @param organization The [MgoOrganization] to display in this card.
+ * @param cardState The [OrganizationSearchCardState] reflecting the state of this card.
+ * @param onCheckedChange Called when the checkbox has changed state.
+ * @param modifier The [Modifier] to be applied.
+ */
 @Composable
-fun OrganizationListAutomaticCard(
+internal fun OrganizationListAutomaticCard(
     organization: MgoOrganization,
     cardState: OrganizationSearchCardState,
     onCheckedChange: (checked: Boolean) -> Unit,

@@ -11,6 +11,12 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.iconsPrimary
 
+/**
+ * Composable that shows a check box. Same as a [Checkbox] but with some specific values set.
+ * @param checked If the check box is checked.
+ * @param onCheckedChange Called if the check box is clicked.
+ * @param modifier the [Modifier] to be applied.
+ */
 @Composable
 fun MgoCheckbox(
     checked: Boolean,

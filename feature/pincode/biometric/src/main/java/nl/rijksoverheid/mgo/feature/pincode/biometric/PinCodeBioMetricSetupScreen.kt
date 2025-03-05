@@ -25,6 +25,11 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen where you can authenticate via biometrics.
+ *
+ * @param onNavigateToDigid Called when requested to navigate to the digid authentication screen.
+ */
 @Composable
 fun PinCodeBioMetricSetupScreen(onNavigateToDigid: () -> Unit) {
     val viewModel: PinCodeBiometricSetupScreenViewModel = hiltViewModel()

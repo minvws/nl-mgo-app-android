@@ -26,6 +26,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen where you can enter your pin code again so it's validated with another entered pin code.
+ *
+ * @param pinCodeToMatch The pin code entered in a previous screen that should match the pin code entered here.
+ * @param onNavigate Called when requested to navigate to another screen.
+ * @param onNavigateBack Called when requested to navigate back.
+ */
 @Composable
 fun PinCodeConfirmScreen(
     pinCodeToMatch: List<Int>,

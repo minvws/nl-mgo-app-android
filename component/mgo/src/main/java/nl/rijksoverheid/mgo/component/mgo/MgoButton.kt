@@ -37,6 +37,14 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.digid
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a button.
+ * @param buttonText The text to show in the button.
+ * @param onClick Called when clicking on the button.
+ * @param modifier the [Modifier] to be applied.
+ * @param buttonTheme The theme for this button. Defaults to [MgoButtonTheme.PRIMARY_DEFAULT].
+ * @param isLoading If set to true, will display a progress loader next to the button text.
+ */
 @Composable
 fun MgoButton(
     buttonText: String,

@@ -24,6 +24,12 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a temporary screen that indicates that the login process with DigiD has been completed.
+ * This is for demo purposes to show a nice screen instead of the test environment from DigiD.
+ *
+ * @param onNavigateToLocalisation Called when requested to navigate to start of searching for health care providers.
+ */
 @Composable
 fun DigidMockScreen(onNavigateToLocalisation: () -> Unit) {
     MgoScaffold(

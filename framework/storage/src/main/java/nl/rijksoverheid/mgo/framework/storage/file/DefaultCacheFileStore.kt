@@ -11,6 +11,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 
+/**
+ * Store that handles files in app's cache directory.
+ */
 internal class DefaultCacheFileStore(context: Context) : CacheFileStore {
     private val cacheDir =
         File(context.cacheDir, "mgo").also {
@@ -21,6 +24,12 @@ internal class DefaultCacheFileStore(context: Context) : CacheFileStore {
             }
         }
 
+    /**
+     * Save a file in cache.
+     * @param name The name of the file (without extension).
+     * @param contentType The contentType, to be used in the [name].
+     * @Param base64Content The contents of the file, base64 encoded.
+     */
     override fun saveFile(
         name: String,
         contentType: String,
@@ -77,6 +86,9 @@ internal class DefaultCacheFileStore(context: Context) : CacheFileStore {
         }
     }
 
+    /**
+     * Delete all files from cache.
+     */
     override fun deleteAll() {
         val files = cacheDir.listFiles() ?: return
         for (file in files) {

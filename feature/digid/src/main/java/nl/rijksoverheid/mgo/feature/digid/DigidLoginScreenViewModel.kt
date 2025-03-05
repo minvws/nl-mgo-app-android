@@ -15,6 +15,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [DigidLoginScreen].
+ *
+ * @param digidRepository The [DigidRepository] that is responsible for authenticating with DigiD.
+ * @param base64Util The [Base64Util] used to decode the response that is returned from the authentication process.
+ */
 @HiltViewModel
 internal class DigidLoginScreenViewModel
     @Inject
@@ -31,6 +37,10 @@ internal class DigidLoginScreenViewModel
         private val _loginFinished = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
         val loginFinished = _loginFinished.asSharedFlow()
 
+        /**
+         * Start the authentication process with DigiD. Reflect the current state in the UI, and if successful open the browser to start the
+         * authentication.
+         */
         fun login() {
             viewModelScope.launch {
                 _viewState.update { viewState -> viewState.copy(loading = true) }
@@ -46,6 +56,12 @@ internal class DigidLoginScreenViewModel
             }
         }
 
+        /**
+         * Called when returning from the authentication process in the browser.
+         * Currently only reads the "userinfo" object, but does not do anything with it yet.
+         *
+         * @param uriString The uri of the deeplink that the app opened, containing the user info as a query parameter.
+         */
         fun handleDeeplink(uriString: String?) {
             viewModelScope.launch {
                 try {

@@ -6,6 +6,12 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
+/**
+ * An OkHttp interceptor that adds Basic Authentication headers to requests.
+ *
+ * @param user The username for authentication.
+ * @param password The password for authentication.
+ */
 class BasicAuthInterceptor(user: String, password: String) : Interceptor {
     private val credentials = basic(user, password)
 

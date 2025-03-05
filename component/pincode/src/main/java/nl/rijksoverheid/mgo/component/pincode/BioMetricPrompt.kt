@@ -5,6 +5,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Shows a system dialog that handles biometric login.
+ * @param onSuccess Called when the biometric login is successful.
+ * @param onFailed Called when the biometric login failed.
+ */
 fun FragmentActivity.showBiometricPrompt(
     onSuccess: () -> Unit,
     onFailed: () -> Unit = {},

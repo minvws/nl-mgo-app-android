@@ -40,7 +40,12 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
- * This screen currently only exists for debugging purposes. So no testing or snapshots need to be done for now.
+ * Composable that shows a screen that contains various settings you can alter for the app.
+ * Note: This screen is currently build for debugging purposes, and does not implement a certain design. This will be done later.
+ *
+ * @param onNavigateToOnboarding Called when requested to navigate back to the onboarding.
+ * @param onRestartApp Called when requested to restart the app. When the `clearData` parameter is true, it should also clear all locally
+ * stored data so that the app in a state as it was just installed.
  */
 @Composable
 fun SettingsScreen(
@@ -76,16 +81,16 @@ private fun SettingsScreenContent(
     var showResetAppDialog by remember { mutableStateOf(false) }
     if (showResetAppDialog) {
         MgoAlertDialog(
-            title = stringResource(CopyR.string.settings_reset_app_dialog_heading),
-            text = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
+            heading = stringResource(CopyR.string.settings_reset_app_dialog_heading),
+            subHeading = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
             onDismissRequest = { showResetAppDialog = false },
-            confirmButtonText = stringResource(CopyR.string.common_yes),
-            onClickConfirmButton = {
+            positiveButtonText = stringResource(CopyR.string.common_yes),
+            onClickPositiveButton = {
                 showResetAppDialog = false
                 onResetAppButtonClicked()
             },
-            dismissButtonText = stringResource(CopyR.string.common_no),
-            onClickDismissButton = {
+            negativeButtonText = stringResource(CopyR.string.common_no),
+            onClickNegativeButton = {
                 showResetAppDialog = false
             },
         )

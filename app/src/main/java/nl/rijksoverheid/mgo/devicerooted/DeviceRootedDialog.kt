@@ -14,19 +14,23 @@ import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.framework.copy.R
 import java.util.Locale
 
+/**
+ * Composable that shows a dialog to inform the user the device has been rooted.
+ * @param show True if the dialog needs to be shown.
+ */
 @Composable
 fun DeviceRootedDialog(show: Boolean) {
     var showDialog by remember { mutableStateOf(show) }
     if (showDialog) {
         MgoAlertDialog(
-            title = stringResource(id = R.string.launch_jailbreak_heading),
-            text = stringResource(id = R.string.launch_jailbreak_subheading),
+            heading = stringResource(id = R.string.launch_jailbreak_heading),
+            subHeading = stringResource(id = R.string.launch_jailbreak_subheading),
             onDismissRequest = { showDialog = false },
-            confirmButtonText =
+            positiveButtonText =
                 stringResource(id = R.string.common_ok)
                     .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-            onClickConfirmButton = { showDialog = false },
-            confirmButtonColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+            onClickPositiveButton = { showDialog = false },
+            positiveButtonTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
         )
     }
 }

@@ -28,7 +28,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.supportHuisarts
@@ -39,6 +38,16 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen to display health care providers. These health care providers are found when searching for them via a
+ * name and city.
+ *
+ * @param name The name of the health care provider to search for.
+ * @param city The city of the health care provider to search for.
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param onNavigateToAddOrganization Called when requested to go back to the screen where you can search for health care providers.
+ * @param onNavigateToDashboard Called when requested to navigate to the dashboard (root bottom bar screen).
+ */
 @Composable
 fun OrganizationListManualScreen(
     name: String,
@@ -149,9 +158,7 @@ private fun OrganizationListManualScreenContent(
                 }
 
                 viewState.error != null -> {
-                    ErrorContent(
-                        error = viewState.error,
-                    )
+                    ErrorContent()
                 }
 
                 viewState.results.isEmpty() -> {
@@ -280,7 +287,7 @@ private fun EmptyListItem(
 }
 
 @Composable
-private fun ColumnScope.ErrorContent(error: Throwable) {
+private fun ColumnScope.ErrorContent() {
     Image(
         modifier =
             Modifier
@@ -295,8 +302,6 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
         text = stringResource(id = CopyR.string.common_error_subheading),
         style = MaterialTheme.typography.bodySmall,
     )
-
-    MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

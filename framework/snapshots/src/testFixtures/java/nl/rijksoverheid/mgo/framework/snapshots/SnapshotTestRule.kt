@@ -15,19 +15,63 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
+/**
+ * Represents a device from which to create a snapshot.
+ */
 enum class SnapshotDevice {
+    /**
+     * Represents a portrait phone in light mode.
+     */
     PHONE_PORTRAIT_LIGHT,
+
+    /**
+     * Represents a portrait phone in light mode with the font size increased.
+     */
     PHONE_PORTRAIT_LIGHT_FONT_INCREASED,
+
+    /**
+     * Represents a landscape phone in light mode.
+     */
     PHONE_LANDSCAPE_LIGHT,
+
+    /**
+     * Represents a landscape phone in light mode with the font size increased.
+     */
     PHONE_LANDSCAPE_LIGHT_FONT_INCREASED,
+
+    /**
+     * Represents a portrait phone in dark mode.
+     */
     PHONE_PORTRAIT_DARK,
+
+    /**
+     * Represents a portrait tablet in light mode.
+     */
     TABLET_PORTRAIT_LIGHT,
+
+    /**
+     * Represents a landscape tablet in light mode.
+     */
     TABLET_LANDSCAPE_LIGHT,
 }
 
+/**
+ * Represents a list of devices to create snapshots for.
+ *
+ * @param devices A list of [SnapshotDevice].
+ */
 sealed class SnapshotDevices(val devices: List<SnapshotDevice>) {
+    /**
+     * Creates snapshots of all devices that are available.
+     */
     data object All : SnapshotDevices(SnapshotDevice.entries)
 
+    /**
+     * Creates snapshots of:
+     * - Portrait phone in light mode.
+     * - Portrait phone in dark mode.
+     * - Landscape phone in light mode.
+     */
     data object Default : SnapshotDevices(
         listOf(
             SnapshotDevice.PHONE_PORTRAIT_LIGHT,
@@ -36,13 +80,33 @@ sealed class SnapshotDevices(val devices: List<SnapshotDevice>) {
         ),
     )
 
+    /**
+     * Creates snapshots of a portrait phone in light and dark mode.
+     */
     data object PhoneLightDarkPortrait : SnapshotDevices(listOf(SnapshotDevice.PHONE_PORTRAIT_LIGHT, SnapshotDevice.PHONE_PORTRAIT_DARK))
 }
 
-class SnapshotTestRule(deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5, renderingMode: RenderingMode = RenderingMode.SHRINK) : TestRule {
+/**
+ *
+ */
+class SnapshotTestRule(
+    deviceConfig: DeviceConfig = DeviceConfig.PIXEL_5,
+    renderingMode: RenderingMode = RenderingMode.SHRINK,
+    useDeviceResolution: Boolean = false,
+) : TestRule {
     @get:Rule
-    val rule = Paparazzi(deviceConfig = deviceConfig, renderingMode = renderingMode)
+    val rule = Paparazzi(deviceConfig = deviceConfig, renderingMode = renderingMode, useDeviceResolution = useDeviceResolution)
 
+    /**
+     * Captures UI snapshots for different device configurations.
+     *
+     * This function iterates over a list of predefined snapshot devices
+     * and takes a screenshot of the provided Composable content in various
+     * screen sizes, orientations, and themes (light/dark mode, font scaling).
+     *
+     * @param devices The set of devices for which snapshots should be taken. Defaults to [SnapshotDevices.Default].
+     * @param content The Composable UI to be rendered and captured in snapshots.
+     */
     fun snapshots(
         devices: SnapshotDevices = SnapshotDevices.Default,
         content: @Composable () -> Unit,

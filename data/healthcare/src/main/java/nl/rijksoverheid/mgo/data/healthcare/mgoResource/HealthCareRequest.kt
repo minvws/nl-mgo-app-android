@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
-import android.net.Uri
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.FhirVersion
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CATEGORY
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CLASS
@@ -12,11 +11,10 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKe
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.TYPE
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 
-// ================
-// BGZ
-// https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
-// ================
-
+/**
+ * Class that defines all the different requests that can be made to fetch the health care data.
+ * Each request is categorized per source (e.g. BGZ, GP, ..) and includes the necessary information to make the request.
+ */
 sealed class HealthCareRequest(
     open val path: String,
     open val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>,
@@ -342,12 +340,4 @@ enum class HealthCareRequestQueryKey(val value: String) {
     PERIOD_OF_USE("periodofuse"),
     CLASS("class"),
     TYPE("type"),
-}
-
-fun HealthCareRequest.createUrl(baseUrl: String): String {
-    val builder = Uri.parse(baseUrl).buildUpon()
-    for ((key, value) in queryParameters) {
-        builder.appendQueryParameter(key.value, value)
-    }
-    return builder.build().toString()
 }

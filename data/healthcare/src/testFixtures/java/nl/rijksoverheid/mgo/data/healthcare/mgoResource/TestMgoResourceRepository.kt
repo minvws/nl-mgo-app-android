@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.data.healthcare.mgoResource
 
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 class TestMgoResourceRepository : MgoResourceRepository {
     private var mgoResource: Result<MgoResource> = Result.success(TEST_MGO_RESOURCE)
@@ -24,7 +23,6 @@ class TestMgoResourceRepository : MgoResourceRepository {
     override suspend fun get(
         endpoint: String,
         request: HealthCareRequest,
-        organization: MgoOrganization,
     ): Result<List<MgoResource>> {
         return mgoResources
     }

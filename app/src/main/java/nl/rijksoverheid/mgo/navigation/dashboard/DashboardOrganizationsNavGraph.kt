@@ -15,6 +15,11 @@ import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.navigation.mgoComposableDialog
 
+/**
+ * Adds all the navigation destinations that can be found in the organizations bottom bar tab in the dashboard.
+ * @param rootNavController The top level nav controller.
+ * @param navController The nav controller used in this navigation.
+ */
 fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
     rootNavController: NavController,
     navController: NavController,

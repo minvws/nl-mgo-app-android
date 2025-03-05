@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.fhirParser.uiSchema
 
+import nl.rijksoverheid.mgo.data.fhirParser.TEST_UI_SCHEMA
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
-import nl.rijksoverheid.mgo.data.fhirParser.shared.TEST_UI_SCHEMA
 
 class TestUiSchemaMapper : UiSchemaMapper {
     private var summary: HealthUiSchema = TEST_UI_SCHEMA

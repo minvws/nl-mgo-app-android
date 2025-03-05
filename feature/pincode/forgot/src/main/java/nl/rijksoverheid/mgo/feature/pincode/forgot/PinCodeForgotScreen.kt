@@ -25,6 +25,13 @@ import nl.rijksoverheid.mgo.framework.copy.R
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows the screen where you can reset the pin code if you forgot it. Resetting here means clearing locally stored data
+ * and restarting the app again.
+ *
+ * @param onNavigateToPinCodeCreate Called when requested to navigate to the screen where you can create a pin code.
+ * @param onNavigateBack Called when requested to navigate back.
+ */
 @Composable
 fun PinCodeForgotScreen(
     onNavigateToPinCodeCreate: () -> Unit,
@@ -50,16 +57,16 @@ private fun PinCodeForgotScreenContent(
     var showDialog by remember { mutableStateOf(false) }
     if (showDialog) {
         MgoAlertDialog(
-            title = stringResource(id = R.string.forgot_pincode_dialog_heading),
-            text = stringResource(id = R.string.forgot_pincode_dialog_subheading),
+            heading = stringResource(id = R.string.forgot_pincode_dialog_heading),
+            subHeading = stringResource(id = R.string.forgot_pincode_dialog_subheading),
             onDismissRequest = { showDialog = false },
-            confirmButtonText = stringResource(id = R.string.common_yes),
-            onClickConfirmButton = {
+            positiveButtonText = stringResource(id = R.string.common_yes),
+            onClickPositiveButton = {
                 onCreateNewAccount()
                 showDialog = false
             },
-            dismissButtonText = stringResource(id = R.string.common_no),
-            onClickDismissButton = {
+            negativeButtonText = stringResource(id = R.string.common_no),
+            onClickNegativeButton = {
                 showDialog = false
             },
         )

@@ -5,6 +5,11 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Store that the user has enabled biometric login.
+ *
+ * @param keyValueStore The [KeyValueStore] to store if the user has enabled biometric login.
+ */
 internal class DefaultSetLoginWithBiometricEnabled
     @Inject
     constructor(

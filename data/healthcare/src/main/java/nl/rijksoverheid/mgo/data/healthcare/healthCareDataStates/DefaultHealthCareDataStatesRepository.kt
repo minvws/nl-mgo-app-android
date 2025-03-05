@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
 /**
- * Holds state of fetched health care data. The health care data is linked to both [MgoOrganization] and [HealthCareCategory].
- * This way it is possible to get all health care related data based on a category, or a category and organization.
+ * Handles various operations on lists of [HealthCareDataState].
+ *
+ * @param healthCareDataStateRepository The [HealthCareDataStateRepository] to handle operations on [HealthCareDataState].
+ * @param healthCareDataStatesStore The [HealthCareDataStatesStore] to handle storage of [HealthCareDataState].
  */
 @Singleton
 internal class DefaultHealthCareDataStatesRepository
@@ -21,14 +23,17 @@ internal class DefaultHealthCareDataStatesRepository
         private val healthCareDataStateRepository: HealthCareDataStateRepository,
         private val healthCareDataStatesStore: HealthCareDataStatesStore,
     ) : HealthCareDataStatesRepository {
+        /**
+         * @return A list of [HealthCareDataState] that are stored.
+         */
         override fun get(): List<HealthCareDataState> {
             return healthCareDataStatesStore.get()
         }
 
         /**
-         * Refreshes health care data.
-         * @param organization The organization you want to fetch health care data from.
-         * @param category The category of health care data it should fetch.
+         * Fetches health care data and adds it to the store.
+         * @param organization The [MgoOrganization] to fetch health care data from.
+         * @param category The [HealthCareCategory] to fetch health care data from.
          */
         override suspend fun refresh(
             organization: MgoOrganization,
@@ -40,9 +45,11 @@ internal class DefaultHealthCareDataStatesRepository
         }
 
         /**
-         * Observes health care data states.
-         * @param category The category to listen to.
-         * @param filterOrganization The organization to listen to. When null, will fetch all health care data states for all organizations.
+         * Observes changes to the stored [HealthCareDataState] based on the given parameters.
+         *
+         * @param category The [HealthCareCategory] to filter the observed states.
+         * @param filterOrganization If provided, only observes [HealthCareDataState] associated with this [MgoOrganization].
+         * @return A [Flow] that emits the latest list of [HealthCareDataState] objects matching the given criteria.
          */
         override fun observe(
             category: HealthCareCategory,
@@ -52,8 +59,9 @@ internal class DefaultHealthCareDataStatesRepository
         }
 
         /**
-         * Delete health care data states. Will delete all data (all categories) for a particular organization.
-         * @param organization The organization to delete.
+         * Deletes all [HealthCareDataState] in the store for a certain [MgoOrganization].
+         *
+         * @param organization The [MgoOrganization] to determine which [HealthCareDataState] objects need to be removed from the store.
          */
         override suspend fun delete(organization: MgoOrganization) {
             return healthCareDataStatesStore.delete(organization)

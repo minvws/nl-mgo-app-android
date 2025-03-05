@@ -28,7 +28,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
-import nl.rijksoverheid.mgo.component.mgo.debugerror.MgoDebugErrorButton
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -40,6 +39,14 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TA
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen to display health care providers. These health care providers were found automatically, meaning that
+ * they were requested per data available.
+ *
+ * @param checkResults If all the checkboxes for the health care providers that are displayed checkboxes should be checked.
+ * @param onNavigateBack Called when requested to navigate back.
+ * @param onNavigateToDashboard Called when requested to navigate to the dashboard (root bottom bar screen).
+ */
 @Composable
 fun OrganizationListAutomaticSearchScreen(
     checkResults: Boolean,
@@ -101,7 +108,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
                 }
 
                 viewState.error != null -> {
-                    ErrorContent(viewState.error)
+                    ErrorContent()
                 }
 
                 viewState.results.isEmpty() -> {
@@ -188,7 +195,7 @@ private fun ResultsContent(
 }
 
 @Composable
-private fun ColumnScope.ErrorContent(error: Throwable) {
+private fun ColumnScope.ErrorContent() {
     Image(
         modifier =
             Modifier
@@ -203,8 +210,6 @@ private fun ColumnScope.ErrorContent(error: Throwable) {
         text = stringResource(id = CopyR.string.common_error_subheading),
         style = MaterialTheme.typography.bodySmall,
     )
-
-    MgoDebugErrorButton(error = error)
 }
 
 @DefaultPreviews

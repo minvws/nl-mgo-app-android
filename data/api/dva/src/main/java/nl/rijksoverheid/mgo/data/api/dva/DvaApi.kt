@@ -17,5 +17,6 @@ interface DvaApi {
     suspend fun get(
         @Header("x-mgo-dva-target") resourceEndpoint: String,
         @Url url: String,
+        @Header("Accept") accept: String
     ): ResponseBody
 }

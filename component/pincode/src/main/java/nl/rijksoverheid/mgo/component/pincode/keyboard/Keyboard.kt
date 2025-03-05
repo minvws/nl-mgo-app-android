@@ -26,7 +26,6 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  * Composable that shows a keyboard.
  * @param onPressNumber Called when a number has been clicked on the keyboard.
  * @param onPressBackspace Called when the backspace has been clicked on the keyboard.
- * @param showBackSpace If the backspace button should be visible.
  * @param modifier the [Modifier] to be applied.
  * @param hasBiometric If the biometric button should be visible.
  * @param onPressBiometric Called when the biometric button is clicked.
@@ -35,7 +34,6 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 internal fun Keyboard(
     onPressNumber: (number: Int) -> Unit,
     onPressBackspace: () -> Unit,
-    showBackSpace: Boolean,
     modifier: Modifier = Modifier,
     hasBiometric: Boolean = false,
     onPressBiometric: (() -> Unit)? = null,
@@ -80,12 +78,9 @@ internal fun Keyboard(
                 KeyboardItemIconInstance(
                     modifier =
                         Modifier
-                            .semantics { contentDescription = backspaceContentDescriptionLabel }
-                            .alpha(
-                                if (showBackSpace) 1f else 0f,
-                            ),
+                            .semantics { contentDescription = backspaceContentDescriptionLabel },
                     icon = R.drawable.ic_keyboard_backspace,
-                    onPressIcon = { if (showBackSpace) onPressBackspace() },
+                    onPressIcon = { onPressBackspace() },
                 )
             }
         }
@@ -127,7 +122,7 @@ private fun RowScope.KeyboardItemIconInstance(
 @Composable
 internal fun KeyboardPreview() {
     MgoTheme {
-        Keyboard(onPressNumber = { }, onPressBackspace = {}, showBackSpace = true)
+        Keyboard(onPressNumber = { }, onPressBackspace = {})
     }
 }
 
@@ -135,6 +130,6 @@ internal fun KeyboardPreview() {
 @Composable
 internal fun KeyboardWithBiometricPreview() {
     MgoTheme {
-        Keyboard(onPressNumber = { }, onPressBackspace = {}, hasBiometric = true, showBackSpace = true)
+        Keyboard(onPressNumber = { }, onPressBackspace = {}, hasBiometric = true)
     }
 }

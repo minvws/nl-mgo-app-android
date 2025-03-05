@@ -197,7 +197,6 @@ private fun PinCodeWithKeyboardContent(
             },
             hasBiometric = hasBiometric,
             onPressBiometric = onPressBiometric,
-            showBackSpace = pinCode.isNotEmpty(),
         )
     }
 }

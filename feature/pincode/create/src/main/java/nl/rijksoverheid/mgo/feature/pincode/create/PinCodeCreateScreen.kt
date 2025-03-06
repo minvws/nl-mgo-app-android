@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.pincode.create
 
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -68,10 +66,6 @@ private fun PinCodeCreateScreenContent(
     val subHeadingFocusRequester = remember { FocusRequester() }
     MgoScaffold(
         appBarTitle = stringResource(id = CopyR.string.pincode_create_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
         onNavigateBack = if (hasBackButton) onNavigateBack else null,
         content = {
             Text(

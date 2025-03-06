@@ -29,8 +29,8 @@ internal fun UiSchemaRowReference(
         modifier =
             modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-                .clickable { onClick(row) },
+                .clickable { onClick(row) }
+                .padding(16.dp),
         text = row.value,
         style = MaterialTheme.typography.bodySmall,
     )

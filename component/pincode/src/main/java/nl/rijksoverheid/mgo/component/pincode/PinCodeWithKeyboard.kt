@@ -1,14 +1,14 @@
 package nl.rijksoverheid.mgo.component.pincode
 
 import android.content.Context
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -23,12 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
@@ -102,49 +102,43 @@ private fun PinCodeWithKeyboardContent(
         }
     }
 
+    var canScroll by remember { mutableStateOf(true) }
+
     Column(
         modifier =
             modifier
-                .padding(bottom = 4.dp),
+                .padding(bottom = 4.dp)
+                .then(
+                    if (canScroll) {
+                        Modifier.verticalScroll(rememberScrollState())
+                    } else {
+                        Modifier
+                    },
+                ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.weight(1f))
-        BoxWithConstraints(modifier = Modifier) {
-            val boxWithConstraintsScope = this
-
-            if (boxWithConstraintsScope.maxHeight == Dp.Infinity) {
-                // If there is no room for the error message to show directly under the text, show it in a column
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    PinCode(
-                        modifier = Modifier.padding(top = 24.dp),
-                        pinCode = pinCode,
-                        error = error != null,
-                    )
-                    if (error != null) {
-                        PinCodeError(
-                            modifier = Modifier.padding(top = 16.dp),
-                            error = error,
-                        )
+        Spacer(
+            modifier =
+                Modifier.weight(1f).onGloballyPositioned {
+                    if (it.size.height == 0) {
+                        canScroll = true
+                    } else {
+                        canScroll = false
                     }
-                }
-            } else {
-                // If there is room, show it on a fixed position so that the pin code circles do not move
-                Box(contentAlignment = Alignment.Center) {
-                    PinCode(
-                        pinCode = pinCode,
-                        error = error != null,
-                    )
-                    if (error != null) {
-                        PinCodeError(
-                            modifier = Modifier.padding(top = 96.dp),
-                            error = error,
-                        )
-                    }
-                }
-            }
+                },
+        )
+        PinCode(
+            modifier = Modifier.padding(top = 48.dp),
+            pinCode = pinCode,
+            error = error != null,
+        )
+        if (error != null) {
+            PinCodeError(
+                modifier = Modifier.padding(top = 16.dp),
+                error = error,
+            )
         }
         Spacer(modifier = Modifier.weight(1f))
-
         if (hint != null) {
             TextButton(onClick = { onClickHint?.invoke() }) {
                 Text(
@@ -157,6 +151,7 @@ private fun PinCodeWithKeyboardContent(
         }
 
         Keyboard(
+            modifier = Modifier.padding(top = 16.dp),
             onPressNumber = { number ->
                 if (error != null) {
                     // When there is a error showing and the user presses the keyboard, clear the error state

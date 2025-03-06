@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.pincode.confirm
 
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,8 +14,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
@@ -80,7 +87,7 @@ private fun PinCodeConfirmScreenContent(
         onNavigateBack = onNavigateBack,
         content = {
             Text(
-                modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
+                modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable().height(getSubHeadingTextHeight()),
                 text = stringResource(id = CopyR.string.pincode_confirm_subheading),
                 style = MaterialTheme.typography.bodySmall,
             )
@@ -101,6 +108,24 @@ private fun PinCodeConfirmScreenContent(
             )
         },
     )
+}
+
+/**
+ * Measure how big the top text was in the previous screen. We want this text to be the same height so that the pin code
+ * does not move.
+ * @return The height the sub text needs to be.
+ */
+@Composable
+private fun getSubHeadingTextHeight(): Dp {
+    val textMeasurer = rememberTextMeasurer()
+    val constraintsWidth = with(LocalDensity.current) { (LocalConfiguration.current.screenWidthDp.dp - 16.dp).roundToPx() }
+    val measuredLayoutResult =
+        textMeasurer.measure(
+            constraints = Constraints(maxWidth = constraintsWidth),
+            text = stringResource(id = CopyR.string.pincode_create_subheading),
+            style = MaterialTheme.typography.bodySmall,
+        )
+    return with(LocalDensity.current) { measuredLayoutResult.size.height.toDp() }
 }
 
 @DefaultPreviews

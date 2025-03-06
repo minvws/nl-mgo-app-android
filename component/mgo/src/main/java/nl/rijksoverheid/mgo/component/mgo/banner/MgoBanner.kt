@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.R
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.iconsSecondary
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -73,14 +73,14 @@ fun MgoBanner(
                         text = buttonText,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                        color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
                     )
                 }
             }
             Icon(
                 modifier = Modifier.clickable { onDismiss() },
                 painter = painterResource(id = R.drawable.ic_banner_close),
-                tint = MaterialTheme.colorScheme.iconsSecondary(),
+                tint = MaterialTheme.colorScheme.symbolsSecondary(),
                 contentDescription = stringResource(id = CopyR.string.common_close),
             )
         }

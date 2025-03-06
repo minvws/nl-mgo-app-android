@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.iconsPrimary
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 
 /**
  * Composable that shows a check box. Same as a [Checkbox] but with some specific values set.
@@ -23,8 +23,8 @@ fun MgoCheckbox(
     onCheckedChange: (checked: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val checkedColor = MaterialTheme.colorScheme.actionTertiaryDefaultText()
-    val unCheckedColor = MaterialTheme.colorScheme.iconsPrimary()
+    val checkedColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
+    val unCheckedColor = MaterialTheme.colorScheme.symbolsPrimary()
     val checkMarkColor = MaterialTheme.colorScheme.backgroundSecondary()
     Checkbox(
         modifier = modifier,

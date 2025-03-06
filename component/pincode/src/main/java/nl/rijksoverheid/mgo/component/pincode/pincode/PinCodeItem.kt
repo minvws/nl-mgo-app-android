@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoVibrateDuration
 import nl.rijksoverheid.mgo.component.mgo.vibrate
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultBackground
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -105,7 +105,7 @@ internal fun PinCodeItemNotFilledPreview() {
     MgoTheme {
         PinCodeItem(
             modifier = Modifier.size(32.dp),
-            color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(),
+            color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
             position = 1,
         )
     }
@@ -117,7 +117,7 @@ internal fun PinCodeItemFilledPreview() {
     MgoTheme {
         PinCodeItem(
             modifier = Modifier.size(32.dp),
-            color = MaterialTheme.colorScheme.actionPrimaryDefaultBackground(),
+            color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
             position = 1,
             fill = true,
         )

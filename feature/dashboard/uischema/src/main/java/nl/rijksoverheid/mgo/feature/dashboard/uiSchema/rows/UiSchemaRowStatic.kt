@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.bodySmallMini
-import nl.rijksoverheid.mgo.component.theme.contentTertiary
+import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
 
 /**
@@ -31,7 +31,7 @@ internal fun UiSchemaRowStatic(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 text = row.heading,
                 style = MaterialTheme.typography.bodySmallMini,
-                color = MaterialTheme.colorScheme.contentTertiary(),
+                color = MaterialTheme.colorScheme.contentSecondary(),
             )
         }
         Text(

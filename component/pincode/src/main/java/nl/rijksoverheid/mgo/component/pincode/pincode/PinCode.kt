@@ -10,8 +10,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 
 /**
  * Composable that represents pin code input. It shows five circles that can be filled or outlined.
@@ -27,7 +27,12 @@ internal fun PinCode(
     modifier: Modifier = Modifier,
     error: Boolean = false,
 ) {
-    val color = if (error) MaterialTheme.colorScheme.notificationError() else MaterialTheme.colorScheme.actionPrimaryDefaultBackground()
+    val color =
+        if (error) {
+            MaterialTheme.colorScheme.sentimentCritical()
+        } else {
+            MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
+        }
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         PinCodeItemInstance(
             color = color,

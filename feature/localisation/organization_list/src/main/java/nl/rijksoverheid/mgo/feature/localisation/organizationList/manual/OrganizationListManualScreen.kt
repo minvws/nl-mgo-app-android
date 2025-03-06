@@ -30,7 +30,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.supportHuisarts
+import nl.rijksoverheid.mgo.component.theme.supportContacts
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
@@ -280,7 +280,7 @@ private fun EmptyListItem(
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_right),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.supportHuisarts(),
+            tint = MaterialTheme.colorScheme.supportContacts(),
         )
         Text(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodySmall)
     }

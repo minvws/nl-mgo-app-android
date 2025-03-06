@@ -17,8 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,7 +30,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.fonts
-import nl.rijksoverheid.mgo.component.theme.iconsSecondary
+import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -122,7 +120,7 @@ fun MgoBasicTextFieldContent(
                                 Icon(
                                     painter = painterResource(R.drawable.ic_clear),
                                     contentDescription = stringResource(CopyR.string.common_clear),
-                                    tint = MaterialTheme.colorScheme.iconsSecondary(),
+                                    tint = MaterialTheme.colorScheme.symbolsSecondary(),
                                 )
                             }
                         }

@@ -39,7 +39,6 @@ import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.contentTertiary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
@@ -245,7 +244,7 @@ private fun ColumnScope.NoDataContent(
                     .padding(top = 8.dp),
             text = stringResource(id = CopyR.string.health_category_empty_subheading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentTertiary(),
+            color = MaterialTheme.colorScheme.contentSecondary(),
             textAlign = TextAlign.Center,
         )
     }

@@ -27,10 +27,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentTertiary
-import nl.rijksoverheid.mgo.component.theme.iconsSecondary
-import nl.rijksoverheid.mgo.component.theme.strokesPrimary
-import nl.rijksoverheid.mgo.component.theme.supportHuisarts
+import nl.rijksoverheid.mgo.component.theme.borderPrimary
+import nl.rijksoverheid.mgo.component.theme.contentSecondary
+import nl.rijksoverheid.mgo.component.theme.supportContacts
+import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
@@ -111,14 +111,14 @@ internal fun HealthCategoriesListItemContent(
                     Text(
                         text = stringResource(id = CopyR.string.common_loading_data),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.contentTertiary(),
+                        color = MaterialTheme.colorScheme.contentSecondary(),
                     )
                     CircularProgressIndicator(
                         modifier =
                             Modifier
                                 .size(24.dp)
                                 .padding(start = 8.dp),
-                        color = MaterialTheme.colorScheme.iconsSecondary(),
+                        color = MaterialTheme.colorScheme.symbolsSecondary(),
                         strokeWidth = 2.dp,
                     )
                 }
@@ -127,7 +127,7 @@ internal fun HealthCategoriesListItemContent(
                     Text(
                         text = stringResource(id = CopyR.string.common_no_data),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.contentTertiary(),
+                        color = MaterialTheme.colorScheme.contentSecondary(),
                     )
                 }
 
@@ -141,7 +141,7 @@ internal fun HealthCategoriesListItemContent(
                         .fillMaxWidth()
                         .height(0.33.dp)
                         .padding(start = 16.dp),
-                color = MaterialTheme.colorScheme.strokesPrimary(),
+                color = MaterialTheme.colorScheme.borderPrimary(),
             )
         }
     }
@@ -154,7 +154,7 @@ internal fun HealthCategoriesListItemLoadingPreview() {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
             title = CopyR.string.hc_medication_heading,
-            iconColor = MaterialTheme.colorScheme.supportHuisarts(),
+            iconColor = MaterialTheme.colorScheme.supportContacts(),
             listItemState = HealthCategoriesListItemState.LOADING,
         )
     }
@@ -167,7 +167,7 @@ internal fun HealthCategoriesListItemNoDataPreview() {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
             title = CopyR.string.hc_medication_heading,
-            iconColor = MaterialTheme.colorScheme.supportHuisarts(),
+            iconColor = MaterialTheme.colorScheme.supportContacts(),
             listItemState = HealthCategoriesListItemState.NO_DATA,
         )
     }
@@ -180,7 +180,7 @@ internal fun HealthCategoriesListItemLoadedPreview() {
         HealthCategoriesListItemContent(
             icon = R.drawable.ic_medication,
             title = CopyR.string.hc_medication_heading,
-            iconColor = MaterialTheme.colorScheme.supportHuisarts(),
+            iconColor = MaterialTheme.colorScheme.supportContacts(),
             listItemState = HealthCategoriesListItemState.LOADED,
         )
     }

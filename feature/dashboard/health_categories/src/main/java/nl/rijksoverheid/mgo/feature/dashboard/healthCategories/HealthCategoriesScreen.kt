@@ -32,24 +32,24 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentTertiary
+import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.component.theme.notificationInformation
-import nl.rijksoverheid.mgo.component.theme.supportApotheek
-import nl.rijksoverheid.mgo.component.theme.supportGegevens
-import nl.rijksoverheid.mgo.component.theme.supportGgd
-import nl.rijksoverheid.mgo.component.theme.supportGgz
-import nl.rijksoverheid.mgo.component.theme.supportHuisarts
-import nl.rijksoverheid.mgo.component.theme.supportKliniek
-import nl.rijksoverheid.mgo.component.theme.supportOverige
-import nl.rijksoverheid.mgo.component.theme.supportRevalidatie
-import nl.rijksoverheid.mgo.component.theme.supportRijkslint
-import nl.rijksoverheid.mgo.component.theme.supportRivm
-import nl.rijksoverheid.mgo.component.theme.supportTandarts
-import nl.rijksoverheid.mgo.component.theme.supportThuiszorg
-import nl.rijksoverheid.mgo.component.theme.supportVerloskundige
-import nl.rijksoverheid.mgo.component.theme.supportVerpleeghuis
-import nl.rijksoverheid.mgo.component.theme.supportZiekenhuis
+import nl.rijksoverheid.mgo.component.theme.supportAllergies
+import nl.rijksoverheid.mgo.component.theme.supportContacts
+import nl.rijksoverheid.mgo.component.theme.supportDevice
+import nl.rijksoverheid.mgo.component.theme.supportDocuments
+import nl.rijksoverheid.mgo.component.theme.supportFunctional
+import nl.rijksoverheid.mgo.component.theme.supportLaboratory
+import nl.rijksoverheid.mgo.component.theme.supportLifestyle
+import nl.rijksoverheid.mgo.component.theme.supportMedication
+import nl.rijksoverheid.mgo.component.theme.supportPayer
+import nl.rijksoverheid.mgo.component.theme.supportPersonal
+import nl.rijksoverheid.mgo.component.theme.supportProblems
+import nl.rijksoverheid.mgo.component.theme.supportProcedures
+import nl.rijksoverheid.mgo.component.theme.supportTreatment
+import nl.rijksoverheid.mgo.component.theme.supportVaccinations
+import nl.rijksoverheid.mgo.component.theme.supportVitals
+import nl.rijksoverheid.mgo.component.theme.supportWarning
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -168,7 +168,7 @@ private fun ColumnScope.NoProviders() {
                 .padding(top = 8.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_subheading),
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.contentTertiary(),
+        color = MaterialTheme.colorScheme.contentSecondary(),
         textAlign = TextAlign.Center,
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -258,22 +258,22 @@ private fun HealthCareCategory.getIcon(): Int {
 @Composable
 private fun HealthCareCategory.getIconColor(): Color {
     return when (this) {
-        HealthCareCategory.MEDICATIONS -> MaterialTheme.colorScheme.supportHuisarts()
-        HealthCareCategory.MEASUREMENTS -> MaterialTheme.colorScheme.supportApotheek()
-        HealthCareCategory.LAB_RESULTS -> MaterialTheme.colorScheme.supportZiekenhuis()
-        HealthCareCategory.ALLERGIES -> MaterialTheme.colorScheme.supportKliniek()
-        HealthCareCategory.TREATMENTS -> MaterialTheme.colorScheme.supportGgz()
-        HealthCareCategory.APPOINTMENTS -> MaterialTheme.colorScheme.supportGgd()
-        HealthCareCategory.VACCINATIONS -> MaterialTheme.colorScheme.supportTandarts()
-        HealthCareCategory.DOCUMENTS -> MaterialTheme.colorScheme.supportThuiszorg()
-        HealthCareCategory.COMPLAINTS -> MaterialTheme.colorScheme.supportVerpleeghuis()
-        HealthCareCategory.PATIENT -> MaterialTheme.colorScheme.supportOverige()
-        HealthCareCategory.ALERTS -> MaterialTheme.colorScheme.supportRivm()
-        HealthCareCategory.PAYMENT -> MaterialTheme.colorScheme.supportVerloskundige()
-        HealthCareCategory.PLANS -> MaterialTheme.colorScheme.supportRevalidatie()
-        HealthCareCategory.DEVICES -> MaterialTheme.colorScheme.supportRijkslint()
-        HealthCareCategory.MENTAL -> MaterialTheme.colorScheme.notificationInformation()
-        HealthCareCategory.LIFESTYLE -> MaterialTheme.colorScheme.supportGegevens()
+        HealthCareCategory.MEDICATIONS -> MaterialTheme.colorScheme.supportMedication()
+        HealthCareCategory.MEASUREMENTS -> MaterialTheme.colorScheme.supportVitals()
+        HealthCareCategory.LAB_RESULTS -> MaterialTheme.colorScheme.supportLaboratory()
+        HealthCareCategory.ALLERGIES -> MaterialTheme.colorScheme.supportAllergies()
+        HealthCareCategory.TREATMENTS -> MaterialTheme.colorScheme.supportTreatment()
+        HealthCareCategory.APPOINTMENTS -> MaterialTheme.colorScheme.supportContacts()
+        HealthCareCategory.VACCINATIONS -> MaterialTheme.colorScheme.supportVaccinations()
+        HealthCareCategory.DOCUMENTS -> MaterialTheme.colorScheme.supportDocuments()
+        HealthCareCategory.COMPLAINTS -> MaterialTheme.colorScheme.supportProblems()
+        HealthCareCategory.PATIENT -> MaterialTheme.colorScheme.supportPersonal()
+        HealthCareCategory.ALERTS -> MaterialTheme.colorScheme.supportWarning()
+        HealthCareCategory.PAYMENT -> MaterialTheme.colorScheme.supportPayer()
+        HealthCareCategory.PLANS -> MaterialTheme.colorScheme.supportProcedures()
+        HealthCareCategory.DEVICES -> MaterialTheme.colorScheme.supportDevice()
+        HealthCareCategory.MENTAL -> MaterialTheme.colorScheme.supportFunctional()
+        HealthCareCategory.LIFESTYLE -> MaterialTheme.colorScheme.supportLifestyle()
     }
 }
 

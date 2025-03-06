@@ -29,11 +29,11 @@ import androidx.navigation.compose.rememberNavController
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.fonts
-import nl.rijksoverheid.mgo.component.theme.iconsPrimary
+import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -152,7 +152,7 @@ private fun BottomNavigationBar(
         )
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
-        contentColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+        contentColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
     ) {
         BottomBarItem.entries.forEachIndexed { index, item ->
             val isSelected = item.route == currentRoute
@@ -173,11 +173,11 @@ private fun BottomNavigationBar(
                 },
                 colors =
                     NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-                        selectedTextColor = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
-                        unselectedIconColor = MaterialTheme.colorScheme.iconsPrimary(),
-                        unselectedTextColor = MaterialTheme.colorScheme.iconsPrimary(),
-                        indicatorColor = MaterialTheme.colorScheme.actionSecondaryDefaultBackground(),
+                        selectedIconColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+                        selectedTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+                        unselectedIconColor = MaterialTheme.colorScheme.symbolsPrimary(),
+                        unselectedTextColor = MaterialTheme.colorScheme.symbolsPrimary(),
+                        indicatorColor = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(),
                     ),
             )
         }

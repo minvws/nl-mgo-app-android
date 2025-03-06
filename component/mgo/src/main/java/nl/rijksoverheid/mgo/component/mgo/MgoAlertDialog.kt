@@ -10,10 +10,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 
 /**
  * Composable that shows a alert dialog.
@@ -31,10 +31,10 @@ import nl.rijksoverheid.mgo.component.theme.headingSmall
 fun MgoAlertDialog(
     onDismissRequest: () -> Unit,
     positiveButtonText: String,
-    positiveButtonTextColor: Color = MaterialTheme.colorScheme.actionTertiaryNegativeText(),
+    positiveButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(),
     onClickPositiveButton: () -> Unit,
     negativeButtonText: String? = null,
-    negativeButtonTextColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+    negativeButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
     onClickNegativeButton: (() -> Unit)? = null,
     heading: String,
     subHeading: String,

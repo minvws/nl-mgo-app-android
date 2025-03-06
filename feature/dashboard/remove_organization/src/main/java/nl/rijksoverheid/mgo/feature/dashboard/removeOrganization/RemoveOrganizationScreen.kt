@@ -29,7 +29,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -86,7 +86,7 @@ private fun RemoveOrganizationScreenContent(
                     Modifier
                         .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
                         .size(102.dp)
-                        .background(MaterialTheme.colorScheme.notificationError(), CircleShape)
+                        .background(MaterialTheme.colorScheme.sentimentCritical(), CircleShape)
                         .align(Alignment.CenterHorizontally),
                 contentAlignment = Alignment.Center,
             ) {

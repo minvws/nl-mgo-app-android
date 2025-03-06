@@ -17,9 +17,51 @@ internal class ColorSampleScreenSnapshotTest {
         )
 
     @Test
-    fun launchView() {
+    fun backgroundColors() {
         snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-            ColorSampleScreenPreview()
+            BackgroundColorsPreview()
+        }
+    }
+
+    @Test
+    fun contentColors() {
+        snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+            ContentColorsPreview()
+        }
+    }
+
+    @Test
+    fun borderColors() {
+        snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+            BorderColorsPreview()
+        }
+    }
+
+    @Test
+    fun symbolColors() {
+        snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+            SymbolColorsPreview()
+        }
+    }
+
+    @Test
+    fun sentimentColors() {
+        snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+            SentimentColorsPreview()
+        }
+    }
+
+    @Test
+    fun interactiveColors() {
+        snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+            InteractiveColorsPreview()
+        }
+    }
+
+    @Test
+    fun supportColorsPreview() {
+        snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+            InteractiveColorsPreview()
         }
     }
 }

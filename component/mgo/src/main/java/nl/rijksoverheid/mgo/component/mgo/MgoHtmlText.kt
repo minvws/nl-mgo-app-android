@@ -16,7 +16,7 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 
 /**
  * Composable that shows HTML Text.
@@ -32,7 +32,7 @@ fun MgoHtmlText(
     html: String,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodySmall,
-    linkColor: Color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+    linkColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
 ) {
     val annotatedString =
         buildAnnotatedString {

@@ -28,10 +28,10 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentTertiary
+import nl.rijksoverheid.mgo.component.theme.borderPrimary
+import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.headingSmall
-import nl.rijksoverheid.mgo.component.theme.iconsSecondary
-import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.organizations.R
@@ -125,7 +125,7 @@ private fun ColumnScope.NoOrganizations() {
                 .padding(top = 8.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_subheading),
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.contentTertiary(),
+        color = MaterialTheme.colorScheme.contentSecondary(),
         textAlign = TextAlign.Center,
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -176,7 +176,7 @@ private fun WithOrganizations(
             Icon(
                 modifier = Modifier.padding(start = 8.dp),
                 painter = painterResource(id = R.drawable.ic_add_organization),
-                tint = MaterialTheme.colorScheme.iconsSecondary(),
+                tint = MaterialTheme.colorScheme.symbolsSecondary(),
                 contentDescription = null,
             )
         }
@@ -202,7 +202,7 @@ private fun OrganizationCard(
                         .fillMaxWidth()
                         .height(0.33.dp)
                         .padding(start = 16.dp),
-                color = MaterialTheme.colorScheme.strokesPrimary(),
+                color = MaterialTheme.colorScheme.borderPrimary(),
             )
         }
     }

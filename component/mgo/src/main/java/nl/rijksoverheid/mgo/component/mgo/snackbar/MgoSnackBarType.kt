@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import nl.rijksoverheid.mgo.component.mgo.R
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
-import nl.rijksoverheid.mgo.component.theme.notificationError
-import nl.rijksoverheid.mgo.component.theme.notificationInformation
-import nl.rijksoverheid.mgo.component.theme.notificationSuccess
-import nl.rijksoverheid.mgo.component.theme.notificationWarning
+import nl.rijksoverheid.mgo.component.theme.sentimentCritical
+import nl.rijksoverheid.mgo.component.theme.sentimentInformative
+import nl.rijksoverheid.mgo.component.theme.sentimentPositive
+import nl.rijksoverheid.mgo.component.theme.sentimentWarning
 
 /**
  * Determines the appearance of a [MgoSnackBar].
@@ -43,10 +43,10 @@ fun MgoSnackBarType.getIcon(): MgoSnackBarDataIcon {
 @Composable
 fun MgoSnackBarType.getBackgroundColor(): Color {
     return when (this) {
-        MgoSnackBarType.SUCCESS -> MaterialTheme.colorScheme.notificationSuccess()
-        MgoSnackBarType.ERROR -> MaterialTheme.colorScheme.notificationError()
-        MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.notificationWarning()
-        MgoSnackBarType.INFO -> MaterialTheme.colorScheme.notificationInformation()
+        MgoSnackBarType.SUCCESS -> MaterialTheme.colorScheme.sentimentPositive()
+        MgoSnackBarType.ERROR -> MaterialTheme.colorScheme.sentimentCritical()
+        MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.sentimentWarning()
+        MgoSnackBarType.INFO -> MaterialTheme.colorScheme.sentimentInformative()
     }
 }
 

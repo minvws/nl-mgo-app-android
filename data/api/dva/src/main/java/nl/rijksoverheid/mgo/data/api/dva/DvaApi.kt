@@ -19,12 +19,14 @@ interface DvaApi {
      *
      * @param resourceEndpoint The target server's endpoint, provided in the "x-mgo-dva-target" header.
      * @param fhirBinary The ID of the binary resource to retrieve.
+     * @param The accept header to send with the request. Defaults to application/fhir+json which is expected in this request.
      * @return A [BinaryResponse] containing the binary data.
      */
     @GET("fhir/{fhirBinary}")
     suspend fun binary(
         @Header("x-mgo-dva-target") resourceEndpoint: String,
         @Path(value = "fhirBinary", encoded = true) fhirBinary: String,
+        @Header("Accept") accept: String = "application/fhir+json",
     ): BinaryResponse
 
     /**
@@ -36,6 +38,7 @@ interface DvaApi {
      *
      * @param resourceEndpoint The target server's endpoint, provided in the "x-mgo-dva-target" header.
      * @param url The complete URL of the FHIR resource to retrieve.
+     * @param accept The accept header to send with the request.
      * @return A [ResponseBody] containing the raw response data.
      */
     @GET

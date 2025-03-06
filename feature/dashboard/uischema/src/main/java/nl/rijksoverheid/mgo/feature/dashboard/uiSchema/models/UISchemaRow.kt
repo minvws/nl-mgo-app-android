@@ -136,7 +136,12 @@ internal fun UiElement.toRow(): UISchemaRow {
         }
 
         is DownloadBinary -> {
-            UISchemaRow.Static(heading = this.label, value = this.label)
+            val reference = this.reference
+            if (reference == null) {
+                UISchemaRow.File.Empty(heading = null, value = this.label)
+            } else {
+                UISchemaRow.File.NotDownloaded.Idle(heading = null, value = this.label, binary = reference)
+            }
         }
     }
 }

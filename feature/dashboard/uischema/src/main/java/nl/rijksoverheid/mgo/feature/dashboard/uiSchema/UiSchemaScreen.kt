@@ -1,7 +1,9 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
@@ -105,19 +107,21 @@ private fun UiSchemaSection(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        section.heading?.let {
+        if (section.heading != null) {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = it,
+                text = section.heading,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,
             )
+        } else {
+            Spacer(modifier = Modifier.height(8.dp))
         }
+
         MgoCard(
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .fillMaxWidth(),
         ) {
             Column {
                 section.rows.forEachIndexed { index, row ->

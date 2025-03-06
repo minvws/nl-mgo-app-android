@@ -24,17 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryNegativeBackground
-import nl.rijksoverheid.mgo.component.theme.actionPrimaryNegativeText
-import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.actionSecondaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeBackground
-import nl.rijksoverheid.mgo.component.theme.actionSecondaryNegativeText
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryNegativeText
 import nl.rijksoverheid.mgo.component.theme.digid
+import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalBackground
+import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalText
+import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryCriticalBackground
+import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryCriticalText
+import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -152,10 +152,10 @@ enum class MgoButtonTheme {
 @Composable
 private fun MgoButtonTheme.getBackgroundColor(): Color {
     return when (this) {
-        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.actionPrimaryDefaultBackground()
-        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.actionPrimaryNegativeBackground()
-        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.actionSecondaryDefaultBackground()
-        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.actionSecondaryNegativeBackground()
+        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
+        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalBackground()
+        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
+        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalBackground()
         MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.digid()
         MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
         MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
@@ -173,13 +173,13 @@ private fun MgoButtonTheme.getIcon(): Int? {
 @Composable
 private fun MgoButtonTheme.getContentColor(): Color {
     return when (this) {
-        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.actionPrimaryDefaultText()
-        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.actionPrimaryNegativeText()
-        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.actionSecondaryDefaultText()
-        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.actionSecondaryNegativeText()
-        MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.actionTertiaryDefaultText()
-        MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.actionTertiaryNegativeText()
-        MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.actionPrimaryDefaultText(true)
+        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultText()
+        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalText()
+        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
+        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalText()
+        MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
+        MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveTertiaryCriticalText()
+        MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultText(true)
     }
 }
 

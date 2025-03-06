@@ -5,10 +5,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import nl.rijksoverheid.mgo.component.mgo.R
-import nl.rijksoverheid.mgo.component.theme.notificationError
-import nl.rijksoverheid.mgo.component.theme.notificationInformation
-import nl.rijksoverheid.mgo.component.theme.notificationSuccess
-import nl.rijksoverheid.mgo.component.theme.notificationWarning
+import nl.rijksoverheid.mgo.component.theme.sentimentCritical
+import nl.rijksoverheid.mgo.component.theme.sentimentInformative
+import nl.rijksoverheid.mgo.component.theme.sentimentPositive
+import nl.rijksoverheid.mgo.component.theme.sentimentWarning
 
 /**
  * Determines the appearance of a [MgoBanner].
@@ -41,9 +41,9 @@ fun MgoBannerType.getIcon(): Int {
 @Composable
 fun MgoBannerType.getIconColor(): Color {
     return when (this) {
-        MgoBannerType.INFO -> MaterialTheme.colorScheme.notificationInformation()
-        MgoBannerType.SUCCESS -> MaterialTheme.colorScheme.notificationSuccess()
-        MgoBannerType.WARNING -> MaterialTheme.colorScheme.notificationWarning()
-        MgoBannerType.ERROR -> MaterialTheme.colorScheme.notificationError()
+        MgoBannerType.INFO -> MaterialTheme.colorScheme.sentimentInformative()
+        MgoBannerType.SUCCESS -> MaterialTheme.colorScheme.sentimentPositive()
+        MgoBannerType.WARNING -> MaterialTheme.colorScheme.sentimentWarning()
+        MgoBannerType.ERROR -> MaterialTheme.colorScheme.sentimentCritical()
     }
 }

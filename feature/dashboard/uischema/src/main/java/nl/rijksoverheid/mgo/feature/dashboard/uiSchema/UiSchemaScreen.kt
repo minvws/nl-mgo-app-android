@@ -21,7 +21,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.strokesPrimary
+import nl.rijksoverheid.mgo.component.theme.borderPrimary
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
@@ -150,7 +150,7 @@ private fun UiSchemaSection(
                                 Modifier
                                     .fillMaxWidth()
                                     .padding(start = 16.dp),
-                            color = MaterialTheme.colorScheme.strokesPrimary(),
+                            color = MaterialTheme.colorScheme.borderPrimary(),
                             thickness = 0.33.dp,
                         )
                     }

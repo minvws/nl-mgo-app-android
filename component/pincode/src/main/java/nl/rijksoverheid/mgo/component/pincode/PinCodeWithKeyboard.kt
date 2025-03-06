@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.actionTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.notificationError
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.framework.util.accessibilityAnnounce
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -145,7 +145,7 @@ private fun PinCodeWithKeyboardContent(
                     text = hint,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.actionTertiaryDefaultText(),
+                    color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
                 )
             }
         }
@@ -201,7 +201,7 @@ private fun PinCodeError(
     error: String?,
     modifier: Modifier = Modifier,
 ) {
-    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.notificationError()) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.sentimentCritical()) {
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
             Text(
@@ -213,7 +213,7 @@ private fun PinCodeError(
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.notificationError(),
+                color = MaterialTheme.colorScheme.sentimentCritical(),
             )
         }
     }

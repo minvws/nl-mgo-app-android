@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoCheckbox
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.notificationInformation
+import nl.rijksoverheid.mgo.component.theme.sentimentInformative
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
@@ -87,7 +87,7 @@ internal fun OrganizationListAutomaticCard(
                         AdditionalText(
                             text = CopyR.string.add_organization_not_participating,
                             icon = R.drawable.ic_search_result_card_not_supported,
-                            contentColor = MaterialTheme.colorScheme.notificationInformation(),
+                            contentColor = MaterialTheme.colorScheme.sentimentInformative(),
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }

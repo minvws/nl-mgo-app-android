@@ -151,7 +151,6 @@ private fun PinCodeWithKeyboardContent(
         }
 
         Keyboard(
-            modifier = Modifier.padding(top = 16.dp),
             onPressNumber = { number ->
                 if (error != null) {
                     // When there is a error showing and the user presses the keyboard, clear the error state

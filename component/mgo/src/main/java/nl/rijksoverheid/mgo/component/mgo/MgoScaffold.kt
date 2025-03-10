@@ -39,7 +39,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -144,12 +143,7 @@ fun MgoScaffold(
             appBarTitle?.let {
                 val adjustedTypography =
                     MgoTypography.copy(
-                        titleLarge =
-                            MaterialTheme.typography.bodySmall.copy(
-                                fontWeight =
-                                    FontWeight
-                                        .Bold,
-                            ),
+                        titleLarge = MaterialTheme.typography.titleLarge,
                         headlineSmall = MaterialTheme.typography.headingLarge,
                     )
                 MgoTheme(typography = adjustedTypography) {

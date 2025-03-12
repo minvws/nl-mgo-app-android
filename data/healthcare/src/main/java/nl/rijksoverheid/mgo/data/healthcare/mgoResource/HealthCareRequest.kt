@@ -4,17 +4,19 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.FhirVersion
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CATEGORY
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CLASS
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.CODE
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.DATE
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.INCLUDE
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.PERIOD_OF_USE
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.STATUS
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequestQueryKey.TYPE
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-/**
- * Class that defines all the different requests that can be made to fetch the health care data.
- * Each request is categorized per source (e.g. BGZ, GP, ..) and includes the necessary information to make the request.
- */
+// ================
+// BGZ
+// https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_BGZ_2017
+// ================
+
 sealed class HealthCareRequest(
     open val path: String,
     open val queryParameters: List<Pair<HealthCareRequestQueryKey, String>>,
@@ -52,7 +54,7 @@ sealed class HealthCareRequest(
         )
 
         data object BloodPressure : Bgz(
-            path = "Observation",
+            path = "Observation/\$lastn",
             queryParameters =
                 listOf(
                     Pair(CODE, "http://loinc.org|85354-9"),
@@ -60,7 +62,7 @@ sealed class HealthCareRequest(
         )
 
         data object BodyWeight : Bgz(
-            path = "Observation",
+            path = "Observation/\$lastn",
             queryParameters =
                 listOf(
                     Pair(CODE, "http://loinc.org|29463-7"),
@@ -68,7 +70,7 @@ sealed class HealthCareRequest(
         )
 
         data object BodyHeight : Bgz(
-            path = "Observation",
+            path = "Observation/\$lastn",
             queryParameters =
                 listOf(
                     Pair(CODE, "http://loinc.org|8302-2,http://loinc.org|8306-3,http://loinc.org|8308-9"),
@@ -152,7 +154,7 @@ sealed class HealthCareRequest(
         )
 
         data object FunctionalOrMentalStatus : Bgz(
-            path = "Observation",
+            path = "Observation/\$lastn",
             queryParameters =
                 listOf(
                     Pair(CATEGORY, "http://snomed.info/sct|118228005,http://snomed.info/sct|384821006"),
@@ -165,7 +167,7 @@ sealed class HealthCareRequest(
         )
 
         data object LivingSituation : Bgz(
-            path = "Observation",
+            path = "Observation/\$lastn",
             queryParameters =
                 listOf(
                     Pair(CODE, "http://snomed.info/sct|365508006"),
@@ -252,7 +254,7 @@ sealed class HealthCareRequest(
             path = "MedicationRequest",
             queryParameters =
                 listOf(
-                    Pair(PERIOD_OF_USE, "ge[today]"),
+                    Pair(PERIOD_OF_USE, "ge${getCurrentDate()}"),
                     Pair(CATEGORY, "http://snomed.info/sct|16076005"),
                     Pair(INCLUDE, "MedicationRequest:medication"),
                 ),
@@ -265,16 +267,12 @@ sealed class HealthCareRequest(
                     Pair(CODE, "https://referentiemodel.nhg.org/tabellen/nhg-tabel-45-diagnostische-bepalingen|"),
                     Pair(INCLUDE, "Observation:related-target"),
                     Pair(INCLUDE, "Observation:specimen"),
-                    Pair(DATE, "ge2017-01-01"),
                 ),
         )
 
         data object AllergyIntolerance : Gp(
             path = "AllergyIntolerance",
-            queryParameters =
-                listOf(
-                    Pair(CATEGORY, "medication"),
-                ),
+            queryParameters = listOf(),
         )
 
         data object Encounter : Gp(
@@ -310,10 +308,7 @@ sealed class HealthCareRequest(
         (path, queryParameters, MgoOrganizationDataServiceType.DOCUMENTS, FhirVersion.R3) {
         data object DocumentReference : Documents(
             path = "DocumentReference",
-            queryParameters =
-                listOf(
-                    Pair(STATUS, "current"),
-                ),
+            queryParameters = listOf(),
         )
     }
 
@@ -323,10 +318,7 @@ sealed class HealthCareRequest(
         (path, queryParameters, MgoOrganizationDataServiceType.VACCINATION, FhirVersion.R4) {
         data object Patient : Vaccination(
             path = "Immunization",
-            queryParameters =
-                listOf(
-                    Pair(INCLUDE, "patient"),
-                ),
+            queryParameters = listOf(),
         )
     }
 }
@@ -340,4 +332,10 @@ enum class HealthCareRequestQueryKey(val value: String) {
     PERIOD_OF_USE("periodofuse"),
     CLASS("class"),
     TYPE("type"),
+}
+
+internal fun getCurrentDate(): String {
+    val currentDate = LocalDate.now()
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    return currentDate.format(formatter)
 }

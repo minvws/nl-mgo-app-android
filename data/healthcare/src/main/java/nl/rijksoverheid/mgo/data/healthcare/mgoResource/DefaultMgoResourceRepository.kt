@@ -100,7 +100,7 @@ internal class DefaultMgoResourceRepository
                 dvaApi.get(
                     resourceEndpoint = endpoint,
                     url = urlCreator.invoke(baseUrl = "$dvaApiBaseUrl/fhir/${request.path}", request = request),
-                    accept = "application/fhir+json; fhirVersion=${request.fhirVersion}",
+                    accept = "application/fhir+json; fhirVersion=${request.fhirVersion.versionNumber}",
                 )
             }
         }

@@ -132,7 +132,7 @@ internal fun UiElement.toRow(): UISchemaRow {
         }
 
         is ReferenceValue -> {
-            UISchemaRow.Static(heading = this.label, value = this.display ?: "")
+            UISchemaRow.Reference(heading = this.label, value = this.display ?: "", referenceId = this.reference ?: "")
         }
 
         is DownloadBinary -> {

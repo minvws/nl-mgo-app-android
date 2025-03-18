@@ -26,7 +26,7 @@ interface DvaApi {
     suspend fun binary(
         @Header("x-mgo-dva-target") resourceEndpoint: String,
         @Path(value = "fhirBinary", encoded = true) fhirBinary: String,
-        @Header("Accept") accept: String = "application/fhir+json",
+        @Header("Accept") accept: String = "application/fhir+json; fhirVersion=3.0s",
     ): BinaryResponse
 
     /**

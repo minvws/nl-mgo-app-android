@@ -69,6 +69,7 @@ internal class MainViewModel
          * Get the first navigation destination to show when launching the app.
          */
         fun getStartDestination(): Any {
+            return DashboardNavigation.Root
             return when {
                 // If the user has not seen the onboarding, show the onboarding flow.
                 !hasSeenOnboarding.invoke() -> {

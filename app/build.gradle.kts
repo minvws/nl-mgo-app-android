@@ -114,7 +114,7 @@ dependencies {
     implementation(projects.feature.dashboard.healthCategory)
     implementation(projects.feature.dashboard.uischema)
     implementation(projects.feature.dashboard.removeOrganization)
-    implementation(projects.feature.dashboard.settings)
+    implementation(projects.feature.dashboard.settings.home)
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)

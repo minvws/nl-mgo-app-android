@@ -140,7 +140,7 @@
   <string name="hc_patient.heading_detail">Alle persoonlijke gegevens</string>
   <string name="hc_payment.heading">Betaalgegevens</string>
   <string name="hc_payment.heading_detail">Alle betaalgegevens</string>
-  <string name="hc_plans.heading">Behandelwensen- en plan</string>
+  <string name="hc_plans.heading">Behandelplan</string>
   <string name="hc_plans.heading_detail">Alle behandelwens/plan gegevens</string>
   <string name="hc_treatments.heading">Behandelingen</string>
   <string name="hc_treatments.heading_detail">Alle behandelgegevens</string>
@@ -205,4 +205,20 @@
   <string name="ihe_mhd_minimal_document_reference.heading">Documenten</string>
   <string name="zib_advance_directive.heading">Wilsverklaring</string>
   <string name="eAfspraak_appointment.heading">Afspraken met zorgaanbieders</string>
+  <string name="settings.preferences.heading">Voorkeuren</string>
+  <string name="settings.display.heading">Weergave</string>
+  <string name="settings.display.system.heading">Systeem</string>
+  <string name="settings.display.system.subheading">Volgt de instellingen van je telefoon</string>
+  <string name="settings.display.light">Licht</string>
+  <string name="settings.display.dark">Donker</string>
+  <string name="settings.security.heading">Beveiliging</string>
+  <string name="settings.advanced.heading">Geavanceerd</string>
+  <string name="settings.advanced.subheading">Instellingen voor ontwikkelaars</string>
+  <string name="settings.information.heading">Informatie</string>
+  <string name="settings.about_this_app.heading">Over deze app</string>
+  <string name="settings.other.heading">Overige</string>
+  <string name="settings.log_out.heading">Log uit</string>
+  <string name="settings.log_out.subheading">Je sluit zo de app af</string>
+  <string name="settings.reset_app.heading">Stel app opnieuw in</string>
+  <string name="settings.reset_app.subheading">Je verwijderd zo al je opgeslagen zorgaanbieders</string>
 </resources>

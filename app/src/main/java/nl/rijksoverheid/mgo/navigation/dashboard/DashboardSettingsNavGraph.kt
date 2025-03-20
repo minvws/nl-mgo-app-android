@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.navigation.dashboard
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import nl.rijksoverheid.mgo.feature.settings.home.SettingsScreen
+import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreen
 import nl.rijksoverheid.mgo.navigation.mgoComposable
 
 /**
@@ -11,7 +11,7 @@ import nl.rijksoverheid.mgo.navigation.mgoComposable
 fun NavGraphBuilder.addDashboardSettingsNavGraph() {
     navigation<DashboardNavigation.Settings.Root>(DashboardNavigation.Settings.Debug) {
         mgoComposable<DashboardNavigation.Settings.Debug>(animate = false) {
-            SettingsScreen(
+            SettingsHomeScreen(
                 onNavigateToDisplaySettings = {},
                 onNavigateToSecuritySettings = {},
                 onNavigateToAboutThisAppSettings = {},

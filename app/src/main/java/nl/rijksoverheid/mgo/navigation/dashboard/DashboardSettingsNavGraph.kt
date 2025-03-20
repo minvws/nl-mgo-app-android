@@ -14,6 +14,7 @@ fun NavGraphBuilder.addDashboardSettingsNavGraph() {
             SettingsHomeScreen(
                 onNavigateToDisplaySettings = {},
                 onNavigateToSecuritySettings = {},
+                onNavigateToAdvancedSettings = {},
                 onNavigateToAboutThisAppSettings = {},
                 onNavigateToOnboarding = {},
             )

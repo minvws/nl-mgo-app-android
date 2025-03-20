@@ -6,9 +6,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Logout
+import androidx.compose.material.icons.outlined.RestartAlt
+import androidx.compose.material.icons.outlined.Smartphone
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,8 +29,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.borderSecondary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -32,6 +42,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  *
  * @param onNavigateToDisplaySettings Called when requested to navigate to the screen that shows display settings.
  * @param onNavigateToSecuritySettings Called when requested to navigate to the screen that shows security settings.
+ * @param onNavigateToAdvancedSettings Called when requested to navigate to the screen that shows advanced settings.
  * @param onNavigateToAboutThisAppSettings Called when requested to navigate to the screen that shows about this app settings.
  * @param onNavigateToOnboarding Called when requested to navigate to the onboarding.
  */
@@ -39,18 +50,35 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun SettingsHomeScreen(
     onNavigateToDisplaySettings: () -> Unit,
     onNavigateToSecuritySettings: () -> Unit,
+    onNavigateToAdvancedSettings: () -> Unit,
     onNavigateToAboutThisAppSettings: () -> Unit,
     onNavigateToOnboarding: () -> Unit,
 ) {
     SettingsScreenContent(
         onClickDisplaySettings = onNavigateToDisplaySettings,
+        onClickSecuritySettings = onNavigateToSecuritySettings,
+        onClickAdvancedSettings = onNavigateToAdvancedSettings,
+        onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
+        onClickLogout = {},
+        onClickResetApp = {},
     )
 }
 
 @Composable
-private fun SettingsScreenContent(onClickDisplaySettings: () -> Unit) {
+private fun SettingsScreenContent(
+    onClickDisplaySettings: () -> Unit,
+    onClickSecuritySettings: () -> Unit,
+    onClickAdvancedSettings: () -> Unit,
+    onClickAboutThisAppSettings: () -> Unit,
+    onClickLogout: () -> Unit,
+    onClickResetApp: () -> Unit,
+) {
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_heading),
+        scrollStateProvider =
+            MgoScaffoldScrollStateProvider.Column(
+                rememberScrollState(),
+            ),
         content = {
             Text(
                 modifier = Modifier.padding(top = 8.dp),
@@ -74,6 +102,83 @@ private fun SettingsScreenContent(onClickDisplaySettings: () -> Unit) {
                     heading = CopyR.string.settings_display_heading,
                     subHeading = CopyR.string.settings_display_light,
                 )
+                SettingsListItem(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onClickSecuritySettings() },
+                    icon = Icons.Outlined.Lock,
+                    heading = CopyR.string.settings_security_heading,
+                )
+                SettingsListItem(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onClickAdvancedSettings() },
+                    icon = Icons.Outlined.Code,
+                    heading = CopyR.string.settings_advanced_heading,
+                    subHeading = CopyR.string.settings_advanced_subheading,
+                    hasDivider = false,
+                )
+            }
+
+            Text(
+                modifier = Modifier.padding(top = 32.dp),
+                text = stringResource(CopyR.string.settings_information_heading),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.contentSecondary(),
+            )
+
+            MgoCard(
+                modifier =
+                    Modifier
+                        .padding(top = 12.dp),
+            ) {
+                SettingsListItem(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onClickAboutThisAppSettings() },
+                    icon = Icons.Outlined.Smartphone,
+                    heading = CopyR.string.settings_about_this_app_heading,
+                    hasDivider = false,
+                )
+            }
+
+            Text(
+                modifier = Modifier.padding(top = 32.dp),
+                text = stringResource(CopyR.string.settings_information_heading),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.contentSecondary(),
+            )
+
+            MgoCard(
+                modifier =
+                    Modifier
+                        .padding(top = 12.dp),
+            ) {
+                SettingsListItem(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onClickAboutThisAppSettings() },
+                    icon = Icons.AutoMirrored.Outlined.Logout,
+                    heading = CopyR.string.settings_log_out_heading,
+                    subHeading = CopyR.string.settings_log_out_subheading,
+                )
+
+                SettingsListItem(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onClickResetApp() },
+                    icon = Icons.Outlined.RestartAlt,
+                    heading = CopyR.string.settings_reset_app_heading,
+                    subHeading = CopyR.string.settings_reset_app_subheading,
+                    hasDivider = false,
+                )
             }
         },
     )
@@ -84,27 +189,36 @@ private fun SettingsListItem(
     icon: ImageVector,
     @StringRes heading: Int,
     @StringRes subHeading: Int? = null,
+    hasDivider: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.symbolsPrimary(),
-        )
-
-        Column(modifier = Modifier.padding(start = 16.dp)) {
-            Text(
-                text = stringResource(heading),
-                style = MaterialTheme.typography.bodyMedium,
+    Column {
+        Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.symbolsPrimary(),
             )
-            if (subHeading != null) {
+
+            Column(modifier = Modifier.padding(start = 16.dp)) {
                 Text(
-                    text = stringResource(subHeading),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.contentSecondary(),
+                    text = stringResource(heading),
+                    style = MaterialTheme.typography.bodyMedium,
                 )
+                if (subHeading != null) {
+                    Text(
+                        text = stringResource(subHeading),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.contentSecondary(),
+                    )
+                }
             }
+        }
+        if (hasDivider) {
+            HorizontalDivider(
+                modifier = Modifier.padding(start = 56.dp),
+                color = MaterialTheme.colorScheme.borderSecondary(),
+            )
         }
     }
 }
@@ -115,6 +229,11 @@ private fun SettingsHomeScreenPreview() {
     MgoTheme {
         SettingsScreenContent(
             onClickDisplaySettings = {},
+            onClickSecuritySettings = {},
+            onClickAdvancedSettings = {},
+            onClickAboutThisAppSettings = {},
+            onClickLogout = {},
+            onClickResetApp = {},
         )
     }
 }

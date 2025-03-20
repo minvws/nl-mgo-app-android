@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.pincode.R
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodyDefault
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 
 /**
@@ -46,7 +45,7 @@ internal fun KeyboardItemNumber(
     ) {
         Text(
             text = number.toString(),
-            style = MaterialTheme.typography.bodyDefault.copy(fontSize = 28.sp),
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 28.sp),
         )
     }
 }

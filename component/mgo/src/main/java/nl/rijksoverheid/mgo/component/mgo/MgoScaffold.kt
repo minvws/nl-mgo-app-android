@@ -50,7 +50,6 @@ import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -144,7 +143,7 @@ fun MgoScaffold(
                 val adjustedTypography =
                     MgoTypography.copy(
                         titleLarge = MaterialTheme.typography.titleLarge,
-                        headlineSmall = MaterialTheme.typography.headingLarge,
+                        headlineSmall = MaterialTheme.typography.headlineLarge,
                     )
                 MgoTheme(typography = adjustedTypography) {
                     MediumTopAppBar(
@@ -248,7 +247,7 @@ private fun calculateExpandedHeight(title: String): Dp {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val fontScale = density.fontScale
-    val style = MaterialTheme.typography.headingLarge
+    val style = MaterialTheme.typography.headlineLarge
     val adjustedFontSize = style.fontSize * fontScale
     val constraintsWidth = with(density) { (configuration.screenWidthDp.dp - 20.dp).roundToPx() }
     val textMeasurer = rememberTextMeasurer()

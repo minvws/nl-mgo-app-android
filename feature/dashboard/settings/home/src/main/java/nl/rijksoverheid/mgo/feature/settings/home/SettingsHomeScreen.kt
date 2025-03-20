@@ -148,7 +148,7 @@ private fun SettingsScreenContent(
 
             Text(
                 modifier = Modifier.padding(top = 32.dp),
-                text = stringResource(CopyR.string.settings_information_heading),
+                text = stringResource(CopyR.string.settings_other_heading),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.contentSecondary(),
@@ -225,7 +225,7 @@ private fun SettingsListItem(
 
 @DefaultPreviews
 @Composable
-private fun SettingsHomeScreenPreview() {
+internal fun SettingsHomeScreenPreview() {
     MgoTheme {
         SettingsScreenContent(
             onClickDisplaySettings = {},

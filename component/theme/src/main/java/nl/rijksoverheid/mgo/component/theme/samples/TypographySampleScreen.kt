@@ -10,32 +10,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.bodyDefault
-import nl.rijksoverheid.mgo.component.theme.bodySmallMini
-import nl.rijksoverheid.mgo.component.theme.headingExtraLarge
-import nl.rijksoverheid.mgo.component.theme.headingExtraSmall
-import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.component.theme.headingRegular
-import nl.rijksoverheid.mgo.component.theme.headingSmall
+import nl.rijksoverheid.mgo.component.theme.headlineExtraSmall
 
 @Composable
 private fun TypographySampleScreen() {
     Column(modifier = Modifier.padding(all = 24.dp)) {
-        Text(text = "Heading Extra Large", style = MaterialTheme.typography.headingExtraLarge)
+        Text(text = "Headline Large", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Heading Large", style = MaterialTheme.typography.headingLarge)
+        Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Heading Regular", style = MaterialTheme.typography.headingRegular)
+        Text(text = "Heading Small", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Heading Small", style = MaterialTheme.typography.headingSmall)
+        Text(text = "Heading Extra Small", style = MaterialTheme.typography.headlineExtraSmall)
         Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Heading Extra Small", style = MaterialTheme.typography.headingExtraSmall)
+        Text(text = "Body Large", style = MaterialTheme.typography.bodyLarge)
         Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Body Default", style = MaterialTheme.typography.bodyDefault)
+        Text(text = "Body Medium", style = MaterialTheme.typography.bodyMedium)
         Spacer(modifier = Modifier.padding(top = 24.dp))
         Text(text = "Body Small", style = MaterialTheme.typography.bodySmall)
-        Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Body Small Mini", style = MaterialTheme.typography.bodySmallMini)
     }
 }
 

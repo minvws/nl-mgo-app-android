@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import androidx.datastore.preferences.core.Preferences
+import kotlinx.coroutines.flow.Flow
 
 /**
  * An interface for a key-value storage system.
@@ -46,6 +47,14 @@ interface KeyValueStore {
         key: Preferences.Key<String>,
         value: String,
     )
+
+    /**
+     * Observes a string value from the key-value store.
+     *
+     * @param key The key associated with the string value.
+     * @return A flow with the stored string value, or null if not found.
+     */
+    fun observeString(key: Preferences.Key<String>): Flow<String?>
 
     /**
      * Retrieves a string value from the key-value store.

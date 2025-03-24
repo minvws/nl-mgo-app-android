@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,6 +25,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.theme.DefaultLocalAppThemeProvider
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
+import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
 import nl.rijksoverheid.mgo.lifecycle.AppLifecycleState
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
@@ -42,26 +48,37 @@ class MainActivity : FragmentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            MgoTheme(modifier = Modifier.fillMaxSize()) {
-                val viewModel: MainViewModel = hiltViewModel()
-                val startDestination = viewModel.getStartDestination()
-                val navController = rememberNavController()
+            val viewModel: MainViewModel = hiltViewModel()
+            val appTheme by viewModel.appTheme.collectAsStateWithLifecycle()
 
-                CheckFlagSecure(viewModel = viewModel)
+            CompositionLocalProvider(
+                LocalSnackBarPresenter provides DefaultLocalSnackBarPresenter(),
+                LocalAppThemeProvider provides DefaultLocalAppThemeProvider(appTheme),
+            ) {
+                val isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()
+                MgoTheme(modifier = Modifier.fillMaxSize(), isDarkTheme = isDarkTheme) {
+                    val startDestination = viewModel.getStartDestination()
+                    val navController = rememberNavController()
 
-                CompositionLocalProvider(LocalSnackBarPresenter provides DefaultLocalSnackBarPresenter()) {
+                    CheckFlagSecure(viewModel = viewModel)
+
                     RootNavigation(
                         navController = navController,
                         startDestination = startDestination,
                         viewModel = viewModel,
                     )
+
+                    CheckAppLock(viewModel = viewModel)
+                    HandleNavigateDialog(viewModel = viewModel, navController = navController)
+
+                    // Device rooted dialog
+                    DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
+
+                    // Set correct status bar icon colors for selected theme
+                    LaunchedEffect(isDarkTheme) {
+                        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = !isDarkTheme
+                    }
                 }
-
-                CheckAppLock(viewModel = viewModel)
-                HandleNavigateDialog(viewModel = viewModel, navController = navController)
-
-                // Device rooted dialog
-                DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
             }
         }
     }
@@ -116,6 +133,7 @@ class MainActivity : FragmentActivity() {
                     AppLifecycleState.FromBackground -> {
                         viewModel.checkAppLock()
                     }
+
                     AppLifecycleState.ToBackground -> {
                         viewModel.saveClosedAppTimestamp()
                     }

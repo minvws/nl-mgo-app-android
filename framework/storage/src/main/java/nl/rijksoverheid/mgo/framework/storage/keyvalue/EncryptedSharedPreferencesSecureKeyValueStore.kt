@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 /**
  * Key that is linked to the stored pin code.
@@ -63,6 +65,18 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
             value: String,
         ) {
             encryptedSharedPreferences.edit().putString(key.name, value).apply()
+        }
+
+        /**
+         * Observes a string value from the key-value store.
+         * The [EncryptedSharedPreferencesSecureKeyValueStore] currently does not support observing a string,
+         * and this function will simply return the string value in a flow. It will not update.
+         *
+         * @param key The key associated with the string value.
+         * @return A flow with the stored string value, or null if not found.
+         */
+        override fun observeString(key: Preferences.Key<String>): Flow<String?> {
+            return flowOf(encryptedSharedPreferences.getString(key.name, null))
         }
 
         /**

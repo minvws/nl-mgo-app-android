@@ -23,8 +23,8 @@ fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
                     addDashboardOrganizationsNavGraph(rootNavController = rootNavController, navController = navController)
                 },
                 settingsStartDestination = DashboardNavigation.Settings.Root,
-                settingsNavGraph = {
-                    addDashboardSettingsNavGraph()
+                settingsNavGraph = { navController ->
+                    addDashboardSettingsNavGraph(navController = navController)
                 },
             )
         }

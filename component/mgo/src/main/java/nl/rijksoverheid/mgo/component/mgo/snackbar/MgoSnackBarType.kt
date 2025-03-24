@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.component.mgo.snackbar
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -11,6 +10,8 @@ import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.component.theme.sentimentInformative
 import nl.rijksoverheid.mgo.component.theme.sentimentPositive
 import nl.rijksoverheid.mgo.component.theme.sentimentWarning
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
+import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 
 /**
  * Determines the appearance of a [MgoSnackBar].
@@ -57,9 +58,26 @@ fun MgoSnackBarType.getBackgroundColor(): Color {
 @Composable
 fun MgoSnackBarType.getContentColor(): Color {
     return when (this) {
-        MgoSnackBarType.SUCCESS -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
-        MgoSnackBarType.ERROR -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
+        MgoSnackBarType.SUCCESS ->
+            MaterialTheme.colorScheme.contentPrimary(
+                isSystemDarkTheme =
+                    !LocalAppThemeProvider.current
+                        .appTheme.isDarkTheme(),
+            )
+
+        MgoSnackBarType.ERROR ->
+            MaterialTheme.colorScheme.contentPrimary(
+                isSystemDarkTheme =
+                    !LocalAppThemeProvider.current
+                        .appTheme.isDarkTheme(),
+            )
+
         MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = false)
-        MgoSnackBarType.INFO -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = !isSystemInDarkTheme())
+        MgoSnackBarType.INFO ->
+            MaterialTheme.colorScheme.contentPrimary(
+                isSystemDarkTheme =
+                    !LocalAppThemeProvider.current
+                        .appTheme.isDarkTheme(),
+            )
     }
 }

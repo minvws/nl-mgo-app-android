@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -54,6 +56,8 @@ val KEY_LOCAL_FEATURE_TOGGLES_INITIALISED = booleanPreferencesKey("local_feature
  * Key indicating the the user has successfully authenticated with DigiD.
  */
 val KEY_DIGID_AUTHENTICATED = booleanPreferencesKey("digid_authenticated")
+
+val KEY_APP_THEME = stringPreferencesKey("app_theme")
 
 /**
  * Key-value storage system that uses [Preferences] to store data.
@@ -115,6 +119,18 @@ internal class DataStoreKeyValueStore(
     ) {
         dataStore.edit { preferences ->
             preferences[key] = value
+        }
+    }
+
+    /**
+     * Observes a string value from the key-value store.
+     *
+     * @param key The key associated with the string value.
+     * @return A flow with the stored string value, or null if not found.
+     */
+    override fun observeString(key: Preferences.Key<String>): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[key]
         }
     }
 

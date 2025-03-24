@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.test.core.app.ApplicationProvider
+import app.cash.turbine.test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -59,6 +60,9 @@ internal class DataStoreKeyValueStoreTest {
             // Then
             assertEquals("123", keyValueStore.getString(preferenceKey1))
             assertNull(keyValueStore.getString(preferenceKey2))
+            keyValueStore.observeString(preferenceKey1).test {
+                assertEquals("123", awaitItem())
+            }
         }
 
     @Test

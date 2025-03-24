@@ -8,4 +8,6 @@ android {
 
 dependencies {
     implementation(projects.framework.environment)
+    implementation(projects.framework.storage)
+    testImplementation(testFixtures(projects.framework.storage))
 }

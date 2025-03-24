@@ -21,12 +21,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
@@ -35,6 +38,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderSecondary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -54,7 +58,11 @@ fun SettingsHomeScreen(
     onNavigateToAboutThisAppSettings: () -> Unit,
     onNavigateToOnboarding: () -> Unit,
 ) {
+    val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
+    val selectedTheme by viewModel.appTheme.collectAsStateWithLifecycle()
+
     SettingsScreenContent(
+        selectedAppTheme = selectedTheme,
         onClickDisplaySettings = onNavigateToDisplaySettings,
         onClickSecuritySettings = onNavigateToSecuritySettings,
         onClickAdvancedSettings = onNavigateToAdvancedSettings,
@@ -66,6 +74,7 @@ fun SettingsHomeScreen(
 
 @Composable
 private fun SettingsScreenContent(
+    selectedAppTheme: AppTheme,
     onClickDisplaySettings: () -> Unit,
     onClickSecuritySettings: () -> Unit,
     onClickAdvancedSettings: () -> Unit,
@@ -100,7 +109,12 @@ private fun SettingsScreenContent(
                             .clickable { onClickDisplaySettings() },
                     icon = Icons.Outlined.LightMode,
                     heading = CopyR.string.settings_display_heading,
-                    subHeading = CopyR.string.settings_display_light,
+                    subHeading =
+                        when (selectedAppTheme) {
+                            AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
+                            AppTheme.LIGHT -> CopyR.string.settings_display_light
+                            AppTheme.DARK -> CopyR.string.settings_display_dark
+                        },
                 )
                 SettingsListItem(
                     modifier =
@@ -228,6 +242,7 @@ private fun SettingsListItem(
 internal fun SettingsHomeScreenPreview() {
     MgoTheme {
         SettingsScreenContent(
+            selectedAppTheme = AppTheme.SYSTEM,
             onClickDisplaySettings = {},
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},

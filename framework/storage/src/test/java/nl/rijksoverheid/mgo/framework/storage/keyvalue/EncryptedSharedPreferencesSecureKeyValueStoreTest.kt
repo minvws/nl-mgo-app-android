@@ -5,7 +5,11 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.test.core.app.ApplicationProvider
-import org.junit.Assert
+import app.cash.turbine.test
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -30,8 +34,8 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
             keyValueStore.removeBoolean(preferenceKey2)
 
             // Then
-            Assert.assertTrue(keyValueStore.getBoolean(preferenceKey1))
-            Assert.assertFalse(keyValueStore.getBoolean(preferenceKey2))
+            assertTrue(keyValueStore.getBoolean(preferenceKey1))
+            assertFalse(keyValueStore.getBoolean(preferenceKey2))
         }
 
     @Test
@@ -47,8 +51,12 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
             keyValueStore.removeString(preferenceKey2)
 
             // Then
-            Assert.assertEquals("123", keyValueStore.getString(preferenceKey1))
-            Assert.assertNull(keyValueStore.getString(preferenceKey2))
+            assertEquals("123", keyValueStore.getString(preferenceKey1))
+            assertNull(keyValueStore.getString(preferenceKey2))
+            keyValueStore.observeString(preferenceKey1).test {
+                assertEquals("123", awaitItem())
+                awaitComplete()
+            }
         }
 
     @Test
@@ -64,8 +72,8 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
             keyValueStore.removeLong(preferenceKey2)
 
             // Then
-            Assert.assertEquals(1L, keyValueStore.getLong(preferenceKey1))
-            Assert.assertEquals(0L, keyValueStore.getLong(preferenceKey2))
+            assertEquals(1L, keyValueStore.getLong(preferenceKey1))
+            assertEquals(0L, keyValueStore.getLong(preferenceKey2))
         }
 
     @Test
@@ -79,6 +87,6 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
             keyValueStore.clear()
 
             // Then
-            Assert.assertEquals(false, keyValueStore.getBoolean(preferenceKey))
+            assertEquals(false, keyValueStore.getBoolean(preferenceKey))
         }
 }

@@ -51,6 +51,8 @@ import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
+import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 sealed class MgoScaffoldScrollStateProvider {
@@ -145,7 +147,7 @@ fun MgoScaffold(
                         titleLarge = MaterialTheme.typography.titleLarge,
                         headlineSmall = MaterialTheme.typography.headlineLarge,
                     )
-                MgoTheme(typography = adjustedTypography) {
+                MgoTheme(typography = adjustedTypography, isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()) {
                     MediumTopAppBar(
                         modifier =
                             Modifier.onGloballyPositioned {

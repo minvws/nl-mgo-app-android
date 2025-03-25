@@ -22,6 +22,7 @@ internal class SettingsHomeScreenViewModelTest {
                 SettingsHomeScreenViewModel(
                     keyValueStore = TestKeyValueStore(),
                     deviceHasBiometric = TestDeviceHasBiometric(true),
+                    isDebug = true,
                 )
 
             // Then: App theme is system and device has biometric is true

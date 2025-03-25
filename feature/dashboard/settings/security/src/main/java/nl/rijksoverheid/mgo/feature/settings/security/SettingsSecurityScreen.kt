@@ -31,6 +31,11 @@ import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+/**
+ * Composable that shows a screen where you can change different security settings regarding the app.
+ *
+ * @param onNavigateBack Called when requested to navigate back.
+ */
 @Composable
 fun SettingsSecurityScreen(onNavigateBack: () -> Unit) {
     val viewModel = hiltViewModel<SettingsSecurityScreenViewModel>()

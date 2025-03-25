@@ -127,16 +127,18 @@ private fun SettingsScreenContent(
                         heading = CopyR.string.settings_security_heading,
                     )
                 }
-                SettingsListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onClickAdvancedSettings() },
-                    icon = Icons.Outlined.Code,
-                    heading = CopyR.string.settings_advanced_heading,
-                    subHeading = CopyR.string.settings_advanced_subheading,
-                    hasDivider = false,
-                )
+                if (viewState.isDebug) {
+                    SettingsListItem(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clickable { onClickAdvancedSettings() },
+                        icon = Icons.Outlined.Code,
+                        heading = CopyR.string.settings_advanced_heading,
+                        subHeading = CopyR.string.settings_advanced_subheading,
+                        hasDivider = false,
+                    )
+                }
             }
 
             Text(
@@ -242,10 +244,10 @@ private fun SettingsListItem(
 
 @DefaultPreviews
 @Composable
-internal fun SettingsHomeScreenWithBiometricPreview() {
+internal fun SettingsHomeScreenPreview() {
     MgoTheme {
         SettingsScreenContent(
-            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, deviceHasBiometric = true),
+            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = true),
             onClickDisplaySettings = {},
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},
@@ -261,7 +263,23 @@ internal fun SettingsHomeScreenWithBiometricPreview() {
 internal fun SettingsHomeScreenWithoutBiometricPreview() {
     MgoTheme {
         SettingsScreenContent(
-            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, deviceHasBiometric = false),
+            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = false),
+            onClickDisplaySettings = {},
+            onClickSecuritySettings = {},
+            onClickAdvancedSettings = {},
+            onClickAboutThisAppSettings = {},
+            onClickLogout = {},
+            onClickResetApp = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun SettingsHomeScreenWithoutDebugPreview() {
+    MgoTheme {
+        SettingsScreenContent(
+            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = false, deviceHasBiometric = true),
             onClickDisplaySettings = {},
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},

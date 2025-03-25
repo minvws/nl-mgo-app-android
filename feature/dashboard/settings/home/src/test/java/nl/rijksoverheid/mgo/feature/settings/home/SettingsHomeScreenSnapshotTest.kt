@@ -9,9 +9,9 @@ internal class SettingsHomeScreenSnapshotTest {
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
-    fun withBiometric() {
+    fun preview() {
         snapshotTestRule.snapshots {
-            SettingsHomeScreenWithBiometricPreview()
+            SettingsHomeScreenPreview()
         }
     }
 
@@ -19,6 +19,13 @@ internal class SettingsHomeScreenSnapshotTest {
     fun withoutBiometric() {
         snapshotTestRule.snapshots {
             SettingsHomeScreenWithoutBiometricPreview()
+        }
+    }
+
+    @Test
+    fun withoutDebug() {
+        snapshotTestRule.snapshots {
+            SettingsHomeScreenWithoutDebugPreview()
         }
     }
 }

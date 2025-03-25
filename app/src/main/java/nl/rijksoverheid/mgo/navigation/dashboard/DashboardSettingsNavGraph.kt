@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.navigation.dashboard
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import nl.rijksoverheid.mgo.feature.settings.advanced.SettingsAdvancedScreen
 import nl.rijksoverheid.mgo.feature.settings.display.SettingsDisplayScreen
 import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreen
 import nl.rijksoverheid.mgo.feature.settings.security.SettingsSecurityScreen
@@ -21,7 +22,9 @@ fun NavGraphBuilder.addDashboardSettingsNavGraph(navController: NavController) {
                 onNavigateToSecuritySettings = {
                     navController.navigate(DashboardNavigation.Settings.Security)
                 },
-                onNavigateToAdvancedSettings = {},
+                onNavigateToAdvancedSettings = {
+                    navController.navigate(DashboardNavigation.Settings.Advanced)
+                },
                 onNavigateToAboutThisAppSettings = {},
                 onNavigateToOnboarding = {},
             )
@@ -37,6 +40,14 @@ fun NavGraphBuilder.addDashboardSettingsNavGraph(navController: NavController) {
 
         mgoComposable<DashboardNavigation.Settings.Security> {
             SettingsSecurityScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+
+        mgoComposable<DashboardNavigation.Settings.Advanced> {
+            SettingsAdvancedScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },

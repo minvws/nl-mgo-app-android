@@ -11,6 +11,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * The [ViewModel] for [SettingsSecurityScreen].
+ *
+ * @param keyValueStore The [KeyValueStore] to get and set if biometric login is enabled.
+ */
 @HiltViewModel
 internal class SettingsSecurityScreenViewModel
     @Inject
@@ -21,6 +26,11 @@ internal class SettingsSecurityScreenViewModel
         val biometricEnabled =
             _biometricEnabled.stateIn(viewModelScope, SharingStarted.Lazily, keyValueStore.getBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED))
 
+        /**
+         * Set if biometric login for the app is enabled or not.
+         *
+         * @param enabled True if biometric login is enabled.
+         */
         fun setBiometricEnabled(enabled: Boolean) {
             viewModelScope.launch {
                 keyValueStore.setBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED, enabled)

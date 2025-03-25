@@ -56,6 +56,12 @@ internal object MainModule {
         return BuildConfig.FLAVOR
     }
 
+    @Named("isDebug")
+    @Provides
+    fun provideIsDebug(): Boolean {
+        return BuildConfig.DEBUG
+    }
+
     @Named("versionCode")
     @Provides
     fun provideVersionCode(): Int {

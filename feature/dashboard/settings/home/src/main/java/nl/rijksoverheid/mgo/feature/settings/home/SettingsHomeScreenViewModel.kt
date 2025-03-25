@@ -25,18 +25,20 @@ internal class SettingsHomeScreenViewModel
     @Inject
     constructor(
         @Named("keyValueStore") keyValueStore: KeyValueStore,
+        @Named("isDebug") isDebug: Boolean,
         deviceHasBiometric: DeviceHasBiometric,
     ) : ViewModel() {
         private val initialViewState =
             SettingsHomeScreenViewState(
                 appTheme = getAppTheme(keyValueStore.getString(KEY_APP_THEME)),
                 deviceHasBiometric = deviceHasBiometric.invoke(),
+                isDebug = isDebug,
             )
         private val _viewState =
             keyValueStore.observeString(KEY_APP_THEME)
                 .map { appThemeString -> getAppTheme(appThemeString) }
                 .map { appTheme ->
-                    SettingsHomeScreenViewState(appTheme = appTheme, deviceHasBiometric = deviceHasBiometric.invoke())
+                    SettingsHomeScreenViewState(appTheme = appTheme, isDebug = isDebug, deviceHasBiometric = deviceHasBiometric.invoke())
                 }
 
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)

@@ -4,5 +4,5 @@ import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 
 data class SettingsHomeScreenViewState(
     val appTheme: AppTheme,
-    val biometricEnabled: Boolean,
+    val deviceHasBiometric: Boolean,
 )

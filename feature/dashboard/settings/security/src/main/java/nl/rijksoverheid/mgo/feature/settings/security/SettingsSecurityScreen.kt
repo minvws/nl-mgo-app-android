@@ -15,13 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -48,6 +51,7 @@ private fun SettingsSecurityScreenContent(
     onEnableBiometric: (enabled: Boolean) -> Unit,
     onClickBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_security_heading),
         scrollStateProvider =
@@ -93,7 +97,18 @@ private fun SettingsSecurityScreenContent(
                         )
                     }
 
-                    Switch(checked = biometricEnabled, onCheckedChange = onEnableBiometric)
+                    Switch(checked = biometricEnabled, onCheckedChange = { checked ->
+                        if (checked) {
+                            val fragmentActivity = context as FragmentActivity
+                            fragmentActivity.showBiometricPrompt(
+                                onSuccess = {
+                                    onEnableBiometric(true)
+                                },
+                            )
+                        } else {
+                            onEnableBiometric(false)
+                        }
+                    })
                 }
             }
         },

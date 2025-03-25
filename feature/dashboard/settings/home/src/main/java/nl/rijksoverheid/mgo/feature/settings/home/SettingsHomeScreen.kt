@@ -117,7 +117,7 @@ private fun SettingsScreenContent(
                             AppTheme.DARK -> CopyR.string.settings_display_dark
                         },
                 )
-                if (viewState.biometricEnabled) {
+                if (viewState.deviceHasBiometric) {
                     SettingsListItem(
                         modifier =
                             Modifier
@@ -245,7 +245,7 @@ private fun SettingsListItem(
 internal fun SettingsHomeScreenWithBiometricPreview() {
     MgoTheme {
         SettingsScreenContent(
-            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, biometricEnabled = true),
+            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, deviceHasBiometric = true),
             onClickDisplaySettings = {},
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},
@@ -261,7 +261,7 @@ internal fun SettingsHomeScreenWithBiometricPreview() {
 internal fun SettingsHomeScreenWithoutBiometricPreview() {
     MgoTheme {
         SettingsScreenContent(
-            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, biometricEnabled = false),
+            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, deviceHasBiometric = false),
             onClickDisplaySettings = {},
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},

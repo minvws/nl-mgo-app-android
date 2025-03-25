@@ -23,6 +23,14 @@ interface KeyValueStore {
     )
 
     /**
+     * Observes a boolean value from the key-value store.
+     *
+     * @param key The key associated with the boolean value.
+     * @return A flow with the stored boolean value, or a default value if not found.
+     */
+    fun observeBoolean(key: Preferences.Key<Boolean>): Flow<Boolean>
+
+    /**
      * Retrieves a boolean value from the key-value store.
      *
      * @param key The key associated with the boolean value.

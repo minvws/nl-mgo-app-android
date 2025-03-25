@@ -220,5 +220,7 @@
   <string name="settings.log_out.heading">Log uit</string>
   <string name="settings.log_out.subheading">Je sluit zo de app af</string>
   <string name="settings.reset_app.heading">Stel app opnieuw in</string>
-  <string name="settings.reset_app.subheading">Je verwijderd zo al je opgeslagen zorgaanbieders</string>
+  <string name="settings.reset_app.subheading">Je verwijderd zo al je opgeslagen zorgaanbieders en toegangscode</string>
+  <string name="settings.security.biometric.subheading">Gebruik dit in plaats van je toegangscode om veilig en nog sneller in te loggen.</string>
+  <string name="settings.security.biometric.heading">Inloggen met vingerafdruk</string>
 </resources>

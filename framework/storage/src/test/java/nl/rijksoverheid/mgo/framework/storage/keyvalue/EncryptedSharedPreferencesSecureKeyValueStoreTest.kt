@@ -36,6 +36,10 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
             // Then
             assertTrue(keyValueStore.getBoolean(preferenceKey1))
             assertFalse(keyValueStore.getBoolean(preferenceKey2))
+            keyValueStore.observeBoolean(KEY_HAS_SEEN_ONBOARDING).test {
+                assertTrue(awaitItem())
+                awaitComplete()
+            }
         }
 
     @Test

@@ -84,7 +84,7 @@ private fun SettingsDisplayScreenContent(
                         onSelectTheme(AppTheme.SYSTEM)
                     },
                     selected = selectedTheme == AppTheme.SYSTEM,
-                    hasDivider = false,
+                    hasDivider = true,
                 )
                 ThemeListItem(
                     modifier =
@@ -95,7 +95,7 @@ private fun SettingsDisplayScreenContent(
                         onSelectTheme(AppTheme.LIGHT)
                     },
                     selected = selectedTheme == AppTheme.LIGHT,
-                    hasDivider = false,
+                    hasDivider = true,
                 )
                 ThemeListItem(
                     modifier =

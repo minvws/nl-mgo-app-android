@@ -7,22 +7,26 @@ import kotlinx.coroutines.flow.map
 
 class TestKeyValueStore : KeyValueStore {
     private val strings = MutableStateFlow(HashMap<Preferences.Key<String>, String>(emptyMap()))
-    private val booleans = HashMap<Preferences.Key<Boolean>, Boolean>(emptyMap())
+    private val booleans = MutableStateFlow(HashMap<Preferences.Key<Boolean>, Boolean>(emptyMap()))
     private val longs = HashMap<Preferences.Key<Long>, Long>(emptyMap())
 
     override suspend fun setBoolean(
         key: Preferences.Key<Boolean>,
         value: Boolean,
     ) {
-        booleans[key] = value
+        booleans.value[key] = value
+    }
+
+    override fun observeBoolean(key: Preferences.Key<Boolean>): Flow<Boolean> {
+        return booleans.map { hashMap -> hashMap[key] ?: false }
     }
 
     override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
-        return booleans[key] == true
+        return booleans.value[key] == true
     }
 
     override suspend fun removeBoolean(key: Preferences.Key<Boolean>) {
-        booleans.remove(key)
+        booleans.value.remove(key)
     }
 
     override suspend fun setString(
@@ -61,6 +65,6 @@ class TestKeyValueStore : KeyValueStore {
 
     override fun clear() {
         strings.value.clear()
-        booleans.clear()
+        booleans.value.clear()
     }
 }

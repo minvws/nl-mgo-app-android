@@ -116,6 +116,7 @@ dependencies {
     implementation(projects.feature.dashboard.removeOrganization)
     implementation(projects.feature.dashboard.settings.home)
     implementation(projects.feature.dashboard.settings.display)
+    implementation(projects.feature.dashboard.settings.security)
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)

@@ -69,5 +69,8 @@ sealed class DashboardNavigation {
 
         @Serializable
         data object Display : Settings()
+
+        @Serializable
+        data object Security : Settings()
     }
 }

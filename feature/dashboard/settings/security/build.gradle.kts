@@ -3,13 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.settings.home"
+    namespace = "nl.rijksoverheid.mgo.feature.settings.security"
 }
 
 dependencies {
     implementation(projects.framework.environment)
     implementation(projects.framework.storage)
-    implementation(projects.data.pincode)
     testImplementation(testFixtures(projects.framework.storage))
-    testImplementation(testFixtures(projects.data.pincode))
 }

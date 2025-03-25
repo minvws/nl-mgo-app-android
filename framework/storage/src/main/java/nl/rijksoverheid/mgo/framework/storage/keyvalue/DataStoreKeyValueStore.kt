@@ -83,6 +83,18 @@ internal class DataStoreKeyValueStore(
     }
 
     /**
+     * Observes a boolean value from the key-value store.
+     *
+     * @param key The key associated with the boolean value.
+     * @return A flow with the stored boolean value, or a default value if not found.
+     */
+    override fun observeBoolean(key: Preferences.Key<Boolean>): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[key] ?: false
+        }
+    }
+
+    /**
      * Retrieves a boolean value from the key-value store.
      *
      * @param key The key associated with the boolean value.

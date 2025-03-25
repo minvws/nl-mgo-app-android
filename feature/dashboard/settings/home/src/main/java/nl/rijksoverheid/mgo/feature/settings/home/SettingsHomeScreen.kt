@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -59,10 +60,10 @@ fun SettingsHomeScreen(
     onNavigateToOnboarding: () -> Unit,
 ) {
     val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
-    val selectedTheme by viewModel.appTheme.collectAsStateWithLifecycle()
+    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     SettingsScreenContent(
-        selectedAppTheme = selectedTheme,
+        viewState = viewState,
         onClickDisplaySettings = onNavigateToDisplaySettings,
         onClickSecuritySettings = onNavigateToSecuritySettings,
         onClickAdvancedSettings = onNavigateToAdvancedSettings,
@@ -74,7 +75,7 @@ fun SettingsHomeScreen(
 
 @Composable
 private fun SettingsScreenContent(
-    selectedAppTheme: AppTheme,
+    viewState: SettingsHomeScreenViewState,
     onClickDisplaySettings: () -> Unit,
     onClickSecuritySettings: () -> Unit,
     onClickAdvancedSettings: () -> Unit,
@@ -110,20 +111,22 @@ private fun SettingsScreenContent(
                     icon = Icons.Outlined.LightMode,
                     heading = CopyR.string.settings_display_heading,
                     subHeading =
-                        when (selectedAppTheme) {
+                        when (viewState.appTheme) {
                             AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
                             AppTheme.LIGHT -> CopyR.string.settings_display_light
                             AppTheme.DARK -> CopyR.string.settings_display_dark
                         },
                 )
-                SettingsListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onClickSecuritySettings() },
-                    icon = Icons.Outlined.Lock,
-                    heading = CopyR.string.settings_security_heading,
-                )
+                if (viewState.biometricEnabled) {
+                    SettingsListItem(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clickable { onClickSecuritySettings() },
+                        icon = Icons.Outlined.Lock,
+                        heading = CopyR.string.settings_security_heading,
+                    )
+                }
                 SettingsListItem(
                     modifier =
                         Modifier
@@ -239,10 +242,26 @@ private fun SettingsListItem(
 
 @DefaultPreviews
 @Composable
-internal fun SettingsHomeScreenPreview() {
+internal fun SettingsHomeScreenWithBiometricPreview() {
     MgoTheme {
         SettingsScreenContent(
-            selectedAppTheme = AppTheme.SYSTEM,
+            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, biometricEnabled = true),
+            onClickDisplaySettings = {},
+            onClickSecuritySettings = {},
+            onClickAdvancedSettings = {},
+            onClickAboutThisAppSettings = {},
+            onClickLogout = {},
+            onClickResetApp = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun SettingsHomeScreenWithoutBiometricPreview() {
+    MgoTheme {
+        SettingsScreenContent(
+            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, biometricEnabled = false),
             onClickDisplaySettings = {},
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
+import nl.rijksoverheid.mgo.data.pincode.biometric.LoginWithBiometricEnabled
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
@@ -23,7 +24,19 @@ internal class SettingsHomeScreenViewModel
     @Inject
     constructor(
         @Named("keyValueStore") keyValueStore: KeyValueStore,
+        loginWithBiometricEnabled: LoginWithBiometricEnabled,
     ) : ViewModel() {
-        private val _appTheme = keyValueStore.observeString(KEY_APP_THEME).map { appThemeString -> getAppTheme(appThemeString) }
-        val appTheme = _appTheme.stateIn(viewModelScope, SharingStarted.Lazily, getAppTheme(keyValueStore.getString(KEY_APP_THEME)))
+        private val initialViewState =
+            SettingsHomeScreenViewState(
+                appTheme = getAppTheme(keyValueStore.getString(KEY_APP_THEME)),
+                biometricEnabled = loginWithBiometricEnabled.invoke(),
+            )
+        private val _viewState =
+            keyValueStore.observeString(KEY_APP_THEME)
+                .map { appThemeString -> getAppTheme(appThemeString) }
+                .map { appTheme ->
+                    SettingsHomeScreenViewState(appTheme = appTheme, biometricEnabled = loginWithBiometricEnabled.invoke())
+                }
+
+        val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
     }

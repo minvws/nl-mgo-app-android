@@ -42,6 +42,9 @@ internal class DataStoreKeyValueStoreTest {
             assertTrue(keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING))
             assertTrue(keyValueStore.getBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED))
             assertFalse(keyValueStore.getBoolean(KEY_IS_ROOT_CHECKED))
+            keyValueStore.observeBoolean(KEY_HAS_SEEN_ONBOARDING).test {
+                assertTrue(awaitItem())
+            }
         }
 
     @Test

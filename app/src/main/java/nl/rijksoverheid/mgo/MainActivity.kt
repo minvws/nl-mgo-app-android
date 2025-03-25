@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowInsetsControllerCompat
@@ -57,18 +58,23 @@ class MainActivity : FragmentActivity() {
             ) {
                 val isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()
                 MgoTheme(modifier = Modifier.fillMaxSize(), isDarkTheme = isDarkTheme) {
-                    val startDestination = viewModel.getStartDestination()
+                    val startDestination = remember { viewModel.getStartDestination() }
                     val navController = rememberNavController()
 
-                    CheckFlagSecure(viewModel = viewModel)
-
+                    // The main navigation
                     RootNavigation(
                         navController = navController,
                         startDestination = startDestination,
                         viewModel = viewModel,
                     )
 
+                    // Set if taking screenshots is enabled or not
+                    CheckFlagSecure(viewModel = viewModel)
+
+                    // Check if the app needs to be locked (show pin code screen above current screen)
                     CheckAppLock(viewModel = viewModel)
+
+                    // Handle navigating to a dialog to display
                     HandleNavigateDialog(viewModel = viewModel, navController = navController)
 
                     // Device rooted dialog

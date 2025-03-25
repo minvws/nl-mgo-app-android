@@ -20,6 +20,7 @@ import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -104,9 +105,11 @@ internal class MainViewModel
                 // If all above things are not true, then we can show the dashboard.
                 else -> {
                     if (featureToggleRepository.get(FeatureToggleId.SkipPin)) {
+                        Timber.v("Ik kom hier #1")
                         DashboardNavigation.Root
                     } else {
                         // Lock dashboard with pin code first.
+                        Timber.v("Ik kom hier #2")
                         PinCodeLoginNavigation.Root
                     }
                 }

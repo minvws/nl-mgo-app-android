@@ -59,6 +59,7 @@ private fun SettingsAdvancedScreenContent(
                 rememberScrollState(),
             ),
         onNavigateBack = onClickBack,
+        isAlwaysCollapsed = true,
         content = {
             Column {
                 SettingsAdvancedListItem(

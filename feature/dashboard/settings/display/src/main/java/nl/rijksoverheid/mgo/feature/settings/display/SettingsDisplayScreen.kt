@@ -69,6 +69,7 @@ private fun SettingsDisplayScreenContent(
                 rememberScrollState(),
             ),
         onNavigateBack = onClickBack,
+        isAlwaysCollapsed = true,
         content = {
             MgoCard(
                 modifier =

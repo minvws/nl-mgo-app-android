@@ -64,6 +64,7 @@ private fun SettingsSecurityScreenContent(
                 rememberScrollState(),
             ),
         onNavigateBack = onClickBack,
+        isAlwaysCollapsed = true,
         content = {
             MgoCard(
                 modifier =

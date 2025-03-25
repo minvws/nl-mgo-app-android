@@ -75,5 +75,11 @@ sealed class DashboardNavigation {
 
         @Serializable
         data object Advanced : Settings()
+
+        @Serializable
+        sealed class About : Settings() {
+            @Serializable
+            data object Home : About()
+        }
     }
 }

@@ -223,4 +223,9 @@
   <string name="settings.reset_app.subheading">Je verwijderd zo al je opgeslagen zorgaanbieders en toegangscode</string>
   <string name="settings.security.biometric.subheading">Gebruik dit in plaats van je toegangscode om veilig en nog sneller in te loggen.</string>
   <string name="settings.security.biometric.heading">Inloggen met vingerafdruk</string>
+  <string name="settings.about_this_app.version">Versie</string>
+  <string name="settings.about_this_app.safety">Veilig gebruik</string>
+  <string name="settings.about_this_app.open_source">Open-source bibliotheken</string>
+  <string name="settings.about_this_app.accessibility">Toegankelijkheid</string>
+  <string name="settings.about_this_app.privacy">Je privacy en persoonsgegevens</string>
 </resources>

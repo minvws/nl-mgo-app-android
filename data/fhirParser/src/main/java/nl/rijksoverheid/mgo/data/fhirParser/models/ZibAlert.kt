@@ -20,6 +20,7 @@ data class ZibAlert(
     val code: MgoCodeableConcept? = null,
     val subject: MgoReference? = null,
     val author: MgoReference? = null,
+    val concernReference: MgoReference? = null,
     val profile: String,
     val encounter: MgoReference? = null,
     val referenceId: String,

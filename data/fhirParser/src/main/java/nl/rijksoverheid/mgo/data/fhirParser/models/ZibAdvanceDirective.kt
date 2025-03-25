@@ -18,6 +18,7 @@ data class ZibAdvanceDirective(
     val dateTime: String? = null,
     val disorder: MgoReference? = null,
     val consentingParty: List<MgoReference>? = null,
+    val typeOfLivingWill: List<MgoCodeableConcept>? = null,
     val profile: String,
     val fhirVersion: String,
     val comment: String? = null,

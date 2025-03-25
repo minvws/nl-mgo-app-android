@@ -22,6 +22,7 @@ data class NlCoreObservation(
     val subject: MgoReference? = null,
     val profile: String,
     val referenceId: String,
+    val valueCodeableConcept: MgoCodeableConcept? = null,
     val bodySite: MgoCodeableConcept? = null,
     val effectiveDateTime: String? = null,
     val fhirVersion: String,

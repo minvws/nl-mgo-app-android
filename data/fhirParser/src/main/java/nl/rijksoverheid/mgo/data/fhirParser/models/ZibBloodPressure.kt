@@ -23,6 +23,7 @@ data class ZibBloodPressure(
     val diastolicBP: DiastolicBP,
     val referenceId: String,
     val cuffTypeSNOMED: CuffTypeSNOMED,
+    val valueCodeableConcept: MgoCodeableConcept? = null,
     val systolicBP: SystolicBP,
     val fhirVersion: String,
     val context: MgoReference? = null,

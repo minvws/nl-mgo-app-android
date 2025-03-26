@@ -62,6 +62,12 @@ internal object MainModule {
         return BuildConfig.DEBUG
     }
 
+    @Named("versionName")
+    @Provides
+    fun provideVersionName(): String {
+        return BuildConfig.VERSION_NAME
+    }
+
     @Named("versionCode")
     @Provides
     fun provideVersionCode(): Int {

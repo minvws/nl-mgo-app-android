@@ -10,6 +10,7 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_SKIP_PIN
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import javax.inject.Named
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -19,12 +20,14 @@ import kotlinx.coroutines.launch
  * The [ViewModel] for [SettingsAdvancedScreen].
  *
  * @param keyValueStore The [KeyValueStore] to get and change the feature toggles for.
+ * @param ioDispatcher Dispatcher for IO-bound operations such as file I/O and network requests.
  */
 @HiltViewModel
 internal class SettingsAdvancedScreenViewModel
     @Inject
     constructor(
         @Named("keyValueStore") private val keyValueStore: KeyValueStore,
+        @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     ) :
     ViewModel() {
         private val initialViewState =
@@ -53,7 +56,7 @@ internal class SettingsAdvancedScreenViewModel
             key: Preferences.Key<Boolean>,
             enabled: Boolean,
         ) {
-            viewModelScope.launch {
+            viewModelScope.launch(ioDispatcher) {
                 keyValueStore.setBoolean(key, enabled)
             }
         }

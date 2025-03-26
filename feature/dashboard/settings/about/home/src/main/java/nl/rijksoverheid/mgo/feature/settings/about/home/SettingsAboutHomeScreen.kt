@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.settings.about.home
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,6 +26,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
@@ -28,8 +36,10 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderSecondary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.feature.settings.about.R
+import java.util.Locale
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -47,8 +57,11 @@ fun SettingsAboutHomeScreen(
     onNavigateToAccessibility: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
+    val viewModel = hiltViewModel<SettingsAboutHomeViewModel>()
+    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+
     SettingsAboutHomeScreenContent(
-        viewState = SettingsAboutHomeScreenViewState(appVersionCode = "1", appVersionName = "1.0.0", fhirParserVersion = ""),
+        viewState = viewState,
         onClickSecureUse = onNavigateToSecureUse,
         onClickOpenSource = onNavigateToOpenSource,
         onClickAccessibility = onNavigateToAccessibility,
@@ -64,6 +77,20 @@ private fun SettingsAboutHomeScreenContent(
     onClickAccessibility: () -> Unit,
     onClickBack: () -> Unit,
 ) {
+    var showFhirParserVersionDialog by remember { mutableStateOf(false) }
+    if (showFhirParserVersionDialog) {
+        MgoAlertDialog(
+            onDismissRequest = { showFhirParserVersionDialog = false },
+            positiveButtonText =
+                stringResource(CopyR.string.common_ok)
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+            positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+            onClickPositiveButton = { showFhirParserVersionDialog = false },
+            heading = stringResource(CopyR.string.settings_about_this_app_version),
+            subHeading = viewState.fhirParserVersion,
+        )
+    }
+
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_about_this_app_heading),
         scrollStateProvider =
@@ -84,15 +111,26 @@ private fun SettingsAboutHomeScreenContent(
                     contentDescription = null,
                 )
                 SettingsAboutHomeListItem(
-                    modifier = Modifier.padding(top = 16.dp),
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp)
+                            .clickable { showFhirParserVersionDialog = true },
                     heading = CopyR.string.common_app_name,
                     headingBold = true,
-                    subHeading = "Versie 1.0.0 (12345)",
+                    subHeading =
+                        "${stringResource(CopyR.string.settings_about_this_app_version)} ${viewState.appVersionName} " +
+                            "(${viewState.appVersionCode})",
                 )
                 SettingsAboutHomeListItem(
+                    modifier = Modifier.clickable { onClickSecureUse() },
+                    heading = CopyR.string.settings_about_this_app_safety,
+                )
+                SettingsAboutHomeListItem(
+                    modifier = Modifier.clickable { onClickOpenSource() },
                     heading = CopyR.string.settings_about_this_app_open_source,
                 )
                 SettingsAboutHomeListItem(
+                    modifier = Modifier.clickable { onClickAccessibility() },
                     heading = CopyR.string.settings_about_this_app_accessibility,
                     hasDivider = false,
                 )
@@ -168,7 +206,7 @@ internal fun SettingsAboutHomeScreenPreview() {
         SettingsAboutHomeScreenContent(
             viewState =
                 SettingsAboutHomeScreenViewState(
-                    appVersionCode = "1",
+                    appVersionCode = 1,
                     appVersionName = "1.0.0",
                     fhirParserVersion =
                         "{ \"version\": \"main\", \"git_ref\": \"d2c2081aefcaa7c0e8c413a1b8c654bcdcbe7705\"," +

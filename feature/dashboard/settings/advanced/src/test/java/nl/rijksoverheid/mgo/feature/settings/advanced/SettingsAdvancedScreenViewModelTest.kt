@@ -26,7 +26,7 @@ internal class SettingsAdvancedScreenViewModelTest {
             keyValueStore.setBoolean(KEY_SKIP_PIN, true)
 
             // Given: View model
-            val viewModel = SettingsAdvancedScreenViewModel(keyValueStore = keyValueStore)
+            val viewModel = SettingsAdvancedScreenViewModel(ioDispatcher = mainDispatcherRule.testDispatcher, keyValueStore = keyValueStore)
 
             // Then: View state matches toggles from key value store
             viewModel.viewState.test {
@@ -45,7 +45,7 @@ internal class SettingsAdvancedScreenViewModelTest {
             keyValueStore.setBoolean(KEY_AUTOMATIC_LOCALISATION, false)
 
             // Given: View model
-            val viewModel = SettingsAdvancedScreenViewModel(keyValueStore = keyValueStore)
+            val viewModel = SettingsAdvancedScreenViewModel(ioDispatcher = mainDispatcherRule.testDispatcher, keyValueStore = keyValueStore)
 
             // When: Enabling automatic localisation
             viewModel.setToggle(KEY_AUTOMATIC_LOCALISATION, true)

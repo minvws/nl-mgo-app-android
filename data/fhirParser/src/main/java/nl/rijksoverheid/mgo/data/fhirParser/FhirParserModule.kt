@@ -10,6 +10,8 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.DefaultMgoResourceMapper
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceMapper
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.DefaultUiSchemaMapper
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.fhirParser.version.DefaultGetFhirParserVersion
+import nl.rijksoverheid.mgo.data.fhirParser.version.GetFhirParserVersion
 import javax.inject.Singleton
 
 @Module
@@ -26,4 +28,8 @@ internal abstract class FhirParserModule {
     @Binds
     @Singleton
     abstract fun bindUiSchemaRepository(default: DefaultUiSchemaMapper): UiSchemaMapper
+
+    @Binds
+    @Singleton
+    abstract fun bindGetFhirParserVersion(default: DefaultGetFhirParserVersion): GetFhirParserVersion
 }

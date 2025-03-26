@@ -2,9 +2,11 @@ package nl.rijksoverheid.mgo.feature.settings.about.home
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.data.fhirParser.version.TestGetFhirParserVersion
+import nl.rijksoverheid.mgo.framework.environment.TestEnvironmentRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 internal class SettingsAboutHomeViewModelTest {
     @Test
@@ -16,6 +18,7 @@ internal class SettingsAboutHomeViewModelTest {
                     versionCode = 1,
                     versionName = "1.0.0",
                     getFhirParserVersion = TestGetFhirParserVersion(),
+                    environmentRepository = TestEnvironmentRepository(),
                 )
 
             // Then: Expected view state
@@ -26,6 +29,7 @@ internal class SettingsAboutHomeViewModelTest {
                 assertEquals(1, viewState.appVersionCode)
                 assertEquals("1.0.0", viewState.appVersionName)
                 assertEquals(expectedFhirVersion, viewState.fhirParserVersion)
+                assertEquals(CopyR.string.settings_about_this_app_privacy_url_test, viewState.privacyUrl)
             }
         }
 }

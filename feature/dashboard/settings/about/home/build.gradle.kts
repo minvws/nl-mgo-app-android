@@ -8,5 +8,7 @@ android {
 
 dependencies {
     implementation(projects.data.fhirParser)
+    implementation(projects.framework.environment)
     testImplementation(testFixtures(projects.data.fhirParser))
+    testImplementation(testFixtures(projects.framework.environment))
 }

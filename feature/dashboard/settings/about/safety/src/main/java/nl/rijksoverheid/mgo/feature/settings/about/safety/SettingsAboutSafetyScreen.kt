@@ -47,7 +47,7 @@ fun SettingsAboutSafetyScreen(onNavigateBack: () -> Unit) {
                 SafetyItem(
                     icon = Icons.Outlined.VisibilityOff,
                     heading = CopyR.string.settings_about_this_app_safety_phone_yourself_heading,
-                    subHeading = CopyR.string.settings_about_this_app_safety_phone_yourself_subhheading,
+                    subHeading = CopyR.string.settings_about_this_app_safety_phone_yourself_subheading,
                 ),
                 SafetyItem(
                     icon = Icons.Outlined.SystemUpdate,

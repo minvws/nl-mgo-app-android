@@ -3,10 +3,13 @@ package nl.rijksoverheid.mgo.feature.settings.about.home
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.data.fhirParser.version.GetFhirParserVersion
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
  * The [ViewModel] for [SettingsAboutHomeScreen].
@@ -22,6 +25,7 @@ internal class SettingsAboutHomeViewModel
         @Named("versionCode") versionCode: Int,
         @Named("versionName") versionName: String,
         getFhirParserVersion: GetFhirParserVersion,
+        environmentRepository: EnvironmentRepository,
     ) : ViewModel() {
         private val _viewState =
             MutableStateFlow(
@@ -29,6 +33,14 @@ internal class SettingsAboutHomeViewModel
                     appVersionCode = versionCode,
                     appVersionName = versionName,
                     fhirParserVersion = getFhirParserVersion(),
+                    privacyUrl =
+                        when (environmentRepository.getEnvironment()) {
+                            is Environment.Acc -> CopyR.string.settings_about_this_app_privacy_url_acc
+                            is Environment.Custom -> CopyR.string.settings_about_this_app_privacy_url_test
+                            is Environment.Demo -> CopyR.string.settings_about_this_app_privacy_url_acc
+                            is Environment.Prod -> CopyR.string.settings_about_this_app_privacy_url_prod
+                            is Environment.Tst -> CopyR.string.settings_about_this_app_privacy_url_test
+                        },
                 ),
             )
         val viewState = _viewState.asStateFlow()

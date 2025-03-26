@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +40,7 @@ import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.feature.settings.about.R
+import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import java.util.Locale
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -77,6 +79,7 @@ private fun SettingsAboutHomeScreenContent(
     onClickAccessibility: () -> Unit,
     onClickBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     var showFhirParserVersionDialog by remember { mutableStateOf(false) }
     if (showFhirParserVersionDialog) {
         MgoAlertDialog(
@@ -141,7 +144,12 @@ private fun SettingsAboutHomeScreenContent(
                     Modifier
                         .padding(top = 32.dp),
             ) {
+                val url = stringResource(viewState.privacyUrl)
                 SettingsAboutHomeListItem(
+                    modifier =
+                        Modifier.clickable {
+                            context.launchBrowser(url)
+                        },
                     heading = CopyR.string.settings_about_this_app_privacy,
                     hasDivider = false,
                     icon = Icons.AutoMirrored.Default.OpenInNew,
@@ -211,6 +219,7 @@ internal fun SettingsAboutHomeScreenPreview() {
                     fhirParserVersion =
                         "{ \"version\": \"main\", \"git_ref\": \"d2c2081aefcaa7c0e8c413a1b8c654bcdcbe7705\"," +
                             " \"created\": \"2025-03-21T16:01:38\"}",
+                    privacyUrl = 0,
                 ),
             onClickSecureUse = {},
             onClickOpenSource = {},

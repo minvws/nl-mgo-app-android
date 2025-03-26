@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.RestartAlt
 import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material3.HorizontalDivider

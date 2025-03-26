@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.serializable) apply false
     alias(libs.plugins.kover) apply false
+    alias(libs.plugins.aboutLibraries) apply false
     alias(libs.plugins.sonarqube)
 }
 

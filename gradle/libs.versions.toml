@@ -52,6 +52,7 @@ robolectric = "4.14.1"
 lifecycle-process = "2.8.7"
 json-kotlin-schema-codegen = "0.115"
 ui-test-junit4-android = "1.7.8"
+about-libraries = "11.6.3"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -108,6 +109,7 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle-process" }
 json-kotlin-schema-codegen = { group = "net.pwall.json", name = "json-kotlin-schema-codegen", version.ref = "json-kotlin-schema-codegen" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "ui-test-junit4-android" }
+aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -123,3 +125,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 serializable = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries"}

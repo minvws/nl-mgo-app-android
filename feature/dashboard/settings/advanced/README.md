@@ -1,4 +1,4 @@
-# Feature - Dashboard - Settings - Advanced
+# Feature - Dashboard - Settings - About - Advanced
 
 This module contains the screen where you can navigate to change different developers settings for the app.
 

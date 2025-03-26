@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.settings.about.home.SettingsAboutHomeScreen
+import nl.rijksoverheid.mgo.feature.settings.about.opensource.SettingsAboutOpenSourceScreen
 import nl.rijksoverheid.mgo.feature.settings.about.safety.SettingsAboutSafetyScreen
 import nl.rijksoverheid.mgo.feature.settings.advanced.SettingsAdvancedScreen
 import nl.rijksoverheid.mgo.feature.settings.display.SettingsDisplayScreen
@@ -63,14 +64,24 @@ fun NavGraphBuilder.addDashboardSettingsNavGraph(navController: NavController) {
                 onNavigateToSecureUse = {
                     navController.navigate(DashboardNavigation.Settings.About.Safety)
                 },
-                onNavigateToOpenSource = {},
+                onNavigateToOpenSource = {
+                    navController.navigate(DashboardNavigation.Settings.About.OpenSource)
+                },
                 onNavigateToAccessibility = {},
-                onNavigateBack = {},
+                onNavigateBack = { navController.popBackStack() },
             )
         }
 
         mgoComposable<DashboardNavigation.Settings.About.Safety> {
             SettingsAboutSafetyScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+
+        mgoComposable<DashboardNavigation.Settings.About.OpenSource> {
+            SettingsAboutOpenSourceScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },

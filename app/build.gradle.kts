@@ -120,6 +120,7 @@ dependencies {
     implementation(projects.feature.dashboard.settings.advanced)
     implementation(projects.feature.dashboard.settings.about.home)
     implementation(projects.feature.dashboard.settings.about.safety)
+    implementation(projects.feature.dashboard.settings.about.opensource)
 
     // Localisation
     implementation(projects.feature.localisation.addOrganization)

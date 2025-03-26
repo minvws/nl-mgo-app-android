@@ -83,6 +83,9 @@ sealed class DashboardNavigation {
 
             @Serializable
             data object Safety : About()
+
+            @Serializable
+            data object OpenSource : About()
         }
     }
 }

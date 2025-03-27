@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.navigation
 
-import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
@@ -10,6 +10,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
@@ -31,15 +32,13 @@ inline fun <reified T : Any> NavGraphBuilder.mgoComposableDialog(
 ) {
     dialog<T>(
         deepLinks = deepLinks,
+        dialogProperties = DialogProperties(dismissOnClickOutside = false, usePlatformDefaultWidth = false),
         content = { backStackEntry ->
-            // Make dialog full screen
+            // Disable dim
             val window = (LocalView.current.parent as DialogWindowProvider).window
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
-            // Disable scrim
-            window.setDimAmount(0f)
-
-            // Show content
+            // Show content inside dialog
             content(backStackEntry)
         },
     )

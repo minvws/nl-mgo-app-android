@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.navigation.dashboard
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
+import nl.rijksoverheid.mgo.MainViewModel
 import nl.rijksoverheid.mgo.feature.settings.about.home.SettingsAboutHomeScreen
 import nl.rijksoverheid.mgo.feature.settings.about.opensource.SettingsAboutOpenSourceScreen
 import nl.rijksoverheid.mgo.feature.settings.about.safety.SettingsAboutSafetyScreen
@@ -19,9 +20,10 @@ import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
  * @param rootNavController The top level nav controller.
  * @param navController The nav controller used in this navigation.
  */
-fun NavGraphBuilder.addDashboardSettingsNavGraph(
+internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
     rootNavController: NavController,
     navController: NavController,
+    mainViewModel: MainViewModel,
 ) {
     navigation<DashboardNavigation.Settings.Root>(DashboardNavigation.Settings.Home) {
         mgoComposable<DashboardNavigation.Settings.Home>(animate = false) {
@@ -37,6 +39,9 @@ fun NavGraphBuilder.addDashboardSettingsNavGraph(
                 },
                 onNavigateToAboutThisAppSettings = {
                     navController.navigate(DashboardNavigation.Settings.About.Home)
+                },
+                onNavigateToAppLock = {
+                    mainViewModel.lockApp()
                 },
                 onNavigateToOnboarding = {
                     rootNavController.navigate(OnboardingNavigation.Root) {

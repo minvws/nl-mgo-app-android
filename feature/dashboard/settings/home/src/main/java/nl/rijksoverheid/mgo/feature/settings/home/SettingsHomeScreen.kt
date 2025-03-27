@@ -53,6 +53,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  * @param onNavigateToSecuritySettings Called when requested to navigate to the screen that shows security settings.
  * @param onNavigateToAdvancedSettings Called when requested to navigate to the screen that shows advanced settings.
  * @param onNavigateToAboutThisAppSettings Called when requested to navigate to the screen that shows about this app settings.
+ * @param onNavigateToAppLock Called when requested to lock the app.
  * @param onNavigateToOnboarding Called when requested to navigate to the onboarding.
  */
 @Composable
@@ -61,6 +62,7 @@ fun SettingsHomeScreen(
     onNavigateToSecuritySettings: () -> Unit,
     onNavigateToAdvancedSettings: () -> Unit,
     onNavigateToAboutThisAppSettings: () -> Unit,
+    onNavigateToAppLock: () -> Unit,
     onNavigateToOnboarding: () -> Unit,
 ) {
     val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
@@ -78,7 +80,7 @@ fun SettingsHomeScreen(
         onClickSecuritySettings = onNavigateToSecuritySettings,
         onClickAdvancedSettings = onNavigateToAdvancedSettings,
         onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
-        onClickLogout = {},
+        onClickLogout = onNavigateToAppLock,
         onClickResetApp = { viewModel.resetApp() },
     )
 }
@@ -208,7 +210,7 @@ private fun SettingsScreenContent(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .clickable { onClickAboutThisAppSettings() },
+                            .clickable { onClickLogout() },
                     icon = Icons.AutoMirrored.Outlined.Logout,
                     heading = CopyR.string.settings_log_out_heading,
                     subHeading = CopyR.string.settings_log_out_subheading,

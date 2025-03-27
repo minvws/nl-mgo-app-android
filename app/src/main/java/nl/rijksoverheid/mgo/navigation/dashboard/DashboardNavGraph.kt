@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import nl.rijksoverheid.mgo.MainViewModel
 import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 
 /**
@@ -11,7 +12,10 @@ import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
  *
  * @param rootNavController The top level nav controller.
  */
-fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
+internal fun NavGraphBuilder.addDashboardNavGraph(
+    rootNavController: NavController,
+    mainViewModel: MainViewModel,
+) {
     navigation<DashboardNavigation.Root>(DashboardNavigation.BottomBar) {
         composable<DashboardNavigation.BottomBar> {
             DashboardBottomBarScreen(
@@ -25,7 +29,11 @@ fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
                 },
                 settingsStartDestination = DashboardNavigation.Settings.Root,
                 settingsNavGraph = { navController ->
-                    addDashboardSettingsNavGraph(rootNavController = rootNavController, navController = navController)
+                    addDashboardSettingsNavGraph(
+                        mainViewModel = mainViewModel,
+                        rootNavController = rootNavController,
+                        navController = navController,
+                    )
                 },
             )
         }

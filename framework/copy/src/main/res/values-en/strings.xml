@@ -170,9 +170,6 @@
   <string name="common.search_organizations">Zoeken naar zorgaanbieders</string>
   <string name="login_info.heading">Je bent nu ingelogd met DigiD</string>
   <string name="login_info.subheading"><![CDATA[Normaal zou je nu naar de website of app van DigiD gaan om je te identificeren. Voor deze demo hoeft dat niet en ben je ingelogd met een fictief account, als <b>Johan Helleman</b>. De gegevens die je ziet, zijn niet echt.]]></string>
-  <string name="settings.reset_app.dialog.heading">Wil je de app resetten?</string>
-  <string name="settings.reset_app.dialog.subheading">Daarmee verwijder je je account. Je kunt later wel weer een nieuw account aanmaken als je dat wilt.</string>
-  <string name="settings.reset_app.button">Reset de app</string>
   <string name="app_name_demo">MGO (Demo)</string>
   <string name="zib_administration_agreement.heading">Hoe je je medicijnen krijgt</string>
   <string name="zib_alcohol_use.heading">Alcoholgebruik</string>
@@ -250,4 +247,6 @@
   <string name="settings.about_this_app.privacy_url.test">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
   <string name="settings.about_this_app.privacy_url.acc">https://web.acc.mgo.irealisatie.nl/toegankelijkheid</string>
   <string name="settings.about_this_app.privacy_url.prod">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
+  <string name="settings.reset_app.dialog.heading">App opnieuw instellen?</string>
+  <string name="settings.reset_app.dialog.subheading">Je gegevens blijven altijd bewaard bij je zorgaanbieders. Je kunt de app later opnieuw instellen.</string>
 </resources>

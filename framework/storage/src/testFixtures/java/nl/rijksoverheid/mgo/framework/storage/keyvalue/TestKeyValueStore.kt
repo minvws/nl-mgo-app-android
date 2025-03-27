@@ -66,5 +66,6 @@ class TestKeyValueStore : KeyValueStore {
     override fun clear() {
         strings.value.clear()
         booleans.value.clear()
+        longs.clear()
     }
 }

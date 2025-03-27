@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
 
 /**
  * Adds all the navigation destinations that can be found in the screen that contains the bottom bar.
+ *
  * @param rootNavController The top level nav controller.
  */
 fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
@@ -24,7 +25,7 @@ fun NavGraphBuilder.addDashboardNavGraph(rootNavController: NavController) {
                 },
                 settingsStartDestination = DashboardNavigation.Settings.Root,
                 settingsNavGraph = { navController ->
-                    addDashboardSettingsNavGraph(navController = navController)
+                    addDashboardSettingsNavGraph(rootNavController = rootNavController, navController = navController)
                 },
             )
         }

@@ -19,7 +19,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,6 +33,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
@@ -38,6 +43,7 @@ import nl.rijksoverheid.mgo.component.theme.borderSecondary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -58,6 +64,12 @@ fun SettingsHomeScreen(
     onNavigateToOnboarding: () -> Unit,
 ) {
     val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
+    LaunchedEffect(Unit) {
+        viewModel.navigateToOnboarding.collectLatest {
+            onNavigateToOnboarding()
+        }
+    }
+
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     SettingsScreenContent(
@@ -67,7 +79,7 @@ fun SettingsHomeScreen(
         onClickAdvancedSettings = onNavigateToAdvancedSettings,
         onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
         onClickLogout = {},
-        onClickResetApp = {},
+        onClickResetApp = { viewModel.resetApp() },
     )
 }
 
@@ -81,6 +93,22 @@ private fun SettingsScreenContent(
     onClickLogout: () -> Unit,
     onClickResetApp: () -> Unit,
 ) {
+    var showResetAppDialog by remember { mutableStateOf(false) }
+    if (showResetAppDialog) {
+        MgoAlertDialog(
+            onDismissRequest = { showResetAppDialog = false },
+            positiveButtonText = stringResource(CopyR.string.common_yes),
+            negativeButtonText = stringResource(CopyR.string.common_no),
+            onClickPositiveButton = {
+                onClickResetApp()
+                showResetAppDialog = false
+            },
+            onClickNegativeButton = { showResetAppDialog = false },
+            heading = stringResource(CopyR.string.settings_reset_app_dialog_heading),
+            subHeading = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
+        )
+    }
+
     MgoScaffold(
         appBarTitle = stringResource(CopyR.string.settings_heading),
         scrollStateProvider =
@@ -190,7 +218,7 @@ private fun SettingsScreenContent(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .clickable { onClickResetApp() },
+                            .clickable { showResetAppDialog = true },
                     icon = Icons.Outlined.RestartAlt,
                     heading = CopyR.string.settings_reset_app_heading,
                     subHeading = CopyR.string.settings_reset_app_subheading,

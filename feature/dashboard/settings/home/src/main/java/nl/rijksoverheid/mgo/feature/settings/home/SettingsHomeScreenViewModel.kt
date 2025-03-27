@@ -6,13 +6,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
+import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
+import nl.rijksoverheid.mgo.framework.storage.file.EncryptedFileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import javax.inject.Named
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /**
  * The [ViewModel] for [SettingsHomeScreen].
@@ -24,10 +29,16 @@ import kotlinx.coroutines.flow.stateIn
 internal class SettingsHomeScreenViewModel
     @Inject
     constructor(
-        @Named("keyValueStore") keyValueStore: KeyValueStore,
+        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
+        @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
         @Named("isDebug") isDebug: Boolean,
+        private val cacheFileStore: CacheFileStore,
+        private val encryptedFileStore: EncryptedFileStore,
         deviceHasBiometric: DeviceHasBiometric,
     ) : ViewModel() {
+        private val _navigateToOnboarding = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+        val navigateToOnboarding = _navigateToOnboarding.asSharedFlow()
+
         private val initialViewState =
             SettingsHomeScreenViewState(
                 appTheme = getAppTheme(keyValueStore.getString(KEY_APP_THEME)),
@@ -42,4 +53,14 @@ internal class SettingsHomeScreenViewModel
                 }
 
         val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
+
+        fun resetApp() {
+            viewModelScope.launch {
+                keyValueStore.clear()
+                secureKeyValueStore.clear()
+                cacheFileStore.deleteAll()
+                encryptedFileStore.deleteAll()
+                _navigateToOnboarding.tryEmit(Unit)
+            }
+        }
     }

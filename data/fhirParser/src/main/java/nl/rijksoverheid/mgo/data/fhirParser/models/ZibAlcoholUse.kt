@@ -17,13 +17,16 @@ import kotlinx.serialization.Serializable
 data class ZibAlcoholUse(
     val identifier: List<MgoIdentifier>? = null,
     val dataAbsentReason: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
     val effectivePeriod: MgoPeriod? = null,
     val method: MgoCodeableConcept? = null,
     val subject: MgoReference? = null,
-    val profile: String,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse",
     val referenceId: String,
+    val valueCodeableConcept: MgoCodeableConcept? = null,
+    val component: Component,
     val bodySite: MgoCodeableConcept? = null,
-    val fhirVersion: String,
+    val fhirVersion: String = "R3",
     val context: MgoReference? = null,
     val comment: String? = null,
     val id: String? = null,
@@ -39,6 +42,11 @@ data class ZibAlcoholUse(
         if (status != null)
             require(status in cg_array2) { "status not in enumerated values - $status" }
     }
+
+    @Serializable
+    data class Component(
+        val amount: MgoQuantity? = null
+    )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse"

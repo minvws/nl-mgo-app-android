@@ -15,8 +15,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibVaccinationRecommendation(
-    val profile: String,
-    val fhirVersion: String,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation",
+    val fhirVersion: String = "R3",
     val orderStatus: MgoCodeableConcept? = null,
     val recommendation: List<Recommendation>? = null,
     val id: String? = null,

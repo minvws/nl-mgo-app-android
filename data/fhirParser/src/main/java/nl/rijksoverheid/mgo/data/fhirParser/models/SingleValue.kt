@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
                 data class SingleValue(
     val display: String? = null,
     val label: String,
-    val type: String
+    val type: String = "SINGLE_VALUE"
 ) : UiElement {
 
     init {

@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
                 data class MultipleValues(
     val display: List<String>? = null,
     val label: String,
-    val type: String
+    val type: String = "MULTIPLE_VALUES"
 ) : UiElement {
 
     init {

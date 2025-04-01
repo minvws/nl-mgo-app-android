@@ -17,8 +17,8 @@ import kotlinx.serialization.Serializable
 data class GpEncounter(
     val reason: List<MgoCodeableConcept>? = null,
     val period: MgoPeriod? = null,
-    val profile: String,
-    val fhirVersion: String,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter",
+    val fhirVersion: String = "R3",
     val serviceProvider: MgoReference? = null,
     val id: String? = null,
     val `class`: MgoCoding? = null,

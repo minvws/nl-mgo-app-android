@@ -18,7 +18,7 @@ data class ZibProcedure(
     val code: MgoCodeableConcept? = null,
     val performer: List<Performer>? = null,
     val subject: MgoReference? = null,
-    val profile: String,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure",
     val procedureMethod: MgoCodeableConcept? = null,
     val reasonReference: List<MgoReference>? = null,
     val focalDevice: List<FocalDevice>? = null,
@@ -26,7 +26,7 @@ data class ZibProcedure(
     val referenceId: String,
     val bodySite: List<MgoCodeableConcept>? = null,
     val bodySiteQualifier: List<MgoCodeableConcept>? = null,
-    val fhirVersion: String,
+    val fhirVersion: String = "R3",
     val location: MgoReference? = null,
     val id: String? = null,
     val resourceType: String? = null

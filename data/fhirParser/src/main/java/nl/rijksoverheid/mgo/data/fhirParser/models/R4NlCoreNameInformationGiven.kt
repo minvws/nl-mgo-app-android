@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 data class R4NlCoreNameInformationGiven(
     val given: List<String>? = null,
     val period: MgoPeriod? = null,
-    val use: String,
+    val use: String = "usual",
     val text: String? = null
 ) : R4NlCorePatientName, R4NlCoreHealthProfessionalPractitionerName {
 

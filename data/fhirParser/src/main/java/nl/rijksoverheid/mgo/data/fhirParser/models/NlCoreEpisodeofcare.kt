@@ -19,7 +19,7 @@ import kotlinx.serialization.Serializable
 data class NlCoreEpisodeofcare(
     val identifier: List<MgoIdentifier>? = null,
     val period: MgoPeriod? = null,
-    val profile: String,
+    val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare",
     val diagnosis: List<Diagnosi>? = null,
     val careManager: MgoReference? = null,
     val team: List<MgoReference>? = null,
@@ -30,7 +30,7 @@ data class NlCoreEpisodeofcare(
     val managingOrganization: MgoReference? = null,
     val referralRequest: List<MgoReference>? = null,
     val patient: MgoReference? = null,
-    val fhirVersion: String,
+    val fhirVersion: String = "R3",
     val id: String? = null,
     val account: List<MgoReference>? = null,
     val dateFirstEncounter: String? = null,

@@ -123,6 +123,10 @@ class FhirParserPlugin : Plugin<Project> {
         val schemaFileJsonObject = JSONObject(downloadedSchemaFile.readText())
         val modifiedSchemaFileJsonObject = modifyJsonSchema(schemaFileJsonObject)
 
+        // Delete old generated kotlin classes
+        val kotlinClassesDir = File(project.rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/models")
+        kotlinClassesDir.deleteRecursively()
+
         // Generate kotlin classes based on the json schema
         CodeGenerator().apply {
             baseDirectoryName = File(project.rootDir, "data/fhirParser/src/main/java").path
@@ -150,8 +154,6 @@ class FhirParserPlugin : Plugin<Project> {
             put("properties", JSONObject())
         }
         definitions.put("Profiles", profilesJsonObject)
-
-        val definitionsToAdd = mutableListOf<Pair<String, JSONObject>>()
 
         // Collect keys first to prevent concurrent modification issues
         val keys = definitions.keys().asSequence().toList()
@@ -182,9 +184,6 @@ class FhirParserPlugin : Plugin<Project> {
                     // Add new definition to schema
                     definitions.put(newKeyName, JSONObject().put("oneOf", oneOfArray))
 
-                    // Store definition in list to ensure safe modification
-                    definitionsToAdd.add(newKeyName to JSONObject().put("oneOf", oneOfArray))
-
                     // Update the "items" reference to new definition
                     properties.getJSONObject(propertyKey).put("items", JSONObject().put("\$ref", "#/definitions/$newKeyName"))
                 } else if (propertyKey == "profile") {
@@ -204,6 +203,13 @@ class FhirParserPlugin : Plugin<Project> {
                     }
 
                     profilesJsonObject.getJSONObject("properties").put(profileJsonObjectKey, profileJsonObject)
+                }
+
+                // Everytime the json object has a property "const", we want to duplicate the value of that to a "default" property.
+                // This will result in kotlin generating the default value for that field.
+                if (property.optString("const").isNotEmpty()) {
+                    val constValue = property.getString("const")
+                    properties.getJSONObject(propertyKey).put("default", constValue)
                 }
             }
         }

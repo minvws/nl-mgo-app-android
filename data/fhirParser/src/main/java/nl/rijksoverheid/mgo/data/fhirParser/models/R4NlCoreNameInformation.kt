@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 data class R4NlCoreNameInformation(
     val given: List<String>? = null,
     val period: MgoPeriod? = null,
-    val use: String,
+    val use: String = "official",
     val prefix: List<String>? = null,
     val givenNames: List<String>? = null,
     val givenInitials: List<String>? = null,

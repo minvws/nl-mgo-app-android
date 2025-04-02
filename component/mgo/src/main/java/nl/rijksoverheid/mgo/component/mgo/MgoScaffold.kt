@@ -148,10 +148,10 @@ fun MgoScaffold(
             titleLarge = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
             headlineSmall = MaterialTheme.typography.headlineLarge,
         )
-    MgoTheme(typography = adjustedTypography, isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()) {
-        Scaffold(
-            modifier = scaffoldModifier,
-            topBar = {
+    Scaffold(
+        modifier = scaffoldModifier,
+        topBar = {
+            MgoTheme(typography = adjustedTypography, isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()) {
                 if (isAlwaysCollapsed) {
                     appBarTitle?.let {
                         TopAppBar(
@@ -223,63 +223,63 @@ fun MgoScaffold(
                         )
                     }
                 }
-            },
-            bottomBar = bottomBar,
-            snackbarHost = {
-                SnackbarHost(hostState = snackBarHostState) {
-                    MgoSnackBar(
-                        visuals = it.visuals as MgoSnackBarVisuals,
-                        onDismiss = { snackBarHostState.currentSnackbarData?.dismiss() },
-                    )
-                }
-            },
-            content = { innerPadding ->
+            }
+        },
+        bottomBar = bottomBar,
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState) {
+                MgoSnackBar(
+                    visuals = it.visuals as MgoSnackBarVisuals,
+                    onDismiss = { snackBarHostState.currentSnackbarData?.dismiss() },
+                )
+            }
+        },
+        content = { innerPadding ->
+            Column(
+                modifier =
+                    Modifier
+                        .consumeWindowInsets(innerPadding)
+                        .padding(innerPadding)
+                        .imePadding(),
+            ) {
                 Column(
                     modifier =
                         Modifier
-                            .consumeWindowInsets(innerPadding)
-                            .padding(innerPadding)
-                            .imePadding(),
+                            .weight(1f)
+                            .padding(horizontal = horizontalPadding)
+                            .then(
+                                if (scrollStateProvider is MgoScaffoldScrollStateProvider.Column && canScroll) {
+                                    Modifier.verticalScroll(scrollStateProvider.scrollState)
+                                } else {
+                                    Modifier
+                                },
+                            ),
                 ) {
-                    Column(
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .padding(horizontal = horizontalPadding)
-                                .then(
-                                    if (scrollStateProvider is MgoScaffoldScrollStateProvider.Column && canScroll) {
-                                        Modifier.verticalScroll(scrollStateProvider.scrollState)
-                                    } else {
-                                        Modifier
-                                    },
-                                ),
-                    ) {
-                        content()
-                    }
-
-                    if (primaryButtonText != null && onPrimaryButtonClick != null) {
-                        // Disable shadow for all previews that use this composable (excepting being this one)
-                        val canScroll =
-                            if (LocalInspectionMode.current && scrollStateProvider !is MgoScaffoldScrollStateProvider.Preview) {
-                                false
-                            } else {
-                                canScroll
-                            }
-                        Buttons(
-                            canScroll = canScroll,
-                            primaryButtonText = primaryButtonText,
-                            primaryButtonTheme = primaryButtonTheme,
-                            primaryButtonLoading = primaryButtonLoading,
-                            onPrimaryButtonClick = onPrimaryButtonClick,
-                            secondaryButtonText = secondaryButtonText,
-                            onSecondaryButtonClick = onSecondaryButtonClick,
-                            horizontalPadding = horizontalPadding,
-                        )
-                    }
+                    content()
                 }
-            },
-        )
-    }
+
+                if (primaryButtonText != null && onPrimaryButtonClick != null) {
+                    // Disable shadow for all previews that use this composable (excepting being this one)
+                    val canScroll =
+                        if (LocalInspectionMode.current && scrollStateProvider !is MgoScaffoldScrollStateProvider.Preview) {
+                            false
+                        } else {
+                            canScroll
+                        }
+                    Buttons(
+                        canScroll = canScroll,
+                        primaryButtonText = primaryButtonText,
+                        primaryButtonTheme = primaryButtonTheme,
+                        primaryButtonLoading = primaryButtonLoading,
+                        onPrimaryButtonClick = onPrimaryButtonClick,
+                        secondaryButtonText = secondaryButtonText,
+                        onSecondaryButtonClick = onSecondaryButtonClick,
+                        horizontalPadding = horizontalPadding,
+                    )
+                }
+            }
+        },
+    )
 }
 
 // A MediumTopAppBar expects an expandedHeight in dps. For this app we want it be a tall as the content (the title),

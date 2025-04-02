@@ -10,14 +10,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nl.rijksoverheid.mgo.component.mgo.MgoButton
-import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -53,12 +50,14 @@ private fun SettingsAboutAccessibilityScreenContent(
                     Text(
                         text = stringResource(CopyR.string.settings_accessibility_subheading),
                     )
-                    MgoButton(
-                        modifier = Modifier.padding(top = 16.dp),
-                        buttonText = stringResource(CopyR.string.settings_accessibility_more_information),
-                        onClick = { context.launchBrowser(url) },
-                        buttonTheme = MgoButtonTheme.LINK,
-                    )
+
+                    // Button disabled for now, since there is no decision if a url is needed
+//                    MgoButton(
+//                        modifier = Modifier.padding(top = 16.dp),
+//                        buttonText = stringResource(CopyR.string.settings_accessibility_more_information),
+//                        onClick = { context.launchBrowser(url) },
+//                        buttonTheme = MgoButtonTheme.LINK,
+//                    )
                 }
             }
         },

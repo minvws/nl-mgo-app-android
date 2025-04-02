@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Lock
@@ -53,7 +52,6 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  * @param onNavigateToSecuritySettings Called when requested to navigate to the screen that shows security settings.
  * @param onNavigateToAdvancedSettings Called when requested to navigate to the screen that shows advanced settings.
  * @param onNavigateToAboutThisAppSettings Called when requested to navigate to the screen that shows about this app settings.
- * @param onNavigateToAppLock Called when requested to lock the app.
  * @param onNavigateToOnboarding Called when requested to navigate to the onboarding.
  */
 @Composable
@@ -62,7 +60,6 @@ fun SettingsHomeScreen(
     onNavigateToSecuritySettings: () -> Unit,
     onNavigateToAdvancedSettings: () -> Unit,
     onNavigateToAboutThisAppSettings: () -> Unit,
-    onNavigateToAppLock: () -> Unit,
     onNavigateToOnboarding: () -> Unit,
 ) {
     val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
@@ -80,7 +77,6 @@ fun SettingsHomeScreen(
         onClickSecuritySettings = onNavigateToSecuritySettings,
         onClickAdvancedSettings = onNavigateToAdvancedSettings,
         onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
-        onClickLogout = onNavigateToAppLock,
         onClickResetApp = { viewModel.resetApp() },
     )
 }
@@ -92,7 +88,6 @@ private fun SettingsScreenContent(
     onClickSecuritySettings: () -> Unit,
     onClickAdvancedSettings: () -> Unit,
     onClickAboutThisAppSettings: () -> Unit,
-    onClickLogout: () -> Unit,
     onClickResetApp: () -> Unit,
 ) {
     var showResetAppDialog by remember { mutableStateOf(false) }
@@ -210,16 +205,6 @@ private fun SettingsScreenContent(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .clickable { onClickLogout() },
-                    icon = Icons.AutoMirrored.Outlined.Logout,
-                    heading = CopyR.string.settings_log_out_heading,
-                    subHeading = CopyR.string.settings_log_out_subheading,
-                )
-
-                SettingsListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
                             .clickable { showResetAppDialog = true },
                     icon = Icons.Outlined.RestartAlt,
                     heading = CopyR.string.settings_reset_app_heading,
@@ -280,7 +265,6 @@ internal fun SettingsHomeScreenPreview() {
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},
             onClickAboutThisAppSettings = {},
-            onClickLogout = {},
             onClickResetApp = {},
         )
     }
@@ -296,7 +280,6 @@ internal fun SettingsHomeScreenWithoutBiometricPreview() {
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},
             onClickAboutThisAppSettings = {},
-            onClickLogout = {},
             onClickResetApp = {},
         )
     }
@@ -312,7 +295,6 @@ internal fun SettingsHomeScreenWithoutDebugPreview() {
             onClickSecuritySettings = {},
             onClickAdvancedSettings = {},
             onClickAboutThisAppSettings = {},
-            onClickLogout = {},
             onClickResetApp = {},
         )
     }

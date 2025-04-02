@@ -41,9 +41,6 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
                 onNavigateToAboutThisAppSettings = {
                     navController.navigate(DashboardNavigation.Settings.About.Home)
                 },
-                onNavigateToAppLock = {
-                    mainViewModel.lockApp()
-                },
                 onNavigateToOnboarding = {
                     rootNavController.navigate(OnboardingNavigation.Root) {
                         popUpTo(rootNavController.graph.id) {

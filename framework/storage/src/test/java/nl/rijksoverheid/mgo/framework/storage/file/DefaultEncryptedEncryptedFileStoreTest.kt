@@ -112,4 +112,26 @@ internal class DefaultEncryptedEncryptedFileStoreTest {
             val file = fileStore.getFile(clazz = TestData::class, name = fileName)
             assertNull(file)
         }
+
+    @Test
+    fun given_saved_files_when_calling_delete_all_then_remove_files() =
+        runTest {
+            // Given: two saved files
+            val testData = TestData(id = 5, name = "Hello World")
+
+            val file1 = "testdata1.json"
+            mockEncryptedFile(fileName = file1, testData = testData)
+            fileStore.saveFile(value = testData, name = file1, clazz = TestData::class)
+
+            val file2 = "testdata2.json"
+            mockEncryptedFile(fileName = file2, testData = testData)
+            fileStore.saveFile(value = testData, name = file2, clazz = TestData::class)
+
+            // When: calling deleteAll
+            fileStore.deleteAll()
+
+            // Then: All files are deleted
+            assertNull(fileStore.getFile(clazz = TestData::class, name = file1))
+            assertNull(fileStore.getFile(clazz = TestData::class, name = file2))
+        }
 }

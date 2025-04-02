@@ -36,4 +36,9 @@ interface EncryptedFileStore {
      * @param name The name of the file.
      */
     suspend fun deleteFile(name: String)
+
+    /**
+     * Deletes all saved encrypted files.
+     */
+    suspend fun deleteAll()
 }

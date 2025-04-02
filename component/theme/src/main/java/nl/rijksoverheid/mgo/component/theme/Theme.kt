@@ -12,12 +12,12 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MgoTheme(
     modifier: Modifier = Modifier,
-    darkTheme: Boolean = isSystemInDarkTheme(),
     typography: Typography = MgoTypography,
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) getDarkColorScheme() else getLightColorScheme(),
+        colorScheme = if (isDarkTheme) getDarkColorScheme() else getLightColorScheme(),
         typography = typography,
     ) {
         Surface(

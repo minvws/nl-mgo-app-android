@@ -90,4 +90,11 @@ internal class DefaultEncryptedEncryptedFileStore(
             check(file.delete()) { "Could not delete file" }
         }
     }
+
+    override suspend fun deleteAll() {
+        val files = dir.listFiles() ?: return
+        for (file in files) {
+            check(file.delete()) { "Could not delete file" }
+        }
+    }
 }

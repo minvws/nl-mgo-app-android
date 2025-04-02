@@ -31,7 +31,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -104,7 +103,7 @@ private fun DigidLoginScreenContent(
         Text(
             modifier = Modifier.padding(top = 32.dp),
             text = stringResource(id = CopyR.string.login_heading),
-            style = MaterialTheme.typography.headingLarge,
+            style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
         )
 

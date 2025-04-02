@@ -65,6 +65,30 @@ sealed class DashboardNavigation {
         data object Root : Settings()
 
         @Serializable
-        data object Debug : Settings()
+        data object Home : Settings()
+
+        @Serializable
+        data object Display : Settings()
+
+        @Serializable
+        data object Security : Settings()
+
+        @Serializable
+        data object Advanced : Settings()
+
+        @Serializable
+        sealed class About : Settings() {
+            @Serializable
+            data object Home : About()
+
+            @Serializable
+            data object Safety : About()
+
+            @Serializable
+            data object OpenSource : About()
+
+            @Serializable
+            data object Accessibility : About()
+        }
     }
 }

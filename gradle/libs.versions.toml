@@ -9,10 +9,10 @@ junit = "4.13.2"
 appcompat = "1.7.0"
 material = "1.12.0"
 material3 = "1.3.0"
-compose-bom = "2024.09.01"
-compose-activity = "1.9.2"
+compose-bom = "2025.03.01"
+compose-activity = "1.10.1"
 compose-compiler = "1.5.15"
-compose-navigation = "2.8.3"
+compose-navigation = "2.8.9"
 compose-lifecycle = "2.8.5"
 google-services = "4.4.2"
 firebase-appdistribution = "5.0.0"
@@ -52,6 +52,7 @@ robolectric = "4.14.1"
 lifecycle-process = "2.8.7"
 json-kotlin-schema-codegen = "0.115"
 ui-test-junit4-android = "1.7.8"
+about-libraries = "11.6.3"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -62,6 +63,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
@@ -107,6 +109,7 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle-process" }
 json-kotlin-schema-codegen = { group = "net.pwall.json", name = "json-kotlin-schema-codegen", version.ref = "json-kotlin-schema-codegen" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "ui-test-junit4-android" }
+aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -122,3 +125,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 serializable = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries"}

@@ -71,4 +71,11 @@ internal class MgoButtonSnapshotTest {
             MgoButtonDigidPreview()
         }
     }
+
+    @Test
+    fun link() {
+        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+            MgoButtonLinkPreview()
+        }
+    }
 }

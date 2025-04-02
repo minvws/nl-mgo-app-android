@@ -27,8 +27,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.bodyDefault
-import nl.rijksoverheid.mgo.component.theme.headingLarge
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -103,7 +101,7 @@ private fun RemoveOrganizationScreenContent(
             Text(
                 modifier = Modifier.padding(top = 32.dp),
                 text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
-                style = MaterialTheme.typography.headingLarge,
+                style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
             )
 
@@ -114,7 +112,7 @@ private fun RemoveOrganizationScreenContent(
                         id = CopyR.string.remove_organization_subheading,
                         providerName,
                     ),
-                style = MaterialTheme.typography.bodyDefault,
+                style = MaterialTheme.typography.bodyMedium,
             )
 
             Spacer(modifier = Modifier.height(16.dp))

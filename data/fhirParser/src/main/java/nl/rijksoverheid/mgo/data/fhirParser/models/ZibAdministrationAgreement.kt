@@ -22,6 +22,7 @@ data class ZibAdministrationAgreement(
     val medicationTreatment: MgoIdentifier? = null,
     val authoredOn: String? = null,
     val quantity: MgoQuantity? = null,
+    val performer: List<Performer>? = null,
     val daysSupply: MgoQuantity? = null,
     val profile: String,
     val stopType: MgoCodeableConcept? = null,
@@ -29,10 +30,12 @@ data class ZibAdministrationAgreement(
     val referenceId: String,
     val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
     val medicationReference: MgoReference? = null,
+    val periodOfUse: MgoPeriod? = null,
     val usageDuration: MgoQuantity? = null,
     val fhirVersion: String,
     val id: String? = null,
     val category: MgoCodeableConcept? = null,
+    val authorizingPrescription: List<MgoReference>? = null,
     val status: String? = null,
     val resourceType: String? = null
 ) {
@@ -43,6 +46,12 @@ data class ZibAdministrationAgreement(
         if (status != null)
             require(status in cg_array2) { "status not in enumerated values - $status" }
     }
+
+    @Serializable
+    data class Performer(
+        val actor: MgoReference? = null,
+        val onBehalfOf: MgoReference? = null
+    )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"

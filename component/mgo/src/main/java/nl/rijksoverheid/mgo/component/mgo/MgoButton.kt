@@ -7,9 +7,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItemDefaults.contentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -68,7 +73,11 @@ fun MgoButton(
                     if (isLoading) {
                         LoadingButtonContent(contentColor)
                     } else {
-                        IdleButtonContent(buttonTheme.getIcon(), buttonText)
+                        IdleButtonContent(
+                            buttonText = buttonText,
+                            materialIcon = buttonTheme.getMaterialIcon(),
+                            icon = buttonTheme.getIcon(),
+                        )
                     }
                 }
             },
@@ -87,7 +96,11 @@ fun MgoButton(
                 if (isLoading) {
                     LoadingButtonContent(buttonTheme.getContentColor())
                 } else {
-                    IdleButtonContent(buttonTheme.getIcon(), buttonText)
+                    IdleButtonContent(
+                        buttonText = buttonText,
+                        materialIcon = buttonTheme.getMaterialIcon(),
+                        icon = buttonTheme.getIcon(),
+                    )
                 }
             },
             onClick = {
@@ -123,18 +136,30 @@ private fun LoadingButtonContent(
 
 @Composable
 private fun IdleButtonContent(
-    @DrawableRes buttonIcon: Int?,
     buttonText: String,
+    materialIcon: ImageVector?,
+    @DrawableRes icon: Int?,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        if (buttonIcon != null) {
-            Image(
-                modifier = Modifier.padding(end = 8.dp),
-                painter = painterResource(buttonIcon),
-                contentDescription = null,
-            )
+        when {
+            materialIcon != null -> {
+                Icon(
+                    modifier = Modifier.padding(end = 8.dp),
+                    imageVector = materialIcon,
+                    contentDescription = null,
+                )
+            }
+
+            icon != null -> {
+                Image(
+                    modifier = Modifier.padding(end = 8.dp),
+                    painter = painterResource(icon),
+                    contentDescription = null,
+                )
+            }
         }
+
         Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
     }
 }
@@ -146,6 +171,7 @@ enum class MgoButtonTheme {
     SECONDARY_NEGATIVE,
     TERTIARY_DEFAULT,
     TERTIARY_NEGATIVE,
+    LINK,
     DIGID,
 }
 
@@ -159,6 +185,14 @@ private fun MgoButtonTheme.getBackgroundColor(): Color {
         MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.digid()
         MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
         MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
+        MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
+    }
+}
+
+private fun MgoButtonTheme.getMaterialIcon(): ImageVector? {
+    return when (this) {
+        MgoButtonTheme.LINK -> Icons.AutoMirrored.Outlined.OpenInNew
+        else -> null
     }
 }
 
@@ -180,6 +214,7 @@ private fun MgoButtonTheme.getContentColor(): Color {
         MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
         MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveTertiaryCriticalText()
         MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultText(true)
+        MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
     }
 }
 
@@ -288,6 +323,19 @@ internal fun MgoButtonDigidPreview() {
             buttonText = "Click me",
             onClick = { },
             buttonTheme = MgoButtonTheme.DIGID,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+internal fun MgoButtonLinkPreview() {
+    MgoTheme {
+        MgoButton(
+            modifier = Modifier.padding(16.dp),
+            buttonText = "Click me",
+            onClick = { },
+            buttonTheme = MgoButtonTheme.LINK,
         )
     }
 }

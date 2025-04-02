@@ -22,6 +22,7 @@ data class ZibFunctionalOrMentalStatus(
     val subject: MgoReference? = null,
     val profile: String,
     val referenceId: String,
+    val valueCodeableConcept: MgoCodeableConcept? = null,
     val bodySite: MgoCodeableConcept? = null,
     val fhirVersion: String,
     val context: MgoReference? = null,

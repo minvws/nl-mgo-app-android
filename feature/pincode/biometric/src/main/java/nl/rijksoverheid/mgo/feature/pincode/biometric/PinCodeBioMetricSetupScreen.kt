@@ -22,7 +22,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.headingMedium
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -75,7 +74,7 @@ private fun PinCodeBioMetricSetupScreenContent(
         Text(
             modifier = Modifier.padding(top = 32.dp),
             text = stringResource(CopyR.string.biometric_setup_heading),
-            style = MaterialTheme.typography.headingMedium,
+            style = MaterialTheme.typography.headlineMedium,
         )
 
         Text(

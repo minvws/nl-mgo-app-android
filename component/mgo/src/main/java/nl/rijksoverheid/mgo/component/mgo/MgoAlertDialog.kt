@@ -11,7 +11,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 
@@ -66,7 +65,7 @@ fun MgoAlertDialog(
             }
         },
         title = {
-            Text(heading, style = MaterialTheme.typography.headingSmall)
+            Text(heading, style = MaterialTheme.typography.headlineSmall)
         },
         text = {
             Text(subHeading, style = MaterialTheme.typography.bodySmall)

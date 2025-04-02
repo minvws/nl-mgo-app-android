@@ -33,7 +33,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.supportAllergies
 import nl.rijksoverheid.mgo.component.theme.supportContacts
 import nl.rijksoverheid.mgo.component.theme.supportDevice
@@ -158,7 +157,7 @@ private fun ColumnScope.NoProviders() {
                 .fillMaxWidth()
                 .padding(top = 24.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_heading),
-        style = MaterialTheme.typography.headingSmall,
+        style = MaterialTheme.typography.headlineSmall,
         textAlign = TextAlign.Center,
     )
     Text(

@@ -3,12 +3,14 @@ package nl.rijksoverheid.mgo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.lock.AppLocked
@@ -21,7 +23,9 @@ import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -56,11 +60,23 @@ internal class MainViewModel
         private val _navigateDialog = MutableSharedFlow<Any>(extraBufferCapacity = 1)
         val navigateDialog = _navigateDialog.asSharedFlow()
 
+        private val _appTheme = MutableStateFlow(getAppTheme(keyValueStore.getString(KEY_APP_THEME)))
+        val appTheme = _appTheme.asStateFlow()
+
         init {
-            // Check if the flag secure feature toggle is enabled.
             viewModelScope.launch {
-                featureToggleRepository.observe(FeatureToggleId.FlagSecure).collectLatest { enabled ->
-                    _flagSecureFeatureToggle.tryEmit(enabled)
+                // Handle if the flag secure (allow screenshots) feature toggle is enabled
+                launch {
+                    featureToggleRepository.observe(FeatureToggleId.FlagSecure).collectLatest { enabled ->
+                        _flagSecureFeatureToggle.tryEmit(enabled)
+                    }
+                }
+
+                // Handle app theming
+                launch {
+                    keyValueStore.observeString(KEY_APP_THEME).collectLatest { appThemeString ->
+                        _appTheme.emit(getAppTheme(appThemeString))
+                    }
                 }
             }
         }
@@ -104,9 +120,13 @@ internal class MainViewModel
             viewModelScope.launch {
                 val appLocked = appLocked.invoke()
                 if (appLocked) {
-                    _navigateDialog.tryEmit(PinCodeLoginNavigation.LoginDialog)
+                    lockApp()
                 }
             }
+        }
+
+        fun lockApp() {
+            _navigateDialog.tryEmit(PinCodeLoginNavigation.LoginDialog)
         }
 
         /**

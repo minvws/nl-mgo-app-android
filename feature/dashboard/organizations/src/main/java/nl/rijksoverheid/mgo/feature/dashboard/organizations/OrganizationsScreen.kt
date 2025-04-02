@@ -30,7 +30,6 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.headingSmall
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -115,7 +114,7 @@ private fun ColumnScope.NoOrganizations() {
                 .fillMaxWidth()
                 .padding(top = 24.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_heading),
-        style = MaterialTheme.typography.headingSmall,
+        style = MaterialTheme.typography.headlineLarge,
         textAlign = TextAlign.Center,
     )
     Text(

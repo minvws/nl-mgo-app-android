@@ -25,4 +25,12 @@ class TestEncryptedFileStore : EncryptedFileStore {
     override suspend fun deleteFile(name: String) {
         files.remove(name)
     }
+
+    override suspend fun deleteAll() {
+        files.clear()
+    }
+
+    fun assertNoFilesSaved(): Boolean {
+        return files.isEmpty()
+    }
 }

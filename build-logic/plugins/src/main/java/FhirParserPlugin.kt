@@ -119,6 +119,11 @@ class FhirParserPlugin : Plugin<Project> {
         // Create kotlin classes from json schema file, and move them to the correct module
         val versionFile = File(workingDir, "version.json")
         println("Downloaded FHIR Parser. Version: ${versionFile.readText()}")
+
+        // Move version file
+        versionFile.renameTo(File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.version.json"))
+
+        // Modify types.json
         val downloadedSchemaFile = File(workingDir, "schema/json/types.json")
         val schemaFileJsonObject = JSONObject(downloadedSchemaFile.readText())
         val modifiedSchemaFileJsonObject = modifyJsonSchema(schemaFileJsonObject)
@@ -224,8 +229,10 @@ class FhirParserPlugin : Plugin<Project> {
 
     /**
      * Our json schema to kotlin classes code generator, generated interface *classname*. We want it to be:
+     *
      * @Serializable
      * sealed interface *classname*.
+     *
      * This function loops through all generates kotlin classes, and changes all the interfaces.
      */
     private fun Project.makeInterfacesSealed() {

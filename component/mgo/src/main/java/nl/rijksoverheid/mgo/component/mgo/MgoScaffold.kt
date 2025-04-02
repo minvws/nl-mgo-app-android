@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -50,8 +52,9 @@ import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
-import nl.rijksoverheid.mgo.component.theme.headingLarge
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.contentPrimary
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
+import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 sealed class MgoScaffoldScrollStateProvider {
@@ -84,6 +87,7 @@ sealed class MgoScaffoldScrollStateProvider {
  * @param onSecondaryButtonClick Called when clicking the secondary button. Defaults to null.
  * @param onNavigateBack Called when clicking the back button. Default to null.
  * @param horizontalPadding The horizontal padding of the content. Default to 16 dp.
+ * @param isAlwaysCollapsed If you want the [MediumTopAppBar] to always be in the collapsed state.
  */
 @Composable
 fun MgoScaffold(
@@ -99,10 +103,12 @@ fun MgoScaffold(
     onSecondaryButtonClick: (() -> Unit)? = null,
     onNavigateBack: (() -> Unit)? = null,
     horizontalPadding: Dp = 16.dp,
+    isAlwaysCollapsed: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     var measured by remember { mutableStateOf(false) }
     val scaffoldModifier =
         if (!measured) {
@@ -137,60 +143,95 @@ fun MgoScaffold(
             is MgoScaffoldScrollStateProvider.Preview -> false
         }
 
+    val adjustedTypography =
+        MgoTypography.copy(
+            titleLarge = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+            headlineSmall = MaterialTheme.typography.headlineLarge,
+        )
     Scaffold(
         modifier = scaffoldModifier,
         topBar = {
-            appBarTitle?.let {
-                val adjustedTypography =
-                    MgoTypography.copy(
-                        titleLarge = MaterialTheme.typography.titleLarge,
-                        headlineSmall = MaterialTheme.typography.headingLarge,
-                    )
-                MgoTheme(typography = adjustedTypography) {
-                    MediumTopAppBar(
-                        modifier =
-                            Modifier.onGloballyPositioned {
-                                measured = true
+            MgoTheme(typography = adjustedTypography, isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()) {
+                if (isAlwaysCollapsed) {
+                    appBarTitle?.let {
+                        TopAppBar(
+                            title = {
+                                Text(
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth(),
+                                    text = appBarTitle,
+                                    textAlign = appBarTitleAlign,
+                                )
                             },
-                        title = {
-                            Text(
-                                modifier =
-                                    Modifier
-                                        .fillMaxWidth(),
-                                text = appBarTitle,
-                                textAlign = appBarTitleAlign,
-                            )
-                        },
-                        expandedHeight =
-                            calculateExpandedHeight(
-                                title = appBarTitle,
-                            ),
-                        // Add 16dp for some bottom padding
-                        navigationIcon = {
-                            onNavigateBack?.let {
-                                IconButton(onClick = it) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                        contentDescription = stringResource(CopyR.string.common_previous),
-                                        tint = MaterialTheme.colorScheme.symbolsPrimary(),
-                                    )
+                            navigationIcon = {
+                                onNavigateBack?.let {
+                                    IconButton(onClick = it) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                            contentDescription = stringResource(CopyR.string.common_previous),
+                                            tint = MaterialTheme.colorScheme.contentPrimary(),
+                                        )
+                                    }
                                 }
-                            }
-                        },
-                        colors =
-                            TopAppBarDefaults.mediumTopAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.background,
-                                scrolledContainerColor = MaterialTheme.colorScheme.background,
-                            ),
-                        scrollBehavior = scrollBehavior,
-                    )
+                            },
+                            colors =
+                                TopAppBarDefaults.topAppBarColors(
+                                    containerColor = MaterialTheme.colorScheme.background,
+                                    scrolledContainerColor = MaterialTheme.colorScheme.background,
+                                ),
+                        )
+                    }
+                } else {
+                    appBarTitle?.let {
+                        MediumTopAppBar(
+                            modifier =
+                                Modifier.onGloballyPositioned {
+                                    measured = true
+                                },
+                            title = {
+                                Text(
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth(),
+                                    text = appBarTitle,
+                                    textAlign = appBarTitleAlign,
+                                )
+                            },
+                            expandedHeight =
+                                calculateExpandedHeight(
+                                    title = appBarTitle,
+                                ),
+                            // Add 16dp for some bottom padding
+                            navigationIcon = {
+                                onNavigateBack?.let {
+                                    IconButton(onClick = it) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                            contentDescription = stringResource(CopyR.string.common_previous),
+                                            tint = MaterialTheme.colorScheme.contentPrimary(),
+                                        )
+                                    }
+                                }
+                            },
+                            colors =
+                                TopAppBarDefaults.mediumTopAppBarColors(
+                                    containerColor = MaterialTheme.colorScheme.background,
+                                    scrolledContainerColor = MaterialTheme.colorScheme.background,
+                                ),
+                            scrollBehavior = scrollBehavior,
+                        )
+                    }
                 }
             }
         },
         bottomBar = bottomBar,
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState) {
-                MgoSnackBar(visuals = it.visuals as MgoSnackBarVisuals, onDismiss = { snackBarHostState.currentSnackbarData?.dismiss() })
+                MgoSnackBar(
+                    visuals = it.visuals as MgoSnackBarVisuals,
+                    onDismiss = { snackBarHostState.currentSnackbarData?.dismiss() },
+                )
             }
         },
         content = { innerPadding ->
@@ -248,7 +289,7 @@ private fun calculateExpandedHeight(title: String): Dp {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val fontScale = density.fontScale
-    val style = MaterialTheme.typography.headingLarge
+    val style = MaterialTheme.typography.headlineLarge
     val adjustedFontSize = style.fontSize * fontScale
     val constraintsWidth = with(density) { (configuration.screenWidthDp.dp - 20.dp).roundToPx() }
     val textMeasurer = rememberTextMeasurer()

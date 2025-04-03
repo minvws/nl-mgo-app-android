@@ -17,8 +17,8 @@ import kotlinx.serialization.Serializable
 data class NlCorePractitioner(
     val identifier: List<MgoIdentifier>? = null,
     val address: List<NlCoreAddress>? = null,
-    val profile: String,
-    val fhirVersion: String,
+    val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner",
+    val fhirVersion: String = "R3",
     val name: List<NlCoreHumanname>? = null,
     val telecom: List<NlCoreContactpoint>? = null,
     val id: String? = null,

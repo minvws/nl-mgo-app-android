@@ -16,8 +16,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EAfspraakAppointment(
     val specialty: List<MgoCodeableConcept>? = null,
-    val profile: String,
-    val fhirVersion: String,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment",
+    val fhirVersion: String = "R3",
     val start: String? = null,
     val description: String? = null,
     val end: String? = null,

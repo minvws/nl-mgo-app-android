@@ -17,8 +17,8 @@ import kotlinx.serialization.Serializable
 data class ZibLaboratoryTestResultSubstance(
     val identifier: List<MgoIdentifier>? = null,
     val code: MgoCodeableConcept? = null,
-    val profile: String,
-    val fhirVersion: String,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Substance",
+    val fhirVersion: String = "R3",
     val description: String? = null,
     val id: String? = null,
     val category: List<MgoCodeableConcept>? = null,

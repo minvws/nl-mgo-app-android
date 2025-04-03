@@ -17,8 +17,8 @@ import kotlinx.serialization.Serializable
 data class ZibMedicalDeviceProduct(
     val note: List<MgoAnnotation>? = null,
     val patient: MgoReference? = null,
-    val profile: String,
-    val fhirVersion: String,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct",
+    val fhirVersion: String = "R3",
     val id: String? = null,
     val referenceId: String,
     val expirationDate: String? = null,

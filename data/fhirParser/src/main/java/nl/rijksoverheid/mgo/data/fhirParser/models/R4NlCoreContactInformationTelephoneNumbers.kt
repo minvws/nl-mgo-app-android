@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreContactInformationTelephoneNumbers(
-    val system: String,
+    val system: String = "phone",
     val use: String? = null,
     val telecomType: MgoCodeableConcept? = null,
     val comment: String? = null,

@@ -12,9 +12,10 @@ Android platforms.
 The plugin executes in four steps:
 
 1. **[Download files](#step-1-download-files)**
-2. **[Modify `types.json`](#step-2-modify-typesjson)**
-3. **[Generate Kotlin classes](#step-3-generate-kotlin-classes)**
-4. **[Modify generated classes](#step-4-modify-generated-classes)**
+2. **[Move files](#step-2-move-files)**
+3. **[Modify JSON Schema](#step-3-modify-json-schema)**
+4. **[Generate Kotlin classes](#step-4-generate-kotlin-classes)**
+5. **[Modify generated classes](#step-5-modify-generated-classes)**
 
 ---
 
@@ -24,7 +25,6 @@ containing the necessary files. The first step:
 
 1. Downloads the artifact.
 2. Extracts the files.
-3. Moves them to the appropriate module.
 
 The files that are downloaded are:
 
@@ -35,7 +35,11 @@ The files that are downloaded are:
 
 ---
 
-## Step 2: Modify `types.json`
+## Step 2: Move Files
+
+The downloaded **mgo-fhir-data.iife.js** and **version.json** files are moved to the correct module.
+
+## Step 3: Modify JSON Schema
 The Web-generated `types.json` file requires adjustments before it can generate the proper Kotlin 
 classes we want.
 
@@ -166,12 +170,12 @@ data class Profiles(
 
 ---
 
-## Step 3: Generate Kotlin Classes
+## Step 4: Generate Kotlin Classes
 After modifying `types.json`, we use [Json Kotlin Schema Codegen](https://github.com/pwall567/json-kotlin-schema-codegen) to generate Kotlin classes.
 
 ---
 
-## Step 4: Modify Generated Classes
+## Step 5: Modify Generated Classes
 Once the Kotlin classes are generated, we apply three modifications:
 
 - **Make interfaces sealed** → Ensures compile-time safety for known implementations.

@@ -6,49 +6,48 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.org.apache.commons.compress.archivers.tar.TarArchiveEntry
-import org.jetbrains.kotlin.org.apache.commons.compress.archivers.tar.TarArchiveInputStream
-import org.jetbrains.kotlin.org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.util.zip.ZipInputStream
 
-/**
- * This plugin downloads shared code that we use for displaying information from FHIR resources.
- * The shared code lives in a javascript file, and gives us a json schema from which we can generate kotlin classes.
- * Some manipulation is needed to the json schema for our parser to create the correct modules, which happens after downloading the
- * shared code.
- */
-class FhirParserPlugin : Plugin<Project> {
+class FhirParserPlugin: Plugin<Project> {
 
-    private val client = OkHttpClient()
+    override fun apply(target: Project) {
+        target.tasks.register("updateNewFhirParser") {
+            try {
+                // Files are downloaded to this directory
+                val workingDir = File(target.rootDir, "tmp")
+                workingDir.mkdir()
 
-    override fun apply(project: Project) {
-        project.tasks.register("updateFhirParser") {
-            val githubToken = System.getenv("MGO_GITHUB_PAT")
-            if (githubToken == null) {
-                println("Missing MGO_GITHUB_PAT")
-                return@register
+                // Step 1: Download Files
+                downloadFiles(workingDir)
+
+                // Step 2: Move Files
+                target.moveFiles(workingDir)
+
+                // Step 3: Modify types.json
+                val modifiedTypes = modifyJsonSchema(workingDir)
+
+                // Step 4: Generate Kotlin classes
+                target.generateKotlinClasses(modifiedTypes)
+
+                // Step 5: Modify generated classes
+                target.modifyGeneratedClasses()
+
+                // Cleanup
+                workingDir.deleteRecursively()
+
+            } catch (e: Exception) {
+                println(e.message)
             }
-
-            // - Download the latest fhir parser (shared js library and json schema),
-            // - Generate kotlin models
-            // - Move everything to correct module
-            project.downloadFhirParser(githubToken = githubToken)
-
-            // Do some modifications to the generated classes
-            project.modifyFhirParserClasses()
         }
     }
 
-    private fun Project.downloadFhirParser(githubToken: String) {
-        val jsFile = File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.js")
+    private fun downloadFiles(workingDir: File) {
+        val githubToken = System.getenv("MGO_GITHUB_PAT") ?: throw IllegalStateException("Missing env MGO_GITHUB_PAT")
 
-        val workingDir = File(rootDir, "tmp")
-        workingDir.mkdir()
+        val client = OkHttpClient()
 
         // Get workflows
         val workflowsRequest = Request.Builder()
@@ -60,8 +59,7 @@ class FhirParserPlugin : Plugin<Project> {
 
         val workFlowsResponse = client.newCall(workflowsRequest).execute()
         if (!workFlowsResponse.isSuccessful) {
-            println("Failed to download Fhir Parser: ${workFlowsResponse.body?.string()}")
-            return
+            throw IllegalStateException("Failed to download Fhir Parser: ${workFlowsResponse.body?.string()}")
         }
 
         val workflowResponseJson = JSONObject(workFlowsResponse.body!!.string())
@@ -76,8 +74,7 @@ class FhirParserPlugin : Plugin<Project> {
 
         val artifactsResponse = client.newCall(artifactsRequest).execute()
         if (!artifactsResponse.isSuccessful) {
-            println("Failed to download Fhir Parser: ${artifactsResponse.body?.string()}")
-            return
+            throw IllegalStateException("Failed to download Fhir Parser: ${artifactsResponse.body?.string()}")
         }
 
         val artifactsResponseJson = JSONObject(artifactsResponse.body!!.string())
@@ -92,8 +89,7 @@ class FhirParserPlugin : Plugin<Project> {
 
         val artifactResponse = client.newCall(artifactRequest).execute()
         if (!artifactResponse.isSuccessful) {
-            println("Failed to download Fhir Parser: ${artifactResponse.body?.string()}")
-            return
+            throw IllegalStateException("Failed to download Fhir Parser: ${artifactResponse.body?.string()}")
         }
 
         // Unzip artifact
@@ -103,7 +99,6 @@ class FhirParserPlugin : Plugin<Project> {
                 inputStream.copyTo(outputStream)
             }
         }
-
         unzip(zipFile, workingDir)
         zipFile.delete()
 
@@ -111,91 +106,57 @@ class FhirParserPlugin : Plugin<Project> {
         val tarFile = workingDir.listFiles()?.first { file -> file.extension == "gz" }!!
         extractTarGz(tarFile, workingDir)
         tarFile.delete()
-
-        // Move downloaded js to correct module
-        val downloadedJsFile = File(workingDir, "js/mgo-fhir-data.iife.js")
-        downloadedJsFile.renameTo(jsFile)
-
-        // Create kotlin classes from json schema file, and move them to the correct module
-        val versionFile = File(workingDir, "version.json")
-        println("Downloaded FHIR Parser. Version: ${versionFile.readText()}")
-
-        // Move version file
-        versionFile.renameTo(File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.version.json"))
-
-        // Modify types.json
-        val downloadedSchemaFile = File(workingDir, "schema/json/types.json")
-        val schemaFileJsonObject = JSONObject(downloadedSchemaFile.readText())
-        val modifiedSchemaFileJsonObject = modifyJsonSchema(schemaFileJsonObject)
-
-        // Delete old generated kotlin classes
-        val kotlinClassesDir = File(project.rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/models")
-        kotlinClassesDir.deleteRecursively()
-
-        // Generate kotlin classes based on the json schema
-        CodeGenerator().apply {
-            baseDirectoryName = File(project.rootDir, "data/fhirParser/src/main/java").path
-            configure(File(project.rootDir, "build-logic/plugins/resources/json-schema-config.json"))
-            generateAll(JSON.parseNonNull(modifiedSchemaFileJsonObject.toString()), JSONPointer("/definitions"))
-        }
-
-        // Clean up
-        workingDir.deleteRecursively()
     }
 
-    /**
-     * Since the json schema that is generated from the typescript does not fully meets our expectations, we do some
-     * modifying so the correct kotlin models are generated.
-     */
-    private fun modifyJsonSchema(schema: JSONObject): JSONObject {
-        // Our parser only parses oneOf, so replace anywhere it finds anyOf with oneOf to work it work
-        val modifiedJsonSchema = JSONObject(schema.toString().replace("anyOf", "oneOf"))
+    private fun Project.moveFiles(workingDir: File) {
+        // Move version.js to correct location
+        val targetVersionFile = File(workingDir, "version.json")
+        println("Downloaded FHIR Parser. Version: ${targetVersionFile.readText()}")
+        val destinationVersionFile = File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.version.json")
+        targetVersionFile.renameTo(destinationVersionFile)
 
+        // Move mgo-fhir-data.iife.js to correct location
+        val targetJsFile = File(workingDir, "js/mgo-fhir-data.iife.js")
+        val destinationJsFile = File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.js")
+        targetJsFile.renameTo(destinationJsFile)
+    }
+
+    private fun modifyJsonSchema(workingDir: File): JSONObject {
+        val typesFile = File(workingDir, "schema/json/types.json")
+        val jsonSchema = JSONObject(typesFile.readText())
+
+        val modifiedJsonSchema = JSONObject(jsonSchema.toString().replace("anyOf", "oneOf"))
         val definitions = modifiedJsonSchema.getJSONObject("definitions")
 
-        // We create our own profiles object so a Profiles class is generate where we can get the profiles from
         val profilesJsonObject = JSONObject().apply {
             put("type", "object")
             put("properties", JSONObject())
         }
         definitions.put("Profiles", profilesJsonObject)
 
-        // Collect keys first to prevent concurrent modification issues
         val keys = definitions.keys().asSequence().toList()
 
         for (key in keys) {
             val definition = definitions.optJSONObject(key) ?: continue
             val properties = definition.optJSONObject("properties") ?: continue
-
             for (propertyKey in properties.keys()) {
                 val property = properties.optJSONObject(propertyKey) ?: continue
                 val type = property.optString("type")
 
-                // The json schema parser we use to generate kotlin models does not handle nested types in "oneOf" without it being
-                // defined in the "definitions" json object. This code moves whats inside the items object to a separate object in the
-                // "definitions" json object. After, it puts a reference in the items array to that definition. This way the parser
-                // knows how to properly create an interface for the child classes that are in oneOf.
                 if (type == "array") {
                     val items = property.optJSONObject("items")?.optJSONArray("oneOf") ?: continue
                     val newKeyName = key + propertyKey.capitalise()
 
-                    // Create "oneOf" array efficiently
                     val oneOfArray = JSONArray().apply {
                         for (i in 0 until items.length()) {
                             put(items.getJSONObject(i))
                         }
                     }
-
-                    // Add new definition to schema
                     definitions.put(newKeyName, JSONObject().put("oneOf", oneOfArray))
-
-                    // Update the "items" reference to new definition
                     properties.getJSONObject(propertyKey).put("items", JSONObject().put("\$ref", "#/definitions/$newKeyName"))
-                } else if (propertyKey == "profile") {
-                    // For each object we need the profile, which is a string value. Since it's nested inside an class that needs to be
-                    // initialised, we want all the profiles inside a class with the values so that we can easily access them. This code
-                    // grabs all those profiles and puts them inside a Profiles class.
+                }
 
+                if (propertyKey == "profile") {
                     val profileJsonObjectKey = property.getString("const").substringAfterLast("/")
                         .split("-")
                         .joinToString("") { it.replaceFirstChar { c -> c.uppercase() } }
@@ -210,31 +171,39 @@ class FhirParserPlugin : Plugin<Project> {
                     profilesJsonObject.getJSONObject("properties").put(profileJsonObjectKey, profileJsonObject)
                 }
 
-                // Everytime the json object has a property "const", we want to duplicate the value of that to a "default" property.
-                // This will result in kotlin generating the default value for that field.
                 if (property.optString("const").isNotEmpty()) {
                     val constValue = property.getString("const")
                     properties.getJSONObject(propertyKey).put("default", constValue)
                 }
             }
         }
+
+        // Write the new json schema to a file (for debugging purposes)
+        val modifiedTypeFile = File(workingDir, "schema/json/types_modified.json")
+        modifiedTypeFile.writeText(modifiedJsonSchema.toString())
+
         return modifiedJsonSchema
     }
 
-    private fun Project.modifyFhirParserClasses() {
+    private fun Project.generateKotlinClasses(jsonSchema: JSONObject) {
+        // Delete old generated kotlin classes
+        val kotlinClassesDir = File(rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/models")
+        kotlinClassesDir.deleteRecursively()
+
+        // Generate kotlin classes based on the json schema
+        CodeGenerator().apply {
+            baseDirectoryName = File(project.rootDir, "data/fhirParser/src/main/java").path
+            configure(File(project.rootDir, "build-logic/plugins/resources/json-schema-config.json"))
+            generateAll(JSON.parseNonNull(jsonSchema.toString()), JSONPointer("/definitions"))
+        }
+    }
+
+    private fun Project.modifyGeneratedClasses() {
         makeInterfacesSealed()
         addSerializeName()
         makeProfilesClassStatic()
     }
 
-    /**
-     * Our json schema to kotlin classes code generator, generated interface *classname*. We want it to be:
-     *
-     * @Serializable
-     * sealed interface *classname*.
-     *
-     * This function loops through all generates kotlin classes, and changes all the interfaces.
-     */
     private fun Project.makeInterfacesSealed() {
         val directory = File(rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/models")
         val interfaceRegex = Regex("""interface (\w+)""") // Matches 'interface ClassName'
@@ -267,15 +236,8 @@ class FhirParserPlugin : Plugin<Project> {
             }
     }
 
-    /**
-     * Polymorphism is automatically supported by kotlinx serialization if there is a type field present,
-     * and if the class is annotated with @SerialName(*type*). This function loops through all generated kotlin classes,
-     * and adds that @SerialName. It assumes the type is the same as the class name, but with all capps underscore naming
-     * instead of SnakeCase. For example the class name is: DownloadLink; the added annotation will be: @SerialName("DOWNLOAD_LINK").
-     */
     private fun Project.addSerializeName() {
         val directory = File(rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/models")
-
         val classRegex = Regex("""data class (\w+)\s*\(([^)]*)\)\s*:\s*([\w<>]+)""", RegexOption.DOT_MATCHES_ALL)
         val importStatement = "import kotlinx.serialization.SerialName"
         val suppressAnnotation = "@file:Suppress(\"ktlint\")"
@@ -284,7 +246,7 @@ class FhirParserPlugin : Plugin<Project> {
         directory.walkTopDown()
             .filter { it.extension == "kt" }
             .forEach { file ->
-                var content = file.readText()
+                val content = file.readText()
                 var updatedContent = content
                 var shouldAddImport = false
 
@@ -320,10 +282,6 @@ class FhirParserPlugin : Plugin<Project> {
             }
     }
 
-    /**
-     * The generated Profiles class is a data class, but it would be nicer if this was a data object.
-     * This function does the changes to the Profiles class so that it's converted from a data class to data object.
-     */
     private fun Project.makeProfilesClassStatic() {
         val file = File(rootDir, "data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/models/Profiles.kt")
         var content = file.readText()
@@ -339,42 +297,5 @@ class FhirParserPlugin : Plugin<Project> {
 
         // Write the modified content back to the file
         file.writeText(content)
-    }
-
-    private fun unzip(zipFile: File, targetDir: File) {
-        ZipInputStream(zipFile.inputStream()).use { zipInputStream ->
-            var entry = zipInputStream.nextEntry
-            while (entry != null) {
-                val file = File(targetDir, entry.name)
-                if (entry.isDirectory) {
-                    file.mkdirs()
-                } else {
-                    file.parentFile?.mkdirs()
-                    FileOutputStream(file).use { outputStream ->
-                        zipInputStream.copyTo(outputStream)
-                    }
-                }
-                zipInputStream.closeEntry()
-                entry = zipInputStream.nextEntry
-            }
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun extractTarGz(tarGzFile: File, targetDir: File) {
-        GzipCompressorInputStream(FileInputStream(tarGzFile)).use { gis ->
-            TarArchiveInputStream(gis).use { tarInput ->
-                var entry: TarArchiveEntry? = tarInput.nextTarEntry
-                while (entry != null) {
-                    val filePath = "$targetDir/${entry.name}"
-                    if (entry.isDirectory) {
-                        File(filePath).mkdirs()
-                    } else {
-                        FileOutputStream(filePath).use { fos -> tarInput.copyTo(fos) }
-                    }
-                    entry = tarInput.nextTarEntry
-                }
-            }
-        }
     }
 }

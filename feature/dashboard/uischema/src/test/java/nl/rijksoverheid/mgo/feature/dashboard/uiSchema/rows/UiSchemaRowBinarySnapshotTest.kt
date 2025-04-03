@@ -4,42 +4,42 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class UiSchemaRowFileSnapshotTest {
+internal class UiSchemaRowBinarySnapshotTest {
     @get:Rule
     val snapshotTestRule = SnapshotTestRule()
 
     @Test
     fun idle() {
         snapshotTestRule.snapshots {
-            UiSchemaRowFileIdlePreview()
+            UiSchemaRowBinaryIdlePreview()
         }
     }
 
     @Test
     fun loading() {
         snapshotTestRule.snapshots {
-            UiSchemaRowFileLoadingPreview()
+            UiSchemaRowBinaryLoadingPreview()
         }
     }
 
     @Test
     fun downloaded() {
         snapshotTestRule.snapshots {
-            UiSchemaRowFileDownloadedPreview()
+            UiSchemaRowBinaryDownloadedPreview()
         }
     }
 
     @Test
     fun empty() {
         snapshotTestRule.snapshots {
-            UiSchemaRowFileEmptyPreview()
+            UiSchemaRowBinaryEmptyPreview()
         }
     }
 
     @Test
     fun error() {
         snapshotTestRule.snapshots {
-            UiSchemaRowFileErrorPreview()
+            UiSchemaRowBinaryErrorPreview()
         }
     }
 }

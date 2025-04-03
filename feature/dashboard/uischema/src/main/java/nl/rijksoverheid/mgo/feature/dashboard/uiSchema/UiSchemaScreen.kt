@@ -26,7 +26,8 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowFile
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
 import kotlinx.coroutines.flow.collectLatest
@@ -77,7 +78,7 @@ fun UiSchemaScreen(
 private fun UiSchemaScreenContent(
     viewState: UiSchemaScreenViewState,
     onClickReference: (row: UISchemaRow.Reference) -> Unit,
-    onClickFile: (row: UISchemaRow.File.NotDownloaded) -> Unit,
+    onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     MgoScaffold(
@@ -103,7 +104,7 @@ private fun UiSchemaScreenContent(
 private fun UiSchemaSection(
     section: UISchemaSection,
     onClickReference: (row: UISchemaRow.Reference) -> Unit,
-    onClickFile: (row: UISchemaRow.File.NotDownloaded) -> Unit,
+    onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -137,10 +138,16 @@ private fun UiSchemaSection(
                             )
                         }
 
-                        is UISchemaRow.File -> {
-                            UiSchemaRowFile(
+                        is UISchemaRow.Binary -> {
+                            UiSchemaRowBinary(
                                 row = row,
                                 onClick = onClickFile,
+                            )
+                        }
+
+                        is UISchemaRow.Link -> {
+                            UiSchemaRowLink(
+                                row = row,
                             )
                         }
                     }
@@ -209,10 +216,21 @@ internal fun UiSchemaScreenContentPreview() {
                                 heading = "Section Heading 3",
                                 rows =
                                     listOf(
-                                        UISchemaRow.File.NotDownloaded.Idle(
+                                        UISchemaRow.Binary.NotDownloaded.Idle(
                                             heading = null,
                                             value = "File",
                                             binary = "",
+                                        ),
+                                    ),
+                            ),
+                            UISchemaSection(
+                                heading = "Section Heading 4",
+                                rows =
+                                    listOf(
+                                        UISchemaRow.Link(
+                                            heading = null,
+                                            value = "Link",
+                                            url = "https://www.google.com",
                                         ),
                                     ),
                             ),

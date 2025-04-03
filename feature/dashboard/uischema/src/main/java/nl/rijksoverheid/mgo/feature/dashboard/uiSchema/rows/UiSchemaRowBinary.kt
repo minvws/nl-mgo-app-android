@@ -40,36 +40,36 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 /**
  * Composable that shows a list item that represents a file that can be downloaded or opened.
  *
- * @param row The [UISchemaRow.File].
+ * @param row The [UISchemaRow.Binary].
  * @param onClick Called when is requested to downloaded the file.
  * @param modifier The [Modifier] to be applied.
  */
 @Composable
-internal fun UiSchemaRowFile(
-    row: UISchemaRow.File,
-    onClick: (row: UISchemaRow.File.NotDownloaded) -> Unit,
+internal fun UiSchemaRowBinary(
+    row: UISchemaRow.Binary,
+    onClick: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
     // Immediately share file when it is finished downloading
     LaunchedEffect(row) {
-        if (row is UISchemaRow.File.Downloaded) {
+        if (row is UISchemaRow.Binary.Downloaded) {
             context.shareFile(file = row.binary.file, contentType = row.binary.contentType)
         }
     }
 
     when (row) {
-        is UISchemaRow.File.NotDownloaded.Idle -> {
-            UiSchemaRowFile(row = row, loading = false, modifier = modifier.clickable { onClick(row) })
+        is UISchemaRow.Binary.NotDownloaded.Idle -> {
+            UiSchemaRowBinary(row = row, loading = false, modifier = modifier.clickable { onClick(row) })
         }
 
-        is UISchemaRow.File.Loading -> {
-            UiSchemaRowFile(row = row, loading = true, modifier = modifier)
+        is UISchemaRow.Binary.Loading -> {
+            UiSchemaRowBinary(row = row, loading = true, modifier = modifier)
         }
 
-        is UISchemaRow.File.Downloaded -> {
-            UiSchemaRowFile(
+        is UISchemaRow.Binary.Downloaded -> {
+            UiSchemaRowBinary(
                 row = row,
                 loading = false,
                 modifier =
@@ -78,7 +78,7 @@ internal fun UiSchemaRowFile(
                     },
             )
         }
-        is UISchemaRow.File.NotDownloaded.Error -> {
+        is UISchemaRow.Binary.NotDownloaded.Error -> {
             UISchemaRowError(
                 icon = R.drawable.ic_error,
                 iconTint = MaterialTheme.colorScheme.sentimentCritical(),
@@ -89,7 +89,7 @@ internal fun UiSchemaRowFile(
             )
         }
 
-        is UISchemaRow.File.Empty -> {
+        is UISchemaRow.Binary.Empty -> {
             UISchemaRowError(
                 icon = R.drawable.ic_info,
                 iconTint = MaterialTheme.colorScheme.sentimentInformative(),
@@ -101,7 +101,7 @@ internal fun UiSchemaRowFile(
 }
 
 @Composable
-private fun UiSchemaRowFile(
+private fun UiSchemaRowBinary(
     row: UISchemaRow,
     loading: Boolean,
     modifier: Modifier = Modifier,
@@ -179,10 +179,10 @@ private fun UISchemaRowError(
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaRowFileIdlePreview() {
+internal fun UiSchemaRowBinaryIdlePreview() {
     MgoTheme {
-        UiSchemaRowFile(
-            row = UISchemaRow.File.NotDownloaded.Idle(heading = "Heading", value = "Value", binary = ""),
+        UiSchemaRowBinary(
+            row = UISchemaRow.Binary.NotDownloaded.Idle(heading = "Heading", value = "Value", binary = ""),
             onClick = {},
         )
     }
@@ -190,10 +190,10 @@ internal fun UiSchemaRowFileIdlePreview() {
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaRowFileLoadingPreview() {
+internal fun UiSchemaRowBinaryLoadingPreview() {
     MgoTheme {
-        UiSchemaRowFile(
-            row = UISchemaRow.File.Loading(heading = "Heading", value = "Value"),
+        UiSchemaRowBinary(
+            row = UISchemaRow.Binary.Loading(heading = "Heading", value = "Value"),
             onClick = {},
         )
     }
@@ -201,10 +201,10 @@ internal fun UiSchemaRowFileLoadingPreview() {
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaRowFileDownloadedPreview() {
+internal fun UiSchemaRowBinaryDownloadedPreview() {
     MgoTheme {
-        UiSchemaRowFile(
-            row = UISchemaRow.File.Downloaded(heading = "Heading", value = "Value", binary = TEST_FHIR_BINARY),
+        UiSchemaRowBinary(
+            row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = TEST_FHIR_BINARY),
             onClick = {},
         )
     }
@@ -212,10 +212,10 @@ internal fun UiSchemaRowFileDownloadedPreview() {
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaRowFileEmptyPreview() {
+internal fun UiSchemaRowBinaryEmptyPreview() {
     MgoTheme {
-        UiSchemaRowFile(
-            row = UISchemaRow.File.Empty(heading = "Heading", value = "Value"),
+        UiSchemaRowBinary(
+            row = UISchemaRow.Binary.Empty(heading = "Heading", value = "Value"),
             onClick = {},
         )
     }
@@ -223,10 +223,10 @@ internal fun UiSchemaRowFileEmptyPreview() {
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaRowFileErrorPreview() {
+internal fun UiSchemaRowBinaryErrorPreview() {
     MgoTheme {
-        UiSchemaRowFile(
-            row = UISchemaRow.File.NotDownloaded.Error(heading = "Heading", value = "Value", binary = ""),
+        UiSchemaRowBinary(
+            row = UISchemaRow.Binary.NotDownloaded.Error(heading = "Heading", value = "Value", binary = ""),
             onClick = {},
         )
     }

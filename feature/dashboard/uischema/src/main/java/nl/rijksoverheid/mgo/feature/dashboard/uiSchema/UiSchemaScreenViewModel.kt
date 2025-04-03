@@ -96,25 +96,25 @@ internal class UiSchemaScreenViewModel
          * When clicking on a file, download the binary and update the view state to reflect the state of downloading.
          * @param row The clicked file row.
          */
-        fun onClickFileRow(row: UISchemaRow.File.NotDownloaded) {
+        fun onClickFileRow(row: UISchemaRow.Binary.NotDownloaded) {
             viewModelScope.launch {
                 // This organization should have a document resource endpoint to get the binary from
                 val endpoint = organization.getDocumentsResourceEndpoint() ?: return@launch
 
                 // Set loading state
-                val loadingRow = UISchemaRow.File.Loading(heading = row.heading, value = row.value)
+                val loadingRow = UISchemaRow.Binary.Loading(heading = row.heading, value = row.value)
                 updateRow(loadingRow)
 
                 // Download file
                 fhirBinaryRepository
                     .download(resourceEndpoint = endpoint, fhirBinary = row.binary)
                     .onSuccess { binary ->
-                        val downloadedRow = UISchemaRow.File.Downloaded(heading = row.heading, value = row.value, binary = binary)
+                        val downloadedRow = UISchemaRow.Binary.Downloaded(heading = row.heading, value = row.value, binary = binary)
                         updateRow(downloadedRow)
                     }
                     .onFailure { error ->
                         Timber.e(error, "Failed to download binary")
-                        val errorRow = UISchemaRow.File.NotDownloaded.Error(heading = row.heading, value = row.value, binary = row.binary)
+                        val errorRow = UISchemaRow.Binary.NotDownloaded.Error(heading = row.heading, value = row.value, binary = row.binary)
                         updateRow(errorRow)
                     }
             }

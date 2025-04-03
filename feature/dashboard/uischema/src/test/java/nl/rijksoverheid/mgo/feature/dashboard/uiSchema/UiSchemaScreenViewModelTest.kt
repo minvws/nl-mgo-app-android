@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import app.cash.turbine.test
-import nl.rijksoverheid.mgo.data.fhirParser.TEST_UI_ENTRY_DOWNLOAD_LINK
+import nl.rijksoverheid.mgo.data.fhirParser.TEST_UI_ENTRY_BINARY
 import nl.rijksoverheid.mgo.data.fhirParser.TEST_UI_SCHEMA
 import nl.rijksoverheid.mgo.data.fhirParser.TEST_UI_SCHEMA_GROUP
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
@@ -65,8 +65,8 @@ internal class UiSchemaScreenViewModelTest {
                             TEST_UI_SCHEMA_GROUP.copy(
                                 children =
                                     listOf(
-                                        TEST_UI_ENTRY_DOWNLOAD_LINK.copy
-                                            (url = null),
+                                        TEST_UI_ENTRY_BINARY.copy
+                                            (reference = null),
                                     ),
                             ),
                         ),
@@ -86,7 +86,7 @@ internal class UiSchemaScreenViewModelTest {
                                 heading = "UI Schema Group",
                                 rows =
                                     listOf(
-                                        UISchemaRow.File.Empty(heading = null, value = "UI Entry Label"),
+                                        UISchemaRow.Binary.Empty(heading = null, value = "UI Entry Label"),
                                     ),
                             ),
                         ),
@@ -122,7 +122,7 @@ internal class UiSchemaScreenViewModelTest {
     fun testOnClickFileRowSuccess() =
         runTest {
             // Given: Row
-            val row = UISchemaRow.File.NotDownloaded.Idle(heading = null, value = "UI Entry Label", binary = "")
+            val row = UISchemaRow.Binary.NotDownloaded.Idle(heading = null, value = "UI Entry Label", binary = "")
 
             // Given: Download succeeds
             fhirBinaryRepository.setDownloadResult(Result.success(TEST_FHIR_BINARY))
@@ -135,7 +135,7 @@ internal class UiSchemaScreenViewModelTest {
                             TEST_UI_SCHEMA_GROUP.copy(
                                 children =
                                     listOf(
-                                        TEST_UI_ENTRY_DOWNLOAD_LINK,
+                                        TEST_UI_ENTRY_BINARY,
                                     ),
                             ),
                         ),
@@ -150,13 +150,13 @@ internal class UiSchemaScreenViewModelTest {
                 viewModel.onClickFileRow(row)
 
                 // Then: Initial state is idle
-                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.File.NotDownloaded)
+                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.Binary.NotDownloaded)
 
                 // Then: Next state is loading
-                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.File.Loading)
+                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.Binary.Loading)
 
                 // Then: Final state is downloaded
-                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.File.Downloaded)
+                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.Binary.Downloaded)
             }
         }
 
@@ -164,7 +164,7 @@ internal class UiSchemaScreenViewModelTest {
     fun testOnClickFileRowError() =
         runTest {
             // Given: Row
-            val row = UISchemaRow.File.NotDownloaded.Idle(heading = null, value = "UI Entry Label", binary = "")
+            val row = UISchemaRow.Binary.NotDownloaded.Idle(heading = null, value = "UI Entry Label", binary = "")
 
             // Given: Download succeeds
             fhirBinaryRepository.setDownloadResult(Result.failure(IllegalStateException("Something went wrong")))
@@ -177,7 +177,7 @@ internal class UiSchemaScreenViewModelTest {
                             TEST_UI_SCHEMA_GROUP.copy(
                                 children =
                                     listOf(
-                                        TEST_UI_ENTRY_DOWNLOAD_LINK,
+                                        TEST_UI_ENTRY_BINARY,
                                     ),
                             ),
                         ),
@@ -192,13 +192,13 @@ internal class UiSchemaScreenViewModelTest {
                 viewModel.onClickFileRow(row)
 
                 // Then: Initial state is idle
-                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.File.NotDownloaded)
+                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.Binary.NotDownloaded)
 
                 // Then: Next state is loading
-                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.File.Loading)
+                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.Binary.Loading)
 
                 // Then: Final state is error
-                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.File.NotDownloaded.Error)
+                assertTrue(awaitItem().sections.first().rows.first() is UISchemaRow.Binary.NotDownloaded.Error)
             }
         }
 

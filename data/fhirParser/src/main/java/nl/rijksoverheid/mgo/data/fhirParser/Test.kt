@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.fhirParser
 
+import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadBinary
 import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadLink
 import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiGroup
 import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
@@ -18,11 +19,11 @@ val TEST_UI_ENTRY =
 /**
  * Represents a [DownloadLink].
  */
-val TEST_UI_ENTRY_DOWNLOAD_LINK =
-    DownloadLink(
-        type = "DOWNLOAD_LINK",
+val TEST_UI_ENTRY_BINARY =
+    DownloadBinary(
+        type = "DOWNLOAD_BINARY",
         label = "UI Entry Label",
-        url = "fhir",
+        reference = "fhir",
     )
 
 /**

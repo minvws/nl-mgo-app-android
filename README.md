@@ -69,7 +69,7 @@ for building UI in Android.
 
 Each screen or component in the app
 has [Previews](https://developer.android.com/develop/ui/compose/tooling/previews) included. These
-previews reflect important states that can be quickly viewed from Android Studio without compiling
+previews reflect important states that can quickly be viewed from Android Studio without compiling
 the app. Usually, these previews also act as snapshot tests.
 
 ### Dependency injection
@@ -84,10 +84,11 @@ Dependency Injection.
 
 All testing can be done using tests that are run on the jvm.
 - If you don't need the Android platform, use [jUnit4](https://github.com/junit-team/junit4)
-- If the Android platform is rquired, use [Robolectric](https://robolectric.org).
+- If the Android platform is required, use [Robolectric](https://robolectric.org).
 
 #### Android tests
-For now, there is no need for Android Tests that require an Emulator. This is prefered, since these are slow tests and will have a pretty big impact on the CI.
+For now, there is no need for Android Tests that require an Emulator. This is preferred, since 
+these are slow tests and will have a pretty big impact on the CI.
 
 #### Snapshot tests
 Snapshot testing are created and verified with [Paparazzi](https://github.com/cashapp/paparazzi).
@@ -102,6 +103,6 @@ Copy is stored in [Lokalise](https://lokalise.com/).
 |-------------------- |--------------------------------------------|  
 | updateCopy          | Updates the copy from Lokalise. Requires `MGO_LOKALISE_PROJECT_ID` and `MGO_LOKALISE_API_TOKEN` environment variables.       
 | runCI               | Runs validation steps that are present on the CI as well. These steps include: `android linting`, `ktlint`, `verifying snapshot tests`, `jvm tests` and exporting `jacoco xml test report`.
-| validateCodeCoverage | Exports `jacoco xml test report`, uploads the result to SonarQube and prints if our code coverage criteria is met (>=80%). Requires the `SONAR_TOKEN` environment variable.
+| validateCodeCoverage | Exports `jacoco xml test report`, uploads the result to SonarQube and prints if our code coverage criteria are met (>=80%). Requires the `SONAR_TOKEN` environment variable.
 | createPR            | Runs both the `runCI` and `validateCodeCoverage` steps. If all checks are okay, the browser is opened to create a PR.
 | updateFhirParser    | Downloads the latest fhir parser release, moves and modifies it to run it in the Android project. Requires `MGO_GITHUB_PAT` environment variable.

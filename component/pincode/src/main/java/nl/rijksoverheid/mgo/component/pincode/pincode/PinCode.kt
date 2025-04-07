@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultBackground
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 
 /**
@@ -31,7 +31,7 @@ internal fun PinCode(
         if (error) {
             MaterialTheme.colorScheme.sentimentCritical()
         } else {
-            MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
+            MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
         }
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         PinCodeItemInstance(

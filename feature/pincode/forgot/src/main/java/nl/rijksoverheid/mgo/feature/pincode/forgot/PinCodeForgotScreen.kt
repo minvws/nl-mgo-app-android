@@ -29,18 +29,18 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  * Composable that shows the screen where you can reset the pin code if you forgot it. Resetting here means clearing locally stored data
  * and restarting the app again.
  *
- * @param onNavigateToPinCodeCreate Called when requested to navigate to the screen where you can create a pin code.
+ * @param onNavigateToPinCodeDeleted Called when requested to navigate to the pin code deleted screen.
  * @param onNavigateBack Called when requested to navigate back.
  */
 @Composable
 fun PinCodeForgotScreen(
-    onNavigateToPinCodeCreate: () -> Unit,
+    onNavigateToPinCodeDeleted: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel: PinCodeForgotScreenViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.navigateToPinCodeCreate.collectLatest {
-            onNavigateToPinCodeCreate()
+            onNavigateToPinCodeDeleted()
         }
     }
     PinCodeForgotScreenContent(

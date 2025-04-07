@@ -17,4 +17,7 @@ sealed class PinCodeLoginNavigation {
 
     @Serializable
     data object Forgot : PinCodeLoginNavigation()
+
+    @Serializable
+    data object Deleted : PinCodeLoginNavigation()
 }

@@ -10,22 +10,22 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Vaccin
  * Enum representing various categories of health care data.
  */
 enum class HealthCareCategory(val id: String) {
-    MEDICATIONS("medication"),
-    LAB_RESULTS("lab_results"),
-    DOCUMENTS("documents"),
-    VACCINATIONS("vaccinations"),
-    MEASUREMENTS("measurements"),
-    ALLERGIES("allergies"),
-    TREATMENTS("treatments"),
-    APPOINTMENTS("appointments"),
-    COMPLAINTS("complaints"),
-    PATIENT("patient"),
-    ALERTS("alerts"),
-    PAYMENT("payment"),
-    PLANS("plans"),
-    DEVICES("devices"),
-    MENTAL("mental"),
-    LIFESTYLE("lifestyle"),
+    COMPLAINTS("complaints"), // Medische klachten
+    LAB_RESULTS("lab_results"), // Uitslagen
+    MEASUREMENTS("measurements"), // Metingen
+    MEDICATIONS("medication"), // Medicijnen
+    TREATMENTS("treatments"), // Behandelingen
+    APPOINTMENTS("appointments"), // Afspraken
+    VACCINATIONS("vaccinations"), // Vaccinaties
+    DOCUMENTS("documents"), // Documenten
+    ALLERGIES("allergies"), // Allergieën
+    MENTAL("mental"), // Mentaal welzijn
+    LIFESTYLE("lifestyle"), // Leefstijl
+    DEVICES("devices"), // Medische hulpmiddelen
+    PLANS("plans"), // Behandelplan
+    ALERTS("alerts"), // Waarschuwingen
+    PATIENT("patient"), // Persoonlijke gegevens
+    PAYMENT("payment"), // Betaalgegevens
 }
 
 /**

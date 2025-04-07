@@ -23,7 +23,11 @@ fun Context.launchBrowser(url: String) {
             intent.launchUrl(this, Uri.parse(url))
         }
     } catch (exception: ActivityNotFoundException) {
-        // If Chrome is unavailable, fall back to a regular web browser
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        try {
+            // If Chrome is unavailable, fall back to a regular web browser
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (e: Exception) {
+            // Do nothing if this fails
+        }
     }
 }

@@ -109,7 +109,7 @@ private fun SettingsAboutHomeScreenContent(
                         .padding(top = 8.dp),
             ) {
                 Image(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    modifier = Modifier.align(Alignment.CenterHorizontally).padding(start = 100.dp),
                     painter = painterResource(R.drawable.illustration_vws),
                     contentDescription = null,
                 )

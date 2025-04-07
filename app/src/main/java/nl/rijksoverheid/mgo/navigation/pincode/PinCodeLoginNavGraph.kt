@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.MainActivity
+import nl.rijksoverheid.mgo.feature.pincode.deleted.PinCodeDeletedScreen
 import nl.rijksoverheid.mgo.feature.pincode.forgot.PinCodeForgotScreen
 import nl.rijksoverheid.mgo.feature.pincode.login.PinCodeLoginScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
@@ -51,10 +52,10 @@ fun NavGraphBuilder.addPinCodeLoginNavGraph(
             )
         }
 
-        mgoComposableDialog<PinCodeLoginNavigation.Forgot> {
+        mgoComposable<PinCodeLoginNavigation.Forgot> {
             PinCodeForgotScreen(
-                onNavigateToPinCodeCreate = {
-                    navController.navigate(PinCodeCreateNavigation.Create) {
+                onNavigateToPinCodeDeleted = {
+                    navController.navigate(PinCodeLoginNavigation.Deleted) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
@@ -62,6 +63,18 @@ fun NavGraphBuilder.addPinCodeLoginNavGraph(
                 },
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+            )
+        }
+
+        mgoComposable<PinCodeLoginNavigation.Deleted> {
+            PinCodeDeletedScreen(
+                onNavigateToPinCodeCreate = {
+                    navController.navigate(PinCodeCreateNavigation.Create) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 },
             )
         }

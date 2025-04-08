@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
   <string name="add_organization.already_added">Zorgaanbieder al toevoegd</string>
-  <string name="add_organization.city">Plaats (verplicht)</string>
+  <string name="add_organization.city">Plaats</string>
   <string name="add_organization.error_missing_city">Vul een plaats in</string>
   <string name="add_organization.error_missing_name">Vul een naam in</string>
-  <string name="add_organization.name">Naam (verplicht)</string>
+  <string name="add_organization.name">Naam</string>
   <string name="organization_search.no_results_found_heading">Geen zorgaanbieders gevonden</string>
   <string name="organization_search.search_hint_1">Controleer de spelling.</string>
   <string name="organization_search.search_hint_2">Vul de juiste naam in. Je vindt deze op de rekening. Of vraag aan de zorgaanbieder hoe je hun naam schrijft.</string>
@@ -109,6 +109,7 @@
   <string name="common.next">Volgende</string>
   <string name="common.no_data">Geen gegevens</string>
   <string name="common.previous">Vorige</string>
+  <string name="common.required">(verplicht)</string>
   <string name="common.search">Zoeken</string>
   <string name="common.unknown">Niet bekend</string>
   <string name="common.failed_to_load_data">Gegevens ophalen mislukt</string>

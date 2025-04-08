@@ -114,7 +114,7 @@ private fun ColumnScope.NoOrganizations() {
                 .fillMaxWidth()
                 .padding(top = 24.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_heading),
-        style = MaterialTheme.typography.headlineLarge,
+        style = MaterialTheme.typography.headlineSmall,
         textAlign = TextAlign.Center,
     )
     Text(
@@ -123,7 +123,7 @@ private fun ColumnScope.NoOrganizations() {
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.contentSecondary(),
         textAlign = TextAlign.Center,
     )
@@ -169,7 +169,7 @@ private fun WithOrganizations(
                 if (automaticLocalisationEnabled) CopyR.string.common_search_organizations else CopyR.string.common_add_organizations
             Text(
                 text = stringResource(id = stringResource),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
@@ -192,7 +192,7 @@ private fun OrganizationCard(
         Text(
             modifier = Modifier.padding(16.dp),
             text = organization.name,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
         if (hasDivider) {
             Divider(

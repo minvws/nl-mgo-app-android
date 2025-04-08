@@ -143,7 +143,7 @@ private fun PinCodeWithKeyboardContent(
             TextButton(onClick = { onClickHint?.invoke() }) {
                 Text(
                     text = hint,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
                 )
@@ -209,7 +209,7 @@ private fun PinCodeError(
                         .wrapContentWidth()
                         .padding(start = 6.dp),
                 text = error ?: "",
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.sentimentCritical(),

@@ -97,7 +97,7 @@ private fun PinCodeLoginScreenContent(
                         .focusable(),
                 text = stringResource(id = CopyR.string.pincode_confirm_subheading),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
             PinCodeWithKeyboard(
                 modifier = Modifier.weight(1f),

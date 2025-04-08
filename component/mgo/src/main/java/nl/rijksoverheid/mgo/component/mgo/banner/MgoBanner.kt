@@ -57,13 +57,13 @@ fun MgoBanner(
             ) {
                 Text(
                     text = heading,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
                     text = subHeading,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 if (buttonText != null) {
                     Text(
@@ -71,7 +71,7 @@ fun MgoBanner(
                             Modifier.padding(top = 4.dp)
                                 .clickable { onButtonClick?.invoke() },
                         text = buttonText,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
                     )

@@ -196,7 +196,7 @@ private fun ColumnScope.LoadingContent() {
             Text(
                 modifier = Modifier.padding(top = 20.dp),
                 text = stringResource(id = CopyR.string.organization_search_searching),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
@@ -234,7 +234,7 @@ private fun ColumnScope.EmptyContent(
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = R.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_critical),
         contentDescription = null,
     )
     MgoHtmlText(
@@ -245,7 +245,7 @@ private fun ColumnScope.EmptyContent(
                 name,
                 city,
             ),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
     )
 
     EmptyListItem(
@@ -282,7 +282,7 @@ private fun EmptyListItem(
             contentDescription = null,
             tint = MaterialTheme.colorScheme.supportContacts(),
         )
-        Text(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodySmall)
+        Text(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -293,14 +293,14 @@ private fun ColumnScope.ErrorContent() {
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = R.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_critical),
         contentDescription = null,
     )
 
     Text(
         modifier = Modifier.padding(top = 24.dp),
         text = stringResource(id = CopyR.string.common_error_subheading),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
     )
 }
 

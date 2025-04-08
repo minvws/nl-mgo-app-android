@@ -110,7 +110,7 @@ private fun DigidLoginScreenContent(
         MgoHtmlText(
             modifier = Modifier.padding(top = 16.dp),
             html = stringResource(id = CopyR.string.login_subheading),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Spacer(modifier = Modifier.height(16.dp))

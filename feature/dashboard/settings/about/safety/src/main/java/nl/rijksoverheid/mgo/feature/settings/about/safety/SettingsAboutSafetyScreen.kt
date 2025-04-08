@@ -85,7 +85,7 @@ fun SettingsAboutSafetyScreen(onNavigateBack: () -> Unit) {
                                 .fillMaxWidth()
                                 .padding(top = 8.dp, bottom = 16.dp),
                         text = stringResource(id = CopyR.string.settings_about_this_app_safety_subheading),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.contentPrimary(),
                     )
                 }

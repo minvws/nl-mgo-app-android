@@ -36,7 +36,7 @@ internal fun UiSchemaRowStatic(
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
             text = row.value,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

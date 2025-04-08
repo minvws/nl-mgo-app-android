@@ -61,7 +61,7 @@ internal fun PropositionOverviewScreenContent(
         content = {
             MgoHtmlText(
                 html = stringResource(id = CopyR.string.proposition_subheading, url),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
             ListItem(
                 modifier = Modifier.padding(top = 16.dp),
@@ -99,7 +99,7 @@ private fun ListItem(
         MgoHtmlText(
             modifier = Modifier.padding(horizontal = 16.dp),
             html = text,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

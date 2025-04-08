@@ -112,7 +112,7 @@ private fun UiSchemaSection(
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
                 text = section.heading,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
             )
         } else {

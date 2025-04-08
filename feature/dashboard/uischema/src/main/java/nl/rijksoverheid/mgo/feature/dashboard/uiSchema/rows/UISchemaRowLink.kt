@@ -48,7 +48,7 @@ internal fun UiSchemaRowLink(
                     .padding(end = 8.dp),
             color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
             text = row.value,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Icon(

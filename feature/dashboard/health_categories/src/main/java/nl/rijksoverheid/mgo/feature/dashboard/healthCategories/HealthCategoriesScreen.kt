@@ -166,7 +166,7 @@ private fun ColumnScope.NoProviders() {
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.contentSecondary(),
         textAlign = TextAlign.Center,
     )
@@ -184,7 +184,7 @@ private fun ColumnScope.WithProviders(
 ) {
     Text(
         text = subHeading,
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
     )
     MgoCard(
         modifier =

@@ -119,7 +119,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
                     Text(
                         modifier = Modifier.padding(bottom = 16.dp),
                         text = stringResource(id = CopyR.string.organisation_list_automatic_subheading),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                     ResultsContent(
                         checkResults = checkResults,
@@ -150,7 +150,7 @@ private fun ColumnScope.LoadingContent(modifier: Modifier = Modifier) {
             Text(
                 modifier = Modifier.padding(top = 20.dp),
                 text = stringResource(id = CopyR.string.organization_search_searching),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
@@ -201,14 +201,14 @@ private fun ColumnScope.ErrorContent() {
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = R.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_critical),
         contentDescription = null,
     )
 
     Text(
         modifier = Modifier.padding(top = 24.dp),
         text = stringResource(id = CopyR.string.common_error_subheading),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
     )
 }
 

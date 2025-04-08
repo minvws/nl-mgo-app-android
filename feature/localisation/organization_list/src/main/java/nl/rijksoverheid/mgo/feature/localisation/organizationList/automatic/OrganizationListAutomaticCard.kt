@@ -69,7 +69,7 @@ internal fun OrganizationListAutomaticCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = organization.name,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 val address = organization.address
@@ -77,7 +77,7 @@ internal fun OrganizationListAutomaticCard(
                     Text(
                         modifier = Modifier.padding(top = 4.dp),
                         text = address,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
                 when (cardState) {
@@ -120,7 +120,7 @@ private fun AdditionalText(
             Text(
                 modifier = Modifier.padding(start = 6.dp),
                 text = stringResource(text),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
             )
         }

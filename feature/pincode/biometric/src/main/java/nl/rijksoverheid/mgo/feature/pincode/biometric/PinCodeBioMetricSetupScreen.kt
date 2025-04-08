@@ -66,21 +66,21 @@ private fun PinCodeBioMetricSetupScreenContent(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 96.dp),
             painter = painterResource(id = R.drawable.illustration_biometric),
             contentDescription = null,
         )
 
         Text(
-            modifier = Modifier.padding(top = 32.dp),
             text = stringResource(CopyR.string.biometric_setup_heading),
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineLarge,
         )
 
         Text(
             modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = CopyR.string.biometric_setup_subheading),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Spacer(modifier = Modifier.height(16.dp))

@@ -47,6 +47,10 @@ class TestOrganizationRepository : OrganizationRepository {
         this.storedOrganizationsFlow.value = providers
     }
 
+    fun assertNoProviders(): Boolean {
+        return storedOrganizationsFlow.value.isEmpty()
+    }
+
     override suspend fun get(): List<MgoOrganization> {
         return storedOrganizationsFlow.value
     }

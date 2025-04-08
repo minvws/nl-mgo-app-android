@@ -114,7 +114,7 @@ private fun ColumnScope.NoOrganizations() {
                 .fillMaxWidth()
                 .padding(top = 24.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_heading),
-        style = MaterialTheme.typography.headlineLarge,
+        style = MaterialTheme.typography.headlineSmall,
         textAlign = TextAlign.Center,
     )
     Text(

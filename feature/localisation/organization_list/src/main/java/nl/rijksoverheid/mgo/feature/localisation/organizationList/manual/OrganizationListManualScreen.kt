@@ -234,7 +234,7 @@ private fun ColumnScope.EmptyContent(
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = R.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_critical),
         contentDescription = null,
     )
     MgoHtmlText(
@@ -293,7 +293,7 @@ private fun ColumnScope.ErrorContent() {
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = R.drawable.illustration_alert),
+        painter = painterResource(id = R.drawable.illustration_critical),
         contentDescription = null,
     )
 

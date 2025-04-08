@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
-import nl.rijksoverheid.mgo.framework.storage.file.EncryptedFileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
@@ -33,7 +33,7 @@ internal class SettingsHomeScreenViewModel
         @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
         @Named("isDebug") isDebug: Boolean,
         private val cacheFileStore: CacheFileStore,
-        private val encryptedFileStore: EncryptedFileStore,
+        private val organizationRepository: OrganizationRepository,
         deviceHasBiometric: DeviceHasBiometric,
     ) : ViewModel() {
         private val _navigateToOnboarding = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
@@ -59,7 +59,7 @@ internal class SettingsHomeScreenViewModel
                 keyValueStore.clear()
                 secureKeyValueStore.clear()
                 cacheFileStore.deleteAll()
-                encryptedFileStore.deleteAll()
+                organizationRepository.deleteAll()
                 _navigateToOnboarding.tryEmit(Unit)
             }
         }

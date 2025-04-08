@@ -2,13 +2,14 @@ package nl.rijksoverheid.mgo.feature.settings.home
 
 import app.cash.turbine.test
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_HAS_SEEN_ONBOARDING
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestEncryptedFileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -23,7 +24,7 @@ internal class SettingsHomeScreenViewModelTest {
     private val keyValueStore = TestKeyValueStore()
     private val secureKeyValueStore = TestKeyValueStore()
     private val cacheFileStore = TestCacheFileStore()
-    private val encryptedFileStore = TestEncryptedFileStore()
+    private val organizationRepository = TestOrganizationRepository()
 
     @Test
     fun testViewState() =
@@ -36,7 +37,7 @@ internal class SettingsHomeScreenViewModelTest {
                     deviceHasBiometric = TestDeviceHasBiometric(true),
                     isDebug = true,
                     cacheFileStore = cacheFileStore,
-                    encryptedFileStore = encryptedFileStore,
+                    organizationRepository = organizationRepository,
                 )
 
             // Then: App theme is system and device has biometric is true
@@ -54,8 +55,7 @@ internal class SettingsHomeScreenViewModelTest {
             keyValueStore.setBoolean(KEY_HAS_SEEN_ONBOARDING, true)
             secureKeyValueStore.setString(KEY_PIN_CODE, "123")
             cacheFileStore.saveFile("file1.json", "", "")
-            val file2 = "file2"
-            encryptedFileStore.saveFile(file2, name = "file2", clazz = String::class)
+            organizationRepository.save(TEST_MGO_ORGANIZATION)
 
             // Given: View model
             val viewModel =
@@ -65,7 +65,7 @@ internal class SettingsHomeScreenViewModelTest {
                     deviceHasBiometric = TestDeviceHasBiometric(true),
                     isDebug = true,
                     cacheFileStore = cacheFileStore,
-                    encryptedFileStore = encryptedFileStore,
+                    organizationRepository = organizationRepository,
                 )
 
             // When: Calling resetApp
@@ -75,6 +75,6 @@ internal class SettingsHomeScreenViewModelTest {
             assertFalse(keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING))
             assertNull(secureKeyValueStore.getString(KEY_PIN_CODE))
             cacheFileStore.assertNoFilesSaved()
-            encryptedFileStore.assertNoFilesSaved()
+            organizationRepository.assertNoProviders()
         }
 }

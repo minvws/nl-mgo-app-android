@@ -91,10 +91,7 @@ private fun AddOrganizationScreenContent(
                         .fillMaxWidth()
                         .focusRequester(nameFocusRequester),
                 value = viewState.name,
-                heading =
-                    stringResource(
-                        id = CopyR.string.add_organization_name,
-                    ),
+                heading = "${stringResource(id = CopyR.string.add_organization_name)} ${stringResource(id = CopyR.string.common_required)}",
                 keyboardOptions =
                     KeyboardOptions(
                         imeAction = ImeAction.Next,
@@ -114,9 +111,7 @@ private fun AddOrganizationScreenContent(
                         .padding(top = 16.dp),
                 value = viewState.city,
                 heading =
-                    stringResource(
-                        id = CopyR.string.add_organization_city,
-                    ),
+                    "${stringResource(id = CopyR.string.add_organization_city)} ${stringResource(id = CopyR.string.common_required)}",
                 keyboardOptions =
                     KeyboardOptions(
                         imeAction = ImeAction.Search,

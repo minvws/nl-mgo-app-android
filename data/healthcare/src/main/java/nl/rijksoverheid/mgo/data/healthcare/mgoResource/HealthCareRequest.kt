@@ -272,7 +272,10 @@ sealed class HealthCareRequest(
 
         data object AllergyIntolerance : Gp(
             path = "AllergyIntolerance",
-            queryParameters = listOf(),
+            queryParameters =
+                listOf(
+                    Pair(CATEGORY, "medication"),
+                ),
         )
 
         data object Encounter : Gp(

@@ -215,7 +215,7 @@ private fun ColorSample(
         Text(
             modifier = Modifier.padding(8.dp),
             text = text,
-            style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 10.sp),
             color = color.getTextColor(),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,

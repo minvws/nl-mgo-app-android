@@ -71,7 +71,7 @@ private fun PinCodeCreateScreenContent(
             Text(
                 modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
                 text = stringResource(id = CopyR.string.pincode_create_subheading),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
             PinCodeWithKeyboard(
                 modifier = Modifier.weight(1f),

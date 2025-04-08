@@ -40,7 +40,7 @@ internal fun UiSchemaRowReference(
                     .clickable { onClick(row) }
                     .padding(16.dp),
             text = row.value,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         IconButton(onClick = {}) {

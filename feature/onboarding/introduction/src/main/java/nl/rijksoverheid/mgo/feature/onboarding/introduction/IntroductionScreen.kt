@@ -57,7 +57,7 @@ fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
         Text(
             modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = CopyR.string.introduction_subheading),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
         Spacer(modifier = Modifier.height(16.dp))
     }

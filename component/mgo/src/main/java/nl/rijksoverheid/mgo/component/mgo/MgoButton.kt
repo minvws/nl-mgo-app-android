@@ -128,7 +128,7 @@ private fun LoadingButtonContent(
         Text(
             modifier = Modifier.padding(start = 8.dp),
             text = stringResource(CopyR.string.common_loading),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
         )
     }
@@ -160,7 +160,7 @@ private fun IdleButtonContent(
             }
         }
 
-        Text(text = buttonText, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+        Text(text = buttonText, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
     }
 }
 

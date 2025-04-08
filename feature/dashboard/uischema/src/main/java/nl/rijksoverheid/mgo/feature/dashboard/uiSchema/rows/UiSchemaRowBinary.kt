@@ -120,7 +120,7 @@ private fun UiSchemaRowBinary(
                     .padding(end = 8.dp),
             color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
             text = row.value,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         if (loading) {
@@ -161,14 +161,14 @@ private fun UISchemaRowError(
             modifier = Modifier.padding(top = 8.dp),
             text = stringResource(heading),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
         if (onTryAgain != null) {
             TextButton(onClick = onTryAgain) {
                 Text(
                     text = stringResource(CopyR.string.common_try_again),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
                 )

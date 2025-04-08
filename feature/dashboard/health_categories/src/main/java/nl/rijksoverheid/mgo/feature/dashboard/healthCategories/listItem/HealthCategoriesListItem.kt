@@ -110,7 +110,7 @@ internal fun HealthCategoriesListItemContent(
                 HealthCategoriesListItemState.LOADING -> {
                     Text(
                         text = stringResource(id = CopyR.string.common_loading_data),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.contentSecondary(),
                     )
                     CircularProgressIndicator(
@@ -126,7 +126,7 @@ internal fun HealthCategoriesListItemContent(
                 HealthCategoriesListItemState.NO_DATA -> {
                     Text(
                         text = stringResource(id = CopyR.string.common_no_data),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.contentSecondary(),
                     )
                 }

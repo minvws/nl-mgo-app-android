@@ -82,7 +82,7 @@ private fun PinCodeConfirmScreenContent(
             Text(
                 modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
                 text = stringResource(id = CopyR.string.pincode_confirm_subheading),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
             PinCodeWithKeyboard(
                 modifier = Modifier.weight(1f),

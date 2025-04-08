@@ -47,6 +47,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
@@ -145,7 +146,7 @@ fun MgoScaffold(
 
     val adjustedTypography =
         MgoTypography.copy(
-            titleLarge = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+            titleLarge = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold, fontSize = 22.sp),
             headlineSmall = MaterialTheme.typography.headlineLarge,
         )
     Scaffold(

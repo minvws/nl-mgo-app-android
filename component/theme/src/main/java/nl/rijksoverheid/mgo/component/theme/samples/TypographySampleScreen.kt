@@ -27,7 +27,7 @@ private fun TypographySampleScreen() {
         Spacer(modifier = Modifier.padding(top = 24.dp))
         Text(text = "Body Medium", style = MaterialTheme.typography.bodyMedium)
         Spacer(modifier = Modifier.padding(top = 24.dp))
-        Text(text = "Body Small", style = MaterialTheme.typography.bodySmall)
+        Text(text = "Body Small", style = MaterialTheme.typography.bodyMedium)
     }
 }
 

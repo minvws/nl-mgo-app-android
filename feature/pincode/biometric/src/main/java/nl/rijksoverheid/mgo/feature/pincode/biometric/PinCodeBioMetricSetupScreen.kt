@@ -80,7 +80,7 @@ private fun PinCodeBioMetricSetupScreenContent(
         Text(
             modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = CopyR.string.biometric_setup_subheading),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Spacer(modifier = Modifier.height(16.dp))

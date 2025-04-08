@@ -129,7 +129,7 @@ private fun ColumnScope.LoadingContent() {
             Text(
                 modifier = Modifier.padding(top = 20.dp),
                 text = stringResource(id = CopyR.string.common_loading),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
@@ -170,7 +170,7 @@ private fun ListItemsContent(
                 Text(
                     modifier = Modifier.padding(bottom = 8.dp),
                     text = stringResource(listItemGroup.heading),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
             for (listItem in listItemGroup.items) {
@@ -242,7 +242,7 @@ private fun ColumnScope.NoDataContent(
                     .fillMaxWidth()
                     .padding(top = 8.dp),
             text = stringResource(id = CopyR.string.health_category_empty_subheading),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.contentSecondary(),
             textAlign = TextAlign.Center,
         )
@@ -259,13 +259,13 @@ private fun HealthCategoryCard(
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.contentSecondary(),
             )
         }

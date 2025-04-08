@@ -57,7 +57,7 @@ internal fun MgoSnackBar(
                         .weight(1f)
                         .padding(start = 16.dp),
                 text = stringResource(visuals.title),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -73,7 +73,7 @@ internal fun MgoSnackBar(
                             }
                             .padding(start = 16.dp),
                     text = stringResource(visuals.action),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     textDecoration = TextDecoration.Underline,
                     color = visuals.type.getContentColor(),
                 )

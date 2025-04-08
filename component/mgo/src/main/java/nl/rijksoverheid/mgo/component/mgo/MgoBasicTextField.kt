@@ -89,7 +89,7 @@ fun MgoBasicTextFieldContent(
                     modifier = Modifier.padding(bottom = 8.dp),
                     text = header,
                     color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
             BasicTextField(
@@ -145,7 +145,7 @@ private fun Error(
         Text(
             modifier = Modifier.padding(start = 6.dp),
             text = text,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
         )
     }

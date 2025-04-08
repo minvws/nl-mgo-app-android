@@ -68,7 +68,7 @@ fun MgoAlertDialog(
             Text(heading, style = MaterialTheme.typography.headlineSmall)
         },
         text = {
-            Text(subHeading, style = MaterialTheme.typography.bodySmall)
+            Text(subHeading, style = MaterialTheme.typography.bodyMedium)
         },
         containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
     )

@@ -87,7 +87,7 @@ private fun PinCodeForgotScreenContent(
             Text(
                 modifier = Modifier.padding(top = 16.dp),
                 text = stringResource(id = CopyR.string.forgot_pincode_subheading),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
             Spacer(modifier = Modifier.height(16.dp))
         },

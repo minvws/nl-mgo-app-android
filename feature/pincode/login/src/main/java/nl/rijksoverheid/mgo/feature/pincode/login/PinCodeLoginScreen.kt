@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.feature.pincode.login
 
+import android.content.Context
+import android.view.ContextThemeWrapper
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -74,7 +76,7 @@ private fun PinCodeLoginScreenContent(
     // Immediately show the biometric prompt if it has been enabled in the onboarding before
     LaunchedEffect(Unit) {
         if (viewState.hasBiometric) {
-            val fragmentActivity = context as FragmentActivity
+            val fragmentActivity = context.findFragmentActivity()
             fragmentActivity.showBiometricPrompt(
                 onSuccess = onBiometricLoginSuccess,
             )
@@ -108,7 +110,7 @@ private fun PinCodeLoginScreenContent(
                 onClickHint = onNavigateForgotPin,
                 hasBiometric = viewState.hasBiometric,
                 onPressBiometric = {
-                    val fragmentActivity = context as FragmentActivity
+                    val fragmentActivity = context.findFragmentActivity()
                     fragmentActivity.showBiometricPrompt(
                         onSuccess = onBiometricLoginSuccess,
                     )
@@ -116,6 +118,17 @@ private fun PinCodeLoginScreenContent(
             )
         },
     )
+}
+
+private fun Context.findFragmentActivity(): FragmentActivity {
+    if (this is FragmentActivity) {
+        return this
+    }
+
+    // Sometimes when resuming the app or after configuration changes, Compose reattaches the composition tree
+    // to a new ContextThemeWrapper. We can get the activity in the base context.
+    val fragmentActivity = ((this as ContextThemeWrapper).baseContext).findFragmentActivity()
+    return fragmentActivity
 }
 
 @DefaultPreviews

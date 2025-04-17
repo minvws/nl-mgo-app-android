@@ -58,10 +58,10 @@ internal class DvaApiModule {
     @Named("dvaApiBaseUrl")
     fun provideBaseUrl(environmentRepository: EnvironmentRepository): String {
         return when (val environment = environmentRepository.getEnvironment()) {
-            is Environment.Acc -> "https://dva.acc.mgo.irealisatie.nl"
-            is Environment.Prod -> "https://dva.acc.mgo.irealisatie.nl"
-            is Environment.Tst -> "https://dva.test.mgo.irealisatie.nl"
-            is Environment.Demo -> "https://dva.acc.mgo.irealisatie.nl"
+            is Environment.Acc -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
+            is Environment.Prod -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
+            is Environment.Tst -> "https://dvp-proxy.test.mgo.irealisatie.nl"
+            is Environment.Demo -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
             is Environment.Custom -> environment.url
         }
     }

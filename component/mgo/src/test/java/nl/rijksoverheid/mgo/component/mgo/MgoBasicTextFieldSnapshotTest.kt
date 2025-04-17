@@ -5,34 +5,34 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class MgoBasicTextFieldSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun empty() {
-        snapshotTestRule.snapshots {
-            MgoBasicTextFieldEmptyPreview()
-        }
+  @Test
+  fun empty() {
+    snapshotTestRule.snapshots {
+      MgoBasicTextFieldEmptyPreview()
     }
+  }
 
-    @Test
-    fun focussed() {
-        snapshotTestRule.snapshots {
-            MgoBasicTextFieldFocussedPreview()
-        }
+  @Test
+  fun focussed() {
+    snapshotTestRule.snapshots {
+      MgoBasicTextFieldFocussedPreview()
     }
+  }
 
-    @Test
-    fun filled() {
-        snapshotTestRule.snapshots {
-            MgoBasicTextFieldFilledPreview()
-        }
+  @Test
+  fun filled() {
+    snapshotTestRule.snapshots {
+      MgoBasicTextFieldFilledPreview()
     }
+  }
 
-    @Test
-    fun error() {
-        snapshotTestRule.snapshots {
-            MgoBasicTextFieldErrorPreview()
-        }
+  @Test
+  fun error() {
+    snapshotTestRule.snapshots {
+      MgoBasicTextFieldErrorPreview()
     }
+  }
 }

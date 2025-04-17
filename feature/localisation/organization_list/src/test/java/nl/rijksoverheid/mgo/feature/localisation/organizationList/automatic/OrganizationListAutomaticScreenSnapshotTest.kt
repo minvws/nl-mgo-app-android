@@ -5,27 +5,27 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class OrganizationListAutomaticScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun loading() {
-        snapshotTestRule.snapshots {
-            OrganizationListAutomaticSearchScreenLoadingPreview()
-        }
+  @Test
+  fun loading() {
+    snapshotTestRule.snapshots {
+      OrganizationListAutomaticSearchScreenLoadingPreview()
     }
+  }
 
-    @Test
-    fun searchResults() {
-        snapshotTestRule.snapshots {
-            OrganizationListAutomaticSearchScreenSearchResultsPreview()
-        }
+  @Test
+  fun searchResults() {
+    snapshotTestRule.snapshots {
+      OrganizationListAutomaticSearchScreenSearchResultsPreview()
     }
+  }
 
-    @Test
-    fun error() {
-        snapshotTestRule.snapshots {
-            OrganizationListAutomaticSearchScreenErrorPreview()
-        }
+  @Test
+  fun error() {
+    snapshotTestRule.snapshots {
+      OrganizationListAutomaticSearchScreenErrorPreview()
     }
+  }
 }

@@ -18,20 +18,20 @@ import javax.inject.Named
  * @param secureKeyValueStore The [KeyValueStore] to remove the pin code from.
  */
 internal class DefaultResetPinCode
-    @Inject
-    constructor(
-        private val organizationRepository: OrganizationRepository,
-        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
-        @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
-    ) : ResetPinCode {
-        override suspend fun invoke() {
-            // Remove organizations
-            organizationRepository.deleteAll()
+  @Inject
+  constructor(
+    private val organizationRepository: OrganizationRepository,
+    @Named("keyValueStore") private val keyValueStore: KeyValueStore,
+    @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
+  ) : ResetPinCode {
+    override suspend fun invoke() {
+      // Remove organizations
+      organizationRepository.deleteAll()
 
-            // Remove pin code
-            secureKeyValueStore.removeString(KEY_PIN_CODE)
+      // Remove pin code
+      secureKeyValueStore.removeString(KEY_PIN_CODE)
 
-            // Remove biometric checked flag
-            keyValueStore.removeBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED)
-        }
+      // Remove biometric checked flag
+      keyValueStore.removeBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED)
     }
+  }

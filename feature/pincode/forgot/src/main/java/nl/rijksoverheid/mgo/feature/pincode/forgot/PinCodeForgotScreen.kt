@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -34,73 +34,73 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun PinCodeForgotScreen(
-    onNavigateToPinCodeDeleted: () -> Unit,
-    onNavigateBack: () -> Unit,
+  onNavigateToPinCodeDeleted: () -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    val viewModel: PinCodeForgotScreenViewModel = hiltViewModel()
-    LaunchedEffect(Unit) {
-        viewModel.navigateToPinCodeCreate.collectLatest {
-            onNavigateToPinCodeDeleted()
-        }
+  val viewModel: PinCodeForgotScreenViewModel = hiltViewModel()
+  LaunchedEffect(Unit) {
+    viewModel.navigateToPinCodeCreate.collectLatest {
+      onNavigateToPinCodeDeleted()
     }
-    PinCodeForgotScreenContent(
-        onCreateNewAccount = { viewModel.createNewAccount() },
-        onNavigateBack = onNavigateBack,
-    )
+  }
+  PinCodeForgotScreenContent(
+    onCreateNewAccount = { viewModel.createNewAccount() },
+    onNavigateBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun PinCodeForgotScreenContent(
-    onCreateNewAccount: () -> Unit,
-    onNavigateBack: () -> Unit,
+  onCreateNewAccount: () -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-    if (showDialog) {
-        MgoAlertDialog(
-            heading = stringResource(id = R.string.forgot_pincode_dialog_heading),
-            subHeading = stringResource(id = R.string.forgot_pincode_dialog_subheading),
-            onDismissRequest = { showDialog = false },
-            positiveButtonText = stringResource(id = R.string.common_yes),
-            onClickPositiveButton = {
-                onCreateNewAccount()
-                showDialog = false
-            },
-            negativeButtonText = stringResource(id = R.string.common_no),
-            onClickNegativeButton = {
-                showDialog = false
-            },
-        )
-    }
-
-    MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.forgot_pincode_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onNavigateBack,
-        primaryButtonText = stringResource(id = CopyR.string.common_cancel),
-        onPrimaryButtonClick = onNavigateBack,
-        secondaryButtonText = stringResource(id = CopyR.string.forgot_pincode_button),
-        onSecondaryButtonClick = { showDialog = true },
-        content = {
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = CopyR.string.forgot_pincode_subheading),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        },
+  var showDialog by remember { mutableStateOf(false) }
+  if (showDialog) {
+    MgoAlertDialog(
+      heading = stringResource(id = R.string.forgot_pincode_dialog_heading),
+      subHeading = stringResource(id = R.string.forgot_pincode_dialog_subheading),
+      onDismissRequest = { showDialog = false },
+      positiveButtonText = stringResource(id = R.string.common_yes),
+      onClickPositiveButton = {
+        onCreateNewAccount()
+        showDialog = false
+      },
+      negativeButtonText = stringResource(id = R.string.common_no),
+      onClickNegativeButton = {
+        showDialog = false
+      },
     )
+  }
+
+  MgoScaffold(
+    appBarTitle = stringResource(CopyR.string.forgot_pincode_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onNavigateBack,
+    primaryButtonText = stringResource(id = CopyR.string.common_cancel),
+    onPrimaryButtonClick = onNavigateBack,
+    secondaryButtonText = stringResource(id = CopyR.string.forgot_pincode_button),
+    onSecondaryButtonClick = { showDialog = true },
+    content = {
+      Text(
+        modifier = Modifier.padding(top = 16.dp),
+        text = stringResource(id = CopyR.string.forgot_pincode_subheading),
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      Spacer(modifier = Modifier.height(16.dp))
+    },
+  )
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeForgotScreenPreview() {
-    MgoTheme {
-        PinCodeForgotScreenContent(
-            onCreateNewAccount = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    PinCodeForgotScreenContent(
+      onCreateNewAccount = {},
+      onNavigateBack = {},
+    )
+  }
 }

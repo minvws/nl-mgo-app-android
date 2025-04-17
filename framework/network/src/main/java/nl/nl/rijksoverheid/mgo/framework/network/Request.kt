@@ -13,14 +13,14 @@ import java.io.IOException
  * @return A [Result] containing either the successful result or an error.
  */
 inline fun <T : Any> executeNetworkRequest(block: () -> T): Result<T> {
-    return try {
-        // Execute the network request and wrap the successful result.
-        Result.success(block())
-    } catch (networkError: IOException) {
-        // Handle network connectivity issues.
-        Result.failure(networkError)
-    } catch (httpError: HttpException) {
-        // Handle HTTP errors (e.g., 4xx and 5xx responses).
-        Result.failure(httpError)
-    }
+  return try {
+    // Execute the network request and wrap the successful result.
+    Result.success(block())
+  } catch (networkError: IOException) {
+    // Handle network connectivity issues.
+    Result.failure(networkError)
+  } catch (httpError: HttpException) {
+    // Handle HTTP errors (e.g., 4xx and 5xx responses).
+    Result.failure(httpError)
+  }
 }

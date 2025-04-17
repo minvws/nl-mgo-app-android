@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class StartResponse(
-    @SerialName("authz_url") val authUrl: String,
+  @SerialName("authz_url") val authUrl: String,
 )

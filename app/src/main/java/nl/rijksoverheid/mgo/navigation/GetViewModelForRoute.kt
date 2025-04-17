@@ -16,15 +16,15 @@ import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation.Organ
  */
 @Composable
 inline fun <reified VM : ViewModel> NavController.getViewModel(route: Any): VM? {
-    val entry =
-        try {
-            getBackStackEntry(route)
-        } catch (e: Exception) {
-            null
-        }
-    if (entry == null) {
-        return null
+  val entry =
+    try {
+      getBackStackEntry(route)
+    } catch (e: Exception) {
+      null
     }
-    val viewModel: VM = hiltViewModel(viewModelStoreOwner = entry)
-    return viewModel
+  if (entry == null) {
+    return null
+  }
+  val viewModel: VM = hiltViewModel(viewModelStoreOwner = entry)
+  return viewModel
 }

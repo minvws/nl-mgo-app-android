@@ -12,24 +12,24 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
  * @param error If there was an error retrieving the health care providers.
  */
 data class OrganizationListManualScreenViewState(
-    val loading: Boolean,
-    val name: String,
-    val city: String,
-    val results: List<MgoOrganization>,
-    val error: Throwable?,
+  val loading: Boolean,
+  val name: String,
+  val city: String,
+  val results: List<MgoOrganization>,
+  val error: Throwable?,
 ) {
-    companion object {
-        fun initialState(
-            name: String,
-            city: String,
-        ): OrganizationListManualScreenViewState {
-            return OrganizationListManualScreenViewState(
-                loading = true,
-                name = name,
-                city = city,
-                results = listOf(),
-                error = null,
-            )
-        }
+  companion object {
+    fun initialState(
+      name: String,
+      city: String,
+    ): OrganizationListManualScreenViewState {
+      return OrganizationListManualScreenViewState(
+        loading = true,
+        name = name,
+        city = city,
+        results = listOf(),
+        error = null,
+      )
     }
+  }
 }

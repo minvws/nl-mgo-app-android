@@ -5,13 +5,13 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class PinCodeForgotScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun preview() {
-        snapshotTestRule.snapshots {
-            PinCodeForgotScreenPreview()
-        }
+  @Test
+  fun preview() {
+    snapshotTestRule.snapshots {
+      PinCodeForgotScreenPreview()
     }
+  }
 }

@@ -29,46 +29,46 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
-    MgoScaffold(
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        primaryButtonText = stringResource(id = CopyR.string.common_next),
-        onPrimaryButtonClick = onNavigateToProposition,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = R.drawable.illustration_introduction),
-            contentDescription = null,
-        )
+  MgoScaffold(
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    primaryButtonText = stringResource(id = CopyR.string.common_next),
+    onPrimaryButtonClick = onNavigateToProposition,
+  ) {
+    Image(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+          .align(Alignment.CenterHorizontally),
+      painter = painterResource(id = R.drawable.illustration_introduction),
+      contentDescription = null,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 32.dp),
-            text = stringResource(id = CopyR.string.introduction_heading),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-        )
+    Text(
+      modifier = Modifier.padding(top = 32.dp),
+      text = stringResource(id = CopyR.string.introduction_heading),
+      style = MaterialTheme.typography.headlineLarge,
+      fontWeight = FontWeight.Bold,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = CopyR.string.introduction_subheading),
-            style = MaterialTheme.typography.bodyMedium,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-    }
+    Text(
+      modifier = Modifier.padding(top = 16.dp),
+      text = stringResource(id = CopyR.string.introduction_subheading),
+      style = MaterialTheme.typography.bodyMedium,
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun IntroductionScreenPreview() {
-    MgoTheme {
-        IntroductionScreen(
-            onNavigateToProposition = {},
-        )
-    }
+  MgoTheme {
+    IntroductionScreen(
+      onNavigateToProposition = {},
+    )
+  }
 }

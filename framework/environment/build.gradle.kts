@@ -1,10 +1,10 @@
 plugins {
-    id("AndroidFrameworkPlugin")
+  id("AndroidFrameworkPlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.framework.environment"
-    testFixtures {
-        enable = true
-    }
+  namespace = "nl.rijksoverheid.mgo.framework.environment"
+  testFixtures {
+    enable = true
+  }
 }

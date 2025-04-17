@@ -16,33 +16,33 @@ import java.io.File
 
 @RunWith(RobolectricTestRunner::class)
 internal class DefaultCacheFileStoreTest {
-    private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val fileStore = DefaultCacheFileStore(context)
+  private val context = ApplicationProvider.getApplicationContext<Context>()
+  private val fileStore = DefaultCacheFileStore(context)
 
-    @Before
-    fun setup() {
-        mockkStatic(MimeTypeMap::class)
-        val mockMimeTypeMap = mockk<MimeTypeMap>()
-        every { MimeTypeMap.getSingleton() } returns mockMimeTypeMap
-        every { mockMimeTypeMap.getExtensionFromMimeType("application/pdf") } returns "pdf"
-    }
+  @Before
+  fun setup() {
+    mockkStatic(MimeTypeMap::class)
+    val mockMimeTypeMap = mockk<MimeTypeMap>()
+    every { MimeTypeMap.getSingleton() } returns mockMimeTypeMap
+    every { mockMimeTypeMap.getExtensionFromMimeType("application/pdf") } returns "pdf"
+  }
 
-    @Test
-    fun testSaveFile() {
-        val file = fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
-        assertTrue(file.exists())
-    }
+  @Test
+  fun testSaveFile() {
+    val file = fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
+    assertTrue(file.exists())
+  }
 
-    @Test
-    fun testDeleteAll() {
-        // Given: file exists in cache dir
-        fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
+  @Test
+  fun testDeleteAll() {
+    // Given: file exists in cache dir
+    fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
 
-        // When: Calling deleteAll
-        fileStore.deleteAll()
+    // When: Calling deleteAll
+    fileStore.deleteAll()
 
-        // Then: No more files exists
-        val cacheDir = File(context.cacheDir, "mgo")
-        assertEquals(0, cacheDir.listFiles()?.size ?: 0)
-    }
+    // Then: No more files exists
+    val cacheDir = File(context.cacheDir, "mgo")
+    assertEquals(0, cacheDir.listFiles()?.size ?: 0)
+  }
 }

@@ -17,19 +17,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class FhirParserModule {
-    @Binds
-    @Singleton
-    abstract fun bindJsRuntimeRepository(default: DefaultJsRuntimeRepository): JsRuntimeRepository
+  @Binds
+  @Singleton
+  abstract fun bindJsRuntimeRepository(default: DefaultJsRuntimeRepository): JsRuntimeRepository
 
-    @Binds
-    @Singleton
-    abstract fun bindMgoResourceRepository(default: DefaultMgoResourceMapper): MgoResourceMapper
+  @Binds
+  @Singleton
+  abstract fun bindMgoResourceRepository(default: DefaultMgoResourceMapper): MgoResourceMapper
 
-    @Binds
-    @Singleton
-    abstract fun bindUiSchemaRepository(default: DefaultUiSchemaMapper): UiSchemaMapper
+  @Binds
+  @Singleton
+  abstract fun bindUiSchemaRepository(default: DefaultUiSchemaMapper): UiSchemaMapper
 
-    @Binds
-    @Singleton
-    abstract fun bindGetFhirParserVersion(default: DefaultGetFhirParserVersion): GetFhirParserVersion
+  @Binds
+  @Singleton
+  abstract fun bindGetFhirParserVersion(default: DefaultGetFhirParserVersion): GetFhirParserVersion
 }

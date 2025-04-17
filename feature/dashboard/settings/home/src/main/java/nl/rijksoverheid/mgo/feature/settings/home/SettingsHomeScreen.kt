@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
@@ -42,7 +43,6 @@ import nl.rijksoverheid.mgo.component.theme.borderSecondary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -56,246 +56,246 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun SettingsHomeScreen(
-    onNavigateToDisplaySettings: () -> Unit,
-    onNavigateToSecuritySettings: () -> Unit,
-    onNavigateToAdvancedSettings: () -> Unit,
-    onNavigateToAboutThisAppSettings: () -> Unit,
-    onNavigateToOnboarding: () -> Unit,
+  onNavigateToDisplaySettings: () -> Unit,
+  onNavigateToSecuritySettings: () -> Unit,
+  onNavigateToAdvancedSettings: () -> Unit,
+  onNavigateToAboutThisAppSettings: () -> Unit,
+  onNavigateToOnboarding: () -> Unit,
 ) {
-    val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
-    LaunchedEffect(Unit) {
-        viewModel.navigateToOnboarding.collectLatest {
-            onNavigateToOnboarding()
-        }
+  val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
+  LaunchedEffect(Unit) {
+    viewModel.navigateToOnboarding.collectLatest {
+      onNavigateToOnboarding()
     }
+  }
 
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
-    SettingsScreenContent(
-        viewState = viewState,
-        onClickDisplaySettings = onNavigateToDisplaySettings,
-        onClickSecuritySettings = onNavigateToSecuritySettings,
-        onClickAdvancedSettings = onNavigateToAdvancedSettings,
-        onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
-        onClickResetApp = { viewModel.resetApp() },
-    )
+  SettingsScreenContent(
+    viewState = viewState,
+    onClickDisplaySettings = onNavigateToDisplaySettings,
+    onClickSecuritySettings = onNavigateToSecuritySettings,
+    onClickAdvancedSettings = onNavigateToAdvancedSettings,
+    onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
+    onClickResetApp = { viewModel.resetApp() },
+  )
 }
 
 @Composable
 private fun SettingsScreenContent(
-    viewState: SettingsHomeScreenViewState,
-    onClickDisplaySettings: () -> Unit,
-    onClickSecuritySettings: () -> Unit,
-    onClickAdvancedSettings: () -> Unit,
-    onClickAboutThisAppSettings: () -> Unit,
-    onClickResetApp: () -> Unit,
+  viewState: SettingsHomeScreenViewState,
+  onClickDisplaySettings: () -> Unit,
+  onClickSecuritySettings: () -> Unit,
+  onClickAdvancedSettings: () -> Unit,
+  onClickAboutThisAppSettings: () -> Unit,
+  onClickResetApp: () -> Unit,
 ) {
-    var showResetAppDialog by remember { mutableStateOf(false) }
-    if (showResetAppDialog) {
-        MgoAlertDialog(
-            onDismissRequest = { showResetAppDialog = false },
-            positiveButtonText = stringResource(CopyR.string.common_yes),
-            negativeButtonText = stringResource(CopyR.string.common_no),
-            onClickPositiveButton = {
-                onClickResetApp()
-                showResetAppDialog = false
-            },
-            onClickNegativeButton = { showResetAppDialog = false },
-            heading = stringResource(CopyR.string.settings_reset_app_dialog_heading),
-            subHeading = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
-        )
-    }
-
-    MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.settings_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        content = {
-            Text(
-                modifier = Modifier.padding(top = 8.dp),
-                text = stringResource(CopyR.string.settings_preferences_heading),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.contentSecondary(),
-            )
-
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 12.dp),
-            ) {
-                SettingsListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onClickDisplaySettings() },
-                    icon = Icons.Outlined.LightMode,
-                    heading = CopyR.string.settings_display_heading,
-                    subHeading =
-                        when (viewState.appTheme) {
-                            AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
-                            AppTheme.LIGHT -> CopyR.string.settings_display_light
-                            AppTheme.DARK -> CopyR.string.settings_display_dark
-                        },
-                )
-                if (viewState.deviceHasBiometric) {
-                    SettingsListItem(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .clickable { onClickSecuritySettings() },
-                        icon = Icons.Outlined.Lock,
-                        heading = CopyR.string.settings_security_heading,
-                    )
-                }
-                if (viewState.isDebug) {
-                    SettingsListItem(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .clickable { onClickAdvancedSettings() },
-                        icon = Icons.Outlined.Code,
-                        heading = CopyR.string.settings_advanced_heading,
-                        subHeading = CopyR.string.settings_advanced_subheading,
-                        hasDivider = false,
-                    )
-                }
-            }
-
-            Text(
-                modifier = Modifier.padding(top = 32.dp),
-                text = stringResource(CopyR.string.settings_information_heading),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.contentSecondary(),
-            )
-
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 12.dp),
-            ) {
-                SettingsListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onClickAboutThisAppSettings() },
-                    icon = Icons.Outlined.Smartphone,
-                    heading = CopyR.string.settings_about_this_app_heading,
-                    hasDivider = false,
-                )
-            }
-
-            Text(
-                modifier = Modifier.padding(top = 32.dp),
-                text = stringResource(CopyR.string.settings_other_heading),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.contentSecondary(),
-            )
-
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 12.dp),
-            ) {
-                SettingsListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { showResetAppDialog = true },
-                    icon = Icons.Outlined.RestartAlt,
-                    heading = CopyR.string.settings_reset_app_heading,
-                    subHeading = CopyR.string.settings_reset_app_subheading,
-                    hasDivider = false,
-                )
-            }
-        },
+  var showResetAppDialog by remember { mutableStateOf(false) }
+  if (showResetAppDialog) {
+    MgoAlertDialog(
+      onDismissRequest = { showResetAppDialog = false },
+      positiveButtonText = stringResource(CopyR.string.common_yes),
+      negativeButtonText = stringResource(CopyR.string.common_no),
+      onClickPositiveButton = {
+        onClickResetApp()
+        showResetAppDialog = false
+      },
+      onClickNegativeButton = { showResetAppDialog = false },
+      heading = stringResource(CopyR.string.settings_reset_app_dialog_heading),
+      subHeading = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
     )
+  }
+
+  MgoScaffold(
+    appBarTitle = stringResource(CopyR.string.settings_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    content = {
+      Text(
+        modifier = Modifier.padding(top = 8.dp),
+        text = stringResource(CopyR.string.settings_preferences_heading),
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+      )
+
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 12.dp),
+      ) {
+        SettingsListItem(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .clickable { onClickDisplaySettings() },
+          icon = Icons.Outlined.LightMode,
+          heading = CopyR.string.settings_display_heading,
+          subHeading =
+            when (viewState.appTheme) {
+              AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
+              AppTheme.LIGHT -> CopyR.string.settings_display_light
+              AppTheme.DARK -> CopyR.string.settings_display_dark
+            },
+        )
+        if (viewState.deviceHasBiometric) {
+          SettingsListItem(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .clickable { onClickSecuritySettings() },
+            icon = Icons.Outlined.Lock,
+            heading = CopyR.string.settings_security_heading,
+          )
+        }
+        if (viewState.isDebug) {
+          SettingsListItem(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .clickable { onClickAdvancedSettings() },
+            icon = Icons.Outlined.Code,
+            heading = CopyR.string.settings_advanced_heading,
+            subHeading = CopyR.string.settings_advanced_subheading,
+            hasDivider = false,
+          )
+        }
+      }
+
+      Text(
+        modifier = Modifier.padding(top = 32.dp),
+        text = stringResource(CopyR.string.settings_information_heading),
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+      )
+
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 12.dp),
+      ) {
+        SettingsListItem(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .clickable { onClickAboutThisAppSettings() },
+          icon = Icons.Outlined.Smartphone,
+          heading = CopyR.string.settings_about_this_app_heading,
+          hasDivider = false,
+        )
+      }
+
+      Text(
+        modifier = Modifier.padding(top = 32.dp),
+        text = stringResource(CopyR.string.settings_other_heading),
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+      )
+
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 12.dp),
+      ) {
+        SettingsListItem(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .clickable { showResetAppDialog = true },
+          icon = Icons.Outlined.RestartAlt,
+          heading = CopyR.string.settings_reset_app_heading,
+          subHeading = CopyR.string.settings_reset_app_subheading,
+          hasDivider = false,
+        )
+      }
+    },
+  )
 }
 
 @Composable
 private fun SettingsListItem(
-    icon: ImageVector,
-    @StringRes heading: Int,
-    @StringRes subHeading: Int? = null,
-    hasDivider: Boolean = true,
-    modifier: Modifier = Modifier,
+  icon: ImageVector,
+  @StringRes heading: Int,
+  @StringRes subHeading: Int? = null,
+  hasDivider: Boolean = true,
+  modifier: Modifier = Modifier,
 ) {
-    Column {
-        Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.symbolsPrimary(),
-            )
+  Column {
+    Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+      Icon(
+        imageVector = icon,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.symbolsPrimary(),
+      )
 
-            Column(modifier = Modifier.padding(start = 16.dp)) {
-                Text(
-                    text = stringResource(heading),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                if (subHeading != null) {
-                    Text(
-                        text = stringResource(subHeading),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.contentSecondary(),
-                    )
-                }
-            }
+      Column(modifier = Modifier.padding(start = 16.dp)) {
+        Text(
+          text = stringResource(heading),
+          style = MaterialTheme.typography.bodyMedium,
+        )
+        if (subHeading != null) {
+          Text(
+            text = stringResource(subHeading),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.contentSecondary(),
+          )
         }
-        if (hasDivider) {
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp),
-                color = MaterialTheme.colorScheme.borderSecondary(),
-            )
-        }
+      }
     }
+    if (hasDivider) {
+      HorizontalDivider(
+        modifier = Modifier.padding(start = 56.dp),
+        color = MaterialTheme.colorScheme.borderSecondary(),
+      )
+    }
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun SettingsHomeScreenPreview() {
-    MgoTheme {
-        SettingsScreenContent(
-            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = true),
-            onClickDisplaySettings = {},
-            onClickSecuritySettings = {},
-            onClickAdvancedSettings = {},
-            onClickAboutThisAppSettings = {},
-            onClickResetApp = {},
-        )
-    }
+  MgoTheme {
+    SettingsScreenContent(
+      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = true),
+      onClickDisplaySettings = {},
+      onClickSecuritySettings = {},
+      onClickAdvancedSettings = {},
+      onClickAboutThisAppSettings = {},
+      onClickResetApp = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun SettingsHomeScreenWithoutBiometricPreview() {
-    MgoTheme {
-        SettingsScreenContent(
-            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = false),
-            onClickDisplaySettings = {},
-            onClickSecuritySettings = {},
-            onClickAdvancedSettings = {},
-            onClickAboutThisAppSettings = {},
-            onClickResetApp = {},
-        )
-    }
+  MgoTheme {
+    SettingsScreenContent(
+      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = false),
+      onClickDisplaySettings = {},
+      onClickSecuritySettings = {},
+      onClickAdvancedSettings = {},
+      onClickAboutThisAppSettings = {},
+      onClickResetApp = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun SettingsHomeScreenWithoutDebugPreview() {
-    MgoTheme {
-        SettingsScreenContent(
-            viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = false, deviceHasBiometric = true),
-            onClickDisplaySettings = {},
-            onClickSecuritySettings = {},
-            onClickAdvancedSettings = {},
-            onClickAboutThisAppSettings = {},
-            onClickResetApp = {},
-        )
-    }
+  MgoTheme {
+    SettingsScreenContent(
+      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = false, deviceHasBiometric = true),
+      onClickDisplaySettings = {},
+      onClickSecuritySettings = {},
+      onClickAdvancedSettings = {},
+      onClickAboutThisAppSettings = {},
+      onClickResetApp = {},
+    )
+  }
 }

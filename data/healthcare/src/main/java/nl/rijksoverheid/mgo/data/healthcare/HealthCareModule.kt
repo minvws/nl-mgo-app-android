@@ -21,27 +21,27 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class HealthCareModule {
-    @Binds
-    @Singleton
-    abstract fun provideHealthCareDataStateRepository(default: DefaultHealthCareDataStateRepository): HealthCareDataStateRepository
+  @Binds
+  @Singleton
+  abstract fun provideHealthCareDataStateRepository(default: DefaultHealthCareDataStateRepository): HealthCareDataStateRepository
 
-    @Binds
-    @Singleton
-    abstract fun provideHealthCareDataStatesRepository(default: DefaultHealthCareDataStatesRepository): HealthCareDataStatesRepository
+  @Binds
+  @Singleton
+  abstract fun provideHealthCareDataStatesRepository(default: DefaultHealthCareDataStatesRepository): HealthCareDataStatesRepository
 
-    @Binds
-    @Singleton
-    abstract fun provideFhirBinaryRepository(default: DefaultFhirBinaryRepository): FhirBinaryRepository
+  @Binds
+  @Singleton
+  abstract fun provideFhirBinaryRepository(default: DefaultFhirBinaryRepository): FhirBinaryRepository
 
-    @Binds
-    @Singleton
-    abstract fun provideHealthCareUrlCreator(default: DefaultHealthCareUrlCreator): HealthCareUrlCreator
+  @Binds
+  @Singleton
+  abstract fun provideHealthCareUrlCreator(default: DefaultHealthCareUrlCreator): HealthCareUrlCreator
 
-    @Binds
-    @Singleton
-    abstract fun provideMgoResourceRepository(default: DefaultMgoResourceRepository): MgoResourceRepository
+  @Binds
+  @Singleton
+  abstract fun provideMgoResourceRepository(default: DefaultMgoResourceRepository): MgoResourceRepository
 
-    @Binds
-    @Singleton
-    abstract fun provideHealthCareDataStatesStore(default: DefaultHealthCareDataStatesStore): HealthCareDataStatesStore
+  @Binds
+  @Singleton
+  abstract fun provideHealthCareDataStatesStore(default: DefaultHealthCareDataStatesStore): HealthCareDataStatesStore
 }

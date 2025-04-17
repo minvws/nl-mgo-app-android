@@ -10,18 +10,18 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
  * @param automaticLocalisationEnabled If the automatic localisation feature is enabled.
  */
 data class HealthCategoriesScreenViewState(
-    val name: String,
-    val providers: List<MgoOrganization>,
-    val automaticLocalisationEnabled: Boolean,
+  val name: String,
+  val providers: List<MgoOrganization>,
+  val automaticLocalisationEnabled: Boolean,
 ) {
-    companion object {
-        fun initialState(
-            providers: List<MgoOrganization>,
-            automaticLocalisationEnabled: Boolean,
-        ) = HealthCategoriesScreenViewState(
-            name = "Wendy de Bruijn",
-            providers = providers,
-            automaticLocalisationEnabled = automaticLocalisationEnabled,
-        )
-    }
+  companion object {
+    fun initialState(
+      providers: List<MgoOrganization>,
+      automaticLocalisationEnabled: Boolean,
+    ) = HealthCategoriesScreenViewState(
+      name = "Wendy de Bruijn",
+      providers = providers,
+      automaticLocalisationEnabled = automaticLocalisationEnabled,
+    )
+  }
 }

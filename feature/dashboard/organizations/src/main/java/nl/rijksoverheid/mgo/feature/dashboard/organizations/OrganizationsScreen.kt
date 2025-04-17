@@ -44,200 +44,200 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun OrganizationsScreen(
-    onNavigateToHealthCategories: (organization: MgoOrganization) -> Unit,
-    onNavigateToLocalisation: () -> Unit,
+  onNavigateToHealthCategories: (organization: MgoOrganization) -> Unit,
+  onNavigateToLocalisation: () -> Unit,
 ) {
-    val viewModel: OrganizationsViewModel = hiltViewModel()
-    val viewState: OrganizationsViewState by viewModel.viewState.collectAsStateWithLifecycle()
-    OrganizationsScreenContent(
-        viewState = viewState,
-        onClickOrganization = onNavigateToHealthCategories,
-        onClickAddProvider = onNavigateToLocalisation,
-    )
+  val viewModel: OrganizationsViewModel = hiltViewModel()
+  val viewState: OrganizationsViewState by viewModel.viewState.collectAsStateWithLifecycle()
+  OrganizationsScreenContent(
+    viewState = viewState,
+    onClickOrganization = onNavigateToHealthCategories,
+    onClickAddProvider = onNavigateToLocalisation,
+  )
 }
 
 @Composable
 private fun OrganizationsScreenContent(
-    viewState: OrganizationsViewState,
-    onClickOrganization: (organization: MgoOrganization) -> Unit,
-    onClickAddProvider: () -> Unit,
+  viewState: OrganizationsViewState,
+  onClickOrganization: (organization: MgoOrganization) -> Unit,
+  onClickAddProvider: () -> Unit,
 ) {
-    val primaryButtonText =
-        when {
-            viewState.organizations.isEmpty() -> {
-                if (viewState.automaticLocalisationEnabled) {
-                    stringResource(id = CopyR.string.common_search_organizations)
-                } else {
-                    stringResource(id = CopyR.string.common_add_organizations)
-                }
-            } else -> {
-                null
-            }
+  val primaryButtonText =
+    when {
+      viewState.organizations.isEmpty() -> {
+        if (viewState.automaticLocalisationEnabled) {
+          stringResource(id = CopyR.string.common_search_organizations)
+        } else {
+          stringResource(id = CopyR.string.common_add_organizations)
         }
-    MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.organizations_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        primaryButtonText = primaryButtonText,
-        onPrimaryButtonClick = onClickAddProvider,
-        content = {
-            if (viewState.organizations.isEmpty()) {
-                NoOrganizations()
-            } else {
-                WithOrganizations(
-                    organizations = viewState.organizations,
-                    onClickOrganization = onClickOrganization,
-                    onClickAddProvider = onClickAddProvider,
-                    automaticLocalisationEnabled = viewState.automaticLocalisationEnabled,
-                )
-            }
-        },
-    )
+      } else -> {
+        null
+      }
+    }
+  MgoScaffold(
+    appBarTitle = stringResource(CopyR.string.organizations_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    primaryButtonText = primaryButtonText,
+    onPrimaryButtonClick = onClickAddProvider,
+    content = {
+      if (viewState.organizations.isEmpty()) {
+        NoOrganizations()
+      } else {
+        WithOrganizations(
+          organizations = viewState.organizations,
+          onClickOrganization = onClickOrganization,
+          onClickAddProvider = onClickAddProvider,
+          automaticLocalisationEnabled = viewState.automaticLocalisationEnabled,
+        )
+      }
+    },
+  )
 }
 
 @Composable
 private fun ColumnScope.NoOrganizations() {
-    Spacer(modifier = Modifier.weight(1f))
-    Image(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(156.dp),
-        painter = painterResource(id = R.drawable.illustration_organizations_empty),
-        contentDescription = null,
-    )
-    Text(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp),
-        text = stringResource(id = CopyR.string.common_no_organizations_heading),
-        style = MaterialTheme.typography.headlineSmall,
-        textAlign = TextAlign.Center,
-    )
-    Text(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-        text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.contentSecondary(),
-        textAlign = TextAlign.Center,
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Spacer(modifier = Modifier.weight(1f))
+  Spacer(modifier = Modifier.weight(1f))
+  Image(
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .height(156.dp),
+    painter = painterResource(id = R.drawable.illustration_organizations_empty),
+    contentDescription = null,
+  )
+  Text(
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .padding(top = 24.dp),
+    text = stringResource(id = CopyR.string.common_no_organizations_heading),
+    style = MaterialTheme.typography.headlineSmall,
+    textAlign = TextAlign.Center,
+  )
+  Text(
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .padding(top = 8.dp),
+    text = stringResource(id = CopyR.string.common_no_organizations_subheading),
+    style = MaterialTheme.typography.bodyMedium,
+    color = MaterialTheme.colorScheme.contentSecondary(),
+    textAlign = TextAlign.Center,
+  )
+  Spacer(modifier = Modifier.height(16.dp))
+  Spacer(modifier = Modifier.weight(1f))
 }
 
 @Composable
 private fun WithOrganizations(
-    organizations: List<MgoOrganization>,
-    automaticLocalisationEnabled: Boolean,
-    onClickOrganization: (organization: MgoOrganization) -> Unit,
-    onClickAddProvider: () -> Unit,
+  organizations: List<MgoOrganization>,
+  automaticLocalisationEnabled: Boolean,
+  onClickOrganization: (organization: MgoOrganization) -> Unit,
+  onClickAddProvider: () -> Unit,
 ) {
-    MgoCard(modifier = Modifier.padding(top = 2.dp)) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            organizations.forEachIndexed { index, organization ->
-                OrganizationCard(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onClickOrganization(organization) },
-                    organization = organization,
-                    hasDivider = index != organizations.lastIndex,
-                )
-            }
-        }
-    }
-
-    MgoCard(
-        modifier =
+  MgoCard(modifier = Modifier.padding(top = 2.dp)) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+      organizations.forEachIndexed { index, organization ->
+        OrganizationCard(
+          modifier =
             Modifier
-                .padding(vertical = 16.dp)
-                .clickable { onClickAddProvider() },
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-        ) {
-            val stringResource =
-                if (automaticLocalisationEnabled) CopyR.string.common_search_organizations else CopyR.string.common_add_organizations
-            Text(
-                text = stringResource(id = stringResource),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                modifier = Modifier.padding(start = 8.dp),
-                painter = painterResource(id = R.drawable.ic_add_organization),
-                tint = MaterialTheme.colorScheme.symbolsSecondary(),
-                contentDescription = null,
-            )
-        }
+              .fillMaxWidth()
+              .clickable { onClickOrganization(organization) },
+          organization = organization,
+          hasDivider = index != organizations.lastIndex,
+        )
+      }
     }
+  }
+
+  MgoCard(
+    modifier =
+      Modifier
+        .padding(vertical = 16.dp)
+        .clickable { onClickAddProvider() },
+  ) {
+    Row(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(16.dp),
+    ) {
+      val stringResource =
+        if (automaticLocalisationEnabled) CopyR.string.common_search_organizations else CopyR.string.common_add_organizations
+      Text(
+        text = stringResource(id = stringResource),
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      Spacer(modifier = Modifier.weight(1f))
+      Icon(
+        modifier = Modifier.padding(start = 8.dp),
+        painter = painterResource(id = R.drawable.ic_add_organization),
+        tint = MaterialTheme.colorScheme.symbolsSecondary(),
+        contentDescription = null,
+      )
+    }
+  }
 }
 
 @Composable
 private fun OrganizationCard(
-    organization: MgoOrganization,
-    hasDivider: Boolean,
-    modifier: Modifier = Modifier,
+  organization: MgoOrganization,
+  hasDivider: Boolean,
+  modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = organization.name,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-        if (hasDivider) {
-            Divider(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(0.33.dp)
-                        .padding(start = 16.dp),
-                color = MaterialTheme.colorScheme.borderPrimary(),
-            )
-        }
+  Column(modifier = modifier) {
+    Text(
+      modifier = Modifier.padding(16.dp),
+      text = organization.name,
+      style = MaterialTheme.typography.bodyMedium,
+    )
+    if (hasDivider) {
+      Divider(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .height(0.33.dp)
+            .padding(start = 16.dp),
+        color = MaterialTheme.colorScheme.borderPrimary(),
+      )
     }
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun OrganizationsScreenNoOrganizationsPreview() {
-    MgoTheme {
-        OrganizationsScreenContent(
-            viewState = OrganizationsViewState(organizations = listOf(), automaticLocalisationEnabled = false),
-            onClickOrganization = {},
-            onClickAddProvider = {},
-        )
-    }
+  MgoTheme {
+    OrganizationsScreenContent(
+      viewState = OrganizationsViewState(organizations = listOf(), automaticLocalisationEnabled = false),
+      onClickOrganization = {},
+      onClickAddProvider = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun OrganizationsScreenWithOrganizationsPreview() {
-    MgoTheme {
-        OrganizationsScreenContent(
-            viewState =
-                OrganizationsViewState(
-                    organizations =
-                        listOf(
-                            TEST_MGO_ORGANIZATION.copy(name = "Streekziekenhuis Willem Alexander"),
-                            TEST_MGO_ORGANIZATION.copy(name = "Huisartsenpraktijk De Haven"),
-                            TEST_MGO_ORGANIZATION.copy(name = "Fysiotherapie Centrum"),
-                            TEST_MGO_ORGANIZATION.copy(name = "Tandartsenpraktijk Tandje Erbij"),
-                            TEST_MGO_ORGANIZATION.copy(name = "Apotheek de Pillendoos"),
-                        ),
-                    automaticLocalisationEnabled = false,
-                ),
-            onClickOrganization = {},
-            onClickAddProvider = {},
-        )
-    }
+  MgoTheme {
+    OrganizationsScreenContent(
+      viewState =
+        OrganizationsViewState(
+          organizations =
+            listOf(
+              TEST_MGO_ORGANIZATION.copy(name = "Streekziekenhuis Willem Alexander"),
+              TEST_MGO_ORGANIZATION.copy(name = "Huisartsenpraktijk De Haven"),
+              TEST_MGO_ORGANIZATION.copy(name = "Fysiotherapie Centrum"),
+              TEST_MGO_ORGANIZATION.copy(name = "Tandartsenpraktijk Tandje Erbij"),
+              TEST_MGO_ORGANIZATION.copy(name = "Apotheek de Pillendoos"),
+            ),
+          automaticLocalisationEnabled = false,
+        ),
+      onClickOrganization = {},
+      onClickAddProvider = {},
+    )
+  }
 }

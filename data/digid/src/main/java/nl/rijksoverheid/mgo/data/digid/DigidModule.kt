@@ -9,15 +9,15 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 internal abstract class DigidModule {
-    @Binds
-    @ViewModelScoped
-    abstract fun provideIsDigidAuthenticated(default: DefaultIsDigidAuthenticated): IsDigidAuthenticated
+  @Binds
+  @ViewModelScoped
+  abstract fun provideIsDigidAuthenticated(default: DefaultIsDigidAuthenticated): IsDigidAuthenticated
 
-    @Binds
-    @ViewModelScoped
-    abstract fun provideSetDigidAuthenticated(default: DefaultSetDigidAuthenticated): SetDigidAuthenticated
+  @Binds
+  @ViewModelScoped
+  abstract fun provideSetDigidAuthenticated(default: DefaultSetDigidAuthenticated): SetDigidAuthenticated
 
-    @Binds
-    @ViewModelScoped
-    abstract fun provideDigidRepository(default: DefaultDigidRepository): DigidRepository
+  @Binds
+  @ViewModelScoped
+  abstract fun provideDigidRepository(default: DefaultDigidRepository): DigidRepository
 }

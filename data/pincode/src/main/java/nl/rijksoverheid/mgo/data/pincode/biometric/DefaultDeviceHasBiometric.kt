@@ -9,10 +9,10 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
  * @param biometricManager The [BiometricManager].
  */
 internal class DefaultDeviceHasBiometric(private val biometricManager: BiometricManager) : DeviceHasBiometric {
-    /**
-     * @return True if this device supports biometric login.
-     */
-    override fun invoke(): Boolean {
-        return biometricManager.canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS
-    }
+  /**
+   * @return True if this device supports biometric login.
+   */
+  override fun invoke(): Boolean {
+    return biometricManager.canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS
+  }
 }

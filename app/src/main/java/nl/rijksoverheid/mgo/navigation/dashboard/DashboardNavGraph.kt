@@ -13,29 +13,29 @@ import nl.rijksoverheid.mgo.feature.dashboard.bottombar.DashboardBottomBarScreen
  * @param rootNavController The top level nav controller.
  */
 internal fun NavGraphBuilder.addDashboardNavGraph(
-    rootNavController: NavController,
-    mainViewModel: MainViewModel,
+  rootNavController: NavController,
+  mainViewModel: MainViewModel,
 ) {
-    navigation<DashboardNavigation.Root>(DashboardNavigation.BottomBar) {
-        composable<DashboardNavigation.BottomBar> {
-            DashboardBottomBarScreen(
-                overviewStartDestination = DashboardNavigation.Overview.Root,
-                overviewNavGraph = { navController ->
-                    addDashboardOverviewNavGraph(rootNavController = rootNavController, navController = navController)
-                },
-                organizationsStartDestination = DashboardNavigation.Organizations.Root,
-                organizationsNavGraph = { navController ->
-                    addDashboardOrganizationsNavGraph(rootNavController = rootNavController, navController = navController)
-                },
-                settingsStartDestination = DashboardNavigation.Settings.Root,
-                settingsNavGraph = { navController ->
-                    addDashboardSettingsNavGraph(
-                        mainViewModel = mainViewModel,
-                        rootNavController = rootNavController,
-                        navController = navController,
-                    )
-                },
-            )
-        }
+  navigation<DashboardNavigation.Root>(DashboardNavigation.BottomBar) {
+    composable<DashboardNavigation.BottomBar> {
+      DashboardBottomBarScreen(
+        overviewStartDestination = DashboardNavigation.Overview.Root,
+        overviewNavGraph = { navController ->
+          addDashboardOverviewNavGraph(rootNavController = rootNavController, navController = navController)
+        },
+        organizationsStartDestination = DashboardNavigation.Organizations.Root,
+        organizationsNavGraph = { navController ->
+          addDashboardOrganizationsNavGraph(rootNavController = rootNavController, navController = navController)
+        },
+        settingsStartDestination = DashboardNavigation.Settings.Root,
+        settingsNavGraph = { navController ->
+          addDashboardSettingsNavGraph(
+            mainViewModel = mainViewModel,
+            rootNavController = rootNavController,
+            navController = navController,
+          )
+        },
+      )
     }
+  }
 }

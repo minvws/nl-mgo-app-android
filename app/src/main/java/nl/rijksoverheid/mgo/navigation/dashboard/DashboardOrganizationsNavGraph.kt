@@ -22,102 +22,102 @@ import nl.rijksoverheid.mgo.navigation.mgoComposableDialog
  * @param navController The nav controller used in this navigation.
  */
 fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
-    rootNavController: NavController,
-    navController: NavController,
+  rootNavController: NavController,
+  navController: NavController,
 ) {
-    navigation<DashboardNavigation.Organizations.Root>(DashboardNavigation.Organizations.List) {
-        mgoComposable<DashboardNavigation.Organizations.List>(animate = false) {
-            OrganizationsScreen(
-                onNavigateToHealthCategories = { organization ->
-                    navController.navigate(DashboardNavigation.Organizations.HealthCareCategories(organization))
-                },
-                onNavigateToLocalisation = {
-                    rootNavController.navigate(LocalisationNavigation.Root(false))
-                },
-            )
-        }
-
-        mgoComposable<DashboardNavigation.Organizations.HealthCareCategories> { backStackEntry ->
-            val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategories>()
-            HealthCategoriesScreen(
-                appBarTitle = route.organization.name,
-                subHeading = stringResource(R.string.overview_organizations_subheading),
-                organization = route.organization,
-                onNavigateToLocalisation = {
-                    rootNavController.navigate(LocalisationNavigation.Root(false))
-                },
-                onNavigateToHealthCategory = { category, filterOrganization ->
-                    navController.navigate(
-                        DashboardNavigation.Organizations.HealthCareCategory(
-                            category = category,
-                            filterOrganization = filterOrganization!!,
-                        ),
-                    )
-                },
-                onNavigateRemoveOrganization = { organization ->
-                    navController.navigate(
-                        DashboardNavigation.Organizations
-                            .RemoveOrganization(organizationId = organization.id, organizationName = organization.name),
-                    )
-                },
-                onNavigateBack = { navController.popBackStack() },
-            )
-        }
-
-        mgoComposable<DashboardNavigation.Organizations.HealthCareCategory> { backStackEntry ->
-            val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategory>()
-            HealthCategoryScreen(
-                category = route.category,
-                filterOrganization = route.filterOrganization,
-                onClickListItem = { organization, mgoResource ->
-                    navController.navigate(
-                        DashboardNavigation.Organizations.UiSchema(
-                            organization = organization,
-                            mgoResource = mgoResource,
-                            isSummary = true,
-                        ),
-                    )
-                },
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        mgoComposable<DashboardNavigation.Organizations.UiSchema> { backStackEntry ->
-            val route = backStackEntry.toRoute<DashboardNavigation.Organizations.UiSchema>()
-            UiSchemaScreen(
-                organization = route.organization,
-                mgoResource = route.mgoResource,
-                isSummary = route.isSummary,
-                onNavigateToUiSchema = { organization, mgoResource ->
-                    val uiSchema =
-                        DashboardNavigation.Organizations.UiSchema(
-                            organization = organization,
-                            mgoResource = mgoResource,
-                            isSummary = false,
-                        )
-                    navController.navigate(uiSchema)
-                },
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        mgoComposableDialog<DashboardNavigation.Organizations.RemoveOrganization> { backStackEntry ->
-            val route = backStackEntry.toRoute<DashboardNavigation.Organizations.RemoveOrganization>()
-            RemoveOrganizationScreen(
-                providerId = route.organizationId,
-                providerName = route.organizationName,
-                onNavigateBack = { navController.popBackStack() },
-                onNavigateToDashboard = {
-                    navController.popBackStack(
-                        route = DashboardNavigation.Organizations.List,
-                        inclusive = false,
-                    )
-                },
-            )
-        }
+  navigation<DashboardNavigation.Organizations.Root>(DashboardNavigation.Organizations.List) {
+    mgoComposable<DashboardNavigation.Organizations.List>(animate = false) {
+      OrganizationsScreen(
+        onNavigateToHealthCategories = { organization ->
+          navController.navigate(DashboardNavigation.Organizations.HealthCareCategories(organization))
+        },
+        onNavigateToLocalisation = {
+          rootNavController.navigate(LocalisationNavigation.Root(false))
+        },
+      )
     }
+
+    mgoComposable<DashboardNavigation.Organizations.HealthCareCategories> { backStackEntry ->
+      val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategories>()
+      HealthCategoriesScreen(
+        appBarTitle = route.organization.name,
+        subHeading = stringResource(R.string.overview_organizations_subheading),
+        organization = route.organization,
+        onNavigateToLocalisation = {
+          rootNavController.navigate(LocalisationNavigation.Root(false))
+        },
+        onNavigateToHealthCategory = { category, filterOrganization ->
+          navController.navigate(
+            DashboardNavigation.Organizations.HealthCareCategory(
+              category = category,
+              filterOrganization = filterOrganization!!,
+            ),
+          )
+        },
+        onNavigateRemoveOrganization = { organization ->
+          navController.navigate(
+            DashboardNavigation.Organizations
+              .RemoveOrganization(organizationId = organization.id, organizationName = organization.name),
+          )
+        },
+        onNavigateBack = { navController.popBackStack() },
+      )
+    }
+
+    mgoComposable<DashboardNavigation.Organizations.HealthCareCategory> { backStackEntry ->
+      val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategory>()
+      HealthCategoryScreen(
+        category = route.category,
+        filterOrganization = route.filterOrganization,
+        onClickListItem = { organization, mgoResource ->
+          navController.navigate(
+            DashboardNavigation.Organizations.UiSchema(
+              organization = organization,
+              mgoResource = mgoResource,
+              isSummary = true,
+            ),
+          )
+        },
+        onNavigateBack = {
+          navController.popBackStack()
+        },
+      )
+    }
+
+    mgoComposable<DashboardNavigation.Organizations.UiSchema> { backStackEntry ->
+      val route = backStackEntry.toRoute<DashboardNavigation.Organizations.UiSchema>()
+      UiSchemaScreen(
+        organization = route.organization,
+        mgoResource = route.mgoResource,
+        isSummary = route.isSummary,
+        onNavigateToUiSchema = { organization, mgoResource ->
+          val uiSchema =
+            DashboardNavigation.Organizations.UiSchema(
+              organization = organization,
+              mgoResource = mgoResource,
+              isSummary = false,
+            )
+          navController.navigate(uiSchema)
+        },
+        onNavigateBack = {
+          navController.popBackStack()
+        },
+      )
+    }
+
+    mgoComposableDialog<DashboardNavigation.Organizations.RemoveOrganization> { backStackEntry ->
+      val route = backStackEntry.toRoute<DashboardNavigation.Organizations.RemoveOrganization>()
+      RemoveOrganizationScreen(
+        providerId = route.organizationId,
+        providerName = route.organizationName,
+        onNavigateBack = { navController.popBackStack() },
+        onNavigateToDashboard = {
+          navController.popBackStack(
+            route = DashboardNavigation.Organizations.List,
+            inclusive = false,
+          )
+        },
+      )
+    }
+  }
 }

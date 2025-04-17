@@ -34,126 +34,126 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun MgoBanner(
-    type: MgoBannerType,
-    heading: String,
-    subHeading: String,
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
-    buttonText: String? = null,
-    onButtonClick: (() -> Unit)? = null,
+  type: MgoBannerType,
+  heading: String,
+  subHeading: String,
+  onDismiss: () -> Unit,
+  modifier: Modifier = Modifier,
+  buttonText: String? = null,
+  onButtonClick: (() -> Unit)? = null,
 ) {
-    MgoCard(modifier = modifier) {
-        Row(modifier = Modifier.padding(12.dp)) {
-            Icon(
-                painterResource(id = type.getIcon()),
-                tint = type.getIconColor(),
-                contentDescription = null,
-            )
-            Column(
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .padding(horizontal = 8.dp),
-            ) {
-                Text(
-                    text = heading,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = subHeading,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                if (buttonText != null) {
-                    Text(
-                        modifier =
-                            Modifier.padding(top = 4.dp)
-                                .clickable { onButtonClick?.invoke() },
-                        text = buttonText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-                    )
-                }
-            }
-            Icon(
-                modifier = Modifier.clickable { onDismiss() },
-                painter = painterResource(id = R.drawable.ic_banner_close),
-                tint = MaterialTheme.colorScheme.symbolsSecondary(),
-                contentDescription = stringResource(id = CopyR.string.common_close),
-            )
+  MgoCard(modifier = modifier) {
+    Row(modifier = Modifier.padding(12.dp)) {
+      Icon(
+        painterResource(id = type.getIcon()),
+        tint = type.getIconColor(),
+        contentDescription = null,
+      )
+      Column(
+        modifier =
+          Modifier
+            .weight(1f)
+            .padding(horizontal = 8.dp),
+      ) {
+        Text(
+          text = heading,
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+        )
+        Text(
+          modifier = Modifier.padding(top = 4.dp),
+          text = subHeading,
+          style = MaterialTheme.typography.bodyMedium,
+        )
+        if (buttonText != null) {
+          Text(
+            modifier =
+              Modifier.padding(top = 4.dp)
+                .clickable { onButtonClick?.invoke() },
+            text = buttonText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+          )
         }
+      }
+      Icon(
+        modifier = Modifier.clickable { onDismiss() },
+        painter = painterResource(id = R.drawable.ic_banner_close),
+        tint = MaterialTheme.colorScheme.symbolsSecondary(),
+        contentDescription = stringResource(id = CopyR.string.common_close),
+      )
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun InfoBannerPreview() {
-    MgoTheme {
-        MgoBanner(
-            modifier = Modifier.fillMaxWidth(),
-            heading = "This is a heading",
-            subHeading = "This is a subheading",
-            type = MgoBannerType.INFO,
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoBanner(
+      modifier = Modifier.fillMaxWidth(),
+      heading = "This is a heading",
+      subHeading = "This is a subheading",
+      type = MgoBannerType.INFO,
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun InfoBannerWithButtonPreview() {
-    MgoTheme {
-        MgoBanner(
-            modifier = Modifier.fillMaxWidth(),
-            heading = "This is a heading",
-            subHeading = "This is a subheading",
-            buttonText = "Button",
-            type = MgoBannerType.INFO,
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoBanner(
+      modifier = Modifier.fillMaxWidth(),
+      heading = "This is a heading",
+      subHeading = "This is a subheading",
+      buttonText = "Button",
+      type = MgoBannerType.INFO,
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun SuccessBannerPreview() {
-    MgoTheme {
-        MgoBanner(
-            modifier = Modifier.fillMaxWidth(),
-            heading = "This is a heading",
-            subHeading = "This is a subheading",
-            type = MgoBannerType.SUCCESS,
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoBanner(
+      modifier = Modifier.fillMaxWidth(),
+      heading = "This is a heading",
+      subHeading = "This is a subheading",
+      type = MgoBannerType.SUCCESS,
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun WarningBannerPreview() {
-    MgoTheme {
-        MgoBanner(
-            modifier = Modifier.fillMaxWidth(),
-            heading = "This is a heading",
-            subHeading = "This is a subheading",
-            type = MgoBannerType.WARNING,
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoBanner(
+      modifier = Modifier.fillMaxWidth(),
+      heading = "This is a heading",
+      subHeading = "This is a subheading",
+      type = MgoBannerType.WARNING,
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun ErrorBannerPreview() {
-    MgoTheme {
-        MgoBanner(
-            modifier = Modifier.fillMaxWidth(),
-            heading = "This is a heading",
-            subHeading = "This is a subheading",
-            type = MgoBannerType.ERROR,
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoBanner(
+      modifier = Modifier.fillMaxWidth(),
+      heading = "This is a heading",
+      subHeading = "This is a subheading",
+      type = MgoBannerType.ERROR,
+      onDismiss = {},
+    )
+  }
 }

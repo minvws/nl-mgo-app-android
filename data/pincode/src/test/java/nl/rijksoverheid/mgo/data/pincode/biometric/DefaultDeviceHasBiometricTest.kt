@@ -9,31 +9,31 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 internal class DefaultDeviceHasBiometricTest {
-    @Test
-    fun `Given device has biometric support, When calling use case, Then return true`() {
-        // Given
-        val bioMetricManager = mockk<BiometricManager>()
-        every { bioMetricManager.canAuthenticate(BIOMETRIC_STRONG) } answers { BiometricManager.BIOMETRIC_SUCCESS }
-        val deviceHasBiometric = DefaultDeviceHasBiometric(bioMetricManager)
+  @Test
+  fun `Given device has biometric support, When calling use case, Then return true`() {
+    // Given
+    val bioMetricManager = mockk<BiometricManager>()
+    every { bioMetricManager.canAuthenticate(BIOMETRIC_STRONG) } answers { BiometricManager.BIOMETRIC_SUCCESS }
+    val deviceHasBiometric = DefaultDeviceHasBiometric(bioMetricManager)
 
-        // When
-        val deviceHasSupport = deviceHasBiometric.invoke()
+    // When
+    val deviceHasSupport = deviceHasBiometric.invoke()
 
-        // Then
-        assertTrue(deviceHasSupport)
-    }
+    // Then
+    assertTrue(deviceHasSupport)
+  }
 
-    @Test
-    fun `Given device has no biometric support, When calling deviceHasSupport, Then return false`() {
-        // Given
-        val bioMetricManager = mockk<BiometricManager>()
-        every { bioMetricManager.canAuthenticate(BIOMETRIC_STRONG) } answers { BiometricManager.BIOMETRIC_STATUS_UNKNOWN }
-        val deviceHasBiometric = DefaultDeviceHasBiometric(bioMetricManager)
+  @Test
+  fun `Given device has no biometric support, When calling deviceHasSupport, Then return false`() {
+    // Given
+    val bioMetricManager = mockk<BiometricManager>()
+    every { bioMetricManager.canAuthenticate(BIOMETRIC_STRONG) } answers { BiometricManager.BIOMETRIC_STATUS_UNKNOWN }
+    val deviceHasBiometric = DefaultDeviceHasBiometric(bioMetricManager)
 
-        // When
-        val deviceHasSupport = deviceHasBiometric.invoke()
+    // When
+    val deviceHasSupport = deviceHasBiometric.invoke()
 
-        // Then
-        assertFalse(deviceHasSupport)
-    }
+    // Then
+    assertFalse(deviceHasSupport)
+  }
 }

@@ -15,16 +15,16 @@ internal class DashboardScreenRobot(private val composeTestRule: ComposeTestRule
 //        assertOneListItem(composeTestRule = composeTestRule, testTag = TEST_TAG_OVERVIEW_ORGANIZATION_CARD)
 //    }
 
-    internal fun assertUpdateRequiredScreenVisible() {
-        composeTestRule.onNodeWithTag(TEST_TAG_UPDATE_REQUIRED_TITLE).assertExists()
-    }
+  internal fun assertUpdateRequiredScreenVisible() {
+    composeTestRule.onNodeWithTag(TEST_TAG_UPDATE_REQUIRED_TITLE).assertExists()
+  }
 
-    internal fun assertUpdateRequiredScreenNotVisible() {
-        composeTestRule.onNodeWithTag(TEST_TAG_UPDATE_REQUIRED_TITLE).assertDoesNotExist()
-    }
+  internal fun assertUpdateRequiredScreenNotVisible() {
+    composeTestRule.onNodeWithTag(TEST_TAG_UPDATE_REQUIRED_TITLE).assertDoesNotExist()
+  }
 
-    internal fun clickLocalisationButton(block: AddOrganizationScreenRobot.() -> Unit) {
-        composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON).performClick()
-        block(AddOrganizationScreenRobot(composeTestRule))
-    }
+  internal fun clickLocalisationButton(block: AddOrganizationScreenRobot.() -> Unit) {
+    composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON).performClick()
+    block(AddOrganizationScreenRobot(composeTestRule))
+  }
 }

@@ -20,25 +20,25 @@ import java.util.Locale
  */
 @Composable
 fun DeviceRootedDialog(show: Boolean) {
-    var showDialog by remember { mutableStateOf(show) }
-    if (showDialog) {
-        MgoAlertDialog(
-            heading = stringResource(id = R.string.launch_jailbreak_heading),
-            subHeading = stringResource(id = R.string.launch_jailbreak_subheading),
-            onDismissRequest = { showDialog = false },
-            positiveButtonText =
-                stringResource(id = R.string.common_ok)
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-            onClickPositiveButton = { showDialog = false },
-            positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-        )
-    }
+  var showDialog by remember { mutableStateOf(show) }
+  if (showDialog) {
+    MgoAlertDialog(
+      heading = stringResource(id = R.string.launch_jailbreak_heading),
+      subHeading = stringResource(id = R.string.launch_jailbreak_subheading),
+      onDismissRequest = { showDialog = false },
+      positiveButtonText =
+        stringResource(id = R.string.common_ok)
+          .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+      onClickPositiveButton = { showDialog = false },
+      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun DeviceRootedDialogPreview() {
-    MgoTheme {
-        DeviceRootedDialog(show = true)
-    }
+  MgoTheme {
+    DeviceRootedDialog(show = true)
+  }
 }

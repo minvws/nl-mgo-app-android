@@ -34,103 +34,103 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_SKIP_PIN
  */
 @Composable
 fun SettingsAdvancedScreen(onNavigateBack: () -> Unit) {
-    val viewModel = hiltViewModel<SettingsAdvancedScreenViewModel>()
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+  val viewModel = hiltViewModel<SettingsAdvancedScreenViewModel>()
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
-    SettingsAdvancedScreenContent(
-        viewState = viewState,
-        onClickListItem = { key, enabled ->
-            viewModel.setToggle(key, enabled)
-        },
-        onClickBack = onNavigateBack,
-    )
+  SettingsAdvancedScreenContent(
+    viewState = viewState,
+    onClickListItem = { key, enabled ->
+      viewModel.setToggle(key, enabled)
+    },
+    onClickBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun SettingsAdvancedScreenContent(
-    viewState: SettingsAdvancedScreenViewState,
-    onClickListItem: (key: Preferences.Key<Boolean>, enabled: Boolean) -> Unit,
-    onClickBack: () -> Unit,
+  viewState: SettingsAdvancedScreenViewState,
+  onClickListItem: (key: Preferences.Key<Boolean>, enabled: Boolean) -> Unit,
+  onClickBack: () -> Unit,
 ) {
-    MgoScaffold(
-        appBarTitle = stringResource(R.string.settings_advanced_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onClickBack,
-        isAlwaysCollapsed = true,
-        content = {
-            Column {
-                SettingsAdvancedListItem(
-                    title = "Automatische lokalisatie",
-                    enabled = viewState.automaticLocalisation,
-                    onClick = { enabled ->
-                        onClickListItem(KEY_AUTOMATIC_LOCALISATION, enabled)
-                    },
-                )
+  MgoScaffold(
+    appBarTitle = stringResource(R.string.settings_advanced_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onClickBack,
+    isAlwaysCollapsed = true,
+    content = {
+      Column {
+        SettingsAdvancedListItem(
+          title = "Automatische lokalisatie",
+          enabled = viewState.automaticLocalisation,
+          onClick = { enabled ->
+            onClickListItem(KEY_AUTOMATIC_LOCALISATION, enabled)
+          },
+        )
 
-                SettingsAdvancedListItem(
-                    modifier = Modifier.padding(top = 16.dp),
-                    title = "Flag secure",
-                    enabled = viewState.flagSecure,
-                    onClick = { enabled ->
-                        onClickListItem(KEY_FLAG_SECURE, enabled)
-                    },
-                )
+        SettingsAdvancedListItem(
+          modifier = Modifier.padding(top = 16.dp),
+          title = "Flag secure",
+          enabled = viewState.flagSecure,
+          onClick = { enabled ->
+            onClickListItem(KEY_FLAG_SECURE, enabled)
+          },
+        )
 
-                SettingsAdvancedListItem(
-                    modifier = Modifier.padding(top = 16.dp),
-                    title = "Skip pin code",
-                    enabled = viewState.skipPinCode,
-                    onClick = { enabled ->
-                        onClickListItem(KEY_SKIP_PIN, enabled)
-                    },
-                )
-            }
-        },
-    )
+        SettingsAdvancedListItem(
+          modifier = Modifier.padding(top = 16.dp),
+          title = "Skip pin code",
+          enabled = viewState.skipPinCode,
+          onClick = { enabled ->
+            onClickListItem(KEY_SKIP_PIN, enabled)
+          },
+        )
+      }
+    },
+  )
 }
 
 @Composable
 private fun SettingsAdvancedListItem(
-    title: String,
-    enabled: Boolean,
-    onClick: (enabled: Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+  title: String,
+  enabled: Boolean,
+  onClick: (enabled: Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = modifier) {
-        Row(
-            modifier =
-                Modifier
-                    .clickable { onClick(!enabled) }
-                    .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+  MgoCard(modifier = modifier) {
+    Row(
+      modifier =
+        Modifier
+          .clickable { onClick(!enabled) }
+          .padding(16.dp),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      Text(
+        modifier = Modifier.weight(1f),
+        text = title,
+        style = MaterialTheme.typography.bodyMedium,
+      )
 
-            Switch(checked = enabled, onCheckedChange = onClick)
-        }
+      Switch(checked = enabled, onCheckedChange = onClick)
     }
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun SettingsAdvancedScreenPreview() {
-    MgoTheme {
-        SettingsAdvancedScreenContent(
-            viewState =
-                SettingsAdvancedScreenViewState(
-                    automaticLocalisation = true,
-                    flagSecure = false,
-                    skipPinCode = true,
-                ),
-            onClickListItem = { _, _ -> },
-            onClickBack = {},
-        )
-    }
+  MgoTheme {
+    SettingsAdvancedScreenContent(
+      viewState =
+        SettingsAdvancedScreenViewState(
+          automaticLocalisation = true,
+          flagSecure = false,
+          skipPinCode = true,
+        ),
+      onClickListItem = { _, _ -> },
+      onClickBack = {},
+    )
+  }
 }

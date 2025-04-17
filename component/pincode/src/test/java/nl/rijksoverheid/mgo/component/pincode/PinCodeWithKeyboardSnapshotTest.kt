@@ -6,20 +6,20 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class PinCodeWithKeyboardSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun preview() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            PinCodeWithKeyboardPreview()
-        }
+  @Test
+  fun preview() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      PinCodeWithKeyboardPreview()
     }
+  }
 
-    @Test
-    fun hint() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            PinCodeWithKeyboardAndHintPreview()
-        }
+  @Test
+  fun hint() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      PinCodeWithKeyboardAndHintPreview()
     }
+  }
 }

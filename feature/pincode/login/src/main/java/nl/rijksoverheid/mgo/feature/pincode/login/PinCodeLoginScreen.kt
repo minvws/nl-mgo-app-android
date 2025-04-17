@@ -20,13 +20,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -37,150 +37,150 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun PinCodeLoginScreen(
-    onNavigateForgotPin: () -> Unit,
-    onPinValidated: () -> Unit,
+  onNavigateForgotPin: () -> Unit,
+  onPinValidated: () -> Unit,
 ) {
-    val viewModel: PinCodeLoginScreenViewModel = hiltViewModel()
-    LaunchedEffect(Unit) {
-        viewModel.navigateToDashboard.collectLatest {
-            onPinValidated()
-        }
+  val viewModel: PinCodeLoginScreenViewModel = hiltViewModel()
+  LaunchedEffect(Unit) {
+    viewModel.navigateToDashboard.collectLatest {
+      onPinValidated()
     }
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    PinCodeLoginScreenContent(
-        viewState = viewState,
-        onBiometricLoginSuccess = {
-            onPinValidated()
-        },
-        onPinCodeEntered = { pinCode ->
-            viewModel.validatePinCode(pinCode)
-        },
-        onResetError = {
-            viewModel.resetError()
-        },
-        onNavigateForgotPin = onNavigateForgotPin,
-    )
+  }
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+  PinCodeLoginScreenContent(
+    viewState = viewState,
+    onBiometricLoginSuccess = {
+      onPinValidated()
+    },
+    onPinCodeEntered = { pinCode ->
+      viewModel.validatePinCode(pinCode)
+    },
+    onResetError = {
+      viewModel.resetError()
+    },
+    onNavigateForgotPin = onNavigateForgotPin,
+  )
 }
 
 @Composable
 private fun PinCodeLoginScreenContent(
-    viewState: PinCodeLoginScreenViewState,
-    onBiometricLoginSuccess: () -> Unit,
-    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
-    onResetError: () -> Unit,
-    onNavigateForgotPin: () -> Unit,
+  viewState: PinCodeLoginScreenViewState,
+  onBiometricLoginSuccess: () -> Unit,
+  onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+  onResetError: () -> Unit,
+  onNavigateForgotPin: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val subHeadingFocusRequester = remember { FocusRequester() }
+  val context = LocalContext.current
+  val subHeadingFocusRequester = remember { FocusRequester() }
 
-    // Immediately show the biometric prompt if it has been enabled in the onboarding before
-    LaunchedEffect(Unit) {
-        if (viewState.hasBiometric) {
-            val fragmentActivity = context.findFragmentActivity()
-            fragmentActivity.showBiometricPrompt(
-                onSuccess = onBiometricLoginSuccess,
-            )
-        }
+  // Immediately show the biometric prompt if it has been enabled in the onboarding before
+  LaunchedEffect(Unit) {
+    if (viewState.hasBiometric) {
+      val fragmentActivity = context.findFragmentActivity()
+      fragmentActivity.showBiometricPrompt(
+        onSuccess = onBiometricLoginSuccess,
+      )
     }
+  }
 
-    MgoScaffold(
-        appBarTitle = stringResource(id = CopyR.string.pincode_validation_heading),
-        appBarTitleAlign = TextAlign.Center,
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        content = {
-            Text(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .focusRequester(subHeadingFocusRequester)
-                        .focusable(),
-                text = stringResource(id = CopyR.string.pincode_confirm_subheading),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            PinCodeWithKeyboard(
-                modifier = Modifier.weight(1f),
-                onPinCodeEntered = onPinCodeEntered,
-                onResetError = onResetError,
-                error = if (viewState.error) stringResource(id = CopyR.string.pincode_validation_wrong) else null,
-                hint = stringResource(id = CopyR.string.pincode_forgot),
-                onClickHint = onNavigateForgotPin,
-                hasBiometric = viewState.hasBiometric,
-                onPressBiometric = {
-                    val fragmentActivity = context.findFragmentActivity()
-                    fragmentActivity.showBiometricPrompt(
-                        onSuccess = onBiometricLoginSuccess,
-                    )
-                },
-            )
+  MgoScaffold(
+    appBarTitle = stringResource(id = CopyR.string.pincode_validation_heading),
+    appBarTitleAlign = TextAlign.Center,
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    content = {
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .focusRequester(subHeadingFocusRequester)
+            .focusable(),
+        text = stringResource(id = CopyR.string.pincode_confirm_subheading),
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      PinCodeWithKeyboard(
+        modifier = Modifier.weight(1f),
+        onPinCodeEntered = onPinCodeEntered,
+        onResetError = onResetError,
+        error = if (viewState.error) stringResource(id = CopyR.string.pincode_validation_wrong) else null,
+        hint = stringResource(id = CopyR.string.pincode_forgot),
+        onClickHint = onNavigateForgotPin,
+        hasBiometric = viewState.hasBiometric,
+        onPressBiometric = {
+          val fragmentActivity = context.findFragmentActivity()
+          fragmentActivity.showBiometricPrompt(
+            onSuccess = onBiometricLoginSuccess,
+          )
         },
-    )
+      )
+    },
+  )
 }
 
 private fun Context.findFragmentActivity(): FragmentActivity {
-    if (this is FragmentActivity) {
-        return this
-    }
+  if (this is FragmentActivity) {
+    return this
+  }
 
-    // Sometimes when resuming the app or after configuration changes, Compose reattaches the composition tree
-    // to a new ContextThemeWrapper. We can get the activity in the base context.
-    val fragmentActivity = ((this as ContextThemeWrapper).baseContext).findFragmentActivity()
-    return fragmentActivity
+  // Sometimes when resuming the app or after configuration changes, Compose reattaches the composition tree
+  // to a new ContextThemeWrapper. We can get the activity in the base context.
+  val fragmentActivity = ((this as ContextThemeWrapper).baseContext).findFragmentActivity()
+  return fragmentActivity
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeLoginScreenPreview() {
-    MgoTheme {
-        PinCodeLoginScreenContent(
-            viewState =
-                PinCodeLoginScreenViewState(
-                    hasBiometric = true,
-                    error = false,
-                ),
-            onBiometricLoginSuccess = {},
-            onPinCodeEntered = {},
-            onResetError = {},
-            onNavigateForgotPin = {},
-        )
-    }
+  MgoTheme {
+    PinCodeLoginScreenContent(
+      viewState =
+        PinCodeLoginScreenViewState(
+          hasBiometric = true,
+          error = false,
+        ),
+      onBiometricLoginSuccess = {},
+      onPinCodeEntered = {},
+      onResetError = {},
+      onNavigateForgotPin = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeLoginScreenErrorPreview() {
-    MgoTheme {
-        PinCodeLoginScreenContent(
-            viewState =
-                PinCodeLoginScreenViewState(
-                    hasBiometric = true,
-                    error = true,
-                ),
-            onBiometricLoginSuccess = {},
-            onPinCodeEntered = {},
-            onResetError = {},
-            onNavigateForgotPin = {},
-        )
-    }
+  MgoTheme {
+    PinCodeLoginScreenContent(
+      viewState =
+        PinCodeLoginScreenViewState(
+          hasBiometric = true,
+          error = true,
+        ),
+      onBiometricLoginSuccess = {},
+      onPinCodeEntered = {},
+      onResetError = {},
+      onNavigateForgotPin = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeLoginWithoutBiometricScreenPreview() {
-    MgoTheme {
-        PinCodeLoginScreenContent(
-            viewState =
-                PinCodeLoginScreenViewState(
-                    hasBiometric = false,
-                    error = false,
-                ),
-            onBiometricLoginSuccess = {},
-            onPinCodeEntered = {},
-            onResetError = {},
-            onNavigateForgotPin = {},
-        )
-    }
+  MgoTheme {
+    PinCodeLoginScreenContent(
+      viewState =
+        PinCodeLoginScreenViewState(
+          hasBiometric = false,
+          error = false,
+        ),
+      onBiometricLoginSuccess = {},
+      onPinCodeEntered = {},
+      onResetError = {},
+      onNavigateForgotPin = {},
+    )
+  }
 }

@@ -17,8 +17,8 @@ import androidx.core.content.ContextCompat
  * @property millis The duration of the vibration in milliseconds.
  */
 enum class MgoVibrateDuration(val millis: Long) {
-    SHORT(100L),
-    LONG(350L),
+  SHORT(100L),
+  LONG(350L),
 }
 
 /**
@@ -35,15 +35,15 @@ enum class MgoVibrateDuration(val millis: Long) {
  */
 @SuppressLint("MissingPermission")
 fun Context.vibrate(duration: MgoVibrateDuration) {
-    if (hasVibrationPermission()) {
-        val vibrator = getVibrator()
-        vibrator.vibrate(
-            VibrationEffect.createOneShot(
-                duration.millis,
-                VibrationEffect.DEFAULT_AMPLITUDE,
-            ),
-        )
-    }
+  if (hasVibrationPermission()) {
+    val vibrator = getVibrator()
+    vibrator.vibrate(
+      VibrationEffect.createOneShot(
+        duration.millis,
+        VibrationEffect.DEFAULT_AMPLITUDE,
+      ),
+    )
+  }
 }
 
 /**
@@ -53,10 +53,10 @@ fun Context.vibrate(duration: MgoVibrateDuration) {
  * @return `true` if the [Manifest.permission.VIBRATE] permission is granted, `false` otherwise.
  */
 private fun Context.hasVibrationPermission() =
-    ContextCompat.checkSelfPermission(
-        this,
-        Manifest.permission.VIBRATE,
-    ) == PackageManager.PERMISSION_GRANTED
+  ContextCompat.checkSelfPermission(
+    this,
+    Manifest.permission.VIBRATE,
+  ) == PackageManager.PERMISSION_GRANTED
 
 /**
  * Retrieves the appropriate [Vibrator] instance for the device, handling API level differences.
@@ -70,12 +70,12 @@ private fun Context.hasVibrationPermission() =
  * **Note:** Suppresses the "DEPRECATION" warning for older APIs that still use the legacy vibrator service.
  */
 private fun Context.getVibrator(): Vibrator {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val vibratorManager =
-            getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-        vibratorManager.defaultVibrator
-    } else {
-        @Suppress("DEPRECATION")
-        getSystemService(VIBRATOR_SERVICE) as Vibrator
-    }
+  return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    val vibratorManager =
+      getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+    vibratorManager.defaultVibrator
+  } else {
+    @Suppress("DEPRECATION")
+    getSystemService(VIBRATOR_SERVICE) as Vibrator
+  }
 }

@@ -38,97 +38,97 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun SettingsSecurityScreen(onNavigateBack: () -> Unit) {
-    val viewModel = hiltViewModel<SettingsSecurityScreenViewModel>()
-    val biometricEnabled by viewModel.biometricEnabled.collectAsStateWithLifecycle()
+  val viewModel = hiltViewModel<SettingsSecurityScreenViewModel>()
+  val biometricEnabled by viewModel.biometricEnabled.collectAsStateWithLifecycle()
 
-    SettingsSecurityScreenContent(
-        biometricEnabled = biometricEnabled,
-        onEnableBiometric = { enabled ->
-            viewModel.setBiometricEnabled(enabled)
-        },
-        onClickBack = onNavigateBack,
-    )
+  SettingsSecurityScreenContent(
+    biometricEnabled = biometricEnabled,
+    onEnableBiometric = { enabled ->
+      viewModel.setBiometricEnabled(enabled)
+    },
+    onClickBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun SettingsSecurityScreenContent(
-    biometricEnabled: Boolean,
-    onEnableBiometric: (enabled: Boolean) -> Unit,
-    onClickBack: () -> Unit,
+  biometricEnabled: Boolean,
+  onEnableBiometric: (enabled: Boolean) -> Unit,
+  onClickBack: () -> Unit,
 ) {
-    val context = LocalContext.current
-    MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.settings_security_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onClickBack,
-        isAlwaysCollapsed = true,
-        content = {
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 8.dp),
-            ) {
-                Row(
-                    modifier =
-                        Modifier
-                            .clickable { onEnableBiometric(!biometricEnabled) }
-                            .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Fingerprint,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.symbolsPrimary(),
-                    )
+  val context = LocalContext.current
+  MgoScaffold(
+    appBarTitle = stringResource(CopyR.string.settings_security_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onClickBack,
+    isAlwaysCollapsed = true,
+    content = {
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 8.dp),
+      ) {
+        Row(
+          modifier =
+            Modifier
+              .clickable { onEnableBiometric(!biometricEnabled) }
+              .padding(16.dp),
+          verticalAlignment = Alignment.CenterVertically,
+        ) {
+          Icon(
+            imageVector = Icons.Outlined.Fingerprint,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.symbolsPrimary(),
+          )
 
-                    Column(
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .padding(horizontal = 16.dp),
-                    ) {
-                        Text(
-                            text = stringResource(CopyR.string.settings_security_biometric_heading),
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
+          Column(
+            modifier =
+              Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp),
+          ) {
+            Text(
+              text = stringResource(CopyR.string.settings_security_biometric_heading),
+              style = MaterialTheme.typography.bodyMedium,
+            )
 
-                        Text(
-                            modifier = Modifier.padding(top = 4.dp),
-                            text = stringResource(CopyR.string.settings_security_biometric_subheading),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.contentSecondary(),
-                        )
-                    }
+            Text(
+              modifier = Modifier.padding(top = 4.dp),
+              text = stringResource(CopyR.string.settings_security_biometric_subheading),
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.contentSecondary(),
+            )
+          }
 
-                    Switch(checked = biometricEnabled, onCheckedChange = { checked ->
-                        if (checked) {
-                            val fragmentActivity = context as FragmentActivity
-                            fragmentActivity.showBiometricPrompt(
-                                onSuccess = {
-                                    onEnableBiometric(true)
-                                },
-                            )
-                        } else {
-                            onEnableBiometric(false)
-                        }
-                    })
-                }
+          Switch(checked = biometricEnabled, onCheckedChange = { checked ->
+            if (checked) {
+              val fragmentActivity = context as FragmentActivity
+              fragmentActivity.showBiometricPrompt(
+                onSuccess = {
+                  onEnableBiometric(true)
+                },
+              )
+            } else {
+              onEnableBiometric(false)
             }
-        },
-    )
+          })
+        }
+      }
+    },
+  )
 }
 
 @DefaultPreviews
 @Composable
 internal fun SettingsSecurityScreenPreview() {
-    MgoTheme {
-        SettingsSecurityScreenContent(
-            biometricEnabled = true,
-            onEnableBiometric = {},
-            onClickBack = {},
-        )
-    }
+  MgoTheme {
+    SettingsSecurityScreenContent(
+      biometricEnabled = true,
+      onEnableBiometric = {},
+      onClickBack = {},
+    )
+  }
 }

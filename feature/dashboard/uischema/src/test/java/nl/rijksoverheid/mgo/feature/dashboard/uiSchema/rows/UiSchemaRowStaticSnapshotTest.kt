@@ -5,13 +5,13 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class UiSchemaRowStaticSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun preview() {
-        snapshotTestRule.snapshots {
-            UiSchemaRowStaticPreview()
-        }
+  @Test
+  fun preview() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowStaticPreview()
     }
+  }
 }

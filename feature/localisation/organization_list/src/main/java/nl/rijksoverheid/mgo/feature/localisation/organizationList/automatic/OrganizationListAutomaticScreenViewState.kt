@@ -10,16 +10,16 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
  * @param error If there was an error retrieving the health care providers.
  */
 data class OrganizationListAutomaticScreenViewState(
-    val loading: Boolean,
-    val results: List<MgoOrganization>,
-    val error: Throwable?,
+  val loading: Boolean,
+  val results: List<MgoOrganization>,
+  val error: Throwable?,
 ) {
-    companion object {
-        val initialState =
-            OrganizationListAutomaticScreenViewState(
-                loading = true,
-                results = listOf(),
-                error = null,
-            )
-    }
+  companion object {
+    val initialState =
+      OrganizationListAutomaticScreenViewState(
+        loading = true,
+        results = listOf(),
+        error = null,
+      )
+  }
 }

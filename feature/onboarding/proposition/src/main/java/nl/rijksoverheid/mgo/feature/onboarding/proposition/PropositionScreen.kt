@@ -29,89 +29,89 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun PropositionOverviewScreen(
-    onNavigateBack: () -> Unit,
-    onOnboardingFinished: () -> Unit,
+  onNavigateBack: () -> Unit,
+  onOnboardingFinished: () -> Unit,
 ) {
-    val viewModel: PropositionScreenViewModel = hiltViewModel()
-    PropositionOverviewScreenContent(
-        url = viewModel.getPrivacyUrl(),
-        onNavigateBack = onNavigateBack,
-        onClickNext = {
-            viewModel.setHasSeenOnboarding()
-            onOnboardingFinished()
-        },
-    )
+  val viewModel: PropositionScreenViewModel = hiltViewModel()
+  PropositionOverviewScreenContent(
+    url = viewModel.getPrivacyUrl(),
+    onNavigateBack = onNavigateBack,
+    onClickNext = {
+      viewModel.setHasSeenOnboarding()
+      onOnboardingFinished()
+    },
+  )
 }
 
 @Composable
 internal fun PropositionOverviewScreenContent(
-    url: String,
-    onNavigateBack: () -> Unit,
-    onClickNext: () -> Unit,
+  url: String,
+  onNavigateBack: () -> Unit,
+  onClickNext: () -> Unit,
 ) {
-    MgoScaffold(
-        appBarTitle = stringResource(id = CopyR.string.proposition_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onNavigateBack,
-        primaryButtonText = stringResource(id = CopyR.string.common_next),
-        onPrimaryButtonClick = onClickNext,
-        content = {
-            MgoHtmlText(
-                html = stringResource(id = CopyR.string.proposition_subheading, url),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            ListItem(
-                modifier = Modifier.padding(top = 16.dp),
-                icon = R.drawable.ic_privacy_overview_encrypted,
-                text = stringResource(id = CopyR.string.proposition_statement_1),
-            )
-            ListItem(
-                modifier = Modifier.padding(top = 24.dp),
-                icon = R.drawable.ic_privacy_overview_health_and_safety,
-                text = stringResource(id = CopyR.string.proposition_statement_2),
-            )
-            ListItem(
-                modifier = Modifier.padding(top = 24.dp),
-                icon = R.drawable.ic_privacy_overview_verified_user,
-                text = stringResource(id = CopyR.string.proposition_statement_3),
-            )
-            ListItem(
-                modifier = Modifier.padding(top = 24.dp),
-                icon = R.drawable.ic_privacy_overview_gpp_bad,
-                text = stringResource(id = CopyR.string.proposition_statement_4),
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        },
-    )
+  MgoScaffold(
+    appBarTitle = stringResource(id = CopyR.string.proposition_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onNavigateBack,
+    primaryButtonText = stringResource(id = CopyR.string.common_next),
+    onPrimaryButtonClick = onClickNext,
+    content = {
+      MgoHtmlText(
+        html = stringResource(id = CopyR.string.proposition_subheading, url),
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      ListItem(
+        modifier = Modifier.padding(top = 16.dp),
+        icon = R.drawable.ic_privacy_overview_encrypted,
+        text = stringResource(id = CopyR.string.proposition_statement_1),
+      )
+      ListItem(
+        modifier = Modifier.padding(top = 24.dp),
+        icon = R.drawable.ic_privacy_overview_health_and_safety,
+        text = stringResource(id = CopyR.string.proposition_statement_2),
+      )
+      ListItem(
+        modifier = Modifier.padding(top = 24.dp),
+        icon = R.drawable.ic_privacy_overview_verified_user,
+        text = stringResource(id = CopyR.string.proposition_statement_3),
+      )
+      ListItem(
+        modifier = Modifier.padding(top = 24.dp),
+        icon = R.drawable.ic_privacy_overview_gpp_bad,
+        text = stringResource(id = CopyR.string.proposition_statement_4),
+      )
+      Spacer(modifier = Modifier.height(16.dp))
+    },
+  )
 }
 
 @Composable
 private fun ListItem(
-    @DrawableRes icon: Int,
-    text: String,
-    modifier: Modifier = Modifier,
+  @DrawableRes icon: Int,
+  text: String,
+  modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier) {
-        Image(painter = painterResource(id = icon), contentDescription = null)
-        MgoHtmlText(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            html = text,
-            style = MaterialTheme.typography.bodyMedium,
-        )
-    }
+  Row(modifier = modifier) {
+    Image(painter = painterResource(id = icon), contentDescription = null)
+    MgoHtmlText(
+      modifier = Modifier.padding(horizontal = 16.dp),
+      html = text,
+      style = MaterialTheme.typography.bodyMedium,
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun PropositionScreenPreview() {
-    MgoTheme {
-        PropositionOverviewScreenContent(
-            url = "https://www.google.nl",
-            onNavigateBack = {},
-            onClickNext = {},
-        )
-    }
+  MgoTheme {
+    PropositionOverviewScreenContent(
+      url = "https://www.google.nl",
+      onNavigateBack = {},
+      onClickNext = {},
+    )
+  }
 }

@@ -11,12 +11,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 internal object LocalisationModule {
-    @Provides
-    @Singleton
-    fun provideSearchRepository(
-        loadApi: LoadApi,
-        encryptedFileStore: EncryptedFileStore,
-    ): OrganizationRepository {
-        return DefaultOrganizationRepository(loadApi = loadApi, encryptedFileStore = encryptedFileStore)
-    }
+  @Provides
+  @Singleton
+  fun provideSearchRepository(
+    loadApi: LoadApi,
+    encryptedFileStore: EncryptedFileStore,
+  ): OrganizationRepository {
+    return DefaultOrganizationRepository(loadApi = loadApi, encryptedFileStore = encryptedFileStore)
+  }
 }

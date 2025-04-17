@@ -21,32 +21,32 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
  */
 @Composable
 internal fun UiSchemaRowStatic(
-    row: UISchemaRow.Static,
-    modifier: Modifier = Modifier,
+  row: UISchemaRow.Static,
+  modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        if (row.heading != null) {
-            Text(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                text = row.heading,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.contentSecondary(),
-            )
-        }
-        Text(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
-            text = row.value,
-            style = MaterialTheme.typography.bodyMedium,
-        )
+  Column(modifier = modifier.fillMaxWidth()) {
+    if (row.heading != null) {
+      Text(
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        text = row.heading,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+      )
     }
+    Text(
+      modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
+      text = row.value,
+      style = MaterialTheme.typography.bodyMedium,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowStaticPreview() {
-    MgoTheme {
-        UiSchemaRowStatic(
-            row = UISchemaRow.Static(heading = "Heading", value = "Value"),
-        )
-    }
+  MgoTheme {
+    UiSchemaRowStatic(
+      row = UISchemaRow.Static(heading = "Heading", value = "Value"),
+    )
+  }
 }

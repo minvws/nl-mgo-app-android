@@ -5,20 +5,20 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class PinCodeConfirmScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun preview() {
-        snapshotTestRule.snapshots {
-            PinCodeConfirmScreenPreview()
-        }
+  @Test
+  fun preview() {
+    snapshotTestRule.snapshots {
+      PinCodeConfirmScreenPreview()
     }
+  }
 
-    @Test
-    fun error() {
-        snapshotTestRule.snapshots {
-            PinCodeConfirmScreenErrorPreview()
-        }
+  @Test
+  fun error() {
+    snapshotTestRule.snapshots {
+      PinCodeConfirmScreenErrorPreview()
     }
+  }
 }

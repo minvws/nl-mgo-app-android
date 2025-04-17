@@ -54,177 +54,177 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun SettingsAboutHomeScreen(
-    onNavigateToSecureUse: () -> Unit,
-    onNavigateToOpenSource: () -> Unit,
-    onNavigateToAccessibility: () -> Unit,
-    onNavigateBack: () -> Unit,
+  onNavigateToSecureUse: () -> Unit,
+  onNavigateToOpenSource: () -> Unit,
+  onNavigateToAccessibility: () -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    val viewModel = hiltViewModel<SettingsAboutHomeViewModel>()
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+  val viewModel = hiltViewModel<SettingsAboutHomeViewModel>()
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
-    SettingsAboutHomeScreenContent(
-        viewState = viewState,
-        onClickSecureUse = onNavigateToSecureUse,
-        onClickOpenSource = onNavigateToOpenSource,
-        onClickAccessibility = onNavigateToAccessibility,
-        onClickBack = onNavigateBack,
-    )
+  SettingsAboutHomeScreenContent(
+    viewState = viewState,
+    onClickSecureUse = onNavigateToSecureUse,
+    onClickOpenSource = onNavigateToOpenSource,
+    onClickAccessibility = onNavigateToAccessibility,
+    onClickBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun SettingsAboutHomeScreenContent(
-    viewState: SettingsAboutHomeScreenViewState,
-    onClickSecureUse: () -> Unit,
-    onClickOpenSource: () -> Unit,
-    onClickAccessibility: () -> Unit,
-    onClickBack: () -> Unit,
+  viewState: SettingsAboutHomeScreenViewState,
+  onClickSecureUse: () -> Unit,
+  onClickOpenSource: () -> Unit,
+  onClickAccessibility: () -> Unit,
+  onClickBack: () -> Unit,
 ) {
-    val context = LocalContext.current
-    var showFhirParserVersionDialog by remember { mutableStateOf(false) }
-    if (showFhirParserVersionDialog) {
-        MgoAlertDialog(
-            onDismissRequest = { showFhirParserVersionDialog = false },
-            positiveButtonText =
-                stringResource(CopyR.string.common_ok)
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-            positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-            onClickPositiveButton = { showFhirParserVersionDialog = false },
-            heading = stringResource(CopyR.string.settings_about_this_app_version),
-            subHeading = viewState.fhirParserVersion,
-        )
-    }
-
-    MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.settings_about_this_app_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onClickBack,
-        isAlwaysCollapsed = true,
-        content = {
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 8.dp),
-            ) {
-                Image(
-                    modifier = Modifier.align(Alignment.CenterHorizontally).padding(start = 100.dp),
-                    painter = painterResource(R.drawable.illustration_vws),
-                    contentDescription = null,
-                )
-                SettingsAboutHomeListItem(
-                    modifier =
-                        Modifier
-                            .padding(top = 16.dp)
-                            .clickable { showFhirParserVersionDialog = true },
-                    heading = CopyR.string.common_app_name,
-                    headingBold = true,
-                    subHeading =
-                        "${stringResource(CopyR.string.settings_about_this_app_version)} ${viewState.appVersionName} " +
-                            "(${viewState.appVersionCode})",
-                )
-                SettingsAboutHomeListItem(
-                    modifier = Modifier.clickable { onClickSecureUse() },
-                    heading = CopyR.string.settings_about_this_app_safety,
-                )
-                SettingsAboutHomeListItem(
-                    modifier = Modifier.clickable { onClickOpenSource() },
-                    heading = CopyR.string.settings_about_this_app_open_source,
-                )
-                SettingsAboutHomeListItem(
-                    modifier = Modifier.clickable { onClickAccessibility() },
-                    heading = CopyR.string.settings_about_this_app_accessibility,
-                    hasDivider = false,
-                )
-            }
-
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 32.dp),
-            ) {
-                val url = stringResource(viewState.privacyUrl)
-                SettingsAboutHomeListItem(
-                    modifier =
-                        Modifier.clickable {
-                            context.launchBrowser(url)
-                        },
-                    heading = CopyR.string.settings_about_this_app_privacy,
-                    hasDivider = false,
-                    icon = Icons.AutoMirrored.Default.OpenInNew,
-                )
-            }
-        },
+  val context = LocalContext.current
+  var showFhirParserVersionDialog by remember { mutableStateOf(false) }
+  if (showFhirParserVersionDialog) {
+    MgoAlertDialog(
+      onDismissRequest = { showFhirParserVersionDialog = false },
+      positiveButtonText =
+        stringResource(CopyR.string.common_ok)
+          .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      onClickPositiveButton = { showFhirParserVersionDialog = false },
+      heading = stringResource(CopyR.string.settings_about_this_app_version),
+      subHeading = viewState.fhirParserVersion,
     )
+  }
+
+  MgoScaffold(
+    appBarTitle = stringResource(CopyR.string.settings_about_this_app_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onClickBack,
+    isAlwaysCollapsed = true,
+    content = {
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 8.dp),
+      ) {
+        Image(
+          modifier = Modifier.align(Alignment.CenterHorizontally).padding(start = 100.dp),
+          painter = painterResource(R.drawable.illustration_vws),
+          contentDescription = null,
+        )
+        SettingsAboutHomeListItem(
+          modifier =
+            Modifier
+              .padding(top = 16.dp)
+              .clickable { showFhirParserVersionDialog = true },
+          heading = CopyR.string.common_app_name,
+          headingBold = true,
+          subHeading =
+            "${stringResource(CopyR.string.settings_about_this_app_version)} ${viewState.appVersionName} " +
+              "(${viewState.appVersionCode})",
+        )
+        SettingsAboutHomeListItem(
+          modifier = Modifier.clickable { onClickSecureUse() },
+          heading = CopyR.string.settings_about_this_app_safety,
+        )
+        SettingsAboutHomeListItem(
+          modifier = Modifier.clickable { onClickOpenSource() },
+          heading = CopyR.string.settings_about_this_app_open_source,
+        )
+        SettingsAboutHomeListItem(
+          modifier = Modifier.clickable { onClickAccessibility() },
+          heading = CopyR.string.settings_about_this_app_accessibility,
+          hasDivider = false,
+        )
+      }
+
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 32.dp),
+      ) {
+        val url = stringResource(viewState.privacyUrl)
+        SettingsAboutHomeListItem(
+          modifier =
+            Modifier.clickable {
+              context.launchBrowser(url)
+            },
+          heading = CopyR.string.settings_about_this_app_privacy,
+          hasDivider = false,
+          icon = Icons.AutoMirrored.Default.OpenInNew,
+        )
+      }
+    },
+  )
 }
 
 @Composable
 private fun SettingsAboutHomeListItem(
-    @StringRes heading: Int,
-    headingBold: Boolean = false,
-    icon: ImageVector? = null,
-    subHeading: String? = null,
-    hasDivider: Boolean = true,
-    modifier: Modifier = Modifier,
+  @StringRes heading: Int,
+  headingBold: Boolean = false,
+  icon: ImageVector? = null,
+  subHeading: String? = null,
+  hasDivider: Boolean = true,
+  modifier: Modifier = Modifier,
 ) {
-    Column {
-        Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Column(
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .padding(horizontal = 16.dp),
-            ) {
-                Text(
-                    text = stringResource(heading),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = if (headingBold) FontWeight.Bold else FontWeight.Normal,
-                )
-                if (subHeading != null) {
-                    Text(
-                        text = subHeading,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.contentSecondary(),
-                    )
-                }
-            }
+  Column {
+    Row(modifier = modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+      Column(
+        modifier =
+          Modifier
+            .weight(1f)
+            .padding(horizontal = 16.dp),
+      ) {
+        Text(
+          text = stringResource(heading),
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = if (headingBold) FontWeight.Bold else FontWeight.Normal,
+        )
+        if (subHeading != null) {
+          Text(
+            text = subHeading,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.contentSecondary(),
+          )
+        }
+      }
 
-            if (icon != null) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.symbolsPrimary(),
-                )
-            }
-        }
-        if (hasDivider) {
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 32.dp),
-                color = MaterialTheme.colorScheme.borderSecondary(),
-            )
-        }
+      if (icon != null) {
+        Icon(
+          imageVector = icon,
+          contentDescription = null,
+          tint = MaterialTheme.colorScheme.symbolsPrimary(),
+        )
+      }
     }
+    if (hasDivider) {
+      HorizontalDivider(
+        modifier = Modifier.padding(start = 32.dp),
+        color = MaterialTheme.colorScheme.borderSecondary(),
+      )
+    }
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun SettingsAboutHomeScreenPreview() {
-    MgoTheme {
-        SettingsAboutHomeScreenContent(
-            viewState =
-                SettingsAboutHomeScreenViewState(
-                    appVersionCode = 1,
-                    appVersionName = "1.0.0",
-                    fhirParserVersion =
-                        "{ \"version\": \"main\", \"git_ref\": \"d2c2081aefcaa7c0e8c413a1b8c654bcdcbe7705\"," +
-                            " \"created\": \"2025-03-21T16:01:38\"}",
-                    privacyUrl = 0,
-                ),
-            onClickSecureUse = {},
-            onClickOpenSource = {},
-            onClickAccessibility = {},
-            onClickBack = {},
-        )
-    }
+  MgoTheme {
+    SettingsAboutHomeScreenContent(
+      viewState =
+        SettingsAboutHomeScreenViewState(
+          appVersionCode = 1,
+          appVersionName = "1.0.0",
+          fhirParserVersion =
+            "{ \"version\": \"main\", \"git_ref\": \"d2c2081aefcaa7c0e8c413a1b8c654bcdcbe7705\"," +
+              " \"created\": \"2025-03-21T16:01:38\"}",
+          privacyUrl = 0,
+        ),
+      onClickSecureUse = {},
+      onClickOpenSource = {},
+      onClickAccessibility = {},
+      onClickBack = {},
+    )
+  }
 }

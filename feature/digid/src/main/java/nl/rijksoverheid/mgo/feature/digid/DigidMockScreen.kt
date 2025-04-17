@@ -31,47 +31,47 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun DigidMockScreen(onNavigateToLocalisation: () -> Unit) {
-    MgoScaffold(
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        primaryButtonText = stringResource(id = CopyR.string.common_next),
-        onPrimaryButtonClick = onNavigateToLocalisation,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = R.drawable.illustration_mock),
-            contentDescription = null,
-        )
+  MgoScaffold(
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    primaryButtonText = stringResource(id = CopyR.string.common_next),
+    onPrimaryButtonClick = onNavigateToLocalisation,
+  ) {
+    Image(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+          .align(Alignment.CenterHorizontally),
+      painter = painterResource(id = R.drawable.illustration_mock),
+      contentDescription = null,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 32.dp),
-            text = stringResource(id = CopyR.string.login_info_heading),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-        )
+    Text(
+      modifier = Modifier.padding(top = 32.dp),
+      text = stringResource(id = CopyR.string.login_info_heading),
+      style = MaterialTheme.typography.headlineLarge,
+      fontWeight = FontWeight.Bold,
+    )
 
-        MgoHtmlText(
-            modifier = Modifier.padding(top = 16.dp),
-            html = stringResource(id = CopyR.string.login_info_subheading),
-            style = MaterialTheme.typography.bodyMedium,
-        )
+    MgoHtmlText(
+      modifier = Modifier.padding(top = 16.dp),
+      html = stringResource(id = CopyR.string.login_info_subheading),
+      style = MaterialTheme.typography.bodyMedium,
+    )
 
-        Spacer(modifier = Modifier.height(16.dp))
-    }
+    Spacer(modifier = Modifier.height(16.dp))
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun DigidMockScreenPreview() {
-    MgoTheme {
-        DigidMockScreen(
-            onNavigateToLocalisation = {},
-        )
-    }
+  MgoTheme {
+    DigidMockScreen(
+      onNavigateToLocalisation = {},
+    )
+  }
 }

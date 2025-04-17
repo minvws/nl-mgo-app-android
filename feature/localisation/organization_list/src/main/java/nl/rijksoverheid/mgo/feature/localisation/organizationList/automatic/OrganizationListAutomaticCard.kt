@@ -44,124 +44,124 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 internal fun OrganizationListAutomaticCard(
-    organization: MgoOrganization,
-    cardState: OrganizationSearchCardState,
-    onCheckedChange: (checked: Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+  organization: MgoOrganization,
+  cardState: OrganizationSearchCardState,
+  onCheckedChange: (checked: Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val cardBackgroundColor =
-        when (cardState) {
-            OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
-            else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
-        }
-    MgoCard(modifier = modifier) {
-        Row(
-            modifier =
-                Modifier
-                    .background(cardBackgroundColor)
-                    .clickable(enabled = cardState != OrganizationSearchCardState.NOT_SUPPORTED) {
-                        val isChecked = cardState == OrganizationSearchCardState.ADDED
-                        onCheckedChange(!isChecked)
-                    }
-                    .padding(12.dp)
-                    .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = organization.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                val address = organization.address
-                if (address != null) {
-                    Text(
-                        modifier = Modifier.padding(top = 4.dp),
-                        text = address,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-                when (cardState) {
-                    OrganizationSearchCardState.ADD -> {}
-                    OrganizationSearchCardState.ADDED -> {}
-                    OrganizationSearchCardState.NOT_SUPPORTED -> {
-                        AdditionalText(
-                            text = CopyR.string.add_organization_not_participating,
-                            icon = R.drawable.ic_search_result_card_not_supported,
-                            contentColor = MaterialTheme.colorScheme.sentimentInformative(),
-                            modifier = Modifier.padding(top = 8.dp),
-                        )
-                    }
-                }
-            }
-            if (cardState != OrganizationSearchCardState.NOT_SUPPORTED) {
-                MgoCheckbox(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    checked = cardState == OrganizationSearchCardState.ADDED,
-                    onCheckedChange = onCheckedChange,
-                )
-            }
-        }
+  val cardBackgroundColor =
+    when (cardState) {
+      OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
+      else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
     }
+  MgoCard(modifier = modifier) {
+    Row(
+      modifier =
+        Modifier
+          .background(cardBackgroundColor)
+          .clickable(enabled = cardState != OrganizationSearchCardState.NOT_SUPPORTED) {
+            val isChecked = cardState == OrganizationSearchCardState.ADDED
+            onCheckedChange(!isChecked)
+          }
+          .padding(12.dp)
+          .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+    ) {
+      Column(modifier = Modifier.weight(1f)) {
+        Text(
+          text = organization.name,
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+        )
+        val address = organization.address
+        if (address != null) {
+          Text(
+            modifier = Modifier.padding(top = 4.dp),
+            text = address,
+            style = MaterialTheme.typography.bodyMedium,
+          )
+        }
+        when (cardState) {
+          OrganizationSearchCardState.ADD -> {}
+          OrganizationSearchCardState.ADDED -> {}
+          OrganizationSearchCardState.NOT_SUPPORTED -> {
+            AdditionalText(
+              text = CopyR.string.add_organization_not_participating,
+              icon = R.drawable.ic_search_result_card_not_supported,
+              contentColor = MaterialTheme.colorScheme.sentimentInformative(),
+              modifier = Modifier.padding(top = 8.dp),
+            )
+          }
+        }
+      }
+      if (cardState != OrganizationSearchCardState.NOT_SUPPORTED) {
+        MgoCheckbox(
+          modifier = Modifier.align(Alignment.CenterVertically),
+          checked = cardState == OrganizationSearchCardState.ADDED,
+          onCheckedChange = onCheckedChange,
+        )
+      }
+    }
+  }
 }
 
 @Composable
 private fun AdditionalText(
-    @StringRes text: Int,
-    @DrawableRes icon: Int,
-    contentColor: Color,
-    modifier: Modifier = Modifier,
+  @StringRes text: Int,
+  @DrawableRes icon: Int,
+  contentColor: Color,
+  modifier: Modifier = Modifier,
 ) {
-    CompositionLocalProvider(LocalContentColor provides contentColor) {
-        Row(modifier = modifier) {
-            Icon(
-                painter = painterResource(id = icon),
-                contentDescription = null,
-            )
-            Text(
-                modifier = Modifier.padding(start = 6.dp),
-                text = stringResource(text),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-            )
-        }
+  CompositionLocalProvider(LocalContentColor provides contentColor) {
+    Row(modifier = modifier) {
+      Icon(
+        painter = painterResource(id = icon),
+        contentDescription = null,
+      )
+      Text(
+        modifier = Modifier.padding(start = 6.dp),
+        text = stringResource(text),
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+      )
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun OrganizationListAutomaticCardAddPreview() {
-    MgoTheme {
-        OrganizationListAutomaticCard(
-            organization = TEST_MGO_ORGANIZATION,
-            onCheckedChange = {},
-            modifier = Modifier.padding(all = 16.dp),
-            cardState = OrganizationSearchCardState.ADD,
-        )
-    }
+  MgoTheme {
+    OrganizationListAutomaticCard(
+      organization = TEST_MGO_ORGANIZATION,
+      onCheckedChange = {},
+      modifier = Modifier.padding(all = 16.dp),
+      cardState = OrganizationSearchCardState.ADD,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun OrganizationListAutomaticCardAddedPreview() {
-    MgoTheme {
-        OrganizationListAutomaticCard(
-            organization = TEST_MGO_ORGANIZATION.copy(added = true),
-            onCheckedChange = {},
-            modifier = Modifier.padding(all = 16.dp),
-            cardState = OrganizationSearchCardState.ADDED,
-        )
-    }
+  MgoTheme {
+    OrganizationListAutomaticCard(
+      organization = TEST_MGO_ORGANIZATION.copy(added = true),
+      onCheckedChange = {},
+      modifier = Modifier.padding(all = 16.dp),
+      cardState = OrganizationSearchCardState.ADDED,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun OrganizationAutomaticSearchCardNotSupportedPreview() {
-    MgoTheme {
-        OrganizationListAutomaticCard(
-            organization = TEST_MGO_ORGANIZATION.copy(added = true),
-            onCheckedChange = {},
-            modifier = Modifier.padding(all = 16.dp),
-            cardState = OrganizationSearchCardState.NOT_SUPPORTED,
-        )
-    }
+  MgoTheme {
+    OrganizationListAutomaticCard(
+      organization = TEST_MGO_ORGANIZATION.copy(added = true),
+      onCheckedChange = {},
+      modifier = Modifier.padding(all = 16.dp),
+      cardState = OrganizationSearchCardState.NOT_SUPPORTED,
+    )
+  }
 }

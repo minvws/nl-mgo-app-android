@@ -5,27 +5,27 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class PinCodeLoginScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun preview() {
-        snapshotTestRule.snapshots {
-            PinCodeLoginScreenPreview()
-        }
+  @Test
+  fun preview() {
+    snapshotTestRule.snapshots {
+      PinCodeLoginScreenPreview()
     }
+  }
 
-    @Test
-    fun withoutBiometric() {
-        snapshotTestRule.snapshots {
-            PinCodeLoginWithoutBiometricScreenPreview()
-        }
+  @Test
+  fun withoutBiometric() {
+    snapshotTestRule.snapshots {
+      PinCodeLoginWithoutBiometricScreenPreview()
     }
+  }
 
-    @Test
-    fun error() {
-        snapshotTestRule.snapshots {
-            PinCodeLoginScreenErrorPreview()
-        }
+  @Test
+  fun error() {
+    snapshotTestRule.snapshots {
+      PinCodeLoginScreenErrorPreview()
     }
+  }
 }

@@ -32,104 +32,118 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 internal fun Keyboard(
-    onPressNumber: (number: Int) -> Unit,
-    onPressBackspace: () -> Unit,
-    modifier: Modifier = Modifier,
-    hasBiometric: Boolean = false,
-    onPressBiometric: (() -> Unit)? = null,
+  onPressNumber: (number: Int) -> Unit,
+  onPressBackspace: () -> Unit,
+  modifier: Modifier = Modifier,
+  hasBiometric: Boolean = false,
+  onPressBiometric: (() -> Unit)? = null,
 ) {
-    Box(modifier = modifier) {
-        Column(
-            modifier =
-                modifier
-                    .wrapContentWidth()
-                    .height(IntrinsicSize.Min),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemNumberInstance(number = 1, onPressNumber = onPressNumber)
-                KeyboardItemNumberInstance(number = 2, onPressNumber = onPressNumber)
-                KeyboardItemNumberInstance(number = 3, onPressNumber = onPressNumber)
-            }
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemNumberInstance(number = 4, onPressNumber = onPressNumber)
-                KeyboardItemNumberInstance(number = 5, onPressNumber = onPressNumber)
-                KeyboardItemNumberInstance(number = 6, onPressNumber = onPressNumber)
-            }
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                KeyboardItemNumberInstance(number = 7, onPressNumber = onPressNumber)
-                KeyboardItemNumberInstance(number = 8, onPressNumber = onPressNumber)
-                KeyboardItemNumberInstance(number = 9, onPressNumber = onPressNumber)
-            }
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                val biometricIconAlpha = if (hasBiometric) 1f else 0f
-                val biometricContentDescriptionLabel = stringResource(CopyR.string.pincode_biometric_voiceover)
-                KeyboardItemIconInstance(
-                    modifier =
-                        Modifier
-                            .alpha(biometricIconAlpha)
-                            .semantics { contentDescription = biometricContentDescriptionLabel },
-                    icon = R.drawable.ic_keyboard_fingerprint,
-                    onPressIcon = { onPressBiometric?.invoke() },
-                )
-                KeyboardItemNumberInstance(number = 0, onPressNumber = onPressNumber)
+  Box(modifier = modifier) {
+    Column(
+      modifier =
+        modifier
+          .wrapContentWidth()
+          .height(IntrinsicSize.Min),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      Row(
+        modifier = Modifier.weight(1f),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        KeyboardItemNumberInstance(number = 1, onPressNumber = onPressNumber)
+        KeyboardItemNumberInstance(number = 2, onPressNumber = onPressNumber)
+        KeyboardItemNumberInstance(number = 3, onPressNumber = onPressNumber)
+      }
+      Row(
+        modifier = Modifier.weight(1f),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        KeyboardItemNumberInstance(number = 4, onPressNumber = onPressNumber)
+        KeyboardItemNumberInstance(number = 5, onPressNumber = onPressNumber)
+        KeyboardItemNumberInstance(number = 6, onPressNumber = onPressNumber)
+      }
+      Row(
+        modifier = Modifier.weight(1f),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        KeyboardItemNumberInstance(number = 7, onPressNumber = onPressNumber)
+        KeyboardItemNumberInstance(number = 8, onPressNumber = onPressNumber)
+        KeyboardItemNumberInstance(number = 9, onPressNumber = onPressNumber)
+      }
+      Row(
+        modifier = Modifier.weight(1f),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        val biometricIconAlpha = if (hasBiometric) 1f else 0f
+        val biometricContentDescriptionLabel =
+          stringResource(CopyR.string.pincode_biometric_voiceover)
+        KeyboardItemIconInstance(
+          modifier =
+            Modifier
+              .alpha(biometricIconAlpha)
+              .semantics { contentDescription = biometricContentDescriptionLabel },
+          icon = R.drawable.ic_keyboard_fingerprint,
+          onPressIcon = { onPressBiometric?.invoke() },
+        )
+        KeyboardItemNumberInstance(number = 0, onPressNumber = onPressNumber)
 
-                val backspaceContentDescriptionLabel = stringResource(CopyR.string.pincode_erase_voiceover)
-                KeyboardItemIconInstance(
-                    modifier =
-                        Modifier
-                            .semantics { contentDescription = backspaceContentDescriptionLabel },
-                    icon = R.drawable.ic_keyboard_backspace,
-                    onPressIcon = { onPressBackspace() },
-                )
-            }
-        }
+        val backspaceContentDescriptionLabel =
+          stringResource(CopyR.string.pincode_erase_voiceover)
+        KeyboardItemIconInstance(
+          modifier =
+            Modifier
+              .semantics { contentDescription = backspaceContentDescriptionLabel },
+          icon = R.drawable.ic_keyboard_backspace,
+          onPressIcon = { onPressBackspace() },
+        )
+      }
     }
+  }
 }
 
 @Composable
 private fun RowScope.KeyboardItemNumberInstance(
-    number: Int,
-    onPressNumber: (number: Int) -> Unit,
+  number: Int,
+  onPressNumber: (number: Int) -> Unit,
 ) {
-    KeyboardItemNumber(
-        modifier =
-            Modifier
-                .weight(1f)
-                .aspectRatio(2.25f),
-        onClick = { onPressNumber(number) },
-        number = number,
-    )
+  KeyboardItemNumber(
+    modifier =
+      Modifier
+        .weight(1f)
+        .aspectRatio(2.25f),
+    onClick = { onPressNumber(number) },
+    number = number,
+  )
 }
 
 @Composable
 private fun RowScope.KeyboardItemIconInstance(
-    @DrawableRes icon: Int,
-    onPressIcon: () -> Unit,
-    modifier: Modifier = Modifier,
+  @DrawableRes icon: Int,
+  onPressIcon: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    KeyboardItemIcon(
-        modifier =
-            modifier
-                .weight(1f)
-                .aspectRatio(2.25f),
-        onClick = onPressIcon,
-        icon = icon,
-    )
+  KeyboardItemIcon(
+    modifier =
+      modifier
+        .weight(1f)
+        .aspectRatio(2.25f),
+    onClick = onPressIcon,
+    icon = icon,
+  )
 }
 
 @PreviewLightDark
 @Composable
 internal fun KeyboardPreview() {
-    MgoTheme {
-        Keyboard(onPressNumber = { }, onPressBackspace = {})
-    }
+  MgoTheme {
+    Keyboard(onPressNumber = { }, onPressBackspace = {})
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun KeyboardWithBiometricPreview() {
-    MgoTheme {
-        Keyboard(onPressNumber = { }, onPressBackspace = {}, hasBiometric = true)
-    }
+  MgoTheme {
+    Keyboard(onPressNumber = { }, onPressBackspace = {}, hasBiometric = true)
+  }
 }

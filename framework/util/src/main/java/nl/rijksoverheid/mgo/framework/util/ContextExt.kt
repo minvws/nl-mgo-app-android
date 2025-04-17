@@ -20,7 +20,7 @@ import java.io.File
 @SuppressLint("DiscouragedApi") // Suppresses the warning for using getIdentifier
 @StringRes
 fun Context.getStringResourceByName(aString: String): Int {
-    return resources.getIdentifier(aString, "string", packageName)
+  return resources.getIdentifier(aString, "string", packageName)
 }
 
 /**
@@ -33,26 +33,26 @@ fun Context.getStringResourceByName(aString: String): Int {
  * @param contentType The MIME type of the file (e.g., "application/pdf", "image/png").
  */
 fun Context.shareFile(
-    file: File,
-    contentType: String,
+  file: File,
+  contentType: String,
 ) {
-    // Generate a content URI for the file using FileProvider
-    val attachmentUri: Uri =
-        FileProvider.getUriForFile(
-            this,
-            "${this.packageName}.fileprovider", // Matches the provider authority in AndroidManifest.xml
-            file,
-        )
-
-    // Create an intent to view or share the file
-    val shareIntent =
-        Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(attachmentUri, contentType) // Set the file URI and MIME type
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant temporary read permission to the receiving app
-        }
-
-    // Start an activity to open the file using a compatible app
-    this.startActivity(
-        Intent.createChooser(shareIntent, "Open File"), // Show a chooser dialog to select an app
+  // Generate a content URI for the file using FileProvider
+  val attachmentUri: Uri =
+    FileProvider.getUriForFile(
+      this,
+      "${this.packageName}.fileprovider", // Matches the provider authority in AndroidManifest.xml
+      file,
     )
+
+  // Create an intent to view or share the file
+  val shareIntent =
+    Intent(Intent.ACTION_VIEW).apply {
+      setDataAndType(attachmentUri, contentType) // Set the file URI and MIME type
+      addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant temporary read permission to the receiving app
+    }
+
+  // Start an activity to open the file using a compatible app
+  this.startActivity(
+    Intent.createChooser(shareIntent, "Open File"), // Show a chooser dialog to select an app
+  )
 }

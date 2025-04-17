@@ -1,12 +1,12 @@
 plugins {
-    id("AndroidDataPlugin")
+  id("AndroidDataPlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.data.api.vad"
+  namespace = "nl.rijksoverheid.mgo.data.api.vad"
 }
 
 dependencies {
-    implementation(libs.retrofit.kotlinx.serialization.converter)
-    implementation(projects.framework.environment)
+  implementation(libs.retrofit.kotlinx.serialization.converter)
+  implementation(projects.framework.environment)
 }

@@ -6,5 +6,5 @@ package nl.rijksoverheid.mgo.feature.digid
  * @param loading If the authentication process is loading.
  */
 internal data class DigidLoginScreenViewState(
-    val loading: Boolean,
+  val loading: Boolean,
 )

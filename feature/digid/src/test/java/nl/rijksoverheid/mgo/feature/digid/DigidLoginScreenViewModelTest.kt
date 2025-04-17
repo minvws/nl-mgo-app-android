@@ -2,101 +2,101 @@ package nl.rijksoverheid.mgo.feature.digid
 
 import app.cash.turbine.test
 import app.cash.turbine.turbineScope
+import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.digid.TestDigidRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.util.base64.TestBase64Util
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import kotlinx.coroutines.test.runTest
 
 internal class DigidLoginScreenViewModelTest {
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
-    private val digidRepository = TestDigidRepository()
-    private val base64Util = TestBase64Util()
-    private val viewModel =
-        DigidLoginScreenViewModel(
-            digidRepository = digidRepository,
-            base64Util = base64Util,
-        )
+  private val digidRepository = TestDigidRepository()
+  private val base64Util = TestBase64Util()
+  private val viewModel =
+    DigidLoginScreenViewModel(
+      digidRepository = digidRepository,
+      base64Util = base64Util,
+    )
 
-    @Test
-    fun testLoginSuccess() =
-        runTest {
-            turbineScope {
-                val navigateToUrlFlow = viewModel.navigateToUrl.testIn(backgroundScope)
+  @Test
+  fun testLoginSuccess() =
+    runTest {
+      turbineScope {
+        val navigateToUrlFlow = viewModel.navigateToUrl.testIn(backgroundScope)
 
-                // Given: login success
-                digidRepository.setLoginResult(Result.success("https://www.google.com"))
+        // Given: login success
+        digidRepository.setLoginResult(Result.success("https://www.google.com"))
 
-                // When: Calling login
-                viewModel.login()
+        // When: Calling login
+        viewModel.login()
 
-                // Then: View state is updated
-                viewModel.viewState.test {
-                    assertEquals(DigidLoginScreenViewState(loading = false), awaitItem())
-                }
-
-                // Then: Navigate to url
-                assertEquals("https://www.google.com", navigateToUrlFlow.awaitItem())
-            }
+        // Then: View state is updated
+        viewModel.viewState.test {
+          assertEquals(DigidLoginScreenViewState(loading = false), awaitItem())
         }
 
-    @Test
-    fun testLoginFailure() =
-        runTest {
-            turbineScope {
-                val navigateToUrlFlow = viewModel.navigateToUrl.testIn(backgroundScope)
+        // Then: Navigate to url
+        assertEquals("https://www.google.com", navigateToUrlFlow.awaitItem())
+      }
+    }
 
-                // Given: login success
-                digidRepository.setLoginResult(Result.failure(IllegalStateException("Something went wrong")))
+  @Test
+  fun testLoginFailure() =
+    runTest {
+      turbineScope {
+        val navigateToUrlFlow = viewModel.navigateToUrl.testIn(backgroundScope)
 
-                // When: Calling login
-                viewModel.login()
+        // Given: login success
+        digidRepository.setLoginResult(Result.failure(IllegalStateException("Something went wrong")))
 
-                // Then: View state is updated
-                viewModel.viewState.test {
-                    assertEquals(DigidLoginScreenViewState(loading = false), awaitItem())
-                }
+        // When: Calling login
+        viewModel.login()
 
-                // Then: Do not navigate to url
-                navigateToUrlFlow.expectNoEvents()
-            }
+        // Then: View state is updated
+        viewModel.viewState.test {
+          assertEquals(DigidLoginScreenViewState(loading = false), awaitItem())
         }
 
-    @Test
-    fun testHandleDeeplinkSuccess() =
-        runTest {
-            turbineScope {
-                val loginFinishedFlow = viewModel.loginFinished.testIn(backgroundScope)
+        // Then: Do not navigate to url
+        navigateToUrlFlow.expectNoEvents()
+      }
+    }
 
-                // Given: valid uri string
-                val uriString = "mgo://app?userinfo=user"
+  @Test
+  fun testHandleDeeplinkSuccess() =
+    runTest {
+      turbineScope {
+        val loginFinishedFlow = viewModel.loginFinished.testIn(backgroundScope)
 
-                // When: Calling handleDeeplink
-                viewModel.handleDeeplink(uriString)
+        // Given: valid uri string
+        val uriString = "mgo://app?userinfo=user"
 
-                // Then: Login is finished
-                assertEquals(Unit, loginFinishedFlow.awaitItem())
-            }
-        }
+        // When: Calling handleDeeplink
+        viewModel.handleDeeplink(uriString)
 
-    @Test
-    fun testHandleDeeplinkFailure() =
-        runTest {
-            turbineScope {
-                val loginFinishedFlow = viewModel.loginFinished.testIn(backgroundScope)
+        // Then: Login is finished
+        assertEquals(Unit, loginFinishedFlow.awaitItem())
+      }
+    }
 
-                // Given: valid uri string
-                val uriString = null
+  @Test
+  fun testHandleDeeplinkFailure() =
+    runTest {
+      turbineScope {
+        val loginFinishedFlow = viewModel.loginFinished.testIn(backgroundScope)
 
-                // When: Calling handleDeeplink
-                viewModel.handleDeeplink(uriString)
+        // Given: valid uri string
+        val uriString = null
 
-                // Then: Login is not finished
-                loginFinishedFlow.expectNoEvents()
-            }
-        }
+        // When: Calling handleDeeplink
+        viewModel.handleDeeplink(uriString)
+
+        // Then: Login is not finished
+        loginFinishedFlow.expectNoEvents()
+      }
+    }
 }

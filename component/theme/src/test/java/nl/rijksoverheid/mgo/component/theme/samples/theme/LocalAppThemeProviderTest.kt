@@ -13,18 +13,18 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 internal class LocalAppThemeProviderTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
+  @get:Rule
+  val composeTestRule = createComposeRule()
 
-    @Test
-    fun testCompositionLocal() {
-        composeTestRule.setContent {
-            CompositionLocalProvider(
-                LocalAppThemeProvider provides DefaultLocalAppThemeProvider(AppTheme.SYSTEM),
-            ) {
-                val appTheme = LocalAppThemeProvider.current.appTheme
-                assertEquals(AppTheme.SYSTEM, appTheme)
-            }
-        }
+  @Test
+  fun testCompositionLocal() {
+    composeTestRule.setContent {
+      CompositionLocalProvider(
+        LocalAppThemeProvider provides DefaultLocalAppThemeProvider(AppTheme.SYSTEM),
+      ) {
+        val appTheme = LocalAppThemeProvider.current.appTheme
+        assertEquals(AppTheme.SYSTEM, appTheme)
+      }
     }
+  }
 }

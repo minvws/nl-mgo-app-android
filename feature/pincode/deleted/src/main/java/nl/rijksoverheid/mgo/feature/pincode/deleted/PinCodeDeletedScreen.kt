@@ -30,47 +30,47 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun PinCodeDeletedScreen(onNavigateToPinCodeCreate: () -> Unit) {
-    MgoScaffold(
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        primaryButtonText = stringResource(id = CopyR.string.account_removed_action),
-        onPrimaryButtonClick = onNavigateToPinCodeCreate,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = R.drawable.illustration_header),
-            contentDescription = null,
-        )
+  MgoScaffold(
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    primaryButtonText = stringResource(id = CopyR.string.account_removed_action),
+    onPrimaryButtonClick = onNavigateToPinCodeCreate,
+  ) {
+    Image(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+          .align(Alignment.CenterHorizontally),
+      painter = painterResource(id = R.drawable.illustration_header),
+      contentDescription = null,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 32.dp),
-            text = stringResource(id = CopyR.string.account_removed_heading),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-        )
+    Text(
+      modifier = Modifier.padding(top = 32.dp),
+      text = stringResource(id = CopyR.string.account_removed_heading),
+      style = MaterialTheme.typography.headlineLarge,
+      fontWeight = FontWeight.Bold,
+    )
 
-        MgoHtmlText(
-            modifier = Modifier.padding(top = 16.dp),
-            html = stringResource(id = CopyR.string.account_removed_subheading),
-            style = MaterialTheme.typography.bodyMedium,
-        )
+    MgoHtmlText(
+      modifier = Modifier.padding(top = 16.dp),
+      html = stringResource(id = CopyR.string.account_removed_subheading),
+      style = MaterialTheme.typography.bodyMedium,
+    )
 
-        Spacer(modifier = Modifier.height(16.dp))
-    }
+    Spacer(modifier = Modifier.height(16.dp))
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeDeletedScreenPreview() {
-    MgoTheme {
-        PinCodeDeletedScreen(
-            onNavigateToPinCodeCreate = {},
-        )
-    }
+  MgoTheme {
+    PinCodeDeletedScreen(
+      onNavigateToPinCodeCreate = {},
+    )
+  }
 }

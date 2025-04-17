@@ -9,6 +9,6 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
  * @param sections A list of [UISchemaSection].
  */
 internal data class UiSchemaScreenViewState(
-    val toolbarTitle: String,
-    val sections: List<UISchemaSection>,
+  val toolbarTitle: String,
+  val sections: List<UISchemaSection>,
 )

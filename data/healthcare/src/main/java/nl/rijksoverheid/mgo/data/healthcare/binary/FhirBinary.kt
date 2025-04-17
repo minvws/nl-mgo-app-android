@@ -9,12 +9,12 @@ import java.io.File
  * @param contentType The content type of the file.
  */
 data class FhirBinary(
-    val file: File,
-    val contentType: String,
+  val file: File,
+  val contentType: String,
 )
 
 val TEST_FHIR_BINARY =
-    FhirBinary(
-        file = File(""),
-        contentType = "application/pdf",
-    )
+  FhirBinary(
+    file = File(""),
+    contentType = "application/pdf",
+  )

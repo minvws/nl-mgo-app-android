@@ -17,17 +17,17 @@ import androidx.browser.customtabs.CustomTabsIntent
  * @param url The web address to open.
  */
 fun Context.launchBrowser(url: String) {
-    try {
-        // Attempt to open the URL using Chrome Custom Tabs
-        CustomTabsIntent.Builder().build().also { intent ->
-            intent.launchUrl(this, Uri.parse(url))
-        }
-    } catch (exception: ActivityNotFoundException) {
-        try {
-            // If Chrome is unavailable, fall back to a regular web browser
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        } catch (e: Exception) {
-            // Do nothing if this fails
-        }
+  try {
+    // Attempt to open the URL using Chrome Custom Tabs
+    CustomTabsIntent.Builder().build().also { intent ->
+      intent.launchUrl(this, Uri.parse(url))
     }
+  } catch (exception: ActivityNotFoundException) {
+    try {
+      // If Chrome is unavailable, fall back to a regular web browser
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    } catch (e: Exception) {
+      // Do nothing if this fails
+    }
+  }
 }

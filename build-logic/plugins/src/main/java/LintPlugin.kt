@@ -5,22 +5,20 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 
 class LintPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        target.configurePlugins()
-        target.configureKtLint()
-    }
+  override fun apply(target: Project) {
+    target.configurePlugins()
+    target.configureKtLint()
+  }
 
-    private fun Project.configurePlugins() {
-        apply<KtlintPlugin>()
-    }
+  private fun Project.configurePlugins() {
+    apply<KtlintPlugin>()
+  }
 
-    private fun Project.configureKtLint() {
-        plugins.apply {
-            extensions.configure(KtlintExtension::class.java) {
-                version.set("1.2.1")
-                android.set(true)
-                ignoreFailures.set(false)
-            }
-        }
+  private fun Project.configureKtLint() {
+    plugins.apply {
+      extensions.configure(KtlintExtension::class.java) {
+        version.set("1.2.1")
+      }
     }
+  }
 }

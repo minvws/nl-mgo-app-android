@@ -5,22 +5,22 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
 
 class TestUiSchemaMapper : UiSchemaMapper {
-    private var summary: HealthUiSchema = TEST_UI_SCHEMA
-    private var detail: HealthUiSchema = TEST_UI_SCHEMA
+  private var summary: HealthUiSchema = TEST_UI_SCHEMA
+  private var detail: HealthUiSchema = TEST_UI_SCHEMA
 
-    fun setSummary(uiSchema: HealthUiSchema) {
-        this.summary = uiSchema
-    }
+  fun setSummary(uiSchema: HealthUiSchema) {
+    this.summary = uiSchema
+  }
 
-    fun setDetail(uiSchema: HealthUiSchema) {
-        this.detail = uiSchema
-    }
+  fun setDetail(uiSchema: HealthUiSchema) {
+    this.detail = uiSchema
+  }
 
-    override suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema {
-        return summary
-    }
+  override suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema {
+    return summary
+  }
 
-    override suspend fun getDetail(mgoResource: MgoResource): HealthUiSchema {
-        return detail
-    }
+  override suspend fun getDetail(mgoResource: MgoResource): HealthUiSchema {
+    return detail
+  }
 }

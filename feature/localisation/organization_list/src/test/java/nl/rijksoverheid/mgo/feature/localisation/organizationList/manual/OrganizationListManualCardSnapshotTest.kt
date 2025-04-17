@@ -6,27 +6,27 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class OrganizationListManualCardSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun add() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            OrganizationSearchCardAddPreview()
-        }
+  @Test
+  fun add() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      OrganizationSearchCardAddPreview()
     }
+  }
 
-    @Test
-    fun added() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            OrganizationSearchCardAddedPreview()
-        }
+  @Test
+  fun added() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      OrganizationSearchCardAddedPreview()
     }
+  }
 
-    @Test
-    fun notSupported() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            OrganizationSearchCardNotSupportedPreview()
-        }
+  @Test
+  fun notSupported() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      OrganizationSearchCardNotSupportedPreview()
     }
+  }
 }

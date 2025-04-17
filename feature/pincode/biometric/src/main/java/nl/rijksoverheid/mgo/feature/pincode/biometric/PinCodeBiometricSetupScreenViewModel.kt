@@ -12,14 +12,14 @@ import javax.inject.Inject
  */
 @HiltViewModel
 internal class PinCodeBiometricSetupScreenViewModel
-    @Inject
-    constructor(
-        private val setLoginWithBiometricEnabled: SetLoginWithBiometricEnabled,
-    ) : ViewModel() {
-        /**
-         * Call to set that biometric login has been successfully enabled.
-         */
-        fun setBiometricLoginEnabled() {
-            setLoginWithBiometricEnabled.invoke()
-        }
+  @Inject
+  constructor(
+    private val setLoginWithBiometricEnabled: SetLoginWithBiometricEnabled,
+  ) : ViewModel() {
+    /**
+     * Call to set that biometric login has been successfully enabled.
+     */
+    fun setBiometricLoginEnabled() {
+      setLoginWithBiometricEnabled.invoke()
     }
+  }

@@ -5,13 +5,13 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class SettingsAboutHomeScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun launchView() {
-        snapshotTestRule.snapshots {
-            SettingsAboutHomeScreenPreview()
-        }
+  @Test
+  fun launchView() {
+    snapshotTestRule.snapshots {
+      SettingsAboutHomeScreenPreview()
     }
+  }
 }

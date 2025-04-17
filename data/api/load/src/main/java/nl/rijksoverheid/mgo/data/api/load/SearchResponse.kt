@@ -15,37 +15,37 @@ const val DATA_SERVICE_VACCINATION: DataServiceId = "63"
  */
 @Serializable
 class SearchResponse(
-    val organizations: List<Organization>,
+  val organizations: List<Organization>,
 ) {
-    @Serializable
-    data class Organization(
-        @SerialName("identification") val id: String,
-        @SerialName("display_name") val displayName: String?,
-        val addresses: List<Address>,
-        val types: List<Types>,
-        @SerialName("data_services") val dataServices: List<DataService>,
-    )
+  @Serializable
+  data class Organization(
+    @SerialName("identification") val id: String,
+    @SerialName("display_name") val displayName: String?,
+    val addresses: List<Address>,
+    val types: List<Types>,
+    @SerialName("data_services") val dataServices: List<DataService>,
+  )
 
-    @Serializable
-    data class Address(
-        val address: String?,
-        val city: String?,
-        @SerialName("postalcode") val postalCode: String?,
-    )
+  @Serializable
+  data class Address(
+    val address: String?,
+    val city: String?,
+    @SerialName("postalcode") val postalCode: String?,
+  )
 
-    @Serializable
-    data class Types(
-        @SerialName("display_name") val displayName: String?,
-    )
+  @Serializable
+  data class Types(
+    @SerialName("display_name") val displayName: String?,
+  )
 
+  @Serializable
+  data class DataService(
+    val id: DataServiceId,
+    val roles: List<Role>,
+  ) {
     @Serializable
-    data class DataService(
-        val id: DataServiceId,
-        val roles: List<Role>,
-    ) {
-        @Serializable
-        data class Role(
-            @SerialName("resource_endpoint") val resourceEndpoint: String,
-        )
-    }
+    data class Role(
+      @SerialName("resource_endpoint") val resourceEndpoint: String,
+    )
+  }
 }

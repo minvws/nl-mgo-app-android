@@ -5,27 +5,27 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class SettingsHomeScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun preview() {
-        snapshotTestRule.snapshots {
-            SettingsHomeScreenPreview()
-        }
+  @Test
+  fun preview() {
+    snapshotTestRule.snapshots {
+      SettingsHomeScreenPreview()
     }
+  }
 
-    @Test
-    fun withoutBiometric() {
-        snapshotTestRule.snapshots {
-            SettingsHomeScreenWithoutBiometricPreview()
-        }
+  @Test
+  fun withoutBiometric() {
+    snapshotTestRule.snapshots {
+      SettingsHomeScreenWithoutBiometricPreview()
     }
+  }
 
-    @Test
-    fun withoutDebug() {
-        snapshotTestRule.snapshots {
-            SettingsHomeScreenWithoutDebugPreview()
-        }
+  @Test
+  fun withoutDebug() {
+    snapshotTestRule.snapshots {
+      SettingsHomeScreenWithoutDebugPreview()
     }
+  }
 }

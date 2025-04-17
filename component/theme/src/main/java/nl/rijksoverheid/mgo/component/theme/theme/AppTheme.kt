@@ -7,20 +7,20 @@ import androidx.compose.runtime.Composable
  * Represents the theme the app is currently in.
  */
 enum class AppTheme {
-    /**
-     * Matches the system theme.
-     */
-    SYSTEM,
+  /**
+   * Matches the system theme.
+   */
+  SYSTEM,
 
-    /**
-     * Forces light theme.
-     */
-    LIGHT,
+  /**
+   * Forces light theme.
+   */
+  LIGHT,
 
-    /**
-     * Forces dark theme.
-     */
-    DARK,
+  /**
+   * Forces dark theme.
+   */
+  DARK,
 }
 
 /**
@@ -28,11 +28,11 @@ enum class AppTheme {
  */
 @Composable
 fun AppTheme.isDarkTheme(): Boolean {
-    return when (this) {
-        AppTheme.SYSTEM -> isSystemInDarkTheme()
-        AppTheme.LIGHT -> false
-        AppTheme.DARK -> true
-    }
+  return when (this) {
+    AppTheme.SYSTEM -> isSystemInDarkTheme()
+    AppTheme.LIGHT -> false
+    AppTheme.DARK -> true
+  }
 }
 
 /**
@@ -42,6 +42,6 @@ fun AppTheme.isDarkTheme(): Boolean {
  * @return The selected app theme.
  */
 fun getAppTheme(appThemeString: String?): AppTheme {
-    if (appThemeString == null) return AppTheme.SYSTEM
-    return AppTheme.valueOf(appThemeString)
+  if (appThemeString == null) return AppTheme.SYSTEM
+  return AppTheme.valueOf(appThemeString)
 }

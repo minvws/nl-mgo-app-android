@@ -54,227 +54,243 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun PinCodeWithKeyboard(
-    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
-    onResetError: () -> Unit,
-    modifier: Modifier = Modifier,
-    hint: String? = null,
-    onClickHint: (() -> Unit)? = null,
-    hasBiometric: Boolean = false,
-    onPressBiometric: (() -> Unit)? = null,
-    error: String? = null,
+  onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+  onResetError: () -> Unit,
+  modifier: Modifier = Modifier,
+  hint: String? = null,
+  onClickHint: (() -> Unit)? = null,
+  hasBiometric: Boolean = false,
+  onPressBiometric: (() -> Unit)? = null,
+  error: String? = null,
 ) {
-    var pinCode by remember { mutableStateOf(listOf<Int>()) }
-    PinCodeWithKeyboardContent(
-        modifier = modifier,
-        pinCode = pinCode,
-        onSetPinCode = { newPinCode ->
-            pinCode = newPinCode
-        },
-        onPinCodeEntered = onPinCodeEntered,
-        onResetError = onResetError,
-        hint = hint,
-        onClickHint = onClickHint,
-        hasBiometric = hasBiometric,
-        onPressBiometric = onPressBiometric,
-        error = error,
-    )
+  var pinCode by remember { mutableStateOf(listOf<Int>()) }
+  PinCodeWithKeyboardContent(
+    modifier = modifier,
+    pinCode = pinCode,
+    onSetPinCode = { newPinCode ->
+      pinCode = newPinCode
+    },
+    onPinCodeEntered = onPinCodeEntered,
+    onResetError = onResetError,
+    hint = hint,
+    onClickHint = onClickHint,
+    hasBiometric = hasBiometric,
+    onPressBiometric = onPressBiometric,
+    error = error,
+  )
 }
 
 @Composable
 private fun PinCodeWithKeyboardContent(
-    pinCode: List<Int>,
-    onSetPinCode: (pinCode: List<Int>) -> Unit,
-    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
-    onResetError: () -> Unit,
-    modifier: Modifier = Modifier,
-    hint: String? = null,
-    onClickHint: (() -> Unit)? = null,
-    hasBiometric: Boolean = false,
-    onPressBiometric: (() -> Unit)? = null,
-    error: String? = null,
+  pinCode: List<Int>,
+  onSetPinCode: (pinCode: List<Int>) -> Unit,
+  onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+  onResetError: () -> Unit,
+  modifier: Modifier = Modifier,
+  hint: String? = null,
+  onClickHint: (() -> Unit)? = null,
+  hasBiometric: Boolean = false,
+  onPressBiometric: (() -> Unit)? = null,
+  error: String? = null,
 ) {
-    val context = LocalContext.current
+  val context = LocalContext.current
 
-    // Announce error if needed
-    LaunchedEffect(error) {
-        if (error != null) {
-            context.accessibilityAnnounce(error)
-        }
+  // Announce error if needed
+  LaunchedEffect(error) {
+    if (error != null) {
+      context.accessibilityAnnounce(error)
+    }
+  }
+
+  var canScroll by remember { mutableStateOf(true) }
+
+  Column(
+    modifier =
+      modifier
+        .padding(bottom = 4.dp)
+        .then(
+          if (canScroll) {
+            Modifier.verticalScroll(rememberScrollState())
+          } else {
+            Modifier
+          },
+        ),
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Spacer(
+      modifier =
+        Modifier.weight(1f).onGloballyPositioned {
+          if (it.size.height == 0) {
+            canScroll = true
+          } else {
+            canScroll = false
+          }
+        },
+    )
+    PinCode(
+      modifier = Modifier.padding(top = 48.dp),
+      pinCode = pinCode,
+      error = error != null,
+    )
+    if (error != null) {
+      PinCodeError(
+        modifier = Modifier.padding(top = 16.dp),
+        error = error,
+      )
+    }
+    Spacer(modifier = Modifier.weight(1f))
+    if (hint != null) {
+      TextButton(onClick = { onClickHint?.invoke() }) {
+        Text(
+          text = hint,
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+          color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+        )
+      }
     }
 
-    var canScroll by remember { mutableStateOf(true) }
-
-    Column(
-        modifier =
-            modifier
-                .padding(bottom = 4.dp)
-                .then(
-                    if (canScroll) {
-                        Modifier.verticalScroll(rememberScrollState())
-                    } else {
-                        Modifier
-                    },
-                ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(
-            modifier =
-                Modifier.weight(1f).onGloballyPositioned {
-                    if (it.size.height == 0) {
-                        canScroll = true
-                    } else {
-                        canScroll = false
-                    }
-                },
-        )
-        PinCode(
-            modifier = Modifier.padding(top = 48.dp),
-            pinCode = pinCode,
-            error = error != null,
-        )
+    Keyboard(
+      onPressNumber = { number ->
         if (error != null) {
-            PinCodeError(
-                modifier = Modifier.padding(top = 16.dp),
-                error = error,
+          // When there is a error showing and the user presses the keyboard, clear the error state
+          onSetPinCode(listOf(number))
+          onResetError()
+
+          // Announce that pin code has changed
+          context.accessibilityAnnounce(context.accessibilityStringPinCodeAdded(1))
+        } else {
+          val newPinCode = pinCode.toMutableList().also { list -> list.add(number) }
+          onSetPinCode(newPinCode)
+          if (newPinCode.size == 5) {
+            onPinCodeEntered(newPinCode)
+          }
+
+          // Announce that pin code has changed
+          context.accessibilityAnnounce(
+            context.accessibilityStringPinCodeAdded(newPinCode.size),
+          )
+        }
+      },
+      onPressBackspace = {
+        if (error != null) {
+          // When there is a error showing and the user presses the keyboard, clear the error state
+          onSetPinCode(listOf())
+          onResetError()
+
+          // Announce that pin code has changed
+          context.accessibilityAnnounce(context.accessibilityStringPinCodeRemoved(0))
+        } else {
+          if (pinCode.isNotEmpty()) {
+            onSetPinCode(
+              pinCode.toMutableList().also { list -> list.removeAt(list.size - 1) },
             )
+          }
+
+          // Announce that pin code has changed
+          context.accessibilityAnnounce(
+            context.accessibilityStringPinCodeRemoved(pinCode.size),
+          )
         }
-        Spacer(modifier = Modifier.weight(1f))
-        if (hint != null) {
-            TextButton(onClick = { onClickHint?.invoke() }) {
-                Text(
-                    text = hint,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-                )
-            }
-        }
-
-        Keyboard(
-            onPressNumber = { number ->
-                if (error != null) {
-                    // When there is a error showing and the user presses the keyboard, clear the error state
-                    onSetPinCode(listOf(number))
-                    onResetError()
-
-                    // Announce that pin code has changed
-                    context.accessibilityAnnounce(context.accessibilityStringPinCodeAdded(1))
-                } else {
-                    val newPinCode = pinCode.toMutableList().also { list -> list.add(number) }
-                    onSetPinCode(newPinCode)
-                    if (newPinCode.size == 5) {
-                        onPinCodeEntered(newPinCode)
-                    }
-
-                    // Announce that pin code has changed
-                    context.accessibilityAnnounce(context.accessibilityStringPinCodeAdded(newPinCode.size))
-                }
-            },
-            onPressBackspace = {
-                if (error != null) {
-                    // When there is a error showing and the user presses the keyboard, clear the error state
-                    onSetPinCode(listOf())
-                    onResetError()
-
-                    // Announce that pin code has changed
-                    context.accessibilityAnnounce(context.accessibilityStringPinCodeRemoved(0))
-                } else {
-                    if (pinCode.isNotEmpty()) {
-                        onSetPinCode(
-                            pinCode.toMutableList().also { list -> list.removeAt(list.size - 1) },
-                        )
-                    }
-
-                    // Announce that pin code has changed
-                    context.accessibilityAnnounce(context.accessibilityStringPinCodeRemoved(pinCode.size))
-                }
-            },
-            hasBiometric = hasBiometric,
-            onPressBiometric = onPressBiometric,
-        )
-    }
+      },
+      hasBiometric = hasBiometric,
+      onPressBiometric = onPressBiometric,
+    )
+  }
 }
 
 @Composable
 private fun PinCodeError(
-    error: String?,
-    modifier: Modifier = Modifier,
+  error: String?,
+  modifier: Modifier = Modifier,
 ) {
-    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.sentimentCritical()) {
-        Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-            Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
-            Text(
-                modifier =
-                    Modifier
-                        .wrapContentWidth()
-                        .padding(start = 6.dp),
-                text = error ?: "",
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.sentimentCritical(),
-            )
-        }
+  CompositionLocalProvider(
+    LocalContentColor provides MaterialTheme.colorScheme.sentimentCritical(),
+  ) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+      Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
+      Text(
+        modifier =
+          Modifier
+            .wrapContentWidth()
+            .padding(start = 6.dp),
+        text = error ?: "",
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.sentimentCritical(),
+      )
     }
+  }
 }
 
 private fun Context.accessibilityStringPinCodeAdded(pinCodeSize: Int): String {
-    return getString(CopyR.string.pincode_voiceover, pinCodeSize.toString(), "5", getString(CopyR.string.pincode_filled_voiceover))
+  return getString(
+    CopyR.string.pincode_voiceover,
+    pinCodeSize.toString(),
+    "5",
+    getString(CopyR.string.pincode_filled_voiceover),
+  )
 }
 
 private fun Context.accessibilityStringPinCodeRemoved(pinCodeSize: Int): String {
-    return getString(CopyR.string.pincode_voiceover, pinCodeSize.toString(), "5", getString(CopyR.string.pincode_empty_voiceover))
+  return getString(
+    CopyR.string.pincode_voiceover,
+    pinCodeSize.toString(),
+    "5",
+    getString(CopyR.string.pincode_empty_voiceover),
+  )
 }
 
 @PreviewLightDark
 @Composable
 internal fun PinCodeWithKeyboardPreview() {
-    MgoTheme {
-        PinCodeWithKeyboardContent(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-            pinCode = listOf(1, 2, 3),
-            onSetPinCode = {},
-            onPinCodeEntered = {},
-            onResetError = {},
-        )
-    }
+  MgoTheme {
+    PinCodeWithKeyboardContent(
+      modifier =
+        Modifier
+          .fillMaxSize()
+          .padding(32.dp),
+      pinCode = listOf(1, 2, 3),
+      onSetPinCode = {},
+      onPinCodeEntered = {},
+      onResetError = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun PinCodeWithKeyboardErrorPreview() {
-    MgoTheme {
-        PinCodeWithKeyboardContent(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-            pinCode = listOf(1, 2, 3),
-            onSetPinCode = {},
-            onPinCodeEntered = {},
-            onResetError = {},
-            error = "Dit is een foutmelding",
-        )
-    }
+  MgoTheme {
+    PinCodeWithKeyboardContent(
+      modifier =
+        Modifier
+          .fillMaxSize()
+          .padding(32.dp),
+      pinCode = listOf(1, 2, 3),
+      onSetPinCode = {},
+      onPinCodeEntered = {},
+      onResetError = {},
+      error = "Dit is een foutmelding",
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun PinCodeWithKeyboardAndHintPreview() {
-    MgoTheme {
-        PinCodeWithKeyboardContent(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-            pinCode = listOf(1, 2, 3),
-            onSetPinCode = {},
-            onPinCodeEntered = {},
-            onResetError = {},
-            hint = "Klik hier",
-        )
-    }
+  MgoTheme {
+    PinCodeWithKeyboardContent(
+      modifier =
+        Modifier
+          .fillMaxSize()
+          .padding(32.dp),
+      pinCode = listOf(1, 2, 3),
+      onSetPinCode = {},
+      onPinCodeEntered = {},
+      onResetError = {},
+      hint = "Klik hier",
+    )
+  }
 }

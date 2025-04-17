@@ -28,64 +28,67 @@ import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
  */
 @Composable
 fun MgoAlertDialog(
-    onDismissRequest: () -> Unit,
-    positiveButtonText: String,
-    positiveButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(),
-    onClickPositiveButton: () -> Unit,
-    negativeButtonText: String? = null,
-    negativeButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-    onClickNegativeButton: (() -> Unit)? = null,
-    heading: String,
-    subHeading: String,
+  onDismissRequest: () -> Unit,
+  positiveButtonText: String,
+  positiveButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(),
+  onClickPositiveButton: () -> Unit,
+  negativeButtonText: String? = null,
+  negativeButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+  onClickNegativeButton: (() -> Unit)? = null,
+  heading: String,
+  subHeading: String,
 ) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(
-                colors = ButtonDefaults.textButtonColors(contentColor = positiveButtonTextColor),
-                onClick = onClickPositiveButton,
-            ) {
-                Text(
-                    text = positiveButtonText,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
-        },
-        dismissButton = {
-            if (negativeButtonText != null && onClickNegativeButton != null) {
-                TextButton(
-                    colors = ButtonDefaults.textButtonColors(contentColor = negativeButtonTextColor),
-                    onClick = onClickNegativeButton,
-                ) {
-                    Text(
-                        text = negativeButtonText,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-            }
-        },
-        title = {
-            Text(heading, style = MaterialTheme.typography.headlineSmall)
-        },
-        text = {
-            Text(subHeading, style = MaterialTheme.typography.bodyMedium)
-        },
-        containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
-    )
+  AlertDialog(
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
+      TextButton(
+        colors = ButtonDefaults.textButtonColors(contentColor = positiveButtonTextColor),
+        onClick = onClickPositiveButton,
+      ) {
+        Text(
+          text = positiveButtonText,
+          fontWeight = FontWeight.Bold,
+        )
+      }
+    },
+    dismissButton = {
+      if (negativeButtonText != null && onClickNegativeButton != null) {
+        TextButton(
+          colors =
+            ButtonDefaults.textButtonColors(
+              contentColor = negativeButtonTextColor,
+            ),
+          onClick = onClickNegativeButton,
+        ) {
+          Text(
+            text = negativeButtonText,
+            fontWeight = FontWeight.Bold,
+          )
+        }
+      }
+    },
+    title = {
+      Text(heading, style = MaterialTheme.typography.headlineSmall)
+    },
+    text = {
+      Text(subHeading, style = MaterialTheme.typography.bodyMedium)
+    },
+    containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
+  )
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoAlertDialogPreview() {
-    MgoTheme {
-        MgoAlertDialog(
-            onDismissRequest = {},
-            positiveButtonText = "Ok",
-            onClickPositiveButton = {},
-            negativeButtonText = "Cancel",
-            onClickNegativeButton = {},
-            heading = "Title",
-            subHeading = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        )
-    }
+  MgoTheme {
+    MgoAlertDialog(
+      onDismissRequest = {},
+      positiveButtonText = "Ok",
+      onClickPositiveButton = {},
+      negativeButtonText = "Cancel",
+      onClickNegativeButton = {},
+      heading = "Title",
+      subHeading = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    )
+  }
 }

@@ -26,6 +26,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -34,9 +37,6 @@ import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 /**
  * Composable that shows the a screen with bottom bar. The dashboard screen is the root screen of the app that shows after inputting the
@@ -51,146 +51,146 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun DashboardBottomBarScreen(
-    overviewStartDestination: Any,
-    overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
-    organizationsStartDestination: Any,
-    organizationsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
-    settingsStartDestination: Any,
-    settingsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+  overviewStartDestination: Any,
+  overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+  organizationsStartDestination: Any,
+  organizationsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+  settingsStartDestination: Any,
+  settingsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
 ) {
-    hiltViewModel<DashboardBottomBarScreenViewModel>()
-    DashboardBottomBarScreenContent(
-        overviewStartDestination = overviewStartDestination,
-        overviewNavGraph = overviewNavGraph,
-        organizationsStartDestination = organizationsStartDestination,
-        organizationsNavGraph = organizationsNavGraph,
-        settingsStartDestination = settingsStartDestination,
-        settingsNavGraph = settingsNavGraph,
-    )
+  hiltViewModel<DashboardBottomBarScreenViewModel>()
+  DashboardBottomBarScreenContent(
+    overviewStartDestination = overviewStartDestination,
+    overviewNavGraph = overviewNavGraph,
+    organizationsStartDestination = organizationsStartDestination,
+    organizationsNavGraph = organizationsNavGraph,
+    settingsStartDestination = settingsStartDestination,
+    settingsNavGraph = settingsNavGraph,
+  )
 }
 
 @Composable
 fun DashboardBottomBarScreenContent(
-    overviewStartDestination: Any,
-    overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
-    organizationsStartDestination: Any,
-    organizationsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
-    settingsStartDestination: Any,
-    settingsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+  overviewStartDestination: Any,
+  overviewNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+  organizationsStartDestination: Any,
+  organizationsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
+  settingsStartDestination: Any,
+  settingsNavGraph: NavGraphBuilder.(navController: NavController) -> Unit,
 ) {
-    val navigateToRootOfGraph = remember { MutableSharedFlow<Int>(extraBufferCapacity = 1) }
-    val coroutineScope = rememberCoroutineScope()
-    val bottomBarItems = BottomBarItem.entries
-    val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
+  val navigateToRootOfGraph = remember { MutableSharedFlow<Int>(extraBufferCapacity = 1) }
+  val coroutineScope = rememberCoroutineScope()
+  val bottomBarItems = BottomBarItem.entries
+  val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
 
-    MgoScaffold(
-        horizontalPadding = 0.dp,
-        content = {
-            HorizontalPager(state = pagerState, userScrollEnabled = false) { position ->
-                val bottomBarItem = bottomBarItems[position]
-                val navController = rememberNavController()
-                LaunchedEffect(Unit) {
-                    // Navigate to the root of nav controller if requested
-                    navigateToRootOfGraph.collectLatest {
-                        if (position == it) {
-                            navController.navigate(navController.graph.findStartDestination().id)
-                        }
-                    }
-                }
-                val startDestination =
-                    when (bottomBarItem.route) {
-                        BottomBarItemNavigation.Settings -> settingsStartDestination
-                        BottomBarItemNavigation.Organizations -> organizationsStartDestination
-                        BottomBarItemNavigation.Overview -> overviewStartDestination
-                    }
-                NavHost(
-                    navController = navController,
-                    startDestination = startDestination,
-                    enterTransition = { EnterTransition.None },
-                    exitTransition = { ExitTransition.None },
-                ) {
-                    when (bottomBarItem.route) {
-                        BottomBarItemNavigation.Settings -> settingsNavGraph(navController)
-                        BottomBarItemNavigation.Organizations -> organizationsNavGraph(navController)
-                        BottomBarItemNavigation.Overview -> overviewNavGraph(navController)
-                    }
-                }
+  MgoScaffold(
+    horizontalPadding = 0.dp,
+    content = {
+      HorizontalPager(state = pagerState, userScrollEnabled = false) { position ->
+        val bottomBarItem = bottomBarItems[position]
+        val navController = rememberNavController()
+        LaunchedEffect(Unit) {
+          // Navigate to the root of nav controller if requested
+          navigateToRootOfGraph.collectLatest {
+            if (position == it) {
+              navController.navigate(navController.graph.findStartDestination().id)
             }
-        },
-        bottomBar = {
-            BottomNavigationBar(
-                currentRoute = bottomBarItems[pagerState.currentPage].route,
-                onClickItem = { position ->
-                    // If we are selecting a different item, navigate to that screen
-                    val isDifferentItem = position != pagerState.currentPage
-                    if (isDifferentItem) {
-                        coroutineScope.launch {
-                            pagerState.scrollToPage(position)
-                        }
-                        return@BottomNavigationBar
-                    }
+          }
+        }
+        val startDestination =
+          when (bottomBarItem.route) {
+            BottomBarItemNavigation.Settings -> settingsStartDestination
+            BottomBarItemNavigation.Organizations -> organizationsStartDestination
+            BottomBarItemNavigation.Overview -> overviewStartDestination
+          }
+        NavHost(
+          navController = navController,
+          startDestination = startDestination,
+          enterTransition = { EnterTransition.None },
+          exitTransition = { ExitTransition.None },
+        ) {
+          when (bottomBarItem.route) {
+            BottomBarItemNavigation.Settings -> settingsNavGraph(navController)
+            BottomBarItemNavigation.Organizations -> organizationsNavGraph(navController)
+            BottomBarItemNavigation.Overview -> overviewNavGraph(navController)
+          }
+        }
+      }
+    },
+    bottomBar = {
+      BottomNavigationBar(
+        currentRoute = bottomBarItems[pagerState.currentPage].route,
+        onClickItem = { position ->
+          // If we are selecting a different item, navigate to that screen
+          val isDifferentItem = position != pagerState.currentPage
+          if (isDifferentItem) {
+            coroutineScope.launch {
+              pagerState.scrollToPage(position)
+            }
+            return@BottomNavigationBar
+          }
 
-                    // If re selecting the item, navigate to the root of that nav controller
-                    navigateToRootOfGraph.tryEmit(pagerState.currentPage)
-                },
-            )
+          // If re selecting the item, navigate to the root of that nav controller
+          navigateToRootOfGraph.tryEmit(pagerState.currentPage)
         },
-    )
+      )
+    },
+  )
 }
 
 @Composable
 private fun BottomNavigationBar(
-    currentRoute: BottomBarItemNavigation,
-    onClickItem: (position: Int) -> Unit,
+  currentRoute: BottomBarItemNavigation,
+  onClickItem: (position: Int) -> Unit,
 ) {
-    val bottomBarItemTextStyle =
-        TextStyle(
-            fontFamily = fonts,
-            fontWeight = FontWeight.Bold,
-            fontSize = 12.sp,
-            lineHeight = 16.sp,
-        )
-    BottomAppBar(
-        containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
-        contentColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-    ) {
-        BottomBarItem.entries.forEachIndexed { index, item ->
-            val isSelected = item.route == currentRoute
-            NavigationBarItem(
-                icon = {
-                    val iconId =
-                        if (isSelected) {
-                            item.selectedIconId
-                        } else {
-                            item.deselectedIconId
-                        }
-                    Icon(painter = painterResource(id = iconId), contentDescription = null)
-                },
-                label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
-                selected = isSelected,
-                onClick = {
-                    onClickItem(index)
-                },
-                colors =
-                    NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-                        selectedTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-                        unselectedIconColor = MaterialTheme.colorScheme.symbolsPrimary(),
-                        unselectedTextColor = MaterialTheme.colorScheme.symbolsPrimary(),
-                        indicatorColor = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(),
-                    ),
-            )
-        }
+  val bottomBarItemTextStyle =
+    TextStyle(
+      fontFamily = fonts,
+      fontWeight = FontWeight.Bold,
+      fontSize = 12.sp,
+      lineHeight = 16.sp,
+    )
+  BottomAppBar(
+    containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
+    contentColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+  ) {
+    BottomBarItem.entries.forEachIndexed { index, item ->
+      val isSelected = item.route == currentRoute
+      NavigationBarItem(
+        icon = {
+          val iconId =
+            if (isSelected) {
+              item.selectedIconId
+            } else {
+              item.deselectedIconId
+            }
+          Icon(painter = painterResource(id = iconId), contentDescription = null)
+        },
+        label = { Text(stringResource(item.titleId), style = bottomBarItemTextStyle) },
+        selected = isSelected,
+        onClick = {
+          onClickItem(index)
+        },
+        colors =
+          NavigationBarItemDefaults.colors(
+            selectedIconColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+            selectedTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+            unselectedIconColor = MaterialTheme.colorScheme.symbolsPrimary(),
+            unselectedTextColor = MaterialTheme.colorScheme.symbolsPrimary(),
+            indicatorColor = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(),
+          ),
+      )
     }
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun DashboardBottomBarScreenPreview() {
-    MgoTheme {
-        BottomNavigationBar(
-            currentRoute = BottomBarItemNavigation.Overview,
-            onClickItem = {},
-        )
-    }
+  MgoTheme {
+    BottomNavigationBar(
+      currentRoute = BottomBarItemNavigation.Overview,
+      onClickItem = {},
+    )
+  }
 }

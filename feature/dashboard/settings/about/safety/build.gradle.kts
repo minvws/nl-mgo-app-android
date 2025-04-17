@@ -1,7 +1,7 @@
 plugins {
-    id("AndroidFeaturePlugin")
+  id("AndroidFeaturePlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.settings.safety"
+  namespace = "nl.rijksoverheid.mgo.feature.settings.safety"
 }

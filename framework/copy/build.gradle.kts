@@ -1,9 +1,9 @@
 plugins {
-    id("AndroidFrameworkPlugin")
+  id("AndroidFrameworkPlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.framework.copy"
+  namespace = "nl.rijksoverheid.mgo.framework.copy"
 }
 
 dependencies {

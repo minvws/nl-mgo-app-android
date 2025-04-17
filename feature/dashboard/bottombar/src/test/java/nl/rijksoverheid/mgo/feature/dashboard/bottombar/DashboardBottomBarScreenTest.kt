@@ -5,13 +5,13 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class DashboardBottomBarScreenTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun bottomNavigationBar() {
-        snapshotTestRule.snapshots {
-            DashboardBottomBarScreenPreview()
-        }
+  @Test
+  fun bottomNavigationBar() {
+    snapshotTestRule.snapshots {
+      DashboardBottomBarScreenPreview()
     }
+  }
 }

@@ -12,14 +12,14 @@ import javax.inject.Named
  * @param keyValueStore The store to save the timestamp into.
  */
 internal class DefaultSaveClosedAppTimestamp
-    @Inject
-    constructor(
-        private val clock: Clock,
-        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
-    ) :
-    SaveClosedAppTimestamp {
-        override suspend fun invoke() {
-            val currentTimestamp = clock.instant().epochSecond
-            keyValueStore.setLong(KEY_APP_CLOSED_TIMESTAMP, currentTimestamp)
-        }
+  @Inject
+  constructor(
+    private val clock: Clock,
+    @Named("keyValueStore") private val keyValueStore: KeyValueStore,
+  ) :
+  SaveClosedAppTimestamp {
+    override suspend fun invoke() {
+      val currentTimestamp = clock.instant().epochSecond
+      keyValueStore.setLong(KEY_APP_CLOSED_TIMESTAMP, currentTimestamp)
     }
+  }

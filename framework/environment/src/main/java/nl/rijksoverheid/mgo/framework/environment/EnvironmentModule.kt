@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class EnvironmentModule {
-    @Binds
-    @Singleton
-    abstract fun provideEnvironmentRepository(default: DefaultEnvironmentRepository): EnvironmentRepository
+  @Binds
+  @Singleton
+  abstract fun provideEnvironmentRepository(default: DefaultEnvironmentRepository): EnvironmentRepository
 }

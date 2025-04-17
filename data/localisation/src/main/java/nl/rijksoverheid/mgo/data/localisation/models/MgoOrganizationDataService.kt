@@ -13,14 +13,14 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class MgoOrganizationDataService(
-    val resourceEndpoint: String,
-    val type: MgoOrganizationDataServiceType,
+  val resourceEndpoint: String,
+  val type: MgoOrganizationDataServiceType,
 ) : Parcelable
 
 enum class MgoOrganizationDataServiceType {
-    BGZ,
-    GP,
-    DOCUMENTS,
-    VACCINATION,
-    NOT_IMPLEMENTED,
+  BGZ,
+  GP,
+  DOCUMENTS,
+  VACCINATION,
+  NOT_IMPLEMENTED,
 }

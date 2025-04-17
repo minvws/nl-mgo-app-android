@@ -13,24 +13,24 @@ import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
  * @param navController The nav controller used in this navigation.
  */
 fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
-    navigation<OnboardingNavigation.Root>(OnboardingNavigation.Introduction) {
-        mgoComposable<OnboardingNavigation.Introduction> {
-            IntroductionScreen(
-                onNavigateToProposition = {
-                    navController.navigate(OnboardingNavigation.Proposition)
-                },
-            )
-        }
-
-        mgoComposable<OnboardingNavigation.Proposition> {
-            PropositionOverviewScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onOnboardingFinished = {
-                    navController.navigate(PinCodeCreateNavigation.Root)
-                },
-            )
-        }
+  navigation<OnboardingNavigation.Root>(OnboardingNavigation.Introduction) {
+    mgoComposable<OnboardingNavigation.Introduction> {
+      IntroductionScreen(
+        onNavigateToProposition = {
+          navController.navigate(OnboardingNavigation.Proposition)
+        },
+      )
     }
+
+    mgoComposable<OnboardingNavigation.Proposition> {
+      PropositionOverviewScreen(
+        onNavigateBack = {
+          navController.popBackStack()
+        },
+        onOnboardingFinished = {
+          navController.navigate(PinCodeCreateNavigation.Root)
+        },
+      )
+    }
+  }
 }

@@ -13,19 +13,19 @@ import javax.inject.Named
  * @param pinCodeHasher The [PinCodeHasher] to validate against a hashed pin code.
  */
 internal class DefaultValidatePinCode
-    @Inject
-    constructor(
-        @Named("secureKeyValueStore") private val keyValueStore: KeyValueStore,
-        private val pinCodeHasher: PinCodeHasher,
-    ) :
-    ValidatePinCode {
-        /**
-         * @param pinCode The pin code to validate.
-         * @return True if the pin code is validated.
-         */
-        override suspend fun invoke(pinCode: List<Int>): Boolean {
-            val pinCodeString = pinCode.joinToString(",")
-            val storedPinCode = keyValueStore.getString(KEY_PIN_CODE) ?: return false
-            return pinCodeHasher.validate(pinCodeString, storedPinCode)
-        }
+  @Inject
+  constructor(
+    @Named("secureKeyValueStore") private val keyValueStore: KeyValueStore,
+    private val pinCodeHasher: PinCodeHasher,
+  ) :
+  ValidatePinCode {
+    /**
+     * @param pinCode The pin code to validate.
+     * @return True if the pin code is validated.
+     */
+    override suspend fun invoke(pinCode: List<Int>): Boolean {
+      val pinCodeString = pinCode.joinToString(",")
+      val storedPinCode = keyValueStore.getString(KEY_PIN_CODE) ?: return false
+      return pinCodeHasher.validate(pinCodeString, storedPinCode)
     }
+  }

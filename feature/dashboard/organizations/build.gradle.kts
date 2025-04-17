@@ -1,14 +1,14 @@
 plugins {
-    id("AndroidFeaturePlugin")
+  id("AndroidFeaturePlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.organizations"
+  namespace = "nl.rijksoverheid.mgo.feature.organizations"
 }
 
 dependencies {
-    implementation(projects.data.localisation)
-    implementation(projects.framework.storage)
-    testImplementation(testFixtures(projects.data.localisation))
-    testImplementation(testFixtures(projects.framework.storage))
+  implementation(projects.data.localisation)
+  implementation(projects.framework.storage)
+  testImplementation(testFixtures(projects.data.localisation))
+  testImplementation(testFixtures(projects.framework.storage))
 }

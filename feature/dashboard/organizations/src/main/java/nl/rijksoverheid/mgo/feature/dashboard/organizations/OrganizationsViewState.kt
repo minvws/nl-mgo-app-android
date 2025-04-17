@@ -9,16 +9,16 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
  * @param automaticLocalisationEnabled True if automatic localisation is enabled.
  */
 data class OrganizationsViewState(
-    val organizations: List<MgoOrganization>,
-    val automaticLocalisationEnabled: Boolean,
+  val organizations: List<MgoOrganization>,
+  val automaticLocalisationEnabled: Boolean,
 ) {
-    companion object {
-        fun initialState(
-            organizations: List<MgoOrganization>,
-            automaticLocalisationEnabled: Boolean,
-        ) = OrganizationsViewState(
-            organizations = organizations,
-            automaticLocalisationEnabled = automaticLocalisationEnabled,
-        )
-    }
+  companion object {
+    fun initialState(
+      organizations: List<MgoOrganization>,
+      automaticLocalisationEnabled: Boolean,
+    ) = OrganizationsViewState(
+      organizations = organizations,
+      automaticLocalisationEnabled = automaticLocalisationEnabled,
+    )
+  }
 }

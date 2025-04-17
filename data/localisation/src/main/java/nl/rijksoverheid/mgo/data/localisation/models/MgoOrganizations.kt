@@ -9,5 +9,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class MgoOrganizations(
-    val providers: List<MgoOrganization>,
+  val providers: List<MgoOrganization>,
 )

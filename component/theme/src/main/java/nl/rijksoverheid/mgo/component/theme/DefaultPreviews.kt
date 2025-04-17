@@ -17,14 +17,14 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
  */
 @Retention(AnnotationRetention.BINARY)
 @Target(
-    AnnotationTarget.ANNOTATION_CLASS,
-    AnnotationTarget.FUNCTION,
+  AnnotationTarget.ANNOTATION_CLASS,
+  AnnotationTarget.FUNCTION,
 )
 @PreviewLightDark
 @PreviewFontScale
 @Preview(
-    name = "Phone - Landscape",
-    device = "spec:width = 411dp, height = 891dp, orientation = landscape, dpi = 420",
+  name = "Phone - Landscape",
+  device = "spec:width = 411dp, height = 891dp, orientation = landscape, dpi = 420",
 )
 @Preview(name = "Unfolded Foldable", device = Devices.FOLDABLE)
 @Preview(name = "Tablet", device = Devices.TABLET)

@@ -19,58 +19,58 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
 fun SettingsAboutAccessibilityScreen(onNavigateBack: () -> Unit) {
-    val viewModel = hiltViewModel<SettingsAboutAccessibilityScreenViewModel>()
-    SettingsAboutAccessibilityScreenContent(
-        url = stringResource(viewModel.getUrl()),
-        onClickBack = onNavigateBack,
-    )
+  val viewModel = hiltViewModel<SettingsAboutAccessibilityScreenViewModel>()
+  SettingsAboutAccessibilityScreenContent(
+    url = stringResource(viewModel.getUrl()),
+    onClickBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun SettingsAboutAccessibilityScreenContent(
-    url: String,
-    onClickBack: () -> Unit,
+  url: String,
+  onClickBack: () -> Unit,
 ) {
-    val context = LocalContext.current
-    MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.settings_accessibility_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onClickBack,
-        isAlwaysCollapsed = true,
-        content = {
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 8.dp),
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = stringResource(CopyR.string.settings_accessibility_subheading),
-                    )
+  val context = LocalContext.current
+  MgoScaffold(
+    appBarTitle = stringResource(CopyR.string.settings_accessibility_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onClickBack,
+    isAlwaysCollapsed = true,
+    content = {
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 8.dp),
+      ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+          Text(
+            text = stringResource(CopyR.string.settings_accessibility_subheading),
+          )
 
-                    // Button disabled for now, since there is no decision if a url is needed
+          // Button disabled for now, since there is no decision if a url is needed
 //                    MgoButton(
 //                        modifier = Modifier.padding(top = 16.dp),
 //                        buttonText = stringResource(CopyR.string.settings_accessibility_more_information),
 //                        onClick = { context.launchBrowser(url) },
 //                        buttonTheme = MgoButtonTheme.LINK,
 //                    )
-                }
-            }
-        },
-    )
+        }
+      }
+    },
+  )
 }
 
 @DefaultPreviews
 @Composable
 internal fun SettingsAboutAccessibilityScreenPreview() {
-    MgoTheme {
-        SettingsAboutAccessibilityScreenContent(
-            url = "",
-            onClickBack = {},
-        )
-    }
+  MgoTheme {
+    SettingsAboutAccessibilityScreenContent(
+      url = "",
+      onClickBack = {},
+    )
+  }
 }

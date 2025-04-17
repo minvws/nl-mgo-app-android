@@ -18,12 +18,12 @@ typealias MgoSnackBarDataIcon = Int
  * @param withDismissAction Not used.
  */
 data class MgoSnackBarVisuals(
-    val type: MgoSnackBarType,
-    @StringRes val title: Int,
-    @StringRes val action: Int? = null,
-    val actionCallback: (suspend () -> Unit)? = null,
-    override val actionLabel: String? = null,
-    override val duration: SnackbarDuration = SnackbarDuration.Short,
-    override val message: String = "",
-    override val withDismissAction: Boolean = false,
+  val type: MgoSnackBarType,
+  @StringRes val title: Int,
+  @StringRes val action: Int? = null,
+  val actionCallback: (suspend () -> Unit)? = null,
+  override val actionLabel: String? = null,
+  override val duration: SnackbarDuration = SnackbarDuration.Short,
+  override val message: String = "",
+  override val withDismissAction: Boolean = false,
 ) : SnackbarVisuals

@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class UtilModule {
-    @Binds
-    @Singleton
-    abstract fun provideBas64Util(default: DefaultBase64Util): Base64Util
+  @Binds
+  @Singleton
+  abstract fun provideBas64Util(default: DefaultBase64Util): Base64Util
 }

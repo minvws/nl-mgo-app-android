@@ -1,14 +1,14 @@
 plugins {
-    id("AndroidFeaturePlugin")
+  id("AndroidFeaturePlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.pincode.forgot"
+  namespace = "nl.rijksoverheid.mgo.feature.pincode.forgot"
 }
 
 dependencies {
-    implementation(projects.data.localisation)
-    implementation(projects.framework.storage)
-    testImplementation(testFixtures(projects.framework.storage))
-    testImplementation(testFixtures(projects.data.localisation))
+  implementation(projects.data.localisation)
+  implementation(projects.framework.storage)
+  testImplementation(testFixtures(projects.framework.storage))
+  testImplementation(testFixtures(projects.data.localisation))
 }

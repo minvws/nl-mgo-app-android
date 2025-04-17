@@ -15,18 +15,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreNameInformationGiven(
-    val given: List<String>? = null,
+    val given: List<MgoString>? = null,
     val period: MgoPeriod? = null,
-    val use: String = "usual",
-    val text: String? = null
-) : R4NlCorePatientName, R4NlCoreHealthProfessionalPractitionerName {
-
-    init {
-        require(use == cg_str0) { "use not constant value $cg_str0 - $use" }
-    }
-
-    companion object {
-        private const val cg_str0 = "usual"
-    }
-
-}
+    val use: R4NlCoreNameInformationGivenUse,
+    val text: MgoString? = null
+) : R4NlCorePatientName, R4NlCoreHealthProfessionalPractitionerName

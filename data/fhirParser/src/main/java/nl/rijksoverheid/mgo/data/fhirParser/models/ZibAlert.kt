@@ -18,34 +18,25 @@ data class ZibAlert(
     val identifier: List<MgoIdentifier>? = null,
     val period: MgoPeriod? = null,
     val code: MgoCodeableConcept? = null,
-    val subject: MgoReference? = null,
     val author: MgoReference? = null,
+    val patient: MgoReference? = null,
     val concernReference: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert",
-    val encounter: MgoReference? = null,
-    val referenceId: String,
     val fhirVersion: String = "R3",
     val id: String? = null,
     val category: MgoCodeableConcept? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val referenceId: String,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert"
         private const val cg_str1 = "R3"
-        private val cg_array2 = setOf(
-            "active",
-            "entered-in-error",
-            "inactive"
-        )
     }
 
 }

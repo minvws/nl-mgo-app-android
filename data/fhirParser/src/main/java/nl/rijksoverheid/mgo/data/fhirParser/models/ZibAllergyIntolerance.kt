@@ -17,55 +17,27 @@ import kotlinx.serialization.Serializable
 data class ZibAllergyIntolerance(
     val identifier: List<MgoIdentifier>? = null,
     val code: MgoCodeableConcept? = null,
-    val verificationStatus: String? = null,
+    val verificationStatus: ZibAllergyIntoleranceVerificationstatus? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance",
-    val criticality: String? = null,
-    val clinicalStatus: ClinicalStatus? = null,
-    val type: Type? = null,
+    val criticality: ZibAllergyIntoleranceCriticality? = null,
+    val clinicalStatus: ZibAllergyIntoleranceClinicalstatus? = null,
+    val type: ZibAllergyIntoleranceType? = null,
     val referenceId: String,
     val patient: MgoReference? = null,
     val fhirVersion: String = "R3",
     val id: String? = null,
-    val category: List<String>? = null,
-    val resourceType: String? = null
+    val category: List<ZibAllergyIntoleranceCategory>? = null,
+    val resourceType: String
 ) {
 
     init {
-        if (verificationStatus != null)
-            require(verificationStatus in cg_array0) { "verificationStatus not in enumerated values - $verificationStatus" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        if (criticality != null)
-            require(criticality in cg_array2) { "criticality not in enumerated values - $criticality" }
-        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
-    }
-
-    @Serializable
-    enum class ClinicalStatus {
-        active,
-        inactive,
-        resolved
-    }
-
-    @Serializable
-    enum class Type {
-        allergy,
-        intolerance
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     companion object {
-        private val cg_array0 = setOf(
-            "entered-in-error",
-            "unconfirmed",
-            "confirmed",
-            "refuted"
-        )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
-        private val cg_array2 = setOf(
-            "high",
-            "low",
-            "unable-to-assess"
-        )
-        private const val cg_str3 = "R3"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
+        private const val cg_str1 = "R3"
     }
 
 }

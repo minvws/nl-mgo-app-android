@@ -11,27 +11,25 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCorePatient(
     val identifier: List<MgoIdentifier>? = null,
     val address: List<NlCoreAddress>? = null,
-    val deceased: Boolean? = null,
-    val gender: Gender? = null,
+    val deceased: MgoBoolean? = null,
+    val gender: NlCorePatientGender? = null,
     val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-patient",
     val link: List<Link>? = null,
-    val active: Boolean? = null,
-    val photo: List<Attachment>? = null,
-    val birthDate: String? = null,
+    val active: MgoBoolean? = null,
+    val photo: List<MgoAttachment>? = null,
+    val birthDate: MgoDate? = null,
     val referenceId: String,
-    val multipleBirth: Boolean? = null,
+    val multipleBirth: MgoBoolean? = null,
     val managingOrganization: MgoReference? = null,
-    val multipleBirthInteger: Double? = null,
+    val multipleBirthInteger: MgoInteger? = null,
     val contact: List<Contact>? = null,
-    val deceasedDateTime: String? = null,
+    val deceasedDateTime: MgoDateTime? = null,
     val generalPractitioner: List<MgoReference>? = null,
     val fhirVersion: String = "R3",
     val name: List<NlCoreHumanname>? = null,
@@ -39,7 +37,7 @@ data class NlCorePatient(
     val id: String? = null,
     val communication: List<Communication>? = null,
     val maritalStatus: MgoCodeableConcept? = null,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {
@@ -48,24 +46,16 @@ data class NlCorePatient(
     }
 
     @Serializable
-    enum class Gender {
-        unknown,
-        other,
-        male,
-        female
-    }
-
-    @Serializable
     data class Link(
         val other: MgoReference? = null,
-        val type: String? = null
+        val type: MgoCode? = null
     )
 
     @Serializable
     data class Contact(
         val period: MgoPeriod? = null,
         val address: NlCoreAddress,
-        val gender: String? = null,
+        val gender: MgoCode? = null,
         val organization: MgoReference? = null,
         val name: NlCoreHumanname,
         val telecom: List<NlCoreContactpoint>,
@@ -75,7 +65,7 @@ data class NlCorePatient(
     @Serializable
     data class Communication(
         val language: MgoCodeableConcept? = null,
-        val preferred: Boolean? = null
+        val preferred: MgoBoolean? = null
     )
 
     companion object {

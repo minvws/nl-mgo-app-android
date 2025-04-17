@@ -17,5 +17,16 @@ import kotlinx.serialization.Serializable
 data class MgoCoding(
     val code: String? = null,
     val system: String? = null,
-    val display: String? = null
-)
+    val display: String? = null,
+    val _type: String = "coding"
+) {
+
+    init {
+        require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+    }
+
+    companion object {
+        private const val cg_str0 = "coding"
+    }
+
+}

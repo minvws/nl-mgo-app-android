@@ -19,14 +19,14 @@ data class ZibLaboratoryTestResultSpecimenIsolate(
     val identifier: List<MgoIdentifier>? = null,
     val note: List<MgoAnnotation>? = null,
     val subject: MgoReference? = null,
-    val receivedTime: String? = null,
+    val receivedTime: MgoDateTime? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate",
     val fhirVersion: String = "R3",
     val collection: Collection,
     val id: String? = null,
     val type: MgoCodeableConcept? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {
@@ -46,7 +46,7 @@ data class ZibLaboratoryTestResultSpecimenIsolate(
         val quantity: MgoQuantity? = null,
         val method: MgoCodeableConcept? = null,
         val collectedPeriod: MgoPeriod? = null,
-        val collectedDateTime: String? = null
+        val collectedDateTime: MgoDateTime? = null
     )
 
     @Serializable

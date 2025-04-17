@@ -35,20 +35,18 @@ data class ZibBloodPressure(
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure",
     val positionSNOMED: PositionSNOMED,
     val bodySite: MgoCodeableConcept? = null,
-    val effectiveDateTime: String? = null,
-    val comment: String? = null,
+    val effectiveDateTime: MgoDateTime? = null,
+    val comment: MgoString? = null,
     val averageBloodPressureSNOMED: AverageBloodPressureSNOMED,
     val category: List<MgoCodeableConcept>? = null,
     val positionLOINC: PositionLOINC,
-    val resourceType: String? = null,
-    val status: String? = null
+    val resourceType: String,
+    val status: GpLaboratoryResultStatus? = null
 ) {
 
     init {
         require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
         require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
@@ -99,16 +97,6 @@ data class ZibBloodPressure(
     companion object {
         private const val cg_str0 = "R3"
         private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure"
-        private val cg_array2 = setOf(
-            "registered",
-            "preliminary",
-            "final",
-            "amended",
-            "corrected",
-            "cancelled",
-            "entered-in-error",
-            "unknown"
-        )
     }
 
 }

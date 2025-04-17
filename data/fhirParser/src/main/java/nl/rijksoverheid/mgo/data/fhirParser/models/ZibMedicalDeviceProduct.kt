@@ -21,8 +21,8 @@ data class ZibMedicalDeviceProduct(
     val fhirVersion: String = "R3",
     val id: String? = null,
     val referenceId: String,
-    val expirationDate: String? = null,
-    val resourceType: String? = null
+    val expirationDate: MgoDateTime? = null,
+    val resourceType: String
 ) {
 
     init {

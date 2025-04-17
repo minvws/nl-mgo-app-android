@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpDiagnosticResult(
-    val valueBoolean: Boolean? = null,
+    val valueBoolean: MgoBoolean? = null,
     val identifier: List<MgoIdentifier>? = null,
     val performer: List<MgoReference>? = null,
     val code: MgoCodeableConcept? = null,
@@ -25,17 +25,17 @@ data class GpDiagnosticResult(
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult",
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
-    val effective: String? = null,
-    val valueString: String? = null,
+    val effective: MgoDateTime? = null,
+    val valueString: MgoString? = null,
     val valuePeriod: MgoPeriod? = null,
     val fhirVersion: String = "R3",
     val context: MgoReference? = null,
-    val comment: String? = null,
-    val valueDateTime: String? = null,
+    val comment: MgoString? = null,
+    val valueDateTime: MgoDateTime? = null,
     val id: String? = null,
     val valueQuantity: MgoQuantity? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {

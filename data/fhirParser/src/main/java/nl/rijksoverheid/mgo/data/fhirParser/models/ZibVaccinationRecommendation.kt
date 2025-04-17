@@ -15,13 +15,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibVaccinationRecommendation(
+    val identifier: List<MgoIdentifier>? = null,
+    val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation",
     val fhirVersion: String = "R3",
     val orderStatus: MgoCodeableConcept? = null,
     val recommendation: List<Recommendation>? = null,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {
@@ -31,9 +33,10 @@ data class ZibVaccinationRecommendation(
 
     @Serializable
     data class Recommendation(
-        val date: String? = null,
-        val code: MgoCodeableConcept? = null,
-        val dateCriterion: List<String>? = null
+        val date: MgoDateTime? = null,
+        val supportingImmunization: List<MgoReference>? = null,
+        val vaccineCode: MgoCodeableConcept? = null,
+        val dateCriterion: List<MgoDateTime>? = null
     )
 
     companion object {

@@ -16,10 +16,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class R4NlCoreContactInformationTelephoneNumbers(
     val system: String = "phone",
-    val use: String? = null,
+    val use: MgoCode? = null,
     val telecomType: MgoCodeableConcept? = null,
-    val comment: String? = null,
-    val value: String? = null
+    val comment: MgoString? = null,
+    val value: MgoString? = null
 ) {
 
     init {

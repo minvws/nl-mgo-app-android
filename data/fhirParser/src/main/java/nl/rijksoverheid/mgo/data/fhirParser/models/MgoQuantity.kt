@@ -21,5 +21,16 @@ data class MgoQuantity(
     val unit: String? = null,
     val system: String? = null,
     val code: String? = null,
+    val _type: String = "quantity",
     val value: Double? = null
-)
+) {
+
+    init {
+        require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+    }
+
+    companion object {
+        private const val cg_str0 = "quantity"
+    }
+
+}

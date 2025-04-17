@@ -20,60 +20,56 @@ data class ZibMedicationAgreement(
     val medicationTreatment: MgoIdentifier? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement",
     val stopType: MgoCodeableConcept? = null,
-    val priority: Priority? = null,
-    val intent: String? = null,
-    val dossageInstruction: List<ZibInstructionsForUse>? = null,
+    val priority: ZibMedicationAgreementPriority? = null,
+    val intent: ZibMedicationAgreementIntent? = null,
+    val dossageInstruction: List<DossageInstruction>? = null,
     val referenceId: String,
-    val repeatPeriodCyclicalSchedule: MgoQuantity? = null,
+    val repeatPeriodCyclicalSchedule: MgoDuration? = null,
     val medicationReference: MgoReference? = null,
     val periodOfUse: MgoPeriod? = null,
-    val usageDuration: MgoQuantity? = null,
+    val usageDuration: MgoDuration? = null,
     val fhirVersion: String = "R3",
     val definition: List<MgoReference>? = null,
     val id: String? = null,
     val groupIdentifier: MgoIdentifier? = null,
     val category: MgoCodeableConcept? = null,
     val basedOn: List<MgoReference>? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: ZibMedicationAgreementStatus? = null,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        if (intent != null)
-            require(intent in cg_array1) { "intent not in enumerated values - $intent" }
         require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array3) { "status not in enumerated values - $status" }
     }
 
     @Serializable
-    enum class Priority {
-        routine,
-        urgent,
-        stat,
-        asap
+    data class DossageInstruction(
+        val additionalInstruction: List<MgoCodeableConcept>? = null,
+        val rateRatio: MgoRatio? = null,
+        val doseQuantity: MgoQuantityProps? = null,
+        val timing: ZibAdministrationSchedule,
+        val rateQuantity: MgoQuantityProps? = null,
+        val sequence: MgoInteger? = null,
+        val route: MgoCodeableConcept? = null,
+        val rateRange: MgoRange? = null,
+        val _profile: String,
+        val doseRange: MgoRange? = null,
+        val maxDosePerPeriod: MgoRatio? = null,
+        val text: MgoString? = null,
+        val asNeededCodeableConcept: MgoCodeableConcept? = null
+    ) {
+
+        init {
+            require(_profile == cg_str1) { "_profile not constant value $cg_str1 - $_profile" }
+        }
+
     }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement"
-        private val cg_array1 = setOf(
-            "order",
-            "plan",
-            "proposal",
-            "instance-order"
-        )
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-InstructionsForUse"
         private const val cg_str2 = "R3"
-        private val cg_array3 = setOf(
-            "active",
-            "cancelled",
-            "entered-in-error",
-            "unknown",
-            "on-hold",
-            "completed",
-            "stopped",
-            "draft"
-        )
     }
 
 }

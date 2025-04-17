@@ -11,8 +11,6 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,56 +20,48 @@ data class ZibPayer(
     val subscriber: MgoReference? = null,
     val contract: List<MgoReference>? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer",
-    val subscriberId: String? = null,
+    val subscriberId: MgoString? = null,
     val type: MgoCodeableConcept? = null,
     val grouping: Grouping,
     val referenceId: String,
-    val network: String? = null,
-    val sequence: String? = null,
+    val network: MgoString? = null,
+    val sequence: MgoString? = null,
     val payor: List<MgoReference>? = null,
     val beneficiary: MgoReference? = null,
     val fhirVersion: String = "R3",
     val id: String? = null,
     val relationship: MgoCodeableConcept? = null,
-    val dependent: String? = null,
-    val status: String? = null,
+    val dependent: MgoString? = null,
+    val status: ZibPayerStatus? = null,
     val policyHolder: MgoReference? = null,
-    val order: Double? = null,
-    val resourceType: String? = null
+    val order: MgoPositiveInt? = null,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
     data class Grouping(
-        val subGroupDisplay: String? = null,
-        val groupDisplay: String? = null,
-        val subClass: String? = null,
-        val subGroup: String? = null,
-        val subPlan: String? = null,
-        val subPlanDisplay: String? = null,
-        val subClassDisplay: String? = null,
-        val plan: String? = null,
-        val `class`: String? = null,
-        val classDisplay: String? = null,
-        val group: String? = null,
-        val planDisplay: String? = null
+        val subGroupDisplay: MgoString? = null,
+        val groupDisplay: MgoString? = null,
+        val subClass: MgoString? = null,
+        val subGroup: MgoString? = null,
+        val subPlan: MgoString? = null,
+        val subPlanDisplay: MgoString? = null,
+        val subClassDisplay: MgoString? = null,
+        val plan: MgoString? = null,
+        val `class`: MgoString? = null,
+        val classDisplay: MgoString? = null,
+        val group: MgoString? = null,
+        val planDisplay: MgoString? = null
     )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer"
         private const val cg_str1 = "R3"
-        private val cg_array2 = setOf(
-            "active",
-            "cancelled",
-            "entered-in-error",
-            "draft"
-        )
     }
 
 }

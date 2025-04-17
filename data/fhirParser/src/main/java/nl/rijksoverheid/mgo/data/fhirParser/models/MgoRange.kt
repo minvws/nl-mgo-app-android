@@ -15,6 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoRange(
-    val high: MgoQuantity? = null,
-    val low: MgoQuantity? = null
-)
+    val high: MgoQuantityProps? = null,
+    val low: MgoQuantityProps? = null,
+    val _type: String = "range"
+) {
+
+    init {
+        require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+    }
+
+    companion object {
+        private const val cg_str0 = "range"
+    }
+
+}

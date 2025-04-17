@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpLaboratoryResult(
-    val valueBoolean: Boolean? = null,
+    val valueBoolean: MgoBoolean? = null,
     val code: MgoCodeableConcept? = null,
     val valueRange: MgoRange? = null,
     val subject: MgoReference? = null,
@@ -26,7 +26,7 @@ data class GpLaboratoryResult(
     val fhirVersion: String = "R3",
     val specimen: MgoReference? = null,
     val context: MgoReference? = null,
-    val valueDateTime: String? = null,
+    val valueDateTime: MgoDateTime? = null,
     val id: String? = null,
     val resultType: List<MgoCodeableConcept>? = null,
     val basedOn: List<MgoReference>? = null,
@@ -38,20 +38,18 @@ data class GpLaboratoryResult(
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult",
     val referenceRange: List<ReferenceRange>? = null,
     val laboratoryTestResultCode: List<MgoCodeableConcept>? = null,
-    val valueString: String? = null,
+    val valueString: MgoString? = null,
     val interpretation: MgoCodeableConcept? = null,
-    val effectiveDateTime: String? = null,
+    val effectiveDateTime: MgoDateTime? = null,
     val valuePeriod: MgoPeriod? = null,
-    val comment: String? = null,
-    val resourceType: String? = null,
-    val status: String? = null
+    val comment: MgoString? = null,
+    val resourceType: String,
+    val status: GpLaboratoryResultStatus? = null
 ) {
 
     init {
         require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
         require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
@@ -71,16 +69,6 @@ data class GpLaboratoryResult(
     companion object {
         private const val cg_str0 = "R3"
         private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult"
-        private val cg_array2 = setOf(
-            "registered",
-            "preliminary",
-            "final",
-            "amended",
-            "corrected",
-            "cancelled",
-            "entered-in-error",
-            "unknown"
-        )
     }
 
 }

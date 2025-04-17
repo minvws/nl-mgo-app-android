@@ -15,6 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProcedure(
+    val identifier: List<MgoIdentifier>? = null,
     val code: MgoCodeableConcept? = null,
     val performer: List<Performer>? = null,
     val subject: MgoReference? = null,
@@ -27,9 +28,11 @@ data class ZibProcedure(
     val bodySite: List<MgoCodeableConcept>? = null,
     val bodySiteQualifier: List<MgoCodeableConcept>? = null,
     val fhirVersion: String = "R3",
+    val report: List<MgoReference>? = null,
     val location: MgoReference? = null,
     val id: String? = null,
-    val resourceType: String? = null
+    val basedOn: List<MgoReference>? = null,
+    val resourceType: String
 ) {
 
     init {
@@ -39,7 +42,8 @@ data class ZibProcedure(
 
     @Serializable
     data class Performer(
-        val actor: MgoReference? = null
+        val actor: MgoReference? = null,
+        val healthProfessionalRole: MgoCodeableConcept? = null
     )
 
     @Serializable

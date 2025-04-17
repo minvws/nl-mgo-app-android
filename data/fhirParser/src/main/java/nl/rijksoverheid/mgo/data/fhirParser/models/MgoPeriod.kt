@@ -15,6 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoPeriod(
+    val _type: String = "period",
     val start: String? = null,
     val end: String? = null
-)
+) {
+
+    init {
+        require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+    }
+
+    companion object {
+        private const val cg_str0 = "period"
+    }
+
+}

@@ -11,8 +11,6 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -28,7 +26,7 @@ data class ZibEncounter(
     val `class`: MgoCoding? = null,
     val participant: List<EncounterParticipant>? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {
@@ -46,7 +44,7 @@ data class ZibEncounter(
     data class Diagnosi(
         val condition: MgoReference? = null,
         val role: MgoCodeableConcept? = null,
-        val rank: Double? = null
+        val rank: MgoPositiveInt? = null
     )
 
     companion object {

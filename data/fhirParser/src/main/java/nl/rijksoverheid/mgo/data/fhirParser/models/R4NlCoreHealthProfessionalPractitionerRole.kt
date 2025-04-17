@@ -25,7 +25,7 @@ data class R4NlCoreHealthProfessionalPractitionerRole(
     val location: List<MgoReference>? = null,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {

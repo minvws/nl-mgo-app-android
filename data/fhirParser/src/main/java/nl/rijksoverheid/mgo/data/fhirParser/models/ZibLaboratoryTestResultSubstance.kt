@@ -19,12 +19,12 @@ data class ZibLaboratoryTestResultSubstance(
     val code: MgoCodeableConcept? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Substance",
     val fhirVersion: String = "R3",
-    val description: String? = null,
+    val description: MgoString? = null,
     val id: String? = null,
     val category: List<MgoCodeableConcept>? = null,
     val referenceId: String,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {

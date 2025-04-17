@@ -20,12 +20,12 @@ data class NlCoreOrganization(
     val address: List<NlCoreAddress>? = null,
     val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization",
     val fhirVersion: String = "R3",
-    val name: String? = null,
+    val name: MgoString? = null,
     val telecom: List<NlCoreContactpoint>? = null,
     val id: String? = null,
     val departmentSpecialty: List<MgoCodeableConcept>? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {

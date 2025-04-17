@@ -15,6 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoRatio(
-    val numerator: MgoQuantity? = null,
-    val denominator: MgoQuantity? = null
-)
+    val _type: String = "ratio",
+    val numerator: MgoQuantityProps? = null,
+    val denominator: MgoQuantityProps? = null
+) {
+
+    init {
+        require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+    }
+
+    companion object {
+        private const val cg_str0 = "ratio"
+    }
+
+}

@@ -11,15 +11,13 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreContactpoint(
     val period: MgoPeriod? = null,
-    val system: String? = null,
-    val use: String? = null,
-    val rank: Double? = null,
-    val value: String? = null
+    val system: MgoCode? = null,
+    val use: MgoCode? = null,
+    val rank: MgoPositiveInt? = null,
+    val value: MgoString? = null
 )

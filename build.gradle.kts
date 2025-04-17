@@ -16,6 +16,13 @@ plugins {
     alias(libs.plugins.sonarqube)
 }
 
+buildscript {
+    dependencies {
+        // https://community.sonarsource.com/t/sonarqube-gradle-plugin-6-0-breaks-android-tasks/130863
+        classpath(libs.bcutil)
+    }
+}
+
 sonar {
     properties {
         property("sonar.organization", "vws")

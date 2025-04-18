@@ -5,15 +5,15 @@
     "type": "searchset",
     "total": 2,
     "link": [
-        { "relation": "self", "url": "https://dva.test.mgo.irealisatie.nl/fhir/MedicationRequest?_format=json" },
+        { "relation": "self", "url": "https://dvp-proxy.test.mgo.irealisatie.nl/fhir/MedicationRequest?_format=json" },
         {
             "relation": "next",
-            "url": "https://dva.test.mgo.irealisatie.nl/fhir?_getpages=e57c10bc-a0f4-421f-a17a-fbffec617f3a&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset"
+            "url": "https://dvp-proxy.test.mgo.irealisatie.nl/fhir?_getpages=e57c10bc-a0f4-421f-a17a-fbffec617f3a&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset"
         }
     ],
     "entry": [
         {
-            "fullUrl": "https://dva.test.mgo.irealisatie.nl/fhir/MedicationRequest/zib-medicationagreement-01",
+            "fullUrl": "https://dvp-proxy.test.mgo.irealisatie.nl/fhir/MedicationRequest/zib-medicationagreement-01",
             "resource": {
                 "resourceType": "MedicationRequest",
                 "id": "zib-medicationagreement-01",
@@ -88,7 +88,7 @@
             "search": { "mode": "match" }
         },
         {
-            "fullUrl": "https://dva.test.mgo.irealisatie.nl/fhir/MedicationRequest/zib-medicationagreement-02",
+            "fullUrl": "https://dvp-proxy.test.mgo.irealisatie.nl/fhir/MedicationRequest/zib-medicationagreement-02",
             "resource": {
                 "resourceType": "MedicationRequest",
                 "id": "zib-medicationagreement-01",

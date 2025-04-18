@@ -7,12 +7,12 @@
     "link": [
         {
             "relation": "self",
-            "url": "https://dva.test.mgo.irealisatie.nl/fhir/MedicationRequest?_include=MedicationRequest%3Amedication&category=http%3A%2F%2Fsnomed.info%2Fsct%7C16076005&patient=Patient%2F93cde269-ce35-4077-a39d-19296670e949"
+            "url": "https://dvp-proxy.test.mgo.irealisatie.nl/fhir/MedicationRequest?_include=MedicationRequest%3Amedication&category=http%3A%2F%2Fsnomed.info%2Fsct%7C16076005&patient=Patient%2F93cde269-ce35-4077-a39d-19296670e949"
         }
     ],
     "entry": [
         {
-            "fullUrl": "https://dva.test.mgo.irealisatie.nl/fhir/MedicationRequest/a257c163-5250-4589-9e0d-dfecf807ce0c",
+            "fullUrl": "https://dvp-proxy.test.mgo.irealisatie.nl/fhir/MedicationRequest/a257c163-5250-4589-9e0d-dfecf807ce0c",
             "resource": {
                 "resourceType": "MedicationRequest",
                 "id": "a257c163-5250-4589-9e0d-dfecf807ce0c",
@@ -88,7 +88,7 @@
             "search": { "mode": "match" }
         },
         {
-            "fullUrl": "https://dva.test.mgo.irealisatie.nl/fhir/Medication/c81da0f1-c240-42e2-a090-c9d9f09ab9a3",
+            "fullUrl": "https://dvp-proxy.test.mgo.irealisatie.nl/fhir/Medication/c81da0f1-c240-42e2-a090-c9d9f09ab9a3",
             "resource": {
                 "resourceType": "Medication",
                 "id": "c81da0f1-c240-42e2-a090-c9d9f09ab9a3",

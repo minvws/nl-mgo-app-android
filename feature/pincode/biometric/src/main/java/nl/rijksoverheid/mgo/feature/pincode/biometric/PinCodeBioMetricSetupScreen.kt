@@ -31,69 +31,69 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun PinCodeBioMetricSetupScreen(onNavigateToDigid: () -> Unit) {
-    val viewModel: PinCodeBiometricSetupScreenViewModel = hiltViewModel()
-    PinCodeBioMetricSetupScreenContent(
-        onBiometricLoginSuccess = {
-            viewModel.setBiometricLoginEnabled()
-            onNavigateToDigid()
-        },
-        onClickSkip = onNavigateToDigid,
-    )
+  val viewModel: PinCodeBiometricSetupScreenViewModel = hiltViewModel()
+  PinCodeBioMetricSetupScreenContent(
+    onBiometricLoginSuccess = {
+      viewModel.setBiometricLoginEnabled()
+      onNavigateToDigid()
+    },
+    onClickSkip = onNavigateToDigid,
+  )
 }
 
 @Composable
 private fun PinCodeBioMetricSetupScreenContent(
-    onBiometricLoginSuccess: () -> Unit,
-    onClickSkip: () -> Unit,
+  onBiometricLoginSuccess: () -> Unit,
+  onClickSkip: () -> Unit,
 ) {
-    val context = LocalContext.current
-    MgoScaffold(
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        primaryButtonText = stringResource(id = CopyR.string.biometric_setup_enable),
-        onPrimaryButtonClick = {
-            val fragmentActivity = context as FragmentActivity
-            fragmentActivity.showBiometricPrompt(
-                onSuccess = onBiometricLoginSuccess,
-            )
-        },
-        secondaryButtonText = stringResource(id = CopyR.string.common_skip),
-        onSecondaryButtonClick = onClickSkip,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 96.dp),
-            painter = painterResource(id = R.drawable.illustration_biometric),
-            contentDescription = null,
-        )
+  val context = LocalContext.current
+  MgoScaffold(
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    primaryButtonText = stringResource(id = CopyR.string.biometric_setup_enable),
+    onPrimaryButtonClick = {
+      val fragmentActivity = context as FragmentActivity
+      fragmentActivity.showBiometricPrompt(
+        onSuccess = onBiometricLoginSuccess,
+      )
+    },
+    secondaryButtonText = stringResource(id = CopyR.string.common_skip),
+    onSecondaryButtonClick = onClickSkip,
+  ) {
+    Image(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .align(Alignment.CenterHorizontally)
+          .padding(vertical = 96.dp),
+      painter = painterResource(id = R.drawable.illustration_biometric),
+      contentDescription = null,
+    )
 
-        Text(
-            text = stringResource(CopyR.string.biometric_setup_heading),
-            style = MaterialTheme.typography.headlineLarge,
-        )
+    Text(
+      text = stringResource(CopyR.string.biometric_setup_heading),
+      style = MaterialTheme.typography.headlineLarge,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = CopyR.string.biometric_setup_subheading),
-            style = MaterialTheme.typography.bodyMedium,
-        )
+    Text(
+      modifier = Modifier.padding(top = 16.dp),
+      text = stringResource(id = CopyR.string.biometric_setup_subheading),
+      style = MaterialTheme.typography.bodyMedium,
+    )
 
-        Spacer(modifier = Modifier.height(16.dp))
-    }
+    Spacer(modifier = Modifier.height(16.dp))
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeBiometricSetupScreenPreview() {
-    MgoTheme {
-        PinCodeBioMetricSetupScreenContent(
-            onBiometricLoginSuccess = {},
-            onClickSkip = {},
-        )
-    }
+  MgoTheme {
+    PinCodeBioMetricSetupScreenContent(
+      onBiometricLoginSuccess = {},
+      onClickSkip = {},
+    )
+  }
 }

@@ -7364,7 +7364,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function CanonicalizeLocaleList(locales) {
     return Intl.getCanonicalLocales(locales);
   }
-  var data$1 = {
+  var data = {
     supplemental: {
       languageMatching: {
         "written-new": [
@@ -11331,10 +11331,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function processData() {
     var _a2, _b;
     if (!PROCESSED_DATA) {
-      var paradigmLocales = (_b = (_a2 = data$1.supplemental.languageMatching["written-new"][0]) === null || _a2 === void 0 ? void 0 : _a2.paradigmLocales) === null || _b === void 0 ? void 0 : _b._locales.split(" ");
-      var matchVariables = data$1.supplemental.languageMatching["written-new"].slice(1, 5);
-      var data2 = data$1.supplemental.languageMatching["written-new"].slice(5);
-      var matches = data2.map(function(d) {
+      var paradigmLocales = (_b = (_a2 = data.supplemental.languageMatching["written-new"][0]) === null || _a2 === void 0 ? void 0 : _a2.paradigmLocales) === null || _b === void 0 ? void 0 : _b._locales.split(" ");
+      var matchVariables = data.supplemental.languageMatching["written-new"].slice(1, 5);
+      var data$1 = data.supplemental.languageMatching["written-new"].slice(5);
+      var matches = data$1.map(function(d) {
         var key = Object.keys(d)[0];
         var value2 = d[key];
         return {
@@ -41913,6 +41913,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   if ("__setDefaultTimeZone" in Intl.DateTimeFormat) {
     Intl.DateTimeFormat.__setDefaultTimeZone("Europe/Amsterdam");
   }
+  function isNullish(value2) {
+    return value2 === void 0 || value2 === null;
+  }
+  function isNonNullish(value2) {
+    return !isNullish(value2);
+  }
   function isInteger(value2) {
     return INTEGER_REGEX.test(value2);
   }
@@ -42439,17 +42445,534 @@ ${indent}}` : "}";
     }
     return parse$2(text);
   }
-  function losslessStringify(value2, format2 = false) {
-    if (format2) {
-      return stringify(value2, null, 2);
+  const losslessStringify = stringify;
+  var _arrayReduce;
+  var hasRequired_arrayReduce;
+  function require_arrayReduce() {
+    if (hasRequired_arrayReduce) return _arrayReduce;
+    hasRequired_arrayReduce = 1;
+    function arrayReduce(array, iteratee, accumulator, initAccum) {
+      var index = -1, length = array == null ? 0 : array.length;
+      if (initAccum && length) {
+        accumulator = array[++index];
+      }
+      while (++index < length) {
+        accumulator = iteratee(accumulator, array[index], index, array);
+      }
+      return accumulator;
     }
-    return stringify(value2);
+    _arrayReduce = arrayReduce;
+    return _arrayReduce;
   }
+  var _basePropertyOf;
+  var hasRequired_basePropertyOf;
+  function require_basePropertyOf() {
+    if (hasRequired_basePropertyOf) return _basePropertyOf;
+    hasRequired_basePropertyOf = 1;
+    function basePropertyOf(object) {
+      return function(key) {
+        return object == null ? void 0 : object[key];
+      };
+    }
+    _basePropertyOf = basePropertyOf;
+    return _basePropertyOf;
+  }
+  var _deburrLetter;
+  var hasRequired_deburrLetter;
+  function require_deburrLetter() {
+    if (hasRequired_deburrLetter) return _deburrLetter;
+    hasRequired_deburrLetter = 1;
+    var basePropertyOf = require_basePropertyOf();
+    var deburredLetters = {
+      // Latin-1 Supplement block.
+      "À": "A",
+      "Á": "A",
+      "Â": "A",
+      "Ã": "A",
+      "Ä": "A",
+      "Å": "A",
+      "à": "a",
+      "á": "a",
+      "â": "a",
+      "ã": "a",
+      "ä": "a",
+      "å": "a",
+      "Ç": "C",
+      "ç": "c",
+      "Ð": "D",
+      "ð": "d",
+      "È": "E",
+      "É": "E",
+      "Ê": "E",
+      "Ë": "E",
+      "è": "e",
+      "é": "e",
+      "ê": "e",
+      "ë": "e",
+      "Ì": "I",
+      "Í": "I",
+      "Î": "I",
+      "Ï": "I",
+      "ì": "i",
+      "í": "i",
+      "î": "i",
+      "ï": "i",
+      "Ñ": "N",
+      "ñ": "n",
+      "Ò": "O",
+      "Ó": "O",
+      "Ô": "O",
+      "Õ": "O",
+      "Ö": "O",
+      "Ø": "O",
+      "ò": "o",
+      "ó": "o",
+      "ô": "o",
+      "õ": "o",
+      "ö": "o",
+      "ø": "o",
+      "Ù": "U",
+      "Ú": "U",
+      "Û": "U",
+      "Ü": "U",
+      "ù": "u",
+      "ú": "u",
+      "û": "u",
+      "ü": "u",
+      "Ý": "Y",
+      "ý": "y",
+      "ÿ": "y",
+      "Æ": "Ae",
+      "æ": "ae",
+      "Þ": "Th",
+      "þ": "th",
+      "ß": "ss",
+      // Latin Extended-A block.
+      "Ā": "A",
+      "Ă": "A",
+      "Ą": "A",
+      "ā": "a",
+      "ă": "a",
+      "ą": "a",
+      "Ć": "C",
+      "Ĉ": "C",
+      "Ċ": "C",
+      "Č": "C",
+      "ć": "c",
+      "ĉ": "c",
+      "ċ": "c",
+      "č": "c",
+      "Ď": "D",
+      "Đ": "D",
+      "ď": "d",
+      "đ": "d",
+      "Ē": "E",
+      "Ĕ": "E",
+      "Ė": "E",
+      "Ę": "E",
+      "Ě": "E",
+      "ē": "e",
+      "ĕ": "e",
+      "ė": "e",
+      "ę": "e",
+      "ě": "e",
+      "Ĝ": "G",
+      "Ğ": "G",
+      "Ġ": "G",
+      "Ģ": "G",
+      "ĝ": "g",
+      "ğ": "g",
+      "ġ": "g",
+      "ģ": "g",
+      "Ĥ": "H",
+      "Ħ": "H",
+      "ĥ": "h",
+      "ħ": "h",
+      "Ĩ": "I",
+      "Ī": "I",
+      "Ĭ": "I",
+      "Į": "I",
+      "İ": "I",
+      "ĩ": "i",
+      "ī": "i",
+      "ĭ": "i",
+      "į": "i",
+      "ı": "i",
+      "Ĵ": "J",
+      "ĵ": "j",
+      "Ķ": "K",
+      "ķ": "k",
+      "ĸ": "k",
+      "Ĺ": "L",
+      "Ļ": "L",
+      "Ľ": "L",
+      "Ŀ": "L",
+      "Ł": "L",
+      "ĺ": "l",
+      "ļ": "l",
+      "ľ": "l",
+      "ŀ": "l",
+      "ł": "l",
+      "Ń": "N",
+      "Ņ": "N",
+      "Ň": "N",
+      "Ŋ": "N",
+      "ń": "n",
+      "ņ": "n",
+      "ň": "n",
+      "ŋ": "n",
+      "Ō": "O",
+      "Ŏ": "O",
+      "Ő": "O",
+      "ō": "o",
+      "ŏ": "o",
+      "ő": "o",
+      "Ŕ": "R",
+      "Ŗ": "R",
+      "Ř": "R",
+      "ŕ": "r",
+      "ŗ": "r",
+      "ř": "r",
+      "Ś": "S",
+      "Ŝ": "S",
+      "Ş": "S",
+      "Š": "S",
+      "ś": "s",
+      "ŝ": "s",
+      "ş": "s",
+      "š": "s",
+      "Ţ": "T",
+      "Ť": "T",
+      "Ŧ": "T",
+      "ţ": "t",
+      "ť": "t",
+      "ŧ": "t",
+      "Ũ": "U",
+      "Ū": "U",
+      "Ŭ": "U",
+      "Ů": "U",
+      "Ű": "U",
+      "Ų": "U",
+      "ũ": "u",
+      "ū": "u",
+      "ŭ": "u",
+      "ů": "u",
+      "ű": "u",
+      "ų": "u",
+      "Ŵ": "W",
+      "ŵ": "w",
+      "Ŷ": "Y",
+      "ŷ": "y",
+      "Ÿ": "Y",
+      "Ź": "Z",
+      "Ż": "Z",
+      "Ž": "Z",
+      "ź": "z",
+      "ż": "z",
+      "ž": "z",
+      "Ĳ": "IJ",
+      "ĳ": "ij",
+      "Œ": "Oe",
+      "œ": "oe",
+      "ŉ": "'n",
+      "ſ": "s"
+    };
+    var deburrLetter = basePropertyOf(deburredLetters);
+    _deburrLetter = deburrLetter;
+    return _deburrLetter;
+  }
+  var _freeGlobal;
+  var hasRequired_freeGlobal;
+  function require_freeGlobal() {
+    if (hasRequired_freeGlobal) return _freeGlobal;
+    hasRequired_freeGlobal = 1;
+    var freeGlobal = typeof commonjsGlobal == "object" && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+    _freeGlobal = freeGlobal;
+    return _freeGlobal;
+  }
+  var _root;
+  var hasRequired_root;
+  function require_root() {
+    if (hasRequired_root) return _root;
+    hasRequired_root = 1;
+    var freeGlobal = require_freeGlobal();
+    var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+    var root = freeGlobal || freeSelf || Function("return this")();
+    _root = root;
+    return _root;
+  }
+  var _Symbol;
+  var hasRequired_Symbol;
+  function require_Symbol() {
+    if (hasRequired_Symbol) return _Symbol;
+    hasRequired_Symbol = 1;
+    var root = require_root();
+    var Symbol2 = root.Symbol;
+    _Symbol = Symbol2;
+    return _Symbol;
+  }
+  var _arrayMap;
+  var hasRequired_arrayMap;
+  function require_arrayMap() {
+    if (hasRequired_arrayMap) return _arrayMap;
+    hasRequired_arrayMap = 1;
+    function arrayMap(array, iteratee) {
+      var index = -1, length = array == null ? 0 : array.length, result = Array(length);
+      while (++index < length) {
+        result[index] = iteratee(array[index], index, array);
+      }
+      return result;
+    }
+    _arrayMap = arrayMap;
+    return _arrayMap;
+  }
+  var isArray_1;
+  var hasRequiredIsArray;
+  function requireIsArray() {
+    if (hasRequiredIsArray) return isArray_1;
+    hasRequiredIsArray = 1;
+    var isArray = Array.isArray;
+    isArray_1 = isArray;
+    return isArray_1;
+  }
+  var _getRawTag;
+  var hasRequired_getRawTag;
+  function require_getRawTag() {
+    if (hasRequired_getRawTag) return _getRawTag;
+    hasRequired_getRawTag = 1;
+    var Symbol2 = require_Symbol();
+    var objectProto = Object.prototype;
+    var hasOwnProperty = objectProto.hasOwnProperty;
+    var nativeObjectToString = objectProto.toString;
+    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
+    function getRawTag(value2) {
+      var isOwn = hasOwnProperty.call(value2, symToStringTag), tag2 = value2[symToStringTag];
+      try {
+        value2[symToStringTag] = void 0;
+        var unmasked = true;
+      } catch (e) {
+      }
+      var result = nativeObjectToString.call(value2);
+      if (unmasked) {
+        if (isOwn) {
+          value2[symToStringTag] = tag2;
+        } else {
+          delete value2[symToStringTag];
+        }
+      }
+      return result;
+    }
+    _getRawTag = getRawTag;
+    return _getRawTag;
+  }
+  var _objectToString;
+  var hasRequired_objectToString;
+  function require_objectToString() {
+    if (hasRequired_objectToString) return _objectToString;
+    hasRequired_objectToString = 1;
+    var objectProto = Object.prototype;
+    var nativeObjectToString = objectProto.toString;
+    function objectToString(value2) {
+      return nativeObjectToString.call(value2);
+    }
+    _objectToString = objectToString;
+    return _objectToString;
+  }
+  var _baseGetTag;
+  var hasRequired_baseGetTag;
+  function require_baseGetTag() {
+    if (hasRequired_baseGetTag) return _baseGetTag;
+    hasRequired_baseGetTag = 1;
+    var Symbol2 = require_Symbol(), getRawTag = require_getRawTag(), objectToString = require_objectToString();
+    var nullTag = "[object Null]", undefinedTag = "[object Undefined]";
+    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
+    function baseGetTag(value2) {
+      if (value2 == null) {
+        return value2 === void 0 ? undefinedTag : nullTag;
+      }
+      return symToStringTag && symToStringTag in Object(value2) ? getRawTag(value2) : objectToString(value2);
+    }
+    _baseGetTag = baseGetTag;
+    return _baseGetTag;
+  }
+  var isObjectLike_1;
+  var hasRequiredIsObjectLike;
+  function requireIsObjectLike() {
+    if (hasRequiredIsObjectLike) return isObjectLike_1;
+    hasRequiredIsObjectLike = 1;
+    function isObjectLike(value2) {
+      return value2 != null && typeof value2 == "object";
+    }
+    isObjectLike_1 = isObjectLike;
+    return isObjectLike_1;
+  }
+  var isSymbol_1;
+  var hasRequiredIsSymbol;
+  function requireIsSymbol() {
+    if (hasRequiredIsSymbol) return isSymbol_1;
+    hasRequiredIsSymbol = 1;
+    var baseGetTag = require_baseGetTag(), isObjectLike = requireIsObjectLike();
+    var symbolTag = "[object Symbol]";
+    function isSymbol(value2) {
+      return typeof value2 == "symbol" || isObjectLike(value2) && baseGetTag(value2) == symbolTag;
+    }
+    isSymbol_1 = isSymbol;
+    return isSymbol_1;
+  }
+  var _baseToString;
+  var hasRequired_baseToString;
+  function require_baseToString() {
+    if (hasRequired_baseToString) return _baseToString;
+    hasRequired_baseToString = 1;
+    var Symbol2 = require_Symbol(), arrayMap = require_arrayMap(), isArray = requireIsArray(), isSymbol = requireIsSymbol();
+    var symbolProto = Symbol2 ? Symbol2.prototype : void 0, symbolToString = symbolProto ? symbolProto.toString : void 0;
+    function baseToString(value2) {
+      if (typeof value2 == "string") {
+        return value2;
+      }
+      if (isArray(value2)) {
+        return arrayMap(value2, baseToString) + "";
+      }
+      if (isSymbol(value2)) {
+        return symbolToString ? symbolToString.call(value2) : "";
+      }
+      var result = value2 + "";
+      return result == "0" && 1 / value2 == -Infinity ? "-0" : result;
+    }
+    _baseToString = baseToString;
+    return _baseToString;
+  }
+  var toString_1;
+  var hasRequiredToString;
+  function requireToString() {
+    if (hasRequiredToString) return toString_1;
+    hasRequiredToString = 1;
+    var baseToString = require_baseToString();
+    function toString(value2) {
+      return value2 == null ? "" : baseToString(value2);
+    }
+    toString_1 = toString;
+    return toString_1;
+  }
+  var deburr_1;
+  var hasRequiredDeburr;
+  function requireDeburr() {
+    if (hasRequiredDeburr) return deburr_1;
+    hasRequiredDeburr = 1;
+    var deburrLetter = require_deburrLetter(), toString = requireToString();
+    var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
+    var rsComboMarksRange = "\\u0300-\\u036f", reComboHalfMarksRange = "\\ufe20-\\ufe2f", rsComboSymbolsRange = "\\u20d0-\\u20ff", rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange;
+    var rsCombo = "[" + rsComboRange + "]";
+    var reComboMark = RegExp(rsCombo, "g");
+    function deburr(string2) {
+      string2 = toString(string2);
+      return string2 && string2.replace(reLatin, deburrLetter).replace(reComboMark, "");
+    }
+    deburr_1 = deburr;
+    return deburr_1;
+  }
+  var _asciiWords;
+  var hasRequired_asciiWords;
+  function require_asciiWords() {
+    if (hasRequired_asciiWords) return _asciiWords;
+    hasRequired_asciiWords = 1;
+    var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
+    function asciiWords(string2) {
+      return string2.match(reAsciiWord) || [];
+    }
+    _asciiWords = asciiWords;
+    return _asciiWords;
+  }
+  var _hasUnicodeWord;
+  var hasRequired_hasUnicodeWord;
+  function require_hasUnicodeWord() {
+    if (hasRequired_hasUnicodeWord) return _hasUnicodeWord;
+    hasRequired_hasUnicodeWord = 1;
+    var reHasUnicodeWord = /[a-z][A-Z]|[A-Z]{2}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
+    function hasUnicodeWord(string2) {
+      return reHasUnicodeWord.test(string2);
+    }
+    _hasUnicodeWord = hasUnicodeWord;
+    return _hasUnicodeWord;
+  }
+  var _unicodeWords;
+  var hasRequired_unicodeWords;
+  function require_unicodeWords() {
+    if (hasRequired_unicodeWords) return _unicodeWords;
+    hasRequired_unicodeWords = 1;
+    var rsAstralRange = "\\ud800-\\udfff", rsComboMarksRange = "\\u0300-\\u036f", reComboHalfMarksRange = "\\ufe20-\\ufe2f", rsComboSymbolsRange = "\\u20d0-\\u20ff", rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange, rsDingbatRange = "\\u2700-\\u27bf", rsLowerRange = "a-z\\xdf-\\xf6\\xf8-\\xff", rsMathOpRange = "\\xac\\xb1\\xd7\\xf7", rsNonCharRange = "\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf", rsPunctuationRange = "\\u2000-\\u206f", rsSpaceRange = " \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000", rsUpperRange = "A-Z\\xc0-\\xd6\\xd8-\\xde", rsVarRange = "\\ufe0e\\ufe0f", rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
+    var rsApos = "['’]", rsBreak = "[" + rsBreakRange + "]", rsCombo = "[" + rsComboRange + "]", rsDigits = "\\d+", rsDingbat = "[" + rsDingbatRange + "]", rsLower = "[" + rsLowerRange + "]", rsMisc = "[^" + rsAstralRange + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + "]", rsFitz = "\\ud83c[\\udffb-\\udfff]", rsModifier = "(?:" + rsCombo + "|" + rsFitz + ")", rsNonAstral = "[^" + rsAstralRange + "]", rsRegional = "(?:\\ud83c[\\udde6-\\uddff]){2}", rsSurrPair = "[\\ud800-\\udbff][\\udc00-\\udfff]", rsUpper = "[" + rsUpperRange + "]", rsZWJ = "\\u200d";
+    var rsMiscLower = "(?:" + rsLower + "|" + rsMisc + ")", rsMiscUpper = "(?:" + rsUpper + "|" + rsMisc + ")", rsOptContrLower = "(?:" + rsApos + "(?:d|ll|m|re|s|t|ve))?", rsOptContrUpper = "(?:" + rsApos + "(?:D|LL|M|RE|S|T|VE))?", reOptMod = rsModifier + "?", rsOptVar = "[" + rsVarRange + "]?", rsOptJoin = "(?:" + rsZWJ + "(?:" + [rsNonAstral, rsRegional, rsSurrPair].join("|") + ")" + rsOptVar + reOptMod + ")*", rsOrdLower = "\\d*(?:1st|2nd|3rd|(?![123])\\dth)(?=\\b|[A-Z_])", rsOrdUpper = "\\d*(?:1ST|2ND|3RD|(?![123])\\dTH)(?=\\b|[a-z_])", rsSeq = rsOptVar + reOptMod + rsOptJoin, rsEmoji = "(?:" + [rsDingbat, rsRegional, rsSurrPair].join("|") + ")" + rsSeq;
+    var reUnicodeWord = RegExp([
+      rsUpper + "?" + rsLower + "+" + rsOptContrLower + "(?=" + [rsBreak, rsUpper, "$"].join("|") + ")",
+      rsMiscUpper + "+" + rsOptContrUpper + "(?=" + [rsBreak, rsUpper + rsMiscLower, "$"].join("|") + ")",
+      rsUpper + "?" + rsMiscLower + "+" + rsOptContrLower,
+      rsUpper + "+" + rsOptContrUpper,
+      rsOrdUpper,
+      rsOrdLower,
+      rsDigits,
+      rsEmoji
+    ].join("|"), "g");
+    function unicodeWords(string2) {
+      return string2.match(reUnicodeWord) || [];
+    }
+    _unicodeWords = unicodeWords;
+    return _unicodeWords;
+  }
+  var words_1;
+  var hasRequiredWords;
+  function requireWords() {
+    if (hasRequiredWords) return words_1;
+    hasRequiredWords = 1;
+    var asciiWords = require_asciiWords(), hasUnicodeWord = require_hasUnicodeWord(), toString = requireToString(), unicodeWords = require_unicodeWords();
+    function words(string2, pattern, guard) {
+      string2 = toString(string2);
+      pattern = guard ? void 0 : pattern;
+      if (pattern === void 0) {
+        return hasUnicodeWord(string2) ? unicodeWords(string2) : asciiWords(string2);
+      }
+      return string2.match(pattern) || [];
+    }
+    words_1 = words;
+    return words_1;
+  }
+  var _createCompounder;
+  var hasRequired_createCompounder;
+  function require_createCompounder() {
+    if (hasRequired_createCompounder) return _createCompounder;
+    hasRequired_createCompounder = 1;
+    var arrayReduce = require_arrayReduce(), deburr = requireDeburr(), words = requireWords();
+    var rsApos = "['’]";
+    var reApos = RegExp(rsApos, "g");
+    function createCompounder(callback) {
+      return function(string2) {
+        return arrayReduce(words(deburr(string2).replace(reApos, "")), callback, "");
+      };
+    }
+    _createCompounder = createCompounder;
+    return _createCompounder;
+  }
+  var kebabCase_1;
+  var hasRequiredKebabCase;
+  function requireKebabCase() {
+    if (hasRequiredKebabCase) return kebabCase_1;
+    hasRequiredKebabCase = 1;
+    var createCompounder = require_createCompounder();
+    var kebabCase = createCompounder(function(result, word, index) {
+      return result + (index ? "-" : "") + word.toLowerCase();
+    });
+    kebabCase_1 = kebabCase;
+    return kebabCase_1;
+  }
+  requireKebabCase();
   function createJsonApi(func) {
     return function(...args) {
       const result = func(...args.map(losslessParse));
       return losslessStringify(result);
     };
+  }
+  function isMgoElement(value2) {
+    return typeof value2 === "object" && value2 !== null && typeof value2["_profile"] === "string";
   }
   function isFhirResource(value2, type) {
     const resource = value2;
@@ -42458,21 +42981,11 @@ ${indent}}` : "}";
     }
     return resource?.resourceType === type;
   }
-  function isNullish(value2) {
-    return value2 === void 0 || value2 === null;
-  }
-  function isNonNullish(value2) {
-    return !isNullish(value2);
-  }
   function map(items, iteratee, returnEmpty = false) {
     if (!items?.length) {
       return returnEmpty ? [] : void 0;
     }
     return items.map(iteratee).filter(isNonNullish);
-  }
-  function capitalizeFirstLetter(str) {
-    if (!str) return str;
-    return str.charAt(0).toUpperCase() + str.slice(1);
   }
   function getBundleResources(bundle) {
     if (!isFhirResource(bundle, "Bundle")) {
@@ -42534,7 +43047,11 @@ ${indent}}` : "}";
     "fhir.range.low": [{ "type": 0, "value": "Ondergrens" }],
     "fhir.ratio.denominator": [{ "type": 0, "value": "Noemer" }],
     "fhir.ratio.numerator": [{ "type": 0, "value": "Teller" }],
-    "fhir.unknown": [{ "type": 0, "value": "Onbekend" }]
+    "fhir.unknown": [{ "type": 0, "value": "Onbekend" }],
+    "fhir.x.identifier": [{ "type": 0, "value": "Identificatie" }],
+    "fhir.x.note": [{ "type": 0, "value": "Toelichting" }],
+    "fhir.x.patient": [{ "type": 0, "value": "Patiënt" }],
+    "fhir.x.practitioner": [{ "type": 0, "value": "Zorgverlener" }]
   };
   const r3ResourceLabels = {
     "r3.e_afspraak_appointment": [{ "type": 0, "value": "Afspraak" }],
@@ -42559,7 +43076,7 @@ ${indent}}` : "}";
     "r3.ihe_mhd_minimal_document_reference.type": [{ "type": 0, "value": "Type" }],
     "r3.nl_core_episodeofcare": [{ "type": 0, "value": "Episode" }],
     "r3.nl_core_episodeofcare.identifier": [{ "type": 0, "value": "Identificatienummer" }],
-    "r3.nl_core_episodeofcare.patient": [{ "type": 0, "value": "Patient" }],
+    "r3.nl_core_episodeofcare.patient": [{ "type": 0, "value": "Patiënt" }],
     "r3.nl_core_episodeofcare.period": [{ "type": 0, "value": "Periode" }],
     "r3.nl_core_episodeofcare.type": [{ "type": 0, "value": "Type" }],
     "r3.nl_core_observation": [{ "type": 0, "value": "Observatie" }],
@@ -42570,6 +43087,8 @@ ${indent}}` : "}";
     "r3.zib_administration_agreement.period_of_use": [{ "type": 0, "value": "Gebruiksperiode" }],
     "r3.zib_administration_agreement.stop_type": [{ "type": 0, "value": "Beëindigingsreden" }],
     "r3.zib_advance_directive.comment": [{ "type": 0, "value": "Toelichting" }],
+    "r3.zib_advance_directive.source.identifier": [{ "type": 0, "value": "Wilsverklaring document" }],
+    "r3.zib_advance_directive.source.reference": [{ "type": 0, "value": "Wilsverklaring document" }],
     "r3.zib_alcohol_use.identifier": [{ "type": 0, "value": "Identificatie" }],
     "r3.zib_alcohol_use.performer": [{ "type": 0, "value": "Verantwoordelijk" }],
     "r3.zib_alcohol_use.subject": [{ "type": 0, "value": "Patiënt" }],
@@ -42585,8 +43104,40 @@ ${indent}}` : "}";
     "r3.zib_laboratory_test_result_substance": [{ "type": 0, "value": "Monstermateriaal" }],
     "r3.zib_medical_device_request": [{ "type": 0, "value": "Medisch hulpmiddel aanvraag" }],
     "r3.zib_medication_use.effective_period.duration": [{ "type": 0, "value": "Tijdsduur" }],
+    "r3.zib_medication_use.information_source": [{ "type": 0, "value": "Informatiebron" }],
+    "r3.zib_medication_use.reason_code": [{ "type": 0, "value": "Reden gebruik" }],
     "r3.zib_medication_use.repeat_period_cyclical_schedule": [{ "type": 0, "value": "Herhaalperiode cyclisch schema" }],
-    "r3.zib_vaccination_recommendation": [{ "type": 0, "value": "Vaccinatieadvies" }]
+    "r3.zib_medication_use.subject": [{ "type": 0, "value": "Onderwerp" }],
+    "r3.zib_payer.beneficiary": [{ "type": 0, "value": "Onderwerp (Patiënt)" }],
+    "r3.zib_procedure.based_on": [{ "type": 0, "value": "Verrichting" }],
+    "r3.zib_procedure.body_site_qualifier": [{ "type": 0, "value": "Verrichting lateraliteit" }],
+    "r3.zib_procedure.focal_device": [{ "type": 0, "value": "Medisch hulpmiddel" }],
+    "r3.zib_procedure.location": [{ "type": 0, "value": "Locatie" }],
+    "r3.zib_procedure.performed_period": [{ "type": 0, "value": "Verrichting datum" }],
+    "r3.zib_procedure.performer.actor": [{ "type": 0, "value": "Uitgevoerd door" }],
+    "r3.zib_procedure.performer.health_professional_role": [{ "type": 0, "value": "Zorgverlener rol" }],
+    "r3.zib_procedure.procedure_method": [{ "type": 0, "value": "Verrichting methode" }],
+    "r3.zib_procedure.report": [{ "type": 0, "value": "Resultaat" }],
+    "r3.zib_procedure.subject": [{ "type": 0, "value": "Onderwerp (Patiënt)" }],
+    "r3.zib_treatment_directive.additional_sources": [{ "type": 0, "value": "Aanvullende bronnen" }],
+    "r3.zib_treatment_directive.additional_sources.value_attachment": [{ "type": 0, "value": "Aanvullende bronnen" }],
+    "r3.zib_treatment_directive.additional_sources.value_identifier": [{ "type": 0, "value": "Aanvullende bronnen" }],
+    "r3.zib_treatment_directive.additional_sources.value_reference": [{ "type": 0, "value": "Aanvullende bronnen" }],
+    "r3.zib_treatment_directive.comment": [{ "type": 0, "value": "Toelichting" }],
+    "r3.zib_treatment_directive.consenting_party": [{ "type": 0, "value": "Toestemmende partij" }],
+    "r3.zib_treatment_directive.date_time": [{ "type": 0, "value": "Datum" }],
+    "r3.zib_treatment_directive.except_restrictions": [{ "type": 0, "value": "Beperkingen" }],
+    "r3.zib_treatment_directive.patient": [{ "type": 0, "value": "Patiënt" }],
+    "r3.zib_treatment_directive.source_attachment": [{ "type": 0, "value": "Bron bijlage" }],
+    "r3.zib_treatment_directive.source_identifier": [{ "type": 0, "value": "Bron identificatie" }],
+    "r3.zib_treatment_directive.source_reference": [{ "type": 0, "value": "Bron referentie" }],
+    "r3.zib_treatment_directive.verification": [{ "type": 0, "value": "Verificatie" }],
+    "r3.zib_treatment_directive.verified": [{ "type": 0, "value": "Bevestigd" }],
+    "r3.zib_vaccination.report_origin": [{ "type": 0, "value": "Informatiebron" }],
+    "r3.zib_vaccination_recommendation": [{ "type": 0, "value": "Vaccinatieadvies" }],
+    "r3.zib_vaccination_recommendation.recommendation": [{ "type": 0, "value": "Vaccinatieadvies" }],
+    "r3.zib_vaccination_recommendation.recommendation.supporting_immunization": [{ "type": 0, "value": "Vaccinatie" }],
+    "r3.zib_vaccination_recommendation.subject": [{ "type": 0, "value": "Onderwerp (Patiënt)" }]
   };
   const r4ResourceLabels = {
     "r4.nl_core_contact_information_email_addresses": [{ "type": 0, "value": "Contactgegevens" }],
@@ -42597,15 +43148,15 @@ ${indent}}` : "}";
     "r4.nl_core_contact_information_telephone_numbers.telecom_type": [{ "type": 0, "value": "Telecom type" }],
     "r4.nl_core_contact_information_telephone_numbers.use": [{ "type": 0, "value": "Telecom type / nummer soort" }],
     "r4.nl_core_contact_information_telephone_numbers.value": [{ "type": 0, "value": "Telefoonnummer" }],
-    "r4.nl_core_healtcare_provider": [{ "type": 0, "value": "Zorgverlener" }],
-    "r4.nl_core_healtcare_provider.identifier": [{ "type": 0, "value": "Identifier" }],
-    "r4.nl_core_healtcare_provider.managing_organization": [{ "type": 0, "value": "Beherende organisatie" }],
-    "r4.nl_core_healtcare_provider.name": [{ "type": 0, "value": "Zorgverlener naam" }],
     "r4.nl_core_health_professional_practitioner_role": [{ "type": 0, "value": "Zorgprofessional rol" }],
     "r4.nl_core_health_professional_practitioner_role.location": [{ "type": 0, "value": "Locatie" }],
     "r4.nl_core_health_professional_practitioner_role.organization": [{ "type": 0, "value": "Zorgaanbieder" }],
     "r4.nl_core_health_professional_practitioner_role.practitioner": [{ "type": 0, "value": "Zorgverlener" }],
     "r4.nl_core_health_professional_practitioner_role.speciality": [{ "type": 0, "value": "Specialiteit" }],
+    "r4.nl_core_healthcare_provider": [{ "type": 0, "value": "Zorgverlener" }],
+    "r4.nl_core_healthcare_provider.identifier": [{ "type": 0, "value": "Identifier" }],
+    "r4.nl_core_healthcare_provider.managing_organization": [{ "type": 0, "value": "Beherende organisatie" }],
+    "r4.nl_core_healthcare_provider.name": [{ "type": 0, "value": "Zorgverlener naam" }],
     "r4.nl_core_healthcare_provider_organization": [{ "type": 0, "value": "Zorgverlener organisatie" }],
     "r4.nl_core_healthcare_provider_organization.department_speciality": [{ "type": 0, "value": "Zorgverlener organisatie afdelings specialiteit" }],
     "r4.nl_core_healthcare_provider_organization.identifier": [{ "type": 0, "value": "Zorgverlener organisatie identifier" }],
@@ -44389,7 +44940,7 @@ ${indent}}` : "}";
   }
   function createHelpers(intl2) {
     const formatMessage2 = (id, ...args) => intl2.formatMessage({ id }, ...args);
-    const hasMessage = (id) => !!intl2.messages[id];
+    const hasMessage = (id) => Object.prototype.hasOwnProperty.call(intl2.messages, id);
     return {
       formatMessage: formatMessage2,
       hasMessage
@@ -48293,8 +48844,8 @@ ${indent}}` : "}";
       ...group,
       children: group.children.map((entry) => {
         return isEmptyUiEntry(entry) && !["DOWNLOAD_LINK", "DOWNLOAD_BINARY"].includes(entry.type) ? {
-          type: "SINGLE_VALUE",
           label: entry.label,
+          type: "SINGLE_VALUE",
           display: formatMessage2("fhir.empty_value")
         } : entry;
       })
@@ -48314,503 +48865,6 @@ ${indent}}` : "}";
       };
     };
   }
-  const intlCache = createIntlCache();
-  function createUiHelperContext(options) {
-    const { locale, ignoreMissingTranslations, isSummary } = options;
-    const intl2 = createIntl(
-      getFhirIntlConfig({
-        locale,
-        ignoreMissingTranslations
-      }),
-      intlCache
-    );
-    return {
-      isSummary,
-      intl: intl2,
-      ...createHelpers(intl2)
-    };
-  }
-  const attachment$1 = ({ formatMessage: formatMessage2 }) => (value2) => {
-    const label = value2?.title ?? formatMessage2("fhir.unknown");
-    if (isBinaryReference(value2?.url)) {
-      return {
-        type: "DOWNLOAD_BINARY",
-        label,
-        reference: value2?.url
-      };
-    }
-    return {
-      type: "DOWNLOAD_LINK",
-      label,
-      url: value2?.url
-    };
-  };
-  function isBinaryReference(value2) {
-    return value2?.startsWith("Binary/");
-  }
-  const annotationDisplay = (value2) => {
-    return value2?.text;
-  };
-  const annotation$1 = ({ intl: intl2 }) => (label, value2) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: intl2.formatMessage({ id: label }),
-        type: "MULTIPLE_VALUES",
-        display: value2.map(annotationDisplay).filter(isNonNullish)
-      };
-    }
-    return {
-      label: intl2.formatMessage({ id: label }),
-      display: annotationDisplay(value2),
-      type: "SINGLE_VALUE"
-    };
-  };
-  const boolean$1 = ({ formatMessage: formatMessage2 }) => (label, value2) => {
-    const truthyString = value2 ? formatMessage2("fhir.boolean.true") : formatMessage2("fhir.boolean.false");
-    return {
-      label: formatMessage2(label),
-      type: "SINGLE_VALUE",
-      display: isNonNullish(value2) ? truthyString : void 0
-    };
-  };
-  function code$1(context) {
-    const { hasMessage, formatMessage: formatMessage2 } = context;
-    return function(label, value2, options) {
-      const { i18nCode } = options ?? {};
-      function translateCode(code2) {
-        const i18nKey = `codes.${i18nCode}.${code2}`;
-        if (isNullish(code2)) {
-          return;
-        }
-        if (i18nCode && hasMessage(i18nKey)) {
-          return formatMessage2(i18nKey);
-        }
-        return code2;
-      }
-      if (Array.isArray(value2)) {
-        return {
-          label: formatMessage2(label),
-          type: "MULTIPLE_VALUES",
-          display: value2.map(translateCode).filter(isNonNullish)
-        };
-      }
-      return {
-        label: formatMessage2(label),
-        type: "SINGLE_VALUE",
-        display: translateCode(value2)
-      };
-    };
-  }
-  const systemCode = ({ formatMessage: formatMessage2, hasMessage }) => (value2) => {
-    const { display, code: code2, system: system2 } = value2 ?? {};
-    const systemCodeI18n = `system.code.${system2}|${code2}`;
-    const systemCodeString = hasMessage(systemCodeI18n) ? formatMessage2(systemCodeI18n) : display;
-    return systemCodeString ?? code2;
-  };
-  const system = (context) => (value2) => {
-    const { isSummary, formatMessage: formatMessage2 } = context;
-    const { display, code: code2, system: system2 } = value2 ?? {};
-    const systemCodeTranslation = systemCode(context)(value2);
-    if (isSummary) {
-      return systemCodeTranslation;
-    }
-    let codeInSystemString;
-    if (code2 && system2) {
-      codeInSystemString = formatMessage2("fhir.code_in_system", {
-        code: code2,
-        system: system2
-      });
-    } else {
-      codeInSystemString = system2 ?? code2;
-    }
-    const systemString = `${display ?? ""} ${codeInSystemString ? "(" + codeInSystemString + ")" : ""}`.trim();
-    return systemString === "" ? void 0 : systemString;
-  };
-  const codeableDisplay = (context) => (value2) => {
-    if (value2?.text?.length) {
-      return [value2.text];
-    }
-    const formatSystem = system(context);
-    return value2?.coding.map(formatSystem).filter(isNonNullish) ?? [];
-  };
-  const codeableConcept$1 = (context) => (label, value2) => {
-    const { formatMessage: formatMessage2 } = context;
-    const display = codeableDisplay(context);
-    if (Array.isArray(value2)) {
-      return {
-        label: formatMessage2(label),
-        type: "MULTIPLE_GROUPED_VALUES",
-        display: value2.map(display)
-      };
-    }
-    return {
-      label: formatMessage2(label),
-      type: "MULTIPLE_VALUES",
-      display: display(value2)
-    };
-  };
-  const coding$1 = (context) => (label, value2) => {
-    const { formatMessage: formatMessage2 } = context;
-    const display = system(context);
-    if (Array.isArray(value2)) {
-      return {
-        label: formatMessage2(label),
-        type: "MULTIPLE_VALUES",
-        display: value2.map(display).filter(isNonNullish)
-      };
-    }
-    return {
-      label: formatMessage2(label),
-      type: "SINGLE_VALUE",
-      display: display(value2)
-    };
-  };
-  const milliseconds = /T\d\d:\d\d:\d\d\.\d+/i;
-  const seconds = /T\d\d:\d\d:\d\d/i;
-  const minutes = /T\d\d:\d\d/i;
-  const hours = /T\d\d/i;
-  const dateRegexp = /^\d\d\d\d-\d\d-\d\d/;
-  const month = /^\d\d\d\d-\d\d/;
-  const year = /^\d\d\d\d/;
-  const timezone = /(([+-][\d:]+)|Z)$/i;
-  function getDateFormatOptions(dateString, isSummary = false) {
-    const hasMilliseconds = milliseconds.test(dateString);
-    const hasSeconds = hasMilliseconds || seconds.test(dateString);
-    const hasMinutes = hasSeconds || minutes.test(dateString);
-    const hasHours = hasMinutes || hours.test(dateString);
-    const hasDate = dateRegexp.test(dateString);
-    const hasMonth = hasDate || month.test(dateString);
-    const hasYear = hasMonth || year.test(dateString);
-    const hasTimezone = hasHours && timezone.test(dateString);
-    return {
-      year: hasYear ? "numeric" : void 0,
-      month: hasMonth ? "long" : void 0,
-      day: hasDate ? "numeric" : void 0,
-      hour: hasHours ? "numeric" : void 0,
-      minute: hasMinutes ? "numeric" : void 0,
-      ...!isSummary && {
-        second: hasSeconds ? "numeric" : void 0,
-        fractionalSecondDigits: hasMilliseconds ? 3 : void 0,
-        timeZoneName: hasTimezone ? "shortOffset" : void 0
-      }
-    };
-  }
-  const date$2 = ({ intl: { locale }, isSummary }) => (value2) => {
-    if (isNullish(value2)) return;
-    const date2 = new Date(value2);
-    const dateTimeFormat = new Intl.DateTimeFormat(
-      locale,
-      getDateFormatOptions(value2, isSummary)
-    );
-    try {
-      return dateTimeFormat.format(date2);
-    } catch (_error) {
-      return `${value2}`;
-    }
-  };
-  const date$3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-    __proto__: null,
-    date: date$2
-  }, Symbol.toStringTag, { value: "Module" }));
-  const date$1 = (i18nContext) => (label, value2) => {
-    return {
-      label: i18nContext.formatMessage(label),
-      type: "SINGLE_VALUE",
-      display: date$2(i18nContext)(value2)
-    };
-  };
-  const dateTime$1 = (context) => (label, value2) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: context.formatMessage(label),
-        type: "MULTIPLE_VALUES",
-        display: value2.map(date$2(context)).filter(isNonNullish)
-      };
-    }
-    return {
-      label: context.formatMessage(label),
-      type: "SINGLE_VALUE",
-      display: date$2(context)(value2)
-    };
-  };
-  const decimal$1 = ({ intl: intl2 }) => (label, value2) => {
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2)
-    };
-  };
-  const systemValue = ({ formatMessage: formatMessage2, hasMessage }) => (value2) => {
-    if (isNullish(value2)) return;
-    const { system: system2, code: code2, value: quantityValue, unit } = value2;
-    const countI18nKey = `system.value.${system2}|${code2}`;
-    if (hasMessage(countI18nKey)) {
-      return formatMessage2(countI18nKey, { value: quantityValue });
-    }
-    if (unit) {
-      return `${numberToString(quantityValue)} ${unit}`;
-    }
-    return numberToString(quantityValue);
-  };
-  const quantity$1 = (context) => (label, value2) => {
-    const { formatMessage: formatMessage2 } = context;
-    return {
-      label: formatMessage2(label),
-      type: `SINGLE_VALUE`,
-      display: systemValue(context)(value2)
-    };
-  };
-  const duration$1 = quantity$1;
-  const identifier$1 = ({ intl: intl2 }) => (label, value2) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: intl2.formatMessage({ id: label }),
-        type: "MULTIPLE_VALUES",
-        display: value2?.map((x) => x?.value).filter(isNonNullish)
-      };
-    }
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: value2?.value
-    };
-  };
-  const instant$1 = (i18nContext) => (label, value2) => {
-    return dateTime$1(i18nContext)(label, value2);
-  };
-  const integer$1 = ({ intl: intl2 }) => (label, value2) => {
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2)
-    };
-  };
-  const integer64$1 = ({ intl: intl2 }) => (label, value2) => {
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2)
-    };
-  };
-  const period$1 = (i18nContext) => (label, value2) => {
-    const { formatMessage: formatMessage2, hasMessage } = i18nContext;
-    const startLabel = `${label}.start`;
-    const endLabel = `${label}.end`;
-    const formatDate2 = date$2(i18nContext);
-    return [
-      {
-        label: formatMessage2(hasMessage(startLabel) ? startLabel : `fhir.period.start`),
-        type: `SINGLE_VALUE`,
-        display: formatDate2(value2?.start)
-      },
-      {
-        label: formatMessage2(hasMessage(endLabel) ? endLabel : `fhir.period.end`),
-        type: `SINGLE_VALUE`,
-        display: formatDate2(value2?.end)
-      }
-    ];
-  };
-  const positiveInt$1 = ({ intl: intl2 }) => (label, value2) => {
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2)
-    };
-  };
-  const range$1 = (context) => (label, value2) => {
-    const { hasMessage, formatMessage: formatMessage2 } = context;
-    const lowLabel = `${label}.low`;
-    const highLabel = `${label}.high`;
-    const formatSystemValue = systemValue(context);
-    return [
-      {
-        label: formatMessage2(hasMessage(lowLabel) ? lowLabel : `fhir.range.low`),
-        type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.low)
-      },
-      {
-        label: formatMessage2(hasMessage(highLabel) ? highLabel : `fhir.range.high`),
-        type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.high)
-      }
-    ];
-  };
-  const ratio$1 = (context) => (label, value2) => {
-    const { hasMessage, formatMessage: formatMessage2 } = context;
-    const numeratorLabel = `${label}.numerator`;
-    const denominatorLabel = `${label}.denominator`;
-    const formatSystemValue = systemValue(context);
-    return [
-      {
-        label: formatMessage2(
-          hasMessage(numeratorLabel) ? numeratorLabel : `fhir.ratio.numerator`
-        ),
-        type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.numerator)
-      },
-      {
-        label: formatMessage2(
-          hasMessage(denominatorLabel) ? denominatorLabel : `fhir.ratio.denominator`
-        ),
-        type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.denominator)
-      }
-    ];
-  };
-  const reference$1 = ({ intl: intl2 }) => (label, value2) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: intl2.formatMessage({ id: label }),
-        type: "MULTIPLE_VALUES",
-        display: value2.map((x) => x.display).filter(isNonNullish)
-      };
-    }
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "REFERENCE_VALUE",
-      display: value2?.display,
-      reference: value2?.reference
-    };
-  };
-  const string$1 = ({ intl: intl2 }) => (label, value2) => {
-    if (Array.isArray(value2)) {
-      return {
-        label: intl2.formatMessage({ id: label }),
-        type: "MULTIPLE_VALUES",
-        display: value2.filter(isNonNullish)
-      };
-    }
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: value2
-    };
-  };
-  const unsignedInt$1 = ({ intl: intl2 }) => (label, value2) => {
-    return {
-      label: intl2.formatMessage({ id: label }),
-      type: "SINGLE_VALUE",
-      display: numberToString(value2)
-    };
-  };
-  function getTypes(context) {
-    return {
-      annotation: annotation$1(context),
-      boolean: boolean$1(context),
-      code: code$1(context),
-      codeableConcept: codeableConcept$1(context),
-      coding: coding$1(context),
-      date: date$1(context),
-      dateTime: dateTime$1(context),
-      instant: instant$1(context),
-      duration: duration$1(context),
-      identifier: identifier$1(context),
-      period: period$1(context),
-      quantity: quantity$1(context),
-      range: range$1(context),
-      ratio: ratio$1(context),
-      reference: reference$1(context),
-      string: string$1(context),
-      decimal: decimal$1(context),
-      integer: integer$1(context),
-      integer64: integer64$1(context),
-      unsignedInt: unsignedInt$1(context),
-      positiveInt: positiveInt$1(context)
-    };
-  }
-  const oneOfValueX$1 = (context) => (label, value2, prefix = "value") => {
-    if (isNullish(value2)) {
-      return [];
-    }
-    const typeUiFunctions = getTypes(context);
-    let type;
-    for (type in typeUiFunctions) {
-      const key = `${prefix}${capitalizeFirstLetter(type)}`;
-      if (key in value2 && isNonNullish(value2[key])) {
-        const uiValue = typeUiFunctions[type](label, value2[key]);
-        return Array.isArray(uiValue) ? uiValue : [uiValue];
-      }
-    }
-    return [];
-  };
-  function valueWithUnit$1(value2, unit) {
-    if (isNullish(value2)) return;
-    const valueString = numberToString(value2);
-    if (isNullish(unit)) return valueString;
-    return `${valueString} ${unit}`;
-  }
-  function valueWithMaxValue(value2, maxValue) {
-    if (isNullish(value2)) return;
-    const valueString = numberToString(value2);
-    if (isNullish(maxValue)) return valueString;
-    return `${valueString} / ${numberToString(maxValue)}`;
-  }
-  const value = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-    __proto__: null,
-    valueWithMaxValue,
-    valueWithUnit: valueWithUnit$1
-  }, Symbol.toStringTag, { value: "Module" }));
-  const format = {
-    ...value,
-    ...date$3
-  };
-  const valueWithMax = ({ intl: intl2 }) => (label, value2, max2) => {
-    return {
-      label: intl2.formatMessage({ id: label }),
-      display: format.valueWithMaxValue(value2, max2),
-      type: "SINGLE_VALUE"
-    };
-  };
-  const valueWithUnit = ({ intl: intl2 }) => (label, value2, unit) => {
-    return {
-      label: intl2.formatMessage({ id: label }),
-      display: format.valueWithUnit(value2, unit),
-      type: "SINGLE_VALUE"
-    };
-  };
-  function getSpecial(context) {
-    return {
-      valueWithMax: valueWithMax(context),
-      valueWithUnit: valueWithUnit(context),
-      oneOfValueX: oneOfValueX$1(context),
-      attachment: attachment$1(context)
-    };
-  }
-  function getUi(context) {
-    return {
-      ...getTypes(context),
-      ...getSpecial(context),
-      helpers: {
-        getChildren
-      }
-    };
-  }
-  function createSchemaContext(options) {
-    const {
-      resources = [],
-      organization: organization2 = void 0,
-      locale,
-      ignoreMissingTranslations,
-      isSummary
-    } = options;
-    const uiHelperContext = createUiHelperContext({ locale, ignoreMissingTranslations, isSummary });
-    return {
-      ...uiHelperContext,
-      ui: getUi(uiHelperContext),
-      resources,
-      organization: organization2,
-      isSummary
-    };
-  }
-  function isMgoResource(value2) {
-    const resourceTyped = value2;
-    return !!resourceTyped?.resourceType && !!resourceTyped?.profile;
-  }
-  var FhirVersion = /* @__PURE__ */ ((FhirVersion2) => {
-    FhirVersion2["R3"] = "R3";
-    FhirVersion2["R4"] = "R4";
-    return FhirVersion2;
-  })(FhirVersion || {});
   var lodash$1 = { exports: {} };
   /**
    * @license
@@ -54299,37 +54353,621 @@ ${indent}}` : "}";
     return lodash$1.exports;
   }
   var lodashExports = requireLodash();
+  function isValueType(value2) {
+    return isNonNullish(value2) && typeof value2 === "object" && typeof value2["_type"] === "string";
+  }
+  function isPrimitiveValueType(value2) {
+    return isNonNullish(value2) && typeof value2 === "object" && typeof value2["_type"] === "string" && Object.prototype.hasOwnProperty.call(value2, "value");
+  }
+  const zibPropertyLabelRegexp = /^(r[34])\.(\w+)\./;
+  function createLabelFormatter(intl2) {
+    const hasMessage = (id) => Object.prototype.hasOwnProperty.call(intl2.messages, id);
+    return function formatLabel(label, value2, fallbackLabel) {
+      if (hasMessage(label)) {
+        return intl2.formatMessage({ id: label });
+      }
+      let valueType = null;
+      if (isValueType(value2)) {
+        valueType = value2._type;
+      } else if (Array.isArray(value2) && isValueType(value2[0])) {
+        valueType = value2[0]._type;
+      }
+      if (valueType) {
+        const typeExtension = `_${lodashExports.snakeCase(valueType)}`;
+        const labelWithoutTypeExtension = label.substring(0, label.lastIndexOf(typeExtension));
+        if (label.endsWith(typeExtension) && hasMessage(labelWithoutTypeExtension)) {
+          return intl2.formatMessage({ id: labelWithoutTypeExtension });
+        }
+      }
+      if (zibPropertyLabelRegexp.test(label)) {
+        const genericPropertyLabel = label.replace(zibPropertyLabelRegexp, "fhir.x.");
+        if (hasMessage(genericPropertyLabel)) {
+          return intl2.formatMessage({ id: genericPropertyLabel });
+        }
+      }
+      if (fallbackLabel && hasMessage(fallbackLabel)) {
+        return intl2.formatMessage({ id: fallbackLabel });
+      }
+      return intl2.formatMessage({ id: label });
+    };
+  }
+  const intlCache = createIntlCache();
+  function createUiHelperContext(options) {
+    const { locale, ignoreMissingTranslations, isSummary } = options;
+    const intl2 = createIntl(
+      getFhirIntlConfig({
+        locale,
+        ignoreMissingTranslations
+      }),
+      intlCache
+    );
+    return {
+      isSummary,
+      intl: intl2,
+      ...createHelpers(intl2),
+      formatLabel: createLabelFormatter(intl2)
+    };
+  }
+  const attachment$1 = ({ formatMessage: formatMessage2 }) => (value2) => {
+    const label = value2?.title ?? formatMessage2("fhir.unknown");
+    if (isBinaryReference(value2?.url)) {
+      return {
+        type: "DOWNLOAD_BINARY",
+        label,
+        reference: value2?.url
+      };
+    }
+    return {
+      type: "DOWNLOAD_LINK",
+      label,
+      url: value2?.url
+    };
+  };
+  function isBinaryReference(value2) {
+    return value2?.startsWith("Binary/");
+  }
+  const annotationDisplay = (value2) => {
+    return value2?.text;
+  };
+  const annotation$1 = ({ formatLabel }) => (label, value2) => {
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_VALUES",
+        display: value2.map(annotationDisplay).filter(isNonNullish)
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      display: annotationDisplay(value2),
+      type: "SINGLE_VALUE"
+    };
+  };
+  const boolean$1 = ({ formatLabel, formatMessage: formatMessage2 }) => (label, value2) => {
+    const truthyString = value2?.value ? formatMessage2("fhir.boolean.true") : formatMessage2("fhir.boolean.false");
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: isNonNullish(value2?.value) ? truthyString : void 0
+    };
+  };
+  function valueOf(value2) {
+    if (isNullish(value2)) {
+      return;
+    }
+    if (isPrimitiveValueType(value2)) {
+      return value2.value;
+    }
+    return value2;
+  }
+  function code$1(context) {
+    const { hasMessage, formatMessage: formatMessage2, formatLabel } = context;
+    return function(label, value2, options) {
+      const { i18nCode } = options ?? {};
+      function translateCode(code2) {
+        const codeValue = valueOf(code2);
+        const i18nKey = `codes.${i18nCode}.${codeValue}`;
+        if (isNullish(codeValue)) {
+          return;
+        }
+        if (i18nCode && hasMessage(i18nKey)) {
+          return formatMessage2(i18nKey);
+        }
+        return codeValue;
+      }
+      if (Array.isArray(value2)) {
+        return {
+          label: formatLabel(label, value2),
+          type: "MULTIPLE_VALUES",
+          display: value2.map(translateCode).filter(isNonNullish)
+        };
+      }
+      return {
+        label: formatLabel(label, value2),
+        type: "SINGLE_VALUE",
+        display: translateCode(value2)
+      };
+    };
+  }
+  const systemCode = ({ formatMessage: formatMessage2, hasMessage }) => (value2) => {
+    const { display, code: code2, system: system2 } = value2 ?? {};
+    const systemCodeI18n = `system.code.${system2}|${code2}`;
+    const systemCodeString = hasMessage(systemCodeI18n) ? formatMessage2(systemCodeI18n) : display;
+    return systemCodeString ?? code2;
+  };
+  const system = (context) => (value2) => {
+    const { isSummary, formatMessage: formatMessage2 } = context;
+    const { display, code: code2, system: system2 } = value2 ?? {};
+    const systemCodeTranslation = systemCode(context)(value2);
+    if (isSummary) {
+      return systemCodeTranslation;
+    }
+    let codeInSystemString;
+    if (code2 && system2) {
+      codeInSystemString = formatMessage2("fhir.code_in_system", {
+        code: code2,
+        system: system2
+      });
+    } else {
+      codeInSystemString = system2 ?? code2;
+    }
+    const systemString = `${display ?? ""} ${codeInSystemString ? "(" + codeInSystemString + ")" : ""}`.trim();
+    return systemString === "" ? void 0 : systemString;
+  };
+  const codeableDisplay = (context) => (value2) => {
+    if (value2?.text?.length) {
+      return [value2.text];
+    }
+    const formatSystem = system(context);
+    return value2?.coding.map(formatSystem).filter(isNonNullish) ?? [];
+  };
+  const codeableConcept$1 = (context) => (label, value2) => {
+    const { formatLabel } = context;
+    const display = codeableDisplay(context);
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_GROUPED_VALUES",
+        display: value2.map(display)
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      type: "MULTIPLE_VALUES",
+      display: display(value2)
+    };
+  };
+  const coding$1 = (context) => (label, value2) => {
+    const { formatLabel } = context;
+    const display = system(context);
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_VALUES",
+        display: value2.map(display).filter(isNonNullish)
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: display(value2)
+    };
+  };
+  const milliseconds = /T\d\d:\d\d:\d\d\.\d+/i;
+  const seconds = /T\d\d:\d\d:\d\d/i;
+  const minutes = /T\d\d:\d\d/i;
+  const hours = /T\d\d/i;
+  const dateRegexp = /^\d\d\d\d-\d\d-\d\d/;
+  const month = /^\d\d\d\d-\d\d/;
+  const year = /^\d\d\d\d/;
+  const timezone = /(([+-][\d:]+)|Z)$/i;
+  function getDateFormatOptions(dateString, isSummary = false) {
+    const hasMilliseconds = milliseconds.test(dateString);
+    const hasSeconds = hasMilliseconds || seconds.test(dateString);
+    const hasMinutes = hasSeconds || minutes.test(dateString);
+    const hasHours = hasMinutes || hours.test(dateString);
+    const hasDate = dateRegexp.test(dateString);
+    const hasMonth = hasDate || month.test(dateString);
+    const hasYear = hasMonth || year.test(dateString);
+    const hasTimezone = hasHours && timezone.test(dateString);
+    return {
+      year: hasYear ? "numeric" : void 0,
+      month: hasMonth ? "long" : void 0,
+      day: hasDate ? "numeric" : void 0,
+      hour: hasHours ? "numeric" : void 0,
+      minute: hasMinutes ? "numeric" : void 0,
+      ...!isSummary && {
+        second: hasSeconds ? "numeric" : void 0,
+        fractionalSecondDigits: hasMilliseconds ? 3 : void 0,
+        timeZoneName: hasTimezone ? "shortOffset" : void 0
+      }
+    };
+  }
+  const date$2 = ({ intl: { locale }, isSummary }) => (value2) => {
+    if (isNullish(value2)) return;
+    const date2 = new Date(value2);
+    const dateTimeFormat = new Intl.DateTimeFormat(
+      locale,
+      getDateFormatOptions(value2, isSummary)
+    );
+    try {
+      return dateTimeFormat.format(date2);
+    } catch (_error) {
+      return `${value2}`;
+    }
+  };
+  const date$3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    date: date$2
+  }, Symbol.toStringTag, { value: "Module" }));
+  const date$1 = (i18nContext) => (label, value2) => {
+    return {
+      label: i18nContext.formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: date$2(i18nContext)(value2?.value)
+    };
+  };
+  const dateTime$1 = (context) => (label, value2) => {
+    const formatDate2 = date$2(context);
+    const { formatLabel } = context;
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_VALUES",
+        display: value2.map((x) => formatDate2(valueOf(x))).filter(isNonNullish)
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: formatDate2(valueOf(value2))
+    };
+  };
+  const decimal$1 = ({ formatLabel }) => (label, value2) => {
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2?.value)
+    };
+  };
+  const systemValue = ({ formatMessage: formatMessage2, hasMessage }) => (value2) => {
+    if (isNullish(value2)) return;
+    const { system: system2, code: code2, value: quantityValue, unit } = value2;
+    const countI18nKey = `system.value.${system2}|${code2}`;
+    if (hasMessage(countI18nKey)) {
+      return formatMessage2(countI18nKey, { value: quantityValue });
+    }
+    if (unit) {
+      return `${numberToString(quantityValue)} ${unit}`;
+    }
+    return numberToString(quantityValue);
+  };
+  const quantity$1 = (context) => (label, value2) => {
+    const { formatLabel } = context;
+    return {
+      label: formatLabel(label, value2),
+      type: `SINGLE_VALUE`,
+      display: systemValue(context)(value2)
+    };
+  };
+  const duration$1 = quantity$1;
+  const identifier$1 = ({ formatLabel }) => (label, value2) => {
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_VALUES",
+        display: value2?.map((x) => x?.value).filter(isNonNullish)
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: value2?.value
+    };
+  };
+  const instant$1 = (context) => (label, value2) => {
+    const formatDate2 = date$2(context);
+    const { formatLabel } = context;
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_VALUES",
+        display: value2.map((x) => formatDate2(x.value)).filter(isNonNullish)
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: formatDate2(value2?.value)
+    };
+  };
+  const integer$1 = ({ formatLabel }) => (label, value2) => {
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2?.value)
+    };
+  };
+  const integer64$1 = ({ formatLabel }) => (label, value2) => {
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2?.value)
+    };
+  };
+  const period$1 = (context) => (label, value2) => {
+    const { formatLabel } = context;
+    const startLabel = `${label}.start`;
+    const endLabel = `${label}.end`;
+    const formatDate2 = date$2(context);
+    return [
+      {
+        label: formatLabel(startLabel, value2, `fhir.period.start`),
+        type: `SINGLE_VALUE`,
+        display: formatDate2(value2?.start)
+      },
+      {
+        label: formatLabel(endLabel, value2, `fhir.period.end`),
+        type: `SINGLE_VALUE`,
+        display: formatDate2(value2?.end)
+      }
+    ];
+  };
+  const positiveInt$1 = ({ formatLabel }) => (label, value2) => {
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: numberToString(value2?.value)
+    };
+  };
+  const range$1 = (context) => (label, value2) => {
+    const { formatLabel } = context;
+    const lowLabel = `${label}.low`;
+    const highLabel = `${label}.high`;
+    const formatSystemValue = systemValue(context);
+    return [
+      {
+        label: formatLabel(lowLabel, value2, `fhir.range.low`),
+        type: `SINGLE_VALUE`,
+        display: formatSystemValue(value2?.low)
+      },
+      {
+        label: formatLabel(highLabel, value2, `fhir.range.high`),
+        type: `SINGLE_VALUE`,
+        display: formatSystemValue(value2?.high)
+      }
+    ];
+  };
+  const ratio$1 = (context) => (label, value2) => {
+    const { formatLabel } = context;
+    const numeratorLabel = `${label}.numerator`;
+    const denominatorLabel = `${label}.denominator`;
+    const formatSystemValue = systemValue(context);
+    return [
+      {
+        label: formatLabel(numeratorLabel, value2, `fhir.ratio.numerator`),
+        type: `SINGLE_VALUE`,
+        display: formatSystemValue(value2?.numerator)
+      },
+      {
+        label: formatLabel(denominatorLabel, value2, `fhir.ratio.denominator`),
+        type: `SINGLE_VALUE`,
+        display: formatSystemValue(value2?.denominator)
+      }
+    ];
+  };
+  const reference$1 = ({ formatLabel, isSummary }) => (label, value2) => {
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_VALUES",
+        display: value2.map((x) => x.display).filter(isNonNullish)
+      };
+    }
+    if (isSummary) {
+      return {
+        label: formatLabel(label, value2),
+        type: "SINGLE_VALUE",
+        display: value2?.display
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      type: "REFERENCE_VALUE",
+      display: value2?.display,
+      reference: value2?.reference
+    };
+  };
+  const string$1 = ({ formatLabel }) => (label, value2) => {
+    if (Array.isArray(value2)) {
+      return {
+        label: formatLabel(label, value2),
+        type: "MULTIPLE_VALUES",
+        display: value2.map((x) => valueOf(x)).filter(isNonNullish)
+      };
+    }
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: valueOf(value2)
+    };
+  };
+  const unsignedInt$1 = ({ formatLabel }) => (label, value2) => {
+    return {
+      label: formatLabel(label, value2),
+      type: "SINGLE_VALUE",
+      display: numberToString(valueOf(value2))
+    };
+  };
+  function getTypes(context) {
+    return {
+      annotation: annotation$1(context),
+      boolean: boolean$1(context),
+      code: code$1(context),
+      codeableConcept: codeableConcept$1(context),
+      coding: coding$1(context),
+      date: date$1(context),
+      dateTime: dateTime$1(context),
+      instant: instant$1(context),
+      duration: duration$1(context),
+      identifier: identifier$1(context),
+      period: period$1(context),
+      quantity: quantity$1(context),
+      range: range$1(context),
+      ratio: ratio$1(context),
+      reference: reference$1(context),
+      string: string$1(context),
+      decimal: decimal$1(context),
+      integer: integer$1(context),
+      integer64: integer64$1(context),
+      unsignedInt: unsignedInt$1(context),
+      positiveInt: positiveInt$1(context)
+    };
+  }
+  const oneOfValueX$1 = (context) => (label, value2, prefix = "value") => {
+    if (isNullish(value2)) {
+      return [];
+    }
+    const typeUiFunctions = getTypes(context);
+    let type;
+    for (type in typeUiFunctions) {
+      const key = `${prefix}${lodashExports.upperFirst(type)}`;
+      if (key in value2 && isNonNullish(value2[key])) {
+        const uiValue = typeUiFunctions[type](label, value2[key]);
+        return Array.isArray(uiValue) ? uiValue : [uiValue];
+      }
+    }
+    return [];
+  };
+  function valueWithUnit$1(value2, unit) {
+    if (isNullish(value2)) return;
+    const valueString = numberToString(value2);
+    if (isNullish(unit)) return valueString;
+    return `${valueString} ${unit}`;
+  }
+  function valueWithMaxValue(value2, maxValue) {
+    if (isNullish(value2)) return;
+    const valueString = numberToString(value2);
+    if (isNullish(maxValue)) return valueString;
+    return `${valueString} / ${numberToString(maxValue)}`;
+  }
+  const value = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    valueWithMaxValue,
+    valueWithUnit: valueWithUnit$1
+  }, Symbol.toStringTag, { value: "Module" }));
+  const format = {
+    ...value,
+    ...date$3
+  };
+  const valueWithMax = ({ formatLabel }) => (label, value2, max2) => {
+    return {
+      label: formatLabel(label, value2),
+      display: format.valueWithMaxValue(value2, max2),
+      type: "SINGLE_VALUE"
+    };
+  };
+  const valueWithUnit = ({ formatLabel }) => (label, value2, unit) => {
+    return {
+      label: formatLabel(label, value2),
+      display: format.valueWithUnit(valueOf(value2), valueOf(unit)),
+      type: "SINGLE_VALUE"
+    };
+  };
+  function getSpecial(context) {
+    return {
+      valueWithMax: valueWithMax(context),
+      valueWithUnit: valueWithUnit(context),
+      oneOfValueX: oneOfValueX$1(context),
+      attachment: attachment$1(context)
+    };
+  }
+  function getUi(context) {
+    return {
+      ...getTypes(context),
+      ...getSpecial(context),
+      helpers: {
+        getChildren
+      }
+    };
+  }
+  function createSchemaContext(options) {
+    const {
+      resources = [],
+      organization: organization2 = void 0,
+      locale,
+      ignoreMissingTranslations,
+      isSummary
+    } = options;
+    const uiHelperContext = createUiHelperContext({ locale, ignoreMissingTranslations, isSummary });
+    return {
+      ...uiHelperContext,
+      ui: getUi(uiHelperContext),
+      resources,
+      organization: organization2,
+      isSummary
+    };
+  }
+  function isMgoResource(value2) {
+    const resourceTyped = value2;
+    return !!resourceTyped?.resourceType && !!resourceTyped?.profile;
+  }
+  var FhirVersion = /* @__PURE__ */ ((FhirVersion2) => {
+    FhirVersion2["R3"] = "R3";
+    FhirVersion2["R4"] = "R4";
+    return FhirVersion2;
+  })(FhirVersion || {});
   function createTypeParser(parser2) {
     return (value2) => {
       if (isNullish(value2)) return;
       return parser2(value2);
     };
   }
-  function quantityLike(value2) {
-    const { value: valueQuantity, comparator, unit, system: system2, code: code2 } = value2;
-    return { value: valueQuantity, comparator, unit, system: system2, code: code2 };
-  }
-  const quantity = createTypeParser(quantityLike);
-  const dateTime = createTypeParser((value2) => value2);
-  const reference = createTypeParser((value2) => {
+  function referenceProps(value2) {
     const { reference: reference2, display } = value2;
     return {
       reference: reference2,
       display
     };
+  }
+  const reference = createTypeParser((value2) => {
+    return {
+      _type: "reference",
+      ...referenceProps(value2)
+    };
   });
   const annotation = createTypeParser((value2) => {
     const { time, text, authorReference } = value2;
     return {
-      time: dateTime(time),
+      _type: "annotation",
+      time,
       text,
-      author: reference(authorReference)
+      author: authorReference && referenceProps(authorReference)
     };
   });
-  const boolean = createTypeParser((value2) => value2);
+  const attachment = createTypeParser((value2) => {
+    return {
+      _type: "attachment",
+      contentType: value2?.contentType,
+      language: value2?.language,
+      data: value2?.data,
+      url: value2?.url,
+      size: value2?.size,
+      hash: value2?.hash,
+      title: value2?.title,
+      creation: value2?.creation
+    };
+  });
+  const boolean = createTypeParser((value2) => ({
+    _type: "boolean",
+    value: value2
+  }));
   function code(value2) {
     if (isNullish(value2)) return;
-    return value2;
+    return {
+      _type: "code",
+      value: value2
+    };
   }
   const nictizIdValueXMap = {
     "BodySite-Qualifier": "codeableConcept",
@@ -54367,9 +55005,6 @@ ${indent}}` : "}";
       nictizIdValueXMap[zibId]
     );
   }
-  function passThrough(value2) {
-    return value2;
-  }
   function findComponentByCode(components, code2) {
     return components?.find((component) => component.code.coding?.find((x) => x.code === code2));
   }
@@ -54383,7 +55018,7 @@ ${indent}}` : "}";
       );
       if (isNonNullish(parsedValue)) {
         return {
-          [`${valuePrefix}${capitalizeFirstLetter(valueKey)}`]: parsedValue
+          [`${valuePrefix}${lodashExports.upperFirst(valueKey)}`]: parsedValue
         };
       }
     }
@@ -54433,15 +55068,21 @@ ${indent}}` : "}";
       return matchingCodes.length;
     });
   }
-  const coding = createTypeParser((value2) => {
+  function codingProps(value2) {
     const { code: code2, display, system: system2 } = value2;
     return {
       code: code2,
       display,
       system: system2
     };
+  }
+  const coding = createTypeParser((value2) => {
+    return {
+      _type: "coding",
+      ...codingProps(value2)
+    };
   });
-  const codeableConcept = createTypeParser((value2) => {
+  function codeableConceptProps(value2) {
     if (!value2.coding?.length) {
       return {
         text: value2.text,
@@ -54450,50 +55091,100 @@ ${indent}}` : "}";
     }
     return {
       text: value2.text,
-      coding: map(value2.coding, coding, true)
+      coding: map(value2.coding, codingProps, true)
+    };
+  }
+  const codeableConcept = createTypeParser((value2) => {
+    return {
+      _type: "codeableConcept",
+      ...codeableConceptProps(value2)
     };
   });
-  const date = createTypeParser((value2) => value2);
-  const instant = createTypeParser((value2) => value2);
-  const duration = createTypeParser(quantityLike);
+  const date = createTypeParser((value2) => ({
+    _type: "date",
+    value: value2
+  }));
+  const dateTime = createTypeParser((value2) => ({
+    _type: "dateTime",
+    value: value2
+  }));
+  const decimal = createTypeParser((value2) => ({
+    _type: "decimal",
+    value: value2
+  }));
+  function quantityProps(value2) {
+    const { value: valueQuantity, comparator, unit, system: system2, code: code2 } = value2;
+    return { value: valueQuantity, comparator, unit, system: system2, code: code2 };
+  }
+  const quantity = createTypeParser((value2) => ({
+    _type: "quantity",
+    ...quantityProps(value2)
+  }));
+  const duration = createTypeParser((value2) => ({
+    _type: "duration",
+    ...quantityProps(value2)
+  }));
   const identifier = createTypeParser((value2) => {
     const { use, system: system2, value: identifierValue, type } = value2;
     return {
+      _type: "identifier",
       use,
       system: system2,
       value: identifierValue,
-      type: codeableConcept(type)
+      type: type && codeableConceptProps(type)
     };
   });
+  const instant = createTypeParser((value2) => ({
+    _type: "instant",
+    value: value2
+  }));
+  const integer = createTypeParser((value2) => ({
+    _type: "integer",
+    value: value2
+  }));
+  const integer64 = createTypeParser((value2) => ({
+    _type: "integer64",
+    value: value2
+  }));
   const period = createTypeParser((value2) => {
     const { start, end } = value2;
     return {
-      start: dateTime(start),
-      end: dateTime(end)
+      _type: "period",
+      start,
+      end
     };
   });
+  const positiveInt = createTypeParser((value2) => ({
+    _type: "positiveInt",
+    value: value2
+  }));
   const range = createTypeParser((value2) => {
     return {
-      low: quantity(value2.low),
-      high: quantity(value2.high)
+      _type: "range",
+      low: value2.low && quantityProps(value2.low),
+      high: value2.high && quantityProps(value2.high)
     };
   });
   const ratio = createTypeParser((value2) => {
     const { numerator, denominator } = value2;
     return {
-      numerator: quantity(numerator),
-      denominator: quantity(denominator)
+      _type: "ratio",
+      numerator: numerator && quantityProps(numerator),
+      denominator: denominator && quantityProps(denominator)
     };
   });
-  const string = createTypeParser((value2) => value2);
-  const decimal = createTypeParser(passThrough);
-  const unsignedInt = createTypeParser(passThrough);
-  const integer = createTypeParser(passThrough);
-  const integer64 = createTypeParser(passThrough);
-  const positiveInt = createTypeParser(passThrough);
+  const string = createTypeParser((value2) => ({
+    _type: "string",
+    value: value2
+  }));
+  const unsignedInt = createTypeParser((value2) => ({
+    _type: "unsignedInt",
+    value: value2
+  }));
   const parse = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
     annotation,
+    attachment,
     boolean,
     code,
     codeableConcept,
@@ -54528,51 +55219,53 @@ ${indent}}` : "}";
     const extension2 = getExtension(resource, url);
     return valueX(extension2, valueType);
   }
+  function customExtension(resource, url, parser2) {
+    const extension2 = getExtension(resource, url);
+    return parser2(extension2);
+  }
   function resourceMeta(resource, profile2, fhirVersion) {
-    const { resourceType: fhirResourceType, id, meta } = resource;
+    const { resourceType, id, meta } = resource;
     if (!meta?.profile?.includes(profile2)) {
       throw new Error(
         `Resource does not have the expected profile: "${profile2}". Got: ${meta?.profile}`
       );
     }
-    const resourceId = string(id);
-    const resourceType = string(fhirResourceType);
     return {
-      id: resourceId,
-      referenceId: `${resourceType}/${resourceId}`,
+      id,
+      referenceId: `${resourceType}/${id}`,
       resourceType,
       profile: profile2,
       fhirVersion: `${fhirVersion}`
     };
   }
-  const i18n$M = "r3.gp_diagnostic_result";
-  const uiSchema$O = (resource, context) => {
+  const i18n$F = "r3.gp_diagnostic_result";
+  const uiSchema$H = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.context?.display ?? context.formatMessage(i18n$M),
+      label: resource.context?.display ?? context.formatMessage(i18n$F),
       children: [
         {
-          label: `${i18n$M}.group_details`,
+          label: `${i18n$F}.group_details`,
           children: [
-            ui.identifier(`${i18n$M}.identifier`, resource.identifier),
-            ui.reference(`${i18n$M}.context`, resource.context),
-            ui.reference(`${i18n$M}.subject`, resource.subject),
-            ui.dateTime(`${i18n$M}.effective`, resource.effective),
-            ui.reference(`${i18n$M}.performer`, resource.performer),
-            ui.string(`${i18n$M}.status`, resource.status),
-            ui.codeableConcept(`${i18n$M}.code`, resource.code),
-            ui.string(`${i18n$M}.comment`, resource.comment),
-            ui.codeableConcept(`${i18n$M}.method`, resource.method),
-            ...ui.oneOfValueX(`${i18n$M}.value`, resource, "value")
+            ui.identifier(`${i18n$F}.identifier`, resource.identifier),
+            ui.reference(`${i18n$F}.context`, resource.context),
+            ui.reference(`${i18n$F}.subject`, resource.subject),
+            ui.dateTime(`${i18n$F}.effective`, resource.effective),
+            ui.reference(`${i18n$F}.performer`, resource.performer),
+            ui.string(`${i18n$F}.status`, resource.status),
+            ui.codeableConcept(`${i18n$F}.code`, resource.code),
+            ui.string(`${i18n$F}.comment`, resource.comment),
+            ui.codeableConcept(`${i18n$F}.method`, resource.method),
+            ...ui.oneOfValueX(`${i18n$F}.value`, resource, "value")
           ]
         }
       ]
     };
   };
-  const profile$O = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult";
+  const profile$Q = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult";
   function parseGpDiagnosticResult(resource) {
     return {
-      ...resourceMeta(resource, profile$O, FhirVersion.R3),
+      ...resourceMeta(resource, profile$Q, FhirVersion.R3),
       identifier: map(resource.identifier, identifier),
       context: reference(resource.context),
       subject: reference(resource.subject),
@@ -54594,11 +55287,11 @@ ${indent}}` : "}";
     };
   }
   const gpDiagnosticResult = {
-    profile: profile$O,
+    profile: profile$Q,
     parse: parseGpDiagnosticResult,
-    uiSchema: uiSchema$O
+    uiSchema: uiSchema$H
   };
-  const uiSchemaGroup$B = (resource, context) => {
+  const uiSchemaGroup$s = (resource, context) => {
     const ui = context.ui;
     return {
       label: "Encounter.participant",
@@ -54613,34 +55306,34 @@ ${indent}}` : "}";
   const encounterParticipant = {
     parse: parseEncounterParticipant
   };
-  const i18n$L = "r3.gp_encounter";
-  const uiSchema$N = (resource, context) => {
+  const i18n$E = "r3.gp_encounter";
+  const uiSchema$G = (resource, context) => {
     const ui = context.ui;
     const participants = map(
       resource.participant,
-      (x) => uiSchemaGroup$B(x, context),
+      (x) => uiSchemaGroup$s(x, context),
       true
     ).flat();
     return {
-      label: resource.serviceProvider?.display ?? context.formatMessage(i18n$L),
+      label: resource.serviceProvider?.display ?? context.formatMessage(i18n$E),
       children: [
         {
-          label: `${i18n$L}`,
+          label: `${i18n$E}`,
           children: [
-            ui.coding(`${i18n$L}.class`, resource.class),
+            ui.coding(`${i18n$E}.class`, resource.class),
             ...ui.helpers.getChildren(participants),
-            ui.reference(`${i18n$L}.serviceProvider`, resource.serviceProvider),
-            ...ui.period(`${i18n$L}.period`, resource.period),
-            ui.codeableConcept(`${i18n$L}.reason`, resource.reason)
+            ui.reference(`${i18n$E}.serviceProvider`, resource.serviceProvider),
+            ...ui.period(`${i18n$E}.period`, resource.period),
+            ui.codeableConcept(`${i18n$E}.reason`, resource.reason)
           ]
         }
       ]
     };
   };
-  const profile$N = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter";
+  const profile$P = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter";
   function parseGpEncounter(resource) {
     return {
-      ...resourceMeta(resource, profile$N, FhirVersion.R3),
+      ...resourceMeta(resource, profile$P, FhirVersion.R3),
       class: coding(resource.class),
       participant: map(resource.participant, encounterParticipant.parse),
       serviceProvider: reference(resource.serviceProvider),
@@ -54649,9 +55342,9 @@ ${indent}}` : "}";
     };
   }
   const gpEncounter = {
-    profile: profile$N,
+    profile: profile$P,
     parse: parseGpEncounter,
-    uiSchema: uiSchema$N
+    uiSchema: uiSchema$G
   };
   function parseSection(value2) {
     return {
@@ -54659,7 +55352,7 @@ ${indent}}` : "}";
       entry: map(value2?.entry, reference)
     };
   }
-  const uiSchemaGroup$A = (resource, context) => {
+  const uiSchemaGroup$r = (resource, context) => {
     const ui = context.ui;
     const profile2 = "EncounterReport.Section";
     return {
@@ -54670,32 +55363,32 @@ ${indent}}` : "}";
       ]
     };
   };
-  const i18n$K = "r3.gp_encounter_report";
-  const uiSchema$M = (resource, context) => {
+  const i18n$D = "r3.gp_encounter_report";
+  const uiSchema$F = (resource, context) => {
     const ui = context.ui;
-    const section = map(resource.section, (x) => uiSchemaGroup$A(x, context), true);
+    const section = map(resource.section, (x) => uiSchemaGroup$r(x, context), true);
     return {
-      label: resource.title ?? context.formatMessage(i18n$K),
+      label: valueOf(resource.title) ?? context.formatMessage(i18n$D),
       children: [
         {
-          label: `${i18n$K}`,
+          label: `${i18n$D}`,
           children: [
-            ui.string(`${i18n$K}.title`, resource.title),
-            ui.string(`${i18n$K}.status`, resource.status),
-            ui.coding(`${i18n$K}.type`, resource.type),
-            ui.reference(`${i18n$K}.encounter`, resource.encounter),
-            ui.dateTime(`${i18n$K}.date`, resource.date),
-            ui.reference(`${i18n$K}.author`, resource.author)
+            ui.string(`${i18n$D}.title`, resource.title),
+            ui.string(`${i18n$D}.status`, resource.status),
+            ui.coding(`${i18n$D}.type`, resource.type),
+            ui.reference(`${i18n$D}.encounter`, resource.encounter),
+            ui.dateTime(`${i18n$D}.date`, resource.date),
+            ui.reference(`${i18n$D}.author`, resource.author)
           ]
         },
         ...section
       ]
     };
   };
-  const profile$M = "http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport";
+  const profile$O = "http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport";
   function parseGpEncounterReport(resource) {
     return {
-      ...resourceMeta(resource, profile$M, FhirVersion.R3),
+      ...resourceMeta(resource, profile$O, FhirVersion.R3),
       identifier: identifier(resource.identifier),
       status: string(resource.status),
       type: map(resource.type.coding, coding),
@@ -54707,39 +55400,39 @@ ${indent}}` : "}";
     };
   }
   const gpEncounterReport = {
-    profile: profile$M,
+    profile: profile$O,
     parse: parseGpEncounterReport,
-    uiSchema: uiSchema$M
+    uiSchema: uiSchema$F
   };
-  const i18n$J = "r3.gp_journal_entry";
-  const uiSchema$L = (resource, context) => {
+  const i18n$C = "r3.gp_journal_entry";
+  const uiSchema$E = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.context?.display ?? context.formatMessage(i18n$J),
+      label: resource.context?.display ?? context.formatMessage(i18n$C),
       children: [
         {
-          label: `${i18n$J}.group_details`,
+          label: `${i18n$C}.group_details`,
           children: [
-            ui.identifier(`${i18n$J}.identifier`, resource.identifier),
-            ui.string(`${i18n$J}.status`, resource.status),
-            ui.codeableConcept(`${i18n$J}.code`, resource.code),
-            ui.reference(`${i18n$J}.context`, resource.context),
-            ...ui.oneOfValueX(`${i18n$J}.effective`, resource, "effective"),
-            ui.reference(`${i18n$J}.performer`, resource.performer),
-            ui.string(`${i18n$J}.valueString`, resource.valueString),
-            ui.codeableConcept(`${i18n$J}.ICPC_S`, resource.ICPC_S.valueCodeableConcept),
-            ui.codeableConcept(`${i18n$J}.ICPC_E`, resource.ICPC_E.valueCodeableConcept)
+            ui.identifier(`${i18n$C}.identifier`, resource.identifier),
+            ui.string(`${i18n$C}.status`, resource.status),
+            ui.codeableConcept(`${i18n$C}.code`, resource.code),
+            ui.reference(`${i18n$C}.context`, resource.context),
+            ...ui.oneOfValueX(`${i18n$C}.effective`, resource, "effective"),
+            ui.reference(`${i18n$C}.performer`, resource.performer),
+            ui.string(`${i18n$C}.valueString`, resource.valueString),
+            ui.codeableConcept(`${i18n$C}.ICPC_S`, resource.ICPC_S.valueCodeableConcept),
+            ui.codeableConcept(`${i18n$C}.ICPC_E`, resource.ICPC_E.valueCodeableConcept)
           ]
         }
       ]
     };
   };
-  const profile$L = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry";
+  const profile$N = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry";
   function parseGpJournalEntry(resource) {
     const ICPC_S = findComponentByCode(resource.component, "ADMDX");
     const ICPC_E = findComponentByCode(resource.component, "DISDX");
     return {
-      ...resourceMeta(resource, profile$L, FhirVersion.R3),
+      ...resourceMeta(resource, profile$N, FhirVersion.R3),
       identifier: map(resource.identifier, identifier),
       status: string(resource.status),
       code: codeableConcept(resource.code),
@@ -54756,9 +55449,9 @@ ${indent}}` : "}";
     };
   }
   const gpJournalEntry = {
-    profile: profile$L,
+    profile: profile$N,
     parse: parseGpJournalEntry,
-    uiSchema: uiSchema$L
+    uiSchema: uiSchema$E
   };
   const SNOMED_SYSTEM = "http://snomed.info/sct";
   var Snomed = /* @__PURE__ */ ((Snomed2) => {
@@ -54795,15 +55488,15 @@ ${indent}}` : "}";
     "131196009"
     /* SUSCEPTIBLE */
   ];
-  const i18n$I = "r3.zib_laboratory_test_result_observation.reference_range";
-  const uiSchemaGroup$z = (resource, context) => {
+  const i18n$B = "r3.zib_laboratory_test_result_observation.reference_range";
+  const uiSchemaGroup$q = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: formatMessage2(i18n$I),
+      label: formatMessage2(i18n$B),
       children: [
-        ui.quantity(`${i18n$I}.low`, resource.low),
-        ui.quantity(`${i18n$I}.high`, resource.high),
-        ui.codeableConcept(`${i18n$I}.type`, resource.type)
+        ui.quantity(`${i18n$B}.low`, resource.low),
+        ui.quantity(`${i18n$B}.high`, resource.high),
+        ui.codeableConcept(`${i18n$B}.type`, resource.type)
       ]
     };
   };
@@ -54823,7 +55516,12 @@ ${indent}}` : "}";
     }
     return {
       label: formatSystemCode(typeCoding) ?? formatMessage2("summary.r3.zib_laboratory_test_result_observation.reference_range"),
-      children: [...ui.range(`summary.${i18n$I}`, resource)]
+      children: [
+        ...ui.range(`summary.${i18n$B}`, {
+          _type: "range",
+          ...resource
+        })
+      ]
     };
   };
   function parseReferenceRange(value2) {
@@ -54837,10 +55535,10 @@ ${indent}}` : "}";
   }
   const referenceRange = {
     parse: parseReferenceRange,
-    uiSchemaGroup: uiSchemaGroup$z,
+    uiSchemaGroup: uiSchemaGroup$q,
     summary: summary$6
   };
-  const uiSchemaGroup$y = (resource, context) => {
+  const uiSchemaGroup$p = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
       label: formatMessage2("r3.zib_laboratory_test_result_observation.related"),
@@ -54876,41 +55574,41 @@ ${indent}}` : "}";
       ]
     };
   }
-  const i18n$H = "r3.zib_laboratory_test_result_observation";
-  function getLabel$5(resource, { formatMessage: formatMessage2 }) {
-    return lodashExports.capitalize(resource.code?.coding.at(0)?.display) || formatMessage2(i18n$H);
+  const i18n$A = "r3.zib_laboratory_test_result_observation";
+  function getLabel$3(resource, { formatMessage: formatMessage2 }) {
+    return lodashExports.capitalize(resource.code?.coding.at(0)?.display) || formatMessage2(i18n$A);
   }
-  const uiSchema$K = (resource, context) => {
+  const uiSchema$D = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const hcimLaboratoryTestResult = {
-      BasedOn: ui.reference(`${i18n$H}.based_on`, resource.basedOn),
-      Status: ui.code(`${i18n$H}.status`, resource.status),
-      ResultType: ui.codeableConcept(`${i18n$H}.result_type`, resource.resultType),
-      Code: ui.codeableConcept(`${i18n$H}.code`, resource.code),
-      Effective: ui.oneOfValueX(`${i18n$H}.effective`, resource, "effective"),
-      Value: ui.oneOfValueX(`${i18n$H}.value`, resource),
-      Interpretation: ui.codeableConcept(`${i18n$H}.interpretation`, resource.interpretation),
-      Comment: ui.string(`${i18n$H}.comment`, resource.comment),
-      Method: ui.codeableConcept(`${i18n$H}.method`, resource.method),
-      Specimen: ui.reference(`${i18n$H}.specimen`, resource.specimen),
+      BasedOn: ui.reference(`${i18n$A}.based_on`, resource.basedOn),
+      Status: ui.code(`${i18n$A}.status`, resource.status),
+      ResultType: ui.codeableConcept(`${i18n$A}.result_type`, resource.resultType),
+      Code: ui.codeableConcept(`${i18n$A}.code`, resource.code),
+      Effective: ui.oneOfValueX(`${i18n$A}.effective`, resource, "effective"),
+      Value: ui.oneOfValueX(`${i18n$A}.value`, resource),
+      Interpretation: ui.codeableConcept(`${i18n$A}.interpretation`, resource.interpretation),
+      Comment: ui.string(`${i18n$A}.comment`, resource.comment),
+      Method: ui.codeableConcept(`${i18n$A}.method`, resource.method),
+      Specimen: ui.reference(`${i18n$A}.specimen`, resource.specimen),
       ReferenceRange: map(
         resource.referenceRange,
-        (x) => uiSchemaGroup$z(x, context),
+        (x) => uiSchemaGroup$q(x, context),
         true
       ).flat(),
-      Related: map(resource.related, (x) => uiSchemaGroup$y(x, context), true).flat()
+      Related: map(resource.related, (x) => uiSchemaGroup$p(x, context), true).flat()
     };
     const hcimBasicElements = {
-      Identifier: ui.identifier(`${i18n$H}.identifier`, resource.identifier),
-      Subject: ui.reference(`${i18n$H}.subject`, resource.subject),
-      Context: ui.reference(`${i18n$H}.context`, resource.context),
-      Performer: ui.reference(`${i18n$H}.performer`, resource.performer)
+      Identifier: ui.identifier(`${i18n$A}.identifier`, resource.identifier),
+      Subject: ui.reference(`${i18n$A}.subject`, resource.subject),
+      Context: ui.reference(`${i18n$A}.context`, resource.context),
+      Performer: ui.reference(`${i18n$A}.performer`, resource.performer)
     };
     return {
-      label: getLabel$5(resource, context),
+      label: getLabel$3(resource, context),
       children: [
         {
-          label: formatMessage2(i18n$H),
+          label: formatMessage2(i18n$A),
           children: [
             hcimBasicElements.Identifier,
             hcimBasicElements.Subject,
@@ -54919,11 +55617,11 @@ ${indent}}` : "}";
           ]
         },
         {
-          label: formatMessage2(`${i18n$H}.general_test_information`),
+          label: formatMessage2(`${i18n$A}.general_test_information`),
           children: [hcimLaboratoryTestResult.ResultType, hcimLaboratoryTestResult.Comment]
         },
         {
-          label: formatMessage2(`${i18n$H}.lab_test`),
+          label: formatMessage2(`${i18n$A}.lab_test`),
           children: [
             hcimLaboratoryTestResult.Code,
             hcimLaboratoryTestResult.Method,
@@ -54948,37 +55646,37 @@ ${indent}}` : "}";
       (x) => x.system === SNOMED_SYSTEM && InterpretatieVlaggenCodelijst.includes(x.code)
     );
     return {
-      label: getLabel$5(resource, context),
+      label: getLabel$3(resource, context),
       children: [
         {
           children: [
-            ...ui.oneOfValueX(`summary.${i18n$H}.effective`, resource, "effective"),
-            ...ui.oneOfValueX(`summary.${i18n$H}.value`, resource),
-            ui.coding(`summary.${i18n$H}.interpretation`, resultFlags)
+            ...ui.oneOfValueX(`summary.${i18n$A}.effective`, resource, "effective"),
+            ...ui.oneOfValueX(`summary.${i18n$A}.value`, resource),
+            ui.coding(`summary.${i18n$A}.interpretation`, resultFlags)
           ]
         },
         {
-          label: formatMessage2(`summary.${i18n$H}.group_test_details`),
+          label: formatMessage2(`summary.${i18n$A}.group_test_details`),
           children: [
-            ui.code(`summary.${i18n$H}.status`, resource.status, {
+            ui.code(`summary.${i18n$A}.status`, resource.status, {
               i18nCode: "r3.observation.status"
             }),
-            ui.reference(`summary.${i18n$H}.specimen`, resource.specimen)
+            ui.reference(`summary.${i18n$A}.specimen`, resource.specimen)
           ]
         },
         ...referenceRangeSummary,
         {
-          label: formatMessage2(`summary.${i18n$H}.group_performer`),
+          label: formatMessage2(`summary.${i18n$A}.group_performer`),
           children: [
-            ui.reference(`summary.${i18n$H}.performer`, resource.performer),
+            ui.reference(`summary.${i18n$A}.performer`, resource.performer),
             organization(context)
           ]
         },
-        summaryOptions(context, i18n$H, resource)
+        summaryOptions(context, i18n$A, resource)
       ]
     };
   };
-  const profile$K = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation";
+  const profile$M = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation";
   function parseZibLaboratoryTestResultObservationBase(resource) {
     const laboratoryTestResultCode = filterCodeableConceptByCoding(
       resource.category,
@@ -55019,80 +55717,47 @@ ${indent}}` : "}";
   }
   function parseZibLaboratoryTestResultObservation(resource) {
     return {
-      ...resourceMeta(resource, profile$K, FhirVersion.R3),
+      ...resourceMeta(resource, profile$M, FhirVersion.R3),
       ...parseZibLaboratoryTestResultObservationBase(resource)
     };
   }
   const zibLaboratoryTestResultObservation = {
-    profile: profile$K,
+    profile: profile$M,
     parse: parseZibLaboratoryTestResultObservation,
-    uiSchema: uiSchema$K,
+    uiSchema: uiSchema$D,
     summary: summary$5
   };
-  const i18n$G = "r3.gp_laboratory_result";
-  function getLabel$4(resource, { formatMessage: formatMessage2 }) {
-    return lodashExports.capitalize(resource.context?.display) || formatMessage2(i18n$G);
+  const i18n$z = "r3.gp_laboratory_result";
+  function getLabel$2(resource, { formatMessage: formatMessage2 }) {
+    return lodashExports.capitalize(resource.context?.display) || formatMessage2(i18n$z);
   }
-  const uiSchema$J = (resource, context) => {
+  const uiSchema$C = (resource, context) => {
     return {
       ...zibLaboratoryTestResultObservation.uiSchema(resource, context),
-      label: getLabel$4(resource, context)
+      label: getLabel$2(resource, context)
     };
   };
   const summary$4 = (resource, context) => {
     return {
       ...zibLaboratoryTestResultObservation.summary(resource, context),
-      label: getLabel$4(resource, context)
+      label: getLabel$2(resource, context)
     };
   };
-  const profile$J = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult";
+  const profile$L = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult";
   function parseGpLaboratoryResult(resource) {
     const { ...rest } = parseZibLaboratoryTestResultObservationBase(resource);
     return {
       ...rest,
-      ...resourceMeta(resource, profile$J, FhirVersion.R3)
+      ...resourceMeta(resource, profile$L, FhirVersion.R3)
     };
   }
   const gpLaboratoryResult = {
-    profile: profile$J,
+    profile: profile$L,
     parse: parseGpLaboratoryResult,
-    uiSchema: uiSchema$J,
+    uiSchema: uiSchema$C,
     summary: summary$4
   };
-  const uiSchemaGroup$x = (resource, context) => {
-    const i18n2 = "r3.attachment";
-    const ui = context.ui;
-    return {
-      label: i18n2,
-      children: [
-        ui.string(`${i18n2}.contentType`, resource.contentType),
-        ui.string(`${i18n2}.language`, resource.language),
-        ui.string(`${i18n2}.data`, resource.data),
-        ui.string(`${i18n2}.url`, resource.url),
-        ui.unsignedInt(`${i18n2}.size`, resource.size),
-        ui.string(`${i18n2}.hash`, resource.hash),
-        ui.string(`${i18n2}.title`, resource.title),
-        ui.dateTime(`${i18n2}.creation`, resource.creation)
-      ]
-    };
-  };
-  function parseAttachment(value2) {
-    return {
-      contentType: string(value2?.contentType),
-      language: string(value2?.language),
-      data: string(value2?.data),
-      url: string(value2?.url),
-      size: unsignedInt(value2?.size),
-      hash: string(value2?.hash),
-      title: string(value2?.title),
-      creation: dateTime(value2?.creation)
-    };
-  }
-  const attachment = {
-    parse: parseAttachment,
-    uiSchemaGroup: uiSchemaGroup$x
-  };
-  const uiSchemaGroup$w = (resource, context) => {
+  const uiSchemaGroup$o = (resource, context) => {
     const i18n2 = "r3.nl_core_address";
     const ui = context.ui;
     return {
@@ -55126,9 +55791,9 @@ ${indent}}` : "}";
   }
   const nlCoreAddress = {
     parse: parseNlCoreAddress,
-    uiSchemaGroup: uiSchemaGroup$w
+    uiSchemaGroup: uiSchemaGroup$o
   };
-  const uiSchemaGroup$v = (resource, context) => {
+  const uiSchemaGroup$n = (resource, context) => {
     const i18n2 = "r3.nl_core_contact_point";
     const ui = context.ui;
     return {
@@ -55153,9 +55818,9 @@ ${indent}}` : "}";
   }
   const nlCoreContactpoint = {
     parse: parseNlCoreContactpoint,
-    uiSchemaGroup: uiSchemaGroup$v
+    uiSchemaGroup: uiSchemaGroup$n
   };
-  const uiSchemaGroup$u = (resource, context) => {
+  const uiSchemaGroup$m = (resource, context) => {
     const i18n2 = "r3.nl_core_humanname";
     const ui = context.ui;
     return {
@@ -55184,9 +55849,9 @@ ${indent}}` : "}";
   }
   const nlCoreHumanname = {
     parse: parseNlCoreHumanname,
-    uiSchemaGroup: uiSchemaGroup$u
+    uiSchemaGroup: uiSchemaGroup$m
   };
-  const uiSchemaGroup$t = (resource, { ui, formatMessage: formatMessage2 }) => {
+  const uiSchemaGroup$l = (resource, { ui, formatMessage: formatMessage2 }) => {
     const i18n2 = "r3.zib_administration_schedule";
     const { repeat: repeat2 } = resource;
     const hcimInstructionsForUse = {
@@ -55221,10 +55886,13 @@ ${indent}}` : "}";
       ]
     };
   };
+  const profile$K = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationSchedule";
   function parseZibAdministrationSchedule(value2) {
     const { repeat: repeat2 } = value2 ?? {};
     return {
+      _profile: profile$K,
       repeat: {
+        // HCIM InstructionsForUse-v1.1(2017EN)
         ...oneOfValueX(repeat2, ["duration", "range", "period"], "bounds"),
         duration: decimal(repeat2?.duration),
         durationUnit: code(repeat2?.durationUnit),
@@ -55240,28 +55908,31 @@ ${indent}}` : "}";
   }
   const zibAdministrationSchedule = {
     parse: parseZibAdministrationSchedule,
-    uiSchemaGroup: uiSchemaGroup$t
+    uiSchemaGroup: uiSchemaGroup$l
   };
-  const i18n$F = "r3.zib_instructions_for_use";
-  const uiSchemaGroup$s = (resource, context) => {
+  const i18n$y = "r3.zib_instructions_for_use";
+  const uiSchemaGroup$k = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const hcimInstructionsForUse = {
-      SequenceNumber: ui.integer(`${i18n$F}.sequence`, resource.sequence),
-      Description: ui.string(`${i18n$F}.text`, resource.text),
+      SequenceNumber: ui.integer(`${i18n$y}.sequence`, resource.sequence),
+      Description: ui.string(`${i18n$y}.text`, resource.text),
       AdditionalInstructions: ui.codeableConcept(
-        `${i18n$F}.additional_instruction`,
+        `${i18n$y}.additional_instruction`,
         resource.additionalInstruction
       ),
       AdministeringSchedule: zibAdministrationSchedule.uiSchemaGroup(resource.timing, context),
-      AsNeeded: ui.codeableConcept(`${i18n$F}.as_needed_codeable_concept`, resource.asNeeded),
-      RouteOfAdministration: ui.codeableConcept(`${i18n$F}.route`, resource.route),
-      Dose: ui.oneOfValueX(`${i18n$F}.dose`, resource, "dose"),
-      MaximumDose: ui.ratio(`${i18n$F}.max_dose_per_period`, resource.maxDosePerPeriod),
-      AdministeringSpeed: ui.oneOfValueX(`${i18n$F}.rate`, resource, "rate")
+      AsNeeded: ui.codeableConcept(
+        `${i18n$y}.as_needed_codeable_concept`,
+        resource.asNeededCodeableConcept
+      ),
+      RouteOfAdministration: ui.codeableConcept(`${i18n$y}.route`, resource.route),
+      Dose: ui.oneOfValueX(`${i18n$y}.dose`, resource, "dose"),
+      MaximumDose: ui.ratio(`${i18n$y}.max_dose_per_period`, resource.maxDosePerPeriod),
+      AdministeringSpeed: ui.oneOfValueX(`${i18n$y}.rate`, resource, "rate")
     };
     return [
       {
-        label: formatMessage2(i18n$F),
+        label: formatMessage2(i18n$y),
         children: [
           hcimInstructionsForUse.Description,
           hcimInstructionsForUse.RouteOfAdministration,
@@ -55279,32 +55950,35 @@ ${indent}}` : "}";
   const summary$3 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: formatMessage2(`summary.${i18n$F}`, { sequence: resource.sequence }),
+      label: formatMessage2(`summary.${i18n$y}`, { sequence: resource.sequence?.value }),
       children: [
-        ui.string(`summary.${i18n$F}.text`, resource.text),
-        ...ui.oneOfValueX(`summary.${i18n$F}.dose`, resource, "dose")
+        ui.string(`summary.${i18n$y}.text`, resource.text),
+        ...ui.oneOfValueX(`summary.${i18n$y}.dose`, resource, "dose")
       ]
     };
   };
+  const profile$J = "http://nictiz.nl/fhir/StructureDefinition/zib-InstructionsForUse";
   function parseZibInstructionsForUse(value2) {
     return {
+      _profile: profile$J,
+      // HCIM InstructionsForUse-v1.1(2017EN)
       sequence: integer(value2?.sequence),
       text: string(value2?.text),
       additionalInstruction: map(value2?.additionalInstruction, codeableConcept),
-      asNeeded: codeableConcept(value2?.asNeededCodeableConcept),
+      timing: zibAdministrationSchedule.parse(value2?.timing),
+      asNeededCodeableConcept: codeableConcept(value2?.asNeededCodeableConcept),
       route: codeableConcept(value2?.route),
       ...oneOfValueX(value2, ["range", "quantity"], "dose"),
       maxDosePerPeriod: ratio(value2?.maxDosePerPeriod),
-      ...oneOfValueX(value2, ["ratio", "range", "quantity"], "rate"),
-      timing: zibAdministrationSchedule.parse(value2?.timing)
+      ...oneOfValueX(value2, ["ratio", "range", "quantity"], "rate")
     };
   }
   const zibInstructionsForUse = {
     parse: parseZibInstructionsForUse,
-    uiSchemaGroup: uiSchemaGroup$s,
+    uiSchemaGroup: uiSchemaGroup$k,
     summary: summary$3
   };
-  const uiSchemaGroup$r = (resource, context) => {
+  const uiSchemaGroup$j = (resource, context) => {
     const i18n2 = "r3.zib_product_ingredient";
     const ui = context.ui;
     return {
@@ -55323,9 +55997,9 @@ ${indent}}` : "}";
   }
   const zibProductIngredient = {
     parse: parseZibProductIngredient,
-    uiSchemaGroup: uiSchemaGroup$r
+    uiSchemaGroup: uiSchemaGroup$j
   };
-  const uiSchemaGroup$q = (resource, context) => {
+  const uiSchemaGroup$i = (resource, context) => {
     const i18n2 = "r3.zib_product_package";
     const ui = context.ui;
     const contents = map(
@@ -55353,10 +56027,10 @@ ${indent}}` : "}";
   }
   const zibProductPackage = {
     parse: parseZibProductPackage,
-    uiSchemaGroup: uiSchemaGroup$q
+    uiSchemaGroup: uiSchemaGroup$i
   };
-  const i18n$E = "r3.nl_core_organization";
-  const uiSchema$I = (resource, context) => {
+  const i18n$x = "r3.nl_core_organization";
+  const uiSchema$B = (resource, context) => {
     const ui = context.ui;
     const address = map(
       resource.address,
@@ -55369,18 +56043,18 @@ ${indent}}` : "}";
       true
     ).flat();
     return {
-      label: resource.name ?? context.formatMessage(i18n$E),
+      label: valueOf(resource.name) ?? context.formatMessage(i18n$x),
       children: [
         {
-          label: `${i18n$E}.group_details`,
+          label: `${i18n$x}.group_details`,
           children: [
-            ui.identifier(`${i18n$E}.identifier`, resource.identifier),
-            ui.string(`${i18n$E}.name`, resource.name),
+            ui.identifier(`${i18n$x}.identifier`, resource.identifier),
+            ui.string(`${i18n$x}.name`, resource.name),
             ui.codeableConcept(
-              `${i18n$E}.department_specialty`,
+              `${i18n$x}.department_specialty`,
               resource.departmentSpecialty
             ),
-            ui.codeableConcept(`${i18n$E}.organization_type`, resource.organizationType)
+            ui.codeableConcept(`${i18n$x}.organization_type`, resource.organizationType)
           ]
         },
         ...address,
@@ -55416,9 +56090,9 @@ ${indent}}` : "}";
   const nlCoreOrganization = {
     profile: profile$I,
     parse: parseNlCoreOrganization,
-    uiSchema: uiSchema$I
+    uiSchema: uiSchema$B
   };
-  const uiSchemaGroup$p = (resource, context) => {
+  const uiSchemaGroup$h = (resource, context) => {
     const i18n2 = "r3.nl_core_patient.communication";
     const ui = context.ui;
     return {
@@ -55438,7 +56112,7 @@ ${indent}}` : "}";
   const communication = {
     parse: parseCommunication
   };
-  const uiSchemaGroup$o = (resource, context) => {
+  const uiSchemaGroup$g = (resource, context) => {
     const i18n2 = "r3.nl_core_patient.contact";
     const ui = context.ui;
     const telecom = map(
@@ -55472,7 +56146,7 @@ ${indent}}` : "}";
   const contact = {
     parse: parseContact
   };
-  const uiSchemaGroup$n = (resource, context) => {
+  const uiSchemaGroup$f = (resource, context) => {
     const i18n2 = "r3.nl_core_patient.link";
     const ui = context.ui;
     return {
@@ -55492,41 +56166,41 @@ ${indent}}` : "}";
   const link = {
     parse: parseLink
   };
-  const i18n$D = "r3.nl_core_patient";
-  const uiSchema$H = (resource, context) => {
+  const i18n$w = "r3.nl_core_patient";
+  const uiSchema$A = (resource, context) => {
     const ui = context.ui;
     const address = map(resource.address, (x) => nlCoreAddress.uiSchemaGroup(x, context), true);
     const communication2 = map(
       resource.communication,
-      (x) => uiSchemaGroup$p(x, context),
+      (x) => uiSchemaGroup$h(x, context),
       true
     );
-    const contact2 = map(resource.contact, (x) => uiSchemaGroup$o(x, context), true);
-    const link2 = map(resource.link, (x) => uiSchemaGroup$n(x, context), true);
+    const contact2 = map(resource.contact, (x) => uiSchemaGroup$g(x, context), true);
+    const link2 = map(resource.link, (x) => uiSchemaGroup$f(x, context), true);
     const name = map(resource.name, (x) => nlCoreHumanname.uiSchemaGroup(x, context), true);
-    const photo = map(resource.photo, (x) => uiSchemaGroup$x(x, context), true);
+    const photos = map(resource.photo, ui.attachment, true);
     const telecom = map(
       resource.telecom,
       (x) => nlCoreContactpoint.uiSchemaGroup(x, context),
       true
     );
     return {
-      label: resource.name?.at(0)?.text ?? context.formatMessage(i18n$D),
+      label: valueOf(resource.name?.at(0)?.text) ?? context.formatMessage(i18n$w),
       children: [
         {
-          label: `${i18n$D}.group_details`,
+          label: `${i18n$w}.group_details`,
           children: [
-            ui.boolean(`${i18n$D}.active`, resource.active),
-            ui.date(`${i18n$D}.birth_date`, resource.birthDate),
-            ui.boolean(`${i18n$D}.deceased`, resource.deceased),
-            ui.dateTime(`${i18n$D}.deceased_date_time`, resource.deceasedDateTime),
-            ui.code(`${i18n$D}.gender`, resource.gender),
-            ui.reference(`${i18n$D}.general_practitioner`, resource.generalPractitioner),
-            ui.identifier(`${i18n$D}.identifier`, resource.identifier),
-            ui.reference(`${i18n$D}.managing_organization`, resource.managingOrganization),
-            ui.codeableConcept(`${i18n$D}.marital_status`, resource.maritalStatus),
-            ui.boolean(`${i18n$D}.multiple_birth`, resource.multipleBirth),
-            ui.integer(`${i18n$D}.multiple_birth_integer`, resource.multipleBirthInteger)
+            ui.boolean(`${i18n$w}.active`, resource.active),
+            ui.date(`${i18n$w}.birth_date`, resource.birthDate),
+            ui.boolean(`${i18n$w}.deceased`, resource.deceased),
+            ui.dateTime(`${i18n$w}.deceased_date_time`, resource.deceasedDateTime),
+            ui.code(`${i18n$w}.gender`, resource.gender),
+            ui.reference(`${i18n$w}.general_practitioner`, resource.generalPractitioner),
+            ui.identifier(`${i18n$w}.identifier`, resource.identifier),
+            ui.reference(`${i18n$w}.managing_organization`, resource.managingOrganization),
+            ui.codeableConcept(`${i18n$w}.marital_status`, resource.maritalStatus),
+            ui.boolean(`${i18n$w}.multiple_birth`, resource.multipleBirth),
+            ui.integer(`${i18n$w}.multiple_birth_integer`, resource.multipleBirthInteger)
           ]
         },
         ...address,
@@ -55534,8 +56208,11 @@ ${indent}}` : "}";
         ...contact2,
         ...link2,
         ...name,
-        ...photo,
-        ...telecom
+        ...telecom,
+        {
+          label: `${i18n$w}.photos`,
+          children: photos
+        }
       ]
     };
   };
@@ -55559,17 +56236,17 @@ ${indent}}` : "}";
       multipleBirth: boolean(resource.multipleBirthBoolean),
       multipleBirthInteger: integer(resource.multipleBirthInteger),
       name: map(resource.name, nlCoreHumanname.parse),
-      photo: map(resource.photo, attachment.parse),
+      photo: map(resource.photo, attachment),
       telecom: map(resource.telecom, nlCoreContactpoint.parse)
     };
   }
   const nlCorePatient = {
     profile: profile$H,
     parse: parseNlCorePatient$1,
-    uiSchema: uiSchema$H
+    uiSchema: uiSchema$A
   };
-  const i18n$C = "r3.nl_core_practitioner";
-  const uiSchema$G = (resource, context) => {
+  const i18n$v = "r3.nl_core_practitioner";
+  const uiSchema$z = (resource, context) => {
     const ui = context.ui;
     const address = map(resource.address, (x) => nlCoreAddress.uiSchemaGroup(x, context), true);
     const name = map(resource.name, (x) => nlCoreHumanname.uiSchemaGroup(x, context), true);
@@ -55579,11 +56256,11 @@ ${indent}}` : "}";
       true
     );
     return {
-      label: resource.name?.at(0)?.text ?? context.formatMessage(i18n$C),
+      label: valueOf(resource.name?.at(0)?.text) ?? context.formatMessage(i18n$v),
       children: [
         {
-          label: `${i18n$C}.group_details`,
-          children: [ui.identifier(`${i18n$C}.identifier`, resource.identifier)]
+          label: `${i18n$v}.group_details`,
+          children: [ui.identifier(`${i18n$v}.identifier`, resource.identifier)]
         },
         ...address,
         ...name,
@@ -55604,10 +56281,10 @@ ${indent}}` : "}";
   const nlCorePractitioner = {
     profile: profile$G,
     parse: parseNlCorePractitioner,
-    uiSchema: uiSchema$G
+    uiSchema: uiSchema$z
   };
-  const i18n$B = "r3.nl_core_practitionerrole";
-  const uiSchema$F = (resource, context) => {
+  const i18n$u = "r3.nl_core_practitionerrole";
+  const uiSchema$y = (resource, context) => {
     const ui = context.ui;
     const telecom = map(
       resource.telecom,
@@ -55615,14 +56292,14 @@ ${indent}}` : "}";
       true
     );
     return {
-      label: resource.identifier?.at(0)?.value ?? context.formatMessage(i18n$B),
+      label: valueOf(resource.identifier?.at(0)) ?? context.formatMessage(i18n$u),
       children: [
         {
-          label: `${i18n$B}.group_details`,
+          label: `${i18n$u}.group_details`,
           children: [
-            ui.identifier(`${i18n$B}.identifier`, resource.identifier),
-            ui.reference(`${i18n$B}.organization`, resource.organization),
-            ui.codeableConcept(`${i18n$B}.specialty`, resource.specialty)
+            ui.identifier(`${i18n$u}.identifier`, resource.identifier),
+            ui.reference(`${i18n$u}.organization`, resource.organization),
+            ui.codeableConcept(`${i18n$u}.specialty`, resource.specialty)
           ]
         },
         ...telecom
@@ -55642,33 +56319,7 @@ ${indent}}` : "}";
   const nlCorePractitionerRole = {
     profile: profile$F,
     parse: parseNlCorePractitionerRole,
-    uiSchema: uiSchema$F
-  };
-  const i18n$A = "r3.nl_core_episodeofcare";
-  const uiSchema$E = (resource, context) => {
-    const { ui, formatMessage: formatMessage2 } = context;
-    const hcimBasicElements = {
-      Identifier: ui.identifier(`${i18n$A}.identifier`, resource.identifier),
-      Patient: ui.reference(`${i18n$A}.patient`, resource.patient),
-      Period: ui.period(`${i18n$A}.period`, resource.period)
-    };
-    const hcimConcernForTransfer = {
-      Type: ui.codeableConcept(`${i18n$A}.type`, resource.type)
-    };
-    return {
-      label: resource.title ?? formatMessage2(i18n$A),
-      children: [
-        {
-          label: formatMessage2(i18n$A),
-          children: [
-            hcimBasicElements.Identifier,
-            hcimBasicElements.Patient,
-            ...hcimBasicElements.Period,
-            hcimConcernForTransfer.Type
-          ]
-        }
-      ]
-    };
+    uiSchema: uiSchema$y
   };
   function parseDiagnosis$1(value2) {
     return {
@@ -55688,6 +56339,32 @@ ${indent}}` : "}";
   }
   const statusHistory = {
     parse: parseStatusHistory
+  };
+  const i18n$t = "r3.nl_core_episodeofcare";
+  const uiSchema$x = (resource, context) => {
+    const { ui, formatMessage: formatMessage2 } = context;
+    const hcimBasicElements = {
+      Identifier: ui.identifier(`${i18n$t}.identifier`, resource.identifier),
+      Patient: ui.reference(`${i18n$t}.patient`, resource.patient),
+      Period: ui.period(`${i18n$t}.period`, resource.period)
+    };
+    const hcimConcernForTransfer = {
+      Type: ui.codeableConcept(`${i18n$t}.type`, resource.type)
+    };
+    return {
+      label: valueOf(resource.title) ?? formatMessage2(i18n$t),
+      children: [
+        {
+          label: formatMessage2(i18n$t),
+          children: [
+            hcimBasicElements.Identifier,
+            hcimBasicElements.Patient,
+            ...hcimBasicElements.Period,
+            hcimConcernForTransfer.Type
+          ]
+        }
+      ]
+    };
   };
   const profile$E = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare";
   function parseNlCoreEpisodeofcare(resource) {
@@ -55713,24 +56390,24 @@ ${indent}}` : "}";
   const nlCoreEpisodeofcare = {
     profile: profile$E,
     parse: parseNlCoreEpisodeofcare,
-    uiSchema: uiSchema$E
+    uiSchema: uiSchema$x
   };
-  const i18n$z = "r3.e_afspraak_appointment";
-  const uiSchema$D = (resource, context) => {
+  const i18n$s = "r3.e_afspraak_appointment";
+  const uiSchema$w = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.description ?? context.formatMessage(i18n$z),
+      label: valueOf(resource.description) ?? context.formatMessage(i18n$s),
       children: [
         {
-          label: `${i18n$z}`,
+          label: `${i18n$s}`,
           children: [
-            ui.string(`${i18n$z}.status.order_status`, resource.status),
-            ui.codeableConcept(`${i18n$z}.specialty`, resource.specialty),
-            ui.string(`${i18n$z}.description`, resource.description),
-            ui.dateTime(`${i18n$z}.start`, resource.start),
-            ui.dateTime(`${i18n$z}.end`, resource.end),
+            ui.string(`${i18n$s}.status.order_status`, resource.status),
+            ui.codeableConcept(`${i18n$s}.specialty`, resource.specialty),
+            ui.string(`${i18n$s}.description`, resource.description),
+            ui.dateTime(`${i18n$s}.start`, resource.start),
+            ui.dateTime(`${i18n$s}.end`, resource.end),
             ui.reference(
-              `${i18n$z}.participant`,
+              `${i18n$s}.participant`,
               resource.participant?.flatMap((x) => x.actor).filter(isNonNullish)
             )
           ]
@@ -55753,30 +56430,30 @@ ${indent}}` : "}";
   const eAfspraakAppointment = {
     profile: profile$D,
     parse: parseEAfspraakAppointment,
-    uiSchema: uiSchema$D
+    uiSchema: uiSchema$w
   };
-  const i18n$y = "r3.nl_core_observation";
-  const uiSchema$C = (resource, context) => {
+  const i18n$r = "r3.nl_core_observation";
+  const uiSchema$v = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.identifier?.[0]?.value ?? context.formatMessage(i18n$y),
+      label: valueOf(resource.identifier?.[0]) ?? context.formatMessage(i18n$r),
       children: [
         {
-          label: `${i18n$y}.group_details`,
+          label: `${i18n$r}.group_details`,
           children: [
-            ui.identifier(`${i18n$y}.identifier`, resource.identifier),
-            ui.code(`${i18n$y}.status`, resource.status),
-            ui.codeableConcept(`${i18n$y}.category`, resource.category),
-            ui.reference(`${i18n$y}.subject`, resource.subject),
-            ui.reference(`${i18n$y}.context`, resource.context),
+            ui.identifier(`${i18n$r}.identifier`, resource.identifier),
+            ui.code(`${i18n$r}.status`, resource.status),
+            ui.codeableConcept(`${i18n$r}.category`, resource.category),
+            ui.reference(`${i18n$r}.subject`, resource.subject),
+            ui.reference(`${i18n$r}.context`, resource.context),
             Object.prototype.hasOwnProperty.call(resource, "effectiveDateTime") ? ui.dateTime(
-              `${i18n$y}.effective_date_time`,
+              `${i18n$r}.effective_date_time`,
               resource.effectiveDateTime
             ) : void 0,
-            ...ui.period(`${i18n$y}.effective_period`, resource.effectivePeriod),
-            ui.codeableConcept(`${i18n$y}.data_absent_reason`, resource.dataAbsentReason),
-            ui.string(`${i18n$y}.comment`, resource.comment),
-            ui.codeableConcept(`${i18n$y}.body_site`, resource.bodySite)
+            ...ui.period(`${i18n$r}.effective_period`, resource.effectivePeriod),
+            ui.codeableConcept(`${i18n$r}.data_absent_reason`, resource.dataAbsentReason),
+            ui.string(`${i18n$r}.comment`, resource.comment),
+            ui.codeableConcept(`${i18n$r}.body_site`, resource.bodySite)
           ].filter(isNonNullish)
         }
       ]
@@ -55809,8 +56486,14 @@ ${indent}}` : "}";
   const nlCoreObservation = {
     profile: profile$C,
     parse: parseNlCoreObservation,
-    uiSchema: uiSchema$C
+    uiSchema: uiSchema$v
   };
+  function parsePerformer$1(value2) {
+    return {
+      actor: reference(value2?.actor),
+      onBehalfOf: reference(value2?.onBehalfOf)
+    };
+  }
   const performerGroup = (resource, context) => {
     const { formatMessage: formatMessage2 } = context;
     const profile2 = "r3.zib_administration_agreement.performer";
@@ -55822,41 +56505,41 @@ ${indent}}` : "}";
       ]
     };
   };
-  const i18n$x = "r3.zib_administration_agreement";
-  function getLabel$3(resource, { formatMessage: formatMessage2 }) {
-    return lodashExports.capitalize(resource.medicationReference?.display) || formatMessage2(i18n$x);
+  const i18n$q = "r3.zib_administration_agreement";
+  function getLabel$1(resource, { formatMessage: formatMessage2 }) {
+    return lodashExports.capitalize(resource.medicationReference?.display) || formatMessage2(i18n$q);
   }
-  const uiSchema$B = (resource, context) => {
+  const uiSchema$u = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const hcimAdministrationAgreement = {
-      AdministrationAgreementDateTime: ui.dateTime(`${i18n$x}.authored_on`, resource.authoredOn),
-      AgreementReason: ui.string(`${i18n$x}.agreement_reason`, resource.agreementReason),
-      PeriodOfUsePeriod: ui.period(`${i18n$x}.period_of_use`, resource.periodOfUse),
-      UsageDuration: ui.duration(`${i18n$x}.usage_duration`, resource.usageDuration),
+      AdministrationAgreementDateTime: ui.dateTime(`${i18n$q}.authored_on`, resource.authoredOn),
+      AgreementReason: ui.string(`${i18n$q}.agreement_reason`, resource.agreementReason),
+      PeriodOfUsePeriod: ui.period(`${i18n$q}.period_of_use`, resource.periodOfUse),
+      UsageDuration: ui.duration(`${i18n$q}.usage_duration`, resource.usageDuration),
       AdministrationAgreementAdditionalInformation: ui.codeableConcept(
-        `${i18n$x}.additional_information`,
+        `${i18n$q}.additional_information`,
         resource.additionalInformation
       ),
-      StopType: ui.codeableConcept(`${i18n$x}.stop_type`, resource.stopType),
-      CanceledIndicator: ui.code(`${i18n$x}.status`, resource.status),
+      StopType: ui.codeableConcept(`${i18n$q}.stop_type`, resource.stopType),
+      CanceledIndicator: ui.code(`${i18n$q}.status`, resource.status),
       MedicineForAdministrationAgreement: ui.reference(
-        `${i18n$x}.medication_reference`,
+        `${i18n$q}.medication_reference`,
         resource.medicationReference
       ),
       Supplier: map(resource.performer, (x) => performerGroup(x, context), true),
       MedicationAgreement: ui.reference(
-        `${i18n$x}.authorizing_prescription`,
+        `${i18n$q}.authorizing_prescription`,
         resource.authorizingPrescription
       ),
-      Comment: ui.annotation(`${i18n$x}.note`, resource.note)
+      Comment: ui.annotation(`${i18n$q}.note`, resource.note)
     };
     const hcimInstructionsForUse = map(
       resource.dossageInstruction,
-      (x) => uiSchemaGroup$s(x, context),
+      (x) => uiSchemaGroup$k(x, context),
       true
     ).flat();
     const uiSchema2 = {
-      label: getLabel$3(resource, context),
+      label: getLabel$1(resource, context),
       children: [
         {
           label: formatMessage2(`fhir.group_general_info`),
@@ -55879,12 +56562,6 @@ ${indent}}` : "}";
     };
     return uiSchema2;
   };
-  function parsePerformer$1(value2) {
-    return {
-      actor: reference(value2?.actor),
-      onBehalfOf: reference(value2?.onBehalfOf)
-    };
-  }
   const profile$B = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement";
   function parseZibAdministrationAgreement(resource) {
     return {
@@ -55921,40 +56598,196 @@ ${indent}}` : "}";
   const zibAdministrationAgreement = {
     profile: profile$B,
     parse: parseZibAdministrationAgreement,
-    uiSchema: uiSchema$B
+    uiSchema: uiSchema$u
   };
-  const i18n$w = "r3.zib_advance_directive";
-  function getLabel$2(resource, { formatMessage: formatMessage2 }) {
-    return resource.dateTime ?? formatMessage2(i18n$w);
+  function isArrayOfSameValueType(values) {
+    if (!values.length) return false;
+    const firstValue = values[0];
+    if (!isValueType(firstValue) && !isPrimitiveValueType(firstValue)) {
+      return false;
+    }
+    const type = firstValue._type;
+    return values.every((value2) => {
+      if (!isValueType(value2) || !isPrimitiveValueType(firstValue)) {
+        return false;
+      }
+      return value2._type === type;
+    });
   }
-  const uiSchema$A = (resource, context) => {
-    const { ui, formatMessage: formatMessage2 } = context;
-    const hcimAdvanceDirective = {
-      Disorder: ui.reference(`${i18n$w}.disorder`, resource.disorder),
-      Comment: ui.string(`${i18n$w}.comment`, resource.comment),
-      LivingWillType: ui.codeableConcept(
-        `${i18n$w}.type_of_living_will`,
-        resource.typeOfLivingWill
-      ),
-      LivingWillDate: ui.dateTime(`${i18n$w}.date_time`, resource.dateTime),
-      ConsentingParty: ui.reference(`${i18n$w}.consenting_party`, resource.consentingParty)
+  function processArray(context, helpers, fhirVersion, path, value2) {
+    const { handleMultipleUiTypes } = helpers;
+    if (isArrayOfSameValueType(value2)) {
+      const result = handleMultipleUiTypes(path, value2);
+      return [result].flat();
+    }
+    return value2.map((x) => processValue(context, helpers, fhirVersion, path, x)).flat();
+  }
+  function processObject(context, helpers, fhirVersion, path, value2) {
+    const elements = [];
+    const entries = Object.entries(value2);
+    for (const [key, value22] of entries) {
+      const valuePath = `${path}.${lodashExports.snakeCase(key)}`;
+      if (isNullish(value22)) {
+        elements.push({
+          label: context.formatMessage(valuePath),
+          type: "SINGLE_VALUE",
+          display: void 0
+        });
+      } else {
+        elements.push(...processValue(context, helpers, fhirVersion, valuePath, value22));
+      }
+    }
+    let group = null;
+    if ((path.match(/\./g) || []).length >= 2) {
+      group = {
+        label: path,
+        children: []
+      };
+    }
+    if (group) {
+      const uiElements = elements.map((x) => isUiSchemaGroup(x) ? x.children : x).flat();
+      group.children.push(...uiElements);
+      return [group];
+    }
+    return elements;
+  }
+  function processValueType({ handleSingeUiType }, path, value2) {
+    const uiElements = [];
+    const uiElement = handleSingeUiType(path, value2);
+    uiElements.push(...[uiElement].flat());
+    const entries = Object.entries(value2);
+    for (const [key, value22] of entries) {
+      if (!isValueType(value22) && !isPrimitiveValueType(value22)) {
+        continue;
+      }
+      const extraUiElements = handleSingeUiType(
+        `${path}.${lodashExports.snakeCase(key)}`,
+        value22
+      );
+      uiElements.push(...[extraUiElements].flat());
+    }
+    return uiElements;
+  }
+  function getProfileKey(fhirVersion, profile2) {
+    const name = profile2.split("/").pop();
+    return `${fhirVersion.toLowerCase()}.${lodashExports.snakeCase(name)}`;
+  }
+  function processValue(context, helpers, fhirVersion, path, value2) {
+    let elements = [];
+    let group = null;
+    if (isMgoElement(value2)) {
+      const { _profile, ...rest } = value2;
+      path = getProfileKey(fhirVersion, _profile);
+      value2 = rest;
+      group = {
+        label: path,
+        children: []
+      };
+    }
+    if (isNullish(value2)) {
+      elements = [];
+    } else if (isValueType(value2) || isPrimitiveValueType(value2)) {
+      elements = processValueType(helpers, path, value2);
+    } else if (Array.isArray(value2)) {
+      elements = processArray(context, helpers, fhirVersion, path, value2);
+    } else if (typeof value2 === "object") {
+      elements = processObject(context, helpers, fhirVersion, path, value2);
+    } else {
+      console.error(`Failed to process path: ${path} with value:`, value2);
+    }
+    if (group) {
+      const uiElements = elements.map((x) => isUiSchemaGroup(x) ? x.children : x).flat();
+      group.children.push(...uiElements);
+      return [group];
+    }
+    return elements;
+  }
+  function getUiHelpers(context) {
+    const { ui } = context;
+    const singleUiTypeMap = {
+      annotation: ui.annotation,
+      attachment: (_label, value2) => ui.attachment(value2),
+      boolean: ui.boolean,
+      code: ui.code,
+      codeableConcept: ui.codeableConcept,
+      coding: ui.coding,
+      date: ui.date,
+      dateTime: ui.dateTime,
+      decimal: ui.decimal,
+      duration: ui.duration,
+      identifier: ui.identifier,
+      instant: ui.instant,
+      integer: ui.integer,
+      integer64: ui.integer64,
+      period: ui.period,
+      positiveInt: ui.positiveInt,
+      quantity: ui.quantity,
+      range: ui.range,
+      ratio: ui.ratio,
+      reference: ui.reference,
+      string: ui.string,
+      unsignedInt: ui.unsignedInt
     };
-    const attachment2 = uiSchemaGroup$x(resource.source.attachment, context);
+    const multipleUiTypeMap = {
+      annotation: ui.annotation,
+      code: ui.code,
+      codeableConcept: ui.codeableConcept,
+      coding: ui.coding,
+      dateTime: ui.dateTime,
+      identifier: ui.identifier,
+      instant: ui.instant,
+      reference: ui.reference,
+      string: ui.string
+    };
+    function handleSingeUiType(label, value2) {
+      const uiHelper = singleUiTypeMap[value2._type];
+      if (!uiHelper) {
+        throw new Error(`No ui helper found for type "${value2._type}"`);
+      }
+      return uiHelper(label, value2);
+    }
+    function handleMultipleUiTypes(label, value2) {
+      const uiHelper = multipleUiTypeMap[value2[0]._type];
+      if (uiHelper) {
+        return uiHelper(label, value2);
+      }
+      return map(value2, (x) => handleSingeUiType(label, x), true);
+    }
+    return { handleSingeUiType, handleMultipleUiTypes };
+  }
+  const generateUiSchema = (resource, context) => {
+    const { formatMessage: formatMessage2 } = context;
+    const {
+      id: _id,
+      referenceId: _referenceId,
+      resourceType: _resourceType,
+      profile: profile2,
+      fhirVersion,
+      ...rest
+    } = resource;
+    const i18nLabel = getProfileKey(fhirVersion, profile2);
+    const uiHelpers = getUiHelpers(context);
+    const defaultGroup = {
+      children: []
+    };
+    const groups = [defaultGroup];
+    const elements = processValue(context, uiHelpers, fhirVersion, i18nLabel, rest);
+    for (const element of elements) {
+      if (isUiSchemaGroup(element)) {
+        groups.push({
+          ...element,
+          label: context.formatLabel(element.label, null)
+        });
+      } else {
+        defaultGroup.children.push(element);
+      }
+    }
+    for (const group of groups) {
+      group.children.sort((a, b) => a.label.localeCompare(b.label));
+    }
     return {
-      label: getLabel$2(resource, context),
-      children: [
-        {
-          label: formatMessage2(`fhir.group_general_info`),
-          children: [
-            hcimAdvanceDirective.Disorder,
-            hcimAdvanceDirective.Comment,
-            hcimAdvanceDirective.LivingWillType,
-            hcimAdvanceDirective.LivingWillDate,
-            hcimAdvanceDirective.ConsentingParty
-          ]
-        },
-        attachment2
-      ]
+      label: formatMessage2(i18nLabel),
+      children: groups
     };
   };
   const typeOfLivingWillValueSet = [
@@ -56008,41 +56841,39 @@ ${indent}}` : "}";
     );
     return {
       ...resourceMeta(resource, profile$A, FhirVersion.R3),
-      category: map(resource.category, codeableConcept),
+      // HCIM BasicElements-v1.0(2017EN)
+      identifier: identifier(resource.identifier),
       dateTime: dateTime(resource.dateTime),
+      // HCIM AdvanceDirective-v3.1(2017EN)
       disorder: extensionNictiz(resource, "zib-AdvanceDirective-Disorder"),
-      consentingParty: map(resource.consentingParty, reference),
-      source: {
-        attachment: attachment.parse(resource.sourceAttachment),
-        identifier: identifier(resource.sourceIdentifier),
-        reference: reference(resource.sourceReference)
-      },
       comment: extensionNictiz(resource, "Comment"),
-      typeOfLivingWill: map(typeOfLivingWillCodeableConcepts, codeableConcept)
+      typeOfLivingWill: map(typeOfLivingWillCodeableConcepts, codeableConcept),
+      consentingParty: reference(resource.consentingParty?.[0]),
+      ...oneOfValueX(resource, ["attachment", "identifier", "reference"], "source")
     };
   }
   const zibAdvanceDirective = {
     profile: profile$A,
     parse: parseZibAdvanceDirective,
-    uiSchema: uiSchema$A
+    uiSchema: generateUiSchema
   };
-  const i18n$v = "r3.zib_alcohol_use";
-  const uiSchema$z = (resource, context) => {
+  const i18n$p = "r3.zib_alcohol_use";
+  const uiSchema$t = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const hcimAlcoholUse = {
-      StartDate: ui.dateTime(`${i18n$v}.effective_period.start`, resource.effectivePeriod?.start),
-      EndDate: ui.dateTime(`${i18n$v}.effective_period.end`, resource.effectivePeriod?.end),
-      AlcoholUseStatus: ui.codeableConcept(`${i18n$v}.value`, resource.valueCodeableConcept),
-      Comment: ui.string(`${i18n$v}.comment`, resource.comment),
-      Amount: ui.quantity(`${i18n$v}.amount.value`, resource.component.amount)
+      StartDate: ui.dateTime(`${i18n$p}.effective_period.start`, resource.effectivePeriod?.start),
+      EndDate: ui.dateTime(`${i18n$p}.effective_period.end`, resource.effectivePeriod?.end),
+      AlcoholUseStatus: ui.codeableConcept(`${i18n$p}.value`, resource.valueCodeableConcept),
+      Comment: ui.string(`${i18n$p}.comment`, resource.comment),
+      Amount: ui.quantity(`${i18n$p}.amount.value`, resource.component.amount)
     };
     const hcimBasicElements = {
-      IdentificationNumber: ui.identifier(`${i18n$v}.identifier`, resource.identifier),
-      Subject: ui.reference(`${i18n$v}.subject`, resource.subject),
-      Author: ui.reference(`${i18n$v}.performer`, resource.performer)
+      IdentificationNumber: ui.identifier(`${i18n$p}.identifier`, resource.identifier),
+      Subject: ui.reference(`${i18n$p}.subject`, resource.subject),
+      Author: ui.reference(`${i18n$p}.performer`, resource.performer)
     };
     return {
-      label: formatMessage2(i18n$v),
+      label: formatMessage2(i18n$p),
       children: [
         {
           label: formatMessage2(`fhir.group_general_info`),
@@ -56073,80 +56904,50 @@ ${indent}}` : "}";
   const zibAlcoholUse = {
     profile: profile$z,
     parse: parseZibAlcoholUse,
-    uiSchema: uiSchema$z
-  };
-  const i18n$u = "r3.zib_alert";
-  const uiSchema$y = (resource, context) => {
-    const { ui, formatMessage: formatMessage2 } = context;
-    const hcimAlert = {
-      Condition: ui.reference(`${i18n$u}.concern_reference`, resource.concernReference),
-      AlertType: ui.codeableConcept(`${i18n$u}.category`, resource.category),
-      AlertName: ui.codeableConcept(`${i18n$u}.code`, resource.code),
-      StartDateTime: ui.dateTime(`${i18n$u}.period.start`, resource.period?.start)
-    };
-    const hcimBasicElements = {
-      IdentificationNumber: ui.identifier(`${i18n$u}.identifier`, resource.identifier),
-      Author: ui.reference(`${i18n$u}.author`, resource.author)
-    };
-    return {
-      label: formatMessage2(i18n$u),
-      children: [
-        {
-          label: resource.code?.coding?.[0]?.display ?? context.formatMessage(i18n$u),
-          children: [
-            hcimAlert.Condition,
-            hcimAlert.AlertType,
-            hcimAlert.AlertName,
-            hcimAlert.StartDateTime,
-            hcimBasicElements.IdentificationNumber,
-            hcimBasicElements.Author
-          ]
-        }
-      ]
-    };
+    uiSchema: uiSchema$t
   };
   const profile$y = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert";
   function parseZibAlert(resource) {
     return {
       ...resourceMeta(resource, profile$y, FhirVersion.R3),
+      // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier),
-      status: code(resource.status),
-      category: codeableConcept(resource.category),
-      code: codeableConcept(resource.code),
-      subject: reference(resource.subject),
-      period: period(resource.period),
-      encounter: reference(resource.encounter),
       author: reference(resource.author),
+      patient: reference(resource.subject),
+      // HCIM Alert-v3.2(2017EN)
       concernReference: extension(
         resource,
         "http://hl7.org/fhir/StructureDefinition/flag-detail",
         // NOSONAR
         "reference"
-      )
+      ),
+      category: codeableConcept(resource.category),
+      code: codeableConcept(resource.code),
+      period: period(resource.period)
     };
   }
   const zibAlert = {
     profile: profile$y,
     parse: parseZibAlert,
-    uiSchema: uiSchema$y
+    uiSchema: generateUiSchema
   };
-  const i18n$t = "r3.zib_allergy_intolerance";
-  const uiSchema$x = (resource, context) => {
+  const i18n$o = "r3.zib_allergy_intolerance";
+  const uiSchema$s = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.identifier?.at(0)?.value ?? context.formatMessage(i18n$t),
+      label: valueOf(resource.identifier?.at(0)) ?? context.formatMessage(i18n$o),
       children: [
         {
-          label: `${i18n$t}.group_details`,
+          label: `${i18n$o}.group_details`,
           children: [
-            ui.identifier(`${i18n$t}.identifier`, resource.identifier),
-            ui.code(`${i18n$t}.clinical_status`, resource.clinicalStatus),
-            ui.code(`${i18n$t}.verification_status`, resource.verificationStatus),
-            ui.code(`${i18n$t}.type`, resource.type),
-            ui.code(`${i18n$t}.category`, resource.category),
-            ui.code(`${i18n$t}.criticality`, resource.criticality),
-            ui.codeableConcept(`${i18n$t}.code`, resource.code),
-            ui.reference(`${i18n$t}.patient`, resource.patient)
+            ui.identifier(`${i18n$o}.identifier`, resource.identifier),
+            ui.code(`${i18n$o}.clinical_status`, resource.clinicalStatus),
+            ui.code(`${i18n$o}.verification_status`, resource.verificationStatus),
+            ui.code(`${i18n$o}.type`, resource.type),
+            ui.code(`${i18n$o}.category`, resource.category),
+            ui.code(`${i18n$o}.criticality`, resource.criticality),
+            ui.codeableConcept(`${i18n$o}.code`, resource.code),
+            ui.reference(`${i18n$o}.patient`, resource.patient)
           ]
         }
       ]
@@ -56169,49 +56970,49 @@ ${indent}}` : "}";
   const zibAllergyIntolerance = {
     profile: profile$x,
     parse: parseZibAllergyIntolerance,
-    uiSchema: uiSchema$x
+    uiSchema: uiSchema$s
   };
-  const i18n$s = "r3.zib_blood_pressure";
-  const uiSchema$w = (resource, context) => {
+  const i18n$n = "r3.zib_blood_pressure";
+  const uiSchema$r = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.effectiveDateTime ?? context.formatMessage(i18n$s),
+      label: valueOf(resource.effectiveDateTime) ?? context.formatMessage(i18n$n),
       children: [
         {
-          label: `${i18n$s}`,
+          label: `${i18n$n}`,
           children: [
-            ui.codeableConcept(`${i18n$s}.method`, resource.method),
+            ui.codeableConcept(`${i18n$n}.method`, resource.method),
             ui.codeableConcept(
-              `${i18n$s}.cuff_type_loinc`,
+              `${i18n$n}.cuff_type_loinc`,
               resource.cuffTypeLOINC.valueCodeableConcept
             ),
             ui.codeableConcept(
-              `${i18n$s}.cuff_type_snomed`,
+              `${i18n$n}.cuff_type_snomed`,
               resource.cuffTypeSNOMED.valueCodeableConcept
             ),
-            ui.codeableConcept(`${i18n$s}.bodySite`, resource.bodySite),
+            ui.codeableConcept(`${i18n$n}.bodySite`, resource.bodySite),
             ui.codeableConcept(
-              `${i18n$s}.diastolic_endpoint`,
+              `${i18n$n}.diastolic_endpoint`,
               resource.diastolicEndpoint.valueCodeableConcept
             ),
-            ui.quantity(`${i18n$s}.systolic_bp`, resource.systolicBP.valueQuantity),
-            ui.quantity(`${i18n$s}.diastolic_bp.code`, resource.diastolicBP.valueQuantity),
+            ui.quantity(`${i18n$n}.systolic_bp`, resource.systolicBP.valueQuantity),
+            ui.quantity(`${i18n$n}.diastolic_bp.code`, resource.diastolicBP.valueQuantity),
             ui.quantity(
-              `${i18n$s}.average_blood_pressure_loinc`,
+              `${i18n$n}.average_blood_pressure_loinc`,
               resource.averageBloodPressureLOINC.valueQuantity
             ),
             ui.quantity(
-              `${i18n$s}.average_blood_pressure_snomed`,
+              `${i18n$n}.average_blood_pressure_snomed`,
               resource.averageBloodPressureSNOMED.valueQuantity
             ),
-            ui.dateTime(`${i18n$s}.effective`, resource.effectiveDateTime),
-            ui.string(`${i18n$s}.comment`, resource.comment),
+            ui.dateTime(`${i18n$n}.effective`, resource.effectiveDateTime),
+            ui.string(`${i18n$n}.comment`, resource.comment),
             ui.codeableConcept(
-              `${i18n$s}.position_snomed`,
+              `${i18n$n}.position_snomed`,
               resource.positionSNOMED.valueCodeableConcept
             ),
             ui.codeableConcept(
-              `${i18n$s}.position_loinc`,
+              `${i18n$n}.position_loinc`,
               resource.positionLOINC.valueCodeableConcept
             )
           ]
@@ -56265,20 +57066,20 @@ ${indent}}` : "}";
   const zibBloodPressure = {
     profile: profile$w,
     parse: parseZibBloodPressure,
-    uiSchema: uiSchema$w
+    uiSchema: uiSchema$r
   };
-  const i18n$r = "r3.zib_body_height";
-  const uiSchema$v = (resource, context) => {
+  const i18n$m = "r3.zib_body_height";
+  const uiSchema$q = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.effectiveDateTime ?? context.formatMessage(i18n$r),
+      label: valueOf(resource.effectiveDateTime) ?? context.formatMessage(i18n$m),
       children: [
         {
-          label: `${i18n$r}`,
+          label: `${i18n$m}`,
           children: [
-            ui.quantity(i18n$r, resource.valueQuantity),
-            ui.dateTime(`${i18n$r}.effective`, resource.effectiveDateTime),
-            ui.string(`${i18n$r}.comment`, resource.comment)
+            ui.quantity(i18n$m, resource.valueQuantity),
+            ui.dateTime(`${i18n$m}.effective`, resource.effectiveDateTime),
+            ui.string(`${i18n$m}.comment`, resource.comment)
           ]
         }
       ]
@@ -56294,21 +57095,21 @@ ${indent}}` : "}";
   const zibBodyHeight = {
     profile: profile$v,
     parse: parseZibBodyHeight,
-    uiSchema: uiSchema$v
+    uiSchema: uiSchema$q
   };
-  const i18n$q = "r3.zib_body_weight";
-  const uiSchema$u = (resource, context) => {
+  const i18n$l = "r3.zib_body_weight";
+  const uiSchema$p = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.effectiveDateTime ?? context.formatMessage(i18n$q),
+      label: valueOf(resource.effectiveDateTime) ?? context.formatMessage(i18n$l),
       children: [
         {
-          label: `${i18n$q}`,
+          label: `${i18n$l}`,
           children: [
-            ui.quantity(i18n$q, resource.valueQuantity),
-            ui.string(`${i18n$q}.comment`, resource.comment),
-            ui.dateTime(`${i18n$q}.effective`, resource.effectiveDateTime),
-            ui.codeableConcept(`${i18n$q}.clothing`, resource.clothing.valueCodeableConcept)
+            ui.quantity(i18n$l, resource.valueQuantity),
+            ui.string(`${i18n$l}.comment`, resource.comment),
+            ui.dateTime(`${i18n$l}.effective`, resource.effectiveDateTime),
+            ui.codeableConcept(`${i18n$l}.clothing`, resource.clothing.valueCodeableConcept)
           ]
         }
       ]
@@ -56328,9 +57129,9 @@ ${indent}}` : "}";
   const zibBodyWeight = {
     profile: profile$u,
     parse: parseZibBodyWeight,
-    uiSchema: uiSchema$u
+    uiSchema: uiSchema$p
   };
-  const uiSchema$t = (resource, context) => {
+  const uiSchema$o = (resource, context) => {
     return nlCoreObservation.uiSchema(resource, context);
   };
   const profile$t = "http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse";
@@ -56344,9 +57145,9 @@ ${indent}}` : "}";
   const zibDrugUse = {
     profile: profile$t,
     parse: parseZibDrugUse,
-    uiSchema: uiSchema$t
+    uiSchema: uiSchema$o
   };
-  const uiSchemaGroup$m = (resource, context) => {
+  const uiSchemaGroup$e = (resource, context) => {
     const ui = context.ui;
     return {
       label: "Encounter.diagnosis",
@@ -56363,7 +57164,7 @@ ${indent}}` : "}";
   const diagnosis = {
     parse: parseDiagnosis
   };
-  const uiSchemaGroup$l = (resource, context) => {
+  const uiSchemaGroup$d = (resource, context) => {
     const ui = context.ui;
     return {
       label: "Encounter.hospitalization",
@@ -56384,31 +57185,31 @@ ${indent}}` : "}";
   }
   const hospitalization = {
     parse: parseHospitalization,
-    uiSchemaGroup: uiSchemaGroup$l
+    uiSchemaGroup: uiSchemaGroup$d
   };
-  const i18n$p = "r3.zib_encounter";
-  const uiSchema$s = (resource, context) => {
+  const i18n$k = "r3.zib_encounter";
+  const uiSchema$n = (resource, context) => {
     const ui = context.ui;
-    const diagnosis2 = map(resource.diagnosis, (x) => uiSchemaGroup$m(x, context), true);
+    const diagnosis2 = map(resource.diagnosis, (x) => uiSchemaGroup$e(x, context), true);
     const participants = map(
       resource.participant,
-      (x) => uiSchemaGroup$B(x, context),
+      (x) => uiSchemaGroup$s(x, context),
       true
     );
     return {
-      label: resource.serviceProvider?.display ?? context.formatMessage(i18n$p),
+      label: resource.serviceProvider?.display ?? context.formatMessage(i18n$k),
       children: [
         {
-          label: `${i18n$p}`,
+          label: `${i18n$k}`,
           children: [
-            ui.coding(`${i18n$p}.class`, resource.class),
+            ui.coding(`${i18n$k}.class`, resource.class),
             ...ui.helpers.getChildren(participants),
-            ui.reference(`${i18n$p}.serviceProvider`, resource.serviceProvider),
-            ...ui.period(`${i18n$p}.period`, resource.period),
+            ui.reference(`${i18n$k}.serviceProvider`, resource.serviceProvider),
+            ...ui.period(`${i18n$k}.period`, resource.period),
             ...ui.helpers.getChildren(diagnosis2),
-            ui.codeableConcept(`${i18n$p}.reason`, resource.reason),
+            ui.codeableConcept(`${i18n$k}.reason`, resource.reason),
             ...ui.helpers.getChildren(
-              uiSchemaGroup$l(resource.hospitalization, context)
+              uiSchemaGroup$d(resource.hospitalization, context)
             )
           ]
         }
@@ -56431,9 +57232,9 @@ ${indent}}` : "}";
   const zibEncounter = {
     profile: profile$s,
     parse: parseZibEncounter,
-    uiSchema: uiSchema$s
+    uiSchema: uiSchema$n
   };
-  const uiSchema$r = (resource, context) => {
+  const uiSchema$m = (resource, context) => {
     return nlCoreObservation.uiSchema(resource, context);
   };
   const profile$r = "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus";
@@ -56447,9 +57248,9 @@ ${indent}}` : "}";
   const zibFunctionalOrMentalStatus = {
     profile: profile$r,
     parse: parseZibFunctionalOrMentalStatus,
-    uiSchema: uiSchema$r
+    uiSchema: uiSchema$m
   };
-  const uiSchemaGroup$k = (resource, context) => {
+  const uiSchemaGroup$c = (resource, context) => {
     const ui = context.ui;
     const i18n2 = "r3.zib_laboratory_test_result_specimen.container";
     return {
@@ -56469,34 +57270,34 @@ ${indent}}` : "}";
   const container$1 = {
     parse: parseContainer$1
   };
-  const i18n$o = "r3.zib_laboratory_test_result_specimen";
-  const uiSchema$q = (resource, context) => {
+  const i18n$j = "r3.zib_laboratory_test_result_specimen";
+  const uiSchema$l = (resource, context) => {
     const ui = context.ui;
-    const container2 = map(resource.container, (x) => uiSchemaGroup$k(x, context), true);
+    const container2 = map(resource.container, (x) => uiSchemaGroup$c(x, context), true);
     return {
-      label: resource.type?.coding?.[0]?.display ?? context.formatMessage(i18n$o),
+      label: resource.type?.coding?.[0]?.display ?? context.formatMessage(i18n$j),
       children: [
         {
-          label: i18n$o,
+          label: i18n$j,
           children: [
-            ui.identifier(`${i18n$o}.identifier`, resource.identifier),
+            ui.identifier(`${i18n$j}.identifier`, resource.identifier),
             ...ui.helpers.getChildren(container2),
-            ui.codeableConcept(`${i18n$o}.type`, resource.type),
-            ui.quantity(`${i18n$o}.quantity`, resource.collection.quantity),
-            ...ui.oneOfValueX(`${i18n$o}.collected`, resource.collection, "collected"),
-            ui.dateTime(`${i18n$o}.received_time`, resource.receivedTime),
-            ui.codeableConcept(`${i18n$o}.collection.method`, resource.collection.method),
-            ui.codeableConcept(`${i18n$o}.body_site`, resource.collection.bodySite.value),
+            ui.codeableConcept(`${i18n$j}.type`, resource.type),
+            ui.quantity(`${i18n$j}.quantity`, resource.collection.quantity),
+            ...ui.oneOfValueX(`${i18n$j}.collected`, resource.collection, "collected"),
+            ui.dateTime(`${i18n$j}.received_time`, resource.receivedTime),
+            ui.codeableConcept(`${i18n$j}.collection.method`, resource.collection.method),
+            ui.codeableConcept(`${i18n$j}.body_site`, resource.collection.bodySite.value),
             ui.codeableConcept(
-              `${i18n$o}.body_site.laterality`,
+              `${i18n$j}.body_site.laterality`,
               resource.collection.bodySite.laterality
             ),
             ui.codeableConcept(
-              `${i18n$o}.body_site.morphology`,
+              `${i18n$j}.body_site.morphology`,
               resource.collection.bodySite.morphology
             ),
-            ui.reference(`${i18n$o}.subject`, resource.subject),
-            ui.annotation(`${i18n$o}.note`, resource.note)
+            ui.reference(`${i18n$j}.subject`, resource.subject),
+            ui.annotation(`${i18n$j}.note`, resource.note)
           ]
         }
       ]
@@ -56540,9 +57341,9 @@ ${indent}}` : "}";
   const zibLaboratoryTestResultSpecimen = {
     profile: profile$q,
     parse: parseZibLaboratoryTestResultSpecimen,
-    uiSchema: uiSchema$q
+    uiSchema: uiSchema$l
   };
-  const uiSchemaGroup$j = (resource, context) => {
+  const uiSchemaGroup$b = (resource, context) => {
     const ui = context.ui;
     const i18n2 = "r3.zib_laboratory_test_result_specimen_isolate.container";
     return {
@@ -56562,34 +57363,34 @@ ${indent}}` : "}";
   const container = {
     parse: parseContainer
   };
-  const i18n$n = "r3.zib_laboratory_test_result_specimen_isolate";
-  const uiSchema$p = (resource, context) => {
+  const i18n$i = "r3.zib_laboratory_test_result_specimen_isolate";
+  const uiSchema$k = (resource, context) => {
     const ui = context.ui;
-    const container2 = map(resource.container, (x) => uiSchemaGroup$j(x, context), true);
+    const container2 = map(resource.container, (x) => uiSchemaGroup$b(x, context), true);
     return {
-      label: resource.type?.coding?.[0]?.display ?? context.formatMessage(i18n$n),
+      label: resource.type?.coding?.[0]?.display ?? context.formatMessage(i18n$i),
       children: [
         {
-          label: `${i18n$n}`,
+          label: `${i18n$i}`,
           children: [
-            ui.identifier(`${i18n$n}.identifier`, resource.identifier),
+            ui.identifier(`${i18n$i}.identifier`, resource.identifier),
             ...ui.helpers.getChildren(container2),
-            ui.codeableConcept(`${i18n$n}.type`, resource.type),
-            ui.quantity(`${i18n$n}.quantity`, resource.collection.quantity),
-            ...ui.oneOfValueX(`${i18n$n}.collected`, resource.collection, "collected"),
-            ui.dateTime(`${i18n$n}.received_time`, resource.receivedTime),
-            ui.codeableConcept(`${i18n$n}.collection.method`, resource.collection.method),
-            ui.codeableConcept(`${i18n$n}.body_site`, resource.collection.bodySite.value),
+            ui.codeableConcept(`${i18n$i}.type`, resource.type),
+            ui.quantity(`${i18n$i}.quantity`, resource.collection.quantity),
+            ...ui.oneOfValueX(`${i18n$i}.collected`, resource.collection, "collected"),
+            ui.dateTime(`${i18n$i}.received_time`, resource.receivedTime),
+            ui.codeableConcept(`${i18n$i}.collection.method`, resource.collection.method),
+            ui.codeableConcept(`${i18n$i}.body_site`, resource.collection.bodySite.value),
             ui.codeableConcept(
-              `${i18n$n}.body_site.laterality`,
+              `${i18n$i}.body_site.laterality`,
               resource.collection.bodySite.laterality
             ),
             ui.codeableConcept(
-              `${i18n$n}.body_site.morphology`,
+              `${i18n$i}.body_site.morphology`,
               resource.collection.bodySite.morphology
             ),
-            ui.reference(`${i18n$n}.subject`, resource.subject),
-            ui.annotation(`${i18n$n}.note`, resource.note)
+            ui.reference(`${i18n$i}.subject`, resource.subject),
+            ui.annotation(`${i18n$i}.note`, resource.note)
           ]
         }
       ]
@@ -56633,9 +57434,9 @@ ${indent}}` : "}";
   const zibLaboratoryTestResultSpecimenIsolate = {
     profile: profile$p,
     parse: parseZibLaboratoryTestResultSpecimenIsolate,
-    uiSchema: uiSchema$p
+    uiSchema: uiSchema$k
   };
-  const uiSchema$o = (resource, context) => {
+  const uiSchema$j = (resource, context) => {
     const ui = context.ui;
     const i18n2 = "r3.zib_laboratory_test_result_substance";
     return {
@@ -56663,9 +57464,9 @@ ${indent}}` : "}";
   const zibLaboratoryTestResultSubstance = {
     profile: profile$o,
     parse: parseZibLaboratoryTestResultSubstance,
-    uiSchema: uiSchema$o
+    uiSchema: uiSchema$j
   };
-  const uiSchema$n = (resource, context) => {
+  const uiSchema$i = (resource, context) => {
     return nlCoreObservation.uiSchema(resource, context);
   };
   const profile$n = "http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation";
@@ -56678,40 +57479,40 @@ ${indent}}` : "}";
   const zibLivingSituation = {
     profile: profile$n,
     parse: parseZibLivingSituation,
-    uiSchema: uiSchema$n
+    uiSchema: uiSchema$i
   };
-  const i18n$m = "r3.zib_medical_device";
-  const uiSchema$m = (resource, context) => {
+  const i18n$h = "r3.zib_medical_device";
+  const uiSchema$h = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.device?.display ?? context.formatMessage(i18n$m),
+      label: resource.device?.display ?? context.formatMessage(i18n$h),
       children: [
         {
-          label: `${i18n$m}.group_product`,
+          label: `${i18n$h}.group_product`,
           children: [
-            ui.identifier(`${i18n$m}.identifier`, resource.identifier),
-            ui.code(`${i18n$m}.clinical_status`, resource.status),
-            ui.reference(`${i18n$m}.device`, resource.device),
-            ...ui.period(`${i18n$m}.whenUsed`, resource.whenUsed),
-            ui.dateTime(`${i18n$m}.recordedOn`, resource.recordedOn)
+            ui.identifier(`${i18n$h}.identifier`, resource.identifier),
+            ui.code(`${i18n$h}.clinical_status`, resource.status),
+            ui.reference(`${i18n$h}.device`, resource.device),
+            ...ui.period(`${i18n$h}.whenUsed`, resource.whenUsed),
+            ui.dateTime(`${i18n$h}.recordedOn`, resource.recordedOn)
           ]
         },
         {
-          label: `${i18n$m}.group_indication`,
+          label: `${i18n$h}.group_indication`,
           children: [
-            ui.annotation(`${i18n$m}.note`, resource.note),
-            ui.codeableConcept(`${i18n$m}.bodySite`, resource.bodySite),
-            ui.codeableConcept(`${i18n$m}.laterality`, resource.laterality),
-            ui.reference(`${i18n$m}.reason`, resource.reason)
+            ui.annotation(`${i18n$h}.note`, resource.note),
+            ui.codeableConcept(`${i18n$h}.bodySite`, resource.bodySite),
+            ui.codeableConcept(`${i18n$h}.laterality`, resource.laterality),
+            ui.reference(`${i18n$h}.reason`, resource.reason)
           ]
         },
         {
-          label: `${i18n$m}.group_general`,
+          label: `${i18n$h}.group_general`,
           children: [
-            ui.reference(`${i18n$m}.patient`, resource.patient),
-            ui.reference(`${i18n$m}.source`, resource.source),
-            ui.reference(`${i18n$m}.organization`, resource.organization),
-            ui.reference(`${i18n$m}.practitioner`, resource.practitioner)
+            ui.reference(`${i18n$h}.patient`, resource.patient),
+            ui.reference(`${i18n$h}.source`, resource.source),
+            ui.reference(`${i18n$h}.organization`, resource.organization),
+            ui.reference(`${i18n$h}.practitioner`, resource.practitioner)
           ]
         }
       ]
@@ -56741,20 +57542,20 @@ ${indent}}` : "}";
   const zibMedicalDevice = {
     profile: profile$m,
     parse: parseZibMedicalDevice,
-    uiSchema: uiSchema$m
+    uiSchema: uiSchema$h
   };
-  const i18n$l = "r3.zib_medical_device_product";
-  const uiSchema$l = (resource, context) => {
+  const i18n$g = "r3.zib_medical_device_product";
+  const uiSchema$g = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.id ?? context.formatMessage(i18n$l),
+      label: resource.id ?? context.formatMessage(i18n$g),
       children: [
         {
-          label: `${i18n$l}.group_general_information`,
+          label: `${i18n$g}.group_general_information`,
           children: [
-            ui.reference(`${i18n$l}.patient`, resource.patient),
-            ui.annotation(`${i18n$l}.note`, resource.note),
-            ui.dateTime(`${i18n$l}.expiration_date`, resource.expirationDate)
+            ui.reference(`${i18n$g}.patient`, resource.patient),
+            ui.annotation(`${i18n$g}.note`, resource.note),
+            ui.dateTime(`${i18n$g}.expiration_date`, resource.expirationDate)
           ]
         }
       ]
@@ -56772,21 +57573,21 @@ ${indent}}` : "}";
   const zibMedicalDeviceProduct = {
     profile: profile$l,
     parse: parseZibMedicalDeviceProduct,
-    uiSchema: uiSchema$l
+    uiSchema: uiSchema$g
   };
-  const i18n$k = "r3.zib_medical_device_request";
-  const uiSchema$k = (resource, context) => {
+  const i18n$f = "r3.zib_medical_device_request";
+  const uiSchema$f = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.occurrence?.start ?? context.formatMessage(i18n$k),
+      label: resource.occurrence?.start ?? context.formatMessage(i18n$f),
       children: [
         {
-          label: `${i18n$k}`,
+          label: `${i18n$f}`,
           children: [
-            ui.string(`${i18n$k}.status.order_status`, resource.status),
-            ...ui.period(`${i18n$k}.occurrence_period`, resource.occurrence),
-            ...ui.oneOfValueX(`${i18n$k}.code`, resource, "code"),
-            ui.reference(`${i18n$k}.perfomer`, resource.perfomer)
+            ui.string(`${i18n$f}.status.order_status`, resource.status),
+            ...ui.period(`${i18n$f}.occurrence_period`, resource.occurrence),
+            ...ui.oneOfValueX(`${i18n$f}.code`, resource, "code"),
+            ui.reference(`${i18n$f}.perfomer`, resource.perfomer)
           ]
         }
       ]
@@ -56807,40 +57608,40 @@ ${indent}}` : "}";
   const zibMedicalDeviceRequest = {
     profile: profile$k,
     parse: parseZibMedicalDeviceRequest,
-    uiSchema: uiSchema$k
+    uiSchema: uiSchema$f
   };
-  const i18n$j = "r3.zib_medication_agreement";
-  const uiSchema$j = (resource, context) => {
+  const i18n$e = "r3.zib_medication_agreement";
+  const uiSchema$e = (resource, context) => {
     const ui = context.ui;
     const instructionsForUse = map(
       resource.dossageInstruction,
-      (x) => uiSchemaGroup$s(x, context),
+      (x) => uiSchemaGroup$k(x, context),
       true
     ).flat();
     return {
-      label: resource.medicationReference?.display ?? context.formatMessage(i18n$j),
+      label: resource.medicationReference?.display ?? context.formatMessage(i18n$e),
       children: [
         {
-          label: `${i18n$j}.group_general_information`,
+          label: `${i18n$e}.group_general_information`,
           children: [
-            ...ui.period(`${i18n$j}.period_of_use`, resource.periodOfUse),
-            ui.duration(`${i18n$j}.usage_duration`, resource.usageDuration),
-            ui.identifier(`${i18n$j}.medication_treatment`, resource.medicationTreatment),
-            ui.codeableConcept(`${i18n$j}.stop_type`, resource.stopType),
+            ...ui.period(`${i18n$e}.period_of_use`, resource.periodOfUse),
+            ui.duration(`${i18n$e}.usage_duration`, resource.usageDuration),
+            ui.identifier(`${i18n$e}.medication_treatment`, resource.medicationTreatment),
+            ui.codeableConcept(`${i18n$e}.stop_type`, resource.stopType),
             ui.duration(
-              `${i18n$j}.repeat_period_cyclical_schedule`,
+              `${i18n$e}.repeat_period_cyclical_schedule`,
               resource.repeatPeriodCyclicalSchedule
             ),
-            ui.identifier(`${i18n$j}.identifier`, resource.identifier),
-            ui.reference(`${i18n$j}.definition`, resource.definition),
-            ui.reference(`${i18n$j}.basedOn`, resource.basedOn),
-            ui.identifier(`${i18n$j}.group_identifier`, resource.groupIdentifier),
-            ui.code(`${i18n$j}.status`, resource.status),
-            ui.code(`${i18n$j}.intent`, resource.intent),
-            ui.codeableConcept(`${i18n$j}.category`, resource.category),
-            ui.code(`${i18n$j}.priority`, resource.priority),
-            ui.reference(`${i18n$j}.medication_reference`, resource.medicationReference),
-            ui.annotation(`${i18n$j}.note`, resource.note)
+            ui.identifier(`${i18n$e}.identifier`, resource.identifier),
+            ui.reference(`${i18n$e}.definition`, resource.definition),
+            ui.reference(`${i18n$e}.basedOn`, resource.basedOn),
+            ui.identifier(`${i18n$e}.group_identifier`, resource.groupIdentifier),
+            ui.code(`${i18n$e}.status`, resource.status),
+            ui.code(`${i18n$e}.intent`, resource.intent),
+            ui.codeableConcept(`${i18n$e}.category`, resource.category),
+            ui.code(`${i18n$e}.priority`, resource.priority),
+            ui.reference(`${i18n$e}.medication_reference`, resource.medicationReference),
+            ui.annotation(`${i18n$e}.note`, resource.note)
           ]
         },
         ...instructionsForUse
@@ -56875,68 +57676,7 @@ ${indent}}` : "}";
   const zibMedicationAgreement = {
     profile: profile$j,
     parse: parseZibMedicationAgreement,
-    uiSchema: uiSchema$j
-  };
-  const i18n$i = "r3.zib_medication_use";
-  function getLabel$1(resource, { formatMessage: formatMessage2 }) {
-    return lodashExports.capitalize(resource.medicationReference?.display) || formatMessage2(i18n$i);
-  }
-  const uiSchema$i = (resource, context) => {
-    const { ui, formatMessage: formatMessage2 } = context;
-    const hcimMedicationUse2 = {
-      AsAgreedIndicator: ui.boolean(`${i18n$i}.as_agreed_indicator`, resource.asAgreedIndicator),
-      Prescriber: ui.reference(`${i18n$i}.prescriber`, resource.prescriber),
-      ReasonForChangeOrDiscontinuationOfUse: ui.codeableConcept(
-        `${i18n$i}.reason_for_change_or_discontinuation_of_use`,
-        resource.reasonForChangeOrDiscontinuationOfUse
-      ),
-      MedicationUseStopType: ui.code(`${i18n$i}.status`, resource.status),
-      ProductUsed: ui.reference(`${i18n$i}.medication_reference`, resource.medicationReference),
-      PeriodOfUsePeriod: ui.period(`${i18n$i}.effective_period`, resource.effectivePeriod),
-      PeriodOfUseDuration: ui.duration(
-        `${i18n$i}.effective_period.duration`,
-        resource.effectiveDuration
-      ),
-      MedicationUseDateTime: ui.dateTime(`${i18n$i}.date_asserted`, resource.dateAsserted),
-      UseIndicator: ui.code(`${i18n$i}.taken`, resource.taken),
-      ReasonForUse: ui.codeableConcept(`${i18n$i}.reason_code.text`, resource.reasonCode),
-      Comment: ui.annotation(`${i18n$i}.note`, resource.note)
-    };
-    const hcimInstructionsForUse = {
-      InstructionsForUse: map(
-        resource.dosage,
-        (x) => uiSchemaGroup$s(x, context),
-        true
-      ).flat(),
-      RepeatPeriodCyclicalSchedule: ui.duration(
-        `${i18n$i}.repeat_period_cyclical_schedule`,
-        resource.repeatPeriodCyclicalSchedule
-      )
-    };
-    return {
-      label: getLabel$1(resource, context),
-      children: [
-        {
-          label: formatMessage2(`fhir.group_general_info`),
-          children: [
-            hcimMedicationUse2.ProductUsed,
-            hcimMedicationUse2.MedicationUseDateTime,
-            ...hcimMedicationUse2.PeriodOfUsePeriod,
-            hcimMedicationUse2.PeriodOfUseDuration,
-            hcimMedicationUse2.Prescriber,
-            hcimMedicationUse2.ReasonForUse,
-            hcimMedicationUse2.AsAgreedIndicator,
-            hcimMedicationUse2.UseIndicator,
-            hcimMedicationUse2.MedicationUseStopType,
-            hcimMedicationUse2.ReasonForChangeOrDiscontinuationOfUse,
-            hcimInstructionsForUse.RepeatPeriodCyclicalSchedule,
-            ui.identifier(`${i18n$i}.medication_treatment`, resource.medicationTreatment),
-            hcimMedicationUse2.Comment
-          ]
-        },
-        ...hcimInstructionsForUse.InstructionsForUse.flat()
-      ]
-    };
+    uiSchema: uiSchema$e
   };
   const summary$2 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
@@ -56946,31 +57686,32 @@ ${indent}}` : "}";
       true
     );
     const hasSingleInstruction = instructions.length === 1;
+    const i18n2 = `r3.zib_medication_use`;
     return {
-      label: getLabel$1(resource, context),
+      label: lodashExports.capitalize(resource.medicationReference?.display) || formatMessage2(i18n2),
       children: [
         {
           children: [
             ...hasSingleInstruction ? instructions[0].children : [],
-            ui.code(`summary.${i18n$i}.status`, resource.status, {
+            ui.code(`summary.${i18n2}.status`, resource.status, {
               i18nCode: "r3.zib_medication_use.status"
             }),
-            ui.codeableConcept(`${i18n$i}.reason_code.text`, resource.reasonCode)
+            ui.codeableConcept(`${i18n2}.reason_code.text`, resource.reasonCode)
           ]
         },
         ...hasSingleInstruction ? [] : instructions,
         {
-          label: formatMessage2(`summary.${i18n$i}.group_period`),
-          children: [...ui.period(`${i18n$i}.effective_period`, resource.effectivePeriod)]
+          label: formatMessage2(`summary.${i18n2}.group_period`),
+          children: [...ui.period(`${i18n2}.effective_period`, resource.effectivePeriod)]
         },
         {
-          label: formatMessage2(`summary.${i18n$i}.group_prescriber`),
+          label: formatMessage2(`summary.${i18n2}.group_prescriber`),
           children: [
-            ui.reference(`summary.${i18n$i}.prescriber`, resource.prescriber),
+            ui.reference(`summary.${i18n2}.prescriber`, resource.prescriber),
             organization(context)
           ]
         },
-        summaryOptions(context, i18n$i, resource)
+        summaryOptions(context, i18n2, resource)
       ]
     };
   };
@@ -56978,58 +57719,63 @@ ${indent}}` : "}";
   function parseZibMedicationUse(resource) {
     return {
       ...resourceMeta(resource, profile$i, FhirVersion.R3),
+      // HCIM BasicElements-v1.0(2017EN)
+      author: extensionNictiz(resource, "zib-MedicationUse-Author"),
+      identifier: map(resource.identifier, identifier),
+      informationSource: reference(resource.informationSource),
+      subject: reference(resource.subject),
+      // HCIM MedicationUse2-v1.0.1(2017EN)
       asAgreedIndicator: extensionNictiz(resource, "zib-MedicationUse-AsAgreedIndicator"),
       prescriber: extensionNictiz(resource, "zib-MedicationUse-Prescriber"),
-      author: extensionNictiz(resource, "zib-MedicationUse-Author"),
-      medicationTreatment: extensionNictiz(resource, "zib-Medication-MedicationTreatment"),
       reasonForChangeOrDiscontinuationOfUse: extensionNictiz(
         resource,
         "zib-MedicationUse-ReasonForChangeOrDiscontinuationOfUse"
       ),
+      status: code(resource.status),
+      medicationReference: reference(resource.medicationReference),
+      dateAsserted: dateTime(resource.dateAsserted),
+      taken: code(resource.taken),
+      reasonCode: map(resource.reasonCode, codeableConcept),
+      effectivePeriod: {
+        _type: "period",
+        start: void 0,
+        end: void 0,
+        ...period(resource.effectivePeriod),
+        duration: extensionNictiz(resource.effectivePeriod, "zib-MedicationUse-Duration")
+      },
+      note: map(resource.note, annotation),
+      // HCIM InstructionsForUse-v1.1(2017EN)
+      dosage: map(resource.dosage, zibInstructionsForUse.parse),
       repeatPeriodCyclicalSchedule: extensionNictiz(
         resource,
         "zib-Medication-RepeatPeriodCyclicalSchedule"
       ),
-      identifier: map(resource.identifier, identifier),
-      status: code(resource.status),
-      category: codeableConcept(resource.category),
-      medicationReference: reference(resource.medicationReference),
-      effectivePeriod: period(resource.effectivePeriod),
-      effectiveDuration: extensionNictiz(
-        resource.effectivePeriod,
-        "zib-MedicationUse-Duration"
-      ),
-      dateAsserted: dateTime(resource.dateAsserted),
-      informationSource: reference(resource.informationSource),
-      subject: reference(resource.subject),
-      taken: code(resource.taken),
-      reasonCode: map(resource.reasonCode, codeableConcept),
-      note: map(resource.note, annotation),
-      dosage: map(resource.dosage, zibInstructionsForUse.parse)
+      // Medication Process v09
+      medicationTreatment: extensionNictiz(resource, "zib-Medication-MedicationTreatment")
     };
   }
   const zibMedicationUse = {
     profile: profile$i,
     parse: parseZibMedicationUse,
     summary: summary$2,
-    uiSchema: uiSchema$i
+    uiSchema: generateUiSchema
   };
-  const i18n$h = "r3.zib_nutrition_advice";
-  const uiSchema$h = (resource, context) => {
+  const i18n$d = "r3.zib_nutrition_advice";
+  const uiSchema$d = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.identifier?.at(0)?.value ?? context.formatMessage(i18n$h),
+      label: valueOf(resource.identifier?.at(0)) ?? context.formatMessage(i18n$d),
       children: [
         {
-          label: `${i18n$h}.group_details`,
+          label: `${i18n$d}.group_details`,
           children: [
-            ui.string(`${i18n$h}.comment`, resource.comment),
-            ui.identifier(`${i18n$h}.identifier`, resource.identifier),
-            ui.code(`${i18n$h}.status`, resource.status),
-            ui.reference(`${i18n$h}.patient`, resource.patient),
-            ui.dateTime(`${i18n$h}.dateTime`, resource.dateTime),
+            ui.string(`${i18n$d}.comment`, resource.comment),
+            ui.identifier(`${i18n$d}.identifier`, resource.identifier),
+            ui.code(`${i18n$d}.status`, resource.status),
+            ui.reference(`${i18n$d}.patient`, resource.patient),
+            ui.dateTime(`${i18n$d}.dateTime`, resource.dateTime),
             ui.codeableConcept(
-              `${i18n$h}.food_preference_modifier`,
+              `${i18n$d}.food_preference_modifier`,
               resource.foodPreferenceModifier
             )
           ]
@@ -57052,9 +57798,9 @@ ${indent}}` : "}";
   const zibNutritionAdvice = {
     profile: profile$h,
     parse: parseZibNutritionAdvice,
-    uiSchema: uiSchema$h
+    uiSchema: uiSchema$d
   };
-  const uiSchemaGroup$i = (resource, context) => {
+  const uiSchemaGroup$a = (resource, context) => {
     const i18n2 = "r3.zib_payer.grouping";
     const ui = context.ui;
     return {
@@ -57087,35 +57833,35 @@ ${indent}}` : "}";
   }
   const grouping = {
     parse: parseGrouping,
-    uiSchemaGroup: uiSchemaGroup$i
+    uiSchemaGroup: uiSchemaGroup$a
   };
-  const i18n$g = "r3.zib_payer";
-  const uiSchema$g = (resource, context) => {
+  const i18n$c = "r3.zib_payer";
+  const uiSchema$c = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.identifier?.at(0)?.value ?? context.formatMessage(i18n$g),
+      label: valueOf(resource.identifier?.at(0)) ?? context.formatMessage(i18n$c),
       children: [
         {
-          label: `${i18n$g}.group_details`,
+          label: `${i18n$c}.group_details`,
           children: [
-            ui.identifier(`${i18n$g}.identifier`, resource.identifier),
-            ui.code(`${i18n$g}.status`, resource.status),
-            ui.codeableConcept(`${i18n$g}.type`, resource.type),
-            ui.reference(`${i18n$g}.policy_holder`, resource.policyHolder),
-            ui.reference(`${i18n$g}.subscriber`, resource.subscriber),
-            ui.string(`${i18n$g}.subscriber_id`, resource.subscriberId),
-            ui.reference(`${i18n$g}.beneficiary`, resource.beneficiary),
-            ui.codeableConcept(`${i18n$g}.relationship`, resource.relationship),
-            ...ui.period(`${i18n$g}.period`, resource.period),
-            ui.reference(`${i18n$g}.payor`, resource.payor),
-            ui.string(`${i18n$g}.dependent`, resource.dependent),
-            ui.string(`${i18n$g}.sequence`, resource.sequence),
-            ui.positiveInt(`${i18n$g}.order`, resource.order),
-            ui.string(`${i18n$g}.network`, resource.network),
-            ui.reference(`${i18n$g}.contract`, resource.contract)
+            ui.identifier(`${i18n$c}.identifier`, resource.identifier),
+            ui.code(`${i18n$c}.status`, resource.status),
+            ui.codeableConcept(`${i18n$c}.type`, resource.type),
+            ui.reference(`${i18n$c}.policy_holder`, resource.policyHolder),
+            ui.reference(`${i18n$c}.subscriber`, resource.subscriber),
+            ui.string(`${i18n$c}.subscriber_id`, resource.subscriberId),
+            ui.reference(`${i18n$c}.beneficiary`, resource.beneficiary),
+            ui.codeableConcept(`${i18n$c}.relationship`, resource.relationship),
+            ...ui.period(`${i18n$c}.period`, resource.period),
+            ui.reference(`${i18n$c}.payor`, resource.payor),
+            ui.string(`${i18n$c}.dependent`, resource.dependent),
+            ui.string(`${i18n$c}.sequence`, resource.sequence),
+            ui.positiveInt(`${i18n$c}.order`, resource.order),
+            ui.string(`${i18n$c}.network`, resource.network),
+            ui.reference(`${i18n$c}.contract`, resource.contract)
           ]
         },
-        uiSchemaGroup$i(resource.grouping, context)
+        uiSchemaGroup$a(resource.grouping, context)
       ]
     };
   };
@@ -57144,9 +57890,9 @@ ${indent}}` : "}";
   const zibPayer = {
     profile: profile$g,
     parse: parseZibPayer,
-    uiSchema: uiSchema$g
+    uiSchema: uiSchema$c
   };
-  const uiSchemaGroup$h = (resource, context) => {
+  const uiSchemaGroup$9 = (resource, context) => {
     const i18n2 = "r3.evidence";
     const ui = context.ui;
     return {
@@ -57166,7 +57912,7 @@ ${indent}}` : "}";
   const evidence = {
     parse: parseEvidence
   };
-  const uiSchemaGroup$g = (resource, context) => {
+  const uiSchemaGroup$8 = (resource, context) => {
     const i18n2 = "r3.stage";
     const ui = context.ui;
     return {
@@ -57185,38 +57931,38 @@ ${indent}}` : "}";
   }
   const stage = {
     parse: parseStage,
-    uiSchemaGroup: uiSchemaGroup$g
+    uiSchemaGroup: uiSchemaGroup$8
   };
-  const i18n$f = "r3.zib_problem";
-  const uiSchema$f = (resource, context) => {
+  const i18n$b = "r3.zib_problem";
+  const uiSchema$b = (resource, context) => {
     const ui = context.ui;
-    const stage2 = uiSchemaGroup$g(resource.stage, context);
-    const evidence2 = map(resource.evidence, (x) => uiSchemaGroup$h(x, context), true);
+    const stage2 = uiSchemaGroup$8(resource.stage, context);
+    const evidence2 = map(resource.evidence, (x) => uiSchemaGroup$9(x, context), true);
     return {
-      label: resource.code?.coding?.at(0)?.display ?? context.formatMessage(i18n$f),
+      label: resource.code?.coding?.at(0)?.display ?? context.formatMessage(i18n$b),
       children: [
         {
-          label: `${i18n$f}.group_general_information`,
+          label: `${i18n$b}.group_general_information`,
           children: [
-            ui.code(`${i18n$f}.clinicalStatus`, resource.clinicalStatus),
-            ui.codeableConcept(`${i18n$f}.category`, resource.category),
-            ui.dateTime(`${i18n$f}.onsetDateTime`, resource.onsetDateTime),
-            ui.dateTime(`${i18n$f}.abatementDateTime`, resource.abatementDateTime),
-            ui.codeableConcept(`${i18n$f}.bodySite`, resource.bodySite),
-            ui.annotation(`${i18n$f}.note`, resource.note)
+            ui.code(`${i18n$b}.clinicalStatus`, resource.clinicalStatus),
+            ui.codeableConcept(`${i18n$b}.category`, resource.category),
+            ui.dateTime(`${i18n$b}.onsetDateTime`, resource.onsetDateTime),
+            ui.dateTime(`${i18n$b}.abatementDateTime`, resource.abatementDateTime),
+            ui.codeableConcept(`${i18n$b}.bodySite`, resource.bodySite),
+            ui.annotation(`${i18n$b}.note`, resource.note)
           ]
         },
         {
-          label: `${i18n$f}.group_others`,
+          label: `${i18n$b}.group_others`,
           children: [
-            ui.identifier(`${i18n$f}.identifier`, resource.identifier),
-            ui.code(`${i18n$f}.verificationStatus`, resource.verificationStatus),
-            ui.codeableConcept(`${i18n$f}.severity`, resource.severity),
-            ui.codeableConcept(`${i18n$f}.code`, resource.code),
-            ui.reference(`${i18n$f}.subject`, resource.subject),
-            ui.reference(`${i18n$f}.context`, resource.context),
-            ui.dateTime(`${i18n$f}.assertedDate`, resource.assertedDate),
-            ui.reference(`${i18n$f}.asserter`, resource.asserter)
+            ui.identifier(`${i18n$b}.identifier`, resource.identifier),
+            ui.code(`${i18n$b}.verificationStatus`, resource.verificationStatus),
+            ui.codeableConcept(`${i18n$b}.severity`, resource.severity),
+            ui.codeableConcept(`${i18n$b}.code`, resource.code),
+            ui.reference(`${i18n$b}.subject`, resource.subject),
+            ui.reference(`${i18n$b}.context`, resource.context),
+            ui.dateTime(`${i18n$b}.assertedDate`, resource.assertedDate),
+            ui.reference(`${i18n$b}.asserter`, resource.asserter)
           ]
         },
         stage2,
@@ -57249,106 +57995,64 @@ ${indent}}` : "}";
   const zibProblem = {
     profile: profile$f,
     parse: parseZibProblem,
-    uiSchema: uiSchema$f
-  };
-  const uiSchemaGroup$f = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "zib_procedure.focal_device",
-      children: [ui.reference(`r3.zib_procedure.focal_device.manipulated`, resource.manipulated)]
-    };
+    uiSchema: uiSchema$b
   };
   function parseFocalDevice(value2) {
     return {
       manipulated: reference(value2?.manipulated)
     };
   }
-  const focalDevice = {
-    parse: parseFocalDevice
-  };
-  const uiSchemaGroup$e = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "zib_procedure.performer",
-      children: [ui.reference(`r3.zib_procedure.performer`, resource.actor)]
-    };
-  };
   function parsePerformer(value2) {
     return {
-      actor: reference(value2?.actor)
+      actor: reference(value2?.actor),
+      healthProfessionalRole: codeableConcept(value2?.role)
     };
   }
-  const performer = {
-    parse: parsePerformer
-  };
-  const i18n$e = "r3.zib_procedure";
-  const uiSchema$e = (resource, context) => {
-    const ui = context.ui;
-    const focalDevices = map(resource.focalDevice, (x) => uiSchemaGroup$f(x, context), true);
-    const performers = map(resource.performer, (x) => uiSchemaGroup$e(x, context), true);
-    return {
-      label: resource.code?.coding?.at(0)?.display ?? context.formatMessage(i18n$e),
-      children: [
-        {
-          label: `${i18n$e}`,
-          children: [
-            ...ui.period(`${i18n$e}.performed_period`, resource.performedPeriod),
-            ui.codeableConcept(`${i18n$e}.body_site`, resource.bodySite),
-            ui.codeableConcept(
-              `${i18n$e}.bodySite.extension:ProcedureLaterality`,
-              resource.bodySiteQualifier
-            ),
-            ui.reference(`${i18n$e}.reason_reference`, resource.reasonReference),
-            ui.codeableConcept(`${i18n$e}.code`, resource.code),
-            ui.codeableConcept(`${i18n$e}.procedure_method`, resource.procedureMethod),
-            ...ui.helpers.getChildren(focalDevices),
-            ui.reference(`${i18n$e}.location`, resource.location),
-            ...ui.helpers.getChildren(performers),
-            ui.reference(`${i18n$e}.subject`, resource.subject)
-          ]
-        }
-      ]
-    };
-  };
   const profile$e = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure";
   function parseZibProcedure(resource) {
     return {
       ...resourceMeta(resource, profile$e, FhirVersion.R3),
+      // HCIM BasicElements-v1.0(2017EN)
+      identifier: map(resource.identifier, identifier),
+      subject: reference(resource.subject),
       performedPeriod: period(resource.performedPeriod),
-      bodySite: map(resource.bodySite, codeableConcept),
-      bodySiteQualifier: resource.bodySite?.map((x) => extensionNictiz(x, "BodySite-Qualifier")).filter(isNonNullish),
-      reasonReference: map(resource.reasonReference, reference),
-      code: codeableConcept(resource.code),
+      // HCIM TextResult-v4.1(2017EN)
+      report: map(resource.report, reference),
+      // HCIM Procedure-v4.1(2017EN) && HCIM HealthProfessional-v3.2(2017EN)
       procedureMethod: extension(
         resource,
         "http://hl7.org/fhir/StructureDefinition/procedure-method",
         // NOSONAR
         "codeableConcept"
       ),
-      focalDevice: map(resource.focalDevice, focalDevice.parse),
+      basedOn: map(resource.basedOn, reference),
+      code: codeableConcept(resource.code),
+      performer: map(resource.performer, parsePerformer),
       location: reference(resource.location),
-      performer: map(resource.performer, performer.parse),
-      subject: reference(resource.subject)
+      reasonReference: map(resource.reasonReference, reference),
+      bodySite: map(resource.bodySite, codeableConcept),
+      bodySiteQualifier: resource.bodySite?.map((x) => extensionNictiz(x, "BodySite-Qualifier")).filter(isNonNullish),
+      focalDevice: map(resource.focalDevice, parseFocalDevice)
     };
   }
   const zibProcedure = {
     profile: profile$e,
     parse: parseZibProcedure,
-    uiSchema: uiSchema$e
+    uiSchema: generateUiSchema
   };
-  const i18n$d = "r3.zib_procedure_request";
-  const uiSchema$d = (resource, context) => {
+  const i18n$a = "r3.zib_procedure_request";
+  const uiSchema$a = (resource, context) => {
     const ui = context.ui;
     return {
-      label: resource.code?.coding?.at(0)?.display ?? context.formatMessage(i18n$d),
+      label: resource.code?.coding?.at(0)?.display ?? context.formatMessage(i18n$a),
       children: [
         {
-          label: `${i18n$d}`,
+          label: `${i18n$a}`,
           children: [
-            ui.string(`${i18n$d}.status.order_status`, resource.status),
-            ...ui.period(`${i18n$d}.occurrence_period`, resource.occurrence),
-            ui.codeableConcept(`${i18n$d}.code`, resource.code),
-            ui.reference(`${i18n$d}.perfomer`, resource.perfomer)
+            ui.string(`${i18n$a}.status.order_status`, resource.status),
+            ...ui.period(`${i18n$a}.occurrence_period`, resource.occurrence),
+            ui.codeableConcept(`${i18n$a}.code`, resource.code),
+            ui.reference(`${i18n$a}.perfomer`, resource.perfomer)
           ]
         }
       ]
@@ -57370,10 +58074,10 @@ ${indent}}` : "}";
   const zibProcedureRequest = {
     profile: profile$d,
     parse: parseZibProcedureRequest,
-    uiSchema: uiSchema$d
+    uiSchema: uiSchema$a
   };
-  const i18n$c = "r3.zib_product";
-  const uiSchema$c = (resource, context) => {
+  const i18n$9 = "r3.zib_product";
+  const uiSchema$9 = (resource, context) => {
     const ui = context.ui;
     const productPackage = zibProductPackage.uiSchemaGroup(resource.package, context);
     const ingredients = map(
@@ -57382,17 +58086,17 @@ ${indent}}` : "}";
       true
     );
     return {
-      label: resource.description ?? context.formatMessage(i18n$c),
+      label: valueOf(resource.description) ?? context.formatMessage(i18n$9),
       children: [
         {
-          label: `${i18n$c}.group_general_information`,
+          label: `${i18n$9}.group_general_information`,
           children: [
-            ui.codeableConcept(`${i18n$c}.code`, resource.code),
-            ui.codeableConcept(`${i18n$c}.form`, resource.form)
+            ui.codeableConcept(`${i18n$9}.code`, resource.code),
+            ui.codeableConcept(`${i18n$9}.form`, resource.form)
           ]
         },
         {
-          label: `${i18n$c}.group_ingredients`,
+          label: `${i18n$9}.group_ingredients`,
           children: ui.helpers.getChildren(ingredients)
         },
         productPackage
@@ -57413,9 +58117,9 @@ ${indent}}` : "}";
   const zibProduct = {
     profile: profile$c,
     parse: parseZibProduct,
-    uiSchema: uiSchema$c
+    uiSchema: uiSchema$9
   };
-  const uiSchema$b = (resource, context) => {
+  const uiSchema$8 = (resource, context) => {
     return nlCoreObservation.uiSchema(resource, context);
   };
   const profile$b = "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse";
@@ -57429,291 +58133,126 @@ ${indent}}` : "}";
   const zibTobaccoUse = {
     profile: profile$b,
     parse: parseZibTobaccoUse,
-    uiSchema: uiSchema$b
-  };
-  const uiSchemaGroup$d = (resource, context) => {
-    const i18n2 = "r3.zib_treatment_directive.actor";
-    const ui = context.ui;
-    return {
-      label: i18n2,
-      children: [
-        ui.codeableConcept(`${i18n2}.role`, resource.role),
-        ui.reference(`${i18n2}.reference`, resource.reference)
-      ]
-    };
-  };
-  function parseActor$1(value2) {
-    return {
-      role: codeableConcept(value2?.role),
-      reference: reference(value2?.reference)
-    };
-  }
-  const actor$1 = {
-    parse: parseActor$1
-  };
-  const uiSchemaGroup$c = (resource, context) => {
-    const i18n2 = "r3.zib_treatment_directive.data";
-    const ui = context.ui;
-    return {
-      label: i18n2,
-      children: [
-        ui.code(`${i18n2}.meaning`, resource.meaning),
-        ui.reference(`${i18n2}.reference`, resource.reference)
-      ]
-    };
-  };
-  function parseData(value2) {
-    return {
-      meaning: code(value2?.meaning),
-      reference: reference(value2?.reference)
-    };
-  }
-  const data = {
-    parse: parseData
-  };
-  const uiSchemaGroup$b = (resource, context) => {
-    const i18n2 = "r3.zib_treatment_directive.except";
-    const ui = context.ui;
-    const actor2 = map(resource.actor, (x) => uiSchemaGroup$d(x, context));
-    const data2 = map(resource.data, (x) => uiSchemaGroup$c(x, context));
-    return {
-      label: i18n2,
-      children: [
-        ui.code(`${i18n2}.type`, resource.type),
-        ...ui.period(`${i18n2}.period`, resource.period),
-        ui.codeableConcept(`${i18n2}.action`, resource.action),
-        ui.coding(`${i18n2}.security_label`, resource.securityLabel),
-        ui.coding(`${i18n2}.purpose`, resource.purpose),
-        ui.coding(`${i18n2}.class`, resource.class),
-        ui.coding(`${i18n2}.code`, resource.code),
-        ...ui.period(`${i18n2}.plan`, resource.dataPeriod),
-        ...ui.helpers.getChildren(actor2),
-        ...ui.helpers.getChildren(data2)
-      ]
-    };
-  };
-  function parseExcept(value2) {
-    return {
-      type: code(value2?.type),
-      period: period(value2?.period),
-      actor: map(value2?.actor, actor$1.parse),
-      action: map(value2?.action, codeableConcept),
-      securityLabel: map(value2?.securityLabel, coding),
-      purpose: map(value2?.purpose, coding),
-      class: map(value2?.class, coding),
-      code: map(value2?.code, coding),
-      dataPeriod: period(value2?.dataPeriod),
-      data: map(value2?.data, data.parse)
-    };
-  }
-  const except = {
-    parse: parseExcept
-  };
-  const uiSchemaGroup$a = (resource, context) => {
-    const i18n2 = "r3.zib_treatment_directive.policy";
-    const ui = context.ui;
-    return {
-      label: i18n2,
-      children: [
-        ui.string(`${i18n2}.id`, resource.id),
-        ui.string(`${i18n2}.authority`, resource.authority),
-        ui.string(`${i18n2}.uri`, resource.uri)
-      ]
-    };
-  };
-  function parsePolicy(value2) {
-    return {
-      id: string(value2?.id),
-      authority: string(value2?.authority),
-      uri: string(value2?.uri)
-    };
-  }
-  const policy = {
-    parse: parsePolicy
-  };
-  const i18n$b = "r3.zib_treatment_directive";
-  const uiSchema$a = (resource, context) => {
-    const ui = context.ui;
-    const actor2 = map(resource.actor, (x) => uiSchemaGroup$d(x, context), true);
-    const data2 = map(resource.data, (x) => uiSchemaGroup$c(x, context), true);
-    const except2 = map(resource.except, (x) => uiSchemaGroup$b(x, context), true);
-    const policy2 = map(resource.policy, (x) => uiSchemaGroup$a(x, context), true);
-    return {
-      label: resource.identifier?.value ?? context.formatMessage(i18n$b),
-      children: [
-        {
-          label: `${i18n$b}.group_details`,
-          children: [
-            ui.identifier(`${i18n$b}.identifier`, resource.identifier),
-            ui.code(`${i18n$b}.status`, resource.status),
-            ui.codeableConcept(`${i18n$b}.category`, resource.category),
-            ui.reference(`${i18n$b}.patient`, resource.patient),
-            ...ui.period(`${i18n$b}.period`, resource.period),
-            ui.dateTime(`${i18n$b}.date_time`, resource.dateTime),
-            ui.reference(`${i18n$b}.consenting_party`, resource.consentingParty),
-            ui.codeableConcept(`${i18n$b}.action`, resource.action),
-            ui.reference(`${i18n$b}.organization`, resource.organization),
-            ui.identifier(`${i18n$b}.source_identifier`, resource.sourceIdentifier),
-            ui.reference(`${i18n$b}.source_reference`, resource.sourceReference),
-            ui.string(`${i18n$b}.policy_rule`, resource.policyRule),
-            ui.coding(`${i18n$b}.security_label`, resource.securityLabel),
-            ui.coding(`${i18n$b}.purpose`, resource.purpose),
-            ...ui.period(`${i18n$b}.data_period`, resource.dataPeriod)
-          ]
-        },
-        uiSchemaGroup$x(resource.sourceAttachment, context),
-        ...actor2,
-        ...data2,
-        ...except2,
-        ...policy2
-      ]
-    };
+    uiSchema: uiSchema$8
   };
   const profile$a = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective";
   function parseZibTreatmentDirective(resource) {
+    const verification = customExtension(
+      resource,
+      "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective-Verification",
+      // NOSONAR
+      (element) => {
+        return {
+          verified: extension(element, "Verified", "boolean"),
+          verifiedWith: extension(element, "VerifiedWith", "codeableConcept"),
+          verificationDate: extension(element, "VerificationDate", "dateTime")
+        };
+      }
+    );
     return {
       ...resourceMeta(resource, profile$a, FhirVersion.R3),
+      // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier(resource.identifier),
-      status: code(resource.status),
-      category: map(resource.category, codeableConcept),
       patient: reference(resource.patient),
-      period: period(resource.period),
       dateTime: dateTime(resource.dateTime),
       consentingParty: map(resource.consentingParty, reference),
-      actor: map(resource.actor, actor$1.parse),
-      action: map(resource.action, codeableConcept),
-      organization: map(resource.organization, reference),
-      sourceAttachment: attachment.parse(resource.sourceAttachment),
+      // HCIM TreatmentDirective-v3.1(2017EN)
+      verification,
+      comment: extensionNictiz(resource, "Comment"),
+      treatment: extension(
+        resource,
+        "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective-Treatment",
+        // NOSONAR
+        "codeableConcept"
+      ),
+      additionalSources: customExtension(
+        resource,
+        "http://nictiz.nl/fhir/StructureDefinition/consent-additionalSources",
+        // NOSONAR
+        (extension2) => {
+          const value2 = oneOfValueX(extension2, ["attachment", "identifier", "reference"]);
+          return lodashExports.isEmpty(value2) ? void 0 : value2;
+        }
+      ),
+      treatmentPermitted: extension(
+        resource,
+        "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective-TreatmentPermitted",
+        // NOSONAR
+        "codeableConcept"
+      ),
+      period: period(resource.period),
+      sourceAttachment: attachment(resource.sourceAttachment),
       sourceIdentifier: identifier(resource.sourceIdentifier),
       sourceReference: reference(resource.sourceReference),
-      policy: map(resource.policy, policy.parse),
-      policyRule: string(resource.policyRule),
-      securityLabel: map(resource.securityLabel, coding),
-      purpose: map(resource.purpose, coding),
-      dataPeriod: period(resource.dataPeriod),
-      data: map(resource.data, data.parse),
-      except: map(resource.except, except.parse)
+      exceptRestrictions: map(
+        resource.except,
+        (x) => extension(
+          x,
+          "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective-Restrictions",
+          // NOSONAR
+          "string"
+        )
+      )
     };
   }
   const zibTreatmentDirective = {
     profile: profile$a,
     parse: parseZibTreatmentDirective,
-    uiSchema: uiSchema$a
-  };
-  const uiSchemaGroup$9 = (resource, context) => {
-    const ui = context.ui;
-    return {
-      label: "r3.immunization.practitioner.actor",
-      children: [ui.reference(`r3.immunization.practitioner.actor`, resource.actor)]
-    };
-  };
-  function parseActor(value2) {
-    return {
-      actor: reference(value2?.actor)
-    };
-  }
-  const actor = {
-    parse: parseActor
-  };
-  const i18n$a = "r3.zib_vaccination";
-  const uiSchema$9 = (resource, context) => {
-    const ui = context.ui;
-    const practitioners = map(resource.practitioner, (x) => uiSchemaGroup$9(x, context), true);
-    return {
-      label: resource.vaccineCode?.coding?.[0]?.display ?? context.formatMessage(i18n$a),
-      children: [
-        {
-          label: i18n$a,
-          children: [
-            ui.codeableConcept(`${i18n$a}.vaccineCode`, resource.vaccineCode),
-            ui.quantity(`${i18n$a}.doseQuantity`, resource.dose),
-            ui.dateTime(`${i18n$a}.date`, resource.vaccinationDate),
-            ui.annotation(`${i18n$a}.note.text`, resource.note),
-            ...ui.helpers.getChildren(practitioners)
-          ]
-        }
-      ]
-    };
+    uiSchema: generateUiSchema
   };
   const profile$9 = "http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination";
   function parseZibVaccination(resource) {
     return {
       ...resourceMeta(resource, profile$9, FhirVersion.R3),
+      // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier),
       patient: reference(resource.patient),
+      date: date(resource.date),
+      reportOrigin: codeableConcept(resource.reportOrigin),
+      practitioner: map(resource.practitioner, (practitioner) => ({
+        // HCIM BasicElements-v1.0(2017EN)
+        actor: reference(practitioner.actor),
+        // HCIM HealthProfessional-v3.2(2017EN)
+        role: {
+          healthProfessionalRole: codeableConcept(practitioner?.role)
+        }
+      })),
+      // HCIM Vaccination-v3.1(2017EN)
       vaccineCode: codeableConcept(resource.vaccineCode),
-      dose: quantity(resource.doseQuantity),
-      vaccinationDate: date(resource.date),
-      practitioner: map(resource.practitioner, actor.parse),
+      doseQuantity: quantity(resource.doseQuantity),
       note: map(resource.note, annotation)
     };
   }
   const zibVaccination = {
     profile: profile$9,
     parse: parseZibVaccination,
-    uiSchema: uiSchema$9
-  };
-  const uiSchemaGroup$8 = (resource, context) => {
-    const profile2 = "zib_vaccination_recommendation.recommendation";
-    const ui = context.ui;
-    return {
-      label: profile2,
-      children: [
-        ui.dateTime(`${profile2}.date`, resource.date),
-        ui.codeableConcept(`${profile2}.vaccine_code`, resource.code),
-        ui.dateTime(`${profile2}.date_criterion`, resource.dateCriterion)
-      ]
-    };
-  };
-  function parseRecommendation(value2) {
-    return {
-      date: dateTime(value2?.date),
-      code: codeableConcept(value2?.vaccineCode),
-      dateCriterion: map(value2?.dateCriterion, (x) => dateTime(x.value))
-    };
-  }
-  const recommendation = {
-    parse: parseRecommendation
-  };
-  const i18n$9 = "r3.zib_vaccination_recommendation";
-  const uiSchema$8 = (resource, context) => {
-    const ui = context.ui;
-    const recommendation2 = map(
-      resource.recommendation,
-      (x) => uiSchemaGroup$8(x, context),
-      true
-    );
-    return {
-      label: resource.recommendation?.at(0)?.code?.coding?.at(0)?.display ?? context.formatMessage(i18n$9),
-      children: [
-        {
-          label: `${i18n$9}`,
-          children: [
-            ui.codeableConcept(`${i18n$9}.order_status`, resource.orderStatus),
-            ...ui.helpers.getChildren(recommendation2)
-          ]
-        }
-      ]
-    };
+    uiSchema: generateUiSchema
   };
   const profile$8 = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation";
   function parseZibVaccinationRecommendation(resource) {
     return {
       ...resourceMeta(resource, profile$8, FhirVersion.R3),
+      // HCIM BasicElements-v1.0(2017EN)
+      identifier: map(resource.identifier, identifier),
+      subject: reference(resource.patient),
+      // HCIM PlannedCareActivityForTransfer-v3.1(2017EN) & HCIM Vaccination-v3.1(2017EN)
       orderStatus: extensionNictiz(resource, "zib-VaccinationRecommendation-OrderStatus"),
-      recommendation: map(resource.recommendation, recommendation.parse)
+      recommendation: map(resource.recommendation, (recomendation) => ({
+        // HCIM BasicElements-v1.0(2017EN)
+        date: dateTime(recomendation?.date),
+        // HCIM PlannedCareActivityForTransfer-v3.1(2017EN)
+        supportingImmunization: map(recomendation?.supportingImmunization, reference),
+        // HCIM Vaccination-v3.1(2017EN)
+        vaccineCode: codeableConcept(recomendation?.vaccineCode),
+        dateCriterion: map(recomendation?.dateCriterion, (x) => dateTime(x.value))
+      }))
     };
   }
   const zibVaccinationRecommendation = {
     profile: profile$8,
     parse: parseZibVaccinationRecommendation,
-    uiSchema: uiSchema$8
+    uiSchema: generateUiSchema
   };
-  function parseContent(value2) {
-    return {
-      attachment: value2?.attachment ? attachment.parse(value2.attachment) : void 0
-    };
-  }
   const i18n$8 = "r3.ihe_mhd_minimal_document_reference";
   const uiSchema$7 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
@@ -57819,7 +58358,9 @@ ${indent}}` : "}";
       subject: reference(resource.subject),
       indexed: instant(resource.indexed),
       author: map(resource.author, reference),
-      content: parseContent(resource.content[0]),
+      content: {
+        attachment: attachment(resource.content?.[0].attachment)
+      },
       securityLabel: map(resource.securityLabel, codeableConcept)
     };
   }
@@ -58027,7 +58568,7 @@ ${indent}}` : "}";
   };
   const uiSchemaGroup$4 = (resource, context) => {
     const ui = context.ui;
-    if (resource?.use === "usual") {
+    if (resource?.use?.value === "usual") {
       const i18n22 = "nl_name_information_given_name";
       return {
         label: i18n22,
@@ -58035,22 +58576,23 @@ ${indent}}` : "}";
       };
     }
     const i18n2 = "nl_name_information";
+    const nameInformation = resource;
     return {
       label: i18n2,
       children: [
-        ui.string(`${i18n2}.text`, resource?.text),
-        ui.string(`${i18n2}.family`, resource?.family),
-        ui.string(`${i18n2}.given`, resource?.given),
-        ui.string(`${i18n2}.name_usage`, resource?.nameUsage),
-        ui.string(`${i18n2}.prefix`, resource?.prefix),
-        ui.string(`${i18n2}.suffix`, resource?.suffix)
+        ui.string(`${i18n2}.text`, nameInformation?.text),
+        ui.string(`${i18n2}.family`, nameInformation?.family),
+        ui.string(`${i18n2}.given`, nameInformation?.given),
+        ui.string(`${i18n2}.name_usage`, nameInformation?.nameUsage),
+        ui.string(`${i18n2}.prefix`, nameInformation?.prefix),
+        ui.string(`${i18n2}.suffix`, nameInformation?.suffix)
       ]
     };
   };
   function parseNlCoreNameInformation(value2) {
     if (value2?.use === "usual") {
       return {
-        use: value2.use,
+        use: code(value2?.use),
         given: map(value2?.given, string),
         period: period(value2?.period),
         text: string(value2?.text)
@@ -58081,14 +58623,14 @@ ${indent}}` : "}";
       prefix: map(value2?.prefix, string),
       suffix: map(value2?.suffix, string),
       text: string(value2?.text),
-      use: string(value2?.use)
+      use: code(value2?.use)
     };
   }
   const nlCoreNameInformation = {
     parse: parseNlCoreNameInformation,
     uiSchemaGroup: uiSchemaGroup$4
   };
-  const i18n$7 = "r4.nl_core_healtcare_provider";
+  const i18n$7 = "r4.nl_core_healthcare_provider";
   const uiSchema$6 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const zibHealthcareProvider = {
@@ -58125,7 +58667,7 @@ ${indent}}` : "}";
     };
   };
   const profile$6 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider";
-  function parseNlCoreHealtcareProvider(resource) {
+  function parseNlCoreHealthcareProvider(resource) {
     return {
       ...resourceMeta(resource, profile$6, FhirVersion.R4),
       identifier: map(resource.identifier, identifier),
@@ -58136,10 +58678,74 @@ ${indent}}` : "}";
       managingOrganization: reference(resource.managingOrganization)
     };
   }
-  const nlCoreHealtcareProvider = {
+  const nlCoreHealthcareProvider = {
     profile: profile$6,
-    parse: parseNlCoreHealtcareProvider,
+    parse: parseNlCoreHealthcareProvider,
     uiSchema: uiSchema$6
+  };
+  const i18n$6 = "r4.nl_core_healthcare_provider_organization";
+  const uiSchema$5 = (resource, context) => {
+    const { ui, formatMessage: formatMessage2 } = context;
+    const zibHealthcareProvider = {
+      HealthcareProviderIdentificationNumber: ui.identifier(
+        `${i18n$6}.identifier`,
+        resource.identifier
+      ),
+      DepartmentSpecialty: ui.codeableConcept(
+        `${i18n$6}.department_speciality`,
+        resource.departmentSpecialty
+      ),
+      OrganizationType: ui.codeableConcept(
+        `${i18n$6}.organization_type`,
+        resource.organizationType
+      ),
+      OrganizationName: ui.string(`${i18n$6}.name`, resource.name)
+    };
+    return {
+      label: resource.name?.value ?? formatMessage2(i18n$6),
+      children: [
+        {
+          label: formatMessage2(i18n$6),
+          children: [
+            zibHealthcareProvider.HealthcareProviderIdentificationNumber,
+            zibHealthcareProvider.DepartmentSpecialty,
+            zibHealthcareProvider.OrganizationType,
+            zibHealthcareProvider.OrganizationName
+          ]
+        }
+      ]
+    };
+  };
+  const profile$5 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider-Organization";
+  function parseNlCoreHealthcareProviderOrganization(resource) {
+    return {
+      ...resourceMeta(resource, profile$5, FhirVersion.R4),
+      identifier: map(resource.identifier, identifier),
+      departmentSpecialty: map(
+        filterCodeableConceptByCoding(
+          resource.type,
+          (x) => x.system === "urn:oid:2.16.840.1.113883.2.4.6.7"
+        ),
+        codeableConcept
+      ),
+      organizationType: map(
+        filterCodeableConceptByCoding(
+          resource.type,
+          (x) => x.system === "http://nictiz.nl/fhir/NamingSystem/organization-type"
+          // NOSONAR
+        ),
+        codeableConcept
+      ),
+      name: string(resource.name),
+      telephoneNumbers: map(resource.telecom, nlCoreContactInformationTelephoneNumbers.parse),
+      emailAddresses: map(resource.telecom, nlCoreContactInformationEmailAddresses.parse),
+      address: map(resource.address, nlCoreAddressInformation.parse)
+    };
+  }
+  const nlCoreHealthcareProviderOrganization = {
+    profile: profile$5,
+    parse: parseNlCoreHealthcareProviderOrganization,
+    uiSchema: uiSchema$5
   };
   const uiSchemaGroup$3 = (resource, context) => {
     const profile2 = "nl_core_health_professional_practitioner.qualification";
@@ -58165,8 +58771,8 @@ ${indent}}` : "}";
   const qualification = {
     parse: parseQualification
   };
-  const i18n$6 = "r4.nl_core_health_professional_practitioner";
-  const uiSchema$5 = (resource, context) => {
+  const i18n$5 = "r4.nl_core_health_professional_practitioner";
+  const uiSchema$4 = (resource, context) => {
     const ui = context.ui;
     const address = map(
       resource.address,
@@ -58190,15 +58796,15 @@ ${indent}}` : "}";
       true
     );
     return {
-      label: resource.name?.at(0)?.text ?? context.formatMessage(i18n$6),
+      label: resource.name?.at(0)?.text?.value ?? context.formatMessage(i18n$5),
       children: [
         {
-          label: `${i18n$6}.group_details`,
+          label: `${i18n$5}.group_details`,
           children: [
-            ui.identifier(`${i18n$6}.identifier`, resource.identifier),
-            ui.code(`${i18n$6}.gender`, resource.gender),
-            ui.date(`${i18n$6}.birth_date`, resource.birthDate),
-            ui.codeableConcept(`${i18n$6}.communication`, resource.communication)
+            ui.identifier(`${i18n$5}.identifier`, resource.identifier),
+            ui.code(`${i18n$5}.gender`, resource.gender),
+            ui.date(`${i18n$5}.birth_date`, resource.birthDate),
+            ui.codeableConcept(`${i18n$5}.communication`, resource.communication)
           ]
         },
         ...name,
@@ -58209,10 +58815,10 @@ ${indent}}` : "}";
       ]
     };
   };
-  const profile$5 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner";
+  const profile$4 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner";
   function parseNlCoreHealthProfessionalPractitioner(resource) {
     return {
-      ...resourceMeta(resource, profile$5, FhirVersion.R4),
+      ...resourceMeta(resource, profile$4, FhirVersion.R4),
       identifier: map(resource.identifier, identifier),
       // NL-CM:17.1.2
       name: map(resource.name, nlCoreNameInformation.parse),
@@ -58231,16 +58837,16 @@ ${indent}}` : "}";
     };
   }
   const r4NlCoreHealthProfessionalPractitioner = {
-    profile: profile$5,
+    profile: profile$4,
     parse: parseNlCoreHealthProfessionalPractitioner,
-    uiSchema: uiSchema$5
+    uiSchema: uiSchema$4
   };
-  const i18n$5 = "r4.nl_core_health_professional_practitioner_role";
-  const uiSchema$4 = (resource, context) => {
+  const i18n$4 = "r4.nl_core_health_professional_practitioner_role";
+  const uiSchema$3 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const zibHealthProfessional = {
-      Organization: ui.reference(`${i18n$5}.organization`, resource.organization),
-      Speciality: ui.codeableConcept(`${i18n$5}.speciality`, resource.speciality)
+      Organization: ui.reference(`${i18n$4}.organization`, resource.organization),
+      Speciality: ui.codeableConcept(`${i18n$4}.speciality`, resource.speciality)
     };
     const zibContactInformation = {
       TelephoneNumbers: map(
@@ -58255,10 +58861,10 @@ ${indent}}` : "}";
       ).flat()
     };
     return {
-      label: resource.speciality?.at(0)?.coding.at(0)?.display ?? formatMessage2(i18n$5),
+      label: resource.speciality?.at(0)?.coding.at(0)?.display ?? formatMessage2(i18n$4),
       children: [
         {
-          label: formatMessage2(i18n$5),
+          label: formatMessage2(i18n$4),
           children: [zibHealthProfessional.Organization, zibHealthProfessional.Speciality]
         },
         ...zibContactInformation.EmailAddresses,
@@ -58266,10 +58872,10 @@ ${indent}}` : "}";
       ]
     };
   };
-  const profile$4 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole";
+  const profile$3 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole";
   function parseNlCoreHealthProfessionalPractitionerRole(resource) {
     return {
-      ...resourceMeta(resource, profile$4, FhirVersion.R4),
+      ...resourceMeta(resource, profile$3, FhirVersion.R4),
       practitioner: reference(resource.practitioner),
       organization: reference(resource.organization),
       location: map(resource.location, reference),
@@ -58279,72 +58885,8 @@ ${indent}}` : "}";
     };
   }
   const nlCoreHealthProfessionalPractitionerRole = {
-    profile: profile$4,
-    parse: parseNlCoreHealthProfessionalPractitionerRole,
-    uiSchema: uiSchema$4
-  };
-  const i18n$4 = "r4.nl_core_healthcare_provider_organization";
-  const uiSchema$3 = (resource, context) => {
-    const { ui, formatMessage: formatMessage2 } = context;
-    const zibHealthcareProvider = {
-      HealthcareProviderIdentificationNumber: ui.identifier(
-        `${i18n$4}.identifier`,
-        resource.identifier
-      ),
-      DepartmentSpecialty: ui.codeableConcept(
-        `${i18n$4}.department_speciality`,
-        resource.departmentSpecialty
-      ),
-      OrganizationType: ui.codeableConcept(
-        `${i18n$4}.organization_type`,
-        resource.organizationType
-      ),
-      OrganizationName: ui.string(`${i18n$4}.name`, resource.name)
-    };
-    return {
-      label: resource.name ?? formatMessage2(i18n$4),
-      children: [
-        {
-          label: formatMessage2(i18n$4),
-          children: [
-            zibHealthcareProvider.HealthcareProviderIdentificationNumber,
-            zibHealthcareProvider.DepartmentSpecialty,
-            zibHealthcareProvider.OrganizationType,
-            zibHealthcareProvider.OrganizationName
-          ]
-        }
-      ]
-    };
-  };
-  const profile$3 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider-Organization";
-  function parseNlCoreHealthcareProviderOrganization(resource) {
-    return {
-      ...resourceMeta(resource, profile$3, FhirVersion.R4),
-      identifier: map(resource.identifier, identifier),
-      departmentSpecialty: map(
-        filterCodeableConceptByCoding(
-          resource.type,
-          (x) => x.system === "urn:oid:2.16.840.1.113883.2.4.6.7"
-        ),
-        codeableConcept
-      ),
-      organizationType: map(
-        filterCodeableConceptByCoding(
-          resource.type,
-          (x) => x.system === "http://nictiz.nl/fhir/NamingSystem/organization-type"
-          // NOSONAR
-        ),
-        codeableConcept
-      ),
-      name: string(resource.name),
-      telephoneNumbers: map(resource.telecom, nlCoreContactInformationTelephoneNumbers.parse),
-      emailAddresses: map(resource.telecom, nlCoreContactInformationEmailAddresses.parse),
-      address: map(resource.address, nlCoreAddressInformation.parse)
-    };
-  }
-  const nlCoreHealthcareProviderOrganization = {
     profile: profile$3,
-    parse: parseNlCoreHealthcareProviderOrganization,
+    parse: parseNlCoreHealthProfessionalPractitionerRole,
     uiSchema: uiSchema$3
   };
   const i18n$3 = "r4.nl_core_patient";
@@ -58357,7 +58899,7 @@ ${indent}}` : "}";
       true
     );
     return {
-      label: resource.name?.at(0)?.text ?? context.formatMessage(i18n$3),
+      label: resource.name?.at(0)?.text?.value ?? context.formatMessage(i18n$3),
       children: [
         ...name,
         {
@@ -58462,7 +59004,7 @@ ${indent}}` : "}";
       Description: ui.string(`${i18n$2}.description`, resource.description)
     };
     return {
-      label: resource.name ?? formatMessage2(i18n$2),
+      label: resource.name?.value ?? formatMessage2(i18n$2),
       children: [
         {
           label: formatMessage2(i18n$2),
@@ -58688,8 +59230,8 @@ ${indent}}` : "}";
   };
   const resourcesR4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    nlCoreHealtcareProvider,
     nlCoreHealthProfessionalPractitionerRole,
+    nlCoreHealthcareProvider,
     nlCoreHealthcareProviderOrganization,
     nlCorePharmaceuticalProductR4,
     r4NlCoreHealthProfessionalPractitioner,
@@ -58697,18 +59239,21 @@ ${indent}}` : "}";
     r4NlCoreVaccinationEvent
   }, Symbol.toStringTag, { value: "Module" }));
   const resourcesMapR3 = Object.fromEntries(
-    Object.entries(resourcesR3).map(([_name, config2]) => [config2.profile, config2])
+    Object.entries(resourcesR3).map(([_name, config2]) => [config2.profile.toLowerCase(), config2])
   );
   const resourcesMapR4 = Object.fromEntries(
-    Object.entries(resourcesR4).map(([_name, config2]) => [config2.profile, config2])
+    Object.entries(resourcesR4).map(([_name, config2]) => [config2.profile.toLowerCase(), config2])
   );
   function getResourceConfig(profile2, fhirVersion) {
     const resourcesMap = FhirVersion[fhirVersion] === FhirVersion.R3 ? resourcesMapR3 : resourcesMapR4;
+    let matchingProfile;
     if (Array.isArray(profile2)) {
-      profile2 = profile2.find((x) => !!resourcesMap[x]) ?? profile2[0];
+      matchingProfile = profile2.map((x) => x.toLowerCase()).find((x) => !!resourcesMap[x]);
+    } else {
+      matchingProfile = profile2.toLowerCase();
     }
-    if (resourcesMap[profile2]) {
-      return resourcesMap[profile2];
+    if (!!matchingProfile && resourcesMap[matchingProfile]) {
+      return resourcesMap[matchingProfile];
     }
   }
   function getDetails(resource, options) {

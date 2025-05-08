@@ -65,160 +65,160 @@ val KEY_APP_THEME = stringPreferencesKey("app_theme")
  * @param dataStore The [DataStore] to save key-values into [Preferences].
  */
 internal class DataStoreKeyValueStore(
-    private val dataStore: DataStore<Preferences>,
+  private val dataStore: DataStore<Preferences>,
 ) : KeyValueStore {
-    /**
-     * Stores a boolean value in the key-value store.
-     *
-     * @param key The key associated with the boolean value.
-     * @param value The boolean value to store.
-     */
-    override suspend fun setBoolean(
-        key: Preferences.Key<Boolean>,
-        value: Boolean,
-    ) {
-        dataStore.edit { preferences ->
-            preferences[key] = value
-        }
+  /**
+   * Stores a boolean value in the key-value store.
+   *
+   * @param key The key associated with the boolean value.
+   * @param value The boolean value to store.
+   */
+  override suspend fun setBoolean(
+    key: Preferences.Key<Boolean>,
+    value: Boolean,
+  ) {
+    dataStore.edit { preferences ->
+      preferences[key] = value
     }
+  }
 
-    /**
-     * Observes a boolean value from the key-value store.
-     *
-     * @param key The key associated with the boolean value.
-     * @return A flow with the stored boolean value, or a default value if not found.
-     */
-    override fun observeBoolean(key: Preferences.Key<Boolean>): Flow<Boolean> {
-        return dataStore.data.map { preferences ->
-            preferences[key] ?: false
-        }
+  /**
+   * Observes a boolean value from the key-value store.
+   *
+   * @param key The key associated with the boolean value.
+   * @return A flow with the stored boolean value, or a default value if not found.
+   */
+  override fun observeBoolean(key: Preferences.Key<Boolean>): Flow<Boolean> {
+    return dataStore.data.map { preferences ->
+      preferences[key] ?: false
     }
+  }
 
-    /**
-     * Retrieves a boolean value from the key-value store.
-     *
-     * @param key The key associated with the boolean value.
-     * @return The stored boolean value, or a default value if not found.
-     */
-    override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
-        return runBlocking {
-            dataStore.data.map { preferences ->
-                preferences[key]
-            }.first() == true
-        }
+  /**
+   * Retrieves a boolean value from the key-value store.
+   *
+   * @param key The key associated with the boolean value.
+   * @return The stored boolean value, or a default value if not found.
+   */
+  override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
+    return runBlocking {
+      dataStore.data.map { preferences ->
+        preferences[key]
+      }.first() == true
     }
+  }
 
-    /**
-     * Removes a boolean value from the key-value store.
-     *
-     * @param key The key associated with the boolean value to remove.
-     */
-    override suspend fun removeBoolean(key: Preferences.Key<Boolean>) {
-        dataStore.edit { preferences ->
-            preferences.remove(key)
-        }
+  /**
+   * Removes a boolean value from the key-value store.
+   *
+   * @param key The key associated with the boolean value to remove.
+   */
+  override suspend fun removeBoolean(key: Preferences.Key<Boolean>) {
+    dataStore.edit { preferences ->
+      preferences.remove(key)
     }
+  }
 
-    /**
-     * Stores a string value in the key-value store.
-     *
-     * @param key The key associated with the string value.
-     * @param value The string value to store.
-     */
-    override suspend fun setString(
-        key: Preferences.Key<String>,
-        value: String,
-    ) {
-        dataStore.edit { preferences ->
-            preferences[key] = value
-        }
+  /**
+   * Stores a string value in the key-value store.
+   *
+   * @param key The key associated with the string value.
+   * @param value The string value to store.
+   */
+  override suspend fun setString(
+    key: Preferences.Key<String>,
+    value: String,
+  ) {
+    dataStore.edit { preferences ->
+      preferences[key] = value
     }
+  }
 
-    /**
-     * Observes a string value from the key-value store.
-     *
-     * @param key The key associated with the string value.
-     * @return A flow with the stored string value, or null if not found.
-     */
-    override fun observeString(key: Preferences.Key<String>): Flow<String?> {
-        return dataStore.data.map { preferences ->
-            preferences[key]
-        }
+  /**
+   * Observes a string value from the key-value store.
+   *
+   * @param key The key associated with the string value.
+   * @return A flow with the stored string value, or null if not found.
+   */
+  override fun observeString(key: Preferences.Key<String>): Flow<String?> {
+    return dataStore.data.map { preferences ->
+      preferences[key]
     }
+  }
 
-    /**
-     * Retrieves a string value from the key-value store.
-     *
-     * @param key The key associated with the string value.
-     * @return The stored string value, or null if not found.
-     */
-    override fun getString(key: Preferences.Key<String>): String? {
-        return runBlocking {
-            dataStore.data.map { preferences ->
-                preferences[key]
-            }.firstOrNull()
-        }
+  /**
+   * Retrieves a string value from the key-value store.
+   *
+   * @param key The key associated with the string value.
+   * @return The stored string value, or null if not found.
+   */
+  override fun getString(key: Preferences.Key<String>): String? {
+    return runBlocking {
+      dataStore.data.map { preferences ->
+        preferences[key]
+      }.firstOrNull()
     }
+  }
 
-    /**
-     * Removes a string value from the key-value store.
-     *
-     * @param key The key associated with the string value to remove.
-     */
-    override suspend fun removeString(key: Preferences.Key<String>) {
-        dataStore.edit { preferences ->
-            preferences.remove(key)
-        }
+  /**
+   * Removes a string value from the key-value store.
+   *
+   * @param key The key associated with the string value to remove.
+   */
+  override suspend fun removeString(key: Preferences.Key<String>) {
+    dataStore.edit { preferences ->
+      preferences.remove(key)
     }
+  }
 
-    /**
-     * Stores a long value in the key-value store.
-     *
-     * @param key The key associated with the long value.
-     * @param value The long value to store.
-     */
-    override suspend fun setLong(
-        key: Preferences.Key<Long>,
-        value: Long,
-    ) {
-        dataStore.edit { preferences ->
-            preferences[key] = value
-        }
+  /**
+   * Stores a long value in the key-value store.
+   *
+   * @param key The key associated with the long value.
+   * @param value The long value to store.
+   */
+  override suspend fun setLong(
+    key: Preferences.Key<Long>,
+    value: Long,
+  ) {
+    dataStore.edit { preferences ->
+      preferences[key] = value
     }
+  }
 
-    /**
-     * Retrieves a long value from the key-value store.
-     *
-     * @param key The key associated with the long value.
-     * @return The stored long value, or null if not found.
-     */
-    override fun getLong(key: Preferences.Key<Long>): Long? {
-        return runBlocking {
-            dataStore.data.map { preferences ->
-                preferences[key]
-            }.firstOrNull()
-        }
+  /**
+   * Retrieves a long value from the key-value store.
+   *
+   * @param key The key associated with the long value.
+   * @return The stored long value, or null if not found.
+   */
+  override fun getLong(key: Preferences.Key<Long>): Long? {
+    return runBlocking {
+      dataStore.data.map { preferences ->
+        preferences[key]
+      }.firstOrNull()
     }
+  }
 
-    /**
-     * Removes a long value from the key-value store.
-     *
-     * @param key The key associated with the long value to remove.
-     */
-    override suspend fun removeLong(key: Preferences.Key<Long>) {
-        dataStore.edit { preferences ->
-            preferences.remove(key)
-        }
+  /**
+   * Removes a long value from the key-value store.
+   *
+   * @param key The key associated with the long value to remove.
+   */
+  override suspend fun removeLong(key: Preferences.Key<Long>) {
+    dataStore.edit { preferences ->
+      preferences.remove(key)
     }
+  }
 
-    /**
-     * Clears all stored key-value pairs in the store.
-     */
-    override fun clear() {
-        runBlocking {
-            dataStore.edit {
-                it.clear()
-            }
-        }
+  /**
+   * Clears all stored key-value pairs in the store.
+   */
+  override fun clear() {
+    runBlocking {
+      dataStore.edit {
+        it.clear()
+      }
     }
+  }
 }

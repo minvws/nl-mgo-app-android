@@ -24,7 +24,7 @@ data class GpEncounter(
     val `class`: MgoCoding? = null,
     val participant: List<EncounterParticipant>? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {

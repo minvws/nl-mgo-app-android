@@ -18,25 +18,25 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
  */
 @Composable
 fun MgoCard(
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit,
+  modifier: Modifier = Modifier,
+  content: @Composable ColumnScope.() -> Unit,
 ) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.outlinedCardColors(),
-        elevation = CardDefaults.elevatedCardElevation(),
-        content = content,
-    )
+  Card(
+    modifier = modifier,
+    colors = CardDefaults.outlinedCardColors(),
+    elevation = CardDefaults.elevatedCardElevation(),
+    content = content,
+  )
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoCardPreview() {
-    MgoTheme {
-        MgoCard {
-            Box(modifier = Modifier.padding(16.dp)) {
-                Text(text = "Hello World")
-            }
-        }
+  MgoTheme {
+    MgoCard {
+      Box(modifier = Modifier.padding(16.dp)) {
+        Text(text = "Hello World")
+      }
     }
+  }
 }

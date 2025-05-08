@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class IheMhdMinimalDocumentReference(
-    val indexed: String? = null,
+    val indexed: MgoInstant? = null,
     val subject: MgoReference? = null,
     val author: List<MgoReference>? = null,
     val securityLabel: List<MgoCodeableConcept>? = null,
@@ -27,30 +27,23 @@ data class IheMhdMinimalDocumentReference(
     val fhirVersion: String = "R3",
     val id: String? = null,
     val `class`: MgoCodeableConcept? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: IheMhdMinimalDocumentReferenceStatus? = null,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
     data class Content(
-        val attachment: Attachment? = null
+        val attachment: MgoAttachment? = null
     )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference"
         private const val cg_str1 = "R3"
-        private val cg_array2 = setOf(
-            "entered-in-error",
-            "current",
-            "superseded"
-        )
     }
 
 }

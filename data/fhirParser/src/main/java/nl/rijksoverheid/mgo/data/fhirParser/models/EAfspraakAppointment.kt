@@ -18,14 +18,14 @@ data class EAfspraakAppointment(
     val specialty: List<MgoCodeableConcept>? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment",
     val fhirVersion: String = "R3",
-    val start: String? = null,
-    val description: String? = null,
-    val end: String? = null,
+    val start: MgoDateTime? = null,
+    val description: MgoString? = null,
+    val end: MgoDateTime? = null,
     val id: String? = null,
     val participant: List<Participant>? = null,
     val referenceId: String,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {

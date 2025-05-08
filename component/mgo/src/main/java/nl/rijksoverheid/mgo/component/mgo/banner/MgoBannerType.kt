@@ -14,10 +14,10 @@ import nl.rijksoverheid.mgo.component.theme.sentimentWarning
  * Determines the appearance of a [MgoBanner].
  */
 enum class MgoBannerType {
-    INFO,
-    SUCCESS,
-    WARNING,
-    ERROR,
+  INFO,
+  SUCCESS,
+  WARNING,
+  ERROR,
 }
 
 /**
@@ -26,12 +26,12 @@ enum class MgoBannerType {
  */
 @DrawableRes
 fun MgoBannerType.getIcon(): Int {
-    return when (this) {
-        MgoBannerType.INFO -> R.drawable.ic_banner_info
-        MgoBannerType.SUCCESS -> R.drawable.ic_banner_success
-        MgoBannerType.WARNING -> R.drawable.ic_banner_warning
-        MgoBannerType.ERROR -> R.drawable.ic_banner_error
-    }
+  return when (this) {
+    MgoBannerType.INFO -> R.drawable.ic_banner_info
+    MgoBannerType.SUCCESS -> R.drawable.ic_banner_success
+    MgoBannerType.WARNING -> R.drawable.ic_banner_warning
+    MgoBannerType.ERROR -> R.drawable.ic_banner_error
+  }
 }
 
 /**
@@ -40,10 +40,10 @@ fun MgoBannerType.getIcon(): Int {
  */
 @Composable
 fun MgoBannerType.getIconColor(): Color {
-    return when (this) {
-        MgoBannerType.INFO -> MaterialTheme.colorScheme.sentimentInformative()
-        MgoBannerType.SUCCESS -> MaterialTheme.colorScheme.sentimentPositive()
-        MgoBannerType.WARNING -> MaterialTheme.colorScheme.sentimentWarning()
-        MgoBannerType.ERROR -> MaterialTheme.colorScheme.sentimentCritical()
-    }
+  return when (this) {
+    MgoBannerType.INFO -> MaterialTheme.colorScheme.sentimentInformative()
+    MgoBannerType.SUCCESS -> MaterialTheme.colorScheme.sentimentPositive()
+    MgoBannerType.WARNING -> MaterialTheme.colorScheme.sentimentWarning()
+    MgoBannerType.ERROR -> MaterialTheme.colorScheme.sentimentCritical()
+  }
 }

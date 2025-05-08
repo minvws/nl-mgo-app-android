@@ -20,13 +20,13 @@ data class ZibProblem(
     val note: List<MgoAnnotation>? = null,
     val code: MgoCodeableConcept? = null,
     val evidence: List<Evidence>? = null,
-    val verificationStatus: String? = null,
+    val verificationStatus: ZibProblemVerificationstatus? = null,
     val subject: MgoReference? = null,
-    val abatementDateTime: String? = null,
+    val abatementDateTime: MgoDateTime? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem",
-    val clinicalStatus: ClinicalStatus? = null,
-    val onsetDateTime: String? = null,
-    val assertedDate: String? = null,
+    val clinicalStatus: ZibProblemClinicalstatus? = null,
+    val onsetDateTime: MgoDateTime? = null,
+    val assertedDate: MgoDateTime? = null,
     val referenceId: String,
     val bodySite: List<MgoCodeableConcept>? = null,
     val asserter: MgoReference? = null,
@@ -35,14 +35,12 @@ data class ZibProblem(
     val context: MgoReference? = null,
     val id: String? = null,
     val category: List<MgoCodeableConcept>? = null,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {
-        if (verificationStatus != null)
-            require(verificationStatus in cg_array0) { "verificationStatus not in enumerated values - $verificationStatus" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     @Serializable
@@ -52,31 +50,14 @@ data class ZibProblem(
     )
 
     @Serializable
-    enum class ClinicalStatus {
-        active,
-        inactive,
-        resolved,
-        recurrence,
-        remission
-    }
-
-    @Serializable
     data class Stage(
         val summary: MgoCodeableConcept? = null,
         val assessment: List<MgoReference>? = null
     )
 
     companion object {
-        private val cg_array0 = setOf(
-            "differential",
-            "entered-in-error",
-            "unknown",
-            "confirmed",
-            "refuted",
-            "provisional"
-        )
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem"
-        private const val cg_str2 = "R3"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem"
+        private const val cg_str1 = "R3"
     }
 
 }

@@ -5,41 +5,41 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class UiSchemaRowBinarySnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun idle() {
-        snapshotTestRule.snapshots {
-            UiSchemaRowBinaryIdlePreview()
-        }
+  @Test
+  fun idle() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowBinaryIdlePreview()
     }
+  }
 
-    @Test
-    fun loading() {
-        snapshotTestRule.snapshots {
-            UiSchemaRowBinaryLoadingPreview()
-        }
+  @Test
+  fun loading() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowBinaryLoadingPreview()
     }
+  }
 
-    @Test
-    fun downloaded() {
-        snapshotTestRule.snapshots {
-            UiSchemaRowBinaryDownloadedPreview()
-        }
+  @Test
+  fun downloaded() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowBinaryDownloadedPreview()
     }
+  }
 
-    @Test
-    fun empty() {
-        snapshotTestRule.snapshots {
-            UiSchemaRowBinaryEmptyPreview()
-        }
+  @Test
+  fun empty() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowBinaryEmptyPreview()
     }
+  }
 
-    @Test
-    fun error() {
-        snapshotTestRule.snapshots {
-            UiSchemaRowBinaryErrorPreview()
-        }
+  @Test
+  fun error() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowBinaryErrorPreview()
     }
+  }
 }

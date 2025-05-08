@@ -13,14 +13,14 @@ import java.io.IOException
  * @param password The password for authentication.
  */
 class BasicAuthInterceptor(user: String, password: String) : Interceptor {
-    private val credentials = basic(user, password)
+  private val credentials = basic(user, password)
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request: Request = chain.request()
-        val authenticatedRequest =
-            request.newBuilder()
-                .header("Authorization", credentials).build()
-        return chain.proceed(authenticatedRequest)
-    }
+  @Throws(IOException::class)
+  override fun intercept(chain: Interceptor.Chain): Response {
+    val request: Request = chain.request()
+    val authenticatedRequest =
+      request.newBuilder()
+        .header("Authorization", credentials).build()
+    return chain.proceed(authenticatedRequest)
+  }
 }

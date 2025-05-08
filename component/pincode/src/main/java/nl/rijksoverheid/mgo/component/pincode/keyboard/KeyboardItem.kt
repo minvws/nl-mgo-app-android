@@ -28,78 +28,78 @@ import nl.rijksoverheid.mgo.component.theme.contentPrimary
  */
 @Composable
 internal fun KeyboardItemNumber(
-    number: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+  number: Int,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    Button(
-        modifier = modifier,
-        colors =
-            ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ),
-        shape = RoundedCornerShape(25.dp),
-        elevation = ButtonDefaults.buttonElevation(1.dp),
-        onClick = onClick,
-    ) {
-        Text(
-            text = number.toString(),
-            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 28.sp),
-        )
-    }
+  Button(
+    modifier = modifier,
+    colors =
+      ButtonDefaults.buttonColors(
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+      ),
+    shape = RoundedCornerShape(25.dp),
+    elevation = ButtonDefaults.buttonElevation(1.dp),
+    onClick = onClick,
+  ) {
+    Text(
+      text = number.toString(),
+      style = MaterialTheme.typography.bodyMedium.copy(fontSize = 28.sp),
+    )
+  }
 }
 
 @Composable
 internal fun KeyboardItemIcon(
-    @DrawableRes icon: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+  @DrawableRes icon: Int,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    Button(
-        modifier = modifier,
-        colors =
-            ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.contentPrimary(),
-            ),
-        elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp),
-        shape = RoundedCornerShape(25.dp),
-        onClick = onClick,
-    ) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-        )
-    }
+  Button(
+    modifier = modifier,
+    colors =
+      ButtonDefaults.buttonColors(
+        containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.contentPrimary(),
+      ),
+    elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp),
+    shape = RoundedCornerShape(25.dp),
+    onClick = onClick,
+  ) {
+    Icon(
+      painter = painterResource(icon),
+      contentDescription = null,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun KeyboardItemNumberPreview() {
-    MgoTheme {
-        KeyboardItemNumber(
-            modifier =
-                Modifier
-                    .size(100.dp)
-                    .padding(16.dp),
-            number = 1,
-            onClick = {},
-        )
-    }
+  MgoTheme {
+    KeyboardItemNumber(
+      modifier =
+        Modifier
+          .size(100.dp)
+          .padding(16.dp),
+      number = 1,
+      onClick = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun KeyboardItemIconPreview() {
-    MgoTheme {
-        KeyboardItemIcon(
-            modifier =
-                Modifier
-                    .size(100.dp)
-                    .padding(16.dp),
-            onClick = {},
-            icon = R.drawable.ic_keyboard_backspace,
-        )
-    }
+  MgoTheme {
+    KeyboardItemIcon(
+      modifier =
+        Modifier
+          .size(100.dp)
+          .padding(16.dp),
+      onClick = {},
+      icon = R.drawable.ic_keyboard_backspace,
+    )
+  }
 }

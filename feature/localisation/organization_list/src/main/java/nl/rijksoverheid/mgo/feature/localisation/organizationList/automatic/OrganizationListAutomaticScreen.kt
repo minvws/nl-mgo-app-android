@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -36,7 +37,6 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSe
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TAG_ORGANIZATION_SEARCH_CARD
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -49,218 +49,218 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun OrganizationListAutomaticSearchScreen(
-    checkResults: Boolean,
-    onNavigateBack: (() -> Unit)?,
-    onNavigateToDashboard: () -> Unit,
+  checkResults: Boolean,
+  onNavigateBack: (() -> Unit)?,
+  onNavigateToDashboard: () -> Unit,
 ) {
-    val viewModel: OrganizationListAutomaticScreenViewModel = hiltViewModel()
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) {
-        viewModel.navigation.collectLatest {
-            onNavigateToDashboard()
-        }
+  val viewModel: OrganizationListAutomaticScreenViewModel = hiltViewModel()
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+  LaunchedEffect(Unit) {
+    viewModel.navigation.collectLatest {
+      onNavigateToDashboard()
     }
-    OrganizationListAutomaticSearchScreenContent(
-        viewState = viewState,
-        checkResults = checkResults,
-        onNavigateBack = onNavigateBack,
-        onGetSearchResults = { viewModel.getSearchResults() },
-        updateOrganization = { organization, added -> viewModel.updateOrganization(organization, added) },
-        onUpdateOrganizations = { viewModel.updateOrganizations() },
-    )
+  }
+  OrganizationListAutomaticSearchScreenContent(
+    viewState = viewState,
+    checkResults = checkResults,
+    onNavigateBack = onNavigateBack,
+    onGetSearchResults = { viewModel.getSearchResults() },
+    updateOrganization = { organization, added -> viewModel.updateOrganization(organization, added) },
+    onUpdateOrganizations = { viewModel.updateOrganizations() },
+  )
 }
 
 @Composable
 private fun OrganizationListAutomaticSearchScreenContent(
-    viewState: OrganizationListAutomaticScreenViewState,
-    checkResults: Boolean,
-    onNavigateBack: (() -> Unit)?,
-    onUpdateOrganizations: () -> Unit,
-    onGetSearchResults: () -> Unit,
-    updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
+  viewState: OrganizationListAutomaticScreenViewState,
+  checkResults: Boolean,
+  onNavigateBack: (() -> Unit)?,
+  onUpdateOrganizations: () -> Unit,
+  onGetSearchResults: () -> Unit,
+  updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
 ) {
-    val lazyListState = rememberLazyListState()
-    val primaryButtonText =
-        if (viewState.error == null) {
-            stringResource(CopyR.string.common_to_overview)
-        } else {
-            stringResource(
-                id =
-                    CopyR.string
-                        .common_try_again,
-            )
+  val lazyListState = rememberLazyListState()
+  val primaryButtonText =
+    if (viewState.error == null) {
+      stringResource(CopyR.string.common_to_overview)
+    } else {
+      stringResource(
+        id =
+          CopyR.string
+            .common_try_again,
+      )
+    }
+  val onPrimaryButtonClick = if (viewState.error == null) onUpdateOrganizations else onGetSearchResults
+
+  MgoScaffold(
+    appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
+    primaryButtonText = primaryButtonText,
+    onPrimaryButtonClick = onPrimaryButtonClick,
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.LazyColumn(
+        lazyListState,
+      ),
+    onNavigateBack = onNavigateBack,
+    content = {
+      when {
+        viewState.loading -> {
+          LoadingContent()
         }
-    val onPrimaryButtonClick = if (viewState.error == null) onUpdateOrganizations else onGetSearchResults
 
-    MgoScaffold(
-        appBarTitle = stringResource(id = CopyR.string.organization_search_heading),
-        primaryButtonText = primaryButtonText,
-        onPrimaryButtonClick = onPrimaryButtonClick,
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.LazyColumn(
-                lazyListState,
-            ),
-        onNavigateBack = onNavigateBack,
-        content = {
-            when {
-                viewState.loading -> {
-                    LoadingContent()
-                }
+        viewState.error != null -> {
+          ErrorContent()
+        }
 
-                viewState.error != null -> {
-                    ErrorContent()
-                }
+        viewState.results.isEmpty() -> {
+          // TODO: Empty state
+        }
 
-                viewState.results.isEmpty() -> {
-                    // TODO: Empty state
-                }
-
-                else -> {
-                    Text(
-                        modifier = Modifier.padding(bottom = 16.dp),
-                        text = stringResource(id = CopyR.string.organisation_list_automatic_subheading),
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                    ResultsContent(
-                        checkResults = checkResults,
-                        lazyListState = lazyListState,
-                        searchResults = viewState.results,
-                        updateOrganization = updateOrganization,
-                    )
-                }
-            }
-        },
-    )
+        else -> {
+          Text(
+            modifier = Modifier.padding(bottom = 16.dp),
+            text = stringResource(id = CopyR.string.organisation_list_automatic_subheading),
+            style = MaterialTheme.typography.bodyMedium,
+          )
+          ResultsContent(
+            checkResults = checkResults,
+            lazyListState = lazyListState,
+            searchResults = viewState.results,
+            updateOrganization = updateOrganization,
+          )
+        }
+      }
+    },
+  )
 }
 
 @Composable
 private fun ColumnScope.LoadingContent(modifier: Modifier = Modifier) {
-    Box(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .weight(1f),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(48.dp),
-                strokeWidth = 6.dp,
-            )
-            Text(
-                modifier = Modifier.padding(top = 20.dp),
-                text = stringResource(id = CopyR.string.organization_search_searching),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+  Box(
+    modifier =
+      modifier
+        .fillMaxSize()
+        .weight(1f),
+    contentAlignment = Alignment.Center,
+  ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+      CircularProgressIndicator(
+        modifier = Modifier.size(48.dp),
+        strokeWidth = 6.dp,
+      )
+      Text(
+        modifier = Modifier.padding(top = 20.dp),
+        text = stringResource(id = CopyR.string.organization_search_searching),
+        style = MaterialTheme.typography.bodyMedium,
+      )
     }
+  }
 }
 
 @Composable
 private fun ResultsContent(
-    checkResults: Boolean,
-    lazyListState: LazyListState,
-    searchResults: List<MgoOrganization>,
-    updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+  checkResults: Boolean,
+  lazyListState: LazyListState,
+  searchResults: List<MgoOrganization>,
+  updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    // If requested, check all search results
-    LaunchedEffect(Unit) {
-        if (checkResults) {
-            for (searchResult in searchResults) {
-                val cardState = searchResult.getCardState()
-                if (cardState == OrganizationSearchCardState.ADD) {
-                    updateOrganization(searchResult, true)
-                }
-            }
+  // If requested, check all search results
+  LaunchedEffect(Unit) {
+    if (checkResults) {
+      for (searchResult in searchResults) {
+        val cardState = searchResult.getCardState()
+        if (cardState == OrganizationSearchCardState.ADD) {
+          updateOrganization(searchResult, true)
         }
+      }
     }
+  }
 
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp), state = lazyListState) {
-        items(searchResults.size) { position ->
-            val organization = searchResults[position]
-            OrganizationListAutomaticCard(
-                modifier =
-                    Modifier
-                        .padding(bottom = 8.dp)
-                        .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
-                organization = organization,
-                onCheckedChange = { checked ->
-                    updateOrganization(organization, checked)
-                },
-                cardState = organization.getCardState(),
-            )
-        }
+  LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp), state = lazyListState) {
+    items(searchResults.size) { position ->
+      val organization = searchResults[position]
+      OrganizationListAutomaticCard(
+        modifier =
+          Modifier
+            .padding(bottom = 8.dp)
+            .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+        organization = organization,
+        onCheckedChange = { checked ->
+          updateOrganization(organization, checked)
+        },
+        cardState = organization.getCardState(),
+      )
     }
+  }
 }
 
 @Composable
 private fun ColumnScope.ErrorContent() {
-    Image(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
-        painter = painterResource(id = R.drawable.illustration_critical),
-        contentDescription = null,
-    )
+  Image(
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .align(Alignment.CenterHorizontally),
+    painter = painterResource(id = R.drawable.illustration_critical),
+    contentDescription = null,
+  )
 
-    Text(
-        modifier = Modifier.padding(top = 24.dp),
-        text = stringResource(id = CopyR.string.common_error_subheading),
-        style = MaterialTheme.typography.bodyMedium,
-    )
+  Text(
+    modifier = Modifier.padding(top = 24.dp),
+    text = stringResource(id = CopyR.string.common_error_subheading),
+    style = MaterialTheme.typography.bodyMedium,
+  )
 }
 
 @DefaultPreviews
 @Composable
 internal fun OrganizationListAutomaticSearchScreenLoadingPreview() {
-    MgoTheme {
-        OrganizationListAutomaticSearchScreenContent(
-            viewState = OrganizationListAutomaticScreenViewState.initialState,
-            onNavigateBack = {},
-            onGetSearchResults = {},
-            updateOrganization = { _, _ -> },
-            onUpdateOrganizations = {},
-            checkResults = false,
-        )
-    }
+  MgoTheme {
+    OrganizationListAutomaticSearchScreenContent(
+      viewState = OrganizationListAutomaticScreenViewState.initialState,
+      onNavigateBack = {},
+      onGetSearchResults = {},
+      updateOrganization = { _, _ -> },
+      onUpdateOrganizations = {},
+      checkResults = false,
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun OrganizationListAutomaticSearchScreenSearchResultsPreview() {
-    MgoTheme {
-        OrganizationListAutomaticSearchScreenContent(
-            viewState =
-                OrganizationListAutomaticScreenViewState.initialState.copy(
-                    loading = false,
-                    results = listOf(TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION),
-                ),
-            onNavigateBack = {},
-            onGetSearchResults = {},
-            updateOrganization = { _, _ -> },
-            onUpdateOrganizations = {},
-            checkResults = false,
-        )
-    }
+  MgoTheme {
+    OrganizationListAutomaticSearchScreenContent(
+      viewState =
+        OrganizationListAutomaticScreenViewState.initialState.copy(
+          loading = false,
+          results = listOf(TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION),
+        ),
+      onNavigateBack = {},
+      onGetSearchResults = {},
+      updateOrganization = { _, _ -> },
+      onUpdateOrganizations = {},
+      checkResults = false,
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun OrganizationListAutomaticSearchScreenErrorPreview() {
-    MgoTheme {
-        OrganizationListAutomaticSearchScreenContent(
-            viewState =
-                OrganizationListAutomaticScreenViewState.initialState.copy(
-                    loading = false,
-                    error = IllegalStateException("Something went wrong"),
-                ),
-            onNavigateBack = {},
-            onGetSearchResults = {},
-            updateOrganization = { _, _ -> },
-            onUpdateOrganizations = {},
-            checkResults = false,
-        )
-    }
+  MgoTheme {
+    OrganizationListAutomaticSearchScreenContent(
+      viewState =
+        OrganizationListAutomaticScreenViewState.initialState.copy(
+          loading = false,
+          error = IllegalStateException("Something went wrong"),
+        ),
+      onNavigateBack = {},
+      onGetSearchResults = {},
+      updateOrganization = { _, _ -> },
+      onUpdateOrganizations = {},
+      checkResults = false,
+    )
+  }
 }

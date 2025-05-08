@@ -6,12 +6,12 @@ package nl.rijksoverheid.mgo.feature.pincode.create
  * @param error True if the pin code is not validated.
  */
 internal data class PinCodeCreateScreenViewState(
-    val error: Boolean,
+  val error: Boolean,
 ) {
-    companion object {
-        val initialState =
-            PinCodeCreateScreenViewState(
-                error = false,
-            )
-    }
+  companion object {
+    val initialState =
+      PinCodeCreateScreenViewState(
+        error = false,
+      )
+  }
 }

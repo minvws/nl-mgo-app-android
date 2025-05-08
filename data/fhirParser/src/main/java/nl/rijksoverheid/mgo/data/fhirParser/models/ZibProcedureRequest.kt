@@ -23,10 +23,10 @@ data class ZibProcedureRequest(
     val fhirVersion: String = "R3",
     val occurrence: MgoPeriod? = null,
     val id: String? = null,
-    val intent: String? = null,
+    val intent: MgoString? = null,
     val referenceId: String,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {

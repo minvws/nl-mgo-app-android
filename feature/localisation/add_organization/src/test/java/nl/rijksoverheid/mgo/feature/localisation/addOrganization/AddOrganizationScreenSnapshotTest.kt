@@ -5,13 +5,13 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class AddOrganizationScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun launchView() {
-        snapshotTestRule.snapshots {
-            AddOrganizationScreenPreview()
-        }
+  @Test
+  fun launchView() {
+    snapshotTestRule.snapshots {
+      AddOrganizationScreenPreview()
     }
+  }
 }

@@ -11,29 +11,36 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibAdministrationSchedule(
+    val _profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationSchedule",
     val repeat: Repeat
 ) {
+
+    init {
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+    }
 
     @Serializable
     data class Repeat(
         val boundsDuration: MgoDuration? = null,
-        val duration: Double? = null,
+        val duration: MgoDecimal? = null,
         val boundsRange: MgoRange? = null,
-        val period: Double? = null,
-        val dayOfWeek: List<String>? = null,
-        val frequencyMax: Double? = null,
+        val period: MgoDecimal? = null,
+        val dayOfWeek: List<MgoCode>? = null,
+        val frequencyMax: MgoInteger? = null,
         val boundsPeriod: MgoPeriod? = null,
-        val durationUnit: String? = null,
-        val periodUnit: String? = null,
-        val `when`: List<String>? = null,
-        val frequency: Double? = null,
-        val timeOfDay: List<String>? = null
+        val durationUnit: MgoCode? = null,
+        val periodUnit: MgoCode? = null,
+        val `when`: List<MgoCode>? = null,
+        val frequency: MgoInteger? = null,
+        val timeOfDay: List<MgoDateTime>? = null
     )
+
+    companion object {
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationSchedule"
+    }
 
 }

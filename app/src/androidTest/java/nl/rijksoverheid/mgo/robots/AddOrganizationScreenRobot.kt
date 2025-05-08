@@ -9,18 +9,18 @@ import nl.rijksoverheid.mgo.feature.localisation.addOrganization.TEST_TAG_CITY_T
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.TEST_TAG_NAME_TEXT_FIELD
 
 internal class AddOrganizationScreenRobot(
-    private val composeTestRule: ComposeTestRule,
+  private val composeTestRule: ComposeTestRule,
 ) {
-    internal fun inputName(name: String) {
-        composeTestRule.onNodeWithTag(TEST_TAG_NAME_TEXT_FIELD).performTextInput(name)
-    }
+  internal fun inputName(name: String) {
+    composeTestRule.onNodeWithTag(TEST_TAG_NAME_TEXT_FIELD).performTextInput(name)
+  }
 
-    internal fun inputCity(city: String) {
-        composeTestRule.onNodeWithTag(TEST_TAG_CITY_TEXT_FIELD).performTextInput(city)
-    }
+  internal fun inputCity(city: String) {
+    composeTestRule.onNodeWithTag(TEST_TAG_CITY_TEXT_FIELD).performTextInput(city)
+  }
 
-    internal fun pressSearchButton(block: OrganizationSearchScreenRobot.() -> Unit) {
-        composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON).performClick()
-        block(OrganizationSearchScreenRobot(composeTestRule))
-    }
+  internal fun pressSearchButton(block: OrganizationSearchScreenRobot.() -> Unit) {
+    composeTestRule.onNodeWithTag(TEST_TAG_COLUMN_WITH_BUTTON_PRIMARY_BUTTON).performClick()
+    block(OrganizationSearchScreenRobot(composeTestRule))
+  }
 }

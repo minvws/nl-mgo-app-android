@@ -23,7 +23,7 @@ data class NlCorePractitioner(
     val telecom: List<NlCoreContactpoint>? = null,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {

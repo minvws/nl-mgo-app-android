@@ -15,96 +15,52 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibTreatmentDirective(
-    val dateTime: String? = null,
+    val dateTime: MgoDateTime? = null,
     val sourceReference: MgoReference? = null,
+    val identifier: MgoIdentifier? = null,
+    val treatment: MgoCodeableConcept? = null,
+    val period: MgoPeriod? = null,
     val sourceIdentifier: MgoIdentifier? = null,
-    val data: List<Data>? = null,
-    val purpose: List<MgoCoding>? = null,
-    val sourceAttachment: Attachment,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective",
+    val sourceAttachment: MgoAttachment? = null,
+    val exceptRestrictions: List<ExceptRestriction>? = null,
+    val additionalSources: AdditionalSources? = null,
     val referenceId: String,
+    val consentingParty: List<MgoReference>? = null,
     val patient: MgoReference? = null,
     val fhirVersion: String = "R3",
-    val action: List<MgoCodeableConcept>? = null,
+    val treatmentPermitted: MgoCodeableConcept? = null,
+    val comment: MgoString? = null,
     val id: String? = null,
-    val policy: List<Policy>? = null,
-    val dataPeriod: MgoPeriod? = null,
-    val identifier: MgoIdentifier? = null,
-    val period: MgoPeriod? = null,
-    val securityLabel: List<MgoCoding>? = null,
-    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective",
-    val actor: List<Actor>? = null,
-    val policyRule: String? = null,
-    val consentingParty: List<MgoReference>? = null,
-    val organization: List<MgoReference>? = null,
-    val except: List<Except>? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val verification: Verification,
+    val resourceType: String
 ) {
 
     init {
-        require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     @Serializable
-    data class Data(
-        val reference: MgoReference? = null,
-        val meaning: String? = null
+    open class ExceptRestriction
+
+    @Serializable
+    data class AdditionalSources(
+        val valueIdentifier: MgoIdentifier? = null,
+        val valueAttachment: MgoAttachment? = null,
+        val valueReference: MgoReference? = null
     )
 
     @Serializable
-    data class Policy(
-        val authority: String? = null,
-        val id: String? = null,
-        val uri: String? = null
-    )
-
-    @Serializable
-    data class Actor(
-        val reference: MgoReference? = null,
-        val role: MgoCodeableConcept? = null
-    )
-
-    @Serializable
-    data class Except(
-        val actor: List<Actor1>? = null,
-        val dataPeriod: MgoPeriod? = null,
-        val period: MgoPeriod? = null,
-        val code: List<MgoCoding>? = null,
-        val data: List<Data1>? = null,
-        val purpose: List<MgoCoding>? = null,
-        val securityLabel: List<MgoCoding>? = null,
-        val action: List<MgoCodeableConcept>? = null,
-        val type: String? = null,
-        val `class`: List<MgoCoding>? = null
-    )
-
-    @Serializable
-    data class Actor1(
-        val reference: MgoReference? = null,
-        val role: MgoCodeableConcept? = null
-    )
-
-    @Serializable
-    data class Data1(
-        val reference: MgoReference? = null,
-        val meaning: String? = null
+    data class Verification(
+        val verifiedWith: MgoCodeableConcept? = null,
+        val verified: MgoBoolean? = null,
+        val verificationDate: MgoDateTime? = null
     )
 
     companion object {
-        private const val cg_str0 = "R3"
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"
-        private val cg_array2 = setOf(
-            "active",
-            "entered-in-error",
-            "inactive",
-            "draft",
-            "proposed",
-            "rejected"
-        )
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"
+        private const val cg_str1 = "R3"
     }
 
 }

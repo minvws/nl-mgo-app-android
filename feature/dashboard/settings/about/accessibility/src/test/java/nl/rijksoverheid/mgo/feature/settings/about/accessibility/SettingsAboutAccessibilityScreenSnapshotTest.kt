@@ -5,13 +5,13 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class SettingsAboutAccessibilityScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun launchView() {
-        snapshotTestRule.snapshots {
-            SettingsAboutAccessibilityScreenPreview()
-        }
+  @Test
+  fun launchView() {
+    snapshotTestRule.snapshots {
+      SettingsAboutAccessibilityScreenPreview()
     }
+  }
 }

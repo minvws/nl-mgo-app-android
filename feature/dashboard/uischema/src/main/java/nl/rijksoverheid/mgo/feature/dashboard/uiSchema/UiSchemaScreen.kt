@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -30,7 +31,6 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Composable that shows a screen that displays health care data.
@@ -44,201 +44,201 @@ import kotlinx.coroutines.flow.collectLatest
  */
 @Composable
 fun UiSchemaScreen(
-    organization: MgoOrganization,
-    mgoResource: MgoResource,
-    isSummary: Boolean,
-    onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
-    onNavigateBack: () -> Unit,
+  organization: MgoOrganization,
+  mgoResource: MgoResource,
+  isSummary: Boolean,
+  onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    val viewModel =
-        hiltViewModel<UiSchemaScreenViewModel, UiSchemaScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
-        )
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        viewModel.navigate.collectLatest { mgoResource ->
-            onNavigateToUiSchema(organization, mgoResource)
-        }
-    }
-
-    UiSchemaScreenContent(
-        viewState = viewState,
-        onClickReference = { row ->
-            viewModel.onClickReferenceRow(row)
-        },
-        onClickFile = { row ->
-            viewModel.onClickFileRow(row)
-        },
-        onNavigateBack = onNavigateBack,
+  val viewModel =
+    hiltViewModel<UiSchemaScreenViewModel, UiSchemaScreenViewModel.Factory>(
+      creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
     )
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(Unit) {
+    viewModel.navigate.collectLatest { mgoResource ->
+      onNavigateToUiSchema(organization, mgoResource)
+    }
+  }
+
+  UiSchemaScreenContent(
+    viewState = viewState,
+    onClickReference = { row ->
+      viewModel.onClickReferenceRow(row)
+    },
+    onClickFile = { row ->
+      viewModel.onClickFileRow(row)
+    },
+    onNavigateBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun UiSchemaScreenContent(
-    viewState: UiSchemaScreenViewState,
-    onClickReference: (row: UISchemaRow.Reference) -> Unit,
-    onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
-    onNavigateBack: () -> Unit,
+  viewState: UiSchemaScreenViewState,
+  onClickReference: (row: UISchemaRow.Reference) -> Unit,
+  onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    MgoScaffold(
-        appBarTitle = viewState.toolbarTitle,
-        onNavigateBack = onNavigateBack,
-        content = {
-            LazyColumn {
-                items(viewState.sections.size) { position ->
-                    val section = viewState.sections[position]
-                    UiSchemaSection(
-                        section = section,
-                        onClickReference = onClickReference,
-                        onClickFile = onClickFile,
-                        modifier = Modifier.padding(bottom = 24.dp),
-                    )
-                }
-            }
-        },
-    )
+  MgoScaffold(
+    appBarTitle = viewState.toolbarTitle,
+    onNavigateBack = onNavigateBack,
+    content = {
+      LazyColumn {
+        items(viewState.sections.size) { position ->
+          val section = viewState.sections[position]
+          UiSchemaSection(
+            section = section,
+            onClickReference = onClickReference,
+            onClickFile = onClickFile,
+            modifier = Modifier.padding(bottom = 24.dp),
+          )
+        }
+      }
+    },
+  )
 }
 
 @Composable
 private fun UiSchemaSection(
-    section: UISchemaSection,
-    onClickReference: (row: UISchemaRow.Reference) -> Unit,
-    onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
-    modifier: Modifier = Modifier,
+  section: UISchemaSection,
+  onClickReference: (row: UISchemaRow.Reference) -> Unit,
+  onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        if (section.heading != null) {
-            Text(
-                modifier = Modifier.padding(bottom = 8.dp),
-                text = section.heading,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-            )
-        } else {
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        MgoCard(
-            modifier =
-                Modifier
-                    .fillMaxWidth(),
-        ) {
-            Column {
-                section.rows.forEachIndexed { index, row ->
-                    when (row) {
-                        is UISchemaRow.Static -> {
-                            UiSchemaRowStatic(row = row)
-                        }
-
-                        is UISchemaRow.Reference -> {
-                            UiSchemaRowReference(
-                                row = row,
-                                onClick = onClickReference,
-                            )
-                        }
-
-                        is UISchemaRow.Binary -> {
-                            UiSchemaRowBinary(
-                                row = row,
-                                onClick = onClickFile,
-                            )
-                        }
-
-                        is UISchemaRow.Link -> {
-                            UiSchemaRowLink(
-                                row = row,
-                            )
-                        }
-                    }
-                    if (index != section.rows.lastIndex) {
-                        HorizontalDivider(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 16.dp),
-                            color = MaterialTheme.colorScheme.borderPrimary(),
-                            thickness = 0.33.dp,
-                        )
-                    }
-                }
-            }
-        }
+  Column(modifier = modifier) {
+    if (section.heading != null) {
+      Text(
+        modifier = Modifier.padding(bottom = 8.dp),
+        text = section.heading,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+      )
+    } else {
+      Spacer(modifier = Modifier.height(8.dp))
     }
+
+    MgoCard(
+      modifier =
+        Modifier
+          .fillMaxWidth(),
+    ) {
+      Column {
+        section.rows.forEachIndexed { index, row ->
+          when (row) {
+            is UISchemaRow.Static -> {
+              UiSchemaRowStatic(row = row)
+            }
+
+            is UISchemaRow.Reference -> {
+              UiSchemaRowReference(
+                row = row,
+                onClick = onClickReference,
+              )
+            }
+
+            is UISchemaRow.Binary -> {
+              UiSchemaRowBinary(
+                row = row,
+                onClick = onClickFile,
+              )
+            }
+
+            is UISchemaRow.Link -> {
+              UiSchemaRowLink(
+                row = row,
+              )
+            }
+          }
+          if (index != section.rows.lastIndex) {
+            HorizontalDivider(
+              modifier =
+                Modifier
+                  .fillMaxWidth()
+                  .padding(start = 16.dp),
+              color = MaterialTheme.colorScheme.borderPrimary(),
+              thickness = 0.33.dp,
+            )
+          }
+        }
+      }
+    }
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun UiSchemaScreenContentPreview() {
-    MgoTheme {
-        UiSchemaScreenContent(
-            viewState =
-                UiSchemaScreenViewState(
-                    toolbarTitle = "Titel",
-                    sections =
-                        listOf(
-                            UISchemaSection(
-                                heading = null,
-                                rows =
-                                    listOf(
-                                        UISchemaRow.Static(
-                                            heading = "Row Heading 1",
-                                            value = "Row Value 1",
-                                        ),
-                                        UISchemaRow.Static(
-                                            heading = "Row Heading 2",
-                                            value = "Row Value 2",
-                                        ),
-                                    ),
-                            ),
-                            UISchemaSection(
-                                heading = "Section Heading 1",
-                                rows =
-                                    listOf(
-                                        UISchemaRow.Static(
-                                            heading = "Row Heading 3",
-                                            value = "Row Value 3",
-                                        ),
-                                    ),
-                            ),
-                            UISchemaSection(
-                                heading = "Section Heading 2",
-                                rows =
-                                    listOf(
-                                        UISchemaRow.Reference(
-                                            heading = null,
-                                            value = "Reference",
-                                            referenceId = "1",
-                                        ),
-                                    ),
-                            ),
-                            UISchemaSection(
-                                heading = "Section Heading 3",
-                                rows =
-                                    listOf(
-                                        UISchemaRow.Binary.NotDownloaded.Idle(
-                                            heading = null,
-                                            value = "File",
-                                            binary = "",
-                                        ),
-                                    ),
-                            ),
-                            UISchemaSection(
-                                heading = "Section Heading 4",
-                                rows =
-                                    listOf(
-                                        UISchemaRow.Link(
-                                            heading = null,
-                                            value = "Link",
-                                            url = "https://www.google.com",
-                                        ),
-                                    ),
-                            ),
-                        ),
-                ),
-            onClickReference = {},
-            onClickFile = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    UiSchemaScreenContent(
+      viewState =
+        UiSchemaScreenViewState(
+          toolbarTitle = "Titel",
+          sections =
+            listOf(
+              UISchemaSection(
+                heading = null,
+                rows =
+                  listOf(
+                    UISchemaRow.Static(
+                      heading = "Row Heading 1",
+                      value = "Row Value 1",
+                    ),
+                    UISchemaRow.Static(
+                      heading = "Row Heading 2",
+                      value = "Row Value 2",
+                    ),
+                  ),
+              ),
+              UISchemaSection(
+                heading = "Section Heading 1",
+                rows =
+                  listOf(
+                    UISchemaRow.Static(
+                      heading = "Row Heading 3",
+                      value = "Row Value 3",
+                    ),
+                  ),
+              ),
+              UISchemaSection(
+                heading = "Section Heading 2",
+                rows =
+                  listOf(
+                    UISchemaRow.Reference(
+                      heading = null,
+                      value = "Reference",
+                      referenceId = "1",
+                    ),
+                  ),
+              ),
+              UISchemaSection(
+                heading = "Section Heading 3",
+                rows =
+                  listOf(
+                    UISchemaRow.Binary.NotDownloaded.Idle(
+                      heading = null,
+                      value = "File",
+                      binary = "",
+                    ),
+                  ),
+              ),
+              UISchemaSection(
+                heading = "Section Heading 4",
+                rows =
+                  listOf(
+                    UISchemaRow.Link(
+                      heading = null,
+                      value = "Link",
+                      url = "https://www.google.com",
+                    ),
+                  ),
+              ),
+            ),
+        ),
+      onClickReference = {},
+      onClickFile = {},
+      onNavigateBack = {},
+    )
+  }
 }

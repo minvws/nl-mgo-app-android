@@ -40,86 +40,93 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 internal fun PinCodeItem(
-    position: Int,
-    color: Color,
-    modifier: Modifier = Modifier,
-    error: Boolean = false,
-    fill: Boolean = false,
+  position: Int,
+  color: Color,
+  modifier: Modifier = Modifier,
+  error: Boolean = false,
+  fill: Boolean = false,
 ) {
-    val context = LocalContext.current
-    val fillColor by animateColorAsState(
-        if (fill) color else Color.Transparent,
-        label = "color",
-    )
-    val animatedScale = remember { Animatable(1f) }
-    LaunchedEffect(fill, error) {
-        if (fill || error) {
-            val vibrationDuration = if (error) MgoVibrateDuration.LONG else MgoVibrateDuration.SHORT
-            context.vibrate(vibrationDuration)
+  val context = LocalContext.current
+  val fillColor by animateColorAsState(
+    if (fill) color else Color.Transparent,
+    label = "color",
+  )
+  val animatedScale = remember { Animatable(1f) }
+  LaunchedEffect(fill, error) {
+    if (fill || error) {
+      val vibrationDuration = if (error) MgoVibrateDuration.LONG else MgoVibrateDuration.SHORT
+      context.vibrate(vibrationDuration)
 
-            animatedScale.animateTo(
-                targetValue = 1.25f,
-                animationSpec =
-                    tween(durationMillis = 175, easing = {
-                        OvershootInterpolator().getInterpolation(it)
-                    }),
-            )
-            animatedScale.animateTo(
-                targetValue = 1f,
-                animationSpec =
-                    tween(durationMillis = 175, easing = {
-                        OvershootInterpolator().getInterpolation(it)
-                    }),
-            )
-        }
+      animatedScale.animateTo(
+        targetValue = 1.25f,
+        animationSpec =
+          tween(durationMillis = 175, easing = {
+            OvershootInterpolator().getInterpolation(it)
+          }),
+      )
+      animatedScale.animateTo(
+        targetValue = 1f,
+        animationSpec =
+          tween(durationMillis = 175, easing = {
+            OvershootInterpolator().getInterpolation(it)
+          }),
+      )
     }
+  }
 
-    val stateString =
-        if (fill) stringResource(CopyR.string.pincode_filled_voiceover) else stringResource(CopyR.string.pincode_empty_voiceover)
-    val contentDescriptionLabel = stringResource(id = CopyR.string.pincode_voiceover, position.toString(), "5", stateString)
+  val stateString =
+    if (fill) {
+      stringResource(
+        CopyR.string.pincode_filled_voiceover,
+      )
+    } else {
+      stringResource(CopyR.string.pincode_empty_voiceover)
+    }
+  val contentDescriptionLabel =
+    stringResource(id = CopyR.string.pincode_voiceover, position.toString(), "5", stateString)
+  Box(
+    modifier =
+      modifier
+        .semantics { contentDescription = contentDescriptionLabel }
+        .scale(animatedScale.value),
+  ) {
     Box(
-        modifier =
-            modifier
-                .semantics { contentDescription = contentDescriptionLabel }
-                .scale(animatedScale.value),
-    ) {
-        Box(
-            modifier =
-                modifier
-                    .border(2.dp, color, CircleShape)
-                    .clip(CircleShape),
-        )
-        Box(
-            modifier =
-                modifier
-                    .border(2.dp, color, CircleShape)
-                    .clip(CircleShape)
-                    .background(fillColor),
-        )
-    }
+      modifier =
+        modifier
+          .border(2.dp, color, CircleShape)
+          .clip(CircleShape),
+    )
+    Box(
+      modifier =
+        modifier
+          .border(2.dp, color, CircleShape)
+          .clip(CircleShape)
+          .background(fillColor),
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun PinCodeItemNotFilledPreview() {
-    MgoTheme {
-        PinCodeItem(
-            modifier = Modifier.size(32.dp),
-            color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
-            position = 1,
-        )
-    }
+  MgoTheme {
+    PinCodeItem(
+      modifier = Modifier.size(32.dp),
+      color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
+      position = 1,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun PinCodeItemFilledPreview() {
-    MgoTheme {
-        PinCodeItem(
-            modifier = Modifier.size(32.dp),
-            color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
-            position = 1,
-            fill = true,
-        )
-    }
+  MgoTheme {
+    PinCodeItem(
+      modifier = Modifier.size(32.dp),
+      color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
+      position = 1,
+      fill = true,
+    )
+  }
 }

@@ -36,102 +36,102 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun SettingsAboutSafetyScreen(onNavigateBack: () -> Unit) {
-    val safetyItems =
-        remember {
-            listOf(
-                SafetyItem(
-                    icon = Icons.Outlined.Password,
-                    heading = CopyR.string.settings_about_this_app_safety_security_phone_heading,
-                    subHeading = CopyR.string.settings_about_this_app_safety_security_phone_subheading,
-                ),
-                SafetyItem(
-                    icon = Icons.Outlined.VisibilityOff,
-                    heading = CopyR.string.settings_about_this_app_safety_phone_yourself_heading,
-                    subHeading = CopyR.string.settings_about_this_app_safety_phone_yourself_subheading,
-                ),
-                SafetyItem(
-                    icon = Icons.Outlined.SystemUpdate,
-                    heading = CopyR.string.settings_about_this_app_safety_install_updates_heading,
-                    subHeading = CopyR.string.settings_about_this_app_safety_install_updates_subheading,
-                ),
-                SafetyItem(
-                    icon = Icons.Outlined.Lock,
-                    heading = CopyR.string.settings_about_this_app_safety_safe_apps_heading,
-                    subHeading = CopyR.string.settings_about_this_app_safety_safe_apps_subheading,
-                ),
-                SafetyItem(
-                    icon = Icons.Outlined.WifiPassword,
-                    heading = CopyR.string.settings_about_this_app_safety_public_wifi_heading,
-                    subHeading = CopyR.string.settings_about_this_app_safety_public_wifi_subheading,
-                ),
-                SafetyItem(
-                    icon = Icons.Outlined.VerifiedUser,
-                    heading = CopyR.string.settings_about_this_app_safety_permissions_heading,
-                    subHeading = CopyR.string.settings_about_this_app_safety_permissions_subheading,
-                ),
-            )
+  val safetyItems =
+    remember {
+      listOf(
+        SafetyItem(
+          icon = Icons.Outlined.Password,
+          heading = CopyR.string.settings_about_this_app_safety_security_phone_heading,
+          subHeading = CopyR.string.settings_about_this_app_safety_security_phone_subheading,
+        ),
+        SafetyItem(
+          icon = Icons.Outlined.VisibilityOff,
+          heading = CopyR.string.settings_about_this_app_safety_phone_yourself_heading,
+          subHeading = CopyR.string.settings_about_this_app_safety_phone_yourself_subheading,
+        ),
+        SafetyItem(
+          icon = Icons.Outlined.SystemUpdate,
+          heading = CopyR.string.settings_about_this_app_safety_install_updates_heading,
+          subHeading = CopyR.string.settings_about_this_app_safety_install_updates_subheading,
+        ),
+        SafetyItem(
+          icon = Icons.Outlined.Lock,
+          heading = CopyR.string.settings_about_this_app_safety_safe_apps_heading,
+          subHeading = CopyR.string.settings_about_this_app_safety_safe_apps_subheading,
+        ),
+        SafetyItem(
+          icon = Icons.Outlined.WifiPassword,
+          heading = CopyR.string.settings_about_this_app_safety_public_wifi_heading,
+          subHeading = CopyR.string.settings_about_this_app_safety_public_wifi_subheading,
+        ),
+        SafetyItem(
+          icon = Icons.Outlined.VerifiedUser,
+          heading = CopyR.string.settings_about_this_app_safety_permissions_heading,
+          subHeading = CopyR.string.settings_about_this_app_safety_permissions_subheading,
+        ),
+      )
+    }
+
+  MgoScaffold(
+    appBarTitle = stringResource(CopyR.string.settings_about_this_app_safety),
+    isAlwaysCollapsed = true,
+    onNavigateBack = onNavigateBack,
+    content = {
+      LazyColumn {
+        item {
+          Text(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 16.dp),
+            text = stringResource(id = CopyR.string.settings_about_this_app_safety_subheading),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.contentPrimary(),
+          )
         }
 
-    MgoScaffold(
-        appBarTitle = stringResource(CopyR.string.settings_about_this_app_safety),
-        isAlwaysCollapsed = true,
-        onNavigateBack = onNavigateBack,
-        content = {
-            LazyColumn {
-                item {
-                    Text(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp, bottom = 16.dp),
-                        text = stringResource(id = CopyR.string.settings_about_this_app_safety_subheading),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.contentPrimary(),
-                    )
-                }
-
-                items(safetyItems.size) { position ->
-                    val safetyItem = safetyItems[position]
-                    SettingsAboutSafetyListItemCard(
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        item = safetyItem,
-                    )
-                }
-            }
-        },
-    )
+        items(safetyItems.size) { position ->
+          val safetyItem = safetyItems[position]
+          SettingsAboutSafetyListItemCard(
+            modifier = Modifier.padding(bottom = 8.dp),
+            item = safetyItem,
+          )
+        }
+      }
+    },
+  )
 }
 
 @Composable
 private fun SettingsAboutSafetyListItemCard(
-    item: SafetyItem,
-    modifier: Modifier = Modifier,
+  item: SafetyItem,
+  modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = modifier) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            Icon(imageVector = item.icon, contentDescription = null, tint = MaterialTheme.colorScheme.symbolsPrimary())
-            Column(modifier = Modifier.padding(start = 8.dp)) {
-                Text(
-                    text = stringResource(item.heading),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = stringResource(item.subHeading),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.contentSecondary(),
-                )
-            }
-        }
+  MgoCard(modifier = modifier) {
+    Row(modifier = Modifier.padding(16.dp)) {
+      Icon(imageVector = item.icon, contentDescription = null, tint = MaterialTheme.colorScheme.symbolsPrimary())
+      Column(modifier = Modifier.padding(start = 8.dp)) {
+        Text(
+          text = stringResource(item.heading),
+          style = MaterialTheme.typography.bodyMedium,
+        )
+        Text(
+          modifier = Modifier.padding(top = 4.dp),
+          text = stringResource(item.subHeading),
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.contentSecondary(),
+        )
+      }
     }
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun SettingsAboutSafetyScreenPreview() {
-    MgoTheme {
-        SettingsAboutSafetyScreen(
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    SettingsAboutSafetyScreen(
+      onNavigateBack = {},
+    )
+  }
 }

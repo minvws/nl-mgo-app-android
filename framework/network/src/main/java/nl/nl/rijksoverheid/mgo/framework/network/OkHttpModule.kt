@@ -15,20 +15,20 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 internal object OkHttpModule {
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(
-        @ApplicationContext context: Context,
-    ): OkHttpClient {
-        val cache =
-            Cache(
-                directory = File(context.cacheDir, "http_cache"),
-                maxSize = 50L * 1024L * 1024L, // 50 MiB
-            )
-        return OkHttpClient
-            .Builder()
-            .cache(cache)
-            .addInterceptor(ChuckerInterceptor(context))
-            .build()
-    }
+  @Provides
+  @Singleton
+  fun provideOkHttpClient(
+    @ApplicationContext context: Context,
+  ): OkHttpClient {
+    val cache =
+      Cache(
+        directory = File(context.cacheDir, "http_cache"),
+        maxSize = 50L * 1024L * 1024L, // 50 MiB
+      )
+    return OkHttpClient
+      .Builder()
+      .cache(cache)
+      .addInterceptor(ChuckerInterceptor(context))
+      .build()
+  }
 }

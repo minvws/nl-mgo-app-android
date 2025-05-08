@@ -28,48 +28,48 @@ import nl.rijksoverheid.mgo.framework.util.launchBrowser
  */
 @Composable
 internal fun UiSchemaRowLink(
-    row: UISchemaRow.Link,
-    modifier: Modifier = Modifier,
+  row: UISchemaRow.Link,
+  modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
+  val context = LocalContext.current
 
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clickable { context.launchBrowser(row.url) },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-            color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-            text = row.value,
-            style = MaterialTheme.typography.bodyMedium,
-        )
+  Row(
+    modifier =
+      modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .clickable { context.launchBrowser(row.url) },
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      modifier =
+        Modifier
+          .weight(1f)
+          .padding(end = 8.dp),
+      color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      text = row.value,
+      style = MaterialTheme.typography.bodyMedium,
+    )
 
-        Icon(
-            painter = painterResource(R.drawable.ic_attachment),
-            tint = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-            contentDescription = null,
-        )
-    }
+    Icon(
+      painter = painterResource(R.drawable.ic_attachment),
+      tint = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      contentDescription = null,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowLinkPreview() {
-    MgoTheme {
-        UiSchemaRowLink(
-            row =
-                UISchemaRow.Link(
-                    heading = "Heading",
-                    value = "Value",
-                    url = "https://www.google.com",
-                ),
-        )
-    }
+  MgoTheme {
+    UiSchemaRowLink(
+      row =
+        UISchemaRow.Link(
+          heading = "Heading",
+          value = "Value",
+          url = "https://www.google.com",
+        ),
+    )
+  }
 }

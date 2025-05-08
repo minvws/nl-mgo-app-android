@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -31,161 +31,161 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 internal fun MgoSnackBar(
-    visuals: MgoSnackBarVisuals,
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
+  visuals: MgoSnackBarVisuals,
+  onDismiss: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    Card(
-        modifier = modifier.padding(16.dp),
+  val coroutineScope = rememberCoroutineScope()
+  Card(
+    modifier = modifier.padding(16.dp),
+  ) {
+    Row(
+      modifier =
+        Modifier
+          .background(visuals.type.getBackgroundColor())
+          .padding(16.dp),
+      verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier =
-                Modifier
-                    .background(visuals.type.getBackgroundColor())
-                    .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(visuals.type.getIcon()),
-                contentDescription = null,
-                tint = visuals.type.getContentColor(),
-            )
-            Text(
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .padding(start = 16.dp),
-                text = stringResource(visuals.title),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = visuals.type.getContentColor(),
-            )
-            if (visuals.action != null) {
-                Text(
-                    modifier =
-                        Modifier
-                            .clickable(visuals.actionCallback != null) {
-                                onDismiss()
-                                coroutineScope.launch { visuals.actionCallback?.invoke() }
-                            }
-                            .padding(start = 16.dp),
-                    text = stringResource(visuals.action),
-                    style = MaterialTheme.typography.bodyMedium,
-                    textDecoration = TextDecoration.Underline,
-                    color = visuals.type.getContentColor(),
-                )
-            }
-        }
+      Icon(
+        painter = painterResource(visuals.type.getIcon()),
+        contentDescription = null,
+        tint = visuals.type.getContentColor(),
+      )
+      Text(
+        modifier =
+          Modifier
+            .weight(1f)
+            .padding(start = 16.dp),
+        text = stringResource(visuals.title),
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        color = visuals.type.getContentColor(),
+      )
+      if (visuals.action != null) {
+        Text(
+          modifier =
+            Modifier
+              .clickable(visuals.actionCallback != null) {
+                onDismiss()
+                coroutineScope.launch { visuals.actionCallback?.invoke() }
+              }
+              .padding(start = 16.dp),
+          text = stringResource(visuals.action),
+          style = MaterialTheme.typography.bodyMedium,
+          textDecoration = TextDecoration.Underline,
+          color = visuals.type.getContentColor(),
+        )
+      }
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoSnackBarSuccess() {
-    MgoTheme {
-        MgoSnackBar(
-            visuals =
-                MgoSnackBarVisuals(
-                    type = MgoSnackBarType.SUCCESS,
-                    title = CopyR.string.app_name,
-                ),
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoSnackBar(
+      visuals =
+        MgoSnackBarVisuals(
+          type = MgoSnackBarType.SUCCESS,
+          title = CopyR.string.app_name,
+        ),
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoSnackBarSuccessWithAction() {
-    MgoTheme {
-        MgoSnackBar(
-            visuals =
-                MgoSnackBarVisuals(
-                    type = MgoSnackBarType.SUCCESS,
-                    title = CopyR.string.app_name,
-                    action = CopyR.string.app_name,
-                ),
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoSnackBar(
+      visuals =
+        MgoSnackBarVisuals(
+          type = MgoSnackBarType.SUCCESS,
+          title = CopyR.string.app_name,
+          action = CopyR.string.app_name,
+        ),
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoSnackBarSuccessOverflow() {
-    MgoTheme {
-        MgoSnackBar(
-            visuals =
-                MgoSnackBarVisuals(
-                    type = MgoSnackBarType.SUCCESS,
-                    title = CopyR.string.dialog_remove_organization_subheading,
-                    action = CopyR.string.app_name,
-                ),
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoSnackBar(
+      visuals =
+        MgoSnackBarVisuals(
+          type = MgoSnackBarType.SUCCESS,
+          title = CopyR.string.dialog_remove_organization_subheading,
+          action = CopyR.string.app_name,
+        ),
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoSnackBarWarning() {
-    MgoTheme {
-        MgoSnackBar(
-            visuals =
-                MgoSnackBarVisuals(
-                    type = MgoSnackBarType.WARNING,
-                    title = CopyR.string.app_name,
-                ),
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoSnackBar(
+      visuals =
+        MgoSnackBarVisuals(
+          type = MgoSnackBarType.WARNING,
+          title = CopyR.string.app_name,
+        ),
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoSnackBarWarningWithAction() {
-    MgoTheme {
-        MgoSnackBar(
-            visuals =
-                MgoSnackBarVisuals(
-                    type = MgoSnackBarType.WARNING,
-                    title = CopyR.string.app_name,
-                    action = CopyR.string.app_name,
-                ),
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoSnackBar(
+      visuals =
+        MgoSnackBarVisuals(
+          type = MgoSnackBarType.WARNING,
+          title = CopyR.string.app_name,
+          action = CopyR.string.app_name,
+        ),
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoSnackBarError() {
-    MgoTheme {
-        MgoSnackBar(
-            visuals =
-                MgoSnackBarVisuals(
-                    type = MgoSnackBarType.ERROR,
-                    title = CopyR.string.app_name,
-                ),
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoSnackBar(
+      visuals =
+        MgoSnackBarVisuals(
+          type = MgoSnackBarType.ERROR,
+          title = CopyR.string.app_name,
+        ),
+      onDismiss = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoSnackBarInfo() {
-    MgoTheme {
-        MgoSnackBar(
-            visuals =
-                MgoSnackBarVisuals(
-                    type = MgoSnackBarType.INFO,
-                    title = CopyR.string.app_name,
-                ),
-            onDismiss = {},
-        )
-    }
+  MgoTheme {
+    MgoSnackBar(
+      visuals =
+        MgoSnackBarVisuals(
+          type = MgoSnackBarType.INFO,
+          title = CopyR.string.app_name,
+        ),
+      onDismiss = {},
+    )
+  }
 }

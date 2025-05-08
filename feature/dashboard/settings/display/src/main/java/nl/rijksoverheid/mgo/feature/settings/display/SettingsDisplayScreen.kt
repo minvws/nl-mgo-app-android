@@ -44,165 +44,165 @@ import nl.rijksoverheid.mgo.framework.copy.R
  */
 @Composable
 fun SettingsDisplayScreen(onNavigateBack: () -> Unit) {
-    val viewModel = hiltViewModel<SettingsDisplayScreenViewModel>()
-    val selectedTheme by viewModel.appTheme.collectAsStateWithLifecycle()
+  val viewModel = hiltViewModel<SettingsDisplayScreenViewModel>()
+  val selectedTheme by viewModel.appTheme.collectAsStateWithLifecycle()
 
-    SettingsDisplayScreenContent(
-        selectedTheme = selectedTheme,
-        onSelectTheme = { theme ->
-            viewModel.setTheme(theme)
-        },
-        onClickBack = onNavigateBack,
-    )
+  SettingsDisplayScreenContent(
+    selectedTheme = selectedTheme,
+    onSelectTheme = { theme ->
+      viewModel.setTheme(theme)
+    },
+    onClickBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun SettingsDisplayScreenContent(
-    selectedTheme: AppTheme,
-    onSelectTheme: (theme: AppTheme) -> Unit,
-    onClickBack: () -> Unit,
+  selectedTheme: AppTheme,
+  onSelectTheme: (theme: AppTheme) -> Unit,
+  onClickBack: () -> Unit,
 ) {
-    MgoScaffold(
-        appBarTitle = stringResource(R.string.settings_display_heading),
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onClickBack,
-        isAlwaysCollapsed = true,
-        content = {
-            MgoCard(
-                modifier =
-                    Modifier
-                        .padding(top = 8.dp),
-            ) {
-                ThemeListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth(),
-                    theme = AppTheme.SYSTEM,
-                    onSelectTheme = {
-                        onSelectTheme(AppTheme.SYSTEM)
-                    },
-                    selected = selectedTheme == AppTheme.SYSTEM,
-                    hasDivider = true,
-                )
-                ThemeListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth(),
-                    theme = AppTheme.LIGHT,
-                    onSelectTheme = {
-                        onSelectTheme(AppTheme.LIGHT)
-                    },
-                    selected = selectedTheme == AppTheme.LIGHT,
-                    hasDivider = true,
-                )
-                ThemeListItem(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth(),
-                    theme = AppTheme.DARK,
-                    onSelectTheme = {
-                        onSelectTheme(AppTheme.DARK)
-                    },
-                    selected = selectedTheme == AppTheme.DARK,
-                    hasDivider = false,
-                )
-            }
-        },
-    )
+  MgoScaffold(
+    appBarTitle = stringResource(R.string.settings_display_heading),
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onClickBack,
+    isAlwaysCollapsed = true,
+    content = {
+      MgoCard(
+        modifier =
+          Modifier
+            .padding(top = 8.dp),
+      ) {
+        ThemeListItem(
+          modifier =
+            Modifier
+              .fillMaxWidth(),
+          theme = AppTheme.SYSTEM,
+          onSelectTheme = {
+            onSelectTheme(AppTheme.SYSTEM)
+          },
+          selected = selectedTheme == AppTheme.SYSTEM,
+          hasDivider = true,
+        )
+        ThemeListItem(
+          modifier =
+            Modifier
+              .fillMaxWidth(),
+          theme = AppTheme.LIGHT,
+          onSelectTheme = {
+            onSelectTheme(AppTheme.LIGHT)
+          },
+          selected = selectedTheme == AppTheme.LIGHT,
+          hasDivider = true,
+        )
+        ThemeListItem(
+          modifier =
+            Modifier
+              .fillMaxWidth(),
+          theme = AppTheme.DARK,
+          onSelectTheme = {
+            onSelectTheme(AppTheme.DARK)
+          },
+          selected = selectedTheme == AppTheme.DARK,
+          hasDivider = false,
+        )
+      }
+    },
+  )
 }
 
 @Composable
 private fun ThemeListItem(
-    theme: AppTheme,
-    onSelectTheme: () -> Unit,
-    selected: Boolean,
-    hasDivider: Boolean = true,
-    modifier: Modifier = Modifier,
+  theme: AppTheme,
+  onSelectTheme: () -> Unit,
+  selected: Boolean,
+  hasDivider: Boolean = true,
+  modifier: Modifier = Modifier,
 ) {
-    Column {
-        Row(
-            modifier =
-                modifier
-                    .clickable { onSelectTheme() }
-                    .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = theme.getIcon(),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.symbolsPrimary(),
-            )
+  Column {
+    Row(
+      modifier =
+        modifier
+          .clickable { onSelectTheme() }
+          .padding(16.dp),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      Icon(
+        imageVector = theme.getIcon(),
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.symbolsPrimary(),
+      )
 
-            Column(
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .padding(start = 16.dp),
-            ) {
-                Text(
-                    text = stringResource(theme.getHeading()),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+      Column(
+        modifier =
+          Modifier
+            .weight(1f)
+            .padding(start = 16.dp),
+      ) {
+        Text(
+          text = stringResource(theme.getHeading()),
+          style = MaterialTheme.typography.bodyMedium,
+        )
 
-                theme.getSubHeading()?.let { subHeading ->
-                    Text(
-                        text = stringResource(subHeading),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.contentSecondary(),
-                    )
-                }
-            }
-
-            RadioButton(
-                selected = selected,
-                onClick = { onSelectTheme() },
-            )
+        theme.getSubHeading()?.let { subHeading ->
+          Text(
+            text = stringResource(subHeading),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.contentSecondary(),
+          )
         }
-        if (hasDivider) {
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp),
-                color = MaterialTheme.colorScheme.borderSecondary(),
-            )
-        }
+      }
+
+      RadioButton(
+        selected = selected,
+        onClick = { onSelectTheme() },
+      )
     }
+    if (hasDivider) {
+      HorizontalDivider(
+        modifier = Modifier.padding(start = 56.dp),
+        color = MaterialTheme.colorScheme.borderSecondary(),
+      )
+    }
+  }
 }
 
 private fun AppTheme.getIcon(): ImageVector {
-    return when (this) {
-        AppTheme.SYSTEM -> Icons.Outlined.SettingsApplications
-        AppTheme.LIGHT -> Icons.Outlined.LightMode
-        AppTheme.DARK -> Icons.Outlined.DarkMode
-    }
+  return when (this) {
+    AppTheme.SYSTEM -> Icons.Outlined.SettingsApplications
+    AppTheme.LIGHT -> Icons.Outlined.LightMode
+    AppTheme.DARK -> Icons.Outlined.DarkMode
+  }
 }
 
 @StringRes
 private fun AppTheme.getHeading(): Int {
-    return when (this) {
-        AppTheme.SYSTEM -> R.string.settings_display_system_heading
-        AppTheme.LIGHT -> R.string.settings_display_light
-        AppTheme.DARK -> R.string.settings_display_dark
-    }
+  return when (this) {
+    AppTheme.SYSTEM -> R.string.settings_display_system_heading
+    AppTheme.LIGHT -> R.string.settings_display_light
+    AppTheme.DARK -> R.string.settings_display_dark
+  }
 }
 
 @StringRes
 private fun AppTheme.getSubHeading(): Int? {
-    if (this == AppTheme.SYSTEM) {
-        return R.string.settings_display_system_subheading
-    }
-    return null
+  if (this == AppTheme.SYSTEM) {
+    return R.string.settings_display_system_subheading
+  }
+  return null
 }
 
 @DefaultPreviews
 @Composable
 internal fun SettingsDisplayScreenPreview() {
-    MgoTheme {
-        SettingsDisplayScreenContent(
-            selectedTheme = AppTheme.SYSTEM,
-            onSelectTheme = {},
-            onClickBack = {},
-        )
-    }
+  MgoTheme {
+    SettingsDisplayScreenContent(
+      selectedTheme = AppTheme.SYSTEM,
+      onSelectTheme = {},
+      onClickBack = {},
+    )
+  }
 }

@@ -11,8 +11,6 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -23,7 +21,7 @@ data class NlCoreEpisodeofcare(
     val diagnosis: List<Diagnosi>? = null,
     val careManager: MgoReference? = null,
     val team: List<MgoReference>? = null,
-    val title: String? = null,
+    val title: MgoString? = null,
     val type: List<MgoCodeableConcept>? = null,
     val referenceId: String,
     val statusHistory: List<StatusHistory>? = null,
@@ -33,44 +31,33 @@ data class NlCoreEpisodeofcare(
     val fhirVersion: String = "R3",
     val id: String? = null,
     val account: List<MgoReference>? = null,
-    val dateFirstEncounter: String? = null,
-    val status: String? = null,
-    val dateLastEncounter: String? = null,
-    val resourceType: String? = null
+    val dateFirstEncounter: MgoDateTime? = null,
+    val status: NlCoreEpisodeofcareStatus? = null,
+    val dateLastEncounter: MgoDateTime? = null,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
     data class Diagnosi(
         val condition: MgoReference? = null,
         val role: MgoCodeableConcept? = null,
-        val rank: Double? = null
+        val rank: MgoPositiveInt? = null
     )
 
     @Serializable
     data class StatusHistory(
         val period: MgoPeriod? = null,
-        val status: String? = null
+        val status: MgoCode? = null
     )
 
     companion object {
         private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare"
         private const val cg_str1 = "R3"
-        private val cg_array2 = setOf(
-            "active",
-            "cancelled",
-            "entered-in-error",
-            "planned",
-            "waitlist",
-            "onhold",
-            "finished"
-        )
     }
 
 }

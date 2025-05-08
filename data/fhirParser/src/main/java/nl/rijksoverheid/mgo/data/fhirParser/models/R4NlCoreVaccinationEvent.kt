@@ -11,8 +11,6 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -31,12 +29,12 @@ data class R4NlCoreVaccinationEvent(
     val patient: MgoReference? = null,
     val fhirVersion: String = "R4",
     val protocolApplied: List<ProtocolApplied>? = null,
-    val occurrenceDateTime: String? = null,
+    val occurrenceDateTime: MgoDateTime? = null,
     val location: MgoReference? = null,
     val id: String? = null,
     val vaccineCode: MgoCodeableConcept? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {
@@ -46,12 +44,12 @@ data class R4NlCoreVaccinationEvent(
 
     @Serializable
     data class ProtocolApplied(
-        val doseNumberString: String? = null,
-        val seriesDosesPositiveInt: Double? = null,
+        val doseNumberString: MgoString? = null,
+        val seriesDosesPositiveInt: MgoPositiveInt? = null,
         val authority: MgoReference? = null,
-        val doseNumberPositiveInt: Double? = null,
+        val doseNumberPositiveInt: MgoPositiveInt? = null,
         val targetDisease: List<MgoCodeableConcept>? = null,
-        val seriesDosesString: String? = null
+        val seriesDosesString: MgoString? = null
     )
 
     companion object {

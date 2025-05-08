@@ -21,22 +21,20 @@ data class R4NlCorePharmaceuticalProduct(
     val ingredient: List<Ingredient>? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-PharmaceuticalProduct",
     val batch: Batch,
-    val description: String? = null,
+    val description: MgoString? = null,
     val referenceId: String,
     val manufacturer: MgoReference? = null,
     val form: MgoCodeableConcept? = null,
     val fhirVersion: String = "R4",
-    val name: String? = null,
+    val name: MgoString? = null,
     val id: String? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: R4NlCorePharmaceuticalProductStatus? = null,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
@@ -48,18 +46,13 @@ data class R4NlCorePharmaceuticalProduct(
 
     @Serializable
     data class Batch(
-        val lotNumber: String? = null,
-        val expirationDate: String? = null
+        val lotNumber: MgoString? = null,
+        val expirationDate: MgoDateTime? = null
     )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-PharmaceuticalProduct"
         private const val cg_str1 = "R4"
-        private val cg_array2 = setOf(
-            "active",
-            "entered-in-error",
-            "inactive"
-        )
     }
 
 }

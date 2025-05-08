@@ -5,13 +5,13 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class PropositionScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun launchView() {
-        snapshotTestRule.snapshots {
-            PropositionScreenPreview()
-        }
+  @Test
+  fun launchView() {
+    snapshotTestRule.snapshots {
+      PropositionScreenPreview()
     }
+  }
 }

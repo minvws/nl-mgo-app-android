@@ -16,34 +16,26 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class R4NlCorePatient(
     val identifier: List<MgoIdentifier>? = null,
-    val deceased: Boolean? = null,
+    val deceased: MgoBoolean? = null,
     val address: List<R4NlCoreAddressInformation>? = null,
-    val gender: Gender? = null,
+    val gender: NlCorePatientGender? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient",
-    val birthDate: String? = null,
+    val birthDate: MgoDate? = null,
     val referenceId: String,
-    val multipleBirth: Boolean? = null,
+    val multipleBirth: MgoBoolean? = null,
     val managingOrganization: MgoReference? = null,
-    val deceasedDateTime: String? = null,
+    val deceasedDateTime: MgoDateTime? = null,
     val generalPractitioner: List<MgoReference>? = null,
     val fhirVersion: String = "R4",
     val name: List<R4NlCorePatientName>? = null,
     val id: String? = null,
     val maritalStatus: MgoCodeableConcept? = null,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-    }
-
-    @Serializable
-    enum class Gender {
-        unknown,
-        other,
-        male,
-        female
     }
 
     companion object {

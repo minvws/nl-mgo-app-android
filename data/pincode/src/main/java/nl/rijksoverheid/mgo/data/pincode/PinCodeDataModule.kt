@@ -24,66 +24,66 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object PinCodeDataModule {
-    @Provides
-    @Singleton
-    fun provideStorePinCode(
-        @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
-        pinCodeHasher: PinCodeHasher,
-    ): StorePinCode {
-        return DefaultStorePinCode(keyValueStore, pinCodeHasher)
-    }
+  @Provides
+  @Singleton
+  fun provideStorePinCode(
+    @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
+    pinCodeHasher: PinCodeHasher,
+  ): StorePinCode {
+    return DefaultStorePinCode(keyValueStore, pinCodeHasher)
+  }
 
-    @Provides
-    @Singleton
-    fun provideValidatePinCode(
-        @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
-        pinCodeHasher: PinCodeHasher,
-    ): ValidatePinCode {
-        return DefaultValidatePinCode(keyValueStore, pinCodeHasher)
-    }
+  @Provides
+  @Singleton
+  fun provideValidatePinCode(
+    @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
+    pinCodeHasher: PinCodeHasher,
+  ): ValidatePinCode {
+    return DefaultValidatePinCode(keyValueStore, pinCodeHasher)
+  }
 
-    @Provides
-    @Singleton
-    fun provideHasPinCode(
-        @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
-    ): HasPinCode {
-        return DefaultHasPinCode(keyValueStore)
-    }
+  @Provides
+  @Singleton
+  fun provideHasPinCode(
+    @Named("secureKeyValueStore") keyValueStore: KeyValueStore,
+  ): HasPinCode {
+    return DefaultHasPinCode(keyValueStore)
+  }
 
-    @Provides
-    @Singleton
-    fun providePinCodeHasher(): PinCodeHasher {
-        return BcryptPinCodeHasher()
-    }
+  @Provides
+  @Singleton
+  fun providePinCodeHasher(): PinCodeHasher {
+    return BcryptPinCodeHasher()
+  }
 
-    @Provides
-    @Singleton
-    fun providePinCodeStrengthValidator(): PinCodeStrengthValidator {
-        return DefaultPinCodeStrengthStrengthValidator()
-    }
+  @Provides
+  @Singleton
+  fun providePinCodeStrengthValidator(): PinCodeStrengthValidator {
+    return DefaultPinCodeStrengthStrengthValidator()
+  }
 
-    @Provides
-    @Singleton
-    fun provideDeviceHasBiometric(
-        @ApplicationContext context: Context,
-    ): DeviceHasBiometric {
-        val bioMetricManager = BiometricManager.from(context)
-        return DefaultDeviceHasBiometric(bioMetricManager)
-    }
+  @Provides
+  @Singleton
+  fun provideDeviceHasBiometric(
+    @ApplicationContext context: Context,
+  ): DeviceHasBiometric {
+    val bioMetricManager = BiometricManager.from(context)
+    return DefaultDeviceHasBiometric(bioMetricManager)
+  }
 
-    @Provides
-    @Singleton
-    fun provideLoginWithBiometricEnabled(
-        @Named("keyValueStore") keyValueStore: KeyValueStore,
-    ): LoginWithBiometricEnabled {
-        return DefaultLoginWithBiometricEnabled(keyValueStore)
-    }
+  @Provides
+  @Singleton
+  fun provideLoginWithBiometricEnabled(
+    @Named("keyValueStore") keyValueStore: KeyValueStore,
+  ): LoginWithBiometricEnabled {
+    return DefaultLoginWithBiometricEnabled(keyValueStore)
+  }
 
-    @Provides
-    @Singleton
-    fun provideSetLoginWithBiometricEnabled(
-        @Named("keyValueStore") keyValueStore: KeyValueStore,
-    ): SetLoginWithBiometricEnabled {
-        return DefaultSetLoginWithBiometricEnabled(keyValueStore)
-    }
+  @Provides
+  @Singleton
+  fun provideSetLoginWithBiometricEnabled(
+    @Named("keyValueStore") keyValueStore: KeyValueStore,
+  ): SetLoginWithBiometricEnabled {
+    return DefaultSetLoginWithBiometricEnabled(keyValueStore)
+  }
 }

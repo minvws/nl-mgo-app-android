@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class StartRequestBody(
-    @SerialName("client_callback_url") val clientCallbackUrl: String,
+  @SerialName("client_callback_url") val clientCallbackUrl: String,
 )

@@ -11,15 +11,15 @@ import javax.inject.Named
  * @param keyValueStore The [KeyValueStore] where is stored if has authenticated with DigiD.
  */
 internal class DefaultIsDigidAuthenticated
-    @Inject
-    constructor(
-        @Named("keyValueStore") private val keyValueStore: KeyValueStore,
-    ) :
-    IsDigidAuthenticated {
-        /**
-         * @return True if the user has authenticated with DigiD.
-         */
-        override fun invoke(): Boolean {
-            return keyValueStore.getBoolean(KEY_DIGID_AUTHENTICATED)
-        }
+  @Inject
+  constructor(
+    @Named("keyValueStore") private val keyValueStore: KeyValueStore,
+  ) :
+  IsDigidAuthenticated {
+    /**
+     * @return True if the user has authenticated with DigiD.
+     */
+    override fun invoke(): Boolean {
+      return keyValueStore.getBoolean(KEY_DIGID_AUTHENTICATED)
     }
+  }

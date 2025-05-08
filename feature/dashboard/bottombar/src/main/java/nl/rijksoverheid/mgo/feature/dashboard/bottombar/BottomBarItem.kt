@@ -14,27 +14,27 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  * @param selectedIconId The drawable resource id of the selected icon in the bottom bar item.
  */
 internal enum class BottomBarItem(
-    val route: BottomBarItemNavigation,
-    @StringRes val titleId: Int,
-    @DrawableRes val deselectedIconId: Int,
-    @DrawableRes val selectedIconId: Int,
+  val route: BottomBarItemNavigation,
+  @StringRes val titleId: Int,
+  @DrawableRes val deselectedIconId: Int,
+  @DrawableRes val selectedIconId: Int,
 ) {
-    OVERVIEW(
-        BottomBarItemNavigation.Overview,
-        CopyR.string.bottombar_overview,
-        R.drawable.ic_bottombar_item_overview_deselected,
-        R.drawable.ic_bottombar_item_overview_selected,
-    ),
-    ORGANIZATIONS(
-        BottomBarItemNavigation.Organizations,
-        CopyR.string.bottombar_healthcareproviders,
-        R.drawable.ic_bottombar_item_organizations_deselected,
-        R.drawable.ic_bottombar_item_organizations_selected,
-    ),
-    SETTINGS(
-        BottomBarItemNavigation.Settings,
-        CopyR.string.bottombar_settings,
-        R.drawable.ic_bottombar_item_settings_deselected,
-        R.drawable.ic_bottombar_item_settings_selected,
-    ),
+  OVERVIEW(
+    BottomBarItemNavigation.Overview,
+    CopyR.string.bottombar_overview,
+    R.drawable.ic_bottombar_item_overview_deselected,
+    R.drawable.ic_bottombar_item_overview_selected,
+  ),
+  ORGANIZATIONS(
+    BottomBarItemNavigation.Organizations,
+    CopyR.string.bottombar_healthcareproviders,
+    R.drawable.ic_bottombar_item_organizations_deselected,
+    R.drawable.ic_bottombar_item_organizations_selected,
+  ),
+  SETTINGS(
+    BottomBarItemNavigation.Settings,
+    CopyR.string.bottombar_settings,
+    R.drawable.ic_bottombar_item_settings_deselected,
+    R.drawable.ic_bottombar_item_settings_selected,
+  ),
 }

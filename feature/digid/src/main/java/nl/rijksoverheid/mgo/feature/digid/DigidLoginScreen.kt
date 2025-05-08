@@ -25,6 +25,7 @@ import androidx.core.util.Consumer
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
@@ -32,7 +33,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -42,99 +42,99 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
-    val activity = LocalContext.current as FragmentActivity
-    val viewModel: DigidLoginScreenViewModel = hiltViewModel()
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+  val activity = LocalContext.current as FragmentActivity
+  val viewModel: DigidLoginScreenViewModel = hiltViewModel()
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
-    DisposableEffect(Unit) {
-        val listener =
-            Consumer<Intent> { intent ->
-                viewModel.handleDeeplink(intent.dataString)
-            }
-        activity.addOnNewIntentListener(listener)
-        onDispose { activity.removeOnNewIntentListener(listener) }
+  DisposableEffect(Unit) {
+    val listener =
+      Consumer<Intent> { intent ->
+        viewModel.handleDeeplink(intent.dataString)
+      }
+    activity.addOnNewIntentListener(listener)
+    onDispose { activity.removeOnNewIntentListener(listener) }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.navigateToUrl.collectLatest { url ->
+      activity.launchBrowser(url)
     }
+  }
 
-    LaunchedEffect(Unit) {
-        viewModel.navigateToUrl.collectLatest { url ->
-            activity.launchBrowser(url)
-        }
+  LaunchedEffect(Unit) {
+    viewModel.loginFinished.collectLatest {
+      onNavigateToDigidMock()
     }
+  }
 
-    LaunchedEffect(Unit) {
-        viewModel.loginFinished.collectLatest {
-            onNavigateToDigidMock()
-        }
-    }
-
-    DigidLoginScreenContent(
-        viewState = viewState,
-        onLoginClicked = {
-            viewModel.login()
-        },
-    )
+  DigidLoginScreenContent(
+    viewState = viewState,
+    onLoginClicked = {
+      viewModel.login()
+    },
+  )
 }
 
 @Composable
 private fun DigidLoginScreenContent(
-    viewState: DigidLoginScreenViewState,
-    onLoginClicked: () -> Unit,
+  viewState: DigidLoginScreenViewState,
+  onLoginClicked: () -> Unit,
 ) {
-    MgoScaffold(
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        primaryButtonText = stringResource(id = CopyR.string.login_digid),
-        primaryButtonTheme = MgoButtonTheme.DIGID,
-        primaryButtonLoading = viewState.loading,
-        onPrimaryButtonClick = onLoginClicked,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = R.drawable.illustration_login),
-            contentDescription = null,
-        )
+  MgoScaffold(
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    primaryButtonText = stringResource(id = CopyR.string.login_digid),
+    primaryButtonTheme = MgoButtonTheme.DIGID,
+    primaryButtonLoading = viewState.loading,
+    onPrimaryButtonClick = onLoginClicked,
+  ) {
+    Image(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+          .align(Alignment.CenterHorizontally),
+      painter = painterResource(id = R.drawable.illustration_login),
+      contentDescription = null,
+    )
 
-        Text(
-            modifier = Modifier.padding(top = 32.dp),
-            text = stringResource(id = CopyR.string.login_heading),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-        )
+    Text(
+      modifier = Modifier.padding(top = 32.dp),
+      text = stringResource(id = CopyR.string.login_heading),
+      style = MaterialTheme.typography.headlineLarge,
+      fontWeight = FontWeight.Bold,
+    )
 
-        MgoHtmlText(
-            modifier = Modifier.padding(top = 16.dp),
-            html = stringResource(id = CopyR.string.login_subheading),
-            style = MaterialTheme.typography.bodyMedium,
-        )
+    MgoHtmlText(
+      modifier = Modifier.padding(top = 16.dp),
+      html = stringResource(id = CopyR.string.login_subheading),
+      style = MaterialTheme.typography.bodyMedium,
+    )
 
-        Spacer(modifier = Modifier.height(16.dp))
-    }
+    Spacer(modifier = Modifier.height(16.dp))
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun DigidLoginScreenIdlePreview() {
-    MgoTheme {
-        DigidLoginScreenContent(
-            viewState = DigidLoginScreenViewState(false),
-            onLoginClicked = {},
-        )
-    }
+  MgoTheme {
+    DigidLoginScreenContent(
+      viewState = DigidLoginScreenViewState(false),
+      onLoginClicked = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun DigidLoginScreenLoadingPreview() {
-    MgoTheme {
-        DigidLoginScreenContent(
-            viewState = DigidLoginScreenViewState(true),
-            onLoginClicked = {},
-        )
-    }
+  MgoTheme {
+    DigidLoginScreenContent(
+      viewState = DigidLoginScreenViewState(true),
+      onLoginClicked = {},
+    )
+  }
 }

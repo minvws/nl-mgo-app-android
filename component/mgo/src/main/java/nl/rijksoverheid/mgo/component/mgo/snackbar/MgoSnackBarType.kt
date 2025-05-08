@@ -17,10 +17,10 @@ import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
  * Determines the appearance of a [MgoSnackBar].
  */
 enum class MgoSnackBarType {
-    SUCCESS,
-    ERROR,
-    WARNING,
-    INFO,
+  SUCCESS,
+  ERROR,
+  WARNING,
+  INFO,
 }
 
 /**
@@ -29,12 +29,12 @@ enum class MgoSnackBarType {
  */
 @DrawableRes
 fun MgoSnackBarType.getIcon(): MgoSnackBarDataIcon {
-    return when (this) {
-        MgoSnackBarType.SUCCESS -> R.drawable.ic_snackbar_success
-        MgoSnackBarType.ERROR -> R.drawable.ic_snackbar_error
-        MgoSnackBarType.WARNING -> R.drawable.ic_snackbar_warning
-        MgoSnackBarType.INFO -> R.drawable.ic_snackbar_info
-    }
+  return when (this) {
+    MgoSnackBarType.SUCCESS -> R.drawable.ic_snackbar_success
+    MgoSnackBarType.ERROR -> R.drawable.ic_snackbar_error
+    MgoSnackBarType.WARNING -> R.drawable.ic_snackbar_warning
+    MgoSnackBarType.INFO -> R.drawable.ic_snackbar_info
+  }
 }
 
 /**
@@ -43,12 +43,12 @@ fun MgoSnackBarType.getIcon(): MgoSnackBarDataIcon {
  */
 @Composable
 fun MgoSnackBarType.getBackgroundColor(): Color {
-    return when (this) {
-        MgoSnackBarType.SUCCESS -> MaterialTheme.colorScheme.sentimentPositive()
-        MgoSnackBarType.ERROR -> MaterialTheme.colorScheme.sentimentCritical()
-        MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.sentimentWarning()
-        MgoSnackBarType.INFO -> MaterialTheme.colorScheme.sentimentInformative()
-    }
+  return when (this) {
+    MgoSnackBarType.SUCCESS -> MaterialTheme.colorScheme.sentimentPositive()
+    MgoSnackBarType.ERROR -> MaterialTheme.colorScheme.sentimentCritical()
+    MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.sentimentWarning()
+    MgoSnackBarType.INFO -> MaterialTheme.colorScheme.sentimentInformative()
+  }
 }
 
 /**
@@ -57,27 +57,30 @@ fun MgoSnackBarType.getBackgroundColor(): Color {
  */
 @Composable
 fun MgoSnackBarType.getContentColor(): Color {
-    return when (this) {
-        MgoSnackBarType.SUCCESS ->
-            MaterialTheme.colorScheme.contentPrimary(
-                isSystemDarkTheme =
-                    !LocalAppThemeProvider.current
-                        .appTheme.isDarkTheme(),
-            )
+  return when (this) {
+    MgoSnackBarType.SUCCESS ->
+      MaterialTheme.colorScheme.contentPrimary(
+        isSystemDarkTheme =
+          !LocalAppThemeProvider.current
+            .appTheme.isDarkTheme(),
+      )
 
-        MgoSnackBarType.ERROR ->
-            MaterialTheme.colorScheme.contentPrimary(
-                isSystemDarkTheme =
-                    !LocalAppThemeProvider.current
-                        .appTheme.isDarkTheme(),
-            )
+    MgoSnackBarType.ERROR ->
+      MaterialTheme.colorScheme.contentPrimary(
+        isSystemDarkTheme =
+          !LocalAppThemeProvider.current
+            .appTheme.isDarkTheme(),
+      )
 
-        MgoSnackBarType.WARNING -> MaterialTheme.colorScheme.contentPrimary(isSystemDarkTheme = false)
-        MgoSnackBarType.INFO ->
-            MaterialTheme.colorScheme.contentPrimary(
-                isSystemDarkTheme =
-                    !LocalAppThemeProvider.current
-                        .appTheme.isDarkTheme(),
-            )
-    }
+    MgoSnackBarType.WARNING ->
+      MaterialTheme.colorScheme.contentPrimary(
+        isSystemDarkTheme = false,
+      )
+    MgoSnackBarType.INFO ->
+      MaterialTheme.colorScheme.contentPrimary(
+        isSystemDarkTheme =
+          !LocalAppThemeProvider.current
+            .appTheme.isDarkTheme(),
+      )
+  }
 }

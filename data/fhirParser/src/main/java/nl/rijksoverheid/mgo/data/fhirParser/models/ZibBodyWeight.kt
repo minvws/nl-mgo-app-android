@@ -24,23 +24,21 @@ data class ZibBodyWeight(
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
     val bodySite: MgoCodeableConcept? = null,
-    val effectiveDateTime: String? = null,
+    val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
     val context: MgoReference? = null,
     val clothing: Clothing,
-    val comment: String? = null,
+    val comment: MgoString? = null,
     val id: String? = null,
     val category: List<MgoCodeableConcept>? = null,
-    val resourceType: String? = null,
-    val status: String? = null,
+    val resourceType: String,
+    val status: GpLaboratoryResultStatus? = null,
     val valueQuantity: MgoQuantity? = null
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     @Serializable
@@ -51,16 +49,6 @@ data class ZibBodyWeight(
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-BodyWeight"
         private const val cg_str1 = "R3"
-        private val cg_array2 = setOf(
-            "registered",
-            "preliminary",
-            "final",
-            "amended",
-            "corrected",
-            "cancelled",
-            "entered-in-error",
-            "unknown"
-        )
     }
 
 }

@@ -24,55 +24,55 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 internal object StorageModule {
-    private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
+  private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+  private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
-    @Provides
-    @Singleton
-    @Named("keyValueStore")
-    fun provideKeyValueStore(
-        @ApplicationContext context: Context,
-    ): KeyValueStore {
-        return DataStoreKeyValueStore(
-            dataStore = context.dataStore,
-        )
-    }
+  @Provides
+  @Singleton
+  @Named("keyValueStore")
+  fun provideKeyValueStore(
+    @ApplicationContext context: Context,
+  ): KeyValueStore {
+    return DataStoreKeyValueStore(
+      dataStore = context.dataStore,
+    )
+  }
 
-    @Provides
-    @Singleton
-    @Named("secureKeyValueStore")
-    fun provideSecureKeyValueStore(
-        @ApplicationContext context: Context,
-    ): KeyValueStore {
-        val encryptedSharedPreferences =
-            EncryptedSharedPreferences.create(
-                "app_secure",
-                masterKeyAlias,
-                context,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
-            )
-        return EncryptedSharedPreferencesSecureKeyValueStore(encryptedSharedPreferences)
-    }
+  @Provides
+  @Singleton
+  @Named("secureKeyValueStore")
+  fun provideSecureKeyValueStore(
+    @ApplicationContext context: Context,
+  ): KeyValueStore {
+    val encryptedSharedPreferences =
+      EncryptedSharedPreferences.create(
+        "app_secure",
+        masterKeyAlias,
+        context,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+      )
+    return EncryptedSharedPreferencesSecureKeyValueStore(encryptedSharedPreferences)
+  }
 
-    @Provides
-    @Singleton
-    fun provideEncryptedFileStore(
-        @ApplicationContext context: Context,
-    ): EncryptedFileStore {
-        return DefaultEncryptedEncryptedFileStore(
-            context = context,
-            masterKeyAlias = masterKeyAlias,
-        )
-    }
+  @Provides
+  @Singleton
+  fun provideEncryptedFileStore(
+    @ApplicationContext context: Context,
+  ): EncryptedFileStore {
+    return DefaultEncryptedEncryptedFileStore(
+      context = context,
+      masterKeyAlias = masterKeyAlias,
+    )
+  }
 
-    @Provides
-    @Singleton
-    fun provideCacheFileStore(
-        @ApplicationContext context: Context,
-    ): CacheFileStore {
-        return DefaultCacheFileStore(
-            context = context,
-        )
-    }
+  @Provides
+  @Singleton
+  fun provideCacheFileStore(
+    @ApplicationContext context: Context,
+  ): CacheFileStore {
+    return DefaultCacheFileStore(
+      context = context,
+    )
+  }
 }

@@ -23,79 +23,79 @@ import nl.rijksoverheid.mgo.component.theme.sentimentCritical
  */
 @Composable
 internal fun PinCode(
-    pinCode: List<Int>,
-    modifier: Modifier = Modifier,
-    error: Boolean = false,
+  pinCode: List<Int>,
+  modifier: Modifier = Modifier,
+  error: Boolean = false,
 ) {
-    val color =
-        if (error) {
-            MaterialTheme.colorScheme.sentimentCritical()
-        } else {
-            MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
-        }
-    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        PinCodeItemInstance(
-            color = color,
-            position = 1,
-            error = error,
-            fill = pinCode.isNotEmpty(),
-        )
-        PinCodeItemInstance(
-            color = color,
-            position = 2,
-            error = error,
-            fill = pinCode.size > 1,
-        )
-        PinCodeItemInstance(
-            color = color,
-            position = 3,
-            error = error,
-            fill = pinCode.size > 2,
-        )
-        PinCodeItemInstance(
-            color = color,
-            position = 4,
-            error = error,
-            fill = pinCode.size > 3,
-        )
-        PinCodeItemInstance(
-            color = color,
-            position = 5,
-            error = error,
-            fill = pinCode.size > 4,
-        )
+  val color =
+    if (error) {
+      MaterialTheme.colorScheme.sentimentCritical()
+    } else {
+      MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
     }
+  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+    PinCodeItemInstance(
+      color = color,
+      position = 1,
+      error = error,
+      fill = pinCode.isNotEmpty(),
+    )
+    PinCodeItemInstance(
+      color = color,
+      position = 2,
+      error = error,
+      fill = pinCode.size > 1,
+    )
+    PinCodeItemInstance(
+      color = color,
+      position = 3,
+      error = error,
+      fill = pinCode.size > 2,
+    )
+    PinCodeItemInstance(
+      color = color,
+      position = 4,
+      error = error,
+      fill = pinCode.size > 3,
+    )
+    PinCodeItemInstance(
+      color = color,
+      position = 5,
+      error = error,
+      fill = pinCode.size > 4,
+    )
+  }
 }
 
 @Composable
 private fun PinCodeItemInstance(
-    color: Color,
-    error: Boolean,
-    fill: Boolean,
-    position: Int,
-    modifier: Modifier = Modifier,
+  color: Color,
+  error: Boolean,
+  fill: Boolean,
+  position: Int,
+  modifier: Modifier = Modifier,
 ) {
-    PinCodeItem(
-        modifier = modifier.size(32.dp),
-        color = color,
-        error = error,
-        position = position,
-        fill = fill,
-    )
+  PinCodeItem(
+    modifier = modifier.size(32.dp),
+    color = color,
+    error = error,
+    position = position,
+    fill = fill,
+  )
 }
 
 @PreviewLightDark
 @Composable
 internal fun PinCodeEmptyPreview() {
-    MgoTheme {
-        PinCode(pinCode = listOf())
-    }
+  MgoTheme {
+    PinCode(pinCode = listOf())
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun PinCodeHalfFilledPreview() {
-    MgoTheme {
-        PinCode(pinCode = listOf(1, 2, 3))
-    }
+  MgoTheme {
+    PinCode(pinCode = listOf(1, 2, 3))
+  }
 }

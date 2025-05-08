@@ -46,188 +46,188 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 internal fun UiSchemaRowBinary(
-    row: UISchemaRow.Binary,
-    onClick: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
-    modifier: Modifier = Modifier,
+  row: UISchemaRow.Binary,
+  onClick: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
+  val context = LocalContext.current
 
-    // Immediately share file when it is finished downloading
-    LaunchedEffect(row) {
-        if (row is UISchemaRow.Binary.Downloaded) {
+  // Immediately share file when it is finished downloading
+  LaunchedEffect(row) {
+    if (row is UISchemaRow.Binary.Downloaded) {
+      context.shareFile(file = row.binary.file, contentType = row.binary.contentType)
+    }
+  }
+
+  when (row) {
+    is UISchemaRow.Binary.NotDownloaded.Idle -> {
+      UiSchemaRowBinary(row = row, loading = false, modifier = modifier.clickable { onClick(row) })
+    }
+
+    is UISchemaRow.Binary.Loading -> {
+      UiSchemaRowBinary(row = row, loading = true, modifier = modifier)
+    }
+
+    is UISchemaRow.Binary.Downloaded -> {
+      UiSchemaRowBinary(
+        row = row,
+        loading = false,
+        modifier =
+          modifier.clickable {
             context.shareFile(file = row.binary.file, contentType = row.binary.contentType)
-        }
+          },
+      )
+    }
+    is UISchemaRow.Binary.NotDownloaded.Error -> {
+      UISchemaRowError(
+        icon = R.drawable.ic_error,
+        iconTint = MaterialTheme.colorScheme.sentimentCritical(),
+        heading = CopyR.string.hc_documents_error,
+        onTryAgain = {
+          onClick(row)
+        },
+      )
     }
 
-    when (row) {
-        is UISchemaRow.Binary.NotDownloaded.Idle -> {
-            UiSchemaRowBinary(row = row, loading = false, modifier = modifier.clickable { onClick(row) })
-        }
-
-        is UISchemaRow.Binary.Loading -> {
-            UiSchemaRowBinary(row = row, loading = true, modifier = modifier)
-        }
-
-        is UISchemaRow.Binary.Downloaded -> {
-            UiSchemaRowBinary(
-                row = row,
-                loading = false,
-                modifier =
-                    modifier.clickable {
-                        context.shareFile(file = row.binary.file, contentType = row.binary.contentType)
-                    },
-            )
-        }
-        is UISchemaRow.Binary.NotDownloaded.Error -> {
-            UISchemaRowError(
-                icon = R.drawable.ic_error,
-                iconTint = MaterialTheme.colorScheme.sentimentCritical(),
-                heading = CopyR.string.hc_documents_error,
-                onTryAgain = {
-                    onClick(row)
-                },
-            )
-        }
-
-        is UISchemaRow.Binary.Empty -> {
-            UISchemaRowError(
-                icon = R.drawable.ic_info,
-                iconTint = MaterialTheme.colorScheme.sentimentInformative(),
-                heading = CopyR.string.hc_documents_no_document,
-                onTryAgain = null,
-            )
-        }
+    is UISchemaRow.Binary.Empty -> {
+      UISchemaRowError(
+        icon = R.drawable.ic_info,
+        iconTint = MaterialTheme.colorScheme.sentimentInformative(),
+        heading = CopyR.string.hc_documents_no_document,
+        onTryAgain = null,
+      )
     }
+  }
 }
 
 @Composable
 private fun UiSchemaRowBinary(
-    row: UISchemaRow,
-    loading: Boolean,
-    modifier: Modifier = Modifier,
+  row: UISchemaRow,
+  loading: Boolean,
+  modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-            color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-            text = row.value,
-            style = MaterialTheme.typography.bodyMedium,
-        )
+  Row(
+    modifier =
+      modifier
+        .fillMaxWidth()
+        .padding(16.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      modifier =
+        Modifier
+          .weight(1f)
+          .padding(end = 8.dp),
+      color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      text = row.value,
+      style = MaterialTheme.typography.bodyMedium,
+    )
 
-        if (loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(24.dp),
-                strokeWidth = 3.dp,
-                trackColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-                color = MaterialTheme.colorScheme.backgroundTertiary(),
-            )
-        } else {
-            Icon(
-                painter = painterResource(R.drawable.ic_attachment),
-                tint = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-                contentDescription = null,
-            )
-        }
+    if (loading) {
+      CircularProgressIndicator(
+        modifier = Modifier.size(24.dp),
+        strokeWidth = 3.dp,
+        trackColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+        color = MaterialTheme.colorScheme.backgroundTertiary(),
+      )
+    } else {
+      Icon(
+        painter = painterResource(R.drawable.ic_attachment),
+        tint = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+        contentDescription = null,
+      )
     }
+  }
 }
 
 @Composable
 private fun UISchemaRowError(
-    @DrawableRes icon: Int,
-    iconTint: Color,
-    @StringRes heading: Int,
-    onTryAgain: (() -> Unit)?,
-    modifier: Modifier = Modifier,
+  @DrawableRes icon: Int,
+  iconTint: Color,
+  @StringRes heading: Int,
+  onTryAgain: (() -> Unit)?,
+  modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Icon(painter = painterResource(icon), tint = iconTint, contentDescription = null)
+  Column(
+    modifier =
+      modifier
+        .fillMaxWidth()
+        .padding(24.dp),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Icon(painter = painterResource(icon), tint = iconTint, contentDescription = null)
+    Text(
+      modifier = Modifier.padding(top = 8.dp),
+      text = stringResource(heading),
+      textAlign = TextAlign.Center,
+      style = MaterialTheme.typography.bodyMedium,
+    )
+    if (onTryAgain != null) {
+      TextButton(onClick = onTryAgain) {
         Text(
-            modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(heading),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
+          text = stringResource(CopyR.string.common_try_again),
+          textAlign = TextAlign.Center,
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+          color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
         )
-        if (onTryAgain != null) {
-            TextButton(onClick = onTryAgain) {
-                Text(
-                    text = stringResource(CopyR.string.common_try_again),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-                )
-            }
-        }
+      }
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowBinaryIdlePreview() {
-    MgoTheme {
-        UiSchemaRowBinary(
-            row = UISchemaRow.Binary.NotDownloaded.Idle(heading = "Heading", value = "Value", binary = ""),
-            onClick = {},
-        )
-    }
+  MgoTheme {
+    UiSchemaRowBinary(
+      row = UISchemaRow.Binary.NotDownloaded.Idle(heading = "Heading", value = "Value", binary = ""),
+      onClick = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowBinaryLoadingPreview() {
-    MgoTheme {
-        UiSchemaRowBinary(
-            row = UISchemaRow.Binary.Loading(heading = "Heading", value = "Value"),
-            onClick = {},
-        )
-    }
+  MgoTheme {
+    UiSchemaRowBinary(
+      row = UISchemaRow.Binary.Loading(heading = "Heading", value = "Value"),
+      onClick = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowBinaryDownloadedPreview() {
-    MgoTheme {
-        UiSchemaRowBinary(
-            row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = TEST_FHIR_BINARY),
-            onClick = {},
-        )
-    }
+  MgoTheme {
+    UiSchemaRowBinary(
+      row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = TEST_FHIR_BINARY),
+      onClick = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowBinaryEmptyPreview() {
-    MgoTheme {
-        UiSchemaRowBinary(
-            row = UISchemaRow.Binary.Empty(heading = "Heading", value = "Value"),
-            onClick = {},
-        )
-    }
+  MgoTheme {
+    UiSchemaRowBinary(
+      row = UISchemaRow.Binary.Empty(heading = "Heading", value = "Value"),
+      onClick = {},
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowBinaryErrorPreview() {
-    MgoTheme {
-        UiSchemaRowBinary(
-            row = UISchemaRow.Binary.NotDownloaded.Error(heading = "Heading", value = "Value", binary = ""),
-            onClick = {},
-        )
-    }
+  MgoTheme {
+    UiSchemaRowBinary(
+      row = UISchemaRow.Binary.NotDownloaded.Error(heading = "Heading", value = "Value", binary = ""),
+      onClick = {},
+    )
+  }
 }

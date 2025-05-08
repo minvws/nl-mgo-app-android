@@ -29,58 +29,67 @@ import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
  */
 @Composable
 fun MgoHtmlText(
-    html: String,
-    modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.bodyMedium,
-    linkColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+  html: String,
+  modifier: Modifier = Modifier,
+  style: TextStyle = MaterialTheme.typography.bodyMedium,
+  linkColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
 ) {
-    val annotatedString =
-        buildAnnotatedString {
-            var currentIndex = 0
-            val regex = Regex("<(b|a href=['\"]([^'\"]+)['\"])>(.+?)</(b|a)>")
-            regex.findAll(html).forEach { matchResult ->
-                val tag = matchResult.groups[1]?.value
-                val url = matchResult.groups[2]?.value
-                val content = matchResult.groups[3]?.value ?: ""
-                val start = matchResult.range.first
-                val end = matchResult.range.last + 1
+  val annotatedString =
+    buildAnnotatedString {
+      var currentIndex = 0
+      val regex = Regex("<(b|a href=['\"]([^'\"]+)['\"])>(.+?)</(b|a)>")
+      regex.findAll(html).forEach { matchResult ->
+        val tag = matchResult.groups[1]?.value
+        val url = matchResult.groups[2]?.value
+        val content = matchResult.groups[3]?.value ?: ""
+        val start = matchResult.range.first
+        val end = matchResult.range.last + 1
 
-                if (currentIndex < start) {
-                    append(html.substring(currentIndex, start))
-                }
-
-                if (tag?.startsWith("a href") == true && url != null) {
-                    withLink(
-                        LinkAnnotation.Url(
-                            url = url,
-                            styles = TextLinkStyles(style = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline)),
-                        ),
-                    ) {
-                        append(content)
-                    }
-                } else if (tag == "b") {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(content)
-                    }
-                }
-
-                currentIndex = end
-            }
-            if (currentIndex < html.length) {
-                append(html.substring(currentIndex, html.length))
-            }
+        if (currentIndex < start) {
+          append(html.substring(currentIndex, start))
         }
-    Text(
-        modifier = modifier,
-        text = annotatedString,
-        style = style,
-    )
+
+        if (tag?.startsWith("a href") == true && url != null) {
+          withLink(
+            LinkAnnotation.Url(
+              url = url,
+              styles =
+                TextLinkStyles(
+                  style =
+                    SpanStyle(
+                      color = linkColor,
+                      textDecoration = TextDecoration.Underline,
+                    ),
+                ),
+            ),
+          ) {
+            append(content)
+          }
+        } else if (tag == "b") {
+          withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+            append(content)
+          }
+        }
+
+        currentIndex = end
+      }
+      if (currentIndex < html.length) {
+        append(html.substring(currentIndex, html.length))
+      }
+    }
+  Text(
+    modifier = modifier,
+    text = annotatedString,
+    style = style,
+  )
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoHtmlTextPreview() {
-    MgoTheme {
-        MgoHtmlText(html = "Hello <b>World</b>. This is a <a href='https://www.google.nl'>link</a>.")
-    }
+  MgoTheme {
+    MgoHtmlText(
+      html = "Hello <b>World</b>. This is a <a href='https://www.google.nl'>link</a>.",
+    )
+  }
 }

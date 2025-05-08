@@ -15,19 +15,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpEncounterReport(
-    val date: String? = null,
+    val date: MgoDateTime? = null,
     val identifier: MgoIdentifier? = null,
     val author: List<MgoReference>? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport",
     val section: List<Section>? = null,
     val encounter: MgoReference? = null,
     val type: List<MgoCoding>? = null,
-    val title: String? = null,
+    val title: MgoString? = null,
     val referenceId: String,
     val fhirVersion: String = "R3",
     val id: String? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {

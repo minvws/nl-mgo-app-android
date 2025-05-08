@@ -25,8 +25,8 @@ data class ZibMedicalDeviceRequest(
     val intent: MgoCodeableConcept? = null,
     val codeCodeableConcept: MgoCodeableConcept? = null,
     val referenceId: String,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {

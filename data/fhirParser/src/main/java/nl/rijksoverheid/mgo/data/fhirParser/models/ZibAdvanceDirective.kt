@@ -15,31 +15,26 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibAdvanceDirective(
-    val dateTime: String? = null,
-    val disorder: MgoReference? = null,
-    val consentingParty: List<MgoReference>? = null,
-    val typeOfLivingWill: List<MgoCodeableConcept>? = null,
+    val sourceReference: MgoReference? = null,
+    val dateTime: MgoDateTime? = null,
+    val identifier: MgoIdentifier? = null,
+    val sourceIdentifier: MgoIdentifier? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective",
-    val fhirVersion: String = "R3",
-    val comment: String? = null,
-    val source: Source,
-    val id: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
+    val sourceAttachment: MgoAttachment? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val disorder: MgoReference? = null,
+    val consentingParty: MgoReference? = null,
+    val typeOfLivingWill: List<MgoCodeableConcept>? = null,
+    val fhirVersion: String = "R3",
+    val comment: MgoString? = null,
+    val id: String? = null,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
-
-    @Serializable
-    data class Source(
-        val reference: MgoReference? = null,
-        val identifier: MgoIdentifier? = null,
-        val attachment: Attachment
-    )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective"

@@ -11,13 +11,13 @@ import javax.inject.Singleton
 
 @Module
 @TestInstallIn(
-    components = [SingletonComponent::class],
-    replaces = [EnvironmentModule::class],
+  components = [SingletonComponent::class],
+  replaces = [EnvironmentModule::class],
 )
 object TestEnvironmentModule {
-    @Provides
-    @Singleton
-    fun provideEnvironmentRepository(): EnvironmentRepository {
-        return TestEnvironmentRepository()
-    }
+  @Provides
+  @Singleton
+  fun provideEnvironmentRepository(): EnvironmentRepository {
+    return TestEnvironmentRepository()
+  }
 }

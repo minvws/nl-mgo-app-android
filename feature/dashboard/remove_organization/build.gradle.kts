@@ -1,12 +1,12 @@
 plugins {
-    id("AndroidFeaturePlugin")
+  id("AndroidFeaturePlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.dashboard.removeOrganization"
+  namespace = "nl.rijksoverheid.mgo.feature.dashboard.removeOrganization"
 }
 
 dependencies {
-    implementation(projects.data.localisation)
-    testImplementation(testFixtures((projects.data.localisation)))
+  implementation(projects.data.localisation)
+  testImplementation(testFixtures((projects.data.localisation)))
 }

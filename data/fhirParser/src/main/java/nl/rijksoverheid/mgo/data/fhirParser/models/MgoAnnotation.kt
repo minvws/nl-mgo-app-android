@@ -15,7 +15,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoAnnotation(
-    val author: MgoReference? = null,
+    val author: MgoReferenceProps? = null,
+    val _type: String = "annotation",
     val time: String? = null,
     val text: String? = null
-)
+) {
+
+    init {
+        require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+    }
+
+    companion object {
+        private const val cg_str0 = "annotation"
+    }
+
+}

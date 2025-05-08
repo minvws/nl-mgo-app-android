@@ -21,10 +21,10 @@ data class ZibProduct(
     val form: MgoCodeableConcept? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Product",
     val fhirVersion: String = "R3",
-    val description: String? = null,
+    val description: MgoString? = null,
     val id: String? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {

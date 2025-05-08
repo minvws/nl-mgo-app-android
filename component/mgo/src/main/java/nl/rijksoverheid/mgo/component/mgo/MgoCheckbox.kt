@@ -19,39 +19,39 @@ import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
  */
 @Composable
 fun MgoCheckbox(
-    checked: Boolean,
-    onCheckedChange: (checked: Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+  checked: Boolean,
+  onCheckedChange: (checked: Boolean) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val checkedColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
-    val unCheckedColor = MaterialTheme.colorScheme.symbolsPrimary()
-    val checkMarkColor = MaterialTheme.colorScheme.backgroundSecondary()
-    Checkbox(
-        modifier = modifier,
-        checked = checked,
-        onCheckedChange = onCheckedChange,
-        colors =
-            CheckboxDefaults.colors().copy(
-                checkedBoxColor = checkedColor,
-                checkedBorderColor = checkedColor,
-                checkedCheckmarkColor = checkMarkColor,
-                uncheckedBorderColor = unCheckedColor,
-            ),
-    )
+  val checkedColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
+  val unCheckedColor = MaterialTheme.colorScheme.symbolsPrimary()
+  val checkMarkColor = MaterialTheme.colorScheme.backgroundSecondary()
+  Checkbox(
+    modifier = modifier,
+    checked = checked,
+    onCheckedChange = onCheckedChange,
+    colors =
+      CheckboxDefaults.colors().copy(
+        checkedBoxColor = checkedColor,
+        checkedBorderColor = checkedColor,
+        checkedCheckmarkColor = checkMarkColor,
+        uncheckedBorderColor = unCheckedColor,
+      ),
+  )
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoCheckboxCheckedPreview() {
-    MgoTheme {
-        MgoCheckbox(checked = true, onCheckedChange = {})
-    }
+  MgoTheme {
+    MgoCheckbox(checked = true, onCheckedChange = {})
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoCheckboxUnCheckedPreview() {
-    MgoTheme {
-        MgoCheckbox(checked = false, onCheckedChange = {})
-    }
+  MgoTheme {
+    MgoCheckbox(checked = false, onCheckedChange = {})
+  }
 }

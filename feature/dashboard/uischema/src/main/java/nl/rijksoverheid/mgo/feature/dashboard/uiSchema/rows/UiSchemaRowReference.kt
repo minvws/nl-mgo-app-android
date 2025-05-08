@@ -29,37 +29,37 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 internal fun UiSchemaRowReference(
-    row: UISchemaRow.Reference,
-    onClick: (reference: UISchemaRow.Reference) -> Unit,
-    modifier: Modifier = Modifier,
+  row: UISchemaRow.Reference,
+  onClick: (reference: UISchemaRow.Reference) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            modifier =
-                modifier.weight(1f)
-                    .clickable { onClick(row) }
-                    .padding(16.dp),
-            text = row.value,
-            style = MaterialTheme.typography.bodyMedium,
-        )
+  Row(verticalAlignment = Alignment.CenterVertically) {
+    Text(
+      modifier =
+        modifier.weight(1f)
+          .clickable { onClick(row) }
+          .padding(16.dp),
+      text = row.value,
+      style = MaterialTheme.typography.bodyMedium,
+    )
 
-        IconButton(onClick = {}) {
-            Icon(
-                painter = painterResource(R.drawable.ic_chevron),
-                contentDescription = stringResource(CopyR.string.common_next),
-                tint = MaterialTheme.colorScheme.symbolsSecondary(),
-            )
-        }
+    IconButton(onClick = {}) {
+      Icon(
+        painter = painterResource(R.drawable.ic_chevron),
+        contentDescription = stringResource(CopyR.string.common_next),
+        tint = MaterialTheme.colorScheme.symbolsSecondary(),
+      )
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun UiSchemaRowReferencePreview() {
-    MgoTheme {
-        UiSchemaRowReference(
-            row = UISchemaRow.Reference(heading = "Heading", value = "Value", referenceId = "1"),
-            onClick = {},
-        )
-    }
+  MgoTheme {
+    UiSchemaRowReference(
+      row = UISchemaRow.Reference(heading = "Heading", value = "Value", referenceId = "1"),
+      onClick = {},
+    )
+  }
 }

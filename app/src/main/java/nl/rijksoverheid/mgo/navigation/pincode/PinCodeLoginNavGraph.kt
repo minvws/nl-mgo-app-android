@@ -17,66 +17,66 @@ import nl.rijksoverheid.mgo.navigation.mgoComposableDialog
  * @param navController The nav controller used in this navigation.
  */
 fun NavGraphBuilder.addPinCodeLoginNavGraph(
-    navController: NavController,
-    activity: MainActivity,
+  navController: NavController,
+  activity: MainActivity,
 ) {
-    navigation<PinCodeLoginNavigation.Root>(PinCodeLoginNavigation.Login) {
-        mgoComposable<PinCodeLoginNavigation.Login> {
-            PinCodeLoginScreen(
-                onNavigateForgotPin = {
-                    navController.navigate(PinCodeLoginNavigation.Forgot)
-                },
-                onPinValidated = {
-                    navController.navigate(DashboardNavigation.Root) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                },
-            )
-        }
-
-        mgoComposableDialog<PinCodeLoginNavigation.LoginDialog> {
-            // This dialog is blocking, so quit the app if going back
-            BackHandler {
-                activity.finish()
+  navigation<PinCodeLoginNavigation.Root>(PinCodeLoginNavigation.Login) {
+    mgoComposable<PinCodeLoginNavigation.Login> {
+      PinCodeLoginScreen(
+        onNavigateForgotPin = {
+          navController.navigate(PinCodeLoginNavigation.Forgot)
+        },
+        onPinValidated = {
+          navController.navigate(DashboardNavigation.Root) {
+            popUpTo(navController.graph.id) {
+              inclusive = true
             }
-
-            PinCodeLoginScreen(
-                onNavigateForgotPin = {
-                    navController.navigate(PinCodeLoginNavigation.Forgot)
-                },
-                onPinValidated = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        mgoComposable<PinCodeLoginNavigation.Forgot> {
-            PinCodeForgotScreen(
-                onNavigateToPinCodeDeleted = {
-                    navController.navigate(PinCodeLoginNavigation.Deleted) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        mgoComposable<PinCodeLoginNavigation.Deleted> {
-            PinCodeDeletedScreen(
-                onNavigateToPinCodeCreate = {
-                    navController.navigate(PinCodeCreateNavigation.Create) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                },
-            )
-        }
+          }
+        },
+      )
     }
+
+    mgoComposableDialog<PinCodeLoginNavigation.LoginDialog> {
+      // This dialog is blocking, so quit the app if going back
+      BackHandler {
+        activity.finish()
+      }
+
+      PinCodeLoginScreen(
+        onNavigateForgotPin = {
+          navController.navigate(PinCodeLoginNavigation.Forgot)
+        },
+        onPinValidated = {
+          navController.popBackStack()
+        },
+      )
+    }
+
+    mgoComposable<PinCodeLoginNavigation.Forgot> {
+      PinCodeForgotScreen(
+        onNavigateToPinCodeDeleted = {
+          navController.navigate(PinCodeLoginNavigation.Deleted) {
+            popUpTo(navController.graph.id) {
+              inclusive = true
+            }
+          }
+        },
+        onNavigateBack = {
+          navController.popBackStack()
+        },
+      )
+    }
+
+    mgoComposable<PinCodeLoginNavigation.Deleted> {
+      PinCodeDeletedScreen(
+        onNavigateToPinCodeCreate = {
+          navController.navigate(PinCodeCreateNavigation.Create) {
+            popUpTo(navController.graph.id) {
+              inclusive = true
+            }
+          }
+        },
+      )
+    }
+  }
 }

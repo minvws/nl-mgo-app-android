@@ -10,39 +10,39 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
  * @param listItemsState The [ListItemsState].
  */
 internal data class HealthCategoryScreenViewState(
-    val category: HealthCareCategory,
-    val showErrorBanner: Boolean,
-    val listItemsState: ListItemsState,
+  val category: HealthCareCategory,
+  val showErrorBanner: Boolean,
+  val listItemsState: ListItemsState,
 ) {
+  /**
+   * Represents the state of the list item.
+   */
+  internal sealed class ListItemsState {
     /**
-     * Represents the state of the list item.
+     * Indicates that the list item is loading.
      */
-    internal sealed class ListItemsState {
-        /**
-         * Indicates that the list item is loading.
-         */
-        data object Loading : ListItemsState()
+    data object Loading : ListItemsState()
 
-        /**
-         * Indicates that the list item is loaded.
-         *
-         * @param listItemsGroup A list of [HealthCategoryScreenListItemsGroup].
-         */
-        data class Loaded(val listItemsGroup: List<HealthCategoryScreenListItemsGroup>) : ListItemsState()
+    /**
+     * Indicates that the list item is loaded.
+     *
+     * @param listItemsGroup A list of [HealthCategoryScreenListItemsGroup].
+     */
+    data class Loaded(val listItemsGroup: List<HealthCategoryScreenListItemsGroup>) : ListItemsState()
 
-        /**
-         * Indicates that there is no data to display.
-         */
-        data object NoData : ListItemsState()
+    /**
+     * Indicates that there is no data to display.
+     */
+    data object NoData : ListItemsState()
+  }
+
+  companion object {
+    fun initialState(category: HealthCareCategory): HealthCategoryScreenViewState {
+      return HealthCategoryScreenViewState(
+        category = category,
+        showErrorBanner = false,
+        listItemsState = ListItemsState.Loading,
+      )
     }
-
-    companion object {
-        fun initialState(category: HealthCareCategory): HealthCategoryScreenViewState {
-            return HealthCategoryScreenViewState(
-                category = category,
-                showErrorBanner = false,
-                listItemsState = ListItemsState.Loading,
-            )
-        }
-    }
+  }
 }

@@ -19,64 +19,64 @@ import nl.rijksoverheid.mgo.navigation.mgoComposable
  * @param navController The nav controller used in this navigation.
  */
 fun NavGraphBuilder.addDashboardOverviewNavGraph(
-    rootNavController: NavController,
-    navController: NavController,
+  rootNavController: NavController,
+  navController: NavController,
 ) {
-    navigation<DashboardNavigation.Overview.Root>(DashboardNavigation.Overview.HealthCareCategories) {
-        mgoComposable<DashboardNavigation.Overview.HealthCareCategories>(animate = false) {
-            HealthCategoriesScreen(
-                appBarTitle = stringResource(R.string.overview_heading),
-                subHeading = stringResource(R.string.overview_subheading),
-                onNavigateToLocalisation = {
-                    rootNavController.navigate(LocalisationNavigation.Root(false))
-                },
-                onNavigateToHealthCategory = { category, _ ->
-                    navController.navigate(
-                        DashboardNavigation.Overview.HealthCareCategory(category = category),
-                    )
-                },
-                onNavigateRemoveOrganization = { },
-            )
-        }
-
-        mgoComposable<DashboardNavigation.Overview.HealthCareCategory> { backStackEntry ->
-            val route = backStackEntry.toRoute<DashboardNavigation.Overview.HealthCareCategory>()
-            HealthCategoryScreen(
-                category = route.category,
-                onClickListItem = { organization, uiSchema ->
-                    navController.navigate(
-                        DashboardNavigation.Overview.UiSchema(
-                            organization = organization,
-                            mgoResource = uiSchema,
-                            isSummary = true,
-                        ),
-                    )
-                },
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        mgoComposable<DashboardNavigation.Overview.UiSchema> { backStackEntry ->
-            val route = backStackEntry.toRoute<DashboardNavigation.Overview.UiSchema>()
-            UiSchemaScreen(
-                organization = route.organization,
-                mgoResource = route.mgoResource,
-                isSummary = route.isSummary,
-                onNavigateToUiSchema = { organization, mgoResource ->
-                    val uiSchema =
-                        DashboardNavigation.Overview.UiSchema(
-                            organization = organization,
-                            mgoResource = mgoResource,
-                            isSummary = false,
-                        )
-                    navController.navigate(uiSchema)
-                },
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-            )
-        }
+  navigation<DashboardNavigation.Overview.Root>(DashboardNavigation.Overview.HealthCareCategories) {
+    mgoComposable<DashboardNavigation.Overview.HealthCareCategories>(animate = false) {
+      HealthCategoriesScreen(
+        appBarTitle = stringResource(R.string.overview_heading),
+        subHeading = stringResource(R.string.overview_subheading),
+        onNavigateToLocalisation = {
+          rootNavController.navigate(LocalisationNavigation.Root(false))
+        },
+        onNavigateToHealthCategory = { category, _ ->
+          navController.navigate(
+            DashboardNavigation.Overview.HealthCareCategory(category = category),
+          )
+        },
+        onNavigateRemoveOrganization = { },
+      )
     }
+
+    mgoComposable<DashboardNavigation.Overview.HealthCareCategory> { backStackEntry ->
+      val route = backStackEntry.toRoute<DashboardNavigation.Overview.HealthCareCategory>()
+      HealthCategoryScreen(
+        category = route.category,
+        onClickListItem = { organization, uiSchema ->
+          navController.navigate(
+            DashboardNavigation.Overview.UiSchema(
+              organization = organization,
+              mgoResource = uiSchema,
+              isSummary = true,
+            ),
+          )
+        },
+        onNavigateBack = {
+          navController.popBackStack()
+        },
+      )
+    }
+
+    mgoComposable<DashboardNavigation.Overview.UiSchema> { backStackEntry ->
+      val route = backStackEntry.toRoute<DashboardNavigation.Overview.UiSchema>()
+      UiSchemaScreen(
+        organization = route.organization,
+        mgoResource = route.mgoResource,
+        isSummary = route.isSummary,
+        onNavigateToUiSchema = { organization, mgoResource ->
+          val uiSchema =
+            DashboardNavigation.Overview.UiSchema(
+              organization = organization,
+              mgoResource = mgoResource,
+              isSummary = false,
+            )
+          navController.navigate(uiSchema)
+        },
+        onNavigateBack = {
+          navController.popBackStack()
+        },
+      )
+    }
+  }
 }

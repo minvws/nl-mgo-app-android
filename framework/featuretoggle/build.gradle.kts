@@ -1,15 +1,15 @@
 plugins {
-    id("AndroidFrameworkPlugin")
+  id("AndroidFrameworkPlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.framework.featuretoggle"
-    testFixtures {
-        enable = true
-    }
+  namespace = "nl.rijksoverheid.mgo.framework.featuretoggle"
+  testFixtures {
+    enable = true
+  }
 }
 
 dependencies {
-    implementation(projects.framework.storage)
-    implementation(projects.framework.environment)
+  implementation(projects.framework.storage)
+  implementation(projects.framework.environment)
 }

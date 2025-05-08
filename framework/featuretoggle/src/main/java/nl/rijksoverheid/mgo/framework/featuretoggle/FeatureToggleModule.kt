@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class FeatureToggleModule {
-    @Binds
-    @Singleton
-    abstract fun provideFeatureToggleRepository(default: DefaultFeatureToggleRepository): FeatureToggleRepository
+  @Binds
+  @Singleton
+  abstract fun provideFeatureToggleRepository(default: DefaultFeatureToggleRepository): FeatureToggleRepository
 }

@@ -1,12 +1,12 @@
 plugins {
-    id("AndroidFeaturePlugin")
+  id("AndroidFeaturePlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.settings.about.accessibility"
+  namespace = "nl.rijksoverheid.mgo.feature.settings.about.accessibility"
 }
 
 dependencies {
-    implementation(projects.framework.environment)
-    testImplementation(testFixtures(projects.framework.environment))
+  implementation(projects.framework.environment)
+  testImplementation(testFixtures(projects.framework.environment))
 }

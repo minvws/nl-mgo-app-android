@@ -52,290 +52,296 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun MgoButton(
-    buttonText: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    buttonTheme: MgoButtonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
-    isLoading: Boolean = false,
+  buttonText: String,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  buttonTheme: MgoButtonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
+  isLoading: Boolean = false,
 ) {
-    val backgroundColor = buttonTheme.getBackgroundColor()
-    val buttonColors =
-        ButtonDefaults.buttonColors(
-            containerColor = backgroundColor,
-            contentColor = buttonTheme.getContentColor(),
-        )
-    if (backgroundColor == Color.Transparent) {
-        TextButton(
-            modifier = modifier.heightIn(min = 48.dp),
-            contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
-            content = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (isLoading) {
-                        LoadingButtonContent(contentColor)
-                    } else {
-                        IdleButtonContent(
-                            buttonText = buttonText,
-                            materialIcon = buttonTheme.getMaterialIcon(),
-                            icon = buttonTheme.getIcon(),
-                        )
-                    }
-                }
-            },
-            onClick = {
-                if (!isLoading) {
-                    onClick()
-                }
-            },
-            colors = buttonColors,
-        )
-    } else {
-        Button(
-            modifier = modifier.heightIn(min = 48.dp),
-            contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
-            content = {
-                if (isLoading) {
-                    LoadingButtonContent(buttonTheme.getContentColor())
-                } else {
-                    IdleButtonContent(
-                        buttonText = buttonText,
-                        materialIcon = buttonTheme.getMaterialIcon(),
-                        icon = buttonTheme.getIcon(),
-                    )
-                }
-            },
-            onClick = {
-                if (!isLoading) {
-                    onClick()
-                }
-            },
-            colors = buttonColors,
-        )
-    }
+  val backgroundColor = buttonTheme.getBackgroundColor()
+  val buttonColors =
+    ButtonDefaults.buttonColors(
+      containerColor = backgroundColor,
+      contentColor = buttonTheme.getContentColor(),
+    )
+  if (backgroundColor == Color.Transparent) {
+    TextButton(
+      modifier = modifier.heightIn(min = 48.dp),
+      contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
+      content = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+          if (isLoading) {
+            LoadingButtonContent(contentColor)
+          } else {
+            IdleButtonContent(
+              buttonText = buttonText,
+              materialIcon = buttonTheme.getMaterialIcon(),
+              icon = buttonTheme.getIcon(),
+            )
+          }
+        }
+      },
+      onClick = {
+        if (!isLoading) {
+          onClick()
+        }
+      },
+      colors = buttonColors,
+    )
+  } else {
+    Button(
+      modifier = modifier.heightIn(min = 48.dp),
+      contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
+      content = {
+        if (isLoading) {
+          LoadingButtonContent(buttonTheme.getContentColor())
+        } else {
+          IdleButtonContent(
+            buttonText = buttonText,
+            materialIcon = buttonTheme.getMaterialIcon(),
+            icon = buttonTheme.getIcon(),
+          )
+        }
+      },
+      onClick = {
+        if (!isLoading) {
+          onClick()
+        }
+      },
+      colors = buttonColors,
+    )
+  }
 }
 
 @Composable
 private fun LoadingButtonContent(
-    contentColor: Color,
-    modifier: Modifier = Modifier,
+  contentColor: Color,
+  modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(22.dp),
-            strokeWidth = 3.dp,
-            trackColor = contentColor.copy(alpha = 0.5f),
-            color = contentColor,
-        )
-        Text(
-            modifier = Modifier.padding(start = 8.dp),
-            text = stringResource(CopyR.string.common_loading),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-        )
-    }
+  Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    CircularProgressIndicator(
+      modifier = Modifier.size(22.dp),
+      strokeWidth = 3.dp,
+      trackColor = contentColor.copy(alpha = 0.5f),
+      color = contentColor,
+    )
+    Text(
+      modifier = Modifier.padding(start = 8.dp),
+      text = stringResource(CopyR.string.common_loading),
+      style = MaterialTheme.typography.bodyMedium,
+      fontWeight = FontWeight.Bold,
+    )
+  }
 }
 
 @Composable
 private fun IdleButtonContent(
-    buttonText: String,
-    materialIcon: ImageVector?,
-    @DrawableRes icon: Int?,
-    modifier: Modifier = Modifier,
+  buttonText: String,
+  materialIcon: ImageVector?,
+  @DrawableRes icon: Int?,
+  modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        when {
-            materialIcon != null -> {
-                Icon(
-                    modifier = Modifier.padding(end = 8.dp),
-                    imageVector = materialIcon,
-                    contentDescription = null,
-                )
-            }
+  Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    when {
+      materialIcon != null -> {
+        Icon(
+          modifier = Modifier.padding(end = 8.dp),
+          imageVector = materialIcon,
+          contentDescription = null,
+        )
+      }
 
-            icon != null -> {
-                Image(
-                    modifier = Modifier.padding(end = 8.dp),
-                    painter = painterResource(icon),
-                    contentDescription = null,
-                )
-            }
-        }
-
-        Text(text = buttonText, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+      icon != null -> {
+        Image(
+          modifier = Modifier.padding(end = 8.dp),
+          painter = painterResource(icon),
+          contentDescription = null,
+        )
+      }
     }
+
+    Text(
+      text = buttonText,
+      style = MaterialTheme.typography.bodyMedium,
+      fontWeight = FontWeight.Bold,
+    )
+  }
 }
 
 enum class MgoButtonTheme {
-    PRIMARY_DEFAULT,
-    PRIMARY_NEGATIVE,
-    SECONDARY_DEFAULT,
-    SECONDARY_NEGATIVE,
-    TERTIARY_DEFAULT,
-    TERTIARY_NEGATIVE,
-    LINK,
-    DIGID,
+  PRIMARY_DEFAULT,
+  PRIMARY_NEGATIVE,
+  SECONDARY_DEFAULT,
+  SECONDARY_NEGATIVE,
+  TERTIARY_DEFAULT,
+  TERTIARY_NEGATIVE,
+  LINK,
+  DIGID,
 }
 
 @Composable
 private fun MgoButtonTheme.getBackgroundColor(): Color {
-    return when (this) {
-        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
-        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalBackground()
-        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
-        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalBackground()
-        MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.digid()
-        MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
-        MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
-        MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
-    }
+  return when (this) {
+    MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
+    MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalBackground()
+    MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
+    MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalBackground()
+    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.digid()
+    MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
+    MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
+    MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
+  }
 }
 
 private fun MgoButtonTheme.getMaterialIcon(): ImageVector? {
-    return when (this) {
-        MgoButtonTheme.LINK -> Icons.AutoMirrored.Outlined.OpenInNew
-        else -> null
-    }
+  return when (this) {
+    MgoButtonTheme.LINK -> Icons.AutoMirrored.Outlined.OpenInNew
+    else -> null
+  }
 }
 
 @DrawableRes
 private fun MgoButtonTheme.getIcon(): Int? {
-    return when (this) {
-        MgoButtonTheme.DIGID -> R.drawable.ic_digid
-        else -> null
-    }
+  return when (this) {
+    MgoButtonTheme.DIGID -> R.drawable.ic_digid
+    else -> null
+  }
 }
 
 @Composable
 private fun MgoButtonTheme.getContentColor(): Color {
-    return when (this) {
-        MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultText()
-        MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalText()
-        MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
-        MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalText()
-        MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
-        MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveTertiaryCriticalText()
-        MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultText(true)
-        MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
-    }
+  return when (this) {
+    MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultText()
+    MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalText()
+    MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
+    MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalText()
+    MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
+    MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveTertiaryCriticalText()
+    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultText(true)
+    MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonPrimaryDefaultPreview() {
-    MgoTheme {
-        MgoButton(modifier = Modifier.padding(16.dp), buttonText = "Click me", onClick = { }, buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT)
-    }
+  MgoTheme {
+    MgoButton(modifier = Modifier.padding(16.dp), buttonText = "Click me", onClick = {
+    }, buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT)
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonPrimaryDefaultLoadingPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
-            isLoading = true,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
+      isLoading = true,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonPrimaryNegativePreview() {
-    MgoTheme {
-        MgoButton(modifier = Modifier.padding(16.dp), buttonText = "Click me", onClick = { }, buttonTheme = MgoButtonTheme.PRIMARY_NEGATIVE)
-    }
+  MgoTheme {
+    MgoButton(modifier = Modifier.padding(16.dp), buttonText = "Click me", onClick = {
+    }, buttonTheme = MgoButtonTheme.PRIMARY_NEGATIVE)
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonSecondaryDefaultPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonSecondaryNegativePreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.SECONDARY_NEGATIVE,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.SECONDARY_NEGATIVE,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonTertiaryDefaultPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonTertiaryDefaultLoadingPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
-            isLoading = true,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.TERTIARY_DEFAULT,
+      isLoading = true,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonTertiaryNegativePreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonDigidPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.DIGID,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.DIGID,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun MgoButtonLinkPreview() {
-    MgoTheme {
-        MgoButton(
-            modifier = Modifier.padding(16.dp),
-            buttonText = "Click me",
-            onClick = { },
-            buttonTheme = MgoButtonTheme.LINK,
-        )
-    }
+  MgoTheme {
+    MgoButton(
+      modifier = Modifier.padding(16.dp),
+      buttonText = "Click me",
+      onClick = { },
+      buttonTheme = MgoButtonTheme.LINK,
+    )
+  }
 }

@@ -8,123 +8,123 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class PropositionScreenViewModelTest {
-    private val setHasSeenOnboarding = TestSetHasSeenOnboarding()
+  private val setHasSeenOnboarding = TestSetHasSeenOnboarding()
 
-    @Test
-    fun `Given ViewModel, When setHasSeenOnboarding is called, Then use case is called`() {
-        // Given
-        val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Prod(versionCode = 1, deeplinkHost = "mgo"))
-        val viewModel =
-            PropositionScreenViewModel(
-                environmentRepository = environmentRepository,
-                setHasSeenOnboarding = setHasSeenOnboarding,
-            )
+  @Test
+  fun `Given ViewModel, When setHasSeenOnboarding is called, Then use case is called`() {
+    // Given
+    val environmentRepository = TestEnvironmentRepository()
+    environmentRepository.setEnvironment(Environment.Prod(versionCode = 1, deeplinkHost = "mgo"))
+    val viewModel =
+      PropositionScreenViewModel(
+        environmentRepository = environmentRepository,
+        setHasSeenOnboarding = setHasSeenOnboarding,
+      )
 
-        // When
-        viewModel.setHasSeenOnboarding()
+    // When
+    viewModel.setHasSeenOnboarding()
 
-        // Then
-        assertTrue(setHasSeenOnboarding.get())
-    }
+    // Then
+    assertTrue(setHasSeenOnboarding.get())
+  }
 
-    @Test
-    fun testGetPrivacyUrlForTst() {
-        // Given: Tst environment
-        val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Tst(1, "mgo"))
+  @Test
+  fun testGetPrivacyUrlForTst() {
+    // Given: Tst environment
+    val environmentRepository = TestEnvironmentRepository()
+    environmentRepository.setEnvironment(Environment.Tst(1, "mgo"))
 
-        // Given: Viewmodel
-        val viewModel =
-            PropositionScreenViewModel(
-                environmentRepository = environmentRepository,
-                setHasSeenOnboarding = TestSetHasSeenOnboarding(),
-            )
+    // Given: Viewmodel
+    val viewModel =
+      PropositionScreenViewModel(
+        environmentRepository = environmentRepository,
+        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+      )
 
-        // When: Calling get privacy url
-        val privacyUrl = viewModel.getPrivacyUrl()
+    // When: Calling get privacy url
+    val privacyUrl = viewModel.getPrivacyUrl()
 
-        // Then: Url is expected
-        assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
-    }
+    // Then: Url is expected
+    assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
+  }
 
-    @Test
-    fun testGetPrivacyUrlForAcc() {
-        // Given: Acc environment
-        val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Acc(1, "mgo"))
+  @Test
+  fun testGetPrivacyUrlForAcc() {
+    // Given: Acc environment
+    val environmentRepository = TestEnvironmentRepository()
+    environmentRepository.setEnvironment(Environment.Acc(1, "mgo"))
 
-        // Given: Viewmodel
-        val viewModel =
-            PropositionScreenViewModel(
-                environmentRepository = environmentRepository,
-                setHasSeenOnboarding = TestSetHasSeenOnboarding(),
-            )
+    // Given: Viewmodel
+    val viewModel =
+      PropositionScreenViewModel(
+        environmentRepository = environmentRepository,
+        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+      )
 
-        // When: Calling get privacy url
-        val privacyUrl = viewModel.getPrivacyUrl()
+    // When: Calling get privacy url
+    val privacyUrl = viewModel.getPrivacyUrl()
 
-        // Then: Url is expected
-        assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
-    }
+    // Then: Url is expected
+    assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
+  }
 
-    @Test
-    fun testGetPrivacyUrlForProd() {
-        // Given: Prod environment
-        val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Prod(1, "mgo"))
+  @Test
+  fun testGetPrivacyUrlForProd() {
+    // Given: Prod environment
+    val environmentRepository = TestEnvironmentRepository()
+    environmentRepository.setEnvironment(Environment.Prod(1, "mgo"))
 
-        // Given: Viewmodel
-        val viewModel =
-            PropositionScreenViewModel(
-                environmentRepository = environmentRepository,
-                setHasSeenOnboarding = TestSetHasSeenOnboarding(),
-            )
+    // Given: Viewmodel
+    val viewModel =
+      PropositionScreenViewModel(
+        environmentRepository = environmentRepository,
+        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+      )
 
-        // When: Calling get privacy url
-        val privacyUrl = viewModel.getPrivacyUrl()
+    // When: Calling get privacy url
+    val privacyUrl = viewModel.getPrivacyUrl()
 
-        // Then: Url is expected
-        assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
-    }
+    // Then: Url is expected
+    assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
+  }
 
-    @Test
-    fun testGetPrivacyUrlForDemo() {
-        // Given: Demo environment
-        val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Demo(1, "mgo"))
+  @Test
+  fun testGetPrivacyUrlForDemo() {
+    // Given: Demo environment
+    val environmentRepository = TestEnvironmentRepository()
+    environmentRepository.setEnvironment(Environment.Demo(1, "mgo"))
 
-        // Given: Viewmodel
-        val viewModel =
-            PropositionScreenViewModel(
-                environmentRepository = environmentRepository,
-                setHasSeenOnboarding = TestSetHasSeenOnboarding(),
-            )
+    // Given: Viewmodel
+    val viewModel =
+      PropositionScreenViewModel(
+        environmentRepository = environmentRepository,
+        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+      )
 
-        // When: Calling get privacy url
-        val privacyUrl = viewModel.getPrivacyUrl()
+    // When: Calling get privacy url
+    val privacyUrl = viewModel.getPrivacyUrl()
 
-        // Then: Url is expected
-        assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
-    }
+    // Then: Url is expected
+    assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
+  }
 
-    @Test
-    fun testGetPrivacyUrlForCustom() {
-        // Given: Demo environment
-        val environmentRepository = TestEnvironmentRepository()
-        environmentRepository.setEnvironment(Environment.Custom(1, "mgo", "https://google.nl"))
+  @Test
+  fun testGetPrivacyUrlForCustom() {
+    // Given: Demo environment
+    val environmentRepository = TestEnvironmentRepository()
+    environmentRepository.setEnvironment(Environment.Custom(1, "mgo", "https://google.nl"))
 
-        // Given: Viewmodel
-        val viewModel =
-            PropositionScreenViewModel(
-                environmentRepository = environmentRepository,
-                setHasSeenOnboarding = TestSetHasSeenOnboarding(),
-            )
+    // Given: Viewmodel
+    val viewModel =
+      PropositionScreenViewModel(
+        environmentRepository = environmentRepository,
+        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+      )
 
-        // When: Calling get privacy url
-        val privacyUrl = viewModel.getPrivacyUrl()
+    // When: Calling get privacy url
+    val privacyUrl = viewModel.getPrivacyUrl()
 
-        // Then: Url is expected
-        assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
-    }
+    // Then: Url is expected
+    assertEquals("https://web.test.mgo.irealisatie.nl/privacy", privacyUrl)
+  }
 }

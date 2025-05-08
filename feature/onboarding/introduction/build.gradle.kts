@@ -1,11 +1,11 @@
 plugins {
-    id("AndroidFeaturePlugin")
+  id("AndroidFeaturePlugin")
 }
 
 android {
-    namespace = "nl.rijksoverheid.mgo.feature.onboarding.introduction"
+  namespace = "nl.rijksoverheid.mgo.feature.onboarding.introduction"
 }
 
 dependencies {
-    implementation(project(":data:onboarding"))
+  implementation(project(":data:onboarding"))
 }

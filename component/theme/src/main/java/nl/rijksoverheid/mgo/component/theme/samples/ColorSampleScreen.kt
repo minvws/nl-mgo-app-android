@@ -68,246 +68,318 @@ import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
 
 @Composable
 private fun BackgroundColors() {
-    Column {
-        Text(text = "Background", style = MaterialTheme.typography.headlineLarge)
-        FlowRow(modifier = Modifier.padding(vertical = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.backgroundPrimary(), text = "Primary")
-            ColorSample(color = MaterialTheme.colorScheme.backgroundSecondary(), text = "Secondary")
-            ColorSample(color = MaterialTheme.colorScheme.backgroundTertiary(), text = "Tertiary")
-        }
+  Column {
+    Text(text = "Background", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(vertical = 16.dp)) {
+      ColorSample(color = MaterialTheme.colorScheme.backgroundPrimary(), text = "Primary")
+      ColorSample(color = MaterialTheme.colorScheme.backgroundSecondary(), text = "Secondary")
+      ColorSample(color = MaterialTheme.colorScheme.backgroundTertiary(), text = "Tertiary")
     }
+  }
 }
 
 @Composable
 private fun ContentColors() {
-    Column {
-        Text(text = "Content", style = MaterialTheme.typography.headlineLarge)
-        FlowRow(modifier = Modifier.padding(top = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.contentPrimary(), text = "Primary")
-            ColorSample(color = MaterialTheme.colorScheme.contentSecondary(), text = "Secondary")
-            ColorSample(color = MaterialTheme.colorScheme.contentInvert(), text = "Invert")
-        }
+  Column {
+    Text(text = "Content", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(top = 16.dp)) {
+      ColorSample(color = MaterialTheme.colorScheme.contentPrimary(), text = "Primary")
+      ColorSample(color = MaterialTheme.colorScheme.contentSecondary(), text = "Secondary")
+      ColorSample(color = MaterialTheme.colorScheme.contentInvert(), text = "Invert")
     }
+  }
 }
 
 @Composable
 private fun BorderColors() {
-    Column {
-        Text(text = "Border", style = MaterialTheme.typography.headlineLarge)
-        FlowRow(modifier = Modifier.padding(top = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.borderPrimary(), text = "Primary")
-            ColorSample(color = MaterialTheme.colorScheme.borderSecondary(), text = "Secondary")
-        }
+  Column {
+    Text(text = "Border", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(top = 16.dp)) {
+      ColorSample(color = MaterialTheme.colorScheme.borderPrimary(), text = "Primary")
+      ColorSample(color = MaterialTheme.colorScheme.borderSecondary(), text = "Secondary")
     }
+  }
 }
 
 @Composable
 private fun SymbolColors() {
-    Column {
-        Text(text = "Symbol", style = MaterialTheme.typography.headlineLarge)
-        FlowRow(modifier = Modifier.padding(top = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.symbolsPrimary(), text = "Primary")
-            ColorSample(color = MaterialTheme.colorScheme.symbolsSecondary(), text = "Secondary")
-            ColorSample(color = MaterialTheme.colorScheme.symbolsTertiary(), text = "Tertiary")
-        }
+  Column {
+    Text(text = "Symbol", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(top = 16.dp)) {
+      ColorSample(color = MaterialTheme.colorScheme.symbolsPrimary(), text = "Primary")
+      ColorSample(color = MaterialTheme.colorScheme.symbolsSecondary(), text = "Secondary")
+      ColorSample(color = MaterialTheme.colorScheme.symbolsTertiary(), text = "Tertiary")
     }
+  }
 }
 
 @Composable
 private fun SentimentColors() {
-    Column {
-        Text(text = "Sentiment", style = MaterialTheme.typography.headlineLarge)
-        FlowRow(modifier = Modifier.padding(top = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.sentimentInformative(), text = "Informative")
-            ColorSample(color = MaterialTheme.colorScheme.sentimentPositive(), text = "Positive")
-            ColorSample(color = MaterialTheme.colorScheme.sentimentWarning(), text = "Warning")
-            ColorSample(color = MaterialTheme.colorScheme.sentimentCritical(), text = "Critical")
-        }
+  Column {
+    Text(text = "Sentiment", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(top = 16.dp)) {
+      ColorSample(
+        color = MaterialTheme.colorScheme.sentimentInformative(),
+        text = "Informative",
+      )
+      ColorSample(color = MaterialTheme.colorScheme.sentimentPositive(), text = "Positive")
+      ColorSample(color = MaterialTheme.colorScheme.sentimentWarning(), text = "Warning")
+      ColorSample(color = MaterialTheme.colorScheme.sentimentCritical(), text = "Critical")
     }
+  }
 }
 
 @Composable
 private fun InteractiveColors() {
-    Column {
-        Text(text = "Interactive", style = MaterialTheme.typography.headlineLarge)
+  Column {
+    Text(text = "Interactive", style = MaterialTheme.typography.headlineLarge)
 
-        Text(text = "Primary", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(top = 4.dp))
+    Text(
+      text = "Primary",
+      style = MaterialTheme.typography.headlineMedium,
+      modifier = Modifier.padding(top = 4.dp),
+    )
 
-        Text(text = "Default", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 4.dp))
-        FlowRow(modifier = Modifier.padding(top = 4.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(), text = "Background")
-            ColorSample(color = MaterialTheme.colorScheme.interactivePrimaryDefaultText(), text = "Text")
-        }
-
-        Text(text = "Critical", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 4.dp))
-        FlowRow(modifier = Modifier.padding(top = 4.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.interactivePrimaryCriticalBackground(), text = "Background")
-            ColorSample(color = MaterialTheme.colorScheme.interactivePrimaryCriticalText(), text = "Text")
-        }
-
-        Text(text = "Secondary", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(top = 4.dp))
-
-        Text(text = "Default", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 4.dp))
-        FlowRow(modifier = Modifier.padding(top = 4.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(), text = "Background")
-            ColorSample(color = MaterialTheme.colorScheme.interactiveSecondaryDefaultText(), text = "Text")
-        }
-
-        Text(text = "Critical", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 4.dp))
-        FlowRow(modifier = Modifier.padding(top = 4.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.interactiveSecondaryCriticalBackground(), text = "Background")
-            ColorSample(color = MaterialTheme.colorScheme.interactiveSecondaryCriticalText(), text = "Text")
-        }
-
-        Text(text = "Tertiary", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(top = 16.dp))
-
-        Text(text = "Default", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 16.dp))
-        FlowRow(modifier = Modifier.padding(top = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(), text = "Text")
-        }
-
-        Text(text = "Critical", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 16.dp))
-        FlowRow(modifier = Modifier.padding(top = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(), text = "Text")
-        }
+    Text(
+      text = "Default",
+      style = MaterialTheme.typography.headlineSmall,
+      modifier = Modifier.padding(top = 4.dp),
+    )
+    FlowRow(modifier = Modifier.padding(top = 4.dp)) {
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
+        text = "Background",
+      )
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactivePrimaryDefaultText(),
+        text = "Text",
+      )
     }
+
+    Text(
+      text = "Critical",
+      style = MaterialTheme.typography.headlineSmall,
+      modifier = Modifier.padding(top = 4.dp),
+    )
+    FlowRow(modifier = Modifier.padding(top = 4.dp)) {
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactivePrimaryCriticalBackground(),
+        text = "Background",
+      )
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactivePrimaryCriticalText(),
+        text = "Text",
+      )
+    }
+
+    Text(
+      text = "Secondary",
+      style = MaterialTheme.typography.headlineMedium,
+      modifier = Modifier.padding(top = 4.dp),
+    )
+
+    Text(
+      text = "Default",
+      style = MaterialTheme.typography.headlineSmall,
+      modifier = Modifier.padding(top = 4.dp),
+    )
+    FlowRow(modifier = Modifier.padding(top = 4.dp)) {
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(),
+        text = "Background",
+      )
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactiveSecondaryDefaultText(),
+        text = "Text",
+      )
+    }
+
+    Text(
+      text = "Critical",
+      style = MaterialTheme.typography.headlineSmall,
+      modifier = Modifier.padding(top = 4.dp),
+    )
+    FlowRow(modifier = Modifier.padding(top = 4.dp)) {
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactiveSecondaryCriticalBackground(),
+        text = "Background",
+      )
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactiveSecondaryCriticalText(),
+        text = "Text",
+      )
+    }
+
+    Text(
+      text = "Tertiary",
+      style = MaterialTheme.typography.headlineMedium,
+      modifier = Modifier.padding(top = 16.dp),
+    )
+
+    Text(
+      text = "Default",
+      style = MaterialTheme.typography.headlineSmall,
+      modifier = Modifier.padding(top = 16.dp),
+    )
+    FlowRow(modifier = Modifier.padding(top = 16.dp)) {
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+        text = "Text",
+      )
+    }
+
+    Text(
+      text = "Critical",
+      style = MaterialTheme.typography.headlineSmall,
+      modifier = Modifier.padding(top = 16.dp),
+    )
+    FlowRow(modifier = Modifier.padding(top = 16.dp)) {
+      ColorSample(
+        color = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(),
+        text = "Text",
+      )
+    }
+  }
 }
 
 @Composable
 private fun SupportColors() {
-    Column {
-        Text(text = "Support", style = MaterialTheme.typography.headlineLarge)
-        FlowRow(modifier = Modifier.padding(top = 16.dp)) {
-            ColorSample(color = MaterialTheme.colorScheme.supportMedication(), text = "Medication")
-            ColorSample(color = MaterialTheme.colorScheme.supportTreatment(), text = "Positive")
-            ColorSample(color = MaterialTheme.colorScheme.supportContacts(), text = "Contacts")
-            ColorSample(color = MaterialTheme.colorScheme.supportLaboratory(), text = "Laboratory")
-            ColorSample(color = MaterialTheme.colorScheme.supportFunctional(), text = "Functional")
-            ColorSample(color = MaterialTheme.colorScheme.supportDevice(), text = "Device")
-            ColorSample(color = MaterialTheme.colorScheme.supportVitals(), text = "Vitals")
-            ColorSample(color = MaterialTheme.colorScheme.supportDocuments(), text = "Documents")
-            ColorSample(color = MaterialTheme.colorScheme.supportAllergies(), text = "Allergies")
-            ColorSample(color = MaterialTheme.colorScheme.supportProblems(), text = "Problems")
-            ColorSample(color = MaterialTheme.colorScheme.supportPersonal(), text = "Personal")
-            ColorSample(color = MaterialTheme.colorScheme.supportRijkslint(), text = "Rijkslint")
-            ColorSample(color = MaterialTheme.colorScheme.supportWarning(), text = "Warning")
-            ColorSample(color = MaterialTheme.colorScheme.supportPayer(), text = "Payer")
-            ColorSample(color = MaterialTheme.colorScheme.supportVaccinations(), text = "Vaccinations")
-            ColorSample(color = MaterialTheme.colorScheme.supportProcedures(), text = "Procedures")
-            ColorSample(color = MaterialTheme.colorScheme.supportLifestyle(), text = "Lifestyle")
-        }
+  Column {
+    Text(text = "Support", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(top = 16.dp)) {
+      ColorSample(color = MaterialTheme.colorScheme.supportMedication(), text = "Medication")
+      ColorSample(color = MaterialTheme.colorScheme.supportTreatment(), text = "Positive")
+      ColorSample(color = MaterialTheme.colorScheme.supportContacts(), text = "Contacts")
+      ColorSample(color = MaterialTheme.colorScheme.supportLaboratory(), text = "Laboratory")
+      ColorSample(color = MaterialTheme.colorScheme.supportFunctional(), text = "Functional")
+      ColorSample(color = MaterialTheme.colorScheme.supportDevice(), text = "Device")
+      ColorSample(color = MaterialTheme.colorScheme.supportVitals(), text = "Vitals")
+      ColorSample(color = MaterialTheme.colorScheme.supportDocuments(), text = "Documents")
+      ColorSample(color = MaterialTheme.colorScheme.supportAllergies(), text = "Allergies")
+      ColorSample(color = MaterialTheme.colorScheme.supportProblems(), text = "Problems")
+      ColorSample(color = MaterialTheme.colorScheme.supportPersonal(), text = "Personal")
+      ColorSample(color = MaterialTheme.colorScheme.supportRijkslint(), text = "Rijkslint")
+      ColorSample(color = MaterialTheme.colorScheme.supportWarning(), text = "Warning")
+      ColorSample(color = MaterialTheme.colorScheme.supportPayer(), text = "Payer")
+      ColorSample(
+        color = MaterialTheme.colorScheme.supportVaccinations(),
+        text = "Vaccinations",
+      )
+      ColorSample(color = MaterialTheme.colorScheme.supportProcedures(), text = "Procedures")
+      ColorSample(color = MaterialTheme.colorScheme.supportLifestyle(), text = "Lifestyle")
     }
+  }
 }
 
 @Composable
 private fun ColorSample(
-    color: Color,
-    text: String,
+  color: Color,
+  text: String,
 ) {
-    Box(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(color)
-                .border(0.1.dp, Color(0xFFE6E6E6))
-                .padding(2.dp),
-    ) {
-        Text(
-            modifier = Modifier.padding(8.dp),
-            text = text,
-            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 10.sp),
-            color = color.getTextColor(),
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-        )
-    }
+  Box(
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .background(color)
+        .border(0.1.dp, Color(0xFFE6E6E6))
+        .padding(2.dp),
+  ) {
+    Text(
+      modifier = Modifier.padding(8.dp),
+      text = text,
+      style = MaterialTheme.typography.bodyMedium.copy(fontSize = 10.sp),
+      color = color.getTextColor(),
+      fontWeight = FontWeight.Bold,
+      textAlign = TextAlign.Center,
+    )
+  }
 }
 
 @Composable
 private fun Color.getTextColor(): Color {
-    return if (isSystemInDarkTheme()) {
-        if (luminance() <= 0.5f) {
-            MaterialTheme.colorScheme.contentPrimary()
-        } else {
-            MaterialTheme.colorScheme
-                .contentPrimary(!isSystemInDarkTheme())
-        }
+  return if (isSystemInDarkTheme()) {
+    if (luminance() <= 0.5f) {
+      MaterialTheme.colorScheme.contentPrimary()
     } else {
-        if (luminance() >= 0.5f) {
-            MaterialTheme.colorScheme.contentPrimary()
-        } else {
-            MaterialTheme.colorScheme
-                .contentPrimary(!isSystemInDarkTheme())
-        }
+      MaterialTheme.colorScheme
+        .contentPrimary(!isSystemInDarkTheme())
     }
+  } else {
+    if (luminance() >= 0.5f) {
+      MaterialTheme.colorScheme.contentPrimary()
+    } else {
+      MaterialTheme.colorScheme
+        .contentPrimary(!isSystemInDarkTheme())
+    }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun BackgroundColorsPreview() {
-    MgoTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
-            BackgroundColors()
-        }
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      BackgroundColors()
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun ContentColorsPreview() {
-    MgoTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
-            ContentColors()
-        }
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      ContentColors()
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun BorderColorsPreview() {
-    MgoTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
-            BorderColors()
-        }
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      BorderColors()
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun SymbolColorsPreview() {
-    MgoTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
-            SymbolColors()
-        }
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      SymbolColors()
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun SentimentColorsPreview() {
-    MgoTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
-            SentimentColors()
-        }
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      SentimentColors()
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun InteractiveColorsPreview() {
-    MgoTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
-            InteractiveColors()
-        }
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      InteractiveColors()
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun SupportColorsPreview() {
-    MgoTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
-            SupportColors()
-        }
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      SupportColors()
     }
+  }
 }

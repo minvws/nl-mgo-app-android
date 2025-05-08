@@ -5,20 +5,20 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class MgoCheckboxSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun checked() {
-        snapshotTestRule.snapshots {
-            MgoCheckboxCheckedPreview()
-        }
+  @Test
+  fun checked() {
+    snapshotTestRule.snapshots {
+      MgoCheckboxCheckedPreview()
     }
+  }
 
-    @Test
-    fun unChecked() {
-        snapshotTestRule.snapshots {
-            MgoCheckboxUnCheckedPreview()
-        }
+  @Test
+  fun unChecked() {
+    snapshotTestRule.snapshots {
+      MgoCheckboxUnCheckedPreview()
     }
+  }
 }

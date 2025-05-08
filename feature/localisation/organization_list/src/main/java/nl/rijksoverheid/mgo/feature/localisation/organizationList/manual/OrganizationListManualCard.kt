@@ -47,136 +47,136 @@ const val TEST_TAG_ORGANIZATION_SEARCH_CARD = "ORGANIZATION_SEARCH_CARD"
  */
 @Composable
 internal fun OrganizationListManualCard(
-    searchResult: MgoOrganization,
-    cardState: OrganizationSearchCardState,
-    onClick: (searchResult: MgoOrganization) -> Unit,
-    modifier: Modifier = Modifier,
+  searchResult: MgoOrganization,
+  cardState: OrganizationSearchCardState,
+  onClick: (searchResult: MgoOrganization) -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val cardBackgroundColor =
-        when (cardState) {
-            OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
-            else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
-        }
-    MgoCard(modifier = modifier) {
-        Row(
-            modifier =
-                Modifier
-                    .background(cardBackgroundColor)
-                    .clickable(enabled = cardState == OrganizationSearchCardState.ADD) {
-                        onClick(searchResult)
-                    }
-                    .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
-                    .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = searchResult.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                val address = searchResult.address
-                if (address != null) {
-                    Text(
-                        modifier = Modifier.padding(top = 4.dp),
-                        text = address,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-                when (cardState) {
-                    OrganizationSearchCardState.ADD -> {}
-                    OrganizationSearchCardState.ADDED -> {
-                        AdditionalText(
-                            text = CopyR.string.add_organization_already_added,
-                            icon = R.drawable.ic_search_result_card_added,
-                            contentColor = MaterialTheme.colorScheme.sentimentPositive(),
-                            modifier = Modifier.padding(top = 8.dp),
-                        )
-                    }
-
-                    OrganizationSearchCardState.NOT_SUPPORTED -> {
-                        AdditionalText(
-                            text = CopyR.string.add_organization_not_participating,
-                            icon = R.drawable.ic_search_result_card_not_supported,
-                            contentColor = MaterialTheme.colorScheme.sentimentInformative(),
-                            modifier = Modifier.padding(top = 8.dp),
-                        )
-                    }
-                }
-            }
-            if (cardState == OrganizationSearchCardState.ADD) {
-                IconButton(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    onClick = { onClick(searchResult) },
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_search_result_card_add),
-                        contentDescription = stringResource(id = CopyR.string.common_add).uppercase(),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            }
-        }
+  val cardBackgroundColor =
+    when (cardState) {
+      OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
+      else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
     }
+  MgoCard(modifier = modifier) {
+    Row(
+      modifier =
+        Modifier
+          .background(cardBackgroundColor)
+          .clickable(enabled = cardState == OrganizationSearchCardState.ADD) {
+            onClick(searchResult)
+          }
+          .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
+          .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+    ) {
+      Column(modifier = Modifier.weight(1f)) {
+        Text(
+          text = searchResult.name,
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+        )
+        val address = searchResult.address
+        if (address != null) {
+          Text(
+            modifier = Modifier.padding(top = 4.dp),
+            text = address,
+            style = MaterialTheme.typography.bodyMedium,
+          )
+        }
+        when (cardState) {
+          OrganizationSearchCardState.ADD -> {}
+          OrganizationSearchCardState.ADDED -> {
+            AdditionalText(
+              text = CopyR.string.add_organization_already_added,
+              icon = R.drawable.ic_search_result_card_added,
+              contentColor = MaterialTheme.colorScheme.sentimentPositive(),
+              modifier = Modifier.padding(top = 8.dp),
+            )
+          }
+
+          OrganizationSearchCardState.NOT_SUPPORTED -> {
+            AdditionalText(
+              text = CopyR.string.add_organization_not_participating,
+              icon = R.drawable.ic_search_result_card_not_supported,
+              contentColor = MaterialTheme.colorScheme.sentimentInformative(),
+              modifier = Modifier.padding(top = 8.dp),
+            )
+          }
+        }
+      }
+      if (cardState == OrganizationSearchCardState.ADD) {
+        IconButton(
+          modifier = Modifier.align(Alignment.CenterVertically),
+          onClick = { onClick(searchResult) },
+        ) {
+          Icon(
+            painter = painterResource(id = R.drawable.ic_search_result_card_add),
+            contentDescription = stringResource(id = CopyR.string.common_add).uppercase(),
+            tint = MaterialTheme.colorScheme.primary,
+          )
+        }
+      }
+    }
+  }
 }
 
 @Composable
 private fun AdditionalText(
-    @StringRes text: Int,
-    @DrawableRes icon: Int,
-    contentColor: Color,
-    modifier: Modifier = Modifier,
+  @StringRes text: Int,
+  @DrawableRes icon: Int,
+  contentColor: Color,
+  modifier: Modifier = Modifier,
 ) {
-    CompositionLocalProvider(LocalContentColor provides contentColor) {
-        Row(modifier = modifier) {
-            Icon(
-                painter = painterResource(id = icon),
-                contentDescription = null,
-            )
-            Text(
-                modifier = Modifier.padding(start = 6.dp),
-                text = stringResource(text),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-            )
-        }
+  CompositionLocalProvider(LocalContentColor provides contentColor) {
+    Row(modifier = modifier) {
+      Icon(
+        painter = painterResource(id = icon),
+        contentDescription = null,
+      )
+      Text(
+        modifier = Modifier.padding(start = 6.dp),
+        text = stringResource(text),
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+      )
     }
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun OrganizationSearchCardAddPreview() {
-    MgoTheme {
-        OrganizationListManualCard(
-            searchResult = TEST_MGO_ORGANIZATION,
-            onClick = { },
-            modifier = Modifier.padding(all = 16.dp),
-            cardState = OrganizationSearchCardState.ADD,
-        )
-    }
+  MgoTheme {
+    OrganizationListManualCard(
+      searchResult = TEST_MGO_ORGANIZATION,
+      onClick = { },
+      modifier = Modifier.padding(all = 16.dp),
+      cardState = OrganizationSearchCardState.ADD,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun OrganizationSearchCardAddedPreview() {
-    MgoTheme {
-        OrganizationListManualCard(
-            searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
-            onClick = { },
-            modifier = Modifier.padding(all = 16.dp),
-            cardState = OrganizationSearchCardState.ADDED,
-        )
-    }
+  MgoTheme {
+    OrganizationListManualCard(
+      searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+      onClick = { },
+      modifier = Modifier.padding(all = 16.dp),
+      cardState = OrganizationSearchCardState.ADDED,
+    )
+  }
 }
 
 @PreviewLightDark
 @Composable
 internal fun OrganizationSearchCardNotSupportedPreview() {
-    MgoTheme {
-        OrganizationListManualCard(
-            searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
-            onClick = { },
-            modifier = Modifier.padding(all = 16.dp),
-            cardState = OrganizationSearchCardState.NOT_SUPPORTED,
-        )
-    }
+  MgoTheme {
+    OrganizationListManualCard(
+      searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+      onClick = { },
+      modifier = Modifier.padding(all = 16.dp),
+      cardState = OrganizationSearchCardState.NOT_SUPPORTED,
+    )
+  }
 }

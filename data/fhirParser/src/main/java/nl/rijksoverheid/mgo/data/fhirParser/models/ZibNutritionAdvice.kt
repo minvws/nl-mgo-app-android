@@ -15,40 +15,27 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibNutritionAdvice(
-    val dateTime: String? = null,
+    val dateTime: MgoDateTime? = null,
     val identifier: List<MgoIdentifier>? = null,
     val patient: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice",
     val fhirVersion: String = "R3",
-    val comment: String? = null,
+    val comment: MgoString? = null,
     val id: String? = null,
     val foodPreferenceModifier: List<MgoCodeableConcept>? = null,
     val referenceId: String,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: ZibNutritionAdviceStatus? = null,
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-        if (status != null)
-            require(status in cg_array2) { "status not in enumerated values - $status" }
     }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"
         private const val cg_str1 = "R3"
-        private val cg_array2 = setOf(
-            "active",
-            "cancelled",
-            "entered-in-error",
-            "planned",
-            "on-hold",
-            "completed",
-            "draft",
-            "proposed",
-            "requested"
-        )
     }
 
 }

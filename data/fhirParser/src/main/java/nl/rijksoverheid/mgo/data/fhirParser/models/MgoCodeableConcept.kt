@@ -15,6 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MgoCodeableConcept(
-    val coding: List<MgoCoding>,
+    val coding: List<MgoCodingProps>,
+    val _type: String = "codeableConcept",
     val text: String? = null
-)
+) {
+
+    init {
+        require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+    }
+
+    companion object {
+        private const val cg_str0 = "codeableConcept"
+    }
+
+}

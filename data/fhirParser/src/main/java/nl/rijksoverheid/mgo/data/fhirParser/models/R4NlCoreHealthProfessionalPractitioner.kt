@@ -17,9 +17,9 @@ import kotlinx.serialization.Serializable
 data class R4NlCoreHealthProfessionalPractitioner(
     val identifier: List<MgoIdentifier>? = null,
     val address: List<R4NlCoreAddressInformation>? = null,
-    val gender: Gender? = null,
+    val gender: NlCorePatientGender? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner",
-    val birthDate: String? = null,
+    val birthDate: MgoDate? = null,
     val referenceId: String,
     val qualification: List<Qualification>? = null,
     val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>? = null,
@@ -28,20 +28,12 @@ data class R4NlCoreHealthProfessionalPractitioner(
     val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
     val id: String? = null,
     val communication: List<MgoCodeableConcept>? = null,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
-    }
-
-    @Serializable
-    enum class Gender {
-        unknown,
-        other,
-        male,
-        female
     }
 
     @Serializable

@@ -22,13 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -41,93 +41,93 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun RemoveOrganizationScreen(
-    providerId: String,
-    providerName: String,
-    onNavigateBack: () -> Unit,
-    onNavigateToDashboard: () -> Unit,
+  providerId: String,
+  providerName: String,
+  onNavigateBack: () -> Unit,
+  onNavigateToDashboard: () -> Unit,
 ) {
-    val snackbarPresenter = LocalSnackBarPresenter.current
-    val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
-    LaunchedEffect(Unit) {
-        viewModel.providerDeleted.collectLatest {
-            onNavigateToDashboard()
-        }
+  val snackbarPresenter = LocalSnackBarPresenter.current
+  val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
+  LaunchedEffect(Unit) {
+    viewModel.providerDeleted.collectLatest {
+      onNavigateToDashboard()
     }
-    RemoveOrganizationScreenContent(
-        providerName = providerName,
-        onNavigateBack = onNavigateBack,
-        onDeleteProvider = {
-            viewModel.delete(snackbarPresenter, providerId)
-        },
-    )
+  }
+  RemoveOrganizationScreenContent(
+    providerName = providerName,
+    onNavigateBack = onNavigateBack,
+    onDeleteProvider = {
+      viewModel.delete(snackbarPresenter, providerId)
+    },
+  )
 }
 
 @Composable
 private fun RemoveOrganizationScreenContent(
-    providerName: String,
-    onNavigateBack: () -> Unit,
-    onDeleteProvider: () -> Unit,
+  providerName: String,
+  onNavigateBack: () -> Unit,
+  onDeleteProvider: () -> Unit,
 ) {
-    MgoScaffold(
-        scrollStateProvider =
-            MgoScaffoldScrollStateProvider.Column(
-                rememberScrollState(),
-            ),
-        onNavigateBack = onNavigateBack,
-        primaryButtonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
-        onPrimaryButtonClick = onNavigateBack,
-        secondaryButtonText = stringResource(id = CopyR.string.remove_organization_yes_delete),
-        onSecondaryButtonClick = onDeleteProvider,
-        content = {
-            Box(
-                modifier =
-                    Modifier
-                        .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-                        .size(102.dp)
-                        .background(MaterialTheme.colorScheme.sentimentCritical(), CircleShape)
-                        .align(Alignment.CenterHorizontally),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    modifier =
-                        Modifier
-                            .size(61.dp),
-                    painter = painterResource(id = R.drawable.ic_delete),
-                    tint = MaterialTheme.colorScheme.backgroundSecondary(),
-                    contentDescription = null,
-                )
-            }
+  MgoScaffold(
+    scrollStateProvider =
+      MgoScaffoldScrollStateProvider.Column(
+        rememberScrollState(),
+      ),
+    onNavigateBack = onNavigateBack,
+    primaryButtonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
+    onPrimaryButtonClick = onNavigateBack,
+    secondaryButtonText = stringResource(id = CopyR.string.remove_organization_yes_delete),
+    onSecondaryButtonClick = onDeleteProvider,
+    content = {
+      Box(
+        modifier =
+          Modifier
+            .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
+            .size(102.dp)
+            .background(MaterialTheme.colorScheme.sentimentCritical(), CircleShape)
+            .align(Alignment.CenterHorizontally),
+        contentAlignment = Alignment.Center,
+      ) {
+        Icon(
+          modifier =
+            Modifier
+              .size(61.dp),
+          painter = painterResource(id = R.drawable.ic_delete),
+          tint = MaterialTheme.colorScheme.backgroundSecondary(),
+          contentDescription = null,
+        )
+      }
 
-            Text(
-                modifier = Modifier.padding(top = 32.dp),
-                text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-            )
+      Text(
+        modifier = Modifier.padding(top = 32.dp),
+        text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
+        style = MaterialTheme.typography.headlineLarge,
+        fontWeight = FontWeight.Bold,
+      )
 
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                text =
-                    stringResource(
-                        id = CopyR.string.remove_organization_subheading,
-                        providerName,
-                    ),
-                style = MaterialTheme.typography.bodyMedium,
-            )
+      Text(
+        modifier = Modifier.padding(top = 16.dp),
+        text =
+          stringResource(
+            id = CopyR.string.remove_organization_subheading,
+            providerName,
+          ),
+        style = MaterialTheme.typography.bodyMedium,
+      )
 
-            Spacer(modifier = Modifier.height(16.dp))
-        },
-    )
+      Spacer(modifier = Modifier.height(16.dp))
+    },
+  )
 }
 
 @PreviewLightDark
 @Composable
 fun RemoveOrganizationScreenPreview() {
-    MgoTheme {
-        RemoveOrganizationScreenContent(
-            providerName = "UMC Groningen",
-            onNavigateBack = {},
-            onDeleteProvider = {},
-        )
-    }
+  MgoTheme {
+    RemoveOrganizationScreenContent(
+      providerName = "UMC Groningen",
+      onNavigateBack = {},
+      onDeleteProvider = {},
+    )
+  }
 }

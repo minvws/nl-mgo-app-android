@@ -21,12 +21,12 @@ data class R4NlCoreHealthcareProviderOrganization(
     val address: List<R4NlCoreAddressInformation>? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider-Organization",
     val fhirVersion: String = "R4",
-    val name: String? = null,
+    val name: MgoString? = null,
     val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
     val id: String? = null,
     val departmentSpecialty: List<MgoCodeableConcept>? = null,
     val referenceId: String,
-    val resourceType: String? = null
+    val resourceType: String
 ) {
 
     init {

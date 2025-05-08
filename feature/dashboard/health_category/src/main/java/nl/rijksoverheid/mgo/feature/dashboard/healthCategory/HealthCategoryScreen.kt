@@ -56,321 +56,321 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun HealthCategoryScreen(
-    category: HealthCareCategory,
-    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
-    onNavigateBack: () -> Unit,
-    filterOrganization: MgoOrganization? = null,
+  category: HealthCareCategory,
+  onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onNavigateBack: () -> Unit,
+  filterOrganization: MgoOrganization? = null,
 ) {
-    val viewModel =
-        hiltViewModel<HealthCategoryScreenViewModel, HealthCategoryScreenViewModel.Factory>(
-            creationCallback = { factory -> factory.create(category = category, filterOrganization = filterOrganization) },
-        )
-    val viewState by viewModel.viewState.collectAsState()
-    HealthCategoryScreenContent(
-        viewState = viewState,
-        onClickListItem = { organization, mgoResource ->
-            onClickListItem(organization, mgoResource)
-        },
-        onRetry = { viewModel.retry() },
-        onNavigateBack = onNavigateBack,
+  val viewModel =
+    hiltViewModel<HealthCategoryScreenViewModel, HealthCategoryScreenViewModel.Factory>(
+      creationCallback = { factory -> factory.create(category = category, filterOrganization = filterOrganization) },
     )
+  val viewState by viewModel.viewState.collectAsState()
+  HealthCategoryScreenContent(
+    viewState = viewState,
+    onClickListItem = { organization, mgoResource ->
+      onClickListItem(organization, mgoResource)
+    },
+    onRetry = { viewModel.retry() },
+    onNavigateBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun HealthCategoryScreenContent(
-    viewState: HealthCategoryScreenViewState,
-    onRetry: () -> Unit,
-    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
-    onNavigateBack: () -> Unit,
+  viewState: HealthCategoryScreenViewState,
+  onRetry: () -> Unit,
+  onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
-    MgoScaffold(
-        appBarTitle = stringResource(viewState.category.getTitle()),
-        onNavigateBack = onNavigateBack,
-        content = {
-            when (viewState.listItemsState) {
-                is HealthCategoryScreenViewState.ListItemsState.Loaded ->
-                    ListItemsContent(
-                        listItemsGroup = viewState.listItemsState.listItemsGroup,
-                        onClickListItem = onClickListItem,
-                        showErrorBanner = showErrorBanner,
-                        onRetryClick = onRetry,
-                        onDismissErrorBanner = { showErrorBanner = false },
-                    )
+  var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
+  MgoScaffold(
+    appBarTitle = stringResource(viewState.category.getTitle()),
+    onNavigateBack = onNavigateBack,
+    content = {
+      when (viewState.listItemsState) {
+        is HealthCategoryScreenViewState.ListItemsState.Loaded ->
+          ListItemsContent(
+            listItemsGroup = viewState.listItemsState.listItemsGroup,
+            onClickListItem = onClickListItem,
+            showErrorBanner = showErrorBanner,
+            onRetryClick = onRetry,
+            onDismissErrorBanner = { showErrorBanner = false },
+          )
 
-                HealthCategoryScreenViewState.ListItemsState.Loading ->
-                    LoadingContent()
+        HealthCategoryScreenViewState.ListItemsState.Loading ->
+          LoadingContent()
 
-                is HealthCategoryScreenViewState.ListItemsState.NoData ->
-                    NoDataContent(
-                        showErrorBanner = showErrorBanner,
-                        onRetryClick = onRetry,
-                        onDismissErrorBanner = { showErrorBanner = false },
-                    )
-            }
-        },
-    )
+        is HealthCategoryScreenViewState.ListItemsState.NoData ->
+          NoDataContent(
+            showErrorBanner = showErrorBanner,
+            onRetryClick = onRetry,
+            onDismissErrorBanner = { showErrorBanner = false },
+          )
+      }
+    },
+  )
 }
 
 @Composable
 private fun ColumnScope.LoadingContent() {
-    Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .weight(1f),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(48.dp),
-                strokeWidth = 6.dp,
-            )
-            Text(
-                modifier = Modifier.padding(top = 20.dp),
-                text = stringResource(id = CopyR.string.common_loading),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+  Box(
+    modifier =
+      Modifier
+        .fillMaxSize()
+        .weight(1f),
+    contentAlignment = Alignment.Center,
+  ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+      CircularProgressIndicator(
+        modifier = Modifier.size(48.dp),
+        strokeWidth = 6.dp,
+      )
+      Text(
+        modifier = Modifier.padding(top = 20.dp),
+        text = stringResource(id = CopyR.string.common_loading),
+        style = MaterialTheme.typography.bodyMedium,
+      )
     }
+  }
 }
 
 @Composable
 private fun ListItemsContent(
-    listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
-    onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
-    showErrorBanner: Boolean,
-    onRetryClick: () -> Unit,
-    onDismissErrorBanner: () -> Unit,
-    modifier: Modifier = Modifier,
+  listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
+  onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  showErrorBanner: Boolean,
+  onRetryClick: () -> Unit,
+  onDismissErrorBanner: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(2.dp),
-    ) {
-        if (showErrorBanner) {
-            item {
-                MgoBanner(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp),
-                    type = MgoBannerType.WARNING,
-                    heading = stringResource(id = CopyR.string.common_error_heading),
-                    subHeading = stringResource(id = CopyR.string.common_error_subheading),
-                    buttonText = stringResource(id = CopyR.string.common_try_again),
-                    onButtonClick = onRetryClick,
-                    onDismiss = onDismissErrorBanner,
-                )
-            }
-        }
-
-        for (listItemGroup in listItemsGroup) {
-            item {
-                Text(
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    text = stringResource(listItemGroup.heading),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-            for (listItem in listItemGroup.items) {
-                item {
-                    HealthCategoryCard(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
-                                .padding(bottom = 16.dp),
-                        title = listItem.title,
-                        subtitle = listItem.subtitle,
-                    )
-                }
-            }
-        }
+  LazyColumn(
+    modifier = modifier,
+    contentPadding = PaddingValues(2.dp),
+  ) {
+    if (showErrorBanner) {
+      item {
+        MgoBanner(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .padding(bottom = 16.dp),
+          type = MgoBannerType.WARNING,
+          heading = stringResource(id = CopyR.string.common_error_heading),
+          subHeading = stringResource(id = CopyR.string.common_error_subheading),
+          buttonText = stringResource(id = CopyR.string.common_try_again),
+          onButtonClick = onRetryClick,
+          onDismiss = onDismissErrorBanner,
+        )
+      }
     }
+
+    for (listItemGroup in listItemsGroup) {
+      item {
+        Text(
+          modifier = Modifier.padding(bottom = 8.dp),
+          text = stringResource(listItemGroup.heading),
+          style = MaterialTheme.typography.bodyMedium,
+        )
+      }
+      for (listItem in listItemGroup.items) {
+        item {
+          HealthCategoryCard(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
+                .padding(bottom = 16.dp),
+            title = listItem.title,
+            subtitle = listItem.subtitle,
+          )
+        }
+      }
+    }
+  }
 }
 
 @Composable
 private fun ColumnScope.NoDataContent(
-    showErrorBanner: Boolean,
-    onRetryClick: () -> Unit,
-    onDismissErrorBanner: () -> Unit,
+  showErrorBanner: Boolean,
+  onRetryClick: () -> Unit,
+  onDismissErrorBanner: () -> Unit,
 ) {
-    if (showErrorBanner) {
-        MgoBanner(
-            modifier =
-                Modifier
-                    .fillMaxWidth(),
-            type = MgoBannerType.WARNING,
-            heading = stringResource(id = CopyR.string.common_error_heading),
-            subHeading = stringResource(id = CopyR.string.common_error_subheading),
-            buttonText = stringResource(id = CopyR.string.common_try_again),
-            onButtonClick = onRetryClick,
-            onDismiss = onDismissErrorBanner,
-        )
-    }
+  if (showErrorBanner) {
+    MgoBanner(
+      modifier =
+        Modifier
+          .fillMaxWidth(),
+      type = MgoBannerType.WARNING,
+      heading = stringResource(id = CopyR.string.common_error_heading),
+      subHeading = stringResource(id = CopyR.string.common_error_subheading),
+      buttonText = stringResource(id = CopyR.string.common_try_again),
+      onButtonClick = onRetryClick,
+      onDismiss = onDismissErrorBanner,
+    )
+  }
 
-    Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .weight(1f)
-                .padding(top = 16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(156.dp),
-            painter = painterResource(id = R.drawable.illustration_health_category_empty),
-            contentDescription = null,
-        )
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp),
-            text = stringResource(id = CopyR.string.health_category_empty_heading),
-            style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            text = stringResource(id = CopyR.string.health_category_empty_subheading),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.contentSecondary(),
-            textAlign = TextAlign.Center,
-        )
-    }
+  Column(
+    modifier =
+      Modifier
+        .fillMaxSize()
+        .weight(1f)
+        .padding(top = 16.dp),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Image(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .height(156.dp),
+      painter = painterResource(id = R.drawable.illustration_health_category_empty),
+      contentDescription = null,
+    )
+    Text(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = 24.dp),
+      text = stringResource(id = CopyR.string.health_category_empty_heading),
+      style = MaterialTheme.typography.headlineSmall,
+      textAlign = TextAlign.Center,
+    )
+    Text(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = 8.dp),
+      text = stringResource(id = CopyR.string.health_category_empty_subheading),
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.contentSecondary(),
+      textAlign = TextAlign.Center,
+    )
+  }
 }
 
 @Composable
 private fun HealthCategoryCard(
-    title: String,
-    subtitle: String,
-    modifier: Modifier = Modifier,
+  title: String,
+  subtitle: String,
+  modifier: Modifier = Modifier,
 ) {
-    MgoCard(modifier = modifier) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                modifier = Modifier.padding(top = 8.dp),
-                text = subtitle,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.contentSecondary(),
-            )
-        }
+  MgoCard(modifier = modifier) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      Text(
+        text = title,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+      )
+      Text(
+        modifier = Modifier.padding(top = 8.dp),
+        text = subtitle,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+      )
     }
+  }
 }
 
 @Composable
 @StringRes
 private fun HealthCareCategory.getTitle(): Int {
-    val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading")
-    if (stringResource == 0) {
-        return CopyR.string.common_unknown
-    }
-    return stringResource
+  val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading")
+  if (stringResource == 0) {
+    return CopyR.string.common_unknown
+  }
+  return stringResource
 }
 
 @DefaultPreviews
 @Composable
 internal fun HealthCategoryScreenLoadingPreview() {
-    MgoTheme {
-        HealthCategoryScreenContent(
-            viewState =
-                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-                    category = HealthCareCategory.MEDICATIONS,
-                    listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
-                ),
-            onClickListItem = { _, _ -> },
-            onRetry = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    HealthCategoryScreenContent(
+      viewState =
+        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+          category = HealthCareCategory.MEDICATIONS,
+          listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
+        ),
+      onClickListItem = { _, _ -> },
+      onRetry = {},
+      onNavigateBack = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun HealthCategoryScreenListItemsPreview() {
-    MgoTheme {
-        HealthCategoryScreenContent(
-            viewState =
-                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-                    category = HealthCareCategory.MEDICATIONS,
-                    listItemsState =
-                        HealthCategoryScreenViewState.ListItemsState.Loaded(
-                            listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
-                        ),
-                ),
-            onClickListItem = { _, _ -> },
-            onRetry = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    HealthCategoryScreenContent(
+      viewState =
+        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+          category = HealthCareCategory.MEDICATIONS,
+          listItemsState =
+            HealthCategoryScreenViewState.ListItemsState.Loaded(
+              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
+            ),
+        ),
+      onClickListItem = { _, _ -> },
+      onRetry = {},
+      onNavigateBack = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun HealthCategoryScreenListItemsWithErrorPreview() {
-    MgoTheme {
-        HealthCategoryScreenContent(
-            viewState =
-                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-                    category = HealthCareCategory.MEDICATIONS,
-                    listItemsState =
-                        HealthCategoryScreenViewState.ListItemsState.Loaded(
-                            listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
-                        ),
-                    showErrorBanner = true,
-                ),
-            onClickListItem = { _, _ -> },
-            onRetry = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    HealthCategoryScreenContent(
+      viewState =
+        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+          category = HealthCareCategory.MEDICATIONS,
+          listItemsState =
+            HealthCategoryScreenViewState.ListItemsState.Loaded(
+              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
+            ),
+          showErrorBanner = true,
+        ),
+      onClickListItem = { _, _ -> },
+      onRetry = {},
+      onNavigateBack = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun HealthCategoryScreenNoDataPreview() {
-    MgoTheme {
-        HealthCategoryScreenContent(
-            viewState =
-                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-                    category = HealthCareCategory.MEDICATIONS,
-                    listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
-                ),
-            onClickListItem = { _, _ -> },
-            onRetry = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    HealthCategoryScreenContent(
+      viewState =
+        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+          category = HealthCareCategory.MEDICATIONS,
+          listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
+        ),
+      onClickListItem = { _, _ -> },
+      onRetry = {},
+      onNavigateBack = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun HealthCategoryScreenNoDataWithErrorPreview() {
-    MgoTheme {
-        HealthCategoryScreenContent(
-            viewState =
-                HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-                    category = HealthCareCategory.MEDICATIONS,
-                    listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
-                    showErrorBanner = true,
-                ),
-            onClickListItem = { _, _ -> },
-            onRetry = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    HealthCategoryScreenContent(
+      viewState =
+        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
+          category = HealthCareCategory.MEDICATIONS,
+          listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
+          showErrorBanner = true,
+        ),
+      onClickListItem = { _, _ -> },
+      onRetry = {},
+      onNavigateBack = {},
+    )
+  }
 }

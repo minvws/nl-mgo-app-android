@@ -14,7 +14,7 @@ import java.io.FileOutputStream
 class FhirParserPlugin: Plugin<Project> {
 
     override fun apply(target: Project) {
-        target.tasks.register("updateNewFhirParser") {
+        target.tasks.register("updateFhirParser") {
             try {
                 // Files are downloaded to this directory
                 val workingDir = File(target.rootDir, "tmp")
@@ -52,7 +52,7 @@ class FhirParserPlugin: Plugin<Project> {
         // Get workflows
         val workflowsRequest = Request.Builder()
             .url("https://api.github.com/repos/minvws/nl-mgo-app-web-private/actions/workflows/114414377/runs?status=completed&branch" +
-                "=develop")
+                "=main")
             .addHeader("Authorization", "Bearer $githubToken")
             .addHeader("Accept", "application/vnd.github+json")
             .build()

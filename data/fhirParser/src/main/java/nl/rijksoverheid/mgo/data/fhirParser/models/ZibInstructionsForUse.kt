@@ -11,22 +11,31 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
-import kotlin.Double
-
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibInstructionsForUse(
-    val asNeeded: MgoCodeableConcept? = null,
-    val sequence: Double? = null,
     val additionalInstruction: List<MgoCodeableConcept>? = null,
     val rateRatio: MgoRatio? = null,
+    val doseQuantity: MgoQuantityProps? = null,
+    val timing: ZibAdministrationSchedule,
+    val rateQuantity: MgoQuantityProps? = null,
+    val sequence: MgoInteger? = null,
     val route: MgoCodeableConcept? = null,
     val rateRange: MgoRange? = null,
+    val _profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-InstructionsForUse",
     val doseRange: MgoRange? = null,
-    val doseQuantity: MgoQuantity? = null,
-    val timing: ZibAdministrationSchedule,
-    val rateQuantity: MgoQuantity? = null,
     val maxDosePerPeriod: MgoRatio? = null,
-    val text: String? = null
-)
+    val text: MgoString? = null,
+    val asNeededCodeableConcept: MgoCodeableConcept? = null
+) {
+
+    init {
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+    }
+
+    companion object {
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-InstructionsForUse"
+    }
+
+}

@@ -6,20 +6,20 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class KeyboardItemSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun icon() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            KeyboardItemIconPreview()
-        }
+  @Test
+  fun icon() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      KeyboardItemIconPreview()
     }
+  }
 
-    @Test
-    fun number() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            KeyboardItemNumberPreview()
-        }
+  @Test
+  fun number() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      KeyboardItemNumberPreview()
     }
+  }
 }

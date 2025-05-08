@@ -6,41 +6,41 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class MgoBannerSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun infoBanner() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            InfoBannerPreview()
-        }
+  @Test
+  fun infoBanner() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      InfoBannerPreview()
     }
+  }
 
-    @Test
-    fun infoBannerWithButton() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            InfoBannerPreview()
-        }
+  @Test
+  fun infoBannerWithButton() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      InfoBannerPreview()
     }
+  }
 
-    @Test
-    fun successBanner() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            SuccessBannerPreview()
-        }
+  @Test
+  fun successBanner() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      SuccessBannerPreview()
     }
+  }
 
-    @Test
-    fun warningBanner() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            WarningBannerPreview()
-        }
+  @Test
+  fun warningBanner() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      WarningBannerPreview()
     }
+  }
 
-    @Test
-    fun errorBanner() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            ErrorBannerPreview()
-        }
+  @Test
+  fun errorBanner() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      ErrorBannerPreview()
     }
+  }
 }

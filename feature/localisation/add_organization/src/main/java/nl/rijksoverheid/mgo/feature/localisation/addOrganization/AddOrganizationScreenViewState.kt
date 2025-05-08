@@ -11,18 +11,18 @@ import androidx.annotation.StringRes
  * @param cityError If not null, the error string resource to show indicating that there is a error validating the city.
  */
 data class AddOrganizationScreenViewState(
-    val name: String,
-    @StringRes val nameError: Int?,
-    val city: String,
-    @StringRes val cityError: Int?,
+  val name: String,
+  @StringRes val nameError: Int?,
+  val city: String,
+  @StringRes val cityError: Int?,
 ) {
-    companion object {
-        val initialState =
-            AddOrganizationScreenViewState(
-                name = "",
-                nameError = null,
-                city = "",
-                cityError = null,
-            )
-    }
+  companion object {
+    val initialState =
+      AddOrganizationScreenViewState(
+        name = "",
+        nameError = null,
+        city = "",
+        cityError = null,
+      )
+  }
 }

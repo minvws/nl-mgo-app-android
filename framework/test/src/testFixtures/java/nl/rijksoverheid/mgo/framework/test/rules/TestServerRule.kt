@@ -7,13 +7,13 @@ import org.junit.rules.ExternalResource
  * JUnit rule to spin up a mock test server that intercepts traffic executed through OkHttp.
  */
 class TestServerRule : ExternalResource() {
-    val testServer: TestServer = TestServer()
+  val testServer: TestServer = TestServer()
 
-    override fun before() {
-        testServer.start()
-    }
+  override fun before() {
+    testServer.start()
+  }
 
-    override fun after() {
-        testServer.stop()
-    }
+  override fun after() {
+    testServer.stop()
+  }
 }

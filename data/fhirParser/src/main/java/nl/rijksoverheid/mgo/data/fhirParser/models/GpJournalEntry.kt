@@ -22,14 +22,14 @@ data class GpJournalEntry(
     val ICPC_S: ICPCS,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry",
     val referenceId: String,
-    val valueString: String? = null,
+    val valueString: MgoString? = null,
     val ICPC_E: ICPCE,
-    val effectiveDateTime: String? = null,
+    val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
     val context: MgoReference? = null,
     val id: String? = null,
-    val status: String? = null,
-    val resourceType: String? = null
+    val status: MgoString? = null,
+    val resourceType: String
 ) {
 
     init {

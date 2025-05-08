@@ -5,20 +5,20 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class HealthCategoriesScreenSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun withProviders() {
-        snapshotTestRule.snapshots {
-            OverviewScreenWithProvidersPreview()
-        }
+  @Test
+  fun withProviders() {
+    snapshotTestRule.snapshots {
+      OverviewScreenWithProvidersPreview()
     }
+  }
 
-    @Test
-    fun noProviders() {
-        snapshotTestRule.snapshots {
-            OverviewScreenNoProvidersPreview()
-        }
+  @Test
+  fun noProviders() {
+    snapshotTestRule.snapshots {
+      OverviewScreenNoProvidersPreview()
     }
+  }
 }

@@ -6,20 +6,20 @@ import org.junit.Rule
 import org.junit.Test
 
 internal class PinCodeItemSnapshotTest {
-    @get:Rule
-    val snapshotTestRule = SnapshotTestRule()
+  @get:Rule
+  val snapshotTestRule = SnapshotTestRule()
 
-    @Test
-    fun notFilled() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            PinCodeItemNotFilledPreview()
-        }
+  @Test
+  fun notFilled() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      PinCodeItemNotFilledPreview()
     }
+  }
 
-    @Test
-    fun filled() {
-        snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-            PinCodeItemFilledPreview()
-        }
+  @Test
+  fun filled() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      PinCodeItemFilledPreview()
     }
+  }
 }

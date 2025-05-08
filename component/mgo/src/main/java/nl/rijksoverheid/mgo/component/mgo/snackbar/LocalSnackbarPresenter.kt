@@ -10,22 +10,22 @@ import androidx.compose.runtime.compositionLocalOf
  * in this application as of yet.
  */
 class DefaultLocalSnackBarPresenter {
-    private var visuals: MgoSnackBarVisuals? = null
+  private var visuals: MgoSnackBarVisuals? = null
 
-    /**
-     * Call this to show a Snackbar where [consume] is called.
-     */
-    fun present(visuals: MgoSnackBarVisuals) {
-        this.visuals = visuals
-    }
+  /**
+   * Call this to show a Snackbar where [consume] is called.
+   */
+  fun present(visuals: MgoSnackBarVisuals) {
+    this.visuals = visuals
+  }
 
-    /**
-     * Get information needed to show a Snackbar. Information can be set with [present].
-     */
-    fun consume(): MgoSnackBarVisuals? {
-        if (visuals == null) return null
-        return visuals.also { this.visuals = null }
-    }
+  /**
+   * Get information needed to show a Snackbar. Information can be set with [present].
+   */
+  fun consume(): MgoSnackBarVisuals? {
+    if (visuals == null) return null
+    return visuals.also { this.visuals = null }
+  }
 }
 
 /**

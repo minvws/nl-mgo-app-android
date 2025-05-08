@@ -15,13 +15,13 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -29,99 +29,99 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  */
 @Composable
 fun PinCodeCreateScreen(
-    hasBackButton: Boolean,
-    onPinEntered: (pinCode: List<Int>) -> Unit,
-    onNavigateBack: () -> Unit,
+  hasBackButton: Boolean,
+  onPinEntered: (pinCode: List<Int>) -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    val viewModel: PinCodeCreateScreenViewModel = hiltViewModel()
-    LaunchedEffect(Unit) {
-        viewModel.navigateToConfirm.collectLatest { pinCode ->
-            onPinEntered(pinCode)
-        }
+  val viewModel: PinCodeCreateScreenViewModel = hiltViewModel()
+  LaunchedEffect(Unit) {
+    viewModel.navigateToConfirm.collectLatest { pinCode ->
+      onPinEntered(pinCode)
     }
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    PinCodeCreateScreenContent(
-        viewState = viewState,
-        hasBackButton = hasBackButton,
-        onPinCodeEntered = { pinCode ->
-            viewModel.validatePinCode(pinCode)
-        },
-        onResetError = {
-            viewModel.resetError()
-        },
-        onNavigateBack = onNavigateBack,
-    )
+  }
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+  PinCodeCreateScreenContent(
+    viewState = viewState,
+    hasBackButton = hasBackButton,
+    onPinCodeEntered = { pinCode ->
+      viewModel.validatePinCode(pinCode)
+    },
+    onResetError = {
+      viewModel.resetError()
+    },
+    onNavigateBack = onNavigateBack,
+  )
 }
 
 @Composable
 private fun PinCodeCreateScreenContent(
-    viewState: PinCodeCreateScreenViewState,
-    hasBackButton: Boolean,
-    onPinCodeEntered: (pinCode: List<Int>) -> Unit,
-    onResetError: () -> Unit,
-    onNavigateBack: () -> Unit,
+  viewState: PinCodeCreateScreenViewState,
+  hasBackButton: Boolean,
+  onPinCodeEntered: (pinCode: List<Int>) -> Unit,
+  onResetError: () -> Unit,
+  onNavigateBack: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val focusManager = LocalFocusManager.current
-    val subHeadingFocusRequester = remember { FocusRequester() }
-    MgoScaffold(
-        appBarTitle = stringResource(id = CopyR.string.pincode_create_heading),
-        onNavigateBack = if (hasBackButton) onNavigateBack else null,
-        content = {
-            Text(
-                modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
-                text = stringResource(id = CopyR.string.pincode_create_subheading),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            PinCodeWithKeyboard(
-                modifier = Modifier.weight(1f),
-                onPinCodeEntered = onPinCodeEntered,
-                onResetError = {
-                    onResetError()
-                    coroutineScope.launch {
-                        // Seems to be a bug where if you request focus it only works once.
-                        // Doing it like this fixes that.
-                        focusManager.clearFocus()
-                        delay(100)
-                        subHeadingFocusRequester.requestFocus()
-                    }
-                },
-                error = if (viewState.error) stringResource(CopyR.string.pincode_create_tooweak) else null,
-            )
+  val coroutineScope = rememberCoroutineScope()
+  val focusManager = LocalFocusManager.current
+  val subHeadingFocusRequester = remember { FocusRequester() }
+  MgoScaffold(
+    appBarTitle = stringResource(id = CopyR.string.pincode_create_heading),
+    onNavigateBack = if (hasBackButton) onNavigateBack else null,
+    content = {
+      Text(
+        modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
+        text = stringResource(id = CopyR.string.pincode_create_subheading),
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      PinCodeWithKeyboard(
+        modifier = Modifier.weight(1f),
+        onPinCodeEntered = onPinCodeEntered,
+        onResetError = {
+          onResetError()
+          coroutineScope.launch {
+            // Seems to be a bug where if you request focus it only works once.
+            // Doing it like this fixes that.
+            focusManager.clearFocus()
+            delay(100)
+            subHeadingFocusRequester.requestFocus()
+          }
         },
-    )
+        error = if (viewState.error) stringResource(CopyR.string.pincode_create_tooweak) else null,
+      )
+    },
+  )
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeCreateScreenPreview() {
-    MgoTheme {
-        PinCodeCreateScreenContent(
-            viewState =
-                PinCodeCreateScreenViewState(
-                    error = false,
-                ),
-            hasBackButton = true,
-            onPinCodeEntered = {},
-            onResetError = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    PinCodeCreateScreenContent(
+      viewState =
+        PinCodeCreateScreenViewState(
+          error = false,
+        ),
+      hasBackButton = true,
+      onPinCodeEntered = {},
+      onResetError = {},
+      onNavigateBack = {},
+    )
+  }
 }
 
 @DefaultPreviews
 @Composable
 internal fun PinCodeCreateScreenErrorPreview() {
-    MgoTheme {
-        PinCodeCreateScreenContent(
-            viewState =
-                PinCodeCreateScreenViewState(
-                    error = true,
-                ),
-            hasBackButton = true,
-            onPinCodeEntered = {},
-            onResetError = {},
-            onNavigateBack = {},
-        )
-    }
+  MgoTheme {
+    PinCodeCreateScreenContent(
+      viewState =
+        PinCodeCreateScreenViewState(
+          error = true,
+        ),
+      hasBackButton = true,
+      onPinCodeEntered = {},
+      onResetError = {},
+      onNavigateBack = {},
+    )
+  }
 }

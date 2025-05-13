@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
-import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -111,7 +111,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     contentWindowInsets = WindowInsets.statusBars,
     topBar = {
-      MgoMediumTopAppBar(
+      MgoLargeTopAppBar(
         title = stringResource(id = CopyR.string.organization_search_heading),
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,

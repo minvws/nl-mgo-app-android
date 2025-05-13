@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
-import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -62,7 +62,7 @@ internal fun PropositionOverviewScreenContent(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     contentWindowInsets = WindowInsets.statusBars,
     topBar = {
-      MgoMediumTopAppBar(
+      MgoLargeTopAppBar(
         title = stringResource(id = CopyR.string.proposition_heading),
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,

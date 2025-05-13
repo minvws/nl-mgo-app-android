@@ -38,7 +38,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
-import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.supportContacts
@@ -142,7 +142,7 @@ private fun OrganizationListManualScreenContent(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     contentWindowInsets = if (primaryButton == null) ScaffoldDefaults.contentWindowInsets else WindowInsets.statusBars,
     topBar = {
-      MgoMediumTopAppBar(
+      MgoLargeTopAppBar(
         title = title,
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,

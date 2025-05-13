@@ -23,7 +23,7 @@ import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.framework.copy.R
 
 @Composable
-fun MgoMediumTopAppBar(
+fun MgoLargeTopAppBar(
   title: String,
   scrollBehavior: TopAppBarScrollBehavior,
   onNavigateBack: (() -> Unit)? = null,

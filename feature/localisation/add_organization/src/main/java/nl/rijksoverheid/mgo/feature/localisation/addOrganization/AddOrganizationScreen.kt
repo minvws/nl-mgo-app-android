@@ -1,10 +1,15 @@
 package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -13,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -21,8 +27,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoBasicTextField
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -41,7 +48,6 @@ fun AddOrganizationScreen(
   onNavigateBack: (() -> Unit)?,
   onNavigateToOrganizationSearch: (name: String, city: String) -> Unit,
 ) {
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val viewModel: AddOrganizationScreenViewModel = hiltViewModel()
   val viewState: AddOrganizationScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -74,57 +80,81 @@ private fun AddOrganizationScreenContent(
   onSetCity: (city: String) -> Unit,
   onSearch: () -> Unit,
 ) {
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val scrollState = rememberScrollState()
+
   val (nameFocusRequester, cityFocusRequester) = FocusRequester.createRefs()
   LaunchedEffect(Unit) {
     nameFocusRequester.requestFocus()
   }
-  MgoScaffold(
-    appBarTitle = stringResource(id = CopyR.string.add_organization_heading),
-    onNavigateBack = onNavigateBack,
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    primaryButtonText = stringResource(id = CopyR.string.common_search),
-    onPrimaryButtonClick = onSearch,
-    content = {
-      MgoBasicTextField(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .focusRequester(nameFocusRequester),
-        value = viewState.name,
-        heading = "${stringResource(id = CopyR.string.add_organization_name)} ${stringResource(id = CopyR.string.common_required)}",
-        keyboardOptions =
-          KeyboardOptions(
-            imeAction = ImeAction.Next,
-            capitalization = KeyboardCapitalization.Words,
-          ),
-        keyboardActions = KeyboardActions(onNext = { cityFocusRequester.requestFocus() }),
-        onValueChange = onSetName,
-        error = viewState.nameError?.let { resource -> stringResource(id = resource) },
-        textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
-      )
 
-      MgoBasicTextField(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .focusRequester(cityFocusRequester)
-            .padding(top = 16.dp),
-        value = viewState.city,
-        heading =
-          "${stringResource(id = CopyR.string.add_organization_city)} ${stringResource(id = CopyR.string.common_required)}",
-        keyboardOptions =
-          KeyboardOptions(
-            imeAction = ImeAction.Search,
-            capitalization = KeyboardCapitalization.Words,
-          ),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
-        onValueChange = onSetCity,
-        error = viewState.cityError?.let { resource -> stringResource(id = resource) },
-        textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    contentWindowInsets = WindowInsets.statusBars,
+    topBar = {
+      MgoLargeTopAppBar(
+        title = stringResource(id = CopyR.string.add_organization_heading),
+        onNavigateBack = onNavigateBack,
+        scrollBehavior = scrollBehavior,
       )
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        Column(
+          modifier =
+            Modifier
+              .weight(1f)
+              .verticalScroll(scrollState)
+              .padding(16.dp),
+        ) {
+          MgoBasicTextField(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .focusRequester(nameFocusRequester),
+            value = viewState.name,
+            heading = "${stringResource(id = CopyR.string.add_organization_name)} ${stringResource(id = CopyR.string.common_required)}",
+            keyboardOptions =
+              KeyboardOptions(
+                imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.Words,
+              ),
+            keyboardActions = KeyboardActions(onNext = { cityFocusRequester.requestFocus() }),
+            onValueChange = onSetName,
+            error = viewState.nameError?.let { resource -> stringResource(id = resource) },
+            textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
+          )
+
+          MgoBasicTextField(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .focusRequester(cityFocusRequester)
+                .padding(top = 16.dp),
+            value = viewState.city,
+            heading =
+              "${stringResource(id = CopyR.string.add_organization_city)} ${stringResource(id = CopyR.string.common_required)}",
+            keyboardOptions =
+              KeyboardOptions(
+                imeAction = ImeAction.Search,
+                capitalization = KeyboardCapitalization.Words,
+              ),
+            keyboardActions = KeyboardActions(onSearch = { onSearch() }),
+            onValueChange = onSetCity,
+            error = viewState.cityError?.let { resource -> stringResource(id = resource) },
+            textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,
+          )
+        }
+
+        MgoBottomButtons(
+          primaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.common_search),
+              onClick = onSearch,
+            ),
+          isElevated = scrollState.canScrollForward,
+        )
+      }
     },
   )
 }

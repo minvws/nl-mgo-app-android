@@ -22,6 +22,8 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 data class MgoBottomButton(
   val text: String,
   val onClick: () -> Unit,
+  val overrideTheme: MgoButtonTheme? = null,
+  val isLoading: Boolean = false,
 )
 
 @Composable
@@ -62,7 +64,8 @@ fun MgoBottomButtons(
             .fillMaxWidth(),
         buttonText = primaryButton.text,
         onClick = primaryButton.onClick,
-        buttonTheme = MgoButtonTheme.PRIMARY_DEFAULT,
+        buttonTheme = primaryButton.overrideTheme ?: MgoButtonTheme.PRIMARY_DEFAULT,
+        isLoading = primaryButton.isLoading,
       )
     }
   }

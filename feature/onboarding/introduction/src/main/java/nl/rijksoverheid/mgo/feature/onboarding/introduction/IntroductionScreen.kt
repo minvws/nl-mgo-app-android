@@ -47,7 +47,7 @@ fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
             modifier =
               Modifier
                 .fillMaxWidth()
-                .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight),
+                .padding(top = TopAppBarDefaults.LargeAppBarCollapsedHeight),
             painter = painterResource(id = R.drawable.illustration_introduction),
             contentDescription = null,
           )

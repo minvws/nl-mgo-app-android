@@ -25,7 +25,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollColumn
-import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -81,7 +81,7 @@ private fun PinCodeConfirmScreenContent(
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
-      MgoMediumTopAppBar(
+      MgoLargeTopAppBar(
         title = stringResource(id = CopyR.string.pincode_create_heading),
         scrollBehavior = scrollBehavior,
         onNavigateBack = onNavigateBack,

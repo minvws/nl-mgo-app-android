@@ -2,12 +2,15 @@ package nl.rijksoverheid.mgo.feature.digid
 
 import android.content.Intent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -26,10 +29,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
@@ -80,41 +83,55 @@ private fun DigidLoginScreenContent(
   viewState: DigidLoginScreenViewState,
   onLoginClicked: () -> Unit,
 ) {
-  MgoScaffold(
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    primaryButtonText = stringResource(id = CopyR.string.login_digid),
-    primaryButtonTheme = MgoButtonTheme.DIGID,
-    primaryButtonLoading = viewState.loading,
-    onPrimaryButtonClick = onLoginClicked,
-  ) {
-    Image(
-      modifier =
-        Modifier
-          .fillMaxWidth()
-          .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-          .align(Alignment.CenterHorizontally),
-      painter = painterResource(id = R.drawable.illustration_login),
-      contentDescription = null,
-    )
+  val scrollState = rememberScrollState()
+  Scaffold(
+    contentWindowInsets = WindowInsets.statusBars,
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        Column(
+          modifier =
+            Modifier
+              .weight(1f)
+              .verticalScroll(scrollState)
+              .padding(16.dp),
+        ) {
+          Image(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .padding(top = TopAppBarDefaults.LargeAppBarCollapsedHeight)
+                .align(Alignment.CenterHorizontally),
+            painter = painterResource(id = R.drawable.illustration_login),
+            contentDescription = null,
+          )
 
-    Text(
-      modifier = Modifier.padding(top = 32.dp),
-      text = stringResource(id = CopyR.string.login_heading),
-      style = MaterialTheme.typography.headlineLarge,
-      fontWeight = FontWeight.Bold,
-    )
+          Text(
+            modifier = Modifier.padding(top = 32.dp),
+            text = stringResource(id = CopyR.string.login_heading),
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+          )
 
-    MgoHtmlText(
-      modifier = Modifier.padding(top = 16.dp),
-      html = stringResource(id = CopyR.string.login_subheading),
-      style = MaterialTheme.typography.bodyMedium,
-    )
+          MgoHtmlText(
+            modifier = Modifier.padding(top = 16.dp),
+            html = stringResource(id = CopyR.string.login_subheading),
+            style = MaterialTheme.typography.bodyMedium,
+          )
+        }
 
-    Spacer(modifier = Modifier.height(16.dp))
-  }
+        MgoBottomButtons(
+          primaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.login_digid),
+              onClick = onLoginClicked,
+              isLoading = viewState.loading,
+              overrideTheme = MgoButtonTheme.DIGID,
+            ),
+          isElevated = scrollState.canScrollForward,
+        )
+      }
+    },
+  )
 }
 
 @DefaultPreviews

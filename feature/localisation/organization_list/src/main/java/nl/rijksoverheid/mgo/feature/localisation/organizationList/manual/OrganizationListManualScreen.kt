@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
@@ -119,9 +120,27 @@ private fun OrganizationListManualScreenContent(
       }
     }
 
+  val primaryButton =
+    when {
+      viewState.loading -> null
+      viewState.error != null ->
+        MgoBottomButton(
+          text = stringResource(CopyR.string.common_try_again),
+          onClick = onGetSearchResults,
+        )
+
+      viewState.results.isEmpty() ->
+        MgoBottomButton(
+          text = stringResource(CopyR.string.common_search_again),
+          onClick = onNavigateToSearch,
+        )
+
+      else -> null
+    }
+
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-    contentWindowInsets = WindowInsets.statusBars,
+    contentWindowInsets = if (primaryButton == null) ScaffoldDefaults.contentWindowInsets else WindowInsets.statusBars,
     topBar = {
       MgoMediumTopAppBar(
         title = title,
@@ -131,11 +150,15 @@ private fun OrganizationListManualScreenContent(
     },
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {
-        LazyColumn(modifier = Modifier.weight(1f), contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp), state = lazyListState) {
+        MgoAutoScrollLazyColumn(
+          modifier = Modifier.weight(1f),
+          contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp),
+          state = lazyListState,
+        ) { canScroll ->
           when {
             viewState.loading -> {
               item {
-                LoadingContent()
+                LoadingContent(canScroll)
               }
             }
 
@@ -165,24 +188,6 @@ private fun OrganizationListManualScreenContent(
           }
         }
 
-        val primaryButton =
-          when {
-            viewState.loading -> null
-            viewState.error != null ->
-              MgoBottomButton(
-                text = stringResource(CopyR.string.common_try_again),
-                onClick = onGetSearchResults,
-              )
-
-            viewState.results.isEmpty() ->
-              MgoBottomButton(
-                text = stringResource(CopyR.string.common_search_again),
-                onClick = onNavigateToSearch,
-              )
-
-            else -> null
-          }
-
         if (primaryButton != null) {
           MgoBottomButtons(
             primaryButton = primaryButton,
@@ -195,11 +200,9 @@ private fun OrganizationListManualScreenContent(
 }
 
 @Composable
-private fun LazyItemScope.LoadingContent() {
+private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
   Box(
-    modifier =
-      Modifier
-        .fillParentMaxSize(),
+    modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
     contentAlignment = Alignment.Center,
   ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

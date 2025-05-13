@@ -4,20 +4,30 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,11 +35,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoButton
 import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -104,120 +116,196 @@ private fun HealthCategoriesScreenContent(
   organization: MgoOrganization? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
-  val primaryButtonText =
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val lazyListState = rememberLazyListState()
+  val primaryButton =
     when {
       viewState.providers.isEmpty() -> {
         if (viewState.automaticLocalisationEnabled) {
-          stringResource(id = CopyR.string.common_search_organizations)
+          MgoBottomButton(
+            text = stringResource(id = CopyR.string.common_search_organizations),
+            onClick = onClickAddProvider,
+          )
         } else {
-          stringResource(id = CopyR.string.common_add_organizations)
+          MgoBottomButton(
+            text = stringResource(id = CopyR.string.common_add_organizations),
+            onClick = onClickAddProvider,
+          )
         }
-      } else -> {
+      }
+
+      else -> {
         null
       }
     }
-  MgoScaffold(
-    appBarTitle = appBarTitle,
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    primaryButtonText = primaryButtonText,
-    onPrimaryButtonClick = onClickAddProvider,
-    onNavigateBack = onNavigateBack,
-    content = {
-      if (viewState.providers.isEmpty()) {
-        NoProviders()
-      } else {
-        WithProviders(
-          subHeading = subHeading,
-          filterOrganization = organization,
-          onClickListItem = onClickListItem,
-          onClickRemoveOrganization = onClickRemoveOrganization,
-        )
+
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    contentWindowInsets = WindowInsets.statusBars,
+    topBar = {
+      MgoMediumTopAppBar(
+        title = appBarTitle,
+        onNavigateBack = onNavigateBack,
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    content = { contentPadding ->
+      Column(
+        modifier = Modifier.padding(contentPadding),
+      ) {
+        MgoAutoScrollLazyColumn(
+          modifier = Modifier.weight(1f),
+          contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+          state = lazyListState,
+        ) { canScroll ->
+          if (viewState.providers.isEmpty()) {
+            item {
+              NoProviders(canScroll)
+            }
+          } else {
+            item {
+              Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = subHeading,
+                style = MaterialTheme.typography.bodyMedium,
+              )
+            }
+
+            items(HealthCareCategory.entries.size) { position ->
+              HealthCategoriesListItemCard(
+                position =
+                  when (position) {
+                    0 -> HealthCategoriesListItemCardPosition.TOP
+                    HealthCareCategory.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
+                    else -> HealthCategoriesListItemCardPosition.CENTER
+                  },
+                category = HealthCareCategory.entries.get(position),
+                onClickListItem = onClickListItem,
+                filterOrganization = organization,
+              )
+            }
+
+            if (organization != null) {
+              item {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                  MgoButton(
+                    modifier =
+                      Modifier
+                        .padding(bottom = 16.dp)
+                        .align(Alignment.CenterHorizontally),
+                    buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
+                    onClick = {
+                      onClickRemoveOrganization(organization)
+                    },
+                    buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+                  )
+                }
+              }
+            } else {
+              item {
+                Spacer(modifier = Modifier.height(16.dp))
+              }
+            }
+          }
+        }
+
+        if (primaryButton != null) {
+          MgoBottomButtons(
+            primaryButton = primaryButton,
+            isElevated = lazyListState.canScrollForward,
+          )
+        }
       }
     },
   )
 }
 
 @Composable
-private fun ColumnScope.NoProviders() {
-  Spacer(modifier = Modifier.weight(1f))
-  Image(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        .height(156.dp),
-    painter = painterResource(id = R.drawable.illustration_overview_empty),
-    contentDescription = null,
-  )
-  Text(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        .padding(top = 24.dp),
-    text = stringResource(id = CopyR.string.common_no_organizations_heading),
-    style = MaterialTheme.typography.headlineSmall,
-    textAlign = TextAlign.Center,
-  )
-  Text(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        .padding(top = 8.dp),
-    text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-    style = MaterialTheme.typography.bodyMedium,
-    color = MaterialTheme.colorScheme.contentSecondary(),
-    textAlign = TextAlign.Center,
-  )
-  Spacer(modifier = Modifier.height(16.dp))
-  Spacer(modifier = Modifier.weight(1f))
+private fun LazyItemScope.NoProviders(canScroll: Boolean) {
+  Box(modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
+    Column {
+      Image(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .height(156.dp),
+        painter = painterResource(id = R.drawable.illustration_overview_empty),
+        contentDescription = null,
+      )
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_heading),
+        style = MaterialTheme.typography.headlineSmall,
+        textAlign = TextAlign.Center,
+      )
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_subheading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+        textAlign = TextAlign.Center,
+      )
+    }
+  }
+}
+
+private enum class HealthCategoriesListItemCardPosition {
+  TOP,
+  CENTER,
+  BOTTOM,
 }
 
 @Composable
-private fun ColumnScope.WithProviders(
-  subHeading: String,
+private fun HealthCategoriesListItemCard(
+  position: HealthCategoriesListItemCardPosition,
+  category: HealthCareCategory,
   onClickListItem: (category: HealthCareCategory) -> Unit,
   filterOrganization: MgoOrganization?,
-  onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
-  modifier: Modifier = Modifier,
 ) {
-  Text(
-    text = subHeading,
-    style = MaterialTheme.typography.bodyMedium,
-  )
-  MgoCard(
-    modifier =
-      modifier.padding(
-        top = 8.dp,
-        bottom = 16.dp,
-      ),
-  ) {
-    Column {
-      HealthCareCategory.entries.forEach { category ->
-        HealthCategoriesListItem(
-          modifier = Modifier.clickable { onClickListItem(category) },
-          icon = category.getIcon(),
-          title = category.getTitle(),
-          iconColor = category.getIconColor(),
-          category = category,
-          filterOrganization = filterOrganization,
+  val shape =
+    when (position) {
+      HealthCategoriesListItemCardPosition.TOP -> {
+        RoundedCornerShape(
+          topStart = 16.dp,
+          topEnd = 16.dp,
+          bottomStart = 0.dp,
+          bottomEnd = 0.dp,
+        )
+      }
+
+      HealthCategoriesListItemCardPosition.CENTER -> {
+        RoundedCornerShape(
+          topStart = 0.dp,
+          topEnd = 0.dp,
+          bottomStart = 0.dp,
+          bottomEnd = 0.dp,
+        )
+      }
+
+      HealthCategoriesListItemCardPosition.BOTTOM -> {
+        RoundedCornerShape(
+          topStart = 0.dp,
+          topEnd = 0.dp,
+          bottomStart = 16.dp,
+          bottomEnd = 16.dp,
         )
       }
     }
-  }
 
-  if (filterOrganization != null) {
-    MgoButton(
-      modifier =
-        Modifier
-          .padding(bottom = 16.dp)
-          .align(Alignment.CenterHorizontally),
-      buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
-      onClick = {
-        onClickRemoveOrganization(filterOrganization)
-      },
-      buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+  MgoCard(shape = shape) {
+    HealthCategoriesListItem(
+      modifier = Modifier.clickable { onClickListItem(category) },
+      icon = category.getIcon(),
+      title = category.getTitle(),
+      iconColor = category.getIconColor(),
+      category = category,
+      filterOrganization = filterOrganization,
     )
   }
 }
@@ -233,8 +321,8 @@ private fun HealthCareCategory.getTitle(): Int {
 }
 
 @DrawableRes
-private fun HealthCareCategory.getIcon(): Int {
-  return when (this) {
+private fun HealthCareCategory.getIcon(): Int =
+  when (this) {
     HealthCareCategory.MEDICATIONS -> R.drawable.ic_medication
     HealthCareCategory.MEASUREMENTS -> R.drawable.ic_measurements
     HealthCareCategory.LAB_RESULTS -> R.drawable.ic_labresults
@@ -252,11 +340,10 @@ private fun HealthCareCategory.getIcon(): Int {
     HealthCareCategory.MENTAL -> R.drawable.ic_mental
     HealthCareCategory.LIFESTYLE -> R.drawable.ic_lifestyle
   }
-}
 
 @Composable
-private fun HealthCareCategory.getIconColor(): Color {
-  return when (this) {
+private fun HealthCareCategory.getIconColor(): Color =
+  when (this) {
     HealthCareCategory.MEDICATIONS -> MaterialTheme.colorScheme.supportMedication()
     HealthCareCategory.MEASUREMENTS -> MaterialTheme.colorScheme.supportVitals()
     HealthCareCategory.LAB_RESULTS -> MaterialTheme.colorScheme.supportLaboratory()
@@ -274,7 +361,6 @@ private fun HealthCareCategory.getIconColor(): Color {
     HealthCareCategory.MENTAL -> MaterialTheme.colorScheme.supportFunctional()
     HealthCareCategory.LIFESTYLE -> MaterialTheme.colorScheme.supportLifestyle()
   }
-}
 
 @DefaultPreviews
 @Composable

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
@@ -87,6 +87,26 @@ private fun OrganizationListAutomaticSearchScreenContent(
   val lazyListState = rememberLazyListState()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
+  val primaryButton =
+    when {
+      viewState.error == null ->
+        MgoBottomButton(
+          text = stringResource(CopyR.string.common_to_overview),
+          onClick = onUpdateOrganizations,
+        )
+
+      else ->
+        MgoBottomButton(
+          text =
+            stringResource(
+              id =
+                CopyR.string
+                  .common_try_again,
+            ),
+          onClick = onGetSearchResults,
+        )
+    }
+
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     contentWindowInsets = WindowInsets.statusBars,
@@ -99,11 +119,15 @@ private fun OrganizationListAutomaticSearchScreenContent(
     },
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {
-        LazyColumn(modifier = Modifier.weight(1f), contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp), state = lazyListState) {
+        MgoAutoScrollLazyColumn(
+          modifier = Modifier.weight(1f),
+          contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp),
+          state = lazyListState,
+        ) { canScroll ->
           when {
             viewState.loading -> {
               item {
-                LoadingContent()
+                LoadingContent(canScroll)
               }
             }
 
@@ -136,26 +160,6 @@ private fun OrganizationListAutomaticSearchScreenContent(
           }
         }
 
-        val primaryButton =
-          when {
-            viewState.error == null ->
-              MgoBottomButton(
-                text = stringResource(CopyR.string.common_to_overview),
-                onClick = onUpdateOrganizations,
-              )
-
-            else ->
-              MgoBottomButton(
-                text =
-                  stringResource(
-                    id =
-                      CopyR.string
-                        .common_try_again,
-                  ),
-                onClick = onGetSearchResults,
-              )
-          }
-
         MgoBottomButtons(
           primaryButton = primaryButton,
           isElevated = lazyListState.canScrollForward,
@@ -166,11 +170,9 @@ private fun OrganizationListAutomaticSearchScreenContent(
 }
 
 @Composable
-private fun LazyItemScope.LoadingContent(modifier: Modifier = Modifier) {
+private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
   Box(
-    modifier =
-      modifier
-        .fillParentMaxSize(),
+    modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
     contentAlignment = Alignment.Center,
   ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

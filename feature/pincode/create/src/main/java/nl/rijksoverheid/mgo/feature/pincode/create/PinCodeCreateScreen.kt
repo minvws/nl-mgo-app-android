@@ -82,7 +82,7 @@ private fun PinCodeCreateScreenContent(
       )
     },
     content = { contentPadding ->
-      MgoAutoScrollColumn(modifier = Modifier.padding(contentPadding).padding(16.dp)) {
+      MgoAutoScrollColumn(modifier = Modifier.padding(contentPadding).padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
         Text(
           modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
           text = stringResource(id = CopyR.string.pincode_create_subheading),

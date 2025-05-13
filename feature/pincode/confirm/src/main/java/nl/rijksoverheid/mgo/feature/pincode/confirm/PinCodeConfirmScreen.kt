@@ -92,7 +92,7 @@ private fun PinCodeConfirmScreenContent(
         modifier =
           Modifier
             .padding(contentPadding)
-            .padding(16.dp),
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
       ) {
         Text(
           modifier =

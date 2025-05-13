@@ -35,7 +35,7 @@ fun MgoMediumTopAppBar(
           fontWeight = FontWeight.Bold,
           fontSize = 22.sp,
         ),
-      headlineSmall = MaterialTheme.typography.headlineLarge.copy(fontSize = 34.sp),
+      headlineMedium = MaterialTheme.typography.headlineLarge.copy(fontSize = 34.sp),
     )
   MgoTheme(
     typography = adjustedTypography,

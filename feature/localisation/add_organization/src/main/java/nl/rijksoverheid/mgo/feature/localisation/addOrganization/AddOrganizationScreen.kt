@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +41,7 @@ fun AddOrganizationScreen(
   onNavigateBack: (() -> Unit)?,
   onNavigateToOrganizationSearch: (name: String, city: String) -> Unit,
 ) {
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val viewModel: AddOrganizationScreenViewModel = hiltViewModel()
   val viewState: AddOrganizationScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 

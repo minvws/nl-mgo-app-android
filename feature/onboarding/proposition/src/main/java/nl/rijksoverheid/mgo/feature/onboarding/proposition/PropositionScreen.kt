@@ -2,21 +2,28 @@ package nl.rijksoverheid.mgo.feature.onboarding.proposition
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -49,41 +56,62 @@ internal fun PropositionOverviewScreenContent(
   onNavigateBack: () -> Unit,
   onClickNext: () -> Unit,
 ) {
-  MgoScaffold(
-    appBarTitle = stringResource(id = CopyR.string.proposition_heading),
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    onNavigateBack = onNavigateBack,
-    primaryButtonText = stringResource(id = CopyR.string.common_next),
-    onPrimaryButtonClick = onClickNext,
-    content = {
-      MgoHtmlText(
-        html = stringResource(id = CopyR.string.proposition_subheading, url),
-        style = MaterialTheme.typography.bodyMedium,
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val scrollState = rememberScrollState()
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    contentWindowInsets = WindowInsets.statusBars,
+    topBar = {
+      MgoMediumTopAppBar(
+        title = stringResource(id = CopyR.string.proposition_heading),
+        onNavigateBack = onNavigateBack,
+        scrollBehavior = scrollBehavior,
       )
-      ListItem(
-        modifier = Modifier.padding(top = 16.dp),
-        icon = R.drawable.ic_privacy_overview_encrypted,
-        text = stringResource(id = CopyR.string.proposition_statement_1),
-      )
-      ListItem(
-        modifier = Modifier.padding(top = 24.dp),
-        icon = R.drawable.ic_privacy_overview_health_and_safety,
-        text = stringResource(id = CopyR.string.proposition_statement_2),
-      )
-      ListItem(
-        modifier = Modifier.padding(top = 24.dp),
-        icon = R.drawable.ic_privacy_overview_verified_user,
-        text = stringResource(id = CopyR.string.proposition_statement_3),
-      )
-      ListItem(
-        modifier = Modifier.padding(top = 24.dp),
-        icon = R.drawable.ic_privacy_overview_gpp_bad,
-        text = stringResource(id = CopyR.string.proposition_statement_4),
-      )
-      Spacer(modifier = Modifier.height(16.dp))
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        Column(
+          modifier =
+            Modifier
+              .weight(1f)
+              .verticalScroll(scrollState)
+              .padding(16.dp),
+        ) {
+          MgoHtmlText(
+            html = stringResource(id = CopyR.string.proposition_subheading, url),
+            style = MaterialTheme.typography.bodyMedium,
+          )
+          ListItem(
+            modifier = Modifier.padding(top = 16.dp),
+            icon = R.drawable.ic_privacy_overview_encrypted,
+            text = stringResource(id = CopyR.string.proposition_statement_1),
+          )
+          ListItem(
+            modifier = Modifier.padding(top = 24.dp),
+            icon = R.drawable.ic_privacy_overview_health_and_safety,
+            text = stringResource(id = CopyR.string.proposition_statement_2),
+          )
+          ListItem(
+            modifier = Modifier.padding(top = 24.dp),
+            icon = R.drawable.ic_privacy_overview_verified_user,
+            text = stringResource(id = CopyR.string.proposition_statement_3),
+          )
+          ListItem(
+            modifier = Modifier.padding(top = 24.dp),
+            icon = R.drawable.ic_privacy_overview_gpp_bad,
+            text = stringResource(id = CopyR.string.proposition_statement_4),
+          )
+        }
+
+        MgoBottomButtons(
+          primaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.common_next),
+              onClick = onClickNext,
+            ),
+          isElevated = scrollState.canScrollForward,
+        )
+      }
     },
   )
 }

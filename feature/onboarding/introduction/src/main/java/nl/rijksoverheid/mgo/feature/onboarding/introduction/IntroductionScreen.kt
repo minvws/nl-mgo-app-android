@@ -34,8 +34,8 @@ fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
   val scrollState = rememberScrollState()
   Scaffold(
     contentWindowInsets = WindowInsets.statusBars,
-    content = { innerPadding ->
-      Column(modifier = Modifier.padding(innerPadding)) {
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
         Column(
           modifier =
             Modifier

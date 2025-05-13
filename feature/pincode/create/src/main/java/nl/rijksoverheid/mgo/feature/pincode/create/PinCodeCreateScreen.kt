@@ -24,7 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.component.mgo.MgoCenteredScrollableColumn
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -82,7 +82,7 @@ private fun PinCodeCreateScreenContent(
       )
     },
     content = { contentPadding ->
-      MgoCenteredScrollableColumn(modifier = Modifier.padding(contentPadding).padding(16.dp)) {
+      MgoAutoScrollColumn(modifier = Modifier.padding(contentPadding).padding(16.dp)) {
         Text(
           modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
           text = stringResource(id = CopyR.string.pincode_create_subheading),

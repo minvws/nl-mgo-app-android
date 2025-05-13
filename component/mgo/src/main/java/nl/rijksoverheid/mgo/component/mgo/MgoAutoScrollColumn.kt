@@ -17,7 +17,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 
 @Composable
-fun MgoCenteredScrollableColumn(
+fun MgoAutoScrollColumn(
   modifier: Modifier = Modifier,
   verticalArrangement: Arrangement.Vertical = Arrangement.Top,
   horizontalAlignment: Alignment.Horizontal = Alignment.Start,

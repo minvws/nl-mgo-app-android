@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -102,31 +100,10 @@ private fun PinCodeWithKeyboardContent(
     }
   }
 
-  var canScroll by remember { mutableStateOf(true) }
-
   Column(
-    modifier =
-      modifier
-        .padding(bottom = 4.dp)
-        .then(
-          if (canScroll) {
-            Modifier.verticalScroll(rememberScrollState())
-          } else {
-            Modifier
-          },
-        ),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Spacer(
-      modifier =
-        Modifier.weight(1f).onGloballyPositioned {
-          if (it.size.height == 0) {
-            canScroll = true
-          } else {
-            canScroll = false
-          }
-        },
-    )
+    Spacer(modifier = Modifier.weight(1f))
     PinCode(
       modifier = Modifier.padding(top = 48.dp),
       pinCode = pinCode,
@@ -149,7 +126,7 @@ private fun PinCodeWithKeyboardContent(
         )
       }
     }
-
+    Spacer(modifier = Modifier.height(48.dp))
     Keyboard(
       onPressNumber = { number ->
         if (error != null) {
@@ -224,23 +201,21 @@ private fun PinCodeError(
   }
 }
 
-private fun Context.accessibilityStringPinCodeAdded(pinCodeSize: Int): String {
-  return getString(
+private fun Context.accessibilityStringPinCodeAdded(pinCodeSize: Int): String =
+  getString(
     CopyR.string.pincode_voiceover,
     pinCodeSize.toString(),
     "5",
     getString(CopyR.string.pincode_filled_voiceover),
   )
-}
 
-private fun Context.accessibilityStringPinCodeRemoved(pinCodeSize: Int): String {
-  return getString(
+private fun Context.accessibilityStringPinCodeRemoved(pinCodeSize: Int): String =
+  getString(
     CopyR.string.pincode_voiceover,
     pinCodeSize.toString(),
     "5",
     getString(CopyR.string.pincode_empty_voiceover),
   )
-}
 
 @PreviewLightDark
 @Composable

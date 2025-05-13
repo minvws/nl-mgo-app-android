@@ -1,8 +1,12 @@
 package nl.rijksoverheid.mgo.feature.pincode.create
 
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,14 +15,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoCenteredScrollableColumn
+import nl.rijksoverheid.mgo.component.mgo.MgoMediumTopAppBar
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -61,33 +68,42 @@ private fun PinCodeCreateScreenContent(
   onResetError: () -> Unit,
   onNavigateBack: () -> Unit,
 ) {
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val coroutineScope = rememberCoroutineScope()
   val focusManager = LocalFocusManager.current
   val subHeadingFocusRequester = remember { FocusRequester() }
-  MgoScaffold(
-    appBarTitle = stringResource(id = CopyR.string.pincode_create_heading),
-    onNavigateBack = if (hasBackButton) onNavigateBack else null,
-    content = {
-      Text(
-        modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
-        text = stringResource(id = CopyR.string.pincode_create_subheading),
-        style = MaterialTheme.typography.bodyMedium,
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MgoMediumTopAppBar(
+        title = stringResource(id = CopyR.string.pincode_create_heading),
+        scrollBehavior = scrollBehavior,
+        onNavigateBack = if (hasBackButton) onNavigateBack else null,
       )
-      PinCodeWithKeyboard(
-        modifier = Modifier.weight(1f),
-        onPinCodeEntered = onPinCodeEntered,
-        onResetError = {
-          onResetError()
-          coroutineScope.launch {
-            // Seems to be a bug where if you request focus it only works once.
-            // Doing it like this fixes that.
-            focusManager.clearFocus()
-            delay(100)
-            subHeadingFocusRequester.requestFocus()
-          }
-        },
-        error = if (viewState.error) stringResource(CopyR.string.pincode_create_tooweak) else null,
-      )
+    },
+    content = { contentPadding ->
+      MgoCenteredScrollableColumn(modifier = Modifier.padding(contentPadding).padding(16.dp)) {
+        Text(
+          modifier = Modifier.focusRequester(subHeadingFocusRequester).focusable(),
+          text = stringResource(id = CopyR.string.pincode_create_subheading),
+          style = MaterialTheme.typography.bodyMedium,
+        )
+        PinCodeWithKeyboard(
+          modifier = Modifier.weight(1f),
+          onPinCodeEntered = onPinCodeEntered,
+          onResetError = {
+            onResetError()
+            coroutineScope.launch {
+              // Seems to be a bug where if you request focus it only works once.
+              // Doing it like this fixes that.
+              focusManager.clearFocus()
+              delay(100)
+              subHeadingFocusRequester.requestFocus()
+            }
+          },
+          error = if (viewState.error) stringResource(CopyR.string.pincode_create_tooweak) else null,
+        )
+      }
     },
   )
 }

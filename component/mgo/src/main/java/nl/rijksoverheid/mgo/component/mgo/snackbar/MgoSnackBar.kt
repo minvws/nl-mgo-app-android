@@ -30,7 +30,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  * @param modifier the [Modifier] to be applied.
  */
 @Composable
-internal fun MgoSnackBar(
+fun MgoSnackBar(
   visuals: MgoSnackBarVisuals,
   onDismiss: () -> Unit,
   modifier: Modifier = Modifier,

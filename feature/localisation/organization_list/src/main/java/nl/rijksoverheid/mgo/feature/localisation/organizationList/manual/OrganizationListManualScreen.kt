@@ -6,20 +6,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,8 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.supportContacts
@@ -89,44 +98,8 @@ private fun OrganizationListManualScreenContent(
   onAddSearchResult: (provider: MgoOrganization) -> Unit,
   onNavigateToSearch: () -> Unit,
 ) {
-  val primaryButtonText =
-    when {
-      viewState.loading -> {
-        null
-      }
-
-      viewState.error != null -> {
-        stringResource(CopyR.string.common_try_again)
-      }
-
-      viewState.results.isEmpty() -> {
-        stringResource(CopyR.string.common_search_again)
-      }
-
-      else -> {
-        null
-      }
-    }
-
-  val onPrimaryButtonClick =
-    when {
-      viewState.loading -> {
-        null
-      }
-
-      viewState.error != null -> {
-        onGetSearchResults
-      }
-
-      viewState.results.isEmpty() -> {
-        onNavigateToSearch
-      }
-
-      else -> {
-        null
-      }
-    }
-
+  val lazyListState = rememberLazyListState()
+  val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
   val title =
     when {
       viewState.loading -> {
@@ -146,32 +119,78 @@ private fun OrganizationListManualScreenContent(
       }
     }
 
-  MgoScaffold(
-    appBarTitle = title,
-    onNavigateBack = onNavigateBack,
-    primaryButtonText = primaryButtonText,
-    onPrimaryButtonClick = onPrimaryButtonClick,
-    content = {
-      when {
-        viewState.loading -> {
-          LoadingContent()
+  val primaryButton =
+    when {
+      viewState.loading -> null
+      viewState.error != null ->
+        MgoBottomButton(
+          text = stringResource(CopyR.string.common_try_again),
+          onClick = onGetSearchResults,
+        )
+
+      viewState.results.isEmpty() ->
+        MgoBottomButton(
+          text = stringResource(CopyR.string.common_search_again),
+          onClick = onNavigateToSearch,
+        )
+
+      else -> null
+    }
+
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    contentWindowInsets = if (primaryButton == null) ScaffoldDefaults.contentWindowInsets else WindowInsets.statusBars,
+    topBar = {
+      MgoLargeTopAppBar(
+        title = title,
+        onNavigateBack = onNavigateBack,
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        MgoAutoScrollLazyColumn(
+          modifier = Modifier.weight(1f),
+          contentPadding = PaddingValues(16.dp),
+          state = lazyListState,
+        ) { canScroll ->
+          when {
+            viewState.loading -> {
+              item {
+                LoadingContent(canScroll)
+              }
+            }
+
+            viewState.error != null -> {
+              item {
+                ErrorContent()
+              }
+            }
+
+            viewState.results.isEmpty() -> {
+              item {
+                EmptyContent(
+                  name = viewState.name,
+                  city = viewState.city,
+                )
+              }
+            }
+
+            else -> {
+              items(viewState.results.size) { position ->
+                ResultContent(
+                  searchResult = viewState.results[position],
+                  onAddSearchResult = onAddSearchResult,
+                )
+              }
+            }
+          }
         }
 
-        viewState.error != null -> {
-          ErrorContent()
-        }
-
-        viewState.results.isEmpty() -> {
-          EmptyContent(
-            name = viewState.name,
-            city = viewState.city,
-          )
-        }
-
-        else -> {
-          ResultsContent(
-            searchResults = viewState.results,
-            onAddSearchResult = onAddSearchResult,
+        if (primaryButton != null) {
+          MgoBottomButtons(
+            primaryButton = primaryButton,
+            isElevated = lazyListState.canScrollForward,
           )
         }
       }
@@ -180,12 +199,9 @@ private fun OrganizationListManualScreenContent(
 }
 
 @Composable
-private fun ColumnScope.LoadingContent() {
+private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
   Box(
-    modifier =
-      Modifier
-        .fillMaxSize()
-        .weight(1f),
+    modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
     contentAlignment = Alignment.Center,
   ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -203,25 +219,20 @@ private fun ColumnScope.LoadingContent() {
 }
 
 @Composable
-private fun ResultsContent(
-  searchResults: List<MgoOrganization>,
+private fun ResultContent(
+  searchResult: MgoOrganization,
   onAddSearchResult: (provider: MgoOrganization) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 2.dp)) {
-    items(searchResults.size) { position ->
-      val searchResult = searchResults[position]
-      OrganizationListManualCard(
-        modifier =
-          Modifier
-            .padding(bottom = 8.dp)
-            .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
-        searchResult = searchResult,
-        onClick = onAddSearchResult,
-        cardState = searchResult.getCardState(),
-      )
-    }
-  }
+  OrganizationListManualCard(
+    modifier =
+      modifier
+        .padding(bottom = 8.dp)
+        .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+    searchResult = searchResult,
+    onClick = onAddSearchResult,
+    cardState = searchResult.getCardState(),
+  )
 }
 
 @Composable
@@ -324,7 +335,8 @@ internal fun OrganizationListManualScreenEmptyPreview() {
   MgoTheme {
     OrganizationListManualScreenContent(
       viewState =
-        OrganizationListManualScreenViewState.initialState(name = "Tandarts Tandje Erbij", city = "Roermond")
+        OrganizationListManualScreenViewState
+          .initialState(name = "Tandarts Tandje Erbij", city = "Roermond")
           .copy(
             loading = false,
           ),
@@ -342,7 +354,8 @@ internal fun OrganizationListManualScreenResultsPreview() {
   MgoTheme {
     OrganizationListManualScreenContent(
       viewState =
-        OrganizationListManualScreenViewState.initialState(name = "Tandarts Tandje Erbij", city = "Roermond")
+        OrganizationListManualScreenViewState
+          .initialState(name = "Tandarts Tandje Erbij", city = "Roermond")
           .copy(
             loading = false,
             results = listOf(TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION),
@@ -361,7 +374,8 @@ internal fun OrganizationListManualScreenErrorPreview() {
   MgoTheme {
     OrganizationListManualScreenContent(
       viewState =
-        OrganizationListManualScreenViewState.initialState(name = "Tandarts Tandje Erbij", city = "Roermond")
+        OrganizationListManualScreenViewState
+          .initialState(name = "Tandarts Tandje Erbij", city = "Roermond")
           .copy(
             loading = false,
             error = IllegalStateException("Something went wrong"),

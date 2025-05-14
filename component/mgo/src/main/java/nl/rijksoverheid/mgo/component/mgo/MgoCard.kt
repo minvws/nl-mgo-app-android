@@ -8,21 +8,26 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 
 /**
  * Composable that shows a card. Same as a [Card] but with some specific values set.
+ *
  * @param modifier the [Modifier] to be applied.
+ * @param shape The [Shape] of the [Card].
  */
 @Composable
 fun MgoCard(
   modifier: Modifier = Modifier,
+  shape: Shape = CardDefaults.shape,
   content: @Composable ColumnScope.() -> Unit,
 ) {
   Card(
     modifier = modifier,
+    shape = shape,
     colors = CardDefaults.outlinedCardColors(),
     elevation = CardDefaults.elevatedCardElevation(),
     content = content,

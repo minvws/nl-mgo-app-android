@@ -2,6 +2,8 @@ package nl.rijksoverheid.mgo.feature.dashboard.bottombar
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.BottomAppBar
@@ -9,16 +11,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -29,7 +34,9 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBar
+import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
@@ -37,6 +44,7 @@ import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import timber.log.Timber
 
 /**
  * Composable that shows the a screen with bottom bar. The dashboard screen is the root screen of the app that shows after inputting the
@@ -83,10 +91,31 @@ fun DashboardBottomBarScreenContent(
   val bottomBarItems = BottomBarItem.entries
   val pagerState = rememberPagerState(pageCount = { bottomBarItems.size })
 
-  MgoScaffold(
-    horizontalPadding = 0.dp,
-    content = {
-      HorizontalPager(state = pagerState, userScrollEnabled = false) { position ->
+  val snackbarHostState = remember { SnackbarHostState() }
+  val snackbarPresenter = LocalDashboardSnackbarPresenter.current
+
+  LaunchedEffect(snackbarPresenter) {
+    snackbarPresenter.snackbarVisuals.collectLatest {
+      Timber.v("Ik kom hier bart")
+      snackbarHostState.showSnackbar(it)
+    }
+  }
+
+  Scaffold(
+    snackbarHost = {
+      SnackbarHost(hostState = snackbarHostState) {
+        MgoSnackBar(
+          visuals = it.visuals as MgoSnackBarVisuals,
+          onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() },
+        )
+      }
+    },
+    content = { contentPadding ->
+      HorizontalPager(
+        modifier = Modifier.consumeWindowInsets(contentPadding).padding(contentPadding),
+        state = pagerState,
+        userScrollEnabled = false,
+      ) { position ->
         val bottomBarItem = bottomBarItems[position]
         val navController = rememberNavController()
         LaunchedEffect(Unit) {

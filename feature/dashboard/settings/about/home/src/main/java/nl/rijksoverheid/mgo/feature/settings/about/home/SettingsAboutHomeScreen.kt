@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,8 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderSecondary
@@ -94,66 +95,67 @@ private fun SettingsAboutHomeScreenContent(
     )
   }
 
-  MgoScaffold(
-    appBarTitle = stringResource(CopyR.string.settings_about_this_app_heading),
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    onNavigateBack = onClickBack,
-    isAlwaysCollapsed = true,
-    content = {
-      MgoCard(
-        modifier =
-          Modifier
-            .padding(top = 8.dp),
-      ) {
-        Image(
-          modifier = Modifier.align(Alignment.CenterHorizontally).padding(start = 100.dp),
-          painter = painterResource(R.drawable.illustration_vws),
-          contentDescription = null,
-        )
-        SettingsAboutHomeListItem(
+  Scaffold(
+    topBar = {
+      MgoTopAppBar(
+        title = stringResource(CopyR.string.settings_about_this_app_heading),
+        onNavigateBack = onClickBack,
+      )
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(all = 16.dp)) {
+        MgoCard(
           modifier =
             Modifier
-              .padding(top = 16.dp)
-              .clickable { showFhirParserVersionDialog = true },
-          heading = CopyR.string.common_app_name,
-          headingBold = true,
-          subHeading =
-            "${stringResource(CopyR.string.settings_about_this_app_version)} ${viewState.appVersionName} " +
-              "(${viewState.appVersionCode})",
-        )
-        SettingsAboutHomeListItem(
-          modifier = Modifier.clickable { onClickSecureUse() },
-          heading = CopyR.string.settings_about_this_app_safety,
-        )
-        SettingsAboutHomeListItem(
-          modifier = Modifier.clickable { onClickOpenSource() },
-          heading = CopyR.string.settings_about_this_app_open_source,
-        )
-        SettingsAboutHomeListItem(
-          modifier = Modifier.clickable { onClickAccessibility() },
-          heading = CopyR.string.settings_about_this_app_accessibility,
-          hasDivider = false,
-        )
-      }
+              .padding(top = 8.dp),
+        ) {
+          Image(
+            modifier = Modifier.align(Alignment.CenterHorizontally).padding(start = 100.dp),
+            painter = painterResource(R.drawable.illustration_vws),
+            contentDescription = null,
+          )
+          SettingsAboutHomeListItem(
+            modifier =
+              Modifier
+                .padding(top = 16.dp)
+                .clickable { showFhirParserVersionDialog = true },
+            heading = CopyR.string.common_app_name,
+            headingBold = true,
+            subHeading =
+              "${stringResource(CopyR.string.settings_about_this_app_version)} ${viewState.appVersionName} " +
+                "(${viewState.appVersionCode})",
+          )
+          SettingsAboutHomeListItem(
+            modifier = Modifier.clickable { onClickSecureUse() },
+            heading = CopyR.string.settings_about_this_app_safety,
+          )
+          SettingsAboutHomeListItem(
+            modifier = Modifier.clickable { onClickOpenSource() },
+            heading = CopyR.string.settings_about_this_app_open_source,
+          )
+          SettingsAboutHomeListItem(
+            modifier = Modifier.clickable { onClickAccessibility() },
+            heading = CopyR.string.settings_about_this_app_accessibility,
+            hasDivider = false,
+          )
+        }
 
-      MgoCard(
-        modifier =
-          Modifier
-            .padding(top = 32.dp),
-      ) {
-        val url = stringResource(viewState.privacyUrl)
-        SettingsAboutHomeListItem(
+        MgoCard(
           modifier =
-            Modifier.clickable {
-              context.launchBrowser(url)
-            },
-          heading = CopyR.string.settings_about_this_app_privacy,
-          hasDivider = false,
-          icon = Icons.AutoMirrored.Default.OpenInNew,
-        )
+            Modifier
+              .padding(top = 32.dp, bottom = 4.dp),
+        ) {
+          val url = stringResource(viewState.privacyUrl)
+          SettingsAboutHomeListItem(
+            modifier =
+              Modifier.clickable {
+                context.launchBrowser(url)
+              },
+            heading = CopyR.string.settings_about_this_app_privacy,
+            hasDivider = false,
+            icon = Icons.AutoMirrored.Default.OpenInNew,
+          )
+        }
       }
     },
   )

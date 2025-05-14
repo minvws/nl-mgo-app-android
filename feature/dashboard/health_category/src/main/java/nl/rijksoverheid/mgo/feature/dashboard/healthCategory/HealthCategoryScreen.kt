@@ -6,16 +6,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,10 +34,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -83,42 +87,65 @@ private fun HealthCategoryScreenContent(
   onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
   onNavigateBack: () -> Unit,
 ) {
+  val lazyListState = rememberLazyListState()
+  val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
   var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
-  MgoScaffold(
-    appBarTitle = stringResource(viewState.category.getTitle()),
-    onNavigateBack = onNavigateBack,
-    content = {
-      when (viewState.listItemsState) {
-        is HealthCategoryScreenViewState.ListItemsState.Loaded ->
-          ListItemsContent(
-            listItemsGroup = viewState.listItemsState.listItemsGroup,
-            onClickListItem = onClickListItem,
-            showErrorBanner = showErrorBanner,
-            onRetryClick = onRetry,
-            onDismissErrorBanner = { showErrorBanner = false },
-          )
 
-        HealthCategoryScreenViewState.ListItemsState.Loading ->
-          LoadingContent()
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MgoLargeTopAppBar(
+        title = stringResource(viewState.category.getTitle()),
+        onNavigateBack = onNavigateBack,
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        MgoAutoScrollLazyColumn(
+          modifier = Modifier.weight(1f),
+          contentPadding = PaddingValues(16.dp),
+          state = lazyListState,
+        ) { canScroll ->
 
-        is HealthCategoryScreenViewState.ListItemsState.NoData ->
-          NoDataContent(
-            showErrorBanner = showErrorBanner,
-            onRetryClick = onRetry,
-            onDismissErrorBanner = { showErrorBanner = false },
-          )
+          when (viewState.listItemsState) {
+            HealthCategoryScreenViewState.ListItemsState.Loading -> {
+              item {
+                LoadingContent(canScroll)
+              }
+            }
+
+            HealthCategoryScreenViewState.ListItemsState.NoData -> {
+              item {
+                NoDataContent(
+                  canScroll = canScroll,
+                  showErrorBanner = showErrorBanner,
+                  onRetryClick = onRetry,
+                  onDismissErrorBanner = { showErrorBanner = false },
+                )
+              }
+            }
+
+            is HealthCategoryScreenViewState.ListItemsState.Loaded -> {
+              LoadedContent(
+                listItemsGroup = viewState.listItemsState.listItemsGroup,
+                onClickListItem = onClickListItem,
+                showErrorBanner = showErrorBanner,
+                onRetryClick = onRetry,
+                onDismissErrorBanner = { showErrorBanner = false },
+              )
+            }
+          }
+        }
       }
     },
   )
 }
 
 @Composable
-private fun ColumnScope.LoadingContent() {
+private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
   Box(
-    modifier =
-      Modifier
-        .fillMaxSize()
-        .weight(1f),
+    modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
     contentAlignment = Alignment.Center,
   ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -135,117 +162,115 @@ private fun ColumnScope.LoadingContent() {
   }
 }
 
-@Composable
-private fun ListItemsContent(
+@Suppress("ktlint:standard:function-naming")
+private fun LazyListScope.LoadedContent(
   listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
   onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
   showErrorBanner: Boolean,
   onRetryClick: () -> Unit,
   onDismissErrorBanner: () -> Unit,
-  modifier: Modifier = Modifier,
 ) {
-  LazyColumn(
-    modifier = modifier,
-    contentPadding = PaddingValues(2.dp),
-  ) {
-    if (showErrorBanner) {
+  if (showErrorBanner) {
+    item {
+      MgoBanner(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+        type = MgoBannerType.WARNING,
+        heading = stringResource(id = CopyR.string.common_error_heading),
+        subHeading = stringResource(id = CopyR.string.common_error_subheading),
+        buttonText = stringResource(id = CopyR.string.common_try_again),
+        onButtonClick = onRetryClick,
+        onDismiss = onDismissErrorBanner,
+      )
+    }
+  }
+
+  for (listItemGroup in listItemsGroup) {
+    item {
+      Text(
+        modifier = Modifier.padding(bottom = 8.dp),
+        text = stringResource(listItemGroup.heading),
+        style = MaterialTheme.typography.bodyMedium,
+      )
+    }
+    for (listItem in listItemGroup.items) {
       item {
-        MgoBanner(
+        HealthCategoryCard(
           modifier =
             Modifier
               .fillMaxWidth()
+              .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
               .padding(bottom = 16.dp),
-          type = MgoBannerType.WARNING,
-          heading = stringResource(id = CopyR.string.common_error_heading),
-          subHeading = stringResource(id = CopyR.string.common_error_subheading),
-          buttonText = stringResource(id = CopyR.string.common_try_again),
-          onButtonClick = onRetryClick,
-          onDismiss = onDismissErrorBanner,
+          title = listItem.title,
+          subtitle = listItem.subtitle,
         )
-      }
-    }
-
-    for (listItemGroup in listItemsGroup) {
-      item {
-        Text(
-          modifier = Modifier.padding(bottom = 8.dp),
-          text = stringResource(listItemGroup.heading),
-          style = MaterialTheme.typography.bodyMedium,
-        )
-      }
-      for (listItem in listItemGroup.items) {
-        item {
-          HealthCategoryCard(
-            modifier =
-              Modifier
-                .fillMaxWidth()
-                .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
-                .padding(bottom = 16.dp),
-            title = listItem.title,
-            subtitle = listItem.subtitle,
-          )
-        }
       }
     }
   }
 }
 
 @Composable
-private fun ColumnScope.NoDataContent(
+private fun LazyItemScope.NoDataContent(
+  canScroll: Boolean,
   showErrorBanner: Boolean,
   onRetryClick: () -> Unit,
   onDismissErrorBanner: () -> Unit,
 ) {
-  if (showErrorBanner) {
-    MgoBanner(
-      modifier =
-        Modifier
-          .fillMaxWidth(),
-      type = MgoBannerType.WARNING,
-      heading = stringResource(id = CopyR.string.common_error_heading),
-      subHeading = stringResource(id = CopyR.string.common_error_subheading),
-      buttonText = stringResource(id = CopyR.string.common_try_again),
-      onButtonClick = onRetryClick,
-      onDismiss = onDismissErrorBanner,
-    )
-  }
-
   Column(
-    modifier =
-      Modifier
-        .fillMaxSize()
-        .weight(1f)
-        .padding(top = 16.dp),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
   ) {
-    Image(
+    if (showErrorBanner) {
+      MgoBanner(
+        modifier =
+          Modifier
+            .fillMaxWidth(),
+        type = MgoBannerType.WARNING,
+        heading = stringResource(id = CopyR.string.common_error_heading),
+        subHeading = stringResource(id = CopyR.string.common_error_subheading),
+        buttonText = stringResource(id = CopyR.string.common_try_again),
+        onButtonClick = onRetryClick,
+        onDismiss = onDismissErrorBanner,
+      )
+    }
+
+    Column(
       modifier =
         Modifier
-          .fillMaxWidth()
-          .height(156.dp),
-      painter = painterResource(id = R.drawable.illustration_health_category_empty),
-      contentDescription = null,
-    )
-    Text(
-      modifier =
-        Modifier
-          .fillMaxWidth()
-          .padding(top = 24.dp),
-      text = stringResource(id = CopyR.string.health_category_empty_heading),
-      style = MaterialTheme.typography.headlineSmall,
-      textAlign = TextAlign.Center,
-    )
-    Text(
-      modifier =
-        Modifier
-          .fillMaxWidth()
-          .padding(top = 8.dp),
-      text = stringResource(id = CopyR.string.health_category_empty_subheading),
-      style = MaterialTheme.typography.bodyMedium,
-      color = MaterialTheme.colorScheme.contentSecondary(),
-      textAlign = TextAlign.Center,
-    )
+          .weight(1f)
+          .padding(top = 16.dp),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+      Image(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .height(156.dp),
+        painter = painterResource(id = R.drawable.illustration_health_category_empty),
+        contentDescription = null,
+      )
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp),
+        text = stringResource(id = CopyR.string.health_category_empty_heading),
+        style = MaterialTheme.typography.headlineSmall,
+        textAlign = TextAlign.Center,
+      )
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        text = stringResource(id = CopyR.string.health_category_empty_subheading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+        textAlign = TextAlign.Center,
+      )
+    }
   }
 }
 

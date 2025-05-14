@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LightMode
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -35,8 +38,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderSecondary
@@ -106,111 +109,120 @@ private fun SettingsScreenContent(
     )
   }
 
-  MgoScaffold(
-    appBarTitle = stringResource(CopyR.string.settings_heading),
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    content = {
-      Text(
-        modifier = Modifier.padding(top = 8.dp),
-        text = stringResource(CopyR.string.settings_preferences_heading),
-        style = MaterialTheme.typography.bodyMedium,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.contentSecondary(),
-      )
+  val scrollState = rememberScrollState()
+  val scrollBehavior = getMgoAppBarScrollBehaviour(scrollState.canScrollForward, scrollState.canScrollBackward)
 
-      MgoCard(
-        modifier =
-          Modifier
-            .padding(top = 12.dp),
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MgoLargeTopAppBar(
+        title = stringResource(CopyR.string.settings_heading),
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    content = { contentPadding ->
+      Column(
+        modifier = Modifier.verticalScroll(scrollState).padding(contentPadding).padding(16.dp),
       ) {
-        SettingsListItem(
+        Text(
+          modifier = Modifier.padding(top = 8.dp),
+          text = stringResource(CopyR.string.settings_preferences_heading),
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+          color = MaterialTheme.colorScheme.contentSecondary(),
+        )
+
+        MgoCard(
           modifier =
             Modifier
-              .fillMaxWidth()
-              .clickable { onClickDisplaySettings() },
-          icon = Icons.Outlined.LightMode,
-          heading = CopyR.string.settings_display_heading,
-          subHeading =
-            when (viewState.appTheme) {
-              AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
-              AppTheme.LIGHT -> CopyR.string.settings_display_light
-              AppTheme.DARK -> CopyR.string.settings_display_dark
-            },
-        )
-        if (viewState.deviceHasBiometric) {
+              .padding(top = 12.dp),
+        ) {
           SettingsListItem(
             modifier =
               Modifier
                 .fillMaxWidth()
-                .clickable { onClickSecuritySettings() },
-            icon = Icons.Outlined.Lock,
-            heading = CopyR.string.settings_security_heading,
+                .clickable { onClickDisplaySettings() },
+            icon = Icons.Outlined.LightMode,
+            heading = CopyR.string.settings_display_heading,
+            subHeading =
+              when (viewState.appTheme) {
+                AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
+                AppTheme.LIGHT -> CopyR.string.settings_display_light
+                AppTheme.DARK -> CopyR.string.settings_display_dark
+              },
           )
+          if (viewState.deviceHasBiometric) {
+            SettingsListItem(
+              modifier =
+                Modifier
+                  .fillMaxWidth()
+                  .clickable { onClickSecuritySettings() },
+              icon = Icons.Outlined.Lock,
+              heading = CopyR.string.settings_security_heading,
+            )
+          }
+          if (viewState.isDebug) {
+            SettingsListItem(
+              modifier =
+                Modifier
+                  .fillMaxWidth()
+                  .clickable { onClickAdvancedSettings() },
+              icon = Icons.Outlined.Code,
+              heading = CopyR.string.settings_advanced_heading,
+              subHeading = CopyR.string.settings_advanced_subheading,
+              hasDivider = false,
+            )
+          }
         }
-        if (viewState.isDebug) {
+
+        Text(
+          modifier = Modifier.padding(top = 32.dp),
+          text = stringResource(CopyR.string.settings_information_heading),
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+          color = MaterialTheme.colorScheme.contentSecondary(),
+        )
+
+        MgoCard(
+          modifier =
+            Modifier
+              .padding(top = 12.dp),
+        ) {
           SettingsListItem(
             modifier =
               Modifier
                 .fillMaxWidth()
-                .clickable { onClickAdvancedSettings() },
-            icon = Icons.Outlined.Code,
-            heading = CopyR.string.settings_advanced_heading,
-            subHeading = CopyR.string.settings_advanced_subheading,
+                .clickable { onClickAboutThisAppSettings() },
+            icon = Icons.Outlined.Smartphone,
+            heading = CopyR.string.settings_about_this_app_heading,
             hasDivider = false,
           )
         }
-      }
 
-      Text(
-        modifier = Modifier.padding(top = 32.dp),
-        text = stringResource(CopyR.string.settings_information_heading),
-        style = MaterialTheme.typography.bodyMedium,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.contentSecondary(),
-      )
+        Text(
+          modifier = Modifier.padding(top = 32.dp),
+          text = stringResource(CopyR.string.settings_other_heading),
+          style = MaterialTheme.typography.bodyMedium,
+          fontWeight = FontWeight.Bold,
+          color = MaterialTheme.colorScheme.contentSecondary(),
+        )
 
-      MgoCard(
-        modifier =
-          Modifier
-            .padding(top = 12.dp),
-      ) {
-        SettingsListItem(
+        MgoCard(
           modifier =
             Modifier
-              .fillMaxWidth()
-              .clickable { onClickAboutThisAppSettings() },
-          icon = Icons.Outlined.Smartphone,
-          heading = CopyR.string.settings_about_this_app_heading,
-          hasDivider = false,
-        )
-      }
-
-      Text(
-        modifier = Modifier.padding(top = 32.dp),
-        text = stringResource(CopyR.string.settings_other_heading),
-        style = MaterialTheme.typography.bodyMedium,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.contentSecondary(),
-      )
-
-      MgoCard(
-        modifier =
-          Modifier
-            .padding(top = 12.dp),
-      ) {
-        SettingsListItem(
-          modifier =
-            Modifier
-              .fillMaxWidth()
-              .clickable { showResetAppDialog = true },
-          icon = Icons.Outlined.RestartAlt,
-          heading = CopyR.string.settings_reset_app_heading,
-          subHeading = CopyR.string.settings_reset_app_subheading,
-          hasDivider = false,
-        )
+              .padding(top = 12.dp),
+        ) {
+          SettingsListItem(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .clickable { showResetAppDialog = true },
+            icon = Icons.Outlined.RestartAlt,
+            heading = CopyR.string.settings_reset_app_heading,
+            subHeading = CopyR.string.settings_reset_app_subheading,
+            hasDivider = false,
+          )
+        }
       }
     },
   )

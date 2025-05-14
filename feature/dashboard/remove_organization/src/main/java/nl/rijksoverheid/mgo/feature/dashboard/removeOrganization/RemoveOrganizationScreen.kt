@@ -2,14 +2,15 @@ package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -23,9 +24,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
@@ -46,7 +47,7 @@ fun RemoveOrganizationScreen(
   onNavigateBack: () -> Unit,
   onNavigateToDashboard: () -> Unit,
 ) {
-  val snackbarPresenter = LocalSnackBarPresenter.current
+  val snackbarPresenter = LocalDashboardSnackbarPresenter.current
   val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
   LaunchedEffect(Unit) {
     viewModel.providerDeleted.collectLatest {
@@ -68,54 +69,69 @@ private fun RemoveOrganizationScreenContent(
   onNavigateBack: () -> Unit,
   onDeleteProvider: () -> Unit,
 ) {
-  MgoScaffold(
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    onNavigateBack = onNavigateBack,
-    primaryButtonText = stringResource(id = CopyR.string.remove_organization_no_cancel),
-    onPrimaryButtonClick = onNavigateBack,
-    secondaryButtonText = stringResource(id = CopyR.string.remove_organization_yes_delete),
-    onSecondaryButtonClick = onDeleteProvider,
-    content = {
-      Box(
-        modifier =
-          Modifier
-            .padding(top = TopAppBarDefaults.MediumAppBarCollapsedHeight)
-            .size(102.dp)
-            .background(MaterialTheme.colorScheme.sentimentCritical(), CircleShape)
-            .align(Alignment.CenterHorizontally),
-        contentAlignment = Alignment.Center,
-      ) {
-        Icon(
+  val scrollState = rememberScrollState()
+  Scaffold(
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        Column(
           modifier =
             Modifier
-              .size(61.dp),
-          painter = painterResource(id = R.drawable.ic_delete),
-          tint = MaterialTheme.colorScheme.backgroundSecondary(),
-          contentDescription = null,
+              .weight(1f)
+              .verticalScroll(scrollState)
+              .padding(16.dp),
+        ) {
+          Box(
+            modifier =
+              Modifier
+                .padding(top = TopAppBarDefaults.LargeAppBarCollapsedHeight)
+                .size(102.dp)
+                .background(MaterialTheme.colorScheme.sentimentCritical(), CircleShape)
+                .align(Alignment.CenterHorizontally),
+            contentAlignment = Alignment.Center,
+          ) {
+            Icon(
+              modifier =
+                Modifier
+                  .size(61.dp),
+              painter = painterResource(id = R.drawable.ic_delete),
+              tint = MaterialTheme.colorScheme.backgroundSecondary(),
+              contentDescription = null,
+            )
+          }
+
+          Text(
+            modifier = Modifier.padding(top = 32.dp),
+            text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+          )
+
+          Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text =
+              stringResource(
+                id = CopyR.string.remove_organization_subheading,
+                providerName,
+              ),
+            style = MaterialTheme.typography.bodyMedium,
+          )
+        }
+
+        MgoBottomButtons(
+          primaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.remove_organization_no_cancel),
+              onClick = onNavigateBack,
+            ),
+          secondaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.remove_organization_yes_delete),
+              onClick = onDeleteProvider,
+            ),
+          hasNavigationBarsPadding = false,
+          isElevated = scrollState.canScrollForward,
         )
       }
-
-      Text(
-        modifier = Modifier.padding(top = 32.dp),
-        text = stringResource(id = CopyR.string.remove_organization_heading, providerName),
-        style = MaterialTheme.typography.headlineLarge,
-        fontWeight = FontWeight.Bold,
-      )
-
-      Text(
-        modifier = Modifier.padding(top = 16.dp),
-        text =
-          stringResource(
-            id = CopyR.string.remove_organization_subheading,
-            providerName,
-          ),
-        style = MaterialTheme.typography.bodyMedium,
-      )
-
-      Spacer(modifier = Modifier.height(16.dp))
     },
   )
 }

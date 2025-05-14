@@ -1,10 +1,13 @@
 package nl.rijksoverheid.mgo.feature.pincode.forgot
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,13 +16,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R
@@ -72,24 +78,49 @@ private fun PinCodeForgotScreenContent(
     )
   }
 
-  MgoScaffold(
-    appBarTitle = stringResource(CopyR.string.forgot_pincode_heading),
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    onNavigateBack = onNavigateBack,
-    primaryButtonText = stringResource(id = CopyR.string.common_cancel),
-    onPrimaryButtonClick = onNavigateBack,
-    secondaryButtonText = stringResource(id = CopyR.string.forgot_pincode_button),
-    onSecondaryButtonClick = { showDialog = true },
-    content = {
-      Text(
-        modifier = Modifier.padding(top = 16.dp),
-        text = stringResource(id = CopyR.string.forgot_pincode_subheading),
-        style = MaterialTheme.typography.bodyMedium,
+  val scrollState = rememberScrollState()
+  val scrollBehavior = getMgoAppBarScrollBehaviour(canScrollForward = scrollState.canScrollForward, canScrollBackward = scrollState.canScrollBackward)
+
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MgoLargeTopAppBar(
+        title = stringResource(id = CopyR.string.forgot_pincode_heading),
+        onNavigateBack = onNavigateBack,
+        scrollBehavior = scrollBehavior,
       )
-      Spacer(modifier = Modifier.height(16.dp))
+    },
+    contentWindowInsets = WindowInsets.statusBars,
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        Column(
+          modifier =
+            Modifier
+              .weight(1f)
+              .verticalScroll(scrollState)
+              .padding(16.dp),
+        ) {
+          Text(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = CopyR.string.forgot_pincode_subheading),
+            style = MaterialTheme.typography.bodyMedium,
+          )
+        }
+
+        MgoBottomButtons(
+          primaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.common_cancel),
+              onClick = onNavigateBack,
+            ),
+          secondaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.forgot_pincode_button),
+              onClick = { showDialog = true },
+            ),
+          isElevated = scrollState.canScrollForward,
+        )
+      }
     },
   )
 }

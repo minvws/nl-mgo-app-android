@@ -95,9 +95,8 @@
   <string name="account_removed.heading">Je account is verwijderd</string>
   <string name="account_removed.subheading">Je gegevens zijn verwijderd van je telefoon. Ze blijven wel veilig bewaard bij je zorgaanbieders. Als je een nieuw account maakt, kun je je gegevens opnieuw ophalen.</string>
   <string name="account_removed.action">Oké, begrepen</string>
-  <string name="add_organization.not_implemented">Zorgaanbieder nog niet beschikbaar</string>
-  <string name="biometric_setup.heading">Log in met je vingerafdruk</string>
-  <string name="biometric_setup.subheading">Houd je vinger tegen de scanner op je scherm</string>
+  <string name="biometric_setup.heading">Inloggen met je vingerafdruk</string>
+  <string name="biometric_setup.subheading">Beveilig de app met je vingerafdruk. Zo log je de volgende keer sneller in. Je kunt ook je toegangscode blijven gebruiken.</string>
   <string name="biometric_setup.enable">Vingerafdruk aanzetten</string>
   <string name="pincode.biometric.voiceover">Biometrisch inloggen</string>
   <string name="biometric_prompt.heading">Log in met je vingerafdruk</string>
@@ -150,12 +149,12 @@
   <string name="common.yes">Ja</string>
   <string name="common.no">Nee</string>
   <string name="common.app_name">Mijn Gezondheidsoverzicht</string>
-  <string name="common.cancel">Annuleren</string>
+  <string name="common.cancel">Annuleer</string>
   <string name="common.clear">Wis inhoud</string>
   <string name="common.close">Sluiten</string>
   <string name="common.error_subheading">Sorry, maar het lijkt erop dat we geen verbinding kunnen maken met ons systeem. Probeer het opnieuw.</string>
   <string name="common.skip">Overslaan</string>
-  <string name="common.ok">ok</string>
+  <string name="common.ok">OK</string>
   <string name="common.search_again">Opnieuw zoeken</string>
   <string name="common.no_organizations_heading">Je hebt nog geen zorgaanbieders toegevoegd</string>
   <string name="common.no_organizations_subheading">Voeg zorgaanbieders toe om gegevens over je gezondheid te zien.</string>
@@ -249,4 +248,7 @@
   <string name="settings.reset_app.dialog.heading">App opnieuw instellen?</string>
   <string name="settings.reset_app.dialog.subheading">Je gegevens blijven altijd bewaard bij je zorgaanbieders. Je kunt de app later opnieuw instellen.</string>
   <string name="settings.about_this_app.logo__accessibility">Logo van het Ministerie van Volksgezondheid, Welzijn en Sport</string>
+  <string name="screenshotalert.heading">Screenshot gemaakt</string>
+  <string name="screenshotalert.subheading">Je hebt een afbeelding van medische gegevens opgeslagen. Wees voorzichtig met delen of opslaan.</string>
+  <string name="screenshotalert.action">Begrepen</string>
 </resources>

@@ -32,7 +32,7 @@ inline fun <reified T : Any> NavGraphBuilder.mgoComposableDialog(
 ) {
   dialog<T>(
     deepLinks = deepLinks,
-    dialogProperties = DialogProperties(dismissOnClickOutside = false, usePlatformDefaultWidth = false),
+    dialogProperties = DialogProperties(dismissOnClickOutside = false, usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
     content = { backStackEntry ->
       // Disable dim
       val window = (LocalView.current.parent as DialogWindowProvider).window

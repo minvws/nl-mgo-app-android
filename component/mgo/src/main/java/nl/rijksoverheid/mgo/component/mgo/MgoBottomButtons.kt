@@ -31,6 +31,7 @@ fun MgoBottomButtons(
   primaryButton: MgoBottomButton,
   isElevated: Boolean,
   modifier: Modifier = Modifier,
+  hasNavigationBarsPadding: Boolean = true,
   secondaryButton: MgoBottomButton? = null,
 ) {
   val background = if (isElevated) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background
@@ -46,7 +47,7 @@ fun MgoBottomButtons(
     if (isElevated) {
       HorizontalDivider(color = DividerDefaults.color.copy(alpha = 0.25f))
     }
-    Column(modifier = Modifier.navigationBarsPadding().padding(16.dp)) {
+    Column(modifier = Modifier.then(if (hasNavigationBarsPadding) Modifier.navigationBarsPadding() else Modifier).padding(16.dp)) {
       if (secondaryButton != null) {
         MgoButton(
           modifier =

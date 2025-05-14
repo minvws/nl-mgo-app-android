@@ -6,6 +6,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalInspectionMode
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
+import app.cash.paparazzi.detectEnvironment
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import com.android.resources.NightMode
 import com.android.resources.ScreenOrientation
@@ -60,7 +61,9 @@ enum class SnapshotDevice {
  *
  * @param devices A list of [SnapshotDevice].
  */
-sealed class SnapshotDevices(val devices: List<SnapshotDevice>) {
+sealed class SnapshotDevices(
+  val devices: List<SnapshotDevice>,
+) {
   /**
    * Creates snapshots of all devices that are available.
    */
@@ -95,7 +98,13 @@ class SnapshotTestRule(
   useDeviceResolution: Boolean = false,
 ) : TestRule {
   @get:Rule
-  val rule = Paparazzi(deviceConfig = deviceConfig, renderingMode = renderingMode, useDeviceResolution = useDeviceResolution)
+  val rule =
+    Paparazzi(
+      environment = detectEnvironment().copy(compileSdkVersion = 34), // See: https://github.com/cashapp/paparazzi/issues/1866,
+      deviceConfig = deviceConfig,
+      renderingMode = renderingMode,
+      useDeviceResolution = useDeviceResolution,
+    )
 
   /**
    * Captures UI snapshots for different device configurations.
@@ -206,7 +215,5 @@ class SnapshotTestRule(
   override fun apply(
     base: Statement?,
     description: Description?,
-  ): Statement {
-    return RuleChain.outerRule(rule).apply(base, description)
-  }
+  ): Statement = RuleChain.outerRule(rule).apply(base, description)
 }

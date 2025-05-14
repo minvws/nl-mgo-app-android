@@ -45,7 +45,7 @@ private fun SettingsAboutAccessibilityScreenContent(
         MgoCard(
           modifier =
             Modifier
-              .padding(top = 8.dp),
+              .padding(top = 8.dp, bottom = 2.dp),
         ) {
           Column(modifier = Modifier.padding(16.dp)) {
             Text(

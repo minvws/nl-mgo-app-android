@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.outlined.WifiPassword
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
@@ -72,12 +73,15 @@ fun SettingsAboutSafetyScreen(onNavigateBack: () -> Unit) {
       )
     }
 
-  MgoScaffold(
-    appBarTitle = stringResource(CopyR.string.settings_about_this_app_safety),
-    isAlwaysCollapsed = true,
-    onNavigateBack = onNavigateBack,
-    content = {
-      LazyColumn {
+  Scaffold(
+    topBar = {
+      MgoTopAppBar(
+        title = stringResource(CopyR.string.settings_about_this_app_safety),
+        onNavigateBack = onNavigateBack,
+      )
+    },
+    content = { contentPadding ->
+      LazyColumn(modifier = Modifier.padding(contentPadding).padding(horizontal = 16.dp)) {
         item {
           Text(
             modifier =

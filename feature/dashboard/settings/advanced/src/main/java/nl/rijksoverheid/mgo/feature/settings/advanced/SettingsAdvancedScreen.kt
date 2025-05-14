@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,8 +20,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R
@@ -52,16 +53,15 @@ private fun SettingsAdvancedScreenContent(
   onClickListItem: (key: Preferences.Key<Boolean>, enabled: Boolean) -> Unit,
   onClickBack: () -> Unit,
 ) {
-  MgoScaffold(
-    appBarTitle = stringResource(R.string.settings_advanced_heading),
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    onNavigateBack = onClickBack,
-    isAlwaysCollapsed = true,
-    content = {
-      Column {
+  Scaffold(
+    topBar = {
+      MgoTopAppBar(
+        title = stringResource(R.string.settings_advanced_heading),
+        onNavigateBack = onClickBack,
+      )
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(horizontal = 16.dp, vertical = 2.dp)) {
         SettingsAdvancedListItem(
           title = "Automatische lokalisatie",
           enabled = viewState.automaticLocalisation,

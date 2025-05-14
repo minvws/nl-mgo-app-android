@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -56,12 +57,15 @@ fun SettingsAboutOpenSourceScreenContent(
   onClickBack: () -> Unit,
 ) {
   val context = LocalContext.current
-  MgoScaffold(
-    appBarTitle = stringResource(CopyR.string.settings_about_this_app_open_source),
-    onNavigateBack = onClickBack,
-    isAlwaysCollapsed = true,
-    content = {
-      LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
+  Scaffold(
+    topBar = {
+      MgoTopAppBar(
+        title = stringResource(CopyR.string.settings_about_this_app_open_source),
+        onNavigateBack = onClickBack,
+      )
+    },
+    content = { contentPadding ->
+      LazyColumn(modifier = Modifier.padding(contentPadding).padding(horizontal = 16.dp)) {
         items(libraries.size) { position ->
           val library = libraries[position]
           val website = library.website

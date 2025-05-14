@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
@@ -15,6 +16,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderSecondary
@@ -62,53 +63,54 @@ private fun SettingsDisplayScreenContent(
   onSelectTheme: (theme: AppTheme) -> Unit,
   onClickBack: () -> Unit,
 ) {
-  MgoScaffold(
-    appBarTitle = stringResource(R.string.settings_display_heading),
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    onNavigateBack = onClickBack,
-    isAlwaysCollapsed = true,
-    content = {
-      MgoCard(
-        modifier =
-          Modifier
-            .padding(top = 8.dp),
-      ) {
-        ThemeListItem(
+  Scaffold(
+    topBar = {
+      MgoTopAppBar(
+        title = stringResource(R.string.settings_display_heading),
+        onNavigateBack = onClickBack,
+      )
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+        MgoCard(
           modifier =
             Modifier
-              .fillMaxWidth(),
-          theme = AppTheme.SYSTEM,
-          onSelectTheme = {
-            onSelectTheme(AppTheme.SYSTEM)
-          },
-          selected = selectedTheme == AppTheme.SYSTEM,
-          hasDivider = true,
-        )
-        ThemeListItem(
-          modifier =
-            Modifier
-              .fillMaxWidth(),
-          theme = AppTheme.LIGHT,
-          onSelectTheme = {
-            onSelectTheme(AppTheme.LIGHT)
-          },
-          selected = selectedTheme == AppTheme.LIGHT,
-          hasDivider = true,
-        )
-        ThemeListItem(
-          modifier =
-            Modifier
-              .fillMaxWidth(),
-          theme = AppTheme.DARK,
-          onSelectTheme = {
-            onSelectTheme(AppTheme.DARK)
-          },
-          selected = selectedTheme == AppTheme.DARK,
-          hasDivider = false,
-        )
+              .padding(top = 8.dp),
+        ) {
+          ThemeListItem(
+            modifier =
+              Modifier
+                .fillMaxWidth(),
+            theme = AppTheme.SYSTEM,
+            onSelectTheme = {
+              onSelectTheme(AppTheme.SYSTEM)
+            },
+            selected = selectedTheme == AppTheme.SYSTEM,
+            hasDivider = true,
+          )
+          ThemeListItem(
+            modifier =
+              Modifier
+                .fillMaxWidth(),
+            theme = AppTheme.LIGHT,
+            onSelectTheme = {
+              onSelectTheme(AppTheme.LIGHT)
+            },
+            selected = selectedTheme == AppTheme.LIGHT,
+            hasDivider = true,
+          )
+          ThemeListItem(
+            modifier =
+              Modifier
+                .fillMaxWidth(),
+            theme = AppTheme.DARK,
+            onSelectTheme = {
+              onSelectTheme(AppTheme.DARK)
+            },
+            selected = selectedTheme == AppTheme.DARK,
+            hasDivider = false,
+          )
+        }
       }
     },
   )
@@ -170,22 +172,20 @@ private fun ThemeListItem(
   }
 }
 
-private fun AppTheme.getIcon(): ImageVector {
-  return when (this) {
+private fun AppTheme.getIcon(): ImageVector =
+  when (this) {
     AppTheme.SYSTEM -> Icons.Outlined.SettingsApplications
     AppTheme.LIGHT -> Icons.Outlined.LightMode
     AppTheme.DARK -> Icons.Outlined.DarkMode
   }
-}
 
 @StringRes
-private fun AppTheme.getHeading(): Int {
-  return when (this) {
+private fun AppTheme.getHeading(): Int =
+  when (this) {
     AppTheme.SYSTEM -> R.string.settings_display_system_heading
     AppTheme.LIGHT -> R.string.settings_display_light
     AppTheme.DARK -> R.string.settings_display_dark
   }
-}
 
 @StringRes
 private fun AppTheme.getSubHeading(): Int? {

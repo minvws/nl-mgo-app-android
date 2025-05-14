@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -8,18 +9,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderPrimary
@@ -81,19 +86,30 @@ private fun UiSchemaScreenContent(
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
   onNavigateBack: () -> Unit,
 ) {
-  MgoScaffold(
-    appBarTitle = viewState.toolbarTitle,
-    onNavigateBack = onNavigateBack,
-    content = {
-      LazyColumn {
-        items(viewState.sections.size) { position ->
-          val section = viewState.sections[position]
-          UiSchemaSection(
-            section = section,
-            onClickReference = onClickReference,
-            onClickFile = onClickFile,
-            modifier = Modifier.padding(bottom = 24.dp),
-          )
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MgoLargeTopAppBar(
+        title = viewState.toolbarTitle,
+        onNavigateBack = onNavigateBack,
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    content = { contentPadding ->
+      Column(modifier = Modifier.padding(contentPadding)) {
+        LazyColumn(
+          contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp),
+        ) {
+          items(viewState.sections.size) { position ->
+            val section = viewState.sections[position]
+            UiSchemaSection(
+              section = section,
+              onClickReference = onClickReference,
+              onClickFile = onClickFile,
+              modifier = Modifier.padding(bottom = 24.dp),
+            )
+          }
         }
       }
     },

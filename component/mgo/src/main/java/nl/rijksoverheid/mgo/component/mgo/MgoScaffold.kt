@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +47,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -61,11 +59,17 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 sealed class MgoScaffoldScrollStateProvider {
   data object None : MgoScaffoldScrollStateProvider()
 
-  data class Column(val scrollState: ScrollState) : MgoScaffoldScrollStateProvider()
+  data class Column(
+    val scrollState: ScrollState,
+  ) : MgoScaffoldScrollStateProvider()
 
-  data class LazyColumn(val lazyListState: LazyListState) : MgoScaffoldScrollStateProvider()
+  data class LazyColumn(
+    val lazyListState: LazyListState,
+  ) : MgoScaffoldScrollStateProvider()
 
-  data class Preview(val canScrollForward: Boolean) : MgoScaffoldScrollStateProvider()
+  data class Preview(
+    val canScrollForward: Boolean,
+  ) : MgoScaffoldScrollStateProvider()
 }
 
 /**
@@ -120,16 +124,7 @@ fun MgoScaffold(
       )
     }
   val snackBarHostState = remember { SnackbarHostState() }
-  if (!LocalInspectionMode.current) {
-    val snackbarPresenter = LocalSnackBarPresenter.current
-    LaunchedEffect(Unit) {
-      val visuals = snackbarPresenter.consume()
-      if (visuals != null) {
-        context.vibrate(MgoVibrateDuration.SHORT)
-        snackBarHostState.showSnackbar(visuals = visuals)
-      }
-    }
-  }
+
   val canScroll =
     when (scrollStateProvider) {
       is MgoScaffoldScrollStateProvider.Column ->
@@ -308,11 +303,12 @@ private fun calculateExpandedHeight(title: String): Dp {
   val constraintsWidth = with(density) { (configuration.screenWidthDp.dp - 20.dp).roundToPx() }
   val textMeasurer = rememberTextMeasurer()
   val expandedHeightPx =
-    textMeasurer.measure(
-      constraints = Constraints(maxWidth = constraintsWidth),
-      text = title,
-      style = style.copy(fontSize = adjustedFontSize),
-    ).size.height
+    textMeasurer
+      .measure(
+        constraints = Constraints(maxWidth = constraintsWidth),
+        text = title,
+        style = style.copy(fontSize = adjustedFontSize),
+      ).size.height
   return density.run {
     expandedHeightPx.toDp()
   } + TopAppBarDefaults.MediumAppBarCollapsedHeight + 16.dp

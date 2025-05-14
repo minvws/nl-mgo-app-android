@@ -24,8 +24,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackBarPresenter
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.theme.DefaultLocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
@@ -53,7 +53,7 @@ class MainActivity : FragmentActivity() {
       val appTheme by viewModel.appTheme.collectAsStateWithLifecycle()
 
       CompositionLocalProvider(
-        LocalSnackBarPresenter provides DefaultLocalSnackBarPresenter(),
+        LocalDashboardSnackbarPresenter provides DefaultLocalDashboardSnackbarPresenter(),
         LocalAppThemeProvider provides DefaultLocalAppThemeProvider(appTheme),
       ) {
         val isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()

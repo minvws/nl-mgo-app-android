@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalSnackBarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarType
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
@@ -30,16 +30,16 @@ class RemoveOrganizationScreenViewModel
     /**
      * Delete the health care provider. Also alerts the UI to show a snackbar explaining that the provider has been deleted.
      *
-     * @param snackbarPresenter The [DefaultLocalSnackBarPresenter] to communicate to the UI that a snackbar should be shown.
+     * @param snackbarPresenter The [DefaultLocalDashboardSnackbarPresenter] to communicate to the UI that a snackbar should be shown.
      * @param organizationId The health care provider id.
      */
     fun delete(
-      snackbarPresenter: DefaultLocalSnackBarPresenter,
+      snackbarPresenter: DefaultLocalDashboardSnackbarPresenter,
       organizationId: String,
     ) {
       viewModelScope.launch {
         val organizationToDelete = organizationRepository.get().first { organization -> organization.id == organizationId }
-        snackbarPresenter.present(
+        snackbarPresenter.showSnackbar(
           MgoSnackBarVisuals(
             type = MgoSnackBarType.SUCCESS,
             title = CopyR.string.toast_organization_removed_heading,

@@ -26,7 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
-import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalSnackBarPresenter
+import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
@@ -47,7 +47,7 @@ fun RemoveOrganizationScreen(
   onNavigateBack: () -> Unit,
   onNavigateToDashboard: () -> Unit,
 ) {
-  val snackbarPresenter = LocalSnackBarPresenter.current
+  val snackbarPresenter = LocalDashboardSnackbarPresenter.current
   val viewModel: RemoveOrganizationScreenViewModel = hiltViewModel()
   LaunchedEffect(Unit) {
     viewModel.providerDeleted.collectLatest {

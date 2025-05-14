@@ -16,6 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 
+/**
+ * A custom Column composable that automatically enables vertical scrolling
+ * when its content exceeds the available vertical space.
+ *
+ * This is useful for layouts where for example if the content is not scrollable, you would like
+ * the content to be centered.
+ *
+ * @param modifier the [Modifier] to be applied.
+ * @param verticalArrangement The vertical arrangement of the items inside the Column.
+ * @param horizontalAlignment The horizontal alignment of the items inside the Column.
+ */
 @Composable
 fun MgoAutoScrollColumn(
   modifier: Modifier = Modifier,

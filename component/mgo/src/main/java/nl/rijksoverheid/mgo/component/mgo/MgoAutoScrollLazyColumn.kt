@@ -14,6 +14,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * A custom LazyColumn composable that exposes whether vertical scrolling is possible
+ * via the `canScroll` parameter in the content lambda.
+ *
+ * This allows the content inside the LazyColumn to adjust its layout or behavior
+ * depending on whether scrolling is necessary. Useful for example if you sometimes have
+ * just one item, that you want to center (loading state for example).
+ *
+ * @param modifier modifier the [Modifier] to be applied.
+ * @param state The scroll state of the LazyColumn.
+ * @param contentPadding Padding to be applied around the LazyColumn's content.
+ */
 @Composable
 fun MgoAutoScrollLazyColumn(
   modifier: Modifier = Modifier,

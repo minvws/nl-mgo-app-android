@@ -4,9 +4,12 @@ import android.content.Context
 import android.view.ContextThemeWrapper
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,15 +17,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollColumn
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -83,39 +88,43 @@ private fun PinCodeLoginScreenContent(
     }
   }
 
-  MgoScaffold(
-    appBarTitle = stringResource(id = CopyR.string.pincode_validation_heading),
-    appBarTitleAlign = TextAlign.Center,
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    content = {
-      Text(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .focusRequester(subHeadingFocusRequester)
-            .focusable(),
-        text = stringResource(id = CopyR.string.pincode_confirm_subheading),
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MgoLargeTopAppBar(
+        title = stringResource(id = CopyR.string.pincode_validation_heading),
+        scrollBehavior = scrollBehavior,
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.bodyMedium,
       )
-      PinCodeWithKeyboard(
-        modifier = Modifier.weight(1f),
-        onPinCodeEntered = onPinCodeEntered,
-        onResetError = onResetError,
-        error = if (viewState.error) stringResource(id = CopyR.string.pincode_validation_wrong) else null,
-        hint = stringResource(id = CopyR.string.pincode_forgot),
-        onClickHint = onNavigateForgotPin,
-        hasBiometric = viewState.hasBiometric,
-        onPressBiometric = {
-          val fragmentActivity = context.findFragmentActivity()
-          fragmentActivity.showBiometricPrompt(
-            onSuccess = onBiometricLoginSuccess,
-          )
-        },
-      )
+    },
+    content = { contentPadding ->
+      MgoAutoScrollColumn(modifier = Modifier.padding(contentPadding).padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+        Text(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .focusRequester(subHeadingFocusRequester)
+              .focusable(),
+          text = stringResource(id = CopyR.string.pincode_confirm_subheading),
+          textAlign = TextAlign.Center,
+          style = MaterialTheme.typography.bodyMedium,
+        )
+        PinCodeWithKeyboard(
+          onPinCodeEntered = onPinCodeEntered,
+          onResetError = onResetError,
+          error = if (viewState.error) stringResource(id = CopyR.string.pincode_validation_wrong) else null,
+          hint = stringResource(id = CopyR.string.pincode_forgot),
+          onClickHint = onNavigateForgotPin,
+          hasBiometric = viewState.hasBiometric,
+          onPressBiometric = {
+            val fragmentActivity = context.findFragmentActivity()
+            fragmentActivity.showBiometricPrompt(
+              onSuccess = onBiometricLoginSuccess,
+            )
+          },
+        )
+      }
     },
   )
 }

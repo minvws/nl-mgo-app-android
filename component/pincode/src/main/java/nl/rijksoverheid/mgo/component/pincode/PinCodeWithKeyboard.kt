@@ -101,6 +101,7 @@ private fun PinCodeWithKeyboardContent(
   }
 
   Column(
+    modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Spacer(modifier = Modifier.weight(1f))
@@ -117,7 +118,7 @@ private fun PinCodeWithKeyboardContent(
     }
     Spacer(modifier = Modifier.weight(1f))
     if (hint != null) {
-      TextButton(onClick = { onClickHint?.invoke() }) {
+      TextButton(modifier = Modifier.padding(top = 48.dp, bottom = 8.dp), onClick = { onClickHint?.invoke() }) {
         Text(
           text = hint,
           style = MaterialTheme.typography.bodyMedium,
@@ -125,8 +126,9 @@ private fun PinCodeWithKeyboardContent(
           color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
         )
       }
+    } else {
+      Spacer(modifier = Modifier.height(48.dp))
     }
-    Spacer(modifier = Modifier.height(48.dp))
     Keyboard(
       onPressNumber = { number ->
         if (error != null) {

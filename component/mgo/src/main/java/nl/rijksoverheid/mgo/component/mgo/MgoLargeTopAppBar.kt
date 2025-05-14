@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
@@ -25,6 +26,7 @@ import nl.rijksoverheid.mgo.framework.copy.R
 @Composable
 fun MgoLargeTopAppBar(
   title: String,
+  textAlign: TextAlign = TextAlign.Start,
   scrollBehavior: TopAppBarScrollBehavior,
   onNavigateBack: (() -> Unit)? = null,
 ) {
@@ -48,6 +50,7 @@ fun MgoLargeTopAppBar(
             Modifier
               .fillMaxWidth(),
           text = title,
+          textAlign = textAlign,
         )
       },
       navigationIcon = {

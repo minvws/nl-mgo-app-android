@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.localisation.addOrganization
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
@@ -88,7 +89,7 @@ private fun AddOrganizationScreenContent(
   }
 
   Scaffold(
-    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).imePadding(),
     contentWindowInsets = WindowInsets.statusBars,
     topBar = {
       MgoLargeTopAppBar(

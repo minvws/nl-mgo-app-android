@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LightMode
@@ -120,7 +122,7 @@ private fun SettingsScreenContent(
     },
     content = { contentPadding ->
       Column(
-        modifier = Modifier.padding(contentPadding).padding(horizontal = 16.dp),
+        modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
       ) {
         Text(
           modifier = Modifier.padding(top = 8.dp),

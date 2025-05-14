@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.component.mgo
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -26,12 +27,14 @@ import androidx.compose.ui.platform.LocalDensity
  * @param modifier the [Modifier] to be applied.
  * @param verticalArrangement The vertical arrangement of the items inside the Column.
  * @param horizontalAlignment The horizontal alignment of the items inside the Column.
+ * @param scrollState The scroll state to be applied to the column.
  */
 @Composable
 fun MgoAutoScrollColumn(
   modifier: Modifier = Modifier,
   verticalArrangement: Arrangement.Vertical = Arrangement.Top,
   horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+  scrollState: ScrollState = rememberScrollState(),
   content: @Composable ColumnScope.() -> Unit,
 ) {
   BoxWithConstraints(modifier = modifier) {
@@ -43,7 +46,7 @@ fun MgoAutoScrollColumn(
     Column(
       modifier =
         Modifier
-          .then(if (canScroll) Modifier.verticalScroll(rememberScrollState()) else Modifier)
+          .then(if (canScroll) Modifier.verticalScroll(scrollState) else Modifier)
           .onGloballyPositioned {
             contentHeightPx = it.size.height
           },

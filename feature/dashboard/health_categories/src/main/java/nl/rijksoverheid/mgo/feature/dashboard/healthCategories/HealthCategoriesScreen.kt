@@ -19,8 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,6 +39,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoButton
 import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -115,8 +114,8 @@ private fun HealthCategoriesScreenContent(
   organization: MgoOrganization? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val lazyListState = rememberLazyListState()
+  val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
   val primaryButton =
     when {
       viewState.providers.isEmpty() -> {
@@ -154,7 +153,7 @@ private fun HealthCategoriesScreenContent(
       ) {
         MgoAutoScrollLazyColumn(
           modifier = Modifier.weight(1f),
-          contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+          contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) { canScroll ->
           if (viewState.providers.isEmpty()) {

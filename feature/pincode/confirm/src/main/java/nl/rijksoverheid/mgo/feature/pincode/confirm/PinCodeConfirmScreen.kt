@@ -2,11 +2,10 @@ package nl.rijksoverheid.mgo.feature.pincode.confirm
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,6 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -73,7 +73,8 @@ private fun PinCodeConfirmScreenContent(
   onResetError: () -> Unit,
   onNavigateBack: () -> Unit,
 ) {
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val scrollState = rememberScrollState()
+  val scrollBehavior = getMgoAppBarScrollBehaviour(scrollState.canScrollForward, scrollState.canScrollBackward)
   val coroutineScope = rememberCoroutineScope()
   val focusManager = LocalFocusManager.current
   val subHeadingFocusRequester = remember { FocusRequester() }
@@ -92,7 +93,8 @@ private fun PinCodeConfirmScreenContent(
         modifier =
           Modifier
             .padding(contentPadding)
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            .padding(16.dp),
+        scrollState = scrollState,
       ) {
         Text(
           modifier =

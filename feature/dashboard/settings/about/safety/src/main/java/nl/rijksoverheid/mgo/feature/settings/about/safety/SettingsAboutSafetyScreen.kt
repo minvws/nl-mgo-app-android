@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.settings.about.safety
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -81,7 +82,7 @@ fun SettingsAboutSafetyScreen(onNavigateBack: () -> Unit) {
       )
     },
     content = { contentPadding ->
-      LazyColumn(modifier = Modifier.padding(contentPadding).padding(horizontal = 16.dp)) {
+      LazyColumn(modifier = Modifier.padding(contentPadding), contentPadding = PaddingValues(16.dp)) {
         item {
           Text(
             modifier =

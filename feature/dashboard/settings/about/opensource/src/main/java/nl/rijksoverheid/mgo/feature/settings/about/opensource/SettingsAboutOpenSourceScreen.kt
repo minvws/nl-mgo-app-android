@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.settings.about.opensource
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -65,7 +66,7 @@ fun SettingsAboutOpenSourceScreenContent(
       )
     },
     content = { contentPadding ->
-      LazyColumn(modifier = Modifier.padding(contentPadding).padding(horizontal = 16.dp)) {
+      LazyColumn(modifier = Modifier.padding(contentPadding), contentPadding = PaddingValues(16.dp)) {
         items(libraries.size) { position ->
           val library = libraries[position]
           val website = library.website

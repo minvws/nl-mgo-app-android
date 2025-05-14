@@ -18,8 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,6 +34,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderPrimary
@@ -72,8 +71,8 @@ private fun OrganizationsScreenContent(
   onClickOrganization: (organization: MgoOrganization) -> Unit,
   onClickAddProvider: () -> Unit,
 ) {
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val lazyListState = rememberLazyListState()
+  val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
 
   val primaryButton =
     when {
@@ -110,7 +109,7 @@ private fun OrganizationsScreenContent(
       ) {
         MgoAutoScrollLazyColumn(
           modifier = Modifier.weight(1f),
-          contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+          contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) { canScroll ->
           if (viewState.organizations.isEmpty()) {

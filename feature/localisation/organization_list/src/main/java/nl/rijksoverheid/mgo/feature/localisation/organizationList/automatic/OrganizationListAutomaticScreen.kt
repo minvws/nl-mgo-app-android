@@ -16,8 +16,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +33,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -67,7 +66,6 @@ fun OrganizationListAutomaticSearchScreen(
   }
   OrganizationListAutomaticSearchScreenContent(
     viewState = viewState,
-    checkResults = checkResults,
     onNavigateBack = onNavigateBack,
     onGetSearchResults = { viewModel.getSearchResults() },
     updateOrganization = { organization, added -> viewModel.updateOrganization(organization, added) },
@@ -78,14 +76,13 @@ fun OrganizationListAutomaticSearchScreen(
 @Composable
 private fun OrganizationListAutomaticSearchScreenContent(
   viewState: OrganizationListAutomaticScreenViewState,
-  checkResults: Boolean,
   onNavigateBack: (() -> Unit)?,
   onUpdateOrganizations: () -> Unit,
   onGetSearchResults: () -> Unit,
   updateOrganization: (organization: MgoOrganization, added: Boolean) -> Unit,
 ) {
   val lazyListState = rememberLazyListState()
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
 
   val primaryButton =
     when {
@@ -121,7 +118,7 @@ private fun OrganizationListAutomaticSearchScreenContent(
       Column(modifier = Modifier.padding(contentPadding)) {
         MgoAutoScrollLazyColumn(
           modifier = Modifier.weight(1f),
-          contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp),
+          contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) { canScroll ->
           when {
@@ -235,7 +232,6 @@ internal fun OrganizationListAutomaticSearchScreenLoadingPreview() {
       onGetSearchResults = {},
       updateOrganization = { _, _ -> },
       onUpdateOrganizations = {},
-      checkResults = false,
     )
   }
 }
@@ -254,7 +250,6 @@ internal fun OrganizationListAutomaticSearchScreenSearchResultsPreview() {
       onGetSearchResults = {},
       updateOrganization = { _, _ -> },
       onUpdateOrganizations = {},
-      checkResults = false,
     )
   }
 }
@@ -273,7 +268,6 @@ internal fun OrganizationListAutomaticSearchScreenErrorPreview() {
       onGetSearchResults = {},
       updateOrganization = { _, _ -> },
       onUpdateOrganizations = {},
-      checkResults = false,
     )
   }
 }

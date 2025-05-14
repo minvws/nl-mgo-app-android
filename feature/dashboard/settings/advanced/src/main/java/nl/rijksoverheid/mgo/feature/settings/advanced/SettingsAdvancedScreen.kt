@@ -61,7 +61,7 @@ private fun SettingsAdvancedScreenContent(
       )
     },
     content = { contentPadding ->
-      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(horizontal = 16.dp, vertical = 2.dp)) {
+      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(16.dp)) {
         SettingsAdvancedListItem(
           title = "Automatische lokalisatie",
           enabled = viewState.automaticLocalisation,

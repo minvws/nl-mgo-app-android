@@ -71,7 +71,7 @@ private fun SettingsDisplayScreenContent(
       )
     },
     content = { contentPadding ->
-      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(16.dp)) {
         MgoCard(
           modifier =
             Modifier

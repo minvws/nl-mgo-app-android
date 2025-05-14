@@ -40,7 +40,7 @@ private fun SettingsAboutAccessibilityScreenContent(
     },
     content = { contentPadding ->
       Column(
-        modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(horizontal = 16.dp),
+        modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(16.dp),
       ) {
         MgoCard(
           modifier =

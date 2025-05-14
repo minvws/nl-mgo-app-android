@@ -103,7 +103,7 @@ private fun SettingsAboutHomeScreenContent(
       )
     },
     content = { contentPadding ->
-      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(horizontal = 16.dp)) {
+      Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(all = 16.dp)) {
         MgoCard(
           modifier =
             Modifier

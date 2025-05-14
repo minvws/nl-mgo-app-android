@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -158,53 +158,14 @@ private fun HealthCategoriesScreenContent(
           state = lazyListState,
         ) { canScroll ->
           if (viewState.providers.isEmpty()) {
-            item {
-              NoProviders(canScroll)
-            }
+            NoProviders(canScroll)
           } else {
-            item {
-              Text(
-                modifier = Modifier.padding(bottom = 8.dp),
-                text = subHeading,
-                style = MaterialTheme.typography.bodyMedium,
-              )
-            }
-
-            items(HealthCareCategory.entries.size) { position ->
-              HealthCategoriesListItemCard(
-                position =
-                  when (position) {
-                    0 -> HealthCategoriesListItemCardPosition.TOP
-                    HealthCareCategory.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
-                    else -> HealthCategoriesListItemCardPosition.CENTER
-                  },
-                category = HealthCareCategory.entries.get(position),
-                onClickListItem = onClickListItem,
-                filterOrganization = organization,
-              )
-            }
-
-            if (organization != null) {
-              item {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                  MgoButton(
-                    modifier =
-                      Modifier
-                        .padding(bottom = 16.dp)
-                        .align(Alignment.CenterHorizontally),
-                    buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
-                    onClick = {
-                      onClickRemoveOrganization(organization)
-                    },
-                    buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
-                  )
-                }
-              }
-            } else {
-              item {
-                Spacer(modifier = Modifier.height(16.dp))
-              }
-            }
+            WithProviders(
+              subHeading = subHeading,
+              onClickListItem = onClickListItem,
+              onClickRemoveOrganization = onClickRemoveOrganization,
+              organization = organization,
+            )
           }
         }
 
@@ -219,37 +180,91 @@ private fun HealthCategoriesScreenContent(
   )
 }
 
-@Composable
-private fun LazyItemScope.NoProviders(canScroll: Boolean) {
-  Box(modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
-    Column {
-      Image(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .height(156.dp),
-        painter = painterResource(id = R.drawable.illustration_overview_empty),
-        contentDescription = null,
-      )
-      Text(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp),
-        text = stringResource(id = CopyR.string.common_no_organizations_heading),
-        style = MaterialTheme.typography.headlineSmall,
-        textAlign = TextAlign.Center,
-      )
-      Text(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-        text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.contentSecondary(),
-        textAlign = TextAlign.Center,
-      )
+@Suppress("ktlint:standard:function-naming")
+private fun LazyListScope.NoProviders(canScroll: Boolean) {
+  item {
+    Box(modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
+      Column {
+        Image(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .height(156.dp),
+          painter = painterResource(id = R.drawable.illustration_overview_empty),
+          contentDescription = null,
+        )
+        Text(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .padding(top = 24.dp),
+          text = stringResource(id = CopyR.string.common_no_organizations_heading),
+          style = MaterialTheme.typography.headlineSmall,
+          textAlign = TextAlign.Center,
+        )
+        Text(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .padding(top = 8.dp),
+          text = stringResource(id = CopyR.string.common_no_organizations_subheading),
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.contentSecondary(),
+          textAlign = TextAlign.Center,
+        )
+      }
+    }
+  }
+}
+
+@Suppress("ktlint:standard:function-naming")
+private fun LazyListScope.WithProviders(
+  subHeading: String,
+  onClickListItem: (category: HealthCareCategory) -> Unit,
+  onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
+  organization: MgoOrganization? = null,
+) {
+  item {
+    Text(
+      modifier = Modifier.padding(bottom = 8.dp),
+      text = subHeading,
+      style = MaterialTheme.typography.bodyMedium,
+    )
+  }
+
+  items(HealthCareCategory.entries.size) { position ->
+    HealthCategoriesListItemCard(
+      position =
+        when (position) {
+          0 -> HealthCategoriesListItemCardPosition.TOP
+          HealthCareCategory.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
+          else -> HealthCategoriesListItemCardPosition.CENTER
+        },
+      category = HealthCareCategory.entries.get(position),
+      onClickListItem = onClickListItem,
+      filterOrganization = organization,
+    )
+  }
+
+  if (organization != null) {
+    item {
+      Column(modifier = Modifier.fillMaxWidth()) {
+        MgoButton(
+          modifier =
+            Modifier
+              .padding(bottom = 16.dp)
+              .align(Alignment.CenterHorizontally),
+          buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
+          onClick = {
+            onClickRemoveOrganization(organization)
+          },
+          buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
+        )
+      }
+    }
+  } else {
+    item {
+      Spacer(modifier = Modifier.height(16.dp))
     }
   }
 }

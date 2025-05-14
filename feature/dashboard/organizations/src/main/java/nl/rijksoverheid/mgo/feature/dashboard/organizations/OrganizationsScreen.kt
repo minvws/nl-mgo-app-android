@@ -2,30 +2,40 @@ package nl.rijksoverheid.mgo.feature.dashboard.organizations
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffold
-import nl.rijksoverheid.mgo.component.mgo.MgoScaffoldScrollStateProvider
+import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderPrimary
@@ -62,147 +72,225 @@ private fun OrganizationsScreenContent(
   onClickOrganization: (organization: MgoOrganization) -> Unit,
   onClickAddProvider: () -> Unit,
 ) {
-  val primaryButtonText =
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val lazyListState = rememberLazyListState()
+
+  val primaryButton =
     when {
       viewState.organizations.isEmpty() -> {
         if (viewState.automaticLocalisationEnabled) {
-          stringResource(id = CopyR.string.common_search_organizations)
+          MgoBottomButton(
+            text = stringResource(id = CopyR.string.common_search_organizations),
+            onClick = onClickAddProvider,
+          )
         } else {
-          stringResource(id = CopyR.string.common_add_organizations)
+          MgoBottomButton(
+            text = stringResource(id = CopyR.string.common_add_organizations),
+            onClick = onClickAddProvider,
+          )
         }
-      } else -> {
+      }
+
+      else -> {
         null
       }
     }
-  MgoScaffold(
-    appBarTitle = stringResource(CopyR.string.organizations_heading),
-    scrollStateProvider =
-      MgoScaffoldScrollStateProvider.Column(
-        rememberScrollState(),
-      ),
-    primaryButtonText = primaryButtonText,
-    onPrimaryButtonClick = onClickAddProvider,
-    content = {
-      if (viewState.organizations.isEmpty()) {
-        NoOrganizations()
-      } else {
-        WithOrganizations(
-          organizations = viewState.organizations,
-          onClickOrganization = onClickOrganization,
-          onClickAddProvider = onClickAddProvider,
-          automaticLocalisationEnabled = viewState.automaticLocalisationEnabled,
-        )
+
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MgoLargeTopAppBar(
+        title = stringResource(CopyR.string.organizations_heading),
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    content = { contentPadding ->
+      Column(
+        modifier = Modifier.padding(contentPadding),
+      ) {
+        MgoAutoScrollLazyColumn(
+          modifier = Modifier.weight(1f),
+          contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+          state = lazyListState,
+        ) { canScroll ->
+          if (viewState.organizations.isEmpty()) {
+            NoOrganizations(canScroll)
+          } else {
+            WithOrganizations(
+              organizations = viewState.organizations,
+              onClickOrganization = onClickOrganization,
+              onClickAddProvider = onClickAddProvider,
+              automaticLocalisationEnabled = viewState.automaticLocalisationEnabled,
+            )
+          }
+        }
+
+        if (primaryButton != null) {
+          MgoBottomButtons(
+            primaryButton = primaryButton,
+            isElevated = lazyListState.canScrollForward,
+          )
+        }
       }
     },
   )
 }
 
-@Composable
-private fun ColumnScope.NoOrganizations() {
-  Spacer(modifier = Modifier.weight(1f))
-  Image(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        .height(156.dp),
-    painter = painterResource(id = R.drawable.illustration_organizations_empty),
-    contentDescription = null,
-  )
-  Text(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        .padding(top = 24.dp),
-    text = stringResource(id = CopyR.string.common_no_organizations_heading),
-    style = MaterialTheme.typography.headlineSmall,
-    textAlign = TextAlign.Center,
-  )
-  Text(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        .padding(top = 8.dp),
-    text = stringResource(id = CopyR.string.common_no_organizations_subheading),
-    style = MaterialTheme.typography.bodyMedium,
-    color = MaterialTheme.colorScheme.contentSecondary(),
-    textAlign = TextAlign.Center,
-  )
-  Spacer(modifier = Modifier.height(16.dp))
-  Spacer(modifier = Modifier.weight(1f))
+@Suppress("ktlint:standard:function-naming")
+private fun LazyListScope.NoOrganizations(canScroll: Boolean) {
+  item {
+    Column(
+      modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+      Image(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .height(156.dp),
+        painter = painterResource(id = R.drawable.illustration_organizations_empty),
+        contentDescription = null,
+      )
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_heading),
+        style = MaterialTheme.typography.headlineSmall,
+        textAlign = TextAlign.Center,
+      )
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        text = stringResource(id = CopyR.string.common_no_organizations_subheading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.contentSecondary(),
+        textAlign = TextAlign.Center,
+      )
+    }
+  }
 }
 
-@Composable
-private fun WithOrganizations(
+@Suppress("ktlint:standard:function-naming")
+private fun LazyListScope.WithOrganizations(
   organizations: List<MgoOrganization>,
   automaticLocalisationEnabled: Boolean,
   onClickOrganization: (organization: MgoOrganization) -> Unit,
   onClickAddProvider: () -> Unit,
 ) {
-  MgoCard(modifier = Modifier.padding(top = 2.dp)) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-      organizations.forEachIndexed { index, organization ->
-        OrganizationCard(
-          modifier =
-            Modifier
-              .fillMaxWidth()
-              .clickable { onClickOrganization(organization) },
-          organization = organization,
-          hasDivider = index != organizations.lastIndex,
+  items(organizations.size) { position ->
+    val organization = organizations[position]
+
+    OrganizationCard(
+      modifier = Modifier.fillMaxWidth(),
+      position =
+        when (position) {
+          0 -> OrganizationCardPosition.TOP
+          organizations.lastIndex -> OrganizationCardPosition.BOTTOM
+          else -> OrganizationCardPosition.CENTER
+        },
+      organization = organization,
+      hasDivider = position != organizations.lastIndex,
+      onClick = { onClickOrganization(organization) },
+    )
+  }
+
+  item {
+    MgoCard(
+      modifier =
+        Modifier
+          .padding(vertical = 16.dp),
+    ) {
+      Row(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .clickable { onClickAddProvider() }
+            .padding(16.dp),
+      ) {
+        val stringResource =
+          if (automaticLocalisationEnabled) CopyR.string.common_search_organizations else CopyR.string.common_add_organizations
+        Text(
+          text = stringResource(id = stringResource),
+          style = MaterialTheme.typography.bodyMedium,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Icon(
+          modifier = Modifier.padding(start = 8.dp),
+          painter = painterResource(id = R.drawable.ic_add_organization),
+          tint = MaterialTheme.colorScheme.symbolsSecondary(),
+          contentDescription = null,
         )
       }
     }
   }
+}
 
-  MgoCard(
-    modifier =
-      Modifier
-        .padding(vertical = 16.dp)
-        .clickable { onClickAddProvider() },
-  ) {
-    Row(
-      modifier =
-        Modifier
-          .fillMaxWidth()
-          .padding(16.dp),
-    ) {
-      val stringResource =
-        if (automaticLocalisationEnabled) CopyR.string.common_search_organizations else CopyR.string.common_add_organizations
-      Text(
-        text = stringResource(id = stringResource),
-        style = MaterialTheme.typography.bodyMedium,
-      )
-      Spacer(modifier = Modifier.weight(1f))
-      Icon(
-        modifier = Modifier.padding(start = 8.dp),
-        painter = painterResource(id = R.drawable.ic_add_organization),
-        tint = MaterialTheme.colorScheme.symbolsSecondary(),
-        contentDescription = null,
-      )
-    }
-  }
+private enum class OrganizationCardPosition {
+  TOP,
+  CENTER,
+  BOTTOM,
 }
 
 @Composable
 private fun OrganizationCard(
+  position: OrganizationCardPosition,
   organization: MgoOrganization,
+  onClick: () -> Unit,
   hasDivider: Boolean,
   modifier: Modifier = Modifier,
 ) {
-  Column(modifier = modifier) {
-    Text(
-      modifier = Modifier.padding(16.dp),
-      text = organization.name,
-      style = MaterialTheme.typography.bodyMedium,
-    )
-    if (hasDivider) {
-      Divider(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .height(0.33.dp)
-            .padding(start = 16.dp),
-        color = MaterialTheme.colorScheme.borderPrimary(),
+  val shape =
+    when (position) {
+      OrganizationCardPosition.TOP -> {
+        RoundedCornerShape(
+          topStart = 16.dp,
+          topEnd = 16.dp,
+          bottomStart = 0.dp,
+          bottomEnd = 0.dp,
+        )
+      }
+
+      OrganizationCardPosition.CENTER -> {
+        RoundedCornerShape(
+          topStart = 0.dp,
+          topEnd = 0.dp,
+          bottomStart = 0.dp,
+          bottomEnd = 0.dp,
+        )
+      }
+
+      OrganizationCardPosition.BOTTOM -> {
+        RoundedCornerShape(
+          topStart = 0.dp,
+          topEnd = 0.dp,
+          bottomStart = 16.dp,
+          bottomEnd = 16.dp,
+        )
+      }
+    }
+
+  MgoCard(modifier = modifier, shape = shape) {
+    Column(modifier = Modifier.fillMaxWidth().clickable { onClick() }) {
+      Text(
+        modifier = Modifier.padding(16.dp),
+        text = organization.name,
+        style = MaterialTheme.typography.bodyMedium,
       )
+      if (hasDivider) {
+        Divider(
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .height(0.33.dp)
+              .padding(start = 16.dp),
+          color = MaterialTheme.colorScheme.borderPrimary(),
+        )
+      }
     }
   }
 }

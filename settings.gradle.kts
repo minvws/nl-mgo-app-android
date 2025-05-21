@@ -1,0 +1,66 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+pluginManagement {
+    includeBuild("build-logic")
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { setUrl("https://jitpack.io") }
+    }
+}
+
+rootProject.name = "MijnGezondheidsOverzicht"
+include(":app")
+include(":framework:copy")
+include(":framework:snapshots")
+include(":framework:network")
+include(":framework:test")
+include(":framework:storage")
+include(":framework:environment")
+include(":data:onboarding")
+include(":data:localisation")
+include(":feature:dashboard:bottombar")
+include(":feature:localisation:add_organization")
+include(":feature:localisation:organization_list")
+include(":feature:onboarding:introduction")
+include(":feature:onboarding:proposition")
+include(":data:api:load")
+include(":data:api:dva")
+include(":data:healthcare")
+include(":feature:pincode:create")
+include(":feature:pincode:confirm")
+include(":feature:pincode:login")
+include(":data:pincode")
+include(":component:pincode")
+include(":feature:pincode:biometric")
+include(":feature:pincode:forgot")
+include(":feature:pincode:deleted")
+include(":framework:featuretoggle")
+include(":data:digid")
+include(":component:mgo")
+include(":component:theme")
+include(":framework:util")
+include(":feature:dashboard:remove_organization")
+include(":feature:dashboard:organizations")
+include(":feature:dashboard:health_categories")
+include(":feature:dashboard:health_category")
+include(":feature:dashboard:uischema")
+include(":feature:dashboard:settings:home")
+include(":feature:dashboard:settings:display")
+include(":feature:dashboard:settings:security")
+include(":feature:dashboard:settings:advanced")
+include(":feature:dashboard:settings:about:home")
+include(":feature:dashboard:settings:about:safety")
+include(":feature:dashboard:settings:about:opensource")
+include(":feature:dashboard:settings:about:accessibility")
+include(":feature:digid")
+include(":data:fhirParser")
+include(":data:api:vad")

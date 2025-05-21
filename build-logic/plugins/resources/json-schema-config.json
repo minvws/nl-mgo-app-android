@@ -1,0 +1,13 @@
+{
+    "packageName": "nl.rijksoverheid.mgo.data.fhirParser.models",
+    "annotations": {
+        "classes": {
+            "kotlinx.serialization.Serializable": null
+        }
+    },
+    "decimalClassName": "kotlin.Double",
+    "classNames": {
+        "https:/pwall.net/internal#/definitions/GpJournalEntry/properties/ICPC_S": "ICPCS",
+        "https:/pwall.net/internal#/definitions/GpJournalEntry/properties/ICPC_E": "ICPCE"
+    }
+}

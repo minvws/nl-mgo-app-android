@@ -1,0 +1,3919 @@
+{
+  "organizations": [
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Van Dijck",
+      "identification": "agb-z:12001468",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Ginnekenweg 183\r\n4835NA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 183"
+          ],
+          "geolocation": {
+            "latitude": 113137.279,
+            "longitude": 398405.915
+          },
+          "postalcode": "4835NA",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Van Dijck",
+      "identification": "agb-z:71026499",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Ginnekenweg 183\r\n4835NA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 183"
+          ],
+          "geolocation": {
+            "latitude": 113137.279,
+            "longitude": 398405.915
+          },
+          "postalcode": "4835NA",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Nijverheidssingel Breda B.V.",
+      "identification": "agb-z:12000913",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Nijverheidssingel 319\r\n4811ZW BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Nijverheidssingel 319"
+          ],
+          "geolocation": {
+            "latitude": 111956.75,
+            "longitude": 400331.392
+          },
+          "postalcode": "4811ZW",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Postbus 88\r\n4900AB OOSTERHOUT NB",
+          "city": "OOSTERHOUT NB",
+          "country": "NEDERLAND",
+          "lines": [
+            "Postbus 88"
+          ],
+          "geolocation": null,
+          "postalcode": "4900AB",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Nijverheidssingel",
+      "identification": "agb-z:71026254",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Postbus 88\r\n4900AB OOSTERHOUT NB",
+          "city": "OOSTERHOUT NB",
+          "country": "NEDERLAND",
+          "lines": [
+            "Postbus 88"
+          ],
+          "geolocation": null,
+          "postalcode": "4900AB",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Nijverheidssingel 319\r\n4811ZW BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Nijverheidssingel 319"
+          ],
+          "geolocation": {
+            "latitude": 111956.75,
+            "longitude": 400331.392
+          },
+          "postalcode": "4811ZW",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Van Gils",
+      "identification": "agb-z:12005502",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Olympiastraat 67\r\n4818TP BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Olympiastraat 67"
+          ],
+          "geolocation": {
+            "latitude": 113390.625,
+            "longitude": 399219.635
+          },
+          "postalcode": "4818TP",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Van Gils",
+      "identification": "agb-z:71029331",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Olympiastraat 67\r\n4818TP BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Olympiastraat 67"
+          ],
+          "geolocation": {
+            "latitude": 113390.625,
+            "longitude": 399219.635
+          },
+          "postalcode": "4818TP",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Van der Heijden",
+      "identification": "agb-z:12001735",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Brabantplein 29\r\n4817LR BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Brabantplein 29"
+          ],
+          "geolocation": {
+            "latitude": 114268.982,
+            "longitude": 400346.031
+          },
+          "postalcode": "4817LR",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Van der Heijden",
+      "identification": "agb-z:71026627",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Brabantplein 29\r\n4817LR BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Brabantplein 29"
+          ],
+          "geolocation": {
+            "latitude": 114268.982,
+            "longitude": 400346.031
+          },
+          "postalcode": "4817LR",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Tuinzigt",
+      "identification": "agb-z:12006310",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Clematisstraat 57\r\n4814JX BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Clematisstraat 57"
+          ],
+          "geolocation": {
+            "latitude": 111067.218,
+            "longitude": 400052.172
+          },
+          "postalcode": "4814JX",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Tuinzigt",
+      "identification": "agb-z:71167551",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Clematisstraat 57\r\n4814JX BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Clematisstraat 57"
+          ],
+          "geolocation": {
+            "latitude": 111067.218,
+            "longitude": 400052.172
+          },
+          "postalcode": "4814JX",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Clematisstraat 57\r\n4814JX BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Clematisstraat 57"
+          ],
+          "geolocation": {
+            "latitude": 111067.218,
+            "longitude": 400052.172
+          },
+          "postalcode": "4814JX",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts I.M.",
+      "identification": "agb-z:12006130",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Leistraat 51\r\n4818NA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Leistraat 51"
+          ],
+          "geolocation": {
+            "latitude": 112785.716,
+            "longitude": 398636.976
+          },
+          "postalcode": "4818NA",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Tramsingel 27C2\r\n4814AB BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Tramsingel 27C2"
+          ],
+          "geolocation": {
+            "latitude": 111969.542,
+            "longitude": 400417.64
+          },
+          "postalcode": "4814AB",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts I.M.",
+      "identification": "agb-z:71161769",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Leistraat 51\r\n4818NA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Leistraat 51"
+          ],
+          "geolocation": {
+            "latitude": 112785.716,
+            "longitude": 398636.976
+          },
+          "postalcode": "4818NA",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Leistraat 51\r\n4818NA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Leistraat 51"
+          ],
+          "geolocation": {
+            "latitude": 112785.716,
+            "longitude": 398636.976
+          },
+          "postalcode": "4818NA",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts M.J.A. van Loon",
+      "identification": "agb-z:12006330",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Waltersveld 9\r\n4817NG BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Waltersveld 9"
+          ],
+          "geolocation": {
+            "latitude": 115651.424,
+            "longitude": 400567.262
+          },
+          "postalcode": "4817NG",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts M.J.A. van Loon",
+      "identification": "agb-z:71168160",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Waltersveld 9\r\n4817NG BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Waltersveld 9"
+          ],
+          "geolocation": {
+            "latitude": 115651.424,
+            "longitude": 400567.262
+          },
+          "postalcode": "4817NG",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Waltersveld 9\r\n4817NG BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Waltersveld 9"
+          ],
+          "geolocation": {
+            "latitude": 115651.424,
+            "longitude": 400567.262
+          },
+          "postalcode": "4817NG",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk H.W. Visscher",
+      "identification": "agb-z:12001878",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Ginnekenweg 183\r\n4835NA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 183"
+          ],
+          "geolocation": {
+            "latitude": 113137.279,
+            "longitude": 398405.915
+          },
+          "postalcode": "4835NA",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk H.W. Visscher",
+      "identification": "agb-z:71026697",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Ginnekenweg 183\r\n4835NA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 183"
+          ],
+          "geolocation": {
+            "latitude": 113137.279,
+            "longitude": 398405.915
+          },
+          "postalcode": "4835NA",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk CAJ Kriele",
+      "identification": "agb-z:12003274",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Burg Middelaerlaan 1A4\r\n4835EK BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Burg Middelaerlaan 1A4"
+          ],
+          "geolocation": {
+            "latitude": 113548.073,
+            "longitude": 397912.004
+          },
+          "postalcode": "4835EK",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk CAJ Kriele",
+      "identification": "agb-z:71027502",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Ginnekenweg 159\r\n4818JD BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 159"
+          ],
+          "geolocation": {
+            "latitude": 113135.239,
+            "longitude": 398528.173
+          },
+          "postalcode": "4818JD",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Y.D. Tuns",
+      "identification": "agb-z:12061353",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Ginnekenweg 159\r\n4818JD BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 159"
+          ],
+          "geolocation": {
+            "latitude": 113135.239,
+            "longitude": 398528.173
+          },
+          "postalcode": "4818JD",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Y.D. Tuns",
+      "identification": "agb-z:71030168",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Ginnekenweg 159\r\n4818JD BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 159"
+          ],
+          "geolocation": {
+            "latitude": 113135.239,
+            "longitude": 398528.173
+          },
+          "postalcode": "4818JD",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Ginnekenweg 159\r\n4818JD BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Ginnekenweg 159"
+          ],
+          "geolocation": {
+            "latitude": 113135.239,
+            "longitude": 398528.173
+          },
+          "postalcode": "4818JD",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Brandebeemd B.V.",
+      "identification": "agb-z:12062486",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Brandebeemd 29\r\n4824NT BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Brandebeemd 29"
+          ],
+          "geolocation": {
+            "latitude": 110313.385,
+            "longitude": 402171.188
+          },
+          "postalcode": "4824NT",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Brandebeemd 29\r\n4824NT BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Brandebeemd 29"
+          ],
+          "geolocation": {
+            "latitude": 110313.385,
+            "longitude": 402171.188
+          },
+          "postalcode": "4824NT",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Brandebeemd B.V.",
+      "identification": "agb-z:71030958",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Brandebeemd 29\r\n4824NT BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Brandebeemd 29"
+          ],
+          "geolocation": {
+            "latitude": 110313.385,
+            "longitude": 402171.188
+          },
+          "postalcode": "4824NT",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Brandebeemd 29\r\n4824NT BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Brandebeemd 29"
+          ],
+          "geolocation": {
+            "latitude": 110313.385,
+            "longitude": 402171.188
+          },
+          "postalcode": "4824NT",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandheelkundig centrum Dudok",
+      "identification": "agb-z:12006727",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Generaal Maczekstraat 179\r\n4818BV BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Generaal Maczekstraat 179"
+          ],
+          "geolocation": {
+            "latitude": 113605.27,
+            "longitude": 399052.038
+          },
+          "postalcode": "4818BV",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk G. Pouw",
+      "identification": "agb-z:12061145",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Haagweg 460\r\n4813XG BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Haagweg 460"
+          ],
+          "geolocation": {
+            "latitude": 110186.451,
+            "longitude": 398974.704
+          },
+          "postalcode": "4813XG",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk G. Pouw",
+      "identification": "agb-z:71030025",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Haagweg 460\r\n4813XG BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Haagweg 460"
+          ],
+          "geolocation": {
+            "latitude": 110186.451,
+            "longitude": 398974.704
+          },
+          "postalcode": "4813XG",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Bilderdijk",
+      "identification": "agb-z:12003907",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Bilderdijkstraat 65\r\n4819GA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Bilderdijkstraat 65"
+          ],
+          "geolocation": {
+            "latitude": 112067.861,
+            "longitude": 398666.586
+          },
+          "postalcode": "4819GA",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Bilderdijk",
+      "identification": "agb-z:71028006",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Bilderdijkstraat 65\r\n4819GA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Bilderdijkstraat 65"
+          ],
+          "geolocation": {
+            "latitude": 112067.861,
+            "longitude": 398666.586
+          },
+          "postalcode": "4819GA",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts Oana Kröber",
+      "identification": "agb-z:12062902",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Goeseelsstraat 4\r\n4817MV BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Goeseelsstraat 4"
+          ],
+          "geolocation": {
+            "latitude": 114133.822,
+            "longitude": 400789.132
+          },
+          "postalcode": "4817MV",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Lange Slagen 54\r\n4823LJ BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Lange Slagen 54"
+          ],
+          "geolocation": {
+            "latitude": 109605.484,
+            "longitude": 404062.8
+          },
+          "postalcode": "4823LJ",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts Oana Kröber",
+      "identification": "agb-z:71031224",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Goeseelsstraat 4\r\n4817MV BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Goeseelsstraat 4"
+          ],
+          "geolocation": {
+            "latitude": 114133.822,
+            "longitude": 400789.132
+          },
+          "postalcode": "4817MV",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Lange Slagen 54\r\n4823LJ BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Lange Slagen 54"
+          ],
+          "geolocation": {
+            "latitude": 109605.484,
+            "longitude": 404062.8
+          },
+          "postalcode": "4823LJ",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Maatschap Tandartsenpraktijk Centrum",
+      "identification": "agb-z:12063164",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Sophiastraat 8\r\n4811EK BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Sophiastraat 8"
+          ],
+          "geolocation": {
+            "latitude": 113274.727,
+            "longitude": 400512.281
+          },
+          "postalcode": "4811EK",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "TANDARTSPRAKTIJK CENTRUM",
+      "identification": "agb-z:71031447",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Sophiastraat 8\r\n4811EK BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Sophiastraat 8"
+          ],
+          "geolocation": {
+            "latitude": 113274.727,
+            "longitude": 400512.281
+          },
+          "postalcode": "4811EK",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Drs. M.A. Kruithof",
+      "identification": "agb-z:12005177",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Parkstraat 11\r\n4818SJ BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Parkstraat 11"
+          ],
+          "geolocation": {
+            "latitude": 112858.394,
+            "longitude": 399135.048
+          },
+          "postalcode": "4818SJ",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Drs. M.A. Kruithof",
+      "identification": "agb-z:71029081",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Parkstraat 11\r\n4818SJ BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Parkstraat 11"
+          ],
+          "geolocation": {
+            "latitude": 112858.394,
+            "longitude": 399135.048
+          },
+          "postalcode": "4818SJ",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts R.H. Jansens",
+      "identification": "agb-z:12060238",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Fatimastraat 110\r\n4835BE BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Fatimastraat 110"
+          ],
+          "geolocation": {
+            "latitude": 113693.39,
+            "longitude": 398359.37
+          },
+          "postalcode": "4835BE",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts R.H. Jansens",
+      "identification": "agb-z:71029492",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Fatimastraat 110\r\n4835BE BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Fatimastraat 110"
+          ],
+          "geolocation": {
+            "latitude": 113693.39,
+            "longitude": 398359.37
+          },
+          "postalcode": "4835BE",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Ypelaar",
+      "identification": "agb-z:12098855",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Groot Ypelaardreef 161\r\n4834HC BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Groot Ypelaardreef 161"
+          ],
+          "geolocation": {
+            "latitude": 114663.358,
+            "longitude": 398431.031
+          },
+          "postalcode": "4834HC",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandarts V. Papadopoulou",
+      "identification": "agb-z:71120729",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Groot Ypelaardreef 161\r\n4834HC BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Groot Ypelaardreef 161"
+          ],
+          "geolocation": {
+            "latitude": 114663.358,
+            "longitude": 398431.031
+          },
+          "postalcode": "4834HC",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk De Nijs",
+      "identification": "agb-z:12061037",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Wagemakerspark 40\r\n4818TV BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Wagemakerspark 40"
+          ],
+          "geolocation": {
+            "latitude": 113486.632,
+            "longitude": 399319.183
+          },
+          "postalcode": "4818TV",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Wagemakerspark 40\r\n4818TV BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Wagemakerspark 40"
+          ],
+          "geolocation": {
+            "latitude": 113486.632,
+            "longitude": 399319.183
+          },
+          "postalcode": "4818TV",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk De Nijs",
+      "identification": "agb-z:71029954",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Wagemakerspark 40\r\n4818TV BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Wagemakerspark 40"
+          ],
+          "geolocation": {
+            "latitude": 113486.632,
+            "longitude": 399319.183
+          },
+          "postalcode": "4818TV",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Wagemakerspark 40\r\n4818TV BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Wagemakerspark 40"
+          ],
+          "geolocation": {
+            "latitude": 113486.632,
+            "longitude": 399319.183
+          },
+          "postalcode": "4818TV",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Mondzorg Grote Spie",
+      "identification": "agb-z:12061211",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Lassuslaan 14\r\n4837AW BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Lassuslaan 14"
+          ],
+          "geolocation": {
+            "latitude": 112477.923,
+            "longitude": 398008.505
+          },
+          "postalcode": "4837AW",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Mondzorg Grote Spie",
+      "identification": "agb-z:71030070",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Lassuslaan 14\r\n4837AW BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Lassuslaan 14"
+          ],
+          "geolocation": {
+            "latitude": 112477.923,
+            "longitude": 398008.505
+          },
+          "postalcode": "4837AW",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Grote Spie 36\r\n4819CX BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Grote Spie 36"
+          ],
+          "geolocation": {
+            "latitude": 112101.708,
+            "longitude": 398658.683
+          },
+          "postalcode": "4819CX",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Van Zwol B.V.",
+      "identification": "agb-z:12098837",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Postbus 66\r\n4860AB CHAAM",
+          "city": "CHAAM",
+          "country": "NEDERLAND",
+          "lines": [
+            "Postbus 66"
+          ],
+          "geolocation": null,
+          "postalcode": "4860AB",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Mozartlaan 50\r\n4837EL BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Mozartlaan 50"
+          ],
+          "geolocation": {
+            "latitude": 111680.516,
+            "longitude": 398202.874
+          },
+          "postalcode": "4837EL",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Van Zwol B.V.",
+      "identification": "agb-z:71120330",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Mozartlaan 50\r\n4837EL BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Mozartlaan 50"
+          ],
+          "geolocation": {
+            "latitude": 111680.516,
+            "longitude": 398202.874
+          },
+          "postalcode": "4837EL",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Postbus 66\r\n4860AB CHAAM",
+          "city": "CHAAM",
+          "country": "NEDERLAND",
+          "lines": [
+            "Postbus 66"
+          ],
+          "geolocation": null,
+          "postalcode": "4860AB",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "12",
+          "display_name": "Tandartsen",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartsenpraktijk Nijverheidssingel",
+      "identification": "agb-z:38380241",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Nijverheidssingel 319\r\n4811ZW BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Nijverheidssingel 319"
+          ],
+          "geolocation": {
+            "latitude": 111956.75,
+            "longitude": 400331.392
+          },
+          "postalcode": "4811ZW",
+          "state": null,
+          "type": "physical"
+        },
+        {
+          "active": true,
+          "address": "Postbus 88\r\n4900AB OOSTERHOUT NB",
+          "city": "OOSTERHOUT NB",
+          "country": "NEDERLAND",
+          "lines": [
+            "Postbus 88"
+          ],
+          "geolocation": null,
+          "postalcode": "4900AB",
+          "state": null,
+          "type": "postal"
+        }
+      ],
+      "types": [
+        {
+          "code": "38",
+          "display_name": "Tandheelkundige Centra",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "medmij_id": "mock.addressing@medmij",
+      "display_name": "Tandartspraktijk Epelenberg",
+      "identification": "agb-z:38380229",
+      "addresses": [
+        {
+          "active": true,
+          "address": "Postbus 88\r\n4900AB OOSTERHOUT NB",
+          "city": "OOSTERHOUT NB",
+          "country": "NEDERLAND",
+          "lines": [
+            "Postbus 88"
+          ],
+          "geolocation": null,
+          "postalcode": "4900AB",
+          "state": null,
+          "type": "postal"
+        },
+        {
+          "active": true,
+          "address": "Epelenberg 1\r\n4817CA BREDA",
+          "city": "BREDA",
+          "country": "NEDERLAND",
+          "lines": [
+            "Epelenberg 1"
+          ],
+          "geolocation": {
+            "latitude": 114795.12,
+            "longitude": 400418.487
+          },
+          "postalcode": "4817CA",
+          "state": null,
+          "type": "physical"
+        }
+      ],
+      "types": [
+        {
+          "code": "38",
+          "display_name": "Tandheelkundige Centra",
+          "type": "http://www.vzvz.nl/fhir/NamingSystem/vektis-zorgsoort"
+        }
+      ],
+      "data_services": [
+        {
+          "id": "51",
+          "name": "Documenten",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-PDB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            },
+            {
+              "code": "MM-3.0-PLB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/51"
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "name": "Huisartsgegevens",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-2.0-HGB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/49"
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "name": "Basisgegevens Zorg",
+          "interface_versions": [
+            "2"
+          ],
+          "auth_endpoint": "https://medmij-inlog.vzvz.nl/2.0.0/oauth2/authorize",
+          "token_endpoint": "https://medmij-pgo.vzvz.nl/2.0.0/oauth2/token",
+          "roles": [
+            {
+              "code": "MM-3.0-BZB-FHIR",
+              "resource_endpoint": "https://dva-mock.test.mgo.prolocation.net/48"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "844514292239",
+    "project_id": "nl-rdo-pifz",
+    "storage_bucket": "nl-rdo-pifz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844514292239:android:33aa8945100d3a573e297a",
+        "android_client_info": {
+          "package_name": "nl.rijksoverheid.mgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPXMtrk9-vqhfzbE1fE4M4PLqrVVFxVoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844514292239:android:b93c61c9e6ee09723e297a",
+        "android_client_info": {
+          "package_name": "nl.rijksoverheid.mgo.acc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPXMtrk9-vqhfzbE1fE4M4PLqrVVFxVoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844514292239:android:7026f358cb84c01c3e297a",
+        "android_client_info": {
+          "package_name": "nl.rijksoverheid.mgo.demo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPXMtrk9-vqhfzbE1fE4M4PLqrVVFxVoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844514292239:android:784b20c180336d933e297a",
+        "android_client_info": {
+          "package_name": "nl.rijksoverheid.mgo.tst"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPXMtrk9-vqhfzbE1fE4M4PLqrVVFxVoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

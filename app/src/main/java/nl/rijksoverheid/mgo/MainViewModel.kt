@@ -16,6 +16,7 @@ import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.pdf.PdfGenerator
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
@@ -53,6 +54,7 @@ internal class MainViewModel
     private val featureToggleRepository: FeatureToggleRepository,
     @Named("keyValueStore") val keyValueStore: KeyValueStore,
     val isDigidAuthenticated: IsDigidAuthenticated,
+    private val pdfGenerator: PdfGenerator,
   ) : ViewModel() {
     private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
     val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -78,14 +80,18 @@ internal class MainViewModel
             _appTheme.emit(getAppTheme(appThemeString))
           }
         }
+
+        launch {
+          pdfGenerator.invoke()
+        }
       }
     }
 
     /**
      * Get the first navigation destination to show when launching the app.
      */
-    fun getStartDestination(): Any {
-      return when {
+    fun getStartDestination(): Any =
+      when {
         // If the user has not seen the onboarding, show the onboarding flow.
         !hasSeenOnboarding.invoke() -> {
           OnboardingNavigation.Root
@@ -111,7 +117,6 @@ internal class MainViewModel
           }
         }
       }
-    }
 
     /**
      * Check if the app needs to be locked.
@@ -141,7 +146,5 @@ internal class MainViewModel
     /**
      * @return True if the automatic localisation needs to be shown instead of the manual one.
      */
-    fun getAutomaticLocalisationEnabled(): Boolean {
-      return keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
-    }
+    fun getAutomaticLocalisationEnabled(): Boolean = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
   }

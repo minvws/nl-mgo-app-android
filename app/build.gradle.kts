@@ -197,4 +197,6 @@ dependencies {
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.digid))
   testImplementation(testFixtures(projects.framework.featuretoggle))
+
+  implementation(projects.framework.pdf)
 }

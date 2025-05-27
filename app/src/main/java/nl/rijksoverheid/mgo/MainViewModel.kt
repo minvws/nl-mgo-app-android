@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo
 
+import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,11 @@ import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.pdf.Pdf
 import nl.rijksoverheid.mgo.framework.pdf.PdfGenerator
+import nl.rijksoverheid.mgo.framework.pdf.PdfStyle
+import nl.rijksoverheid.mgo.framework.pdf.PdfTable
+import nl.rijksoverheid.mgo.framework.pdf.PdfTableColumns
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
@@ -82,7 +87,86 @@ internal class MainViewModel
         }
 
         launch {
-          pdfGenerator.invoke()
+          val pdf =
+            Pdf(
+              heading = "Medicijnen",
+              subHeading = "A.B. de Graaf, opgeslagen op: 12 mei 2025 om 13:03 uur",
+              tables =
+                listOf(
+                  PdfTable(
+                    heading = "Die je nu gebruikt",
+                    headers =
+                      listOf(
+                        "Naam",
+                        "Gebruiksaanwijzing",
+                        "Hoeveelheid per keer",
+                        "Status",
+                        "Startdatum",
+                        "Einddatum",
+                        "Specialist",
+                        "Zorgaanbieder",
+                      ),
+                    columns =
+                      listOf(
+                        PdfTableColumns(
+                          rows =
+                            listOf(
+                              "Omeprazol capsule maagsapresistent 20 mg",
+                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
+                              "1 à 2 stuks",
+                              "Actief",
+                              "9-3-2022",
+                              "Niet ingevuld",
+                              "A. Dekker",
+                              "Huisartsenpraktijk Azuurblauw",
+                            ),
+                        ),
+                        PdfTableColumns(
+                          rows =
+                            listOf(
+                              "Cetirizine Dihydrochloride 10 mg Tabletten",
+                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
+                              "1 à 2 stuks",
+                              "Actief",
+                              "1-4-2024",
+                              "Niet ingevuld",
+                              "M. van Dijk",
+                              "Antonius Ziekenhuis",
+                            ),
+                        ),
+                        PdfTableColumns(
+                          rows =
+                            listOf(
+                              "Metformine HCl 500 mg Tabletten",
+                              "Iedere dag 1 pil.",
+                              "1 à 2 stuks",
+                              "Actief",
+                              "1-1-2023",
+                              "Niet ingevuld",
+                              "H. Moens",
+                              "Huisartsenpraktijk Graafseweg",
+                            ),
+                        ),
+                      ),
+                  ),
+                ),
+              footer =
+                "Dit document is gemaakt met Mijn Gezondheidsoverzicht. " +
+                  "Het bevat jouw medische gegevens, afkomstig van zorgaanbieders die jij hebt toegevoegd. " +
+                  "Jij bent zelf verantwoordelijk voor wat je met deze informatie doet. De gegevens zijn niet gecontroleerd op juistheid of volledigheid.",
+            )
+
+          val style =
+            PdfStyle(
+              tableHeadingsBackgroundColor = "#E1E1E1".toColorInt(),
+              tableCellBorderColor = "#F4F4F4".toColorInt(),
+            )
+
+          pdfGenerator.invoke(
+            pdf = pdf,
+            style = style,
+            fileName = "export.pdf",
+          )
         }
       }
     }

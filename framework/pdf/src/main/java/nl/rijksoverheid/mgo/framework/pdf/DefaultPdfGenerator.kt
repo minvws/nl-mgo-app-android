@@ -22,6 +22,7 @@ import com.itextpdf.layout.properties.VerticalAlignment
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 private const val PAGE_VERTICAL_MARGIN: Float = 32f
 private const val PAGE_HORIZONTAL_MARGIN = 40f
@@ -143,8 +144,9 @@ internal class DefaultPdfGenerator
         )
 
         // Add page number
+        val pageFooterText = context.resources.getString(CopyR.string.export_pdf_page, i, numberOfPages)
         layoutCanvas.showTextAligned(
-          Paragraph("Pagina $i van $numberOfPages").setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
+          Paragraph(pageFooterText).setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
           page.pageSize.width - PAGE_HORIZONTAL_MARGIN,
           PAGE_VERTICAL_MARGIN,
           TextAlignment.RIGHT,

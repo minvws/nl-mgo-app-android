@@ -110,7 +110,7 @@
   <string name="common.previous">Vorige</string>
   <string name="common.required">(verplicht)</string>
   <string name="common.search">Zoeken</string>
-  <string name="common.unknown">Niet bekend</string>
+  <string name="common.unknown">Niet ingevuld</string>
   <string name="common.failed_to_load_data">Gegevens ophalen mislukt</string>
   <string name="common.error_in_system">Er ging iets mis in ons systeem.</string>
   <string name="common.try_again">Probeer opnieuw</string>
@@ -251,4 +251,5 @@
   <string name="screenshotalert.heading">Screenshot gemaakt</string>
   <string name="screenshotalert.subheading">Je hebt een afbeelding van medische gegevens opgeslagen. Wees voorzichtig met delen of opslaan.</string>
   <string name="screenshotalert.action">Begrepen</string>
+  <string name="export_pdf.page">Pagina %1$s van %2$s</string>
 </resources>

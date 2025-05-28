@@ -1,6 +1,5 @@
 plugins {
   id("AndroidFrameworkPlugin")
-  id("AndroidUiPlugin")
 }
 
 android {
@@ -11,5 +10,6 @@ android {
 }
 
 dependencies {
-  implementation("com.itextpdf:itext7-core:9.2.0")
+  implementation(projects.framework.copy)
+  implementation(libs.itext7.core)
 }

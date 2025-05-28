@@ -54,6 +54,7 @@ json-kotlin-schema-codegen = "0.115"
 ui-test-junit4-android = "1.7.8"
 about-libraries = "11.6.3"
 bcutil = "1.79"
+itext7 = "9.2.0"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -112,6 +113,7 @@ json-kotlin-schema-codegen = { group = "net.pwall.json", name = "json-kotlin-sch
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "ui-test-junit4-android" }
 aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries" }
 bcutil = { group = "org.bouncycastle", name = "bcutil-jdk18on", version.ref = "bcutil"}
+itext7-core = { group = "com.itextpdf", name = "itext7-core", version.ref = "itext7"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

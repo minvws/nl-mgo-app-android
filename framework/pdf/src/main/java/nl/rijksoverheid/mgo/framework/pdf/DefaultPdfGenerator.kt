@@ -56,12 +56,26 @@ internal class DefaultPdfGenerator
       // Add more padding to the bottom to account for the footer.
       document.setMargins(PAGE_VERTICAL_MARGIN, PAGE_HORIZONTAL_MARGIN, PAGE_VERTICAL_MARGIN + 32f, PAGE_HORIZONTAL_MARGIN)
 
+      // Add heading on top of the pdf
+      val heading =
+        Paragraph(pdf.heading)
+          .setFontSize(24f)
+          .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+          .setMargin(0f)
+      document.add(heading)
+
+      val subHeading =
+        Paragraph(pdf.subHeading)
+          .setFontSize(14f)
+          .setMarginTop(2f)
+      document.add(subHeading)
+
       // Add heading above the table using bold Helvetica font.
       val tableHeading =
         Paragraph(pdf.tables[0].heading)
           .setFontSize(16f)
           .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-          .setPaddings(0f, 0f, 8f, 0f)
+          .setMarginTop(24f)
       document.add(tableHeading)
 
       // Create a table with dynamic column count based on the number of rows in the first column.

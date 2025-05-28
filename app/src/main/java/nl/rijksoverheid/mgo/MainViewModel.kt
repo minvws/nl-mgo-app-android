@@ -147,108 +147,34 @@ internal class MainViewModel
                               "Huisartsenpraktijk Graafseweg",
                             ),
                         ),
+                      ),
+                  ),
+                  PdfTable(
+                    heading = "Die je niet meer gebruikt",
+                    headers =
+                      listOf(
+                        "Naam",
+                        "Gebruiksaanwijzing",
+                        "Hoeveelheid per keer",
+                        "Status",
+                        "Startdatum",
+                        "Einddatum",
+                        "Specialist",
+                        "Zorgaanbieder",
+                      ),
+                    columns =
+                      listOf(
                         PdfTableColumns(
                           rows =
                             listOf(
                               "Omeprazol capsule maagsapresistent 20 mg",
-                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
+                              "-",
                               "1 à 2 stuks",
                               "Actief",
                               "9-3-2022",
                               "Niet ingevuld",
                               "A. Dekker",
                               "Huisartsenpraktijk Azuurblauw",
-                            ),
-                        ),
-                        PdfTableColumns(
-                          rows =
-                            listOf(
-                              "Cetirizine Dihydrochloride 10 mg Tabletten",
-                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
-                              "1 à 2 stuks",
-                              "Actief",
-                              "1-4-2024",
-                              "Niet ingevuld",
-                              "M. van Dijk",
-                              "Antonius Ziekenhuis",
-                            ),
-                        ),
-                        PdfTableColumns(
-                          rows =
-                            listOf(
-                              "Metformine HCl 500 mg Tabletten",
-                              "Iedere dag 1 pil.",
-                              "1 à 2 stuks",
-                              "Actief",
-                              "1-1-2023",
-                              "Niet ingevuld",
-                              "H. Moens",
-                              "Huisartsenpraktijk Graafseweg",
-                            ),
-                        ),
-                        PdfTableColumns(
-                          rows =
-                            listOf(
-                              "Omeprazol capsule maagsapresistent 20 mg",
-                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
-                              "1 à 2 stuks",
-                              "Actief",
-                              "9-3-2022",
-                              "Niet ingevuld",
-                              "A. Dekker",
-                              "Huisartsenpraktijk Azuurblauw",
-                            ),
-                        ),
-                        PdfTableColumns(
-                          rows =
-                            listOf(
-                              "Cetirizine Dihydrochloride 10 mg Tabletten",
-                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
-                              "1 à 2 stuks",
-                              "Actief",
-                              "1-4-2024",
-                              "Niet ingevuld",
-                              "M. van Dijk",
-                              "Antonius Ziekenhuis",
-                            ),
-                        ),
-                        PdfTableColumns(
-                          rows =
-                            listOf(
-                              "Metformine HCl 500 mg Tabletten",
-                              "Iedere dag 1 pil.",
-                              "1 à 2 stuks",
-                              "Actief",
-                              "1-1-2023",
-                              "Niet ingevuld",
-                              "H. Moens",
-                              "Huisartsenpraktijk Graafseweg",
-                            ),
-                        ),
-                        PdfTableColumns(
-                          rows =
-                            listOf(
-                              "Omeprazol capsule maagsapresistent 20 mg",
-                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
-                              "1 à 2 stuks",
-                              "Actief",
-                              "9-3-2022",
-                              "Niet ingevuld",
-                              "A. Dekker",
-                              "Huisartsenpraktijk Azuurblauw",
-                            ),
-                        ),
-                        PdfTableColumns(
-                          rows =
-                            listOf(
-                              "Cetirizine Dihydrochloride 10 mg Tabletten",
-                              "Vanaf 9 maart 2022, gedurende 30 dagen, zo nodig maal per dag 1 à 2 stuks , maximaal 6 stuks per dag, ORAAL",
-                              "1 à 2 stuks",
-                              "Actief",
-                              "1-4-2024",
-                              "Niet ingevuld",
-                              "M. van Dijk",
-                              "Antonius Ziekenhuis",
                             ),
                         ),
                         PdfTableColumns(

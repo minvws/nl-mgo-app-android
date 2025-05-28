@@ -201,8 +201,8 @@ internal class MainViewModel
 
           val style =
             PdfStyle(
-              tableHeadingsBackgroundColor = "#E1E1E1".toColorInt(),
-              tableCellBorderColor = "#F4F4F4".toColorInt(),
+              tableHeadingsBackgroundColor = "#F4F4F4".toColorInt(),
+              tableCellBorderColor = "#E1E1E1".toColorInt(),
               footerTextColor = "#6D6D6D".toColorInt(),
             )
 

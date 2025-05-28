@@ -138,7 +138,7 @@ data class R4NlCorePatient(
     data class Contact(
         val address: R4NlCoreAddressInformation,
         val _profile: String,
-        val name: Any,
+        val name: List<R4NlCorePatientPropertiesContactItemsPropertiesName>,
         val telecom: Telecom,
         val relationship: Relationship
     ) {

@@ -1,7 +1,6 @@
 import io.kjson.JSON
 import io.kjson.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
-import net.pwall.util.Name.Companion.capitalise
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.gradle.api.Plugin
@@ -128,72 +127,112 @@ class FhirParserPlugin : Plugin<Project> {
 
   private fun modifyJsonSchema(workingDir: File): JSONObject {
     val typesFile = File(workingDir, "schema/json/types.json")
-    val jsonSchema = JSONObject(typesFile.readText())
+    val originalJson = JSONObject(typesFile.readText())
 
-    val modifiedJsonSchema = JSONObject(jsonSchema.toString().replace("anyOf", "oneOf"))
-    val definitions = modifiedJsonSchema.getJSONObject("definitions")
+    val modifiedJson = JSONObject(originalJson.toString().replace("anyOf", "oneOf"))
+    val definitions = modifiedJson.getJSONObject("definitions")
 
-    val profilesJsonObject =
-      JSONObject().apply {
-        put("type", "object")
-        put("properties", JSONObject())
-      }
-    definitions.put("Profiles", profilesJsonObject)
+    val oneOfEntries = mutableListOf<OneOfEntry>()
+    collectOneOfEntries(definitions, result = oneOfEntries)
+
+    // 1. Flatten and move all oneOfs into named definitions
+    oneOfEntries.forEach { entry ->
+      val newKey = entry.parentKeys.joinToStringSnakeCase()
+      val oneOfCopy =
+        JSONArray().apply {
+          for (i in 0 until entry.oneOf.length()) put(entry.oneOf.getJSONObject(i))
+        }
+      definitions.put(newKey, JSONObject().put("oneOf", oneOfCopy))
+      traverseJsonObject(definitions, entry.parentKeys)?.put("items", JSONObject().put("\$ref", "#/definitions/$newKey"))
+    }
+
+    // 2. Construct Profiles object
+    val profilesObject =
+      JSONObject(
+        mapOf(
+          "type" to "object",
+          "properties" to JSONObject(),
+        ),
+      )
+    definitions.put("Profiles", profilesObject)
 
     val keys = definitions.keys().asSequence().toList()
 
-    for (key in keys) {
-      val definition = definitions.optJSONObject(key) ?: continue
-      val properties = definition.optJSONObject("properties") ?: continue
-      for (propertyKey in properties.keys()) {
-        val property = properties.optJSONObject(propertyKey) ?: continue
-        val type = property.optString("type")
+    // 3. Update schema with 'default' and more oneOf lifting
+    keys.forEach outer@{ key ->
+      val definition = definitions.optJSONObject(key) ?: return@outer
+      val properties = definition.optJSONObject("properties") ?: return@outer
 
-        if (type == "array") {
-          val items = property.optJSONObject("items")?.optJSONArray("oneOf") ?: continue
-          val newKeyName = key + propertyKey.capitalise()
+      properties.keys().forEach inner@{ propKey ->
+        val prop = properties.optJSONObject(propKey) ?: return@inner
 
-          val oneOfArray =
-            JSONArray().apply {
-              for (i in 0 until items.length()) {
-                put(items.getJSONObject(i))
+        when (prop.optString("type")) {
+          "array" -> {
+            val items = prop.optJSONObject("items")?.optJSONArray("oneOf") ?: return@inner
+            val newKey = key + propKey.replaceFirstChar { it.uppercase() }
+            definitions.put(newKey, JSONObject().put("oneOf", JSONArray(items.toList())))
+            prop.put("items", JSONObject().put("\$ref", "#/definitions/$newKey"))
+          }
+        }
+
+        // Add profile to Profiles
+        if (propKey == "profile") {
+          val constValue = prop.optString("const")
+          if (constValue.isNotEmpty()) {
+            val profileKey =
+              constValue
+                .substringAfterLast("/")
+                .split("-")
+                .joinToString("") { it.replaceFirstChar { c -> c.uppercase() } }
+                .replaceFirstChar { it.lowercase() }
+                .replace(".", "")
+
+            val profileObj =
+              JSONObject().apply {
+                put("type", "string")
+                put("default", constValue)
               }
-            }
-          definitions.put(newKeyName, JSONObject().put("oneOf", oneOfArray))
-          properties.getJSONObject(propertyKey).put("items", JSONObject().put("\$ref", "#/definitions/$newKeyName"))
+
+            profilesObject.getJSONObject("properties").put(profileKey, profileObj)
+          }
         }
 
-        if (propertyKey == "profile") {
-          val profileJsonObjectKey =
-            property
-              .getString("const")
-              .substringAfterLast("/")
-              .split("-")
-              .joinToString("") { it.replaceFirstChar { c -> c.uppercase() } }
-              .replaceFirstChar { it.lowercase() }
-              .replace(".", "")
-
-          val profileJsonObject =
-            JSONObject().apply {
-              put("type", "string")
-              put("default", property.getString("const"))
-            }
-
-          profilesJsonObject.getJSONObject("properties").put(profileJsonObjectKey, profileJsonObject)
-        }
-
-        if (property.optString("const").isNotEmpty()) {
-          val constValue = property.getString("const")
-          properties.getJSONObject(propertyKey).put("default", constValue)
+        // Add default from const if present
+        if (prop.has("const")) {
+          prop.put("default", prop.get("const"))
         }
       }
     }
 
-    // Write the new json schema to a file (for debugging purposes)
-    val modifiedTypeFile = File(workingDir, "schema/json/types_modified.json")
-    modifiedTypeFile.writeText(modifiedJsonSchema.toString())
+    return modifiedJson
+  }
 
-    return modifiedJsonSchema
+  data class OneOfEntry(
+    val oneOf: JSONArray,
+    val parentKeys: List<String>,
+  )
+
+  private fun collectOneOfEntries(
+    json: Any,
+    result: MutableList<OneOfEntry> = mutableListOf(),
+    parentKeys: MutableList<String> = mutableListOf(),
+  ) {
+    if (json is JSONObject) {
+      val keys = json.keys()
+      while (keys.hasNext()) {
+        val key = keys.next()
+        val value = json.get(key)
+        if (key == "oneOf" && value is JSONArray) {
+          if (parentKeys.contains("properties")) {
+            val oneOfEntry = OneOfEntry(oneOf = value, parentKeys)
+            result.add(oneOfEntry)
+          }
+        } else {
+          val newParentKeys = parentKeys.toMutableList().apply { add(key) }
+          collectOneOfEntries(value, result, newParentKeys)
+        }
+      }
+    }
   }
 
   private fun Project.generateKotlinClasses(jsonSchema: JSONObject) {
@@ -315,4 +354,30 @@ class FhirParserPlugin : Plugin<Project> {
     // Write the modified content back to the file
     file.writeText(content)
   }
+}
+
+private fun List<String>.joinToStringSnakeCase(): String =
+  this
+    .mapIndexed { index, word ->
+      if (index == 0) {
+        word
+      } else {
+        word.replaceFirstChar { it.uppercase() }
+      }
+    }.joinToString("")
+
+private fun traverseJsonObject(
+  root: JSONObject,
+  jsonObjectKeys: List<String>,
+): JSONObject? {
+  var current: JSONObject = root
+  for (key in jsonObjectKeys) {
+    current =
+      if (current.has(key)) {
+        current.getJSONObject(key)
+      } else {
+        return null
+      }
+  }
+  return current
 }

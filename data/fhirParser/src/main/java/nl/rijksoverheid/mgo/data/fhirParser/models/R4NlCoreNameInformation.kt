@@ -22,7 +22,7 @@ data class R4NlCoreNameInformation(
     val text: MgoString? = null,
     val family: Family,
     val suffix: List<MgoString>? = null
-) {
+) : R4NlCorePatientPropertiesContactItemsPropertiesName {
 
     init {
         require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }

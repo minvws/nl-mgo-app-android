@@ -19,7 +19,7 @@ data class R4NlCoreNameInformationGiven(
     val period: MgoPeriod? = null,
     val _profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-NameInformation.Given",
     val text: MgoString? = null
-) {
+) : R4NlCorePatientPropertiesContactItemsPropertiesName {
 
     init {
         require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }

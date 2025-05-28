@@ -12,9 +12,11 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvas
 import com.itextpdf.layout.Canvas
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.borders.SolidBorder
+import com.itextpdf.layout.element.AreaBreak
 import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.properties.AreaBreakType
 import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -70,14 +72,6 @@ internal class DefaultPdfGenerator
           .setMarginTop(2f)
       document.add(subHeading)
 
-      // Add heading above the table using bold Helvetica font.
-      val tableHeading =
-        Paragraph(pdf.tables[0].heading)
-          .setFontSize(16f)
-          .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-          .setMarginTop(24f)
-      document.add(tableHeading)
-
       // Create a table with dynamic column count based on the number of rows in the first column.
       val pageWidth = PageSize.A4.width
       val numColumns =
@@ -85,35 +79,52 @@ internal class DefaultPdfGenerator
           .columns[0]
           .rows.size
       val columnWidths = FloatArray(numColumns) { pageWidth / numColumns }
-      val table = Table(columnWidths)
 
-      // Add table headers with background color and borders.
-      for (header in pdf.tables[0].headers) {
-        val headerCell =
-          Cell()
-            .add(Paragraph(header).setFontSize(10f))
-            .setBackgroundColor(style.tableHeadingsBackgroundColor.toDeviceRgb())
-            .setPadding(8f)
-            .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
+      for (tableData in pdf.tables) {
+        // Add heading above the table using bold Helvetica font.
+        val tableHeading =
+          Paragraph(tableData.heading)
+            .setFontSize(16f)
             .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-            .setVerticalAlignment(VerticalAlignment.MIDDLE)
-        table.addHeaderCell(headerCell)
-      }
+            .setMarginTop(24f)
+        document.add(tableHeading)
 
-      // Populate the table with data rows from each column.
-      for (column in pdf.tables[0].columns) {
-        for (row in column.rows) {
-          table.addCell(
+        val table = Table(columnWidths)
+
+        // Add header cells
+        for (header in tableData.headers) {
+          val headerCell =
             Cell()
-              .add(Paragraph(row).setFontSize(10f))
+              .add(Paragraph(header).setFontSize(10f))
+              .setBackgroundColor(style.tableHeadingsBackgroundColor.toDeviceRgb())
               .setPadding(8f)
-              .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-          )
+              .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
+              .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+              .setVerticalAlignment(VerticalAlignment.MIDDLE)
+          table.addHeaderCell(headerCell)
+        }
+
+        // Add cells
+        for (column in tableData.columns) {
+          for (row in column.rows) {
+            table.addCell(
+              Cell()
+                .add(Paragraph(row).setFontSize(10f))
+                .setPadding(8f)
+                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
+            )
+          }
+        }
+
+        // Add table
+        document.add(table)
+
+        // Next tables are always on a separate page
+        val lastPage = pdf.tables.indexOf(tableData) == pdf.tables.lastIndex
+        if (!lastPage) {
+          document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
         }
       }
-
-      // Add table
-      document.add(table)
 
       // Add footer to each page
       val numberOfPages = pdfDoc.numberOfPages

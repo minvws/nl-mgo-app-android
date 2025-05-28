@@ -1,6 +1,8 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -15,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
@@ -33,15 +36,24 @@ internal fun UiSchemaRowReference(
   onClick: (reference: UISchemaRow.Reference) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  Row(verticalAlignment = Alignment.CenterVertically) {
-    Text(
-      modifier =
-        modifier.weight(1f)
-          .clickable { onClick(row) }
-          .padding(16.dp),
-      text = row.value,
-      style = MaterialTheme.typography.bodyMedium,
-    )
+  Row(modifier = Modifier.clickable { onClick(row) }, verticalAlignment = Alignment.CenterVertically) {
+    Column(
+      modifier = modifier.weight(1f).padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
+      verticalArrangement = Arrangement.Center,
+    ) {
+      if (row.heading != null) {
+        Text(
+          text = row.heading,
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.contentSecondary(),
+        )
+      }
+      Text(
+        modifier = Modifier.padding(top = 4.dp),
+        text = row.value,
+        style = MaterialTheme.typography.bodyMedium,
+      )
+    }
 
     IconButton(onClick = {}) {
       Icon(
@@ -55,10 +67,21 @@ internal fun UiSchemaRowReference(
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaRowReferencePreview() {
+internal fun UiSchemaRowReferenceWithHeadingPreview() {
   MgoTheme {
     UiSchemaRowReference(
       row = UISchemaRow.Reference(heading = "Heading", value = "Value", referenceId = "1"),
+      onClick = {},
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaRowReferenceWithoutHeadingPreview() {
+  MgoTheme {
+    UiSchemaRowReference(
+      row = UISchemaRow.Reference(heading = null, value = "Value", referenceId = "1"),
       onClick = {},
     )
   }

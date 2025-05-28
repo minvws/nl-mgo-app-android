@@ -8,15 +8,21 @@ import com.itextpdf.kernel.font.PdfFontFactory
 import com.itextpdf.kernel.geom.PageSize
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas
+import com.itextpdf.layout.Canvas
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.borders.SolidBorder
 import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
+
+private const val PAGE_VERTICAL_MARGIN: Float = 32f
+private const val PAGE_HORIZONTAL_MARGIN = 40f
 
 /**
  * Implementation of [PdfGenerator] that generates and stores a PDF file
@@ -44,10 +50,11 @@ internal class DefaultPdfGenerator
       // Initialize the PDF writer and document with A4 landscape orientation.
       val pdfWriter = PdfWriter(File(context.cacheDir, fileName))
       val pdfDoc = PdfDocument(pdfWriter)
-      val document = Document(pdfDoc, PageSize.A4.rotate())
+      val document = Document(pdfDoc, PageSize.A4.rotate(), false)
 
       // Set document margins (top, right, bottom, left).
-      document.setMargins(32f, 40f, 32f, 40f)
+      // Add more padding to the bottom to account for the footer.
+      document.setMargins(PAGE_VERTICAL_MARGIN, PAGE_HORIZONTAL_MARGIN, PAGE_VERTICAL_MARGIN + 32f, PAGE_HORIZONTAL_MARGIN)
 
       // Add heading above the table using bold Helvetica font.
       val tableHeading =
@@ -91,8 +98,34 @@ internal class DefaultPdfGenerator
         }
       }
 
-      // Finalize and close the document.
+      // Add table
       document.add(table)
+
+      // Add footer to each page
+      val numberOfPages = pdfDoc.numberOfPages
+      for (i in 1..numberOfPages) {
+        val page = pdfDoc.getPage(i)
+        val canvas = PdfCanvas(page)
+        val pageSize = pdfDoc.firstPage.pageSize
+        val layoutCanvas = Canvas(canvas, pageSize)
+
+        // Add footer text
+        layoutCanvas.showTextAligned(
+          Paragraph(pdf.footer).setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
+          PAGE_HORIZONTAL_MARGIN,
+          PAGE_VERTICAL_MARGIN,
+          TextAlignment.LEFT,
+        )
+
+        // Add page number
+        layoutCanvas.showTextAligned(
+          Paragraph("Pagina $i van $numberOfPages").setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
+          page.pageSize.width - PAGE_HORIZONTAL_MARGIN,
+          PAGE_VERTICAL_MARGIN,
+          TextAlignment.RIGHT,
+        )
+      }
+
       document.close()
     }
   }

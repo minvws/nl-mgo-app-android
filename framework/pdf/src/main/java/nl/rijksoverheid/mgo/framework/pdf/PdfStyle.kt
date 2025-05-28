@@ -11,4 +11,5 @@ import android.graphics.Color
 data class PdfStyle(
   val tableHeadingsBackgroundColor: Int = Color.TRANSPARENT,
   val tableCellBorderColor: Int = Color.BLACK,
+  val footerTextColor: Int = Color.BLACK,
 )

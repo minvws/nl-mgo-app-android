@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowInsetsControllerCompat
@@ -23,6 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
@@ -31,6 +34,7 @@ import nl.rijksoverheid.mgo.component.theme.theme.DefaultLocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
+import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.lifecycle.AppLifecycleState
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.digid.addDigidNavGraph
@@ -49,6 +53,7 @@ class MainActivity : FragmentActivity() {
 
     enableEdgeToEdge()
     setContent {
+      var openSheet by remember { mutableStateOf(false) }
       val viewModel: MainViewModel = hiltViewModel()
       val appTheme by viewModel.appTheme.collectAsStateWithLifecycle()
 
@@ -83,6 +88,15 @@ class MainActivity : FragmentActivity() {
           // Set correct status bar icon colors for selected theme
           LaunchedEffect(isDarkTheme) {
             WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = !isDarkTheme
+          }
+
+          LaunchedEffect(Unit) {
+            delay(3000)
+            openSheet = true
+          }
+
+          PdfViewerBottomSheet(openSheet) {
+            openSheet = false
           }
         }
       }

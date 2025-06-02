@@ -17,23 +17,13 @@ import kotlinx.serialization.Serializable
 data class NlCoreEpisodeofcare(
     val identifier: List<MgoIdentifier>? = null,
     val period: MgoPeriod? = null,
-    val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare",
-    val diagnosis: List<Diagnosi>? = null,
-    val careManager: MgoReference? = null,
-    val team: List<MgoReference>? = null,
-    val title: MgoString? = null,
-    val type: List<MgoCodeableConcept>? = null,
-    val referenceId: String,
-    val statusHistory: List<StatusHistory>? = null,
-    val managingOrganization: MgoReference? = null,
-    val referralRequest: List<MgoReference>? = null,
     val patient: MgoReference? = null,
+    val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare",
     val fhirVersion: String = "R3",
     val id: String? = null,
-    val account: List<MgoReference>? = null,
-    val dateFirstEncounter: MgoDateTime? = null,
-    val status: NlCoreEpisodeofcareStatus? = null,
-    val dateLastEncounter: MgoDateTime? = null,
+    val type: List<MgoCodeableConcept>? = null,
+    val title: Title? = null,
+    val referenceId: String,
     val resourceType: String
 ) {
 
@@ -43,21 +33,22 @@ data class NlCoreEpisodeofcare(
     }
 
     @Serializable
-    data class Diagnosi(
-        val condition: MgoReference? = null,
-        val role: MgoCodeableConcept? = null,
-        val rank: MgoPositiveInt? = null
-    )
+    data class Title(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
 
-    @Serializable
-    data class StatusHistory(
-        val period: MgoPeriod? = null,
-        val status: MgoCode? = null
-    )
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
 
     companion object {
         private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare"
         private const val cg_str1 = "R3"
+        private const val cg_str2 = "string"
     }
 
 }

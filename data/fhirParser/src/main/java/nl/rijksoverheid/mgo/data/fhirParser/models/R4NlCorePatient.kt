@@ -15,32 +15,193 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCorePatient(
-    val identifier: List<MgoIdentifier>? = null,
-    val deceased: MgoBoolean? = null,
-    val address: List<R4NlCoreAddressInformation>? = null,
-    val gender: NlCorePatientGender? = null,
+    val identifier: Identifier,
+    val address: List<Addres>? = null,
+    val gender: Gender,
+    val multipleBirthBoolean: MgoBoolean? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient",
     val birthDate: MgoDate? = null,
     val referenceId: String,
-    val multipleBirth: MgoBoolean? = null,
-    val managingOrganization: MgoReference? = null,
+    val deceasedBoolean: MgoBoolean? = null,
+    val nationality: List<Nationality>,
+    val multipleBirthInteger: MgoInteger? = null,
+    val contact: List<Contact>? = null,
     val deceasedDateTime: MgoDateTime? = null,
-    val generalPractitioner: List<MgoReference>? = null,
     val fhirVersion: String = "R4",
     val name: List<R4NlCorePatientName>? = null,
+    val telecom: Telecom1,
     val id: String? = null,
+    val communication: List<Communication>? = null,
     val maritalStatus: MgoCodeableConcept? = null,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
+        require(fhirVersion == cg_str5) { "fhirVersion not constant value $cg_str5 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class Identifier(
+        val bsn: MgoIdentifier? = null
+    )
+
+    @Serializable
+    data class Addres(
+        val country: Country,
+        val _profile: String,
+        val city: MgoString? = null,
+        val use: NlCoreOrganizationTelecomSystem? = null,
+        val line: List<Line>? = null,
+        val district: MgoString? = null,
+        val postalCode: MgoString? = null,
+        val type: NlCoreOrganizationTelecomSystem? = null
+    ) {
+
+        init {
+            require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class Country(
+        val countryCode: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Line(
+        val additionalInformation: MgoString? = null,
+        val streetName: MgoString? = null,
+        val houseNumberLetter: MgoString? = null,
+        val countryCode: MgoString? = null,
+        val houseNumber: MgoString? = null,
+        val houseNumberAddition: MgoString? = null,
+        val houseNumberIndiciation: MgoString? = null
+    )
+
+    @Serializable
+    data class Gender(
+        val genderCodeList: GenderCodeList? = null
+    )
+
+    @Serializable
+    data class GenderCodeList(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Nationality(
+        val period: Period? = null,
+        val code: Code? = null,
+        val _ext: Boolean
+    )
+
+    @Serializable
+    data class Period(
+        val _type: String,
+        val start: String? = null,
+        val end: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Code(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Contact(
+        val address: R4NlCoreAddressInformation,
+        val _profile: String,
+        val name: List<R4NlCorePatientPropertiesContactItemsPropertiesName>,
+        val telecom: Telecom,
+        val relationship: Relationship
+    ) {
+
+        init {
+            require(_profile == cg_str4) { "_profile not constant value $cg_str4 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class Telecom(
+        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
+        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
+    )
+
+    @Serializable
+    data class Relationship(
+        val role: List<MgoCodeableConcept>? = null,
+        val relationship: List<MgoCodeableConcept>? = null
+    )
+
+    @Serializable
+    data class Telecom1(
+        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
+        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
+    )
+
+    @Serializable
+    data class Communication(
+        val languageProficiency: LanguageProficiency,
+        val comment: List<Comment>,
+        val language: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class LanguageProficiency(
+        val languageControlReading: MgoCoding? = null,
+        val languageControlListening: MgoCoding? = null,
+        val languageControlSpeaking: MgoCoding? = null
+    )
+
+    @Serializable
+    data class Comment(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str6) { "_type not constant value $cg_str6 - $_type" }
+        }
+
     }
 
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"
-        private const val cg_str1 = "R4"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-AddressInformation"
+        private const val cg_str1 = "codeableConcept"
+        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"
+        private const val cg_str3 = "period"
+        private const val cg_str4 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-ContactPerson"
+        private const val cg_str5 = "R4"
+        private const val cg_str6 = "string"
     }
 
 }

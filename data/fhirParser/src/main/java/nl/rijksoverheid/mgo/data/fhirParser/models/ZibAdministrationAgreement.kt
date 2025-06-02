@@ -11,45 +11,121 @@
  */
 package nl.rijksoverheid.mgo.data.fhirParser.models
 
+import kotlin.Double
+
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibAdministrationAgreement(
-    val additionalInformation: MgoCodeableConcept? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val additionalInformation: AdditionalInformation? = null,
     val note: List<MgoAnnotation>? = null,
-    val agreementReason: MgoString? = null,
-    val medicationTreatment: MgoIdentifier? = null,
-    val authoredOn: MgoDateTime? = null,
-    val quantity: MgoQuantity? = null,
+    val agreementReason: AgreementReason? = null,
+    val medicationTreatment: MedicationTreatment? = null,
     val performer: List<Performer>? = null,
-    val daysSupply: MgoQuantity? = null,
+    val authoredOn: AuthoredOn? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement",
-    val stopType: MgoCodeableConcept? = null,
+    val stopType: StopType? = null,
     val dossageInstruction: List<DossageInstruction>? = null,
     val referenceId: String,
-    val repeatPeriodCyclicalSchedule: MgoDuration? = null,
     val medicationReference: MgoReference? = null,
-    val periodOfUse: MgoPeriod? = null,
-    val usageDuration: MgoDuration? = null,
+    val repeatPeriodCyclicalSchedule: RepeatPeriodCyclicalSchedule? = null,
+    val periodOfUse: PeriodOfUse? = null,
+    val usageDuration: UsageDuration? = null,
+    val patient: MgoReference? = null,
     val fhirVersion: String = "R3",
     val id: String? = null,
-    val category: MgoCodeableConcept? = null,
     val authorizingPrescription: List<MgoReference>? = null,
     val status: ZibAdministrationAgreementStatus? = null,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        require(profile == cg_str4) { "profile not constant value $cg_str4 - $profile" }
+        require(fhirVersion == cg_str8) { "fhirVersion not constant value $cg_str8 - $fhirVersion" }
     }
+
+    @Serializable
+    data class AdditionalInformation(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class AgreementReason(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class MedicationTreatment(
+        val system: String? = null,
+        val use: String? = null,
+        val _type: String,
+        val type: Type? = null,
+        val value: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Type(
+        val coding: List<MgoCodingProps>,
+        val text: String? = null
+    )
 
     @Serializable
     data class Performer(
         val actor: MgoReference? = null,
         val onBehalfOf: MgoReference? = null
     )
+
+    @Serializable
+    data class AuthoredOn(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class StopType(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
 
     @Serializable
     data class DossageInstruction(
@@ -69,15 +145,69 @@ data class ZibAdministrationAgreement(
     ) {
 
         init {
-            require(_profile == cg_str1) { "_profile not constant value $cg_str1 - $_profile" }
+            require(_profile == cg_str5) { "_profile not constant value $cg_str5 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class RepeatPeriodCyclicalSchedule(
+        val comparator: String? = null,
+        val unit: String? = null,
+        val system: String? = null,
+        val code: String? = null,
+        val _type: String,
+        val value: Double? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str6) { "_type not constant value $cg_str6 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class PeriodOfUse(
+        val _type: String,
+        val start: String? = null,
+        val end: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str7) { "_type not constant value $cg_str7 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class UsageDuration(
+        val comparator: String? = null,
+        val unit: String? = null,
+        val system: String? = null,
+        val code: String? = null,
+        val _type: String,
+        val value: Double? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str6) { "_type not constant value $cg_str6 - $_type" }
         }
 
     }
 
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-InstructionsForUse"
-        private const val cg_str2 = "R3"
+        private const val cg_str0 = "codeableConcept"
+        private const val cg_str1 = "string"
+        private const val cg_str2 = "identifier"
+        private const val cg_str3 = "dateTime"
+        private const val cg_str4 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"
+        private const val cg_str5 = "http://nictiz.nl/fhir/StructureDefinition/zib-InstructionsForUse"
+        private const val cg_str6 = "duration"
+        private const val cg_str7 = "period"
+        private const val cg_str8 = "R3"
     }
 
 }

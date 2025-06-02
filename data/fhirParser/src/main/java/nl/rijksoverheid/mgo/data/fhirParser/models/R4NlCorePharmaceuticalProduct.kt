@@ -16,19 +16,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class R4NlCorePharmaceuticalProduct(
     val identifier: List<MgoIdentifier>? = null,
-    val amount: MgoRatio? = null,
-    val code: MgoCodeableConcept? = null,
+    val code: Code,
     val ingredient: List<Ingredient>? = null,
-    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-PharmaceuticalProduct",
-    val batch: Batch,
-    val description: MgoString? = null,
-    val referenceId: String,
-    val manufacturer: MgoReference? = null,
     val form: MgoCodeableConcept? = null,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-PharmaceuticalProduct",
     val fhirVersion: String = "R4",
-    val name: MgoString? = null,
+    val batch: Batch,
     val id: String? = null,
-    val status: R4NlCorePharmaceuticalProductStatus? = null,
+    val referenceId: String,
     val resourceType: String
 ) {
 
@@ -36,6 +31,12 @@ data class R4NlCorePharmaceuticalProduct(
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
+
+    @Serializable
+    data class Code(
+        val coding: List<MgoCoding>? = null,
+        val text: MgoString? = null
+    )
 
     @Serializable
     data class Ingredient(
@@ -46,8 +47,7 @@ data class R4NlCorePharmaceuticalProduct(
 
     @Serializable
     data class Batch(
-        val lotNumber: MgoString? = null,
-        val expirationDate: MgoDateTime? = null
+        val lotNumber: MgoString? = null
     )
 
     companion object {

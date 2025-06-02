@@ -17,51 +17,89 @@ import kotlinx.serialization.Serializable
 data class ZibPayer(
     val identifier: List<MgoIdentifier>? = null,
     val period: MgoPeriod? = null,
-    val subscriber: MgoReference? = null,
-    val contract: List<MgoReference>? = null,
-    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer",
-    val subscriberId: MgoString? = null,
-    val type: MgoCodeableConcept? = null,
-    val grouping: Grouping,
-    val referenceId: String,
-    val network: MgoString? = null,
-    val sequence: MgoString? = null,
-    val payor: List<MgoReference>? = null,
+    val payor: List<Payor>? = null,
     val beneficiary: MgoReference? = null,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer",
     val fhirVersion: String = "R3",
+    val subscriberId: MgoString? = null,
     val id: String? = null,
-    val relationship: MgoCodeableConcept? = null,
-    val dependent: MgoString? = null,
-    val status: ZibPayerStatus? = null,
-    val policyHolder: MgoReference? = null,
-    val order: MgoPositiveInt? = null,
+    val type: MgoCodeableConcept? = null,
+    val referenceId: String,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
+        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
     }
 
     @Serializable
-    data class Grouping(
-        val subGroupDisplay: MgoString? = null,
-        val groupDisplay: MgoString? = null,
-        val subClass: MgoString? = null,
-        val subGroup: MgoString? = null,
-        val subPlan: MgoString? = null,
-        val subPlanDisplay: MgoString? = null,
-        val subClassDisplay: MgoString? = null,
-        val plan: MgoString? = null,
-        val `class`: MgoString? = null,
-        val classDisplay: MgoString? = null,
-        val group: MgoString? = null,
-        val planDisplay: MgoString? = null
+    data class Payor(
+        val reference: String? = null,
+        val bankInformation: List<BankInformation>,
+        val display: String? = null,
+        val _type: String? = null
+    ) {
+
+        init {
+            if (_type != null)
+                require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class BankInformation(
+        val bankName: BankName? = null,
+        val accountNumber: AccountNumber? = null,
+        val _ext: Boolean,
+        val bankcode: Bankcode? = null
     )
 
+    @Serializable
+    data class BankName(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class AccountNumber(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Bankcode(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "string"
+        private const val cg_str1 = "reference"
+        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer"
+        private const val cg_str3 = "R3"
     }
 
 }

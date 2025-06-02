@@ -17,14 +17,14 @@ import kotlinx.serialization.Serializable
 data class ZibNutritionAdvice(
     val dateTime: MgoDateTime? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val oralDiet: OralDiet,
     val patient: MgoReference? = null,
+    val orderer: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice",
     val fhirVersion: String = "R3",
-    val comment: MgoString? = null,
+    val comment: Comment? = null,
     val id: String? = null,
-    val foodPreferenceModifier: List<MgoCodeableConcept>? = null,
     val referenceId: String,
-    val status: ZibNutritionAdviceStatus? = null,
     val resourceType: String
 ) {
 
@@ -33,9 +33,36 @@ data class ZibNutritionAdvice(
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
+    @Serializable
+    data class OralDiet(
+        val texture: List<Texture>? = null,
+        val fluidConsistencyType: List<MgoCodeableConcept>? = null,
+        val type: List<MgoCodeableConcept>? = null
+    )
+
+    @Serializable
+    data class Texture(
+        val foodType: MgoCodeableConcept? = null,
+        val modifier: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Comment(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
+
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"
         private const val cg_str1 = "R3"
+        private const val cg_str2 = "string"
     }
 
 }

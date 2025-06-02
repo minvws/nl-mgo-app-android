@@ -9,9 +9,16 @@ internal class UiSchemaRowReferenceSnapshotTest {
   val snapshotTestRule = SnapshotTestRule()
 
   @Test
-  fun preview() {
+  fun withHeading() {
     snapshotTestRule.snapshots {
-      UiSchemaRowReferencePreview()
+      UiSchemaRowReferenceWithHeadingPreview()
+    }
+  }
+
+  @Test
+  fun withoutHeading() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowReferenceWithoutHeadingPreview()
     }
   }
 }

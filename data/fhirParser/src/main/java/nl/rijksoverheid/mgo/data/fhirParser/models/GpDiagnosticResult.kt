@@ -16,36 +16,84 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GpDiagnosticResult(
     val valueBoolean: MgoBoolean? = null,
-    val identifier: List<MgoIdentifier>? = null,
-    val performer: List<MgoReference>? = null,
+    val valueTime: MgoTime? = null,
     val code: MgoCodeableConcept? = null,
-    val method: MgoCodeableConcept? = null,
     val valueRange: MgoRange? = null,
     val subject: MgoReference? = null,
-    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult",
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
-    val effective: MgoDateTime? = null,
-    val valueString: MgoString? = null,
-    val valuePeriod: MgoPeriod? = null,
+    val valueRatio: MgoRatio? = null,
+    val valueAttachment: MgoAttachment? = null,
+    val related: List<Related>? = null,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
-    val comment: MgoString? = null,
     val valueDateTime: MgoDateTime? = null,
+    val episodeOfCare: List<EpisodeOfCare>,
     val id: String? = null,
     val valueQuantity: MgoQuantity? = null,
-    val status: MgoString? = null,
+    val identifier: List<MgoIdentifier>? = null,
+    val performer: List<MgoReference>? = null,
+    val method: MgoCodeableConcept? = null,
+    val effectivePeriod: MgoPeriod? = null,
+    val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult",
+    val bodySite: MgoCodeableConcept? = null,
+    val valueString: MgoString? = null,
+    val effectiveDateTime: MgoDateTime? = null,
+    val valueSampledData: MgoSampledData? = null,
+    val valuePeriod: MgoPeriod? = null,
+    val comment: MgoString? = null,
+    val status: Status,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
+        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
+    }
+
+    @Serializable
+    data class Related(
+        val type: GpDiagnosticResultRelatedType? = null,
+        val target: MgoReference? = null
+    )
+
+    @Serializable
+    data class EpisodeOfCare(
+        val reference: String? = null,
+        val display: String? = null,
+        val _type: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Status(
+        val resultStatusCodelist: ResultStatusCodelist? = null
+    )
+
+    @Serializable
+    data class ResultStatusCodelist(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
+        }
+
     }
 
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "R3"
+        private const val cg_str1 = "reference"
+        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult"
+        private const val cg_str3 = "codeableConcept"
     }
 
 }

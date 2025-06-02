@@ -15,15 +15,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GpEncounter(
+    val identifier: List<MgoIdentifier>? = null,
     val reason: List<MgoCodeableConcept>? = null,
     val period: MgoPeriod? = null,
+    val hospitalization: Hospitalization,
+    val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter",
+    val diagnosis: List<Diagnosi>? = null,
+    val participant: List<Participant>? = null,
+    val referenceId: String,
     val fhirVersion: String = "R3",
     val serviceProvider: MgoReference? = null,
     val id: String? = null,
     val `class`: MgoCoding? = null,
-    val participant: List<EncounterParticipant>? = null,
-    val referenceId: String,
     val resourceType: String
 ) {
 
@@ -31,6 +35,28 @@ data class GpEncounter(
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
+
+    @Serializable
+    data class Hospitalization(
+        val dischargeDisposition: MgoCodeableConcept? = null,
+        val admitSource: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Diagnosi(
+        val condition: MgoReference? = null
+    )
+
+    @Serializable
+    data class Participant(
+        val individual: MgoReference? = null,
+        val type: Type
+    )
+
+    @Serializable
+    data class Type(
+        val healthProfessionalRole: List<MgoCodeableConcept>? = null
+    )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter"

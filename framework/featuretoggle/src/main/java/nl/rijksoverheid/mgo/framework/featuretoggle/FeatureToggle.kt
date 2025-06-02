@@ -55,7 +55,7 @@ val flagSecureFeatureToggle =
   FeatureToggle(
     id = FeatureToggleId.FlagSecure,
     preferenceKey = KEY_FLAG_SECURE,
-    initialValue = true,
+    initialValue = false,
   )
 
 /**

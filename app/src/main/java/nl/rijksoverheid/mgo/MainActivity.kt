@@ -42,6 +42,7 @@ import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeCreateNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeLoginNavGraph
+import java.io.File
 
 /**
  * The app has a single activity architecture, which means this is the entry point to the app and only activity.
@@ -91,11 +92,13 @@ class MainActivity : FragmentActivity() {
           }
 
           LaunchedEffect(Unit) {
-            delay(3000)
+            delay(1000)
             openSheet = true
           }
 
-          PdfViewerBottomSheet(openSheet) {
+          val context = LocalContext.current
+          val pdfFile = File(context.cacheDir, "export.pdf")
+          PdfViewerBottomSheet(pdf = pdfFile, openSheet = openSheet) {
             openSheet = false
           }
         }

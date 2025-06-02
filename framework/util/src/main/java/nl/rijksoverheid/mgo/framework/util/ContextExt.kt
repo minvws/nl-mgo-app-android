@@ -1,5 +1,3 @@
-package nl.rijksoverheid.mgo.framework.util
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -11,48 +9,78 @@ import java.io.File
 /**
  * Retrieves the resource ID of a string resource by its name.
  *
- * This function allows you to get a string resource dynamically using its name.
- * Note: The use of `getIdentifier` is discouraged as it can impact performance.
+ * This method allows dynamic access to string resources using their names.
+ * Note: The use of `getIdentifier` is discouraged due to potential performance issues.
  *
  * @param aString The name of the string resource.
  * @return The resource ID of the string, or 0 if not found.
  */
-@SuppressLint("DiscouragedApi") // Suppresses the warning for using getIdentifier
+@SuppressLint("DiscouragedApi") // Suppresses warning about getIdentifier usage
 @StringRes
-fun Context.getStringResourceByName(aString: String): Int {
-  return resources.getIdentifier(aString, "string", packageName)
-}
+fun Context.getStringResourceByName(aString: String): Int =
+  resources.getIdentifier(aString, "string", packageName)
 
 /**
- * Shares a file using an appropriate application.
+ * Opens a file using a compatible external application.
  *
- * This function creates a content URI using FileProvider and launches an intent
- * to share or open the file using an appropriate app that supports the given content type.
+ * This method generates a content URI using FileProvider and launches an intent
+ * to view the file with an appropriate app installed on the device.
  *
- * @param file The file to be shared.
+ * @param file The file to open.
  * @param contentType The MIME type of the file (e.g., "application/pdf", "image/png").
  */
-fun Context.shareFile(
+fun Context.openFileWithOtherApp(
   file: File,
   contentType: String,
 ) {
-  // Generate a content URI for the file using FileProvider
+  // Generate a content URI for the file
   val attachmentUri: Uri =
     FileProvider.getUriForFile(
       this,
-      "${this.packageName}.fileprovider", // Matches the provider authority in AndroidManifest.xml
+      "${this.packageName}.fileprovider", // Must match the provider authority in AndroidManifest.xml
       file,
     )
 
-  // Create an intent to view or share the file
-  val shareIntent =
+  // Create an intent to view the file
+  val viewIntent =
     Intent(Intent.ACTION_VIEW).apply {
-      setDataAndType(attachmentUri, contentType) // Set the file URI and MIME type
-      addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant temporary read permission to the receiving app
+      setDataAndType(attachmentUri, contentType)
+      addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant temporary read access to the file
     }
 
-  // Start an activity to open the file using a compatible app
-  this.startActivity(
-    Intent.createChooser(shareIntent, "Open File"), // Show a chooser dialog to select an app
-  )
+  // Launch chooser to allow the user to select an appropriate app
+  this.startActivity(Intent.createChooser(viewIntent, null))
+}
+
+/**
+ * Shares a file with another application.
+ *
+ * This method creates a content URI using FileProvider and shares the file
+ * using an ACTION_SEND intent.
+ *
+ * @param file The file to share.
+ * @param contentType The MIME type of the file (e.g., "application/pdf", "image/png").
+ */
+fun Context.sendFileToOtherApp(
+  file: File,
+  contentType: String,
+) {
+  // Generate a content URI for the file
+  val attachmentUri: Uri =
+    FileProvider.getUriForFile(
+      this,
+      "${this.packageName}.fileprovider", // Must match the provider authority in AndroidManifest.xml
+      file,
+    )
+
+  // Create an intent to send the file
+  val sendIntent =
+    Intent(Intent.ACTION_SEND).apply {
+      type = contentType
+      putExtra(Intent.EXTRA_STREAM, attachmentUri)
+      addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant temporary read access to the receiving app
+    }
+
+  // Launch chooser to allow the user to select an app to share with
+  this.startActivity(Intent.createChooser(sendIntent, null))
 }

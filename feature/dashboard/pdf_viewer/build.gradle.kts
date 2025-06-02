@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
-  
+  implementation(libs.zoomable)
+  implementation(projects.framework.pdf)
 }

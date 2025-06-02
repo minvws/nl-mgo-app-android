@@ -16,23 +16,18 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibBodyHeight(
     val identifier: List<MgoIdentifier>? = null,
-    val dataAbsentReason: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
+    val code: MgoCodeableConcept? = null,
     val effectivePeriod: MgoPeriod? = null,
-    val method: MgoCodeableConcept? = null,
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-BodyHeight",
     val referenceId: String,
-    val valueCodeableConcept: MgoCodeableConcept? = null,
-    val bodySite: MgoCodeableConcept? = null,
     val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
     val comment: MgoString? = null,
     val id: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val resourceType: String,
-    val status: GpLaboratoryResultStatus? = null,
-    val valueQuantity: MgoQuantity? = null
+    val valueQuantity: MgoQuantity? = null,
+    val resourceType: String
 ) {
 
     init {

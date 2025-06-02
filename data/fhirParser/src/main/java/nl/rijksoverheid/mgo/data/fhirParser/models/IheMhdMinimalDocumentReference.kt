@@ -15,6 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class IheMhdMinimalDocumentReference(
+    val identifier: List<MgoIdentifier>? = null,
     val indexed: MgoInstant? = null,
     val subject: MgoReference? = null,
     val author: List<MgoReference>? = null,
@@ -25,7 +26,9 @@ data class IheMhdMinimalDocumentReference(
     val content: Content,
     val referenceId: String,
     val fhirVersion: String = "R3",
+    val context: Context,
     val id: String? = null,
+    val relatesTo: List<RelatesTo>? = null,
     val `class`: MgoCodeableConcept? = null,
     val status: IheMhdMinimalDocumentReferenceStatus? = null,
     val resourceType: String
@@ -38,7 +41,21 @@ data class IheMhdMinimalDocumentReference(
 
     @Serializable
     data class Content(
-        val attachment: MgoAttachment? = null
+        val attachment: MgoAttachment? = null,
+        val format: MgoCoding? = null
+    )
+
+    @Serializable
+    data class Context(
+        val period: MgoPeriod? = null,
+        val facilityType: MgoCodeableConcept? = null,
+        val practiceSetting: MgoCodeableConcept? = null,
+        val sourcePatientInfo: MgoReference? = null
+    )
+
+    @Serializable
+    data class RelatesTo(
+        val target: MgoReference? = null
     )
 
     companion object {

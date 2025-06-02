@@ -15,11 +15,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibMedicalDeviceProduct(
+    val identifier: List<MgoIdentifier>? = null,
     val note: List<MgoAnnotation>? = null,
     val patient: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct",
     val fhirVersion: String = "R3",
+    val udi: Udi,
+    val lotNumber: MgoString? = null,
     val id: String? = null,
+    val type: MgoCodeableConcept? = null,
     val referenceId: String,
     val expirationDate: MgoDateTime? = null,
     val resourceType: String
@@ -29,6 +33,12 @@ data class ZibMedicalDeviceProduct(
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
+
+    @Serializable
+    data class Udi(
+        val deviceIdentifier: MgoString? = null,
+        val carrierHRF: MgoString? = null
+    )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct"

@@ -16,33 +16,95 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibMedicalDevice(
     val identifier: List<MgoIdentifier>? = null,
-    val reason: MgoReference? = null,
     val note: List<MgoAnnotation>? = null,
-    val practitioner: MgoReference? = null,
+    val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice",
     val source: MgoReference? = null,
-    val laterality: MgoCodeableConcept? = null,
+    val healthCareProvider: HealthCareProvider? = null,
     val referenceId: String,
-    val bodySite: MgoCodeableConcept? = null,
+    val healthProfessional: HealthProfessional? = null,
+    val bodySite: BodySite,
     val whenUsed: MgoPeriod? = null,
-    val patient: MgoReference? = null,
-    val organization: MgoReference? = null,
+    val indicationProblem: List<IndicationProblem>? = null,
     val fhirVersion: String = "R3",
-    val recordedOn: MgoDateTime? = null,
     val id: String? = null,
     val device: MgoReference? = null,
-    val status: ZibMedicalDeviceStatus? = null,
     val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class HealthCareProvider(
+        val reference: String? = null,
+        val display: String? = null,
+        val _type: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class HealthProfessional(
+        val reference: String? = null,
+        val display: String? = null,
+        val _type: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class BodySite(
+        val coding: List<MgoCoding>? = null,
+        val text: MgoString? = null,
+        val laterality: Laterality? = null
+    )
+
+    @Serializable
+    data class Laterality(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class IndicationProblem(
+        val reference: String? = null,
+        val display: String? = null,
+        val _type: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
     }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice"
-        private const val cg_str1 = "R3"
+        private const val cg_str1 = "reference"
+        private const val cg_str2 = "codeableConcept"
+        private const val cg_str3 = "R3"
     }
 
 }

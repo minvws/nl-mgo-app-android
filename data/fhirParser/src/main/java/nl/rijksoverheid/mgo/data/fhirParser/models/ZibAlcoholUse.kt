@@ -16,24 +16,18 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibAlcoholUse(
     val identifier: List<MgoIdentifier>? = null,
-    val dataAbsentReason: MgoCodeableConcept? = null,
     val performer: List<MgoReference>? = null,
     val effectivePeriod: MgoPeriod? = null,
-    val method: MgoCodeableConcept? = null,
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse",
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
-    val component: Component,
-    val bodySite: MgoCodeableConcept? = null,
+    val component: Component? = null,
+    val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
     val comment: MgoString? = null,
     val id: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val resourceType: String,
-    val status: GpLaboratoryResultStatus? = null,
-    val valueQuantity: MgoQuantity? = null
+    val resourceType: String
 ) {
 
     init {
@@ -43,7 +37,12 @@ data class ZibAlcoholUse(
 
     @Serializable
     data class Component(
-        val amount: MgoQuantity? = null
+        val amount: List<Amount>? = null
+    )
+
+    @Serializable
+    data class Amount(
+        val valueQuantity: MgoQuantity? = null
     )
 
     companion object {

@@ -16,19 +16,18 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GpJournalEntry(
     val identifier: List<MgoIdentifier>? = null,
-    val performer: List<MgoReference>? = null,
     val code: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
     val effectivePeriod: MgoPeriod? = null,
-    val ICPC_S: ICPCS,
+    val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry",
     val referenceId: String,
+    val component: Component? = null,
     val valueString: MgoString? = null,
-    val ICPC_E: ICPCE,
     val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
+    val episodeOfCare: List<EpisodeOfCare>,
     val id: String? = null,
-    val status: MgoString? = null,
     val resourceType: String
 ) {
 
@@ -38,18 +37,39 @@ data class GpJournalEntry(
     }
 
     @Serializable
-    data class ICPCS(
+    data class Component(
+        val ICPC_E: List<ICPC_E>? = null,
+        val ICPC_S: List<ICPC_S>? = null
+    )
+
+    @Serializable
+    data class ICPC_E(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
     @Serializable
-    data class ICPCE(
+    data class ICPC_S(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
+
+    @Serializable
+    data class EpisodeOfCare(
+        val reference: String? = null,
+        val display: String? = null,
+        val _type: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry"
         private const val cg_str1 = "R3"
+        private const val cg_str2 = "reference"
     }
 
 }

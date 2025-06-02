@@ -15,25 +15,110 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCorePractitioner(
-    val identifier: List<MgoIdentifier>? = null,
-    val address: List<NlCoreAddress>? = null,
+    val identifier: Identifier,
+    val address: List<Addres>? = null,
     val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner",
     val fhirVersion: String = "R3",
-    val name: List<NlCoreHumanname>? = null,
-    val telecom: List<NlCoreContactpoint>? = null,
+    val name: List<Name>? = null,
+    val telecom: List<Telecom>? = null,
     val id: String? = null,
     val referenceId: String,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class Identifier(
+        val big: MgoIdentifier? = null,
+        val other: List<MgoIdentifier>? = null,
+        val uzi: MgoIdentifier? = null,
+        val agb: MgoIdentifier? = null
+    )
+
+    @Serializable
+    data class Addres(
+        val country: MgoString? = null,
+        val _profile: String,
+        val city: MgoString? = null,
+        val addressType: MgoCodeableConcept? = null,
+        val use: NlCoreOrganizationTelecomSystem? = null,
+        val line: List<Line>? = null,
+        val district: MgoString? = null,
+        val postalCode: MgoString? = null,
+        val official: MgoBoolean? = null,
+        val type: NlCoreOrganizationTelecomSystem? = null
+    ) {
+
+        init {
+            require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class Line(
+        val streetName: MgoString? = null,
+        val buildingNumberSuffix: MgoString? = null,
+        val additionalLocator: MgoString? = null,
+        val houseNumber: MgoString? = null,
+        val unitId: MgoString? = null
+    )
+
+    @Serializable
+    data class Name(
+        val given: Given,
+        val _profile: String,
+        val humannameAssemblyOrder: NlCoreOrganizationTelecomSystem? = null,
+        val text: MgoString? = null,
+        val family: Family
+    ) {
+
+        init {
+            require(_profile == cg_str3) { "_profile not constant value $cg_str3 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class Given(
+        val initials: List<MgoString>? = null,
+        val callName: List<MgoString>? = null,
+        val birthName: List<MgoString>? = null
+    )
+
+    @Serializable
+    data class Family(
+        val humannamePartnerPrefix: MgoString? = null,
+        val humannameOwnPrefix: MgoString? = null,
+        val humannameOwnName: MgoString? = null,
+        val humannamePartnerName: MgoString? = null
+    )
+
+    @Serializable
+    data class Telecom(
+        val system: NlCoreOrganizationTelecomSystem? = null,
+        val _profile: String,
+        val use: NlCoreOrganizationTelecomSystem? = null,
+        val telecomType: MgoCodeableConcept? = null,
+        val value: MgoString? = null
+    ) {
+
+        init {
+            require(_profile == cg_str4) { "_profile not constant value $cg_str4 - $_profile" }
+        }
+
     }
 
     companion object {
-        private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-address"
+        private const val cg_str1 = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner"
+        private const val cg_str2 = "R3"
+        private const val cg_str3 = "http://fhir.nl/fhir/StructureDefinition/nl-core-humanname"
+        private const val cg_str4 = "http://fhir.nl/fhir/StructureDefinition/nl-core-contactpoint"
     }
 
 }

@@ -15,9 +15,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreContactpoint(
-    val period: MgoPeriod? = null,
     val system: MgoCode? = null,
+    val _profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-contactpoint",
     val use: MgoCode? = null,
-    val rank: MgoPositiveInt? = null,
+    val telecomType: MgoCodeableConcept? = null,
     val value: MgoString? = null
-)
+) {
+
+    init {
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+    }
+
+    companion object {
+        private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-contactpoint"
+    }
+
+}

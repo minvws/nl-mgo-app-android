@@ -15,14 +15,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreHealthProfessionalPractitionerRole(
-    val speciality: List<MgoCodeableConcept>? = null,
-    val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>? = null,
-    val practitioner: MgoReference? = null,
+    val specialty: Specialty,
     val organization: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole",
     val fhirVersion: String = "R4",
-    val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
-    val location: List<MgoReference>? = null,
+    val telecom: Telecom,
     val id: String? = null,
     val referenceId: String,
     val resourceType: String
@@ -32,6 +29,17 @@ data class R4NlCoreHealthProfessionalPractitionerRole(
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
+
+    @Serializable
+    data class Specialty(
+        val specialty: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Telecom(
+        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
+        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
+    )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole"

@@ -15,28 +15,92 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProcedureRequest(
-    val reason: List<MgoReference>? = null,
+    val requester: Requester,
+    val identifier: List<MgoIdentifier>? = null,
     val code: MgoCodeableConcept? = null,
+    val performer: MgoReference? = null,
     val subject: MgoReference? = null,
-    val perfomer: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest",
-    val fhirVersion: String = "R3",
-    val occurrence: MgoPeriod? = null,
-    val id: String? = null,
-    val intent: MgoString? = null,
+    val reasonReference: List<MgoReference>? = null,
+    val occurrenceTiming: MgoTiming? = null,
+    val performerType: PerformerType,
     val referenceId: String,
-    val status: MgoString? = null,
+    val bodySite: List<BodySite>? = null,
+    val occurrencePeriod: MgoPeriod? = null,
+    val fhirVersion: String = "R3",
+    val occurrenceDateTime: MgoDateTime? = null,
+    val id: String? = null,
+    val status: Status,
     val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class Requester(
+        val agent: MgoReference? = null
+    )
+
+    @Serializable
+    data class PerformerType(
+        val healthProfessionalRole: List<MgoCoding>? = null
+    )
+
+    @Serializable
+    data class BodySite(
+        val coding: List<MgoCodingProps>? = null,
+        val procedureLaterality: ProcedureLaterality? = null,
+        val _type: String? = null,
+        val text: String? = null
+    ) {
+
+        init {
+            if (_type != null)
+                require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class ProcedureLaterality(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Status(
+        val orderStatus: OrderStatus? = null
+    )
+
+    @Serializable
+    data class OrderStatus(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
     }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest"
-        private const val cg_str1 = "R3"
+        private const val cg_str1 = "codeableConcept"
+        private const val cg_str2 = "R3"
     }
 
 }

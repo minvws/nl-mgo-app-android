@@ -15,24 +15,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibLivingSituation(
+    val valueCodeableConcept: MgoCodeableConcept? = null,
     val identifier: List<MgoIdentifier>? = null,
-    val dataAbsentReason: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
     val effectivePeriod: MgoPeriod? = null,
-    val method: MgoCodeableConcept? = null,
+    val effectiveDateTime: MgoDateTime? = null,
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation",
-    val referenceId: String,
-    val valueCodeableConcept: MgoCodeableConcept? = null,
-    val bodySite: MgoCodeableConcept? = null,
-    val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
     val comment: MgoString? = null,
     val id: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val resourceType: String,
-    val status: GpLaboratoryResultStatus? = null,
-    val valueQuantity: MgoQuantity? = null
+    val referenceId: String,
+    val resourceType: String
 ) {
 
     init {

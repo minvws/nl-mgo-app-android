@@ -80,9 +80,7 @@ internal class DefaultPdfGenerator
       val numColumns =
         pdf.tables
           .getOrNull(0)
-          ?.columns
-          ?.getOrNull(0)
-          ?.rows
+          ?.headers
           ?.size ?: 0
 
       val columnWidths = FloatArray(numColumns) { pageWidth / numColumns }
@@ -96,40 +94,42 @@ internal class DefaultPdfGenerator
             .setMarginTop(24f)
         document.add(tableHeading)
 
-        val table = Table(columnWidths)
+        if (numColumns != 0) {
+          val table = Table(columnWidths)
 
-        // Add header cells
-        for (header in tableData.headers) {
-          val headerCell =
-            Cell()
-              .add(Paragraph(header).setFontSize(10f))
-              .setBackgroundColor(style.tableHeadingsBackgroundColor.toDeviceRgb())
-              .setPadding(8f)
-              .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
-              .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-              .setVerticalAlignment(VerticalAlignment.MIDDLE)
-          table.addHeaderCell(headerCell)
-        }
-
-        // Add cells
-        for (column in tableData.columns) {
-          for (row in column.rows) {
-            table.addCell(
+          // Add header cells
+          for (header in tableData.headers) {
+            val headerCell =
               Cell()
-                .add(Paragraph(row).setFontSize(10f))
+                .add(Paragraph(header).setFontSize(10f))
+                .setBackgroundColor(style.tableHeadingsBackgroundColor.toDeviceRgb())
                 .setPadding(8f)
-                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-            )
+                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
+                .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+            table.addHeaderCell(headerCell)
           }
-        }
 
-        // Add table
-        document.add(table)
+          // Add cells
+          for (column in tableData.columns) {
+            for (row in column.rows) {
+              table.addCell(
+                Cell()
+                  .add(Paragraph(row).setFontSize(10f))
+                  .setPadding(8f)
+                  .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
+              )
+            }
+          }
 
-        // Next tables are always on a separate page
-        val lastPage = pdf.tables.indexOf(tableData) == pdf.tables.lastIndex
-        if (!lastPage) {
-          document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
+          // Add table
+          document.add(table)
+
+          // Next tables are always on a separate page
+          val lastPage = pdf.tables.indexOf(tableData) == pdf.tables.lastIndex
+          if (!lastPage) {
+            document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
+          }
         }
       }
 

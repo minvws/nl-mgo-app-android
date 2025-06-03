@@ -5,6 +5,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.api.dva.BinaryResponse
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
+import nl.rijksoverheid.mgo.data.healthcare.models.FhirBinary
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody

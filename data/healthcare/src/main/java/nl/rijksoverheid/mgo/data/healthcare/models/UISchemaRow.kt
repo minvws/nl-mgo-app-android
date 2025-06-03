@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models
+package nl.rijksoverheid.mgo.data.healthcare.models
 
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceReferenceId
@@ -11,23 +11,27 @@ import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceLink
 import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceValue
 import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
 import nl.rijksoverheid.mgo.data.fhirParser.models.UiElement
-import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinary
-import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 
 /**
- * Represents a list item is build from a [HealthUiSchema].
+ * Represents a list item that is build from a [HealthUiSchema].
  *
  * @param heading The top text of the list item.
  * @param value The bottom text of the list item.
  */
-internal sealed class UISchemaRow(open val heading: String?, open val value: String) {
+sealed class UISchemaRow(
+  open val heading: String?,
+  open val value: String,
+) {
   /**
    * Represents a non clickable list item.
    *
    * @param heading The top text of the list item.
    * @param value The bottom text of the list item.
    */
-  data class Static(override val heading: String?, override val value: String) : UISchemaRow(heading, value)
+  data class Static(
+    override val heading: String?,
+    override val value: String,
+  ) : UISchemaRow(heading, value)
 
   /**
    * Represents a clickable list item that links to a [MgoResource].
@@ -36,7 +40,11 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
    * @param value The bottom text of the list item.
    * @param referenceId The [MgoResourceReferenceId] of the [MgoResource] to link to.
    */
-  data class Reference(override val heading: String?, override val value: String, val referenceId: String) : UISchemaRow(heading, value)
+  data class Reference(
+    override val heading: String?,
+    override val value: String,
+    val referenceId: String,
+  ) : UISchemaRow(heading, value)
 
   /**
    * Represents a clickable list item that can download a file from a FHIR binary resource.
@@ -44,7 +52,10 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
    * @param heading The top text of the list item.
    * @param value The bottom text of the list item.
    */
-  sealed class Binary(override val heading: String?, override val value: String) : UISchemaRow(heading, value) {
+  sealed class Binary(
+    override val heading: String?,
+    override val value: String,
+  ) : UISchemaRow(heading, value) {
     /**
      * Represents the state that a file has not been downloaded (yet).
      *
@@ -52,10 +63,14 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
      * @param value The bottom text of the list item.
      * @param binary A string to use in [FhirBinaryRepository] to get the binary.
      */
-    sealed class NotDownloaded(override val heading: String?, override val value: String, open val binary: String) : Binary(
-      heading,
-      value,
-    ) {
+    sealed class NotDownloaded(
+      override val heading: String?,
+      override val value: String,
+      open val binary: String,
+    ) : Binary(
+        heading,
+        value,
+      ) {
       /**
        * Represents the state that the list item can be clicked to start downloading the file.
        *
@@ -63,8 +78,11 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
        * @param value The bottom text of the list item.
        * @param binary A string to use in [FhirBinaryRepository] to get the binary.
        */
-      data class Idle(override val heading: String?, override val value: String, override val binary: String) : NotDownloaded
-        (heading, value, binary)
+      data class Idle(
+        override val heading: String?,
+        override val value: String,
+        override val binary: String,
+      ) : NotDownloaded(heading, value, binary)
 
       /**
        * Represents the state that the list item has failed to download the file.
@@ -73,8 +91,11 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
        * @param value The bottom text of the list item.
        * @param binary A string to use in [FhirBinaryRepository] to get the binary.
        */
-      data class Error(override val heading: String?, override val value: String, override val binary: String) : NotDownloaded
-        (heading, value, binary)
+      data class Error(
+        override val heading: String?,
+        override val value: String,
+        override val binary: String,
+      ) : NotDownloaded(heading, value, binary)
     }
 
     /**
@@ -83,7 +104,10 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
      * @param heading The top text of the list item.
      * @param value The bottom text of the list item.
      */
-    data class Loading(override val heading: String?, override val value: String) : Binary(heading, value)
+    data class Loading(
+      override val heading: String?,
+      override val value: String,
+    ) : Binary(heading, value)
 
     /**
      * Represents the state that the list item should have a file, but it does not exist.
@@ -91,7 +115,10 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
      * @param heading The top text of the list item.
      * @param value The bottom text of the list item.
      */
-    data class Empty(override val heading: String?, override val value: String) : Binary(heading, value)
+    data class Empty(
+      override val heading: String?,
+      override val value: String,
+    ) : Binary(heading, value)
 
     /**
      * Represents the state that the list item has downloaded the file. Clicking it should open the file.
@@ -100,7 +127,11 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
      * @param value The bottom text of the list item.
      * @param binary The [FhirBinary] containing the downloaded file.
      */
-    data class Downloaded(override val heading: String?, override val value: String, val binary: FhirBinary) : Binary(heading, value)
+    data class Downloaded(
+      override val heading: String?,
+      override val value: String,
+      val binary: FhirBinary,
+    ) : Binary(heading, value)
   }
 
   /**
@@ -110,11 +141,15 @@ internal sealed class UISchemaRow(open val heading: String?, open val value: Str
    * @param value The bottom text of the list item.
    * @param url The url to download the file.
    */
-  data class Link(override val heading: String?, override val value: String, val url: String) : UISchemaRow(heading, value)
+  data class Link(
+    override val heading: String?,
+    override val value: String,
+    val url: String,
+  ) : UISchemaRow(heading, value)
 }
 
-internal fun UiElement.toRow(): UISchemaRow {
-  return when (this) {
+fun UiElement.toRow(): UISchemaRow =
+  when (this) {
     is ReferenceLink -> {
       UISchemaRow.Reference(heading = null, value = this.label, referenceId = this.reference)
     }
@@ -136,7 +171,11 @@ internal fun UiElement.toRow(): UISchemaRow {
     }
 
     is ReferenceValue -> {
-      UISchemaRow.Reference(heading = this.label, value = this.display ?: "", referenceId = this.reference ?: "")
+      UISchemaRow.Reference(
+        heading = this.label,
+        value = this.display ?: "",
+        referenceId = this.reference ?: "",
+      )
     }
 
     is DownloadBinary -> {
@@ -144,8 +183,11 @@ internal fun UiElement.toRow(): UISchemaRow {
       if (reference == null) {
         UISchemaRow.Binary.Empty(heading = null, value = this.label)
       } else {
-        UISchemaRow.Binary.NotDownloaded.Idle(heading = null, value = this.label, binary = reference)
+        UISchemaRow.Binary.NotDownloaded.Idle(
+          heading = null,
+          value = this.label,
+          binary = reference,
+        )
       }
     }
   }
-}

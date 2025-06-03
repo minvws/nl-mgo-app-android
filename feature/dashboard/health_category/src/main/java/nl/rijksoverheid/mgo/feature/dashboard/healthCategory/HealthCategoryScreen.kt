@@ -14,11 +14,7 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.rounded.Download
-import androidx.compose.material.icons.sharp.Download
-import androidx.compose.material.icons.twotone.Download
+import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -134,7 +130,7 @@ private fun HealthCategoryScreenContent(
         scrollBehavior = scrollBehavior,
         actions = {
           IconButton(onGeneratePdf) {
-            Icon(Icons.Outlined.Download, null)
+            Icon(Icons.Outlined.PictureAsPdf, null)
           }
         },
       )

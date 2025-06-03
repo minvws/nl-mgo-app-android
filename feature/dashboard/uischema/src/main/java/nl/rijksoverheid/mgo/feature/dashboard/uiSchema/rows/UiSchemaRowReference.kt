@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -41,9 +41,10 @@ internal fun UiSchemaRowReference(
       modifier = modifier.weight(1f).padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
       verticalArrangement = Arrangement.Center,
     ) {
-      if (row.heading != null) {
+      val heading = row.heading
+      if (heading != null) {
         Text(
-          text = row.heading,
+          text = heading,
           style = MaterialTheme.typography.bodySmall,
           color = MaterialTheme.colorScheme.contentSecondary(),
         )

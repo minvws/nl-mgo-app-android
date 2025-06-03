@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.healthcare.binary
+package nl.rijksoverheid.mgo.data.healthcare.models
 
 import java.io.File
 

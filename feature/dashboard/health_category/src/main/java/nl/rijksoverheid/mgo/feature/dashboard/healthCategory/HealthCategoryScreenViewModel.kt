@@ -26,11 +26,14 @@ import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataS
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
+import nl.rijksoverheid.mgo.data.healthcare.models.toSections
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.pdf.Pdf
 import nl.rijksoverheid.mgo.framework.pdf.PdfGenerator
 import nl.rijksoverheid.mgo.framework.pdf.PdfStyle
+import nl.rijksoverheid.mgo.framework.pdf.PdfTable
+import nl.rijksoverheid.mgo.framework.pdf.PdfTableColumns
 import java.io.File
 import java.time.Clock
 import java.time.LocalDateTime
@@ -105,7 +108,6 @@ internal class HealthCategoryScreenViewModel
               states
                 .filterIsInstance<HealthCareDataState.Loaded>()
                 .any { state -> state.results.any { result -> result.isFailure } }
-
             _viewState.update {
               val listItemState =
                 when {
@@ -146,11 +148,13 @@ internal class HealthCategoryScreenViewModel
         val dateString = now.format(dateFormatter)
         val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale("nl", "NL"))
         val timeString = now.format(timeFormatter)
+        val pdfTables =
+          (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup?.toPdfTables() ?: listOf()
         val pdf =
           Pdf(
             heading = context.getString(category.getTitle(context)),
             subHeading = context.getString(CopyR.string.export_pdf_subheading, dateString, timeString),
-            tables = listOf(),
+            tables = pdfTables,
             footer = context.getString(CopyR.string.export_pdf_footer),
           )
         val pdfStyle =
@@ -194,6 +198,38 @@ internal class HealthCategoryScreenViewModel
         listOf()
       }
     }
+
+    private suspend fun List<HealthCategoryScreenListItemsGroup>.toPdfTables(): List<PdfTable> =
+      map { listItemGroup ->
+        val uiSchemas = listItemGroup.items.map { item -> uiSchemaMapper.getSummary(item.mgoResource).toSections() }
+        val headers = uiSchemas[0].map { section -> section.rows.mapNotNull { row -> row.heading } }.flatten().toMutableList()
+        headers.add(0, context.getString(CopyR.string.export_pdf_name_column))
+        val columns =
+          uiSchemas
+            .map { uiSchema ->
+              uiSchema.map { section ->
+                PdfTableColumns(
+                  rows =
+                    section.rows.mapNotNull { row ->
+                      if (row.heading ==
+                        null
+                      ) {
+                        null
+                      } else {
+                        row.value
+                      }
+                    },
+                )
+              }
+            }.flatten()
+            .toMutableList()
+        columns.add(0, PdfTableColumns(rows = listItemGroup.items.map { listItem -> listItem.title }))
+        PdfTable(
+          heading = context.getString(listItemGroup.heading),
+          headers = headers,
+          columns = columns,
+        )
+      }
   }
 
 @StringRes

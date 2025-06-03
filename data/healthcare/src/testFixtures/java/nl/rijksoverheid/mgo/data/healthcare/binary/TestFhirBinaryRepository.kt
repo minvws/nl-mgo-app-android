@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthcare.binary
 
 import kotlinx.coroutines.delay
+import nl.rijksoverheid.mgo.data.healthcare.models.FhirBinary
 
 class TestFhirBinaryRepository : FhirBinaryRepository {
   private var downloadResult: Result<FhirBinary>? = null

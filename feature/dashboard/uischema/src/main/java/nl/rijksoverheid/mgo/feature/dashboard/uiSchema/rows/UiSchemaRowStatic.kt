@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 
 /**
  * Composable that shows a list item that displays some data.
@@ -25,10 +25,11 @@ internal fun UiSchemaRowStatic(
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
-    if (row.heading != null) {
+    val heading = row.heading
+    if (heading != null) {
       Text(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-        text = row.heading,
+        text = heading,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.contentSecondary(),
       )

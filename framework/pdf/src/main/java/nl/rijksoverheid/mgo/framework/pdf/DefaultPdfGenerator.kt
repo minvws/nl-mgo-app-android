@@ -44,14 +44,16 @@ internal class DefaultPdfGenerator
      * @param pdf The PDF content model, including tables and headers.
      * @param style Visual styling options such as border and background colors.
      * @param fileName Desired filename for the PDF, including extension (e.g., "report.pdf").
+     * @return The generated PDF file.
      */
     override suspend fun invoke(
       pdf: Pdf,
       style: PdfStyle,
       fileName: String,
-    ) {
+    ): File {
       // Initialize the PDF writer and document with A4 landscape orientation.
-      val pdfWriter = PdfWriter(File(context.cacheDir, fileName))
+      val file = File(context.cacheDir, fileName)
+      val pdfWriter = PdfWriter(file)
       val pdfDoc = PdfDocument(pdfWriter)
       val document = Document(pdfDoc, PageSize.A4.rotate(), false)
 
@@ -76,9 +78,13 @@ internal class DefaultPdfGenerator
       // Create a table with dynamic column count based on the number of rows in the first column.
       val pageWidth = PageSize.A4.width
       val numColumns =
-        pdf.tables[0]
-          .columns[0]
-          .rows.size
+        pdf.tables
+          .getOrNull(0)
+          ?.columns
+          ?.getOrNull(0)
+          ?.rows
+          ?.size ?: 0
+
       val columnWidths = FloatArray(numColumns) { pageWidth / numColumns }
 
       for (tableData in pdf.tables) {
@@ -154,6 +160,8 @@ internal class DefaultPdfGenerator
       }
 
       document.close()
+
+      return file
     }
   }
 

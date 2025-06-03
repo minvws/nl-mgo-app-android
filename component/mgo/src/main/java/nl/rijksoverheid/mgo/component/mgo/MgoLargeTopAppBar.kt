@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.component.mgo
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -31,6 +32,8 @@ import nl.rijksoverheid.mgo.framework.copy.R
  * @param title The title of the app bar.
  * @param textAlign The alignment of the text inside the app bar.
  * @param scrollBehavior The [TopAppBarScrollBehavior] applied to the app bar.
+ * @param actions the actions displayed at the end of the top app bar. This should typically be IconButtons.
+ * The default layout here is a Row, so icons inside will be placed horizontally.
  * @param onNavigateBack If not null, will show a back button that will call this function when pressed.
  */
 @Composable
@@ -38,6 +41,7 @@ fun MgoLargeTopAppBar(
   title: String,
   textAlign: TextAlign = TextAlign.Start,
   scrollBehavior: TopAppBarScrollBehavior,
+  actions: @Composable RowScope.() -> Unit = {},
   onNavigateBack: (() -> Unit)? = null,
 ) {
   val adjustedTypography =
@@ -77,6 +81,7 @@ fun MgoLargeTopAppBar(
           }
         }
       },
+      actions = actions,
       colors =
         TopAppBarDefaults.topAppBarColors(
           containerColor = MaterialTheme.colorScheme.background,

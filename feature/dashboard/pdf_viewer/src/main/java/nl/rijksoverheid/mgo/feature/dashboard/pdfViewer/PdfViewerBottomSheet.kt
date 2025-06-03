@@ -61,61 +61,64 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  *
  * This composable presents the contents of the given PDF file inside a modal bottom sheet.
  *
+ * @param appBarTitle The text to display in the app bar.
  * @param pdf The PDF file to be displayed.
- * @param openSheet Whether the bottom sheet is currently visible.
  * @param onDismissRequest Callback invoked when the user requests to dismiss the sheet.
  */
 @Composable
 fun PdfViewerBottomSheet(
+  appBarTitle: String,
   pdf: File,
-  openSheet: Boolean,
   onDismissRequest: () -> Unit,
 ) {
   val context = LocalContext.current
   val coroutineScope = rememberCoroutineScope()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  if (openSheet) {
-    ModalBottomSheet(
-      contentWindowInsets = { WindowInsets(0) },
-      onDismissRequest = onDismissRequest,
-      sheetState = sheetState,
-      dragHandle = { BottomSheetDefaults.DragHandle() },
-    ) {
-      Scaffold(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(0.95f),
-        topBar = {
-          MgoTopAppBar(
-            title = "Medicijnen",
-            windowInsets = WindowInsets(0),
-            navigationIcon = Icons.Default.Close,
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            onNavigateBack = { coroutineScope.launch { sheetState.hide() } },
-            actions = {
-              IconButton({ context.sendFileToOtherApp(file = pdf, contentType = "application/pdf") }) {
-                Icon(Icons.Outlined.Share, null)
-              }
-            },
-          )
-        },
-        content = { contentPadding ->
-          var bitmaps: List<Bitmap> by remember { mutableStateOf(listOf()) }
-          LaunchedEffect(Unit) {
-            withContext(Dispatchers.IO) {
-              bitmaps = createBitmaps(pdf)
+  ModalBottomSheet(
+    contentWindowInsets = { WindowInsets(0) },
+    onDismissRequest = onDismissRequest,
+    sheetState = sheetState,
+    dragHandle = { BottomSheetDefaults.DragHandle() },
+  ) {
+    Scaffold(
+      modifier = Modifier.fillMaxWidth().fillMaxHeight(0.95f),
+      topBar = {
+        MgoTopAppBar(
+          title = appBarTitle,
+          windowInsets = WindowInsets(0),
+          navigationIcon = Icons.Default.Close,
+          containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+          onNavigateBack = {
+            coroutineScope.launch {
+              sheetState.hide()
+              onDismissRequest()
             }
+          },
+          actions = {
+            IconButton({ context.sendFileToOtherApp(file = pdf, contentType = "application/pdf") }) {
+              Icon(Icons.Outlined.Share, null)
+            }
+          },
+        )
+      },
+      content = { contentPadding ->
+        var bitmaps: List<Bitmap> by remember { mutableStateOf(listOf()) }
+        LaunchedEffect(Unit) {
+          withContext(Dispatchers.IO) {
+            bitmaps = createBitmaps(pdf)
           }
+        }
 
-          Box(modifier = Modifier.fillMaxSize().padding(contentPadding)) {
-            if (bitmaps.isEmpty()) {
-              PdfLoadingContent()
-            } else {
-              PdfLoadedContent(bitmaps)
-            }
+        Box(modifier = Modifier.fillMaxSize().padding(contentPadding)) {
+          if (bitmaps.isEmpty()) {
+            PdfLoadingContent()
+          } else {
+            PdfLoadedContent(bitmaps)
           }
-        },
-      )
-    }
+        }
+      },
+    )
   }
 }
 

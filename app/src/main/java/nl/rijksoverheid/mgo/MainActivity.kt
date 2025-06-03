@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -25,7 +24,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
@@ -34,7 +32,6 @@ import nl.rijksoverheid.mgo.component.theme.theme.DefaultLocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.lifecycle.AppLifecycleState
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.digid.addDigidNavGraph
@@ -42,7 +39,6 @@ import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeCreateNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeLoginNavGraph
-import java.io.File
 
 /**
  * The app has a single activity architecture, which means this is the entry point to the app and only activity.
@@ -54,7 +50,6 @@ class MainActivity : FragmentActivity() {
 
     enableEdgeToEdge()
     setContent {
-      var openSheet by remember { mutableStateOf(false) }
       val viewModel: MainViewModel = hiltViewModel()
       val appTheme by viewModel.appTheme.collectAsStateWithLifecycle()
 
@@ -89,17 +84,6 @@ class MainActivity : FragmentActivity() {
           // Set correct status bar icon colors for selected theme
           LaunchedEffect(isDarkTheme) {
             WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = !isDarkTheme
-          }
-
-          LaunchedEffect(Unit) {
-            delay(1000)
-            openSheet = true
-          }
-
-          val context = LocalContext.current
-          val pdfFile = File(context.cacheDir, "export.pdf")
-          PdfViewerBottomSheet(pdf = pdfFile, openSheet = openSheet) {
-            openSheet = false
           }
         }
       }

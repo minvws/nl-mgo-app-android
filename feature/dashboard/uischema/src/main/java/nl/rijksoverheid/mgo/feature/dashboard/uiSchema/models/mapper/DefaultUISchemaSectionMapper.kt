@@ -26,12 +26,12 @@ internal class DefaultUISchemaSectionMapper
       uiSchema.children.map { uiSchemaChild ->
         UISchemaSection(
           heading = uiSchemaChild.label,
-          rows = uiSchemaChild.children.map { uiElement -> uiElement.toRow() },
+          rows = uiSchemaChild.children.mapNotNull { uiElement -> uiElement.toRow() },
         )
       }
 
     @VisibleForTesting
-    suspend fun UiElement.toRow(): UISchemaRow =
+    suspend fun UiElement.toRow(): UISchemaRow? =
       when (this) {
         is ReferenceLink -> {
           if (isReferenceClickable(reference)) {
@@ -41,9 +41,10 @@ internal class DefaultUISchemaSectionMapper
           }
         }
 
-        is DownloadLink -> {
-          UISchemaRow.Link(heading = null, value = this.label, this.url ?: "")
-        }
+        is DownloadLink ->
+          this.url?.let { url ->
+            UISchemaRow.Link(heading = null, value = this.label, url = url)
+          }
 
         is SingleValue -> {
           UISchemaRow.Static(heading = this.label, value = this.display ?: "")

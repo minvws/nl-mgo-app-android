@@ -90,7 +90,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
         organization = route.organization,
         mgoResource = route.mgoResource,
         isSummary = route.isSummary,
-        onNavigateToUiSchema = { organization, mgoResource ->
+        onNavigateToDetail = { organization, mgoResource ->
           val uiSchema =
             DashboardNavigation.Organizations.UiSchema(
               organization = organization,

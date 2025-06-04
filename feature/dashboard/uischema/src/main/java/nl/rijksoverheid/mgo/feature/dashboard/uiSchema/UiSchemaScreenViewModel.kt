@@ -82,11 +82,11 @@ internal class UiSchemaScreenViewModel
      */
     fun onClickReferenceRow(row: UISchemaRow.Reference) {
       viewModelScope.launch {
-        mgoResourceRepository.get(row.referenceId)
+        mgoResourceRepository
+          .get(row.referenceId)
           .onSuccess { mgoResource ->
             _navigate.tryEmit(mgoResource)
-          }
-          .onFailure { error ->
+          }.onFailure { error ->
             Timber.e(error, "Failed to get mgo resource")
           }
       }
@@ -111,8 +111,7 @@ internal class UiSchemaScreenViewModel
           .onSuccess { binary ->
             val downloadedRow = UISchemaRow.Binary.Downloaded(heading = row.heading, value = row.value, binary = binary)
             updateRow(downloadedRow)
-          }
-          .onFailure { error ->
+          }.onFailure { error ->
             Timber.e(error, "Failed to download binary")
             val errorRow = UISchemaRow.Binary.NotDownloaded.Error(heading = row.heading, value = row.value, binary = row.binary)
             updateRow(errorRow)

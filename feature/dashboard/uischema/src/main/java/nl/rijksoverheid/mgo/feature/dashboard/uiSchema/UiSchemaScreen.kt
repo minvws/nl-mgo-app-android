@@ -15,6 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
@@ -44,7 +47,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
  * @param organization The [MgoOrganization] for the health care data.
  * @param mgoResource The [MgoResource] to get the health care data from.
  * @param isSummary If this screen shows a summary of the health care data, or the complete set.
- * @param onNavigateToUiSchema Called when navigating to another [UiSchemaScreen].
+ * @param onNavigateToDetail Called when navigating to the same UI Schema but the detail page.
  * @param onNavigateBack Called when requested to navigate back.
  */
 @Composable
@@ -52,9 +55,19 @@ fun UiSchemaScreen(
   organization: MgoOrganization,
   mgoResource: MgoResource,
   isSummary: Boolean,
-  onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onNavigateToDetail: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
   onNavigateBack: () -> Unit,
 ) {
+  var showBottomSheet: Pair<MgoOrganization, MgoResource>? by remember { mutableStateOf(null) }
+  showBottomSheet?.let { uiSchemaData ->
+    UiSchemaBottomSheet(
+      organization = uiSchemaData.first,
+      mgoResource = uiSchemaData.second,
+      isSummary = false,
+      onDismissRequest = { showBottomSheet = null },
+    )
+  }
+
   val viewModel =
     hiltViewModel<UiSchemaScreenViewModel, UiSchemaScreenViewModel.Factory>(
       creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
@@ -62,8 +75,14 @@ fun UiSchemaScreen(
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) {
-    viewModel.navigate.collectLatest { mgoResource ->
-      onNavigateToUiSchema(organization, mgoResource)
+    viewModel.navigate.collectLatest { navigateToMgoResource ->
+      if (navigateToMgoResource == mgoResource) {
+        // Called when clicked on "Bekijk alle X". Navigate to the detail page of this ui schema.
+        onNavigateToDetail(organization, navigateToMgoResource)
+      } else {
+        // When navigating to a new ui schema, show it inside a bottom sheet.
+        showBottomSheet = Pair(organization, mgoResource)
+      }
     }
   }
 

@@ -42,11 +42,10 @@ internal class DefaultMgoResourceRepository
     override suspend fun get(
       endpoint: String,
       request: HealthCareRequest,
-    ): Result<List<MgoResource>> {
-      return executeRequest(request = request, endpoint = endpoint)
+    ): Result<List<MgoResource>> =
+      executeRequest(request = request, endpoint = endpoint)
         .mapCatching { requestBody -> requestBody.toMgoResource(request) }
         .onFailure { error -> Timber.e(error, "Failed to fetch health care data") }
-    }
 
     /**
      * Get health care data from the store.
@@ -86,29 +85,26 @@ internal class DefaultMgoResourceRepository
     override suspend fun filter(
       resources: List<MgoResource>,
       profiles: List<MgoResourceProfile>,
-    ): List<MgoResource> {
-      return resources.filter { resource ->
+    ): List<MgoResource> =
+      resources.filter { resource ->
         profiles.contains(resource.profile)
       }
-    }
 
     private suspend fun executeRequest(
       request: HealthCareRequest,
       endpoint: String,
-    ): Result<ResponseBody> {
-      return executeNetworkRequest {
+    ): Result<ResponseBody> =
+      executeNetworkRequest {
         dvaApi.get(
           resourceEndpoint = endpoint,
           url = urlCreator.invoke(baseUrl = "$dvaApiBaseUrl/fhir/${request.path}", request = request),
           accept = "application/fhir+json; fhirVersion=${request.fhirVersion.versionNumber}",
         )
       }
-    }
 
-    private suspend fun ResponseBody.toMgoResource(request: HealthCareRequest): List<MgoResource> {
-      return mgoResourceMapper.get(
+    private suspend fun ResponseBody.toMgoResource(request: HealthCareRequest): List<MgoResource> =
+      mgoResourceMapper.get(
         fhirBundleJson = string(),
         fhirVersion = request.fhirVersion,
       )
-    }
   }

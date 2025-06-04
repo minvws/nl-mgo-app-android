@@ -20,7 +20,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.toSections
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSectionMapper
 import timber.log.Timber
 
 /**
@@ -43,6 +43,7 @@ internal class UiSchemaScreenViewModel
     private val fhirBinaryRepository: FhirBinaryRepository,
     private val uiSchemaMapper: UiSchemaMapper,
     private val mgoResourceRepository: MgoResourceRepository,
+    private val uiSchemaSectionMapper: UISchemaSectionMapper,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -70,8 +71,9 @@ internal class UiSchemaScreenViewModel
           } else {
             uiSchemaMapper.getDetail(mgoResource)
           }
+        val uiSchemaSections = uiSchemaSectionMapper.map(uiSchema)
         _viewState.update { viewState ->
-          viewState.copy(toolbarTitle = uiSchema.label, sections = uiSchema.toSections())
+          viewState.copy(toolbarTitle = uiSchema.label, sections = uiSchemaSections)
         }
       }
     }

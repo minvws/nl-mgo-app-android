@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models
+package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.mapper
 
 import androidx.annotation.VisibleForTesting
 import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadBinary
@@ -12,15 +12,17 @@ import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
 import nl.rijksoverheid.mgo.data.fhirParser.models.UiElement
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
 import javax.inject.Inject
 
-internal class UISchemaSectionMapper
+internal class DefaultUISchemaSectionMapper
   @Inject
   constructor(
     private val mgoResourceRepository: MgoResourceRepository,
     private val uiSchemaMapper: UiSchemaMapper,
-  ) {
-    suspend fun map(uiSchema: HealthUiSchema): List<UISchemaSection> =
+  ) : UISchemaSectionMapper {
+    override suspend fun map(uiSchema: HealthUiSchema): List<UISchemaSection> =
       uiSchema.children.map { uiSchemaChild ->
         UISchemaSection(
           heading = uiSchemaChild.label,
@@ -70,7 +72,11 @@ internal class UISchemaSectionMapper
           if (reference == null) {
             UISchemaRow.Binary.Empty(heading = null, value = this.label)
           } else {
-            UISchemaRow.Binary.NotDownloaded.Idle(heading = null, value = this.label, binary = reference)
+            UISchemaRow.Binary.NotDownloaded.Idle(
+              heading = null,
+              value = this.label,
+              binary = reference,
+            )
           }
         }
       }

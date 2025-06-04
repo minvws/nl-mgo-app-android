@@ -20,7 +20,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSectionMapper
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.mapper.UISchemaSectionMapper
 import timber.log.Timber
 
 /**
@@ -32,6 +32,7 @@ import timber.log.Timber
  * @param fhirBinaryRepository The [FhirBinaryRepository] to download files.
  * @param uiSchemaMapper The [UiSchemaMapper] to map [MgoResource] to [HealthUiSchema].
  * @param mgoResourceRepository The [MgoResourceRepository] to get new [MgoResource] from.
+ * @param uiSchemaSectionMapper The [UISchemaSectionMapper] to map [HealthUiSchema] to [UiSchemaSection].
  */
 @HiltViewModel(assistedFactory = UiSchemaScreenViewModel.Factory::class)
 internal class UiSchemaScreenViewModel

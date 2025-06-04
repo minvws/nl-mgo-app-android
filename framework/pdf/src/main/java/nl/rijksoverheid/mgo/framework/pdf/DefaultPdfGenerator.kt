@@ -55,7 +55,7 @@ internal class DefaultPdfGenerator
       val file = File(context.cacheDir, fileName)
       val pdfWriter = PdfWriter(file)
       val pdfDoc = PdfDocument(pdfWriter)
-      val document = Document(pdfDoc, PageSize.A4.rotate(), false)
+      val document = Document(pdfDoc, PageSize.A4, false)
 
       // Set document margins (top, right, bottom, left).
       // Add more padding to the bottom to account for the footer.
@@ -77,11 +77,7 @@ internal class DefaultPdfGenerator
 
       // Create a table with dynamic column count based on the number of rows in the first column.
       val pageWidth = PageSize.A4.width
-      val numColumns =
-        pdf.tables
-          .getOrNull(0)
-          ?.headers
-          ?.size ?: 0
+      val numColumns = 2
 
       val columnWidths = FloatArray(numColumns) { pageWidth / numColumns }
 
@@ -111,15 +107,20 @@ internal class DefaultPdfGenerator
           }
 
           // Add cells
-          for (column in tableData.columns) {
-            for (row in column.rows) {
-              table.addCell(
-                Cell()
-                  .add(Paragraph(row).setFontSize(10f))
-                  .setPadding(8f)
-                  .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-              )
-            }
+
+          for ((col1, col2) in tableData.data) {
+            table.addCell(
+              Cell()
+                .add(Paragraph(col1).setFontSize(10f))
+                .setPadding(8f)
+                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
+            )
+            table.addCell(
+              Cell()
+                .add(Paragraph(col2).setFontSize(10f))
+                .setPadding(8f)
+                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
+            )
           }
 
           // Add table

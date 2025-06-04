@@ -33,7 +33,6 @@ import nl.rijksoverheid.mgo.framework.pdf.Pdf
 import nl.rijksoverheid.mgo.framework.pdf.PdfGenerator
 import nl.rijksoverheid.mgo.framework.pdf.PdfStyle
 import nl.rijksoverheid.mgo.framework.pdf.PdfTable
-import nl.rijksoverheid.mgo.framework.pdf.PdfTableColumns
 import java.io.File
 import java.time.Clock
 import java.time.LocalDateTime
@@ -199,37 +198,31 @@ internal class HealthCategoryScreenViewModel
       }
     }
 
-    private suspend fun List<HealthCategoryScreenListItemsGroup>.toPdfTables(): List<PdfTable> =
-      map { listItemGroup ->
-        val uiSchemas = listItemGroup.items.map { item -> uiSchemaMapper.getSummary(item.mgoResource).toSections() }
-        val headers = uiSchemas[0].map { section -> section.rows.mapNotNull { row -> row.heading } }.flatten().toMutableList()
-        headers.add(0, context.getString(CopyR.string.export_pdf_name_column))
-        val columns =
-          uiSchemas
-            .map { uiSchema ->
-              uiSchema.map { section ->
-                PdfTableColumns(
-                  rows =
-                    section.rows.mapNotNull { row ->
-                      if (row.heading ==
-                        null
-                      ) {
-                        null
-                      } else {
-                        row.value
-                      }
-                    },
-                )
-              }
-            }.flatten()
-            .toMutableList()
-        columns.add(0, PdfTableColumns(rows = listItemGroup.items.map { listItem -> listItem.title }))
+    private suspend fun List<HealthCategoryScreenListItemsGroup>.toPdfTables(): List<PdfTable> {
+      val listItems = this.map { it.items }.flatten()
+      return listItems.map { listItem ->
+        val uiSchemaRows =
+          uiSchemaMapper
+            .getSummary(listItem.mgoResource)
+            .toSections()
+            .map { it.rows }
+            .flatten()
+
+        val headings = uiSchemaRows.map { it.heading ?: "Niet bekend" }
+        val values = uiSchemaRows.map { it.value }
+
+        val data =
+          uiSchemaRows.map {
+            (it.heading ?: "Niet bekend") to it.value
+          }
+
         PdfTable(
-          heading = context.getString(listItemGroup.heading),
-          headers = headers,
-          columns = columns,
+          heading = listItem.title,
+          headers = listOf("Naam", "Waarde"),
+          data = data,
         )
       }
+    }
   }
 
 @StringRes

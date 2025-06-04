@@ -25,7 +25,7 @@ data class Pdf(
 data class PdfTable(
   val heading: String,
   val headers: List<String>,
-  val columns: List<PdfTableColumns>,
+  val data: List<Pair<String, String>>,
 )
 
 /**
@@ -33,6 +33,7 @@ data class PdfTable(
  *
  * @param rows The list of row values in this column.
  */
-data class PdfTableColumns(
-  val rows: List<String>,
+data class PdfTableInner(
+  val title: String,
+  val data: List<Pair<String, String>>,
 )

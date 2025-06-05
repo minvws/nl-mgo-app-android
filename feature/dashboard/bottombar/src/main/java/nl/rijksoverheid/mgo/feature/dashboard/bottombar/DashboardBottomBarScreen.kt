@@ -44,7 +44,6 @@ import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
-import timber.log.Timber
 
 /**
  * Composable that shows the a screen with bottom bar. The dashboard screen is the root screen of the app that shows after inputting the
@@ -96,7 +95,6 @@ fun DashboardBottomBarScreenContent(
 
   LaunchedEffect(snackbarPresenter) {
     snackbarPresenter.snackbarVisuals.collectLatest {
-      Timber.v("Ik kom hier bart")
       snackbarHostState.showSnackbar(it)
     }
   }

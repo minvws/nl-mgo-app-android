@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.navigation
+package nl.rijksoverheid.mgo.component.mgo.navigation
 
 import android.view.WindowManager
 import androidx.compose.animation.AnimatedContentScope
@@ -15,11 +15,10 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import kotlin.reflect.typeOf
+import kotlin.reflect.KType
 
 const val SCREEN_TRANSITION_DURATION_MILLIS = 250
 
@@ -50,14 +49,10 @@ inline fun <reified T : Any> NavGraphBuilder.mgoComposableDialog(
 inline fun <reified T : Any> NavGraphBuilder.mgoComposable(
   deepLinks: List<NavDeepLink> = emptyList(),
   animate: Boolean = true,
+  typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
   noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) = composable<T>(
-  typeMap =
-    mapOf(
-      typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-      typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-      typeOf<MgoResource>() to JsonNavType(MgoResource::class.java, MgoResource.serializer()),
-    ),
+  typeMap = typeMap,
   deepLinks = deepLinks,
   enterTransition = { if (animate) defaultScreenEnterTransition() else null },
   exitTransition = { if (animate) defaultScreenExitTransition() else null },

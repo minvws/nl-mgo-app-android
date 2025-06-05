@@ -7,13 +7,15 @@ import nl.rijksoverheid.mgo.data.fhirParser.TEST_UI_SCHEMA
 import nl.rijksoverheid.mgo.data.fhirParser.TEST_UI_SCHEMA_GROUP
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.TestUiSchemaMapper
+import nl.rijksoverheid.mgo.data.healthcare.binary.TEST_FHIR_BINARY
 import nl.rijksoverheid.mgo.data.healthcare.binary.TestFhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.TestMgoResourceRepository
-import nl.rijksoverheid.mgo.data.healthcare.models.TEST_FHIR_BINARY
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
+import nl.rijksoverheid.mgo.data.healthcare.models.mapper.DefaultUISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
+import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -21,9 +23,7 @@ import org.junit.Test
 
 internal class UiSchemaScreenViewModelTest {
   @get:Rule
-  val mainDispatcherRule =
-    nl.rijksoverheid.mgo.framework.test.rules
-      .MainDispatcherRule()
+  val mainDispatcherRule = MainDispatcherRule()
 
   private val uiSchemaMapper = TestUiSchemaMapper()
   private val mgoResourceRepository = TestMgoResourceRepository()
@@ -248,5 +248,6 @@ internal class UiSchemaScreenViewModelTest {
       isSummary = false,
       uiSchemaMapper = uiSchemaMapper,
       mgoResourceRepository = mgoResourceRepository,
+      uiSchemaSectionMapper = DefaultUISchemaSectionMapper(mgoResourceRepository = mgoResourceRepository, uiSchemaMapper = uiSchemaMapper),
     )
 }

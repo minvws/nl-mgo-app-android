@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.component.mgo
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -14,6 +15,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +33,8 @@ import nl.rijksoverheid.mgo.framework.copy.R
  *
  * @param title The title of the app bar.
  * @param textAlign The alignment of the text inside the app bar.
+ * @param windowInsets a window insets that app bar will respect.
+ * @param containerColor The color of the container of the app bar.
  * @param scrollBehavior The [TopAppBarScrollBehavior] applied to the app bar.
  * @param actions the actions displayed at the end of the top app bar. This should typically be IconButtons.
  * The default layout here is a Row, so icons inside will be placed horizontally.
@@ -40,6 +44,8 @@ import nl.rijksoverheid.mgo.framework.copy.R
 fun MgoLargeTopAppBar(
   title: String,
   textAlign: TextAlign = TextAlign.Start,
+  windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
+  containerColor: Color = MaterialTheme.colorScheme.background,
   scrollBehavior: TopAppBarScrollBehavior,
   actions: @Composable RowScope.() -> Unit = {},
   onNavigateBack: (() -> Unit)? = null,
@@ -58,6 +64,7 @@ fun MgoLargeTopAppBar(
     isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme(),
   ) {
     LargeTopAppBar(
+      windowInsets = windowInsets,
       title = {
         Text(
           modifier =
@@ -81,13 +88,13 @@ fun MgoLargeTopAppBar(
           }
         }
       },
-      actions = actions,
       colors =
         TopAppBarDefaults.topAppBarColors(
-          containerColor = MaterialTheme.colorScheme.background,
-          scrolledContainerColor = MaterialTheme.colorScheme.background,
+          containerColor = containerColor,
+          scrolledContainerColor = containerColor,
         ),
       scrollBehavior = scrollBehavior,
+      actions = actions,
     )
   }
 }

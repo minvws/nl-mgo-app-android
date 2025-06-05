@@ -10,7 +10,7 @@ import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreen
 import nl.rijksoverheid.mgo.feature.pincode.confirm.PinCodeConfirmScreenNextNavigation
 import nl.rijksoverheid.mgo.feature.pincode.create.PinCodeCreateScreen
 import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
-import nl.rijksoverheid.mgo.navigation.mgoComposable
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
 /**
  * Adds all the navigation destinations that can be found when creating a pin code.
@@ -18,7 +18,7 @@ import nl.rijksoverheid.mgo.navigation.mgoComposable
  */
 fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
   navigation<PinCodeCreateNavigation.Root>(PinCodeCreateNavigation.Create) {
-    mgoComposable<PinCodeCreateNavigation.Create> {
+    mgoComposableExt<PinCodeCreateNavigation.Create> {
       PinCodeCreateScreen(
         hasBackButton = remember { navController.previousBackStackEntry != null },
         onPinEntered = { pinCode ->
@@ -30,7 +30,7 @@ fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
       )
     }
 
-    mgoComposable<PinCodeCreateNavigation.Confirm> { backStackEntry ->
+    mgoComposableExt<PinCodeCreateNavigation.Confirm> { backStackEntry ->
       val route = backStackEntry.toRoute<PinCodeCreateNavigation.Confirm>()
       PinCodeConfirmScreen(
         pinCodeToMatch = route.pinCode,
@@ -59,7 +59,7 @@ fun NavGraphBuilder.addPinCodeCreateNavGraph(navController: NavController) {
       )
     }
 
-    mgoComposable<PinCodeCreateNavigation.BiometricSetup> {
+    mgoComposableExt<PinCodeCreateNavigation.BiometricSetup> {
       PinCodeBioMetricSetupScreen(
         onNavigateToDigid = {
           navController.navigate(DigidNavigation.Root) {

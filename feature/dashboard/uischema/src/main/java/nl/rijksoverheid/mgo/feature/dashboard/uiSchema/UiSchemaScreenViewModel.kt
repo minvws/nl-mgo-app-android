@@ -18,7 +18,7 @@ import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
-import nl.rijksoverheid.mgo.data.healthcare.models.toSections
+import nl.rijksoverheid.mgo.data.healthcare.models.mapper.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
 import timber.log.Timber
@@ -32,6 +32,7 @@ import timber.log.Timber
  * @param fhirBinaryRepository The [FhirBinaryRepository] to download files.
  * @param uiSchemaMapper The [UiSchemaMapper] to map [MgoResource] to [HealthUiSchema].
  * @param mgoResourceRepository The [MgoResourceRepository] to get new [MgoResource] from.
+ * @param uiSchemaSectionMapper The [UISchemaSectionMapper] to map [HealthUiSchema] to [UiSchemaSection].
  */
 @HiltViewModel(assistedFactory = UiSchemaScreenViewModel.Factory::class)
 internal class UiSchemaScreenViewModel
@@ -43,6 +44,7 @@ internal class UiSchemaScreenViewModel
     private val fhirBinaryRepository: FhirBinaryRepository,
     private val uiSchemaMapper: UiSchemaMapper,
     private val mgoResourceRepository: MgoResourceRepository,
+    private val uiSchemaSectionMapper: UISchemaSectionMapper,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -70,8 +72,9 @@ internal class UiSchemaScreenViewModel
           } else {
             uiSchemaMapper.getDetail(mgoResource)
           }
+        val uiSchemaSections = uiSchemaSectionMapper.map(uiSchema)
         _viewState.update { viewState ->
-          viewState.copy(toolbarTitle = uiSchema.label, sections = uiSchema.toSections())
+          viewState.copy(toolbarTitle = uiSchema.label, sections = uiSchemaSections)
         }
       }
     }

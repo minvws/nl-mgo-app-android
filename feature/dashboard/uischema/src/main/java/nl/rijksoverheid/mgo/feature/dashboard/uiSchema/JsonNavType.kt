@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.navigation
+package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import android.os.Build
 import android.os.Bundle

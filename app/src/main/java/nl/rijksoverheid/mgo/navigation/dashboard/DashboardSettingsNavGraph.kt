@@ -12,7 +12,7 @@ import nl.rijksoverheid.mgo.feature.settings.advanced.SettingsAdvancedScreen
 import nl.rijksoverheid.mgo.feature.settings.display.SettingsDisplayScreen
 import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreen
 import nl.rijksoverheid.mgo.feature.settings.security.SettingsSecurityScreen
-import nl.rijksoverheid.mgo.navigation.mgoComposable
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 
 /**
@@ -27,7 +27,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
   mainViewModel: MainViewModel,
 ) {
   navigation<DashboardNavigation.Settings.Root>(DashboardNavigation.Settings.Home) {
-    mgoComposable<DashboardNavigation.Settings.Home>(animate = false) {
+    mgoComposableExt<DashboardNavigation.Settings.Home>(animate = false) {
       SettingsHomeScreen(
         onNavigateToDisplaySettings = {
           navController.navigate(DashboardNavigation.Settings.Display)
@@ -51,7 +51,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Settings.Display> {
+    mgoComposableExt<DashboardNavigation.Settings.Display> {
       SettingsDisplayScreen(
         onNavigateBack = {
           navController.popBackStack()
@@ -59,7 +59,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Settings.Security> {
+    mgoComposableExt<DashboardNavigation.Settings.Security> {
       SettingsSecurityScreen(
         onNavigateBack = {
           navController.popBackStack()
@@ -67,7 +67,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Settings.Advanced> {
+    mgoComposableExt<DashboardNavigation.Settings.Advanced> {
       SettingsAdvancedScreen(
         onNavigateBack = {
           navController.popBackStack()
@@ -75,7 +75,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Settings.About.Home> {
+    mgoComposableExt<DashboardNavigation.Settings.About.Home> {
       SettingsAboutHomeScreen(
         onNavigateToSecureUse = {
           navController.navigate(DashboardNavigation.Settings.About.Safety)
@@ -90,7 +90,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Settings.About.Safety> {
+    mgoComposableExt<DashboardNavigation.Settings.About.Safety> {
       SettingsAboutSafetyScreen(
         onNavigateBack = {
           navController.popBackStack()
@@ -98,7 +98,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Settings.About.OpenSource> {
+    mgoComposableExt<DashboardNavigation.Settings.About.OpenSource> {
       SettingsAboutOpenSourceScreen(
         onNavigateBack = {
           navController.popBackStack()
@@ -106,7 +106,7 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Settings.About.Accessibility> {
+    mgoComposableExt<DashboardNavigation.Settings.About.Accessibility> {
       SettingsAboutAccessibilityScreen(
         onNavigateBack = {
           navController.popBackStack()

@@ -186,7 +186,7 @@
   <string name="zib_living_situation.heading">Leefomstandigheden</string>
   <string name="zib_medical_device.heading">Medische hulpmiddelen</string>
   <string name="zib_medication_agreement.heading">Afspraken over je medicijnen</string>
-  <string name="zib_medication_use.heading">Medicijnen die je gebruikt</string>
+  <string name="zib_medication_use.heading">Wat je nu gebruikt</string>
   <string name="zib_nutrition_advice.heading">Voedingsadvies</string>
   <string name="zib_patient.heading">Persoonsgegevens, Burgerlijke staat &amp; contactpersonen</string>
   <string name="zib_payer.heading">Betaalgegevens</string>
@@ -258,7 +258,7 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="export_pdf.dialog.heading">Document met %1$s maken?</string>
   <string name="export_pdf.dialog.subheading">Je maakt een PDF-document met je medische gegevens. Je kunt het daarna op je telefoon bewaren.</string>
   <string name="export_pdf.dialog.create_document">Document maken</string>
-  <string name="export_pdf.subheading">Opgeslagen op: %1$s om %2$s uur</string>
-  <string name="export_pdf.footer">Dit document is gemaakt met Mijn Gezondheidsoverzicht. Het bevat jouw medische gegevens, afkomstig van zorgaanbieders die jij hebt \n toegevoegd. Jij bent zelf verantwoordelijk voor wat je met deze informatie doet. De gegevens zijn niet gecontroleerd op juistheid of volledigheid.</string>
-  <string name="export_pdf.name_column">Naam</string>
+  <string name="export_pdf.subheading">Opgeslagen op %1$s om %2$s uur</string>
+  <string name="export_pdf.footer">Dit document is gemaakt met Mijn Gezondheidsoverzicht. Het bevat jouw medische gegevens,\nafkomstig van zorgaanbieders die jij hebt toegevoegd. Jij bent zelf verantwoordelijk voor wat je\nmet deze informatie doet. De gegevens zijn niet gecontroleerd op juistheid of volledigheid.</string>
+  <string name="export_pdf.no_data">Geen gegevens beschikbaar</string>
 </resources>

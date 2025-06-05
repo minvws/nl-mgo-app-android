@@ -47,24 +47,34 @@ internal class DefaultUISchemaSectionMapper
           }
 
         is SingleValue -> {
-          UISchemaRow.Static(heading = this.label, value = this.display ?: "")
+          this.display?.let { display ->
+            UISchemaRow.Static(heading = this.label, value = display)
+          }
         }
 
         is MultipleValues -> {
-          UISchemaRow.Static(heading = this.label, value = this.display?.joinToString(", ") ?: "")
+          this.display?.let { display ->
+            UISchemaRow.Static(heading = this.label, value = display.joinToString(", "))
+          }
         }
 
         is MultipleGroupedValues -> {
-          UISchemaRow.Static(heading = this.label, value = this.display?.joinToString(", ") ?: "")
+          this.display?.let { display ->
+            UISchemaRow.Static(heading = this.label, value = display.flatten().joinToString(", "))
+          }
         }
 
         is ReferenceValue -> {
-          val reference = this.reference ?: ""
-          val display = this.display ?: ""
-          if (isReferenceClickable(reference)) {
-            UISchemaRow.Reference(heading = this.label, value = display, referenceId = reference)
+          val reference = this.reference
+          val display = this.display
+          if (reference != null && display != null) {
+            if (isReferenceClickable(reference)) {
+              UISchemaRow.Reference(heading = this.label, value = display, referenceId = reference)
+            } else {
+              UISchemaRow.Static(heading = this.label, value = display)
+            }
           } else {
-            UISchemaRow.Static(heading = this.label, value = display)
+            null
           }
         }
 

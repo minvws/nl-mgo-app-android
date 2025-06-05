@@ -66,14 +66,13 @@ internal class DefaultPdfGenerator
         Paragraph(pdf.heading)
           .setFontSize(24f)
           .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-          .setMargin(0f)
       document.add(heading)
 
-      val subHeading =
-        Paragraph(pdf.subHeading)
-          .setFontSize(14f)
-          .setMarginTop(2f)
-      document.add(subHeading)
+//      val subHeading =
+//        Paragraph(pdf.subHeading)
+//          .setFontSize(14f)
+//          .setMarginTop(2f)
+//      document.add(subHeading)
 
       // Create a table with dynamic column count based on the number of rows in the first column.
       val pageWidth = PageSize.A4.width
@@ -81,56 +80,64 @@ internal class DefaultPdfGenerator
 
       val columnWidths = FloatArray(numColumns) { pageWidth / numColumns }
 
-      for (tableData in pdf.tables) {
+      for (groupedTableData in pdf.groupedTables) {
         // Add heading above the table using bold Helvetica font.
         val tableHeading =
-          Paragraph(tableData.heading)
+          Paragraph(groupedTableData.heading)
             .setFontSize(16f)
             .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-            .setMarginTop(24f)
+            .setMarginTop(16f)
         document.add(tableHeading)
 
-        if (numColumns != 0) {
-          val table = Table(columnWidths)
+        for (tableData in groupedTableData.tables) {
+          val table = Table(columnWidths).setMarginTop(16f)
 
-          // Add header cells
-          for (header in tableData.headers) {
-            val headerCell =
-              Cell()
-                .add(Paragraph(header).setFontSize(10f))
-                .setBackgroundColor(style.tableHeadingsBackgroundColor.toDeviceRgb())
-                .setPadding(8f)
-                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
-                .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-                .setVerticalAlignment(VerticalAlignment.MIDDLE)
-            table.addHeaderCell(headerCell)
-          }
+          table.addCell(
+            Cell(1, 2)
+              .add(Paragraph(tableData.heading).setFontSize(12f))
+              .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
+              .setPadding(6f)
+              .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+              .setTextAlignment(TextAlignment.CENTER)
+              .setVerticalAlignment(VerticalAlignment.MIDDLE),
+          )
 
-          // Add cells
+          for (subTableData in tableData.subTables) {
+            if (subTableData.heading != null) {
+              table.addCell(
+                Cell(1, 2)
+                  .add(Paragraph(subTableData.heading).setFontSize(10f))
+                  .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+                  .setPadding(6f)
+                  .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
+              )
+            }
 
-          for ((col1, col2) in tableData.data) {
-            table.addCell(
-              Cell()
-                .add(Paragraph(col1).setFontSize(10f))
-                .setPadding(8f)
-                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-            )
-            table.addCell(
-              Cell()
-                .add(Paragraph(col2).setFontSize(10f))
-                .setPadding(8f)
-                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-            )
+            for ((col1, col2) in subTableData.data) {
+              table.addCell(
+                Cell()
+                  .add(Paragraph(col1).setFontSize(10f))
+                  .setBackgroundColor(style.tableHeadingsBackgroundColor.toDeviceRgb())
+                  .setPadding(8f)
+                  .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
+              )
+              table.addCell(
+                Cell()
+                  .add(Paragraph(col2).setFontSize(10f))
+                  .setPadding(8f)
+                  .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
+              )
+            }
           }
 
           // Add table
           document.add(table)
+        }
 
-          // Next tables are always on a separate page
-          val lastPage = pdf.tables.indexOf(tableData) == pdf.tables.lastIndex
-          if (!lastPage) {
-            document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
-          }
+        // Next groups are always on a new page
+        val lastPage = pdf.groupedTables.indexOf(groupedTableData) == pdf.groupedTables.lastIndex
+        if (!lastPage) {
+          document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
         }
       }
 
@@ -143,12 +150,12 @@ internal class DefaultPdfGenerator
         val layoutCanvas = Canvas(canvas, pageSize)
 
         // Add footer text
-        layoutCanvas.showTextAligned(
-          Paragraph(pdf.footer).setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
-          PAGE_HORIZONTAL_MARGIN,
-          PAGE_VERTICAL_MARGIN,
-          TextAlignment.LEFT,
-        )
+//        layoutCanvas.showTextAligned(
+//          Paragraph(pdf.footer).setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
+//          PAGE_HORIZONTAL_MARGIN,
+//          PAGE_VERTICAL_MARGIN,
+//          TextAlignment.LEFT,
+//        )
 
         // Add page number
         val pageFooterText = context.resources.getString(CopyR.string.export_pdf_page, i, numberOfPages)
@@ -161,7 +168,6 @@ internal class DefaultPdfGenerator
       }
 
       document.close()
-
       return file
     }
   }

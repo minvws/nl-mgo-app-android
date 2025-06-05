@@ -9,7 +9,7 @@ import nl.rijksoverheid.mgo.feature.digid.DigidMockScreen
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_DIGID_AUTHENTICATED
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
-import nl.rijksoverheid.mgo.navigation.mgoComposable
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
 /**
  * Adds all the navigation destinations that can be found when logging in with DigiD.
@@ -21,7 +21,7 @@ fun NavGraphBuilder.addDigidNavGraph(
   keyValueStore: KeyValueStore,
 ) {
   navigation<DigidNavigation.Root>(DigidNavigation.Login) {
-    mgoComposable<DigidNavigation.Login> {
+    mgoComposableExt<DigidNavigation.Login> {
       DigidLoginScreen(
         onNavigateToDigidMock = {
           navController.navigate(DigidNavigation.Mock)
@@ -29,7 +29,7 @@ fun NavGraphBuilder.addDigidNavGraph(
       )
     }
 
-    mgoComposable<DigidNavigation.Mock> {
+    mgoComposableExt<DigidNavigation.Mock> {
       DigidMockScreen(
         onNavigateToLocalisation = {
           // Temporary do this here so we do not have to create an test a whole viewmodel for a temporary mock screen.

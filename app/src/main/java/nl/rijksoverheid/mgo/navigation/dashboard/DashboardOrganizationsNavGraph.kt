@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import nl.rijksoverheid.mgo.component.mgo.navigation.mgoComposableDialog
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
@@ -12,8 +13,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.removeOrganization.RemoveOrganizat
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaScreen
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
-import nl.rijksoverheid.mgo.navigation.mgoComposable
-import nl.rijksoverheid.mgo.navigation.mgoComposableDialog
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
 /**
  * Adds all the navigation destinations that can be found in the organizations bottom bar tab in the dashboard.
@@ -26,7 +26,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
   navController: NavController,
 ) {
   navigation<DashboardNavigation.Organizations.Root>(DashboardNavigation.Organizations.List) {
-    mgoComposable<DashboardNavigation.Organizations.List>(animate = false) {
+    mgoComposableExt<DashboardNavigation.Organizations.List>(animate = false) {
       OrganizationsScreen(
         onNavigateToHealthCategories = { organization ->
           navController.navigate(DashboardNavigation.Organizations.HealthCareCategories(organization))
@@ -37,7 +37,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Organizations.HealthCareCategories> { backStackEntry ->
+    mgoComposableExt<DashboardNavigation.Organizations.HealthCareCategories> { backStackEntry ->
       val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategories>()
       HealthCategoriesScreen(
         appBarTitle = route.organization.name,
@@ -64,7 +64,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Organizations.HealthCareCategory> { backStackEntry ->
+    mgoComposableExt<DashboardNavigation.Organizations.HealthCareCategory> { backStackEntry ->
       val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategory>()
       HealthCategoryScreen(
         category = route.category,
@@ -84,13 +84,13 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Organizations.UiSchema> { backStackEntry ->
+    mgoComposableExt<DashboardNavigation.Organizations.UiSchema> { backStackEntry ->
       val route = backStackEntry.toRoute<DashboardNavigation.Organizations.UiSchema>()
       UiSchemaScreen(
         organization = route.organization,
         mgoResource = route.mgoResource,
         isSummary = route.isSummary,
-        onNavigateToUiSchema = { organization, mgoResource ->
+        onNavigateToDetail = { organization, mgoResource ->
           val uiSchema =
             DashboardNavigation.Organizations.UiSchema(
               organization = organization,

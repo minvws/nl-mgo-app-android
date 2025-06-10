@@ -1,15 +1,11 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
-import android.content.Context
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import getStringResourceByName
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,23 +21,10 @@ import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataS
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
-import nl.rijksoverheid.mgo.data.healthcare.models.toSections
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.Pdf
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfGenerator
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfGroupedTables
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfSubTable
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfTable
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
 import java.io.File
-import java.time.Clock
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.time.format.TextStyle
-import java.util.Locale
-import javax.inject.Named
-import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
  * The [ViewModel] for [HealthCategoryScreen].
@@ -63,13 +46,11 @@ internal class HealthCategoryScreenViewModel
   constructor(
     @Assisted("category") private val category: HealthCareCategory,
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
-    @ApplicationContext private val context: Context,
     private val organizationRepository: OrganizationRepository,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val mgoResourceRepository: MgoResourceRepository,
     private val uiSchemaMapper: UiSchemaMapper,
-    @Named("systemDefaultZone") private val clock: Clock,
-    private val pdfGenerator: PdfGenerator,
+    private val createPdf: CreatePdfForHealthCategories,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -125,9 +106,6 @@ internal class HealthCategoryScreenViewModel
       }
     }
 
-    /**
-     * Get health care data.
-     */
     fun retry() {
       viewModelScope.launch {
         if (filterOrganization == null) {
@@ -143,38 +121,11 @@ internal class HealthCategoryScreenViewModel
 
     fun generatePdf() {
       viewModelScope.launch {
-        val now = LocalDateTime.now(clock)
-        val mediumDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale("nl", "NL"))
-        val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale("nl", "NL"))
-        val groupedPdfTables =
-          (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup?.toPdfTables() ?: listOf()
-        val categoryTitle = context.getString(category.getTitle(context))
-        val pdf =
-          Pdf(
-            heading = categoryTitle,
-            subHeading = context.getString(CopyR.string.export_pdf_subheading, now.format(mediumDateFormatter), now.format(timeFormatter)),
-            groupedTables = groupedPdfTables,
-            footer = context.getString(CopyR.string.export_pdf_footer),
-          )
-
-        val fileName =
-          buildString {
-            append("mgo")
-            append("_")
-            append(categoryTitle.lowercase().replace(" ", "_"))
-            append("_")
-            append(now.dayOfMonth)
-            append("_")
-            append(now.month.getDisplayName(TextStyle.SHORT, Locale("nl")).lowercase())
-            append("_")
-            append(now.year)
-            append(".pdf")
-          }
-
+        val listItemGroups = (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup ?: listOf()
         val file =
-          pdfGenerator.invoke(
-            pdf = pdf,
-            fileName = fileName,
+          createPdf.invoke(
+            category = category,
+            listItemGroups = listItemGroups,
           )
         _openPdfViewer.tryEmit(file)
       }
@@ -205,39 +156,4 @@ internal class HealthCategoryScreenViewModel
         listOf()
       }
     }
-
-    private suspend fun List<HealthCategoryScreenListItemsGroup>.toPdfTables(): List<PdfGroupedTables> =
-      map { itemsGroup ->
-        val pdfTables =
-          itemsGroup.items.map { listItem ->
-            uiSchemaMapper
-              .getSummary(listItem.mgoResource)
-              .toSections()
-              .map { section ->
-                PdfSubTable(
-                  heading = section.heading,
-                  data = section.rows.mapNotNull { row -> (row.heading ?: return@mapNotNull null) to row.value },
-                )
-              }.filter { it.data.isNotEmpty() }
-              .let { subTables ->
-                PdfTable(
-                  heading = listItem.title,
-                  subTables = subTables,
-                )
-              }
-          }
-        PdfGroupedTables(
-          heading = context.getString(itemsGroup.heading),
-          tables = pdfTables,
-        )
-      }
   }
-
-@StringRes
-internal fun HealthCareCategory.getTitle(context: Context): Int {
-  val stringResource = context.getStringResourceByName("hc_$id.heading")
-  if (stringResource == 0) {
-    return CopyR.string.common_unknown
-  }
-  return stringResource
-}

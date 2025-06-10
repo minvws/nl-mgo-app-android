@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.framework.pdf
+package nl.rijksoverheid.mgo.feature.dashboard.pdfViewer
 
 import android.content.Context
 import android.graphics.Color
@@ -166,7 +166,13 @@ internal class DefaultPdfGenerator
                   Paragraph(rightCellText)
                     .setPadding(6f)
                     .setFontSize(10f)
-                val tableRightCell = Cell().add(rightTableCellParagraph).setBorder(SolidBorder(CELL_BORDER_COLOR, 1f))
+                val tableRightCell =
+                  Cell().add(rightTableCellParagraph).setBorder(
+                    SolidBorder(
+                      CELL_BORDER_COLOR,
+                      1f,
+                    ),
+                  )
                 table.addCell(tableRightCell)
               }
             }

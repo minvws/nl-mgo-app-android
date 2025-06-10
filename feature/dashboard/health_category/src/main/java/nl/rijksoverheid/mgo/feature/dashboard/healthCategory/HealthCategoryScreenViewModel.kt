@@ -28,11 +28,11 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
 import nl.rijksoverheid.mgo.data.healthcare.models.toSections
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.framework.pdf.Pdf
-import nl.rijksoverheid.mgo.framework.pdf.PdfGenerator
-import nl.rijksoverheid.mgo.framework.pdf.PdfGroupedTables
-import nl.rijksoverheid.mgo.framework.pdf.PdfSubTable
-import nl.rijksoverheid.mgo.framework.pdf.PdfTable
+import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.Pdf
+import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfGenerator
+import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfGroupedTables
+import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfSubTable
+import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfTable
 import java.io.File
 import java.time.Clock
 import java.time.LocalDateTime

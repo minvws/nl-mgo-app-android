@@ -14,7 +14,6 @@ dependencies {
   implementation(projects.data.localisation)
   implementation(projects.framework.environment)
   implementation(projects.data.healthcare)
-  implementation(projects.framework.pdf)
   implementation(projects.feature.dashboard.pdfViewer)
   testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.data.healthcare))

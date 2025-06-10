@@ -51,7 +51,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.framework.pdf.createBitmaps
 import sendFileToOtherApp
 import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR

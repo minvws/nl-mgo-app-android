@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.framework.pdf
 
 import android.content.Context
 import android.graphics.Color
+import androidx.core.graphics.toColorInt
 import com.itextpdf.io.font.constants.StandardFonts
 import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.font.PdfFontFactory
@@ -24,6 +25,10 @@ import java.io.File
 import javax.inject.Inject
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+private val HIGHLIGHTED_CELL_BACKGROUND_COLOR = "#F4F4F4".toColorInt().toDeviceRgb()
+private val CELL_BORDER_COLOR = "#E1E1E1".toColorInt().toDeviceRgb()
+private val SUBHEADING_TEXT_COLOR = "#6D6D6D".toColorInt().toDeviceRgb()
+private val FOOTER_TEXT_COLOR = "#6D6D6D".toColorInt().toDeviceRgb()
 private const val PAGE_MARGIN: Float = 28f
 
 /**
@@ -38,16 +43,14 @@ internal class DefaultPdfGenerator
     @ApplicationContext private val context: Context,
   ) : PdfGenerator {
     /**
-     * Creates a styled PDF document based on provided content and saves it to cache.
+     * Creates a styled PDF document based on provided content.
      *
      * @param pdf The PDF content model, including tables and headers.
-     * @param style Visual styling options such as border and background colors.
      * @param fileName Desired filename for the PDF, including extension (e.g., "report.pdf").
      * @return The generated PDF file.
      */
     override suspend fun invoke(
       pdf: Pdf,
-      style: PdfStyle,
       fileName: String,
     ): File {
       // Initialize the PDF writer and document with A4 landscape orientation.
@@ -61,89 +64,113 @@ internal class DefaultPdfGenerator
       document.setMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN + 32f, PAGE_MARGIN)
 
       // Add heading on top of the pdf
-      val heading =
+      val headingParagraph =
         Paragraph(pdf.heading)
-          .setFontSize(24f)
           .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-      document.add(heading)
+          .setFontSize(24f)
+      document.add(headingParagraph)
 
       val firstPage = pdfDoc.firstPage
       val firstPageCanvas = PdfCanvas(firstPage)
       val firstPageSize = firstPage.pageSize
       val firstPageLayoutCanvas = Canvas(firstPageCanvas, firstPageSize)
 
-      // Add sub heading
+      // Add sub heading at the right top corner
+      val subHeadingParagraph =
+        Paragraph(pdf.subHeading)
+          .setFontSize(10f)
+          .setFontColor(SUBHEADING_TEXT_COLOR)
+
       firstPageLayoutCanvas.showTextAligned(
-        Paragraph(pdf.subHeading).setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
+        subHeadingParagraph,
         firstPage.pageSize.width - PAGE_MARGIN,
         firstPage.pageSize.height - PAGE_MARGIN,
         TextAlignment.RIGHT,
       )
 
-      // Create a table with dynamic column count based on the number of rows in the first column.
-      val pageWidth = PageSize.A4.width
-      val numColumns = 2
-
-      val columnWidths = FloatArray(numColumns) { pageWidth / numColumns }
-
       for (groupedTableData in pdf.groupedTables) {
-        // Add heading above the table using bold Helvetica font.
-        val tableHeading =
+        // Add heading above the table.
+        val tableHeadingParagraph =
           Paragraph(groupedTableData.heading)
-            .setFontSize(16f)
-            .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
             .setMarginTop(16f)
-        document.add(tableHeading)
+            .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+            .setFontSize(16f)
+        document.add(tableHeadingParagraph)
 
         val hasNoData = groupedTableData.tables.all { it.subTables.isEmpty() }
         if (hasNoData) {
-          val noData =
+          // If we do not have any tables to show, show an empty state
+          val noDataParagraph =
             Paragraph(context.getString(CopyR.string.export_pdf_no_data))
-              .setFontSize(10f)
-              .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
-              .setPadding(6f)
               .setMarginTop(16f)
-          document.add(noData)
+              .setPadding(6f)
+              .setFontSize(10f)
+              .setBorder(SolidBorder(HIGHLIGHTED_CELL_BACKGROUND_COLOR, 1f))
+          document.add(noDataParagraph)
         } else {
+          // Create and show tables if we have data
+          val pageWidth = PageSize.A4.width
+          val numColumns = 2
+          val columnWidths = FloatArray(numColumns) { pageWidth / numColumns }
+
           for (tableData in groupedTableData.tables) {
-            val table = Table(columnWidths).setMarginTop(16f).setMarginBottom(16f)
-            table.addCell(
-              Cell(1, 2)
-                .add(Paragraph(tableData.heading).setFontSize(12f))
-                .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f))
+            val table =
+              Table(columnWidths)
+                .setMarginTop(16f)
+                .setMarginBottom(16f)
+                .setBorder(SolidBorder(CELL_BORDER_COLOR, 1f))
+
+            // Add heading inside the table
+            val tableCellHeadingParagraph =
+              Paragraph(tableData.heading)
                 .setPadding(6f)
                 .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+                .setFontSize(12f)
                 .setTextAlignment(TextAlignment.CENTER)
-                .setVerticalAlignment(VerticalAlignment.MIDDLE),
-            )
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+            val tableCellHeading =
+              Cell(1, 2)
+                .add(tableCellHeadingParagraph)
+                .setBorder(SolidBorder(CELL_BORDER_COLOR, 1f))
+            table.addCell(tableCellHeading)
 
             for (subTableData in tableData.subTables) {
               if (subTableData.heading != null) {
-                table.addCell(
-                  Cell(1, 2)
-                    .add(Paragraph(subTableData.heading).setFontSize(10f))
-                    .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+                // Add sub headings inside the table
+                val tableCellSubHeadingParagraph =
+                  Paragraph(subTableData.heading)
                     .setPadding(6f)
-                    .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-                )
+                    .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+                    .setFontSize(10f)
+                val tableCellSubHeadingCell =
+                  Cell(1, 2)
+                    .add(tableCellSubHeadingParagraph)
+                    .setBorder(SolidBorder(CELL_BORDER_COLOR, 1f))
+                table.addCell(tableCellSubHeadingCell)
               }
 
-              for ((col1, col2) in subTableData.data) {
-                table.addCell(
+              // Add cells
+              for ((leftCellText, rightCellText) in subTableData.data) {
+                val leftTableCellParagraph =
+                  Paragraph(leftCellText)
+                    .setPadding(6f)
+                    .setFontSize(10f)
+                val tableLeftCell =
                   Cell()
-                    .add(Paragraph(col1).setFontSize(10f))
-                    .setBackgroundColor(style.tableHeadingsBackgroundColor.toDeviceRgb())
-                    .setPadding(8f)
-                    .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-                )
-                table.addCell(
-                  Cell()
-                    .add(Paragraph(col2).setFontSize(10f))
-                    .setPadding(8f)
-                    .setBorder(SolidBorder(style.tableCellBorderColor.toDeviceRgb(), 1f)),
-                )
+                    .add(leftTableCellParagraph)
+                    .setBackgroundColor(HIGHLIGHTED_CELL_BACKGROUND_COLOR)
+                    .setBorder(SolidBorder(CELL_BORDER_COLOR, 1f))
+                table.addCell(tableLeftCell)
+
+                val rightTableCellParagraph =
+                  Paragraph(rightCellText)
+                    .setPadding(6f)
+                    .setFontSize(10f)
+                val tableRightCell = Cell().add(rightTableCellParagraph).setBorder(SolidBorder(CELL_BORDER_COLOR, 1f))
+                table.addCell(tableRightCell)
               }
             }
+
             // Add table
             document.add(table)
           }
@@ -156,7 +183,6 @@ internal class DefaultPdfGenerator
         }
       }
 
-      // Add footer to each page
       val numberOfPages = pdfDoc.numberOfPages
       for (i in 1..numberOfPages) {
         val page = pdfDoc.getPage(i)
@@ -164,18 +190,26 @@ internal class DefaultPdfGenerator
         val pageSize = page.pageSize
         val pageLayoutCanvas = Canvas(pageCanvas, pageSize)
 
-        // Add footer text
+        // Add footer text to the bottom left of each page
+        val footerParagraph =
+          Paragraph(pdf.footer)
+            .setFontSize(10f)
+            .setFontColor(FOOTER_TEXT_COLOR)
         pageLayoutCanvas.showTextAligned(
-          Paragraph(pdf.footer).setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
+          footerParagraph,
           PAGE_MARGIN,
           PAGE_MARGIN,
           TextAlignment.LEFT,
         )
 
-        // Add page number
+        // Add page number text to the bottom right of each page
         val pageFooterText = context.resources.getString(CopyR.string.export_pdf_page, i, numberOfPages)
+        val pageFooterParagraph =
+          Paragraph(pageFooterText)
+            .setFontSize(10f)
+            .setFontColor(FOOTER_TEXT_COLOR)
         pageLayoutCanvas.showTextAligned(
-          Paragraph(pageFooterText).setFontSize(10f).setFontColor(style.footerTextColor.toDeviceRgb()),
+          pageFooterParagraph,
           page.pageSize.width - PAGE_MARGIN,
           PAGE_MARGIN,
           TextAlignment.RIGHT,

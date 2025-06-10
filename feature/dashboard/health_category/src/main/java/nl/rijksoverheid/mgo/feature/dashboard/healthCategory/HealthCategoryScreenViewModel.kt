@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import android.content.Context
 import androidx.annotation.StringRes
-import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -32,7 +31,6 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.pdf.Pdf
 import nl.rijksoverheid.mgo.framework.pdf.PdfGenerator
 import nl.rijksoverheid.mgo.framework.pdf.PdfGroupedTables
-import nl.rijksoverheid.mgo.framework.pdf.PdfStyle
 import nl.rijksoverheid.mgo.framework.pdf.PdfSubTable
 import nl.rijksoverheid.mgo.framework.pdf.PdfTable
 import java.io.File
@@ -40,6 +38,7 @@ import java.time.Clock
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.time.format.TextStyle
 import java.util.Locale
 import javax.inject.Named
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -145,30 +144,37 @@ internal class HealthCategoryScreenViewModel
     fun generatePdf() {
       viewModelScope.launch {
         val now = LocalDateTime.now(clock)
-        val dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale("nl", "NL"))
-        val dateString = now.format(dateFormatter)
+        val mediumDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale("nl", "NL"))
         val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale("nl", "NL"))
-        val timeString = now.format(timeFormatter)
         val groupedPdfTables =
           (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup?.toPdfTables() ?: listOf()
+        val categoryTitle = context.getString(category.getTitle(context))
         val pdf =
           Pdf(
-            heading = context.getString(category.getTitle(context)),
-            subHeading = context.getString(CopyR.string.export_pdf_subheading, dateString, timeString),
+            heading = categoryTitle,
+            subHeading = context.getString(CopyR.string.export_pdf_subheading, now.format(mediumDateFormatter), now.format(timeFormatter)),
             groupedTables = groupedPdfTables,
             footer = context.getString(CopyR.string.export_pdf_footer),
           )
-        val pdfStyle =
-          PdfStyle(
-            tableHeadingsBackgroundColor = "#F4F4F4".toColorInt(),
-            tableCellBorderColor = "#E1E1E1".toColorInt(),
-            footerTextColor = "#6D6D6D".toColorInt(),
-          )
+
+        val fileName =
+          buildString {
+            append("mgo")
+            append("_")
+            append(categoryTitle.lowercase().replace(" ", "_"))
+            append("_")
+            append(now.dayOfMonth)
+            append("_")
+            append(now.month.getDisplayName(TextStyle.SHORT, Locale("nl")).lowercase())
+            append("_")
+            append(now.year)
+            append(".pdf")
+          }
+
         val file =
           pdfGenerator.invoke(
             pdf = pdf,
-            style = pdfStyle,
-            fileName = "export.pdf",
+            fileName = fileName,
           )
         _openPdfViewer.tryEmit(file)
       }

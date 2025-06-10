@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
@@ -48,6 +49,8 @@ import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -95,6 +98,28 @@ fun HealthCategoryScreen(
     }
   }
 
+  var showExportPdfDialog by remember { mutableStateOf(false) }
+  if (showExportPdfDialog) {
+    MgoAlertDialog(
+      heading = stringResource(CopyR.string.export_pdf_dialog_heading, context.getString(category.getTitle(context)).lowercase()),
+      subHeading = stringResource(CopyR.string.export_pdf_dialog_subheading),
+      positiveButtonText = stringResource(CopyR.string.export_pdf_dialog_create_document),
+      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      negativeButtonText = stringResource(CopyR.string.common_cancel),
+      negativeButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(),
+      onClickPositiveButton = {
+        showExportPdfDialog = false
+        viewModel.generatePdf()
+      },
+      onClickNegativeButton = {
+        showExportPdfDialog = false
+      },
+      onDismissRequest = {
+        showExportPdfDialog = false
+      },
+    )
+  }
+
   HealthCategoryScreenContent(
     viewState = viewState,
     onClickListItem = { organization, mgoResource ->
@@ -102,7 +127,7 @@ fun HealthCategoryScreen(
     },
     onRetry = { viewModel.retry() },
     onGeneratePdf = {
-      viewModel.generatePdf()
+      showExportPdfDialog = true
     },
     onNavigateBack = onNavigateBack,
   )

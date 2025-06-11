@@ -4,9 +4,6 @@ plugins {
 
 android {
   namespace = "nl.rijksoverheid.mgo.component.pdfViewer"
-  testFixtures {
-    enable = true
-  }
 }
 
 dependencies {

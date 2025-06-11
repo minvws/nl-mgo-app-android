@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.pdfViewer
+package nl.rijksoverheid.mgo.component.pdfViewer
 
 import dagger.Binds
 import dagger.Module

@@ -46,6 +46,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -54,7 +55,6 @@ import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfViewerBottomSheet
 import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 

@@ -2,16 +2,16 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import nl.rijksoverheid.mgo.component.pdfViewer.Pdf
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfGenerator
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfGroupedTables
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfSubTable
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfTable
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.models.toSections
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenListItemsGroup
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.getTitle
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.Pdf
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfGenerator
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfGroupedTables
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfSubTable
-import nl.rijksoverheid.mgo.feature.dashboard.pdfViewer.PdfTable
 import nl.rijksoverheid.mgo.framework.copy.R
 import java.io.File
 import java.time.Clock
@@ -44,7 +44,12 @@ internal class DefaultCreatePdfForHealthCategories
       val pdf =
         Pdf(
           heading = categoryTitle,
-          subHeading = context.getString(R.string.export_pdf_subheading, now.format(mediumDateFormatter), now.format(timeFormatter)),
+          subHeading =
+            context.getString(
+              R.string.export_pdf_subheading,
+              now.format(mediumDateFormatter),
+              now.format(timeFormatter),
+            ),
           groupedTables = groupedPdfTables,
           footer = context.getString(R.string.export_pdf_footer),
         )
@@ -84,7 +89,10 @@ internal class DefaultCreatePdfForHealthCategories
               .map { section ->
                 PdfSubTable(
                   heading = section.heading,
-                  data = section.rows.mapNotNull { row -> (row.heading ?: return@mapNotNull null) to row.value },
+                  data =
+                    section.rows.mapNotNull { row ->
+                      (row.heading ?: return@mapNotNull null) to row.value
+                    },
                 )
               }.filter { it.data.isNotEmpty() }
               .let { subTables ->

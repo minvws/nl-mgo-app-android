@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.pdfViewer
+package nl.rijksoverheid.mgo.component.pdfViewer
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -18,7 +18,8 @@ import java.io.File
 @RunWith(RobolectricTestRunner::class)
 class DefaultPdfGeneratorTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val generator = DefaultPdfGenerator(context)
+  private val generator =
+    DefaultPdfGenerator(context)
 
   @Before
   fun setUp() {

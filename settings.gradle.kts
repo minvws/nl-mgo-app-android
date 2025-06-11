@@ -1,20 +1,20 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+  includeBuild("build-logic")
+  repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+  }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { setUrl("https://jitpack.io") }
-    }
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    google()
+    mavenCentral()
+    maven { setUrl("https://jitpack.io") }
+  }
 }
 
 rootProject.name = "MijnGezondheidsOverzicht"
@@ -64,3 +64,4 @@ include(":feature:dashboard:settings:about:accessibility")
 include(":feature:digid")
 include(":data:fhirParser")
 include(":data:api:vad")
+include(":component:pdfViewer")

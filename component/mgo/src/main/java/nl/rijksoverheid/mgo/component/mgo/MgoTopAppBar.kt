@@ -1,5 +1,8 @@
 package nl.rijksoverheid.mgo.component.mgo
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -11,6 +14,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,12 +33,21 @@ import nl.rijksoverheid.mgo.framework.copy.R
  *
  * @param title The title of the app bar.
  * @param textAlign The alignment of the text inside the app bar.
+ * @param windowInsets a window insets that app bar will respect.
+ * @param navigationIcon The icon to display at the start of the app bar.
+ * @param containerColor The color of the container of the app bar.
+ * @param actions the actions displayed at the end of the top app bar. This should typically be IconButtons.
+ * The default layout here is a Row, so icons inside will be placed horizontally.
  * @param onNavigateBack If not null, will show a back button that will call this function when pressed.
  */
 @Composable
 fun MgoTopAppBar(
   title: String,
   textAlign: TextAlign = TextAlign.Start,
+  windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
+  navigationIcon: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+  containerColor: Color = MaterialTheme.colorScheme.background,
+  actions: @Composable RowScope.() -> Unit = {},
   onNavigateBack: (() -> Unit)? = null,
 ) {
   val adjustedTypography =
@@ -49,6 +63,7 @@ fun MgoTopAppBar(
     isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme(),
   ) {
     TopAppBar(
+      windowInsets = windowInsets,
       title = {
         Text(
           modifier =
@@ -62,7 +77,7 @@ fun MgoTopAppBar(
         onNavigateBack?.let {
           IconButton(onClick = onNavigateBack) {
             Icon(
-              imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+              imageVector = navigationIcon,
               contentDescription =
                 stringResource(
                   R.string.common_previous,
@@ -72,9 +87,10 @@ fun MgoTopAppBar(
           }
         }
       },
+      actions = actions,
       colors =
         TopAppBarDefaults.topAppBarColors(
-          containerColor = MaterialTheme.colorScheme.background,
+          containerColor = containerColor,
           scrolledContainerColor = MaterialTheme.colorScheme.background,
         ),
     )

@@ -31,10 +31,10 @@ import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.component.theme.sentimentInformative
-import nl.rijksoverheid.mgo.data.healthcare.binary.TEST_FHIR_BINARY
+import nl.rijksoverheid.mgo.data.healthcare.models.TEST_FHIR_BINARY
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
-import nl.rijksoverheid.mgo.framework.util.shareFile
+import openFileWithOtherApp
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -55,7 +55,7 @@ internal fun UiSchemaRowBinary(
   // Immediately share file when it is finished downloading
   LaunchedEffect(row) {
     if (row is UISchemaRow.Binary.Downloaded) {
-      context.shareFile(file = row.binary.file, contentType = row.binary.contentType)
+      context.openFileWithOtherApp(file = row.binary.file, contentType = row.binary.contentType)
     }
   }
 
@@ -74,7 +74,7 @@ internal fun UiSchemaRowBinary(
         loading = false,
         modifier =
           modifier.clickable {
-            context.shareFile(file = row.binary.file, contentType = row.binary.contentType)
+            context.openFileWithOtherApp(file = row.binary.file, contentType = row.binary.contentType)
           },
       )
     }

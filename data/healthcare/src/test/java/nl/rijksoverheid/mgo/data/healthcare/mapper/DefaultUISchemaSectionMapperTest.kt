@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.mapper
+package nl.rijksoverheid.mgo.data.healthcare.mapper
 
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
@@ -14,7 +14,8 @@ import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
 import nl.rijksoverheid.mgo.data.fhirParser.models.UiElement
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.TestUiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.TestMgoResourceRepository
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.healthcare.models.mapper.DefaultUISchemaSectionMapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

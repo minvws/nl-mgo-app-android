@@ -84,8 +84,8 @@ internal class MainViewModel
     /**
      * Get the first navigation destination to show when launching the app.
      */
-    fun getStartDestination(): Any {
-      return when {
+    fun getStartDestination(): Any =
+      when {
         // If the user has not seen the onboarding, show the onboarding flow.
         !hasSeenOnboarding.invoke() -> {
           OnboardingNavigation.Root
@@ -111,7 +111,6 @@ internal class MainViewModel
           }
         }
       }
-    }
 
     /**
      * Check if the app needs to be locked.
@@ -141,7 +140,5 @@ internal class MainViewModel
     /**
      * @return True if the automatic localisation needs to be shown instead of the manual one.
      */
-    fun getAutomaticLocalisationEnabled(): Boolean {
-      return keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
-    }
+    fun getAutomaticLocalisationEnabled(): Boolean = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
   }

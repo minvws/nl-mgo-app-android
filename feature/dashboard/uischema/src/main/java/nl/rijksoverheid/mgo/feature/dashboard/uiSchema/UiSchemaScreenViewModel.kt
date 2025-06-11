@@ -17,10 +17,10 @@ import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.healthcare.models.mapper.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.mapper.UISchemaSectionMapper
 import timber.log.Timber
 
 /**

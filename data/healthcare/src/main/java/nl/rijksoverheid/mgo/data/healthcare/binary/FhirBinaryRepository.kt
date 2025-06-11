@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare.binary
 
+import nl.rijksoverheid.mgo.data.healthcare.models.FhirBinary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 /**

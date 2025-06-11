@@ -35,9 +35,9 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.borderPrimary
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
@@ -155,10 +155,11 @@ private fun UiSchemaSection(
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
-    if (section.heading != null) {
+    val heading = section.heading
+    if (heading != null) {
       Text(
         modifier = Modifier.padding(bottom = 8.dp),
-        text = section.heading,
+        text = heading,
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold,
       )

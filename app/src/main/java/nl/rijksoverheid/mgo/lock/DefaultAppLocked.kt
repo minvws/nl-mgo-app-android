@@ -18,7 +18,7 @@ private const val APP_LOCK_SECONDS = 120
 internal class DefaultAppLocked
   @Inject
   constructor(
-    private val clock: Clock,
+    @Named("systemUTC") private val clock: Clock,
     @Named("keyValueStore") private val keyValueStore: KeyValueStore,
     @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
   ) : AppLocked {

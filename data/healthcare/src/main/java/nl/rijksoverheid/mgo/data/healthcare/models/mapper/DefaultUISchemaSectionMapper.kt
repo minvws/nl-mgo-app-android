@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.mapper
+package nl.rijksoverheid.mgo.data.healthcare.models.mapper
 
 import androidx.annotation.VisibleForTesting
 import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadBinary
@@ -12,11 +12,12 @@ import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
 import nl.rijksoverheid.mgo.data.fhirParser.models.UiElement
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
 import javax.inject.Inject
 
-internal class DefaultUISchemaSectionMapper
+@VisibleForTesting
+class DefaultUISchemaSectionMapper
   @Inject
   constructor(
     private val mgoResourceRepository: MgoResourceRepository,

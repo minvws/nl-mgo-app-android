@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
 
 /**
  * The view state for [UiSchemaScreen].

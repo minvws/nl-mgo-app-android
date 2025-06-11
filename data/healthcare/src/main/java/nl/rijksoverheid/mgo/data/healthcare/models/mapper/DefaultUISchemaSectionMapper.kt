@@ -16,7 +16,8 @@ import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
 import javax.inject.Inject
 
-internal class DefaultUISchemaSectionMapper
+@VisibleForTesting
+class DefaultUISchemaSectionMapper
   @Inject
   constructor(
     private val mgoResourceRepository: MgoResourceRepository,

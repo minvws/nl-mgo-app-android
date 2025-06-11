@@ -73,7 +73,12 @@ internal class DefaultCreatePdfForHealthCategories
       append("_")
       append(now.dayOfMonth)
       append("_")
-      append(now.month.getDisplayName(TextStyle.SHORT, Locale("nl")).lowercase())
+      append(
+        now.month
+          .getDisplayName(TextStyle.SHORT, Locale.getDefault())
+          .lowercase()
+          .replace(".", ""),
+      )
       append("_")
       append(now.year)
       append(".pdf")

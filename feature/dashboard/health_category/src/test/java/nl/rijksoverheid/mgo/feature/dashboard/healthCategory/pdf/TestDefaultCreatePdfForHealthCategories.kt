@@ -12,13 +12,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-@Config(qualifiers = "nl-rNL")
 @RunWith(RobolectricTestRunner::class)
 internal class TestDefaultCreatePdfForHealthCategories {
   private val createPdf =

@@ -154,8 +154,10 @@ private fun HealthCategoryScreenContent(
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
         actions = {
-          IconButton(onGeneratePdf) {
-            Icon(Icons.Outlined.PictureAsPdf, null)
+          if (viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.Loaded) {
+            IconButton(onGeneratePdf) {
+              Icon(Icons.Outlined.PictureAsPdf, null)
+            }
           }
         },
       )

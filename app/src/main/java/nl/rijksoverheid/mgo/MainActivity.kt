@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo
 
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
@@ -7,17 +8,24 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -25,9 +33,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.theme.DefaultLocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
@@ -39,6 +49,7 @@ import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeCreateNavGraph
 import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeLoginNavGraph
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
  * The app has a single activity architecture, which means this is the entry point to the app and only activity.
@@ -80,6 +91,9 @@ class MainActivity : FragmentActivity() {
 
           // Device rooted dialog
           DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
+
+          // Show a dialog if user takes a screenshot
+          HandleScreenshotDetection()
 
           // Set correct status bar icon colors for selected theme
           LaunchedEffect(isDarkTheme) {
@@ -159,6 +173,54 @@ class MainActivity : FragmentActivity() {
         navController.navigate(screen) {
           launchSingleTop = true
         }
+      }
+    }
+  }
+
+  @Composable
+  private fun HandleScreenshotDetection() {
+    var showDialog by remember { mutableStateOf(false) }
+    if (showDialog) {
+      MgoAlertDialog(
+        heading = stringResource(CopyR.string.screenshotalert_heading),
+        subHeading = stringResource(CopyR.string.screenshotalert_subheading),
+        positiveButtonText = stringResource(CopyR.string.screenshotalert_action),
+        positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+        onClickPositiveButton = { showDialog = false },
+        onDismissRequest = { showDialog = false },
+      )
+    }
+
+    val screenCaptureCallback =
+      remember {
+        ScreenCaptureCallback {
+          showDialog = true
+        }
+      }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+      val observer =
+        LifecycleEventObserver { _, event ->
+          when (event) {
+            Lifecycle.Event.ON_START -> {
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                registerScreenCaptureCallback(mainExecutor, screenCaptureCallback)
+              }
+            }
+            Lifecycle.Event.ON_STOP -> {
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                unregisterScreenCaptureCallback(screenCaptureCallback)
+              }
+            }
+            else -> {}
+          }
+        }
+
+      lifecycleOwner.lifecycle.addObserver(observer)
+
+      onDispose {
+        lifecycleOwner.lifecycle.removeObserver(observer)
       }
     }
   }

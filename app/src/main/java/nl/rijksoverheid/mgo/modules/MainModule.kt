@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.modules
 
 import android.content.Context
+import android.os.Build
 import com.scottyab.rootbeer.RootBeer
 import dagger.Module
 import dagger.Provides
@@ -98,4 +99,8 @@ internal object MainModule {
   @Provides
   @Named("ioDispatcher")
   fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+  @Provides
+  @Named("sdkVersion")
+  fun provideSdkVersion() = Build.VERSION.SDK_INT
 }

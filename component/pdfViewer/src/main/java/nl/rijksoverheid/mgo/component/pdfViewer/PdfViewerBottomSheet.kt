@@ -52,7 +52,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import sendFileToOtherApp
-import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -61,13 +60,13 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  * This composable presents the contents of the given PDF file inside a modal bottom sheet.
  *
  * @param appBarTitle The text to display in the app bar.
- * @param pdf The PDF file to be displayed.
+ * @param state The state of the PDF file. Either loading or providing a pdf file to display.
  * @param onDismissRequest Callback invoked when the user requests to dismiss the sheet.
  */
 @Composable
 fun PdfViewerBottomSheet(
   appBarTitle: String,
-  pdf: File,
+  state: PdfViewerState,
   onDismissRequest: () -> Unit,
 ) {
   val context = LocalContext.current
@@ -95,25 +94,34 @@ fun PdfViewerBottomSheet(
             }
           },
           actions = {
-            IconButton({ context.sendFileToOtherApp(file = pdf, contentType = "application/pdf") }) {
-              Icon(Icons.Outlined.Share, null)
+            if (state is PdfViewerState.Loaded) {
+              IconButton({ context.sendFileToOtherApp(file = state.file, contentType = "application/pdf") }) {
+                Icon(Icons.Outlined.Share, null)
+              }
             }
           },
         )
       },
       content = { contentPadding ->
-        var bitmaps: List<Bitmap> by remember { mutableStateOf(listOf()) }
-        LaunchedEffect(Unit) {
-          withContext(Dispatchers.IO) {
-            bitmaps = createBitmaps(pdf)
-          }
-        }
-
-        Box(modifier = Modifier.fillMaxSize().padding(contentPadding)) {
-          if (bitmaps.isEmpty()) {
+        when (state) {
+          is PdfViewerState.Loading -> {
             PdfLoadingContent()
-          } else {
-            PdfLoadedContent(bitmaps)
+          }
+          is PdfViewerState.Loaded -> {
+            var bitmaps: List<Bitmap> by remember { mutableStateOf(listOf()) }
+            LaunchedEffect(Unit) {
+              withContext(Dispatchers.IO) {
+                bitmaps = createBitmaps(state.file)
+              }
+            }
+
+            Box(modifier = Modifier.fillMaxSize().padding(contentPadding)) {
+              if (bitmaps.isEmpty()) {
+                PdfLoadingContent()
+              } else {
+                PdfLoadedContent(bitmaps)
+              }
+            }
           }
         }
       },

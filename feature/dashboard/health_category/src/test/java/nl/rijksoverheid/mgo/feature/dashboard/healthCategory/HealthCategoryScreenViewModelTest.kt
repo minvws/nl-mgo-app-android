@@ -124,5 +124,6 @@ internal class HealthCategoryScreenViewModelTest {
       uiSchemaMapper = TestUiSchemaMapper(),
       mgoResourceRepository = mgoResourceRepository,
       createPdf = createPdf,
+      ioDispatcher = mainDispatcherRule.testDispatcher,
     )
 }

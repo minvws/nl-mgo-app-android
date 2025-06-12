@@ -179,48 +179,46 @@ class MainActivity : FragmentActivity() {
 
   @Composable
   private fun HandleScreenshotDetection() {
-    var showDialog by remember { mutableStateOf(false) }
-    if (showDialog) {
-      MgoAlertDialog(
-        heading = stringResource(CopyR.string.screenshotalert_heading),
-        subHeading = stringResource(CopyR.string.screenshotalert_subheading),
-        positiveButtonText = stringResource(CopyR.string.screenshotalert_action),
-        positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-        onClickPositiveButton = { showDialog = false },
-        onDismissRequest = { showDialog = false },
-      )
-    }
-
-    val screenCaptureCallback =
-      remember {
-        ScreenCaptureCallback {
-          showDialog = true
-        }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      var showDialog by remember { mutableStateOf(false) }
+      if (showDialog) {
+        MgoAlertDialog(
+          heading = stringResource(CopyR.string.screenshotalert_heading),
+          subHeading = stringResource(CopyR.string.screenshotalert_subheading),
+          positiveButtonText = stringResource(CopyR.string.screenshotalert_action),
+          positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+          onClickPositiveButton = { showDialog = false },
+          onDismissRequest = { showDialog = false },
+        )
       }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-      val observer =
-        LifecycleEventObserver { _, event ->
-          when (event) {
-            Lifecycle.Event.ON_START -> {
-              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                registerScreenCaptureCallback(mainExecutor, screenCaptureCallback)
-              }
-            }
-            Lifecycle.Event.ON_STOP -> {
-              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                unregisterScreenCaptureCallback(screenCaptureCallback)
-              }
-            }
-            else -> {}
+      val screenCaptureCallback =
+        remember {
+          ScreenCaptureCallback {
+            showDialog = true
           }
         }
 
-      lifecycleOwner.lifecycle.addObserver(observer)
+      val lifecycleOwner = LocalLifecycleOwner.current
+      DisposableEffect(lifecycleOwner) {
+        val observer =
+          LifecycleEventObserver { _, event ->
+            when (event) {
+              Lifecycle.Event.ON_START -> {
+                registerScreenCaptureCallback(mainExecutor, screenCaptureCallback)
+              }
+              Lifecycle.Event.ON_STOP -> {
+                unregisterScreenCaptureCallback(screenCaptureCallback)
+              }
+              else -> {}
+            }
+          }
 
-      onDispose {
-        lifecycleOwner.lifecycle.removeObserver(observer)
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+          lifecycleOwner.lifecycle.removeObserver(observer)
+        }
       }
     }
   }

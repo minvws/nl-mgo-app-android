@@ -47,6 +47,7 @@ import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -55,7 +56,6 @@ import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -81,20 +81,20 @@ fun HealthCategoryScreen(
     )
   val viewState by viewModel.viewState.collectAsState()
 
-  var pdfFile: File? by remember { mutableStateOf(null) }
-  pdfFile?.let { pdf ->
+  var pdfViewerState: PdfViewerState? by remember { mutableStateOf(null) }
+  pdfViewerState?.let { state ->
     PdfViewerBottomSheet(
       appBarTitle = context.getString(category.getTitle(context)),
-      pdf = pdf,
+      state = state,
       onDismissRequest = {
-        pdfFile = null
+        pdfViewerState = null
       },
     )
   }
 
   LaunchedEffect(Unit) {
-    viewModel.openPdfViewer.collectLatest { pdf ->
-      pdfFile = pdf
+    viewModel.openPdfViewer.collectLatest { state ->
+      pdfViewerState = state
     }
   }
 

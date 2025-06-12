@@ -6,6 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
@@ -24,7 +26,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
-import java.io.File
+import javax.inject.Named
 
 /**
  * The [ViewModel] for [HealthCategoryScreen].
@@ -38,7 +40,7 @@ import java.io.File
  * @param mgoResourceRepository The [MgoResourceRepository] that is used to filter out resources so that only the resources are shown
  * that we want to show.
  * @param uiSchemaMapper The [UiSchemaMapper] to get models for displaying the health care data.
- * @param clock The clock used to be used in the pdf generation.
+ * @param createPdf The [CreatePdfForHealthCategories] to generate a presentable pdf.
  */
 @HiltViewModel(assistedFactory = HealthCategoryScreenViewModel.Factory::class)
 internal class HealthCategoryScreenViewModel
@@ -46,6 +48,7 @@ internal class HealthCategoryScreenViewModel
   constructor(
     @Assisted("category") private val category: HealthCareCategory,
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val mgoResourceRepository: MgoResourceRepository,
@@ -64,7 +67,7 @@ internal class HealthCategoryScreenViewModel
     private val _viewState: MutableStateFlow<HealthCategoryScreenViewState> = MutableStateFlow(initialState)
     val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
-    private val _openPdfViewer = MutableSharedFlow<File>(extraBufferCapacity = 1)
+    private val _openPdfViewer = MutableSharedFlow<PdfViewerState>(extraBufferCapacity = 1)
     val openPdfViewer = _openPdfViewer.asSharedFlow()
 
     init {
@@ -120,14 +123,15 @@ internal class HealthCategoryScreenViewModel
     }
 
     fun generatePdf() {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
+        _openPdfViewer.tryEmit(PdfViewerState.Loading)
         val listItemGroups = (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup ?: listOf()
         val file =
           createPdf.invoke(
             category = category,
             listItemGroups = listItemGroups,
           )
-        _openPdfViewer.tryEmit(file)
+        _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
       }
     }
 

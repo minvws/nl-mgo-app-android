@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,9 +38,9 @@ internal fun UiSchemaRowReference(
   onClick: (reference: UISchemaRow.Reference) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  Row(modifier = Modifier.clickable { onClick(row) }, verticalAlignment = Alignment.CenterVertically) {
+  Row(modifier = Modifier.clickable { onClick(row) }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
     Column(
-      modifier = modifier.weight(1f).padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
+      modifier = modifier.weight(1f),
       verticalArrangement = Arrangement.Center,
     ) {
       val heading = row.heading
@@ -56,13 +58,11 @@ internal fun UiSchemaRowReference(
       )
     }
 
-    IconButton(onClick = {}) {
-      Icon(
-        painter = painterResource(R.drawable.ic_chevron),
+    Icon(
+        imageVector = Icons.Rounded.ChevronRight,
         contentDescription = stringResource(CopyR.string.common_next),
         tint = MaterialTheme.colorScheme.symbolsSecondary(),
-      )
-    }
+    )
   }
 }
 

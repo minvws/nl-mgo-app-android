@@ -51,7 +51,6 @@ import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
@@ -106,7 +105,7 @@ fun HealthCategoryScreen(
       positiveButtonText = stringResource(CopyR.string.export_pdf_dialog_create_document),
       positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
       negativeButtonText = stringResource(CopyR.string.common_cancel),
-      negativeButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(),
+      negativeButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
       onClickPositiveButton = {
         showExportPdfDialog = false
         viewModel.generatePdf()

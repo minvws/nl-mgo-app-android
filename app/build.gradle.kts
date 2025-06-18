@@ -202,4 +202,7 @@ dependencies {
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.test.core)
+  androidTestImplementation(libs.compose.ui.test.junit4)
+  androidTestImplementation(projects.component.pincode)
 }

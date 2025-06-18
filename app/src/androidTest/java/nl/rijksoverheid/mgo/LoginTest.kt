@@ -1,19 +1,33 @@
 package nl.rijksoverheid.mgo
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.test.core.app.launchActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import nl.rijksoverheid.mgo.robots.AuthRobot
+import nl.rijksoverheid.mgo.robots.OnboardingRobot
+import nl.rijksoverheid.mgo.robots.PinCodeLoginScreenRobot
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
+/**
+ * This test validates that after logging in (= entering a valid pin code), the dashboard is showing.
+ */
 @HiltAndroidTest
 class LoginTest {
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
 
   @get:Rule
-  val activityRule = ActivityScenarioRule(MainActivity::class.java)
+  val composeTestRule = createComposeRule()
+
+  @Inject
+  lateinit var authRobot: AuthRobot
+
+  @Inject
+  lateinit var onboardingRobot: OnboardingRobot
 
   @Before
   fun setup() {
@@ -21,7 +35,18 @@ class LoginTest {
   }
 
   @Test
-  fun launchApp() {
-    Thread.sleep(5000)
+  fun loginTest() {
+    onboardingRobot
+      .skipOnboarding()
+
+    authRobot
+      .setAuthenticatedWithDigid()
+      .setPinCode(listOf(1, 2, 3, 4, 5))
+
+    launchActivity<MainActivity>().use {
+      PinCodeLoginScreenRobot(composeTestRule)
+        .pressKeyboardNumbers(listOf(1, 2, 3, 4, 5))
+        .assertDashboardIsDisplayed()
+    }
   }
 }

@@ -76,7 +76,7 @@
   <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
   <string name="pincode.confirm.subheading">Voer je 5-cijferige code nog een keer in.</string>
   <string name="pincode.confirm.mismatch">Code is anders dan de vorige</string>
-  <string name="pincode.validation.heading">Welkom terug</string>
+  <string name="pincode.validation.heading">Welkom</string>
   <string name="pincode.validation.subheading">Vul je toegangscode in om door te gaan</string>
   <string name="pincode.validation.wrong">Deze code klopt niet</string>
   <string name="pincode.voiceover" formatted="false">Veld %s van %s, %s</string>
@@ -94,7 +94,7 @@
   <string name="health_category.empty.subheading">Er is hier niets opgeslagen.</string>
   <string name="account_removed.heading">Je account is verwijderd</string>
   <string name="account_removed.subheading">Je gegevens zijn verwijderd van je telefoon. Ze blijven wel veilig bewaard bij je zorgaanbieders. Als je een nieuw account maakt, kun je je gegevens opnieuw ophalen.</string>
-  <string name="account_removed.action">Oké, begrepen</string>
+  <string name="account_removed.action">Begrepen</string>
   <string name="biometric_setup.heading">Inloggen met je vingerafdruk</string>
   <string name="biometric_setup.subheading">Beveilig de app met je vingerafdruk. Zo log je de volgende keer sneller in. Je kunt ook je toegangscode blijven gebruiken.</string>
   <string name="biometric_setup.enable">Vingerafdruk aanzetten</string>

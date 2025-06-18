@@ -16,7 +16,7 @@ import javax.inject.Inject
  * This test validates that after logging in (= entering a valid pin code), the dashboard is showing.
  */
 @HiltAndroidTest
-class LoginTest {
+class PinCodeLoginTest {
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
 
@@ -35,7 +35,7 @@ class LoginTest {
   }
 
   @Test
-  fun loginTest() {
+  fun pinCodeLoginTest() {
     onboardingRobot
       .skipOnboarding()
 
@@ -45,8 +45,9 @@ class LoginTest {
 
     launchActivity<MainActivity>().use {
       PinCodeLoginScreenRobot(composeTestRule)
-        .pressKeyboardNumbers(listOf(1, 2, 3, 4, 5))
-        .assertDashboardIsDisplayed()
+        .clickKeyboardNumbers(listOf(1, 2, 3, 4, 5))
+        .gotoDashboardBottomBarScreen()
+        .assertIsDisplayed()
     }
   }
 }

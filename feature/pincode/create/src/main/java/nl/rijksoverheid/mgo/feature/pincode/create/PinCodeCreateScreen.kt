@@ -16,6 +16,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +31,10 @@ import nl.rijksoverheid.mgo.component.pincode.PinCodeWithKeyboard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object PinCodeCreateScreenTestTag {
+  const val SCREEN = "PinCodeCreateScreen"
+}
 
 /**
  * Composable that shows a screen where you can enter a pin code for storage.
@@ -74,7 +79,7 @@ private fun PinCodeCreateScreenContent(
   val focusManager = LocalFocusManager.current
   val subHeadingFocusRequester = remember { FocusRequester() }
   Scaffold(
-    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).testTag(PinCodeCreateScreenTestTag.SCREEN),
     topBar = {
       MgoLargeTopAppBar(
         title = stringResource(id = CopyR.string.pincode_create_heading),

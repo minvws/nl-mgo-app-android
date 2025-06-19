@@ -1,11 +1,9 @@
 package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.test.core.app.launchActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import nl.rijksoverheid.mgo.robots.AuthRobot
-import nl.rijksoverheid.mgo.robots.OnboardingRobot
+import nl.rijksoverheid.mgo.robots.LaunchAppRobot
 import nl.rijksoverheid.mgo.robots.PinCodeLoginScreenRobot
 import org.junit.Before
 import org.junit.Rule
@@ -21,10 +19,7 @@ class PinCodeForgotTest {
   val composeTestRule = createComposeRule()
 
   @Inject
-  lateinit var authRobot: AuthRobot
-
-  @Inject
-  lateinit var onboardingRobot: OnboardingRobot
+  lateinit var launchAppRobot: LaunchAppRobot
 
   @Before
   fun setup() {
@@ -33,14 +28,11 @@ class PinCodeForgotTest {
 
   @Test
   fun pinCodeForgotTest() {
-    onboardingRobot
-      .skipOnboarding()
-
-    authRobot
-      .setAuthenticatedWithDigid()
-      .setPinCode(listOf(1, 2, 3, 4, 5))
-
-    launchActivity<MainActivity>().use {
+    launchAppRobot.launchApp(
+      skipOnboarding = true,
+      pinCode = listOf(1, 2, 3, 4, 5),
+      digidAuthenticated = true,
+    ) {
       PinCodeLoginScreenRobot(composeTestRule)
         .clickForgotPinCodeButton()
         .clickCreateNewAccount()

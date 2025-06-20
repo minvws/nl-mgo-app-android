@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +45,11 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.organizations.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object OrganizationsScreenTestTag {
+  const val ORGANIZATION_CARD = "OrganizationsScreenOrganizationCard"
+  const val ADD_ORGANIZATION_BUTTON = "OrganizationsScreenAddOrganizationButton"
+}
 
 /**
  * Composable that shows a screen with a list of added health care providers.
@@ -202,7 +208,8 @@ private fun LazyListScope.WithOrganizations(
     MgoCard(
       modifier =
         Modifier
-          .padding(vertical = 16.dp),
+          .padding(vertical = 16.dp)
+          .testTag(OrganizationsScreenTestTag.ADD_ORGANIZATION_BUTTON),
     ) {
       Row(
         modifier =
@@ -273,7 +280,7 @@ private fun OrganizationCard(
       }
     }
 
-  MgoCard(modifier = modifier, shape = shape) {
+  MgoCard(modifier = modifier.testTag(OrganizationsScreenTestTag.ORGANIZATION_CARD), shape = shape) {
     Column(modifier = Modifier.fillMaxWidth().clickable { onClick() }) {
       Text(
         modifier = Modifier.padding(16.dp),

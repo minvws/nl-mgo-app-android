@@ -20,3 +20,16 @@ fun ComposeTestRule.assertListItems(listItemTestTag: String) {
     "Expected more than 1 item with tag '$listItemTestTag', but found ${nodes.size}."
   }
 }
+
+fun ComposeTestRule.assertListItems(
+  listItemTestTag: String,
+  amount: Int,
+) {
+  val nodes =
+    onAllNodesWithTag(listItemTestTag)
+      .fetchSemanticsNodes()
+
+  assert(nodes.size == amount) {
+    "Expected $amount items with tag '$listItemTestTag', but found ${nodes.size}."
+  }
+}

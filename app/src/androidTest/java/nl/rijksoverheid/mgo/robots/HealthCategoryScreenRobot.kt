@@ -6,11 +6,11 @@ import nl.rijksoverheid.mgo.utils.assertListItems
 import nl.rijksoverheid.mgo.utils.waitForListItems
 
 class HealthCategoryScreenRobot(
-  private val composeTestResult: ComposeTestRule,
+  private val composeTestRule: ComposeTestRule,
 ) {
   fun assertCardsExists(): HealthCategoryScreenRobot {
-    composeTestResult.waitForListItems(HealthCategoryScreenTestTag.CARD)
-    composeTestResult.assertListItems(HealthCategoryScreenTestTag.CARD)
+    composeTestRule.waitForListItems(HealthCategoryScreenTestTag.CARD)
+    composeTestRule.assertListItems(HealthCategoryScreenTestTag.CARD)
     return this
   }
 }

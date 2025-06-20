@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 /**
  * Represents the root navigation of the bottom bar item.
  */
-internal sealed class BottomBarItemNavigation {
+sealed class BottomBarItemNavigation {
   @Serializable
   data object Overview : BottomBarItemNavigation()
 

@@ -190,6 +190,7 @@ private fun BottomNavigationBar(
     BottomBarItem.entries.forEachIndexed { index, item ->
       val isSelected = item.route == currentRoute
       NavigationBarItem(
+        modifier = Modifier.testTag(item.testTag),
         icon = {
           val iconId =
             if (isSelected) {

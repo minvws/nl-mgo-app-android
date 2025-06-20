@@ -16,4 +16,6 @@ class OrganizationListScreenRobot(
   }
 
   fun gotoHealthCareCategoriesScreen(): HealthCategoriesScreenRobot = HealthCategoriesScreenRobot(composeTestRule)
+
+  fun gotoOrganizationsScreen(): OrganizationsScreenRobot = OrganizationsScreenRobot(composeTestRule)
 }

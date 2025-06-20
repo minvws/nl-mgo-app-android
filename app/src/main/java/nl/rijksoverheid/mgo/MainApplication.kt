@@ -2,39 +2,18 @@ package nl.rijksoverheid.mgo
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
-import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
-import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
-import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltAndroidApp
 class MainApplication : Application() {
   @Inject
-  lateinit var featureToggleRepository: FeatureToggleRepository
-
-  @Inject
-  lateinit var featureToggleLocalDataSource: FeatureToggleLocalDataSource
-
-  @Inject
-  lateinit var fhirBinaryRepository: FhirBinaryRepository
-
-  @Inject
-  lateinit var jsRuntimeRepository: JsRuntimeRepository
-
-  @Inject
-  @Named("ioDispatcher")
-  lateinit var ioDispatcher: CoroutineDispatcher
+  lateinit var appInitializer: AppInitializer
 
   private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -43,16 +22,7 @@ class MainApplication : Application() {
     if (BuildConfig.DEBUG) {
       plant(Timber.DebugTree())
     }
-
-    // Initialize feature toggles
-    runBlocking { featureToggleLocalDataSource.init(featureToggleRepository.getAll()) }
-
-    coroutineScope.launch(ioDispatcher) {
-      jsRuntimeRepository.load()
-
-      // Remove any left over downloaded files on each app launch
-      launch { fhirBinaryRepository.cleanup() }
-    }
+    appInitializer(coroutineScope)
   }
 
   @Deprecated("Deprecated in Java")

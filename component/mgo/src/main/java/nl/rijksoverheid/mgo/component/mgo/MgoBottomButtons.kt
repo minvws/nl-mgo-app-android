@@ -60,7 +60,7 @@ fun MgoBottomButtons(
             Modifier
               .fillMaxWidth()
               .padding(bottom = 16.dp)
-                .testTag(MgoBottomButtonsTestTag.SECONDARY_BUTTON),
+              .testTag(MgoBottomButtonsTestTag.SECONDARY_BUTTON),
           buttonText = secondaryButton.text,
           onClick = secondaryButton.onClick,
           buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
@@ -70,7 +70,7 @@ fun MgoBottomButtons(
         modifier =
           Modifier
             .fillMaxWidth()
-              .testTag(MgoBottomButtonsTestTag.PRIMARY_BUTTON),
+            .testTag(MgoBottomButtonsTestTag.PRIMARY_BUTTON),
         buttonText = primaryButton.text,
         onClick = primaryButton.onClick,
         buttonTheme = primaryButton.overrideTheme ?: MgoButtonTheme.PRIMARY_DEFAULT,

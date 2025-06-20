@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -35,6 +36,10 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object HealthCategoriesListItemTestTag {
+  const val LIST_ITEM = "HealthCategoriesListItem"
+}
 
 /**
  * Composable that shows a list item representing a health care category.
@@ -96,7 +101,7 @@ internal fun HealthCategoriesListItemContent(
   modifier: Modifier = Modifier,
   hasDivider: Boolean = true,
 ) {
-  Column(modifier = modifier.fillMaxWidth()) {
+  Column(modifier = modifier.fillMaxWidth().testTag(HealthCategoriesListItemTestTag.LIST_ITEM)) {
     Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
       Icon(painter = painterResource(id = icon), contentDescription = null, tint = iconColor)
       Text(

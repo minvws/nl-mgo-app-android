@@ -22,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,7 +39,6 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TAG_ORGANIZATION_SEARCH_CARD
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -194,8 +192,7 @@ private fun ResultContent(
   OrganizationListAutomaticCard(
     modifier =
       Modifier
-        .padding(bottom = 8.dp)
-        .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+        .padding(bottom = 8.dp),
     organization = searchResult,
     onCheckedChange = { checked ->
       updateOrganization(searchResult, checked)

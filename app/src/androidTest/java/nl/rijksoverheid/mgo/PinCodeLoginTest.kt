@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo
 import androidx.compose.ui.test.junit4.createComposeRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.robots.LaunchAppRobot
 import nl.rijksoverheid.mgo.robots.PinCodeLoginScreenRobot
 import org.junit.Before
@@ -30,16 +31,17 @@ class PinCodeLoginTest {
   }
 
   @Test
-  fun pinCodeLoginTest() {
-    launchAppRobot.launchApp(
-      skipOnboarding = true,
-      pinCode = listOf(1, 2, 3, 4, 5),
-      digidAuthenticated = true,
-    ) {
-      PinCodeLoginScreenRobot(composeTestRule)
-        .clickKeyboardNumbers(listOf(1, 2, 3, 4, 5))
-        .gotoDashboardBottomBarScreen()
-        .assertIsDisplayed()
+  fun pinCodeLoginTest() =
+    runTest {
+      launchAppRobot.launchApp(
+        skipOnboarding = true,
+        pinCode = listOf(1, 2, 3, 4, 5),
+        digidAuthenticated = true,
+      ) {
+        PinCodeLoginScreenRobot(composeTestRule)
+          .clickKeyboardNumbers(listOf(1, 2, 3, 4, 5))
+          .gotoDashboardBottomBarScreen()
+          .assertIsDisplayed()
+      }
     }
-  }
 }

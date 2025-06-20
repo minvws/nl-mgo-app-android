@@ -22,9 +22,8 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 
 object KeyboardItemNumberTestTag {
-
   fun button(number: Int): String {
-    return "keyboardItemButton+${number}"
+    return "keyboardItemButton+$number"
   }
 }
 

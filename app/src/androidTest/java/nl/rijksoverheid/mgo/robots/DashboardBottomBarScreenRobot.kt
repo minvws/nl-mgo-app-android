@@ -24,5 +24,14 @@ class DashboardBottomBarScreenRobot(
     return this
   }
 
+  fun selectSettingsTab(): DashboardBottomBarScreenRobot {
+    composeTestRule
+      .onNodeWithTag(BottomBarItem.SETTINGS.testTag)
+      .performClick()
+    return this
+  }
+
   fun gotoOrganizationsScreen(): OrganizationsScreenRobot = OrganizationsScreenRobot(composeTestRule)
+
+  fun gotoSettingsHomeScreen(): SettingsHomeScreenRobot = SettingsHomeScreenRobot(composeTestRule)
 }

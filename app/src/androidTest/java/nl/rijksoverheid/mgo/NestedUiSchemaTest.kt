@@ -14,7 +14,7 @@ import org.junit.Test
 import javax.inject.Inject
 
 /**
- * This test validates that when a second organization is added, it is correctly added in the organizations tab.
+ * This test validates that when clicking through medical data, the nesting works as expected and shows the correct screens.
  */
 @HiltAndroidTest
 class NestedUiSchemaTest {

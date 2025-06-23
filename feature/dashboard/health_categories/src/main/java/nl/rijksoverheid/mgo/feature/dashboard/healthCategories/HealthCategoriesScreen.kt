@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import getStringResourceByName
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoButton
@@ -158,13 +158,13 @@ private fun HealthCategoriesScreenContent(
       Column(
         modifier = Modifier.padding(contentPadding),
       ) {
-        LazyColumn(
+        MgoAutoScrollLazyColumn(
           modifier = Modifier.weight(1f).testTag(HealthCategoriesScreenTestTag.LIST),
           contentPadding = PaddingValues(16.dp),
           state = lazyListState,
-        ) {
+        ) { canScroll ->
           if (viewState.providers.isEmpty()) {
-            NoProviders(false)
+            NoProviders(canScroll)
           } else {
             WithProviders(
               subHeading = subHeading,

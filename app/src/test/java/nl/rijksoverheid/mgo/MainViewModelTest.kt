@@ -28,7 +28,7 @@ internal class MainViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val featureToggleRepository = TestFeatureToggleRepository()
+  private val featureToggleRepository = TestFeatureToggleRepository(listOf())
   private val keyValueStore = TestKeyValueStore()
   private val hasSeenOnboarding = TestHasSeenOnboarding()
   private val hasPinCode = TestHasPinCode()

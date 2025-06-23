@@ -197,6 +197,8 @@ dependencies {
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.digid))
   testImplementation(testFixtures(projects.framework.featuretoggle))
+  testImplementation(testFixtures(projects.data.healthcare))
+  testImplementation(testFixtures(projects.data.fhirParser))
 
   androidTestImplementation(libs.dagger.hilt.testing)
   androidTestImplementation(libs.junit)

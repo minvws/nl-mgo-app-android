@@ -49,6 +49,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 object OrganizationsScreenTestTag {
   const val ORGANIZATION_CARD = "OrganizationsScreenOrganizationCard"
   const val ADD_ORGANIZATION_BUTTON = "OrganizationsScreenAddOrganizationButton"
+  const val EMPTY_STATE = "OrganizationsScreenEmptyState"
 }
 
 /**
@@ -145,7 +146,14 @@ private fun OrganizationsScreenContent(
 private fun LazyListScope.NoOrganizations(canScroll: Boolean) {
   item {
     Column(
-      modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
+      modifier =
+        if (canScroll) {
+          Modifier.testTag(
+            OrganizationsScreenTestTag.EMPTY_STATE,
+          )
+        } else {
+          Modifier.fillParentMaxSize().testTag(OrganizationsScreenTestTag.EMPTY_STATE)
+        },
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {

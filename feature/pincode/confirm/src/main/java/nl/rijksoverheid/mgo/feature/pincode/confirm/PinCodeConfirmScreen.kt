@@ -83,7 +83,7 @@ private fun PinCodeConfirmScreenContent(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       MgoLargeTopAppBar(
-        title = stringResource(id = CopyR.string.pincode_create_heading),
+        title = stringResource(id = CopyR.string.pincode_confirm_heading),
         scrollBehavior = scrollBehavior,
         onNavigateBack = onNavigateBack,
       )

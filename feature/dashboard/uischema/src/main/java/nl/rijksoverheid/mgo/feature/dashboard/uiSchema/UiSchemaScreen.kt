@@ -34,7 +34,8 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
+import nl.rijksoverheid.mgo.component.theme.borderSecondary
+import nl.rijksoverheid.mgo.component.theme.headlineExtraSmall
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
@@ -144,7 +145,7 @@ private fun UiSchemaScreenContent(
               section = section,
               onClickReference = onClickReference,
               onClickFile = onClickFile,
-              modifier = Modifier.padding(bottom = 24.dp),
+              modifier = Modifier.padding(bottom = 32.dp),
             )
           }
         }
@@ -164,13 +165,13 @@ private fun UiSchemaSection(
     val heading = section.heading
     if (heading != null) {
       Text(
-        modifier = Modifier.padding(bottom = 8.dp),
+        modifier = Modifier.padding(bottom = 12.dp),
         text = heading,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.headlineExtraSmall,
         fontWeight = FontWeight.Bold,
       )
     } else {
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(12.dp))
     }
 
     MgoCard(
@@ -211,8 +212,8 @@ private fun UiSchemaSection(
                 Modifier
                   .fillMaxWidth()
                   .padding(start = 16.dp),
-              color = MaterialTheme.colorScheme.borderPrimary(),
-              thickness = 0.33.dp,
+              color = MaterialTheme.colorScheme.borderSecondary(),
+              thickness = 1.dp,
             )
           }
         }

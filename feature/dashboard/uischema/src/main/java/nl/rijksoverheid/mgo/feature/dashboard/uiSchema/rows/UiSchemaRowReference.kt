@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -22,7 +20,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -59,9 +56,9 @@ internal fun UiSchemaRowReference(
     }
 
     Icon(
-        imageVector = Icons.Rounded.ChevronRight,
-        contentDescription = stringResource(CopyR.string.common_next),
-        tint = MaterialTheme.colorScheme.symbolsSecondary(),
+      imageVector = Icons.Rounded.ChevronRight,
+      contentDescription = stringResource(CopyR.string.common_next),
+      tint = MaterialTheme.colorScheme.symbolsSecondary(),
     )
   }
 }

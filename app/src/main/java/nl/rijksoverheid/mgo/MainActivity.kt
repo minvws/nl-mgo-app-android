@@ -18,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
@@ -147,9 +146,8 @@ class MainActivity : FragmentActivity() {
 
   @Composable
   private fun CheckAppLock(viewModel: MainViewModel) {
-    val application = (LocalContext.current.applicationContext as MainApplication)
     LaunchedEffect(Unit) {
-      application.appLifecycleState.collectLatest { state ->
+      viewModel.appLifecycleRepository.observeLifecycle().collectLatest { state ->
         when (state) {
           AppLifecycleState.FromBackground -> {
             viewModel.checkAppLock()

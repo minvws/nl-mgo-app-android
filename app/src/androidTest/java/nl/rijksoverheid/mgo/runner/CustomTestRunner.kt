@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo
+package nl.rijksoverheid.mgo.runner
 
 import android.app.Application
 import android.content.Context
@@ -10,7 +10,5 @@ class CustomTestRunner : AndroidJUnitRunner() {
     cl: ClassLoader?,
     name: String?,
     context: Context?,
-  ): Application {
-    return super.newApplication(cl, HiltTestApplication::class.java.name, context)
-  }
+  ): Application = super.newApplication(cl, HiltTestApplication::class.java.name, context)
 }

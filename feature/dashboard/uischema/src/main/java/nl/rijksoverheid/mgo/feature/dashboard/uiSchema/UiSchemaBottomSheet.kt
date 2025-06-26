@@ -7,6 +7,8 @@ import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
@@ -25,6 +27,10 @@ data class UiSchema(
   val mgoResource: MgoResource,
 )
 
+object UiSchemaBottomSheetTestTag {
+  const val SHEET = "UiSchemaBottomSheet"
+}
+
 @Composable
 fun UiSchemaBottomSheet(
   organization: MgoOrganization,
@@ -35,6 +41,7 @@ fun UiSchemaBottomSheet(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
+    modifier = Modifier.testTag(UiSchemaBottomSheetTestTag.SHEET),
     contentWindowInsets = { WindowInsets(0) },
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,

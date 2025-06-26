@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -25,6 +26,11 @@ data class MgoBottomButton(
   val overrideTheme: MgoButtonTheme? = null,
   val isLoading: Boolean = false,
 )
+
+object MgoBottomButtonsTestTag {
+  const val PRIMARY_BUTTON = "MgoBottomButtonsPrimaryButton"
+  const val SECONDARY_BUTTON = "MgoBottomButtonsSecondaryButton"
+}
 
 @Composable
 fun MgoBottomButtons(
@@ -53,7 +59,8 @@ fun MgoBottomButtons(
           modifier =
             Modifier
               .fillMaxWidth()
-              .padding(bottom = 16.dp),
+              .padding(bottom = 16.dp)
+              .testTag(MgoBottomButtonsTestTag.SECONDARY_BUTTON),
           buttonText = secondaryButton.text,
           onClick = secondaryButton.onClick,
           buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
@@ -62,7 +69,8 @@ fun MgoBottomButtons(
       MgoButton(
         modifier =
           Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .testTag(MgoBottomButtonsTestTag.PRIMARY_BUTTON),
         buttonText = primaryButton.text,
         onClick = primaryButton.onClick,
         buttonTheme = primaryButton.overrideTheme ?: MgoButtonTheme.PRIMARY_DEFAULT,

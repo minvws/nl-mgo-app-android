@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,12 @@ import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.pincode.R
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
+
+object KeyboardItemNumberTestTag {
+  fun button(number: Int): String {
+    return "keyboardItemButton+$number"
+  }
+}
 
 /**
  * Composable that shows a number in a keyboard, to use in [Keyboard].
@@ -33,7 +40,7 @@ internal fun KeyboardItemNumber(
   modifier: Modifier = Modifier,
 ) {
   Button(
-    modifier = modifier,
+    modifier = modifier.testTag(KeyboardItemNumberTestTag.button(number)),
     colors =
       ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.colorScheme.surface,

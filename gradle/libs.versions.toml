@@ -92,7 +92,7 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 datastore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
-androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidx-test-core" }
+androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test-core" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp-mockwebserver" }

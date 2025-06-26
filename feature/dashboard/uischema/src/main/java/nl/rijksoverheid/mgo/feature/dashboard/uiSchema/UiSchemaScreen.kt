@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,6 +43,10 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
+
+object UiSchemaScreenTestTag {
+  const val LIST = "UiSchemaScreenList"
+}
 
 /**
  * Composable that shows a screen that displays health care data.
@@ -129,6 +134,7 @@ private fun UiSchemaScreenContent(
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {
         LazyColumn(
+          modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST),
           contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) {

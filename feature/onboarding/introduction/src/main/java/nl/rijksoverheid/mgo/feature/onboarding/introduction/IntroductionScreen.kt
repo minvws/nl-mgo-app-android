@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +25,10 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+object IntroductionScreenTestTag {
+  const val SCREEN = "IntroductionScreen"
+}
+
 /**
  * Composable that shows a screen that introduces the app.
  *
@@ -33,6 +38,7 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
   val scrollState = rememberScrollState()
   Scaffold(
+    modifier = Modifier.testTag(IntroductionScreenTestTag.SCREEN),
     contentWindowInsets = WindowInsets.statusBars,
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {

@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +30,6 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
-import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.TEST_TAG_ORGANIZATION_SEARCH_CARD
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -52,7 +50,10 @@ internal fun OrganizationListAutomaticCard(
   val cardBackgroundColor =
     when (cardState) {
       OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
-      else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
+      else ->
+        MaterialTheme.colorScheme.background
+          .copy(alpha = 0.5f)
+          .compositeOver(MaterialTheme.colorScheme.surface)
     }
   MgoCard(modifier = modifier) {
     Row(
@@ -62,9 +63,7 @@ internal fun OrganizationListAutomaticCard(
           .clickable(enabled = cardState != OrganizationSearchCardState.NOT_SUPPORTED) {
             val isChecked = cardState == OrganizationSearchCardState.ADDED
             onCheckedChange(!isChecked)
-          }
-          .padding(12.dp)
-          .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+          }.padding(12.dp),
     ) {
       Column(modifier = Modifier.weight(1f)) {
         Text(

@@ -63,8 +63,7 @@ internal class OrganizationListManualScreenViewModel
           .search(name = name, city = city)
           .catch { error ->
             _viewState.update { viewState -> viewState.copy(loading = false, error = error) }
-          }
-          .collectLatest { results ->
+          }.collectLatest { results ->
             _viewState.update { viewState -> viewState.copy(loading = false, results = results, error = null) }
           }
       }

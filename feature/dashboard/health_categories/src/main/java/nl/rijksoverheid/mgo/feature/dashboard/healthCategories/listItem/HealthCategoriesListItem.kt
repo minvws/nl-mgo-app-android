@@ -6,11 +6,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,7 +27,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.supportContacts
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
@@ -109,7 +107,7 @@ internal fun HealthCategoriesListItemContent(
         text = stringResource(id = title),
         style =
           MaterialTheme.typography
-            .bodySmall,
+            .bodyMedium,
       )
       when (listItemState) {
         HealthCategoriesListItemState.LOADING -> {
@@ -140,13 +138,11 @@ internal fun HealthCategoriesListItemContent(
       }
     }
     if (hasDivider) {
-      Divider(
+      HorizontalDivider(
         modifier =
           Modifier
             .fillMaxWidth()
-            .height(0.33.dp)
-            .padding(start = 16.dp),
-        color = MaterialTheme.colorScheme.borderPrimary(),
+            .padding(start = 58.dp),
       )
     }
   }

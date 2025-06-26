@@ -76,8 +76,8 @@
   <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
   <string name="pincode.confirm.subheading">Voer je 5-cijferige code nog een keer in.</string>
   <string name="pincode.confirm.mismatch">Code is anders dan de vorige</string>
-  <string name="pincode.validation.heading">Welkom</string>
-  <string name="pincode.validation.subheading">Vul je toegangscode in om door te gaan</string>
+  <string name="pincode.validation.heading">Welkom terug</string>
+  <string name="pincode.validation.subheading">Voer je toegangscode in om door te gaan</string>
   <string name="pincode.validation.wrong">Deze code klopt niet</string>
   <string name="pincode.voiceover" formatted="false">Veld %s van %s, %s</string>
   <string name="toast.organization_removed.heading">Zorgaanbieder verwijderd</string>
@@ -216,7 +216,7 @@
   <string name="settings.other.heading">Overige</string>
   <string name="settings.reset_app.heading">Stel app opnieuw in</string>
   <string name="settings.reset_app.subheading">Je verwijdert al je bewaarde zorgaanbieders en je toegangscode.</string>
-  <string name="settings.security.biometric.subheading">Gebruik dit in plaats van je toegangscode om veilig en nog sneller in te loggen.</string>
+  <string name="settings.security.biometric.subheading">Gebruik dit in plaats van je toegangscode om veilig en nog sneller in te loggen</string>
   <string name="settings.security.biometric.heading">Inloggen met vingerafdruk</string>
   <string name="settings.about_this_app.version">Versie</string>
   <string name="settings.about_this_app.safety">Veilig gebruik</string>
@@ -255,9 +255,9 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="screenshotalert.action">OK</string>
   <string name="export_pdf.page">Pagina %1$s van %2$s</string>
   <string name="pdf_viewer.loading">Document maken…</string>
-  <string name="export_pdf.dialog.heading">Document met %1$s maken?</string>
-  <string name="export_pdf.dialog.subheading">Je maakt een PDF-document met je medische gegevens. Je kunt het daarna op je telefoon bewaren.</string>
-  <string name="export_pdf.dialog.create_document">Document maken</string>
+  <string name="export_pdf.dialog.heading">Pdf maken van deze lijst?</string>
+  <string name="export_pdf.dialog.subheading">Je maakt een document met je medische gegevens. Die kun je daarna op je telefoon opslaan.</string>
+  <string name="export_pdf.dialog.create_document">Maak pdf</string>
   <string name="export_pdf.subheading">Opgeslagen op %1$s om %2$s uur</string>
   <string name="export_pdf.footer">Dit document is gemaakt met Mijn Gezondheidsoverzicht. Het bevat jouw medische gegevens,\nafkomstig van zorgaanbieders die jij hebt toegevoegd. Jij bent zelf verantwoordelijk voor wat je\nmet deze informatie doet. De gegevens zijn niet gecontroleerd op juistheid of volledigheid.</string>
   <string name="export_pdf.no_data">Geen gegevens beschikbaar</string>

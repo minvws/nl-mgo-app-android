@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,6 +51,7 @@ private fun SettingsAboutAccessibilityScreenContent(
           Column(modifier = Modifier.padding(16.dp)) {
             Text(
               text = stringResource(CopyR.string.settings_accessibility_subheading),
+              style = MaterialTheme.typography.bodyMedium,
             )
 
             // Button disabled for now, since there is no decision if a url is needed

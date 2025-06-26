@@ -169,6 +169,7 @@ private fun SettingsScreenContent(
                   .clickable { onClickSecuritySettings() },
               icon = Icons.Outlined.Lock,
               heading = CopyR.string.settings_security_heading,
+              hasDivider = viewState.isDebug,
             )
           }
           if (viewState.isDebug) {

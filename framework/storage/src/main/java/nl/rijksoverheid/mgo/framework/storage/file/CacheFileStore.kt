@@ -7,6 +7,12 @@ import java.io.File
  */
 interface CacheFileStore {
   /**
+   * Get a file from cache.
+   * @param name The file of the file (with extension).
+   */
+  fun getFile(name: String): File
+
+  /**
    * Save a file in cache.
    * @param name The name of the file (without extension).
    * @param contentType The contentType, to be used in the [name].

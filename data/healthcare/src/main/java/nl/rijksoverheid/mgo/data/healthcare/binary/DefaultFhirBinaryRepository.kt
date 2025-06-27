@@ -51,11 +51,4 @@ internal class DefaultFhirBinaryRepository
           )
         }
     }
-
-    /**
-     * Removes all downloaded binaries from the store.
-     */
-    override suspend fun cleanup() {
-      cacheFileStore.deleteAll()
-    }
   }

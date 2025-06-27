@@ -21,6 +21,7 @@ import com.itextpdf.layout.properties.AreaBreakType
 import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import dagger.hilt.android.qualifiers.ApplicationContext
+import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import java.io.File
 import javax.inject.Inject
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -41,6 +42,7 @@ internal class DefaultPdfGenerator
   @Inject
   constructor(
     @ApplicationContext private val context: Context,
+    private val cacheFileStore: CacheFileStore,
   ) : PdfGenerator {
     /**
      * Creates a styled PDF document based on provided content.
@@ -54,7 +56,7 @@ internal class DefaultPdfGenerator
       fileName: String,
     ): File {
       // Initialize the PDF writer and document with A4 landscape orientation.
-      val file = File(context.cacheDir, fileName)
+      val file = cacheFileStore.getFile(fileName)
       val pdfWriter = PdfWriter(file)
       val pdfDoc = PdfDocument(pdfWriter)
       val document = Document(pdfDoc, PageSize.A4, false)

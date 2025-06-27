@@ -14,7 +14,9 @@ import java.io.InputStream
 /**
  * Store that handles files in app's cache directory.
  */
-internal class DefaultCacheFileStore(context: Context) : CacheFileStore {
+internal class DefaultCacheFileStore(
+  context: Context,
+) : CacheFileStore {
   private val cacheDir =
     File(context.cacheDir, "mgo").also {
       if (!it.exists()) {
@@ -23,6 +25,8 @@ internal class DefaultCacheFileStore(context: Context) : CacheFileStore {
         }
       }
     }
+
+  override fun getFile(name: String): File = File(cacheDir, name)
 
   /**
    * Save a file in cache.

@@ -8,6 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -18,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
@@ -63,40 +66,54 @@ class MainActivity : FragmentActivity() {
       val viewModel: MainViewModel = hiltViewModel()
       val appTheme by viewModel.appTheme.collectAsStateWithLifecycle()
 
+      val textSelectionColors =
+        TextSelectionColors(
+          handleColor = Color.Red,
+          backgroundColor = Color.Red,
+        )
+
       CompositionLocalProvider(
         LocalDashboardSnackbarPresenter provides DefaultLocalDashboardSnackbarPresenter(),
         LocalAppThemeProvider provides DefaultLocalAppThemeProvider(appTheme),
+        LocalTextSelectionColors provides textSelectionColors,
       ) {
         val isDarkTheme = LocalAppThemeProvider.current.appTheme.isDarkTheme()
         MgoTheme(modifier = Modifier.fillMaxSize(), isDarkTheme = isDarkTheme) {
           val startDestination = remember { viewModel.getStartDestination() }
           val navController = rememberNavController()
 
-          // The main navigation
-          RootNavigation(
-            navController = navController,
-            startDestination = startDestination,
-            viewModel = viewModel,
-          )
+          val textSelectionColors =
+            TextSelectionColors(
+              handleColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+              backgroundColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText().copy(alpha = 0.2f),
+            )
+          CompositionLocalProvider(LocalTextSelectionColors provides textSelectionColors) {
+            // The main navigation
+            RootNavigation(
+              navController = navController,
+              startDestination = startDestination,
+              viewModel = viewModel,
+            )
 
-          // Set if taking screenshots is enabled or not
-          CheckFlagSecure(viewModel = viewModel)
+            // Set if taking screenshots is enabled or not
+            CheckFlagSecure(viewModel = viewModel)
 
-          // Check if the app needs to be locked (show pin code screen above current screen)
-          CheckAppLock(viewModel = viewModel)
+            // Check if the app needs to be locked (show pin code screen above current screen)
+            CheckAppLock(viewModel = viewModel)
 
-          // Handle navigating to a dialog to display
-          HandleNavigateDialog(viewModel = viewModel, navController = navController)
+            // Handle navigating to a dialog to display
+            HandleNavigateDialog(viewModel = viewModel, navController = navController)
 
-          // Device rooted dialog
-          DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
+            // Device rooted dialog
+            DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
 
-          // Show a dialog if user takes a screenshot
-          HandleScreenshotDetection()
+            // Show a dialog if user takes a screenshot
+            HandleScreenshotDetection()
 
-          // Set correct status bar icon colors for selected theme
-          LaunchedEffect(isDarkTheme) {
-            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = !isDarkTheme
+            // Set correct status bar icon colors for selected theme
+            LaunchedEffect(isDarkTheme) {
+              WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = !isDarkTheme
+            }
           }
         }
       }

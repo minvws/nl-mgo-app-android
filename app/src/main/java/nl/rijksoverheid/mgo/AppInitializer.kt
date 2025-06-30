@@ -28,7 +28,7 @@ class AppInitializer
         jsRuntimeRepository.load()
 
         // Remove any files from cache on each fresh app launch
-        launch { cacheFileStore.deleteAll() }
+        cacheFileStore.deleteAll()
       }
     }
   }

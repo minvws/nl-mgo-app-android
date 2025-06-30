@@ -5,9 +5,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
-import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -16,7 +16,7 @@ class AppInitializer
   constructor(
     private val featureToggleRepository: FeatureToggleRepository,
     private val featureToggleLocalDataSource: FeatureToggleLocalDataSource,
-    private val fhirBinaryRepository: FhirBinaryRepository,
+    private val cacheFileStore: CacheFileStore,
     private val jsRuntimeRepository: JsRuntimeRepository,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
   ) {
@@ -27,8 +27,8 @@ class AppInitializer
       coroutineScope.launch(ioDispatcher) {
         jsRuntimeRepository.load()
 
-        // Remove any left over downloaded files on each app launch
-        launch { fhirBinaryRepository.cleanup() }
+        // Remove any files from cache on each fresh app launch
+        cacheFileStore.deleteAll()
       }
     }
   }

@@ -18,9 +18,4 @@ interface FhirBinaryRepository {
     resourceEndpoint: String,
     fhirBinary: String,
   ): Result<FhirBinary>
-
-  /**
-   * Removes all downloaded binaries from the store.
-   */
-  suspend fun cleanup()
 }

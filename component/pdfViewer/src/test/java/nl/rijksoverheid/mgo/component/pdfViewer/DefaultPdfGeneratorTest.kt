@@ -6,6 +6,7 @@ import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfReader
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -18,18 +19,20 @@ import java.io.File
 @RunWith(RobolectricTestRunner::class)
 class DefaultPdfGeneratorTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
+  private val cacheFileStore = TestCacheFileStore()
   private val generator =
-    DefaultPdfGenerator(context)
+    DefaultPdfGenerator(context, cacheFileStore)
 
   @Before
   fun setUp() {
+    cacheFileStore.setFile(File(context.cacheDir, "test.pdf"))
     context.cacheDir?.listFiles()?.forEach { file ->
       file.delete()
     }
   }
 
   @Test
-  fun generatePdf() =
+  fun testGeneratePdf() =
     runTest {
       val pdf =
         Pdf(

@@ -146,12 +146,4 @@ internal class UiSchemaScreenViewModel
         )
       }
     }
-
-    override fun onCleared() {
-      super.onCleared()
-      // Remove all downloaded files when leaving the screen
-      viewModelScope.launch {
-        fhirBinaryRepository.cleanup()
-      }
-    }
   }

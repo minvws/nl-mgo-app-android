@@ -25,10 +25,4 @@ class TestFhirBinaryRepository : FhirBinaryRepository {
     downloads++
     return downloadResult
   }
-
-  override suspend fun cleanup() {
-    downloads = 0
-  }
-
-  fun assertNoDownloads(): Boolean = downloads == 0
 }

@@ -28,6 +28,13 @@ internal class DefaultCacheFileStoreTest {
   }
 
   @Test
+  fun testGetFile() {
+    fileStore.saveFile("file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
+    val expectedFile = File(context.cacheDir, "mgo/file.pdf")
+    assertEquals(expectedFile, fileStore.getFile("file.pdf"))
+  }
+
+  @Test
   fun testSaveFile() {
     val file = fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
     assertTrue(file.exists())

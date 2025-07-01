@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.component.mgo
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Icon
@@ -67,15 +66,13 @@ fun MgoLargeTopAppBar(
     LargeTopAppBar(
       windowInsets = windowInsets,
       title = {
-        SelectionContainer {
-          Text(
-              modifier =
-                  Modifier
-                      .fillMaxWidth(),
-              text = title,
-              textAlign = textAlign,
-          )
-        }
+        Text(
+          modifier =
+            Modifier
+              .fillMaxWidth(),
+          text = title,
+          textAlign = textAlign,
+        )
       },
       navigationIcon = {
         onNavigateBack?.let {

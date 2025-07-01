@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -124,12 +125,14 @@ private fun UiSchemaScreenContent(
         if (isBottomSheet) Modifier.fillMaxHeight(0.95f) else Modifier,
       ),
     topBar = {
-      MgoLargeTopAppBar(
-        title = viewState.toolbarTitle,
-        onNavigateBack = onNavigateBack,
-        scrollBehavior = scrollBehavior,
-        windowInsets = if (isBottomSheet) WindowInsets(0) else TopAppBarDefaults.windowInsets,
-      )
+      SelectionContainer {
+        MgoLargeTopAppBar(
+          title = viewState.toolbarTitle,
+          onNavigateBack = onNavigateBack,
+          scrollBehavior = scrollBehavior,
+          windowInsets = if (isBottomSheet) WindowInsets(0) else TopAppBarDefaults.windowInsets,
+        )
+      }
     },
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {

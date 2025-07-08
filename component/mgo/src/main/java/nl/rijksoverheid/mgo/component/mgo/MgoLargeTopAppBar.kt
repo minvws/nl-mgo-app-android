@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.component.mgo
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Icon
@@ -19,7 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
@@ -69,9 +72,11 @@ fun MgoLargeTopAppBar(
         Text(
           modifier =
             Modifier
-              .fillMaxWidth(),
+              .fillMaxWidth()
+              .padding(end = 16.dp),
           text = title,
           textAlign = textAlign,
+          overflow = TextOverflow.Ellipsis,
         )
       },
       navigationIcon = {

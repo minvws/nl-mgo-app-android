@@ -89,6 +89,10 @@ android {
   }
 
   buildTypes {
+    debug {
+      manifestPlaceholders["allowHttpTraffic"] = true
+      manifestPlaceholders["networkSecurityConfig"] = "@xml/network_config_http"
+    }
     release {
       isMinifyEnabled = true
       isShrinkResources = true
@@ -96,6 +100,8 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro",
       )
+      manifestPlaceholders["allowHttpTraffic"] = false
+      manifestPlaceholders["networkSecurityConfig"] = "@xml/network_config_https"
     }
   }
 

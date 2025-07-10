@@ -15,19 +15,24 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreContactInformationTelephoneNumbers(
-    val system: String = "phone",
+    val system: System,
+    val _profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-ContactInformationTelephoneNumbers",
     val use: MgoCode? = null,
-    val telecomType: MgoCodeableConcept? = null,
     val comment: MgoString? = null,
     val value: MgoString? = null
 ) {
 
     init {
-        require(system == cg_str0) { "system not constant value $cg_str0 - $system" }
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
     }
 
+    @Serializable
+    data class System(
+        val telecomType: MgoCodeableConcept? = null
+    )
+
     companion object {
-        private const val cg_str0 = "phone"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-ContactInformationTelephoneNumbers"
     }
 
 }

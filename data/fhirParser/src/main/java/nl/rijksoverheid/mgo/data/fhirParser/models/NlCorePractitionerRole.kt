@@ -16,11 +16,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NlCorePractitionerRole(
     val identifier: List<MgoIdentifier>? = null,
-    val specialty: List<MgoCodeableConcept>? = null,
+    val specialty: MgoCodeableConcept? = null,
     val organization: MgoReference? = null,
     val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitionerrole",
     val fhirVersion: String = "R3",
-    val telecom: List<NlCoreContactpoint>? = null,
+    val telecom: List<Telecom>? = null,
     val id: String? = null,
     val referenceId: String,
     val resourceType: String
@@ -31,9 +31,25 @@ data class NlCorePractitionerRole(
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
+    @Serializable
+    data class Telecom(
+        val system: NlCoreOrganizationTelecomSystem? = null,
+        val _profile: String,
+        val use: NlCoreOrganizationTelecomSystem? = null,
+        val telecomType: MgoCodeableConcept? = null,
+        val value: MgoString? = null
+    ) {
+
+        init {
+            require(_profile == cg_str2) { "_profile not constant value $cg_str2 - $_profile" }
+        }
+
+    }
+
     companion object {
         private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitionerrole"
         private const val cg_str1 = "R3"
+        private const val cg_str2 = "http://fhir.nl/fhir/StructureDefinition/nl-core-contactpoint"
     }
 
 }

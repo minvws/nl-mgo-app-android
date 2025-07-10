@@ -35,7 +35,9 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreen
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-const val TEST_TAG_ORGANIZATION_SEARCH_CARD = "ORGANIZATION_SEARCH_CARD"
+object OrganizationListManualCardTestTag {
+  const val CARD = "OrganizationListManualCard"
+}
 
 /**
  * Composable that shows a card to show in [OrganizationListAutomaticSearchScreen].
@@ -57,7 +59,7 @@ internal fun OrganizationListManualCard(
       OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
       else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
     }
-  MgoCard(modifier = modifier) {
+  MgoCard(modifier = modifier.testTag(OrganizationListManualCardTestTag.CARD)) {
     Row(
       modifier =
         Modifier
@@ -65,8 +67,7 @@ internal fun OrganizationListManualCard(
           .clickable(enabled = cardState == OrganizationSearchCardState.ADD) {
             onClick(searchResult)
           }
-          .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
-          .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+          .padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
     ) {
       Column(modifier = Modifier.weight(1f)) {
         Text(

@@ -10,7 +10,7 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.Orga
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationListManualScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.getViewModel
-import nl.rijksoverheid.mgo.navigation.mgoComposable
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
 /**
  * Adds all the navigation destinations that can be found when searching for health care providers.
@@ -31,7 +31,7 @@ fun NavGraphBuilder.addLocalisationNavGraph(
         .AddOrganization
     }
   navigation<LocalisationNavigation.Root>(startNavigation) {
-    mgoComposable<LocalisationNavigation.AddOrganization> {
+    mgoComposableExt<LocalisationNavigation.AddOrganization> {
       val onNavigateBack: (() -> Unit)? =
         if (navController.previousBackStackEntry == null) {
           null
@@ -46,7 +46,7 @@ fun NavGraphBuilder.addLocalisationNavGraph(
       )
     }
 
-    mgoComposable<LocalisationNavigation.OrganisationListManual> { backStackEntry ->
+    mgoComposableExt<LocalisationNavigation.OrganisationListManual> { backStackEntry ->
       val route = backStackEntry.toRoute<LocalisationNavigation.OrganisationListManual>()
       val addOrganizationScreenViewModel =
         navController.getViewModel<AddOrganizationScreenViewModel>(
@@ -80,7 +80,7 @@ fun NavGraphBuilder.addLocalisationNavGraph(
       )
     }
 
-    mgoComposable<LocalisationNavigation.OrganizationListAutomatic> { backStackEntry ->
+    mgoComposableExt<LocalisationNavigation.OrganizationListAutomatic> { backStackEntry ->
       val route = backStackEntry.toRoute<LocalisationNavigation.OrganizationListAutomatic>()
       val onNavigateBack: (() -> Unit)? =
         if (navController.previousBackStackEntry == null) {

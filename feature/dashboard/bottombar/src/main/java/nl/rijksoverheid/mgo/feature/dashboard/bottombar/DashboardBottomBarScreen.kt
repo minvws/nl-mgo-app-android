@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -44,7 +45,10 @@ import nl.rijksoverheid.mgo.component.theme.fonts
 import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
-import timber.log.Timber
+
+object DashboardBottomBarScreenTestTag {
+  const val SCREEN = "DashboardBottomBarScreen"
+}
 
 /**
  * Composable that shows the a screen with bottom bar. The dashboard screen is the root screen of the app that shows after inputting the
@@ -96,12 +100,12 @@ fun DashboardBottomBarScreenContent(
 
   LaunchedEffect(snackbarPresenter) {
     snackbarPresenter.snackbarVisuals.collectLatest {
-      Timber.v("Ik kom hier bart")
       snackbarHostState.showSnackbar(it)
     }
   }
 
   Scaffold(
+    modifier = Modifier.testTag(DashboardBottomBarScreenTestTag.SCREEN),
     snackbarHost = {
       SnackbarHost(hostState = snackbarHostState) {
         MgoSnackBar(
@@ -186,6 +190,7 @@ private fun BottomNavigationBar(
     BottomBarItem.entries.forEachIndexed { index, item ->
       val isSelected = item.route == currentRoute
       NavigationBarItem(
+        modifier = Modifier.testTag(item.testTag),
         icon = {
           val iconId =
             if (isSelected) {

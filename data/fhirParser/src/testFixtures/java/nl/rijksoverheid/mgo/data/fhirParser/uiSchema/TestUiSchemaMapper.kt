@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
 class TestUiSchemaMapper : UiSchemaMapper {
   private var summary: HealthUiSchema = TEST_UI_SCHEMA
   private var detail: HealthUiSchema = TEST_UI_SCHEMA
+  private var detailError: Throwable? = null
 
   fun setSummary(uiSchema: HealthUiSchema) {
     this.summary = uiSchema
@@ -16,11 +17,14 @@ class TestUiSchemaMapper : UiSchemaMapper {
     this.detail = uiSchema
   }
 
-  override suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema {
-    return summary
+  fun setDetailError(error: Throwable) {
+    this.detailError = error
   }
 
+  override suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema = summary
+
   override suspend fun getDetail(mgoResource: MgoResource): HealthUiSchema {
+    detailError?.let { error -> throw error }
     return detail
   }
 }

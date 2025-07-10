@@ -15,32 +15,141 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EAfspraakAppointment(
+    val patientInstructions: List<PatientInstruction>,
+    val identifier: List<MgoIdentifier>? = null,
+    val appointmentType: MgoCodeableConcept? = null,
+    val reason: List<MgoCodeableConcept>? = null,
     val specialty: List<MgoCodeableConcept>? = null,
+    val incomingReferral: List<MgoReference>? = null,
+    val created: MgoDateTime? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment",
-    val fhirVersion: String = "R3",
     val start: MgoDateTime? = null,
     val description: MgoString? = null,
-    val end: MgoDateTime? = null,
-    val id: String? = null,
+    val minutesDuration: MgoPositiveInt? = null,
+    val serviceCategory: MgoCodeableConcept? = null,
     val participant: List<Participant>? = null,
     val referenceId: String,
-    val status: MgoString? = null,
+    val onlineEditable: OnlineEditable? = null,
+    val fhirVersion: String = "R3",
+    val end: MgoDateTime? = null,
+    val indication: List<MgoReference>? = null,
+    val id: String? = null,
+    val status: Status,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str4) { "fhirVersion not constant value $cg_str4 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class PatientInstruction(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
     }
 
     @Serializable
     data class Participant(
-        val actor: MgoReference? = null
+        val actor: MgoReference? = null,
+        val type: Type,
+        val required: EAfspraakAppointmentParticipantRequired? = null,
+        val status: EAfspraakAppointmentParticipantStatus? = null
     )
 
+    @Serializable
+    data class Type(
+        val healthProfessionalRole: List<MgoCodeableConcept>? = null
+    )
+
+    @Serializable
+    data class OnlineEditable(
+        val indicator: Indicator? = null,
+        val onlineEditableUntil: OnlineEditableUntil? = null,
+        val _ext: Boolean
+    )
+
+    @Serializable
+    data class Indicator(
+        val _type: String,
+        val value: Boolean,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class OnlineEditableUntil(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Status(
+        val _type: String? = null,
+        val orderStatus: OrderStatus? = null,
+        val value: String? = null
+    ) {
+
+        init {
+            if (_type != null)
+                require(_type == cg_str5) { "_type not constant value $cg_str5 - $_type" }
+            if (value != null)
+                require(value in cg_array7) { "value not in enumerated values - $value" }
+        }
+
+    }
+
+    @Serializable
+    data class OrderStatus(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str6) { "_type not constant value $cg_str6 - $_type" }
+        }
+
+    }
+
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "string"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment"
+        private const val cg_str2 = "boolean"
+        private const val cg_str3 = "dateTime"
+        private const val cg_str4 = "R3"
+        private const val cg_str5 = "code"
+        private const val cg_str6 = "codeableConcept"
+        private val cg_array7 = setOf(
+            "cancelled",
+            "entered-in-error",
+            "proposed",
+            "pending",
+            "booked",
+            "arrived",
+            "fulfilled",
+            "noshow"
+        )
     }
 
 }

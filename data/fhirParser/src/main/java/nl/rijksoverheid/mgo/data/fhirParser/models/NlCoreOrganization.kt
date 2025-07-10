@@ -15,27 +15,79 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreOrganization(
-    val organizationType: List<MgoCodeableConcept>? = null,
     val identifier: List<MgoIdentifier>? = null,
-    val address: List<NlCoreAddress>? = null,
+    val address: List<Addres>? = null,
     val profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization",
     val fhirVersion: String = "R3",
     val name: MgoString? = null,
-    val telecom: List<NlCoreContactpoint>? = null,
+    val alias: List<MgoString>? = null,
+    val telecom: List<Telecom>? = null,
     val id: String? = null,
-    val departmentSpecialty: List<MgoCodeableConcept>? = null,
+    val type: Type,
     val referenceId: String,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
+    @Serializable
+    data class Addres(
+        val country: MgoString? = null,
+        val _profile: String,
+        val city: MgoString? = null,
+        val addressType: MgoCodeableConcept? = null,
+        val use: NlCoreOrganizationTelecomSystem? = null,
+        val line: List<Line>? = null,
+        val district: MgoString? = null,
+        val postalCode: MgoString? = null,
+        val official: MgoBoolean? = null,
+        val type: NlCoreOrganizationTelecomSystem? = null
+    ) {
+
+        init {
+            require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class Line(
+        val streetName: MgoString? = null,
+        val buildingNumberSuffix: MgoString? = null,
+        val additionalLocator: MgoString? = null,
+        val houseNumber: MgoString? = null,
+        val unitId: MgoString? = null
+    )
+
+    @Serializable
+    data class Telecom(
+        val system: NlCoreOrganizationTelecomSystem? = null,
+        val _profile: String,
+        val use: NlCoreOrganizationTelecomSystem? = null,
+        val telecomType: MgoCodeableConcept? = null,
+        val value: MgoString? = null
+    ) {
+
+        init {
+            require(_profile == cg_str3) { "_profile not constant value $cg_str3 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class Type(
+        val organizationType: List<MgoCodeableConcept>? = null,
+        val departmentSpecialty: List<MgoCodeableConcept>? = null
+    )
+
     companion object {
-        private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-address"
+        private const val cg_str1 = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization"
+        private const val cg_str2 = "R3"
+        private const val cg_str3 = "http://fhir.nl/fhir/StructureDefinition/nl-core-contactpoint"
     }
 
 }

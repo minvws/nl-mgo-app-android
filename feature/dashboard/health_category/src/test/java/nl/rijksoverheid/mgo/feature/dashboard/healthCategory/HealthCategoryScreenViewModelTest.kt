@@ -15,6 +15,7 @@ import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -28,6 +29,12 @@ internal class HealthCategoryScreenViewModelTest {
       setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
     }
   private val mgoResourceRepository = TestMgoResourceRepository()
+  private val createPdf = TestCreatePdfForHealthCategories()
+
+  @Before
+  fun setUp() {
+    createPdf.reset()
+  }
 
   @Test
   fun testLoadedState() =
@@ -95,14 +102,28 @@ internal class HealthCategoryScreenViewModelTest {
       }
     }
 
-  private fun createViewModel(organization: MgoOrganization?): HealthCategoryScreenViewModel {
-    return HealthCategoryScreenViewModel(
+  @Test
+  fun testGeneratePdf() =
+    runTest {
+      // Given
+      val viewModel = createViewModel(TEST_MGO_ORGANIZATION)
+
+      // When
+      viewModel.generatePdf()
+
+      // Then
+      assertTrue(createPdf.assertPdfGenerated())
+    }
+
+  private fun createViewModel(organization: MgoOrganization?): HealthCategoryScreenViewModel =
+    HealthCategoryScreenViewModel(
       category = HealthCareCategory.MEDICATIONS,
       filterOrganization = organization,
       healthCareDataStatesRepository = healthCareDataStatesRepository,
       organizationRepository = organizationRepository,
       uiSchemaMapper = TestUiSchemaMapper(),
       mgoResourceRepository = mgoResourceRepository,
+      createPdf = createPdf,
+      ioDispatcher = mainDispatcherRule.testDispatcher,
     )
-  }
 }

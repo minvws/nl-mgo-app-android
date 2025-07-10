@@ -16,37 +16,66 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class R4NlCoreHealthProfessionalPractitioner(
     val identifier: List<MgoIdentifier>? = null,
-    val address: List<R4NlCoreAddressInformation>? = null,
-    val gender: NlCorePatientGender? = null,
+    val address: List<Addres>? = null,
+    val gender: R4NlCoreHealthProfessionalPractitionerGender? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner",
-    val birthDate: MgoDate? = null,
-    val referenceId: String,
-    val qualification: List<Qualification>? = null,
-    val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>? = null,
     val fhirVersion: String = "R4",
     val name: List<R4NlCoreHealthProfessionalPractitionerName>? = null,
-    val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>? = null,
+    val telecom: Telecom,
     val id: String? = null,
-    val communication: List<MgoCodeableConcept>? = null,
+    val referenceId: String,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
     @Serializable
-    data class Qualification(
-        val identifier: List<MgoIdentifier>? = null,
-        val period: MgoPeriod? = null,
-        val code: MgoCodeableConcept? = null,
-        val issuer: MgoReference? = null
+    data class Addres(
+        val country: Country,
+        val _profile: String,
+        val city: MgoString? = null,
+        val use: NlCoreOrganizationTelecomSystem? = null,
+        val line: List<Line>? = null,
+        val district: MgoString? = null,
+        val postalCode: MgoString? = null,
+        val type: NlCoreOrganizationTelecomSystem? = null
+    ) {
+
+        init {
+            require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+        }
+
+    }
+
+    @Serializable
+    data class Country(
+        val countryCode: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Line(
+        val additionalInformation: MgoString? = null,
+        val streetName: MgoString? = null,
+        val houseNumberLetter: MgoString? = null,
+        val countryCode: MgoString? = null,
+        val houseNumber: MgoString? = null,
+        val houseNumberAddition: MgoString? = null,
+        val houseNumberIndiciation: MgoString? = null
+    )
+
+    @Serializable
+    data class Telecom(
+        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
+        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
     )
 
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner"
-        private const val cg_str1 = "R4"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-AddressInformation"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner"
+        private const val cg_str2 = "R4"
     }
 
 }

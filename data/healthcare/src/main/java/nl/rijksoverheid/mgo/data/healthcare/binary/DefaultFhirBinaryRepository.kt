@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.healthcare.binary
 
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
+import nl.rijksoverheid.mgo.data.healthcare.models.FhirBinary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import javax.inject.Inject
@@ -49,12 +50,5 @@ internal class DefaultFhirBinaryRepository
             contentType = binaryResponse.contentType,
           )
         }
-    }
-
-    /**
-     * Removes all downloaded binaries from the store.
-     */
-    override suspend fun cleanup() {
-      cacheFileStore.deleteAll()
     }
   }

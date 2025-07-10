@@ -10,7 +10,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScree
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaScreen
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
-import nl.rijksoverheid.mgo.navigation.mgoComposable
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
 /**
  * Adds all the navigation destinations that can be found in the overview bottom bar tab in the dashboard.
@@ -23,7 +23,7 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
   navController: NavController,
 ) {
   navigation<DashboardNavigation.Overview.Root>(DashboardNavigation.Overview.HealthCareCategories) {
-    mgoComposable<DashboardNavigation.Overview.HealthCareCategories>(animate = false) {
+    mgoComposableExt<DashboardNavigation.Overview.HealthCareCategories>(animate = false) {
       HealthCategoriesScreen(
         appBarTitle = stringResource(R.string.overview_heading),
         subHeading = stringResource(R.string.overview_subheading),
@@ -39,7 +39,7 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Overview.HealthCareCategory> { backStackEntry ->
+    mgoComposableExt<DashboardNavigation.Overview.HealthCareCategory> { backStackEntry ->
       val route = backStackEntry.toRoute<DashboardNavigation.Overview.HealthCareCategory>()
       HealthCategoryScreen(
         category = route.category,
@@ -58,13 +58,13 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
       )
     }
 
-    mgoComposable<DashboardNavigation.Overview.UiSchema> { backStackEntry ->
+    mgoComposableExt<DashboardNavigation.Overview.UiSchema> { backStackEntry ->
       val route = backStackEntry.toRoute<DashboardNavigation.Overview.UiSchema>()
       UiSchemaScreen(
         organization = route.organization,
         mgoResource = route.mgoResource,
         isSummary = route.isSummary,
-        onNavigateToUiSchema = { organization, mgoResource ->
+        onNavigateToDetail = { organization, mgoResource ->
           val uiSchema =
             DashboardNavigation.Overview.UiSchema(
               organization = organization,

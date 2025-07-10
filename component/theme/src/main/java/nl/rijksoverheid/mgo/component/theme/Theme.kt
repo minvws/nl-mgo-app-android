@@ -42,6 +42,8 @@ private fun getDarkColorScheme() =
     onSurface = MaterialTheme.colorScheme.contentPrimary(true),
     error = MaterialTheme.colorScheme.sentimentCritical(true),
     surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(true),
+    surfaceContainerLow = MaterialTheme.colorScheme.backgroundPrimary(true), // Container color of bottom sheet,
+    outlineVariant = MaterialTheme.colorScheme.borderSecondary(true), // Divider color
   )
 
 @Composable
@@ -58,4 +60,6 @@ private fun getLightColorScheme() =
     onSurface = MaterialTheme.colorScheme.contentPrimary(false),
     error = MaterialTheme.colorScheme.sentimentCritical(false),
     surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(false),
+    surfaceContainerLow = MaterialTheme.colorScheme.backgroundPrimary(false), // Container color of bottom sheet
+    outlineVariant = MaterialTheme.colorScheme.borderSecondary(false), // Divider color
   )

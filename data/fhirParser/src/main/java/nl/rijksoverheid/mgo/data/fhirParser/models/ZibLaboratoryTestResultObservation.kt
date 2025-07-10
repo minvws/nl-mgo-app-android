@@ -16,34 +16,36 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibLaboratoryTestResultObservation(
     val valueBoolean: MgoBoolean? = null,
+    val valueTime: MgoTime? = null,
     val code: MgoCodeableConcept? = null,
     val valueRange: MgoRange? = null,
     val subject: MgoReference? = null,
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
     val valueRatio: MgoRatio? = null,
+    val valueAttachment: MgoAttachment? = null,
     val related: List<Related>? = null,
     val specimen: MgoReference? = null,
     val fhirVersion: String = "R3",
     val context: MgoReference? = null,
     val valueDateTime: MgoDateTime? = null,
     val id: String? = null,
-    val resultType: List<MgoCodeableConcept>? = null,
     val basedOn: List<MgoReference>? = null,
     val valueQuantity: MgoQuantity? = null,
     val identifier: List<MgoIdentifier>? = null,
     val performer: List<MgoReference>? = null,
-    val effectivePeriod: MgoPeriod? = null,
     val method: MgoCodeableConcept? = null,
+    val effectivePeriod: MgoPeriod? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation",
     val referenceRange: List<ReferenceRange>? = null,
-    val laboratoryTestResultCode: List<MgoCodeableConcept>? = null,
     val valueString: MgoString? = null,
-    val interpretation: MgoCodeableConcept? = null,
+    val interpretation: Interpretation,
     val effectiveDateTime: MgoDateTime? = null,
+    val valueSampledData: MgoSampledData? = null,
     val valuePeriod: MgoPeriod? = null,
     val comment: MgoString? = null,
-    val status: GpLaboratoryResultStatus? = null,
+    val category: Category,
+    val status: Status,
     val resourceType: String
 ) {
 
@@ -61,14 +63,65 @@ data class ZibLaboratoryTestResultObservation(
     data class ReferenceRange(
         val high: MgoQuantity? = null,
         val low: MgoQuantity? = null,
-        val appliesTo: List<MgoCodeableConcept>? = null,
-        val type: MgoCodeableConcept? = null,
-        val age: MgoRange? = null
+        val type: MgoCodeableConcept? = null
     )
+
+    @Serializable
+    data class Interpretation(
+        val interpretatieVlaggenCodelijst: List<MgoCoding>? = null
+    )
+
+    @Serializable
+    data class Category(
+        val laboratoryTestResultCode: MgoCodeableConcept? = null,
+        val resultType: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Status(
+        val testResultStatus: TestResultStatus? = null,
+        val _type: String? = null,
+        val value: String? = null
+    ) {
+
+        init {
+            if (_type != null)
+                require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
+            if (value != null)
+                require(value in cg_array4) { "value not in enumerated values - $value" }
+        }
+
+    }
+
+    @Serializable
+    data class TestResultStatus(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
 
     companion object {
         private const val cg_str0 = "R3"
         private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation"
+        private const val cg_str2 = "codeableConcept"
+        private const val cg_str3 = "code"
+        private val cg_array4 = setOf(
+            "cancelled",
+            "entered-in-error",
+            "registered",
+            "preliminary",
+            "final",
+            "amended",
+            "corrected",
+            "unknown"
+        )
     }
 
 }

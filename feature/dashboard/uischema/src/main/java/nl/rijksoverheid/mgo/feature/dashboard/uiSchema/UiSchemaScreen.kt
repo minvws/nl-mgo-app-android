@@ -3,6 +3,8 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,11 +14,16 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,15 +34,19 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
+import nl.rijksoverheid.mgo.component.theme.headlineExtraSmall
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.models.UISchemaSection
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
+
+object UiSchemaScreenTestTag {
+  const val LIST = "UiSchemaScreenList"
+}
 
 /**
  * Composable that shows a screen that displays health care data.
@@ -44,17 +55,28 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
  * @param organization The [MgoOrganization] for the health care data.
  * @param mgoResource The [MgoResource] to get the health care data from.
  * @param isSummary If this screen shows a summary of the health care data, or the complete set.
- * @param onNavigateToUiSchema Called when navigating to another [UiSchemaScreen].
- * @param onNavigateBack Called when requested to navigate back.
+ * @param isBottomSheet Indicate whether or not this composable is nested inside a bottom sheet.
+ * @param onNavigateToDetail Called when navigating to the same UI Schema but the detail page.
+ * @param onNavigateBack Called when requested to navigate back. If null, does not show a back button.
  */
 @Composable
 fun UiSchemaScreen(
   organization: MgoOrganization,
   mgoResource: MgoResource,
   isSummary: Boolean,
-  onNavigateToUiSchema: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
-  onNavigateBack: () -> Unit,
+  isBottomSheet: Boolean = false,
+  onNavigateBack: (() -> Unit)? = null,
+  onNavigateToDetail: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
 ) {
+  var showBottomSheet: Pair<MgoOrganization, MgoResource>? by remember { mutableStateOf(null) }
+  showBottomSheet?.let { uiSchemaData ->
+    UiSchemaBottomSheet(
+      organization = uiSchemaData.first,
+      mgoResource = uiSchemaData.second,
+      onDismissRequest = { showBottomSheet = null },
+    )
+  }
+
   val viewModel =
     hiltViewModel<UiSchemaScreenViewModel, UiSchemaScreenViewModel.Factory>(
       creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
@@ -62,8 +84,14 @@ fun UiSchemaScreen(
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) {
-    viewModel.navigate.collectLatest { mgoResource ->
-      onNavigateToUiSchema(organization, mgoResource)
+    viewModel.navigate.collectLatest { navigateToMgoResource ->
+      if (navigateToMgoResource == mgoResource || isBottomSheet) {
+        // Called when clicked on "Bekijk alle X". Navigate to the detail page of this ui schema.
+        onNavigateToDetail(organization, navigateToMgoResource)
+      } else {
+        // When navigating to a new ui schema, show it inside a bottom sheet.
+        showBottomSheet = Pair(organization, navigateToMgoResource)
+      }
     }
   }
 
@@ -75,6 +103,7 @@ fun UiSchemaScreen(
     onClickFile = { row ->
       viewModel.onClickFileRow(row)
     },
+    isBottomSheet = isBottomSheet,
     onNavigateBack = onNavigateBack,
   )
 }
@@ -82,24 +111,30 @@ fun UiSchemaScreen(
 @Composable
 private fun UiSchemaScreenContent(
   viewState: UiSchemaScreenViewState,
+  isBottomSheet: Boolean,
   onClickReference: (row: UISchemaRow.Reference) -> Unit,
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
-  onNavigateBack: () -> Unit,
+  onNavigateBack: (() -> Unit)?,
 ) {
   val lazyListState = rememberLazyListState()
   val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
   Scaffold(
-    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    modifier =
+      Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).then(
+        if (isBottomSheet) Modifier.fillMaxHeight(0.95f) else Modifier,
+      ),
     topBar = {
       MgoLargeTopAppBar(
         title = viewState.toolbarTitle,
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
+        windowInsets = if (isBottomSheet) WindowInsets(0) else TopAppBarDefaults.windowInsets,
       )
     },
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {
         LazyColumn(
+          modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST),
           contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) {
@@ -109,7 +144,7 @@ private fun UiSchemaScreenContent(
               section = section,
               onClickReference = onClickReference,
               onClickFile = onClickFile,
-              modifier = Modifier.padding(bottom = 24.dp),
+              modifier = Modifier.padding(bottom = 32.dp),
             )
           }
         }
@@ -126,15 +161,16 @@ private fun UiSchemaSection(
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
-    if (section.heading != null) {
+    val heading = section.heading
+    if (heading != null) {
       Text(
-        modifier = Modifier.padding(bottom = 8.dp),
-        text = section.heading,
-        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier.padding(bottom = 12.dp),
+        text = heading,
+        style = MaterialTheme.typography.headlineExtraSmall,
         fontWeight = FontWeight.Bold,
       )
     } else {
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(12.dp))
     }
 
     MgoCard(
@@ -175,8 +211,6 @@ private fun UiSchemaSection(
                 Modifier
                   .fillMaxWidth()
                   .padding(start = 16.dp),
-              color = MaterialTheme.colorScheme.borderPrimary(),
-              thickness = 0.33.dp,
             )
           }
         }
@@ -257,6 +291,7 @@ internal fun UiSchemaScreenContentPreview() {
       onClickReference = {},
       onClickFile = {},
       onNavigateBack = {},
+      isBottomSheet = false,
     )
   }
 }

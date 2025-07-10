@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare.binary
 
+import nl.rijksoverheid.mgo.data.healthcare.models.FhirBinary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 /**
@@ -17,9 +18,4 @@ interface FhirBinaryRepository {
     resourceEndpoint: String,
     fhirBinary: String,
   ): Result<FhirBinary>
-
-  /**
-   * Removes all downloaded binaries from the store.
-   */
-  suspend fun cleanup()
 }

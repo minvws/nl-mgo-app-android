@@ -15,17 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreContactInformationEmailAddresses(
-    val system: String = "email",
+    val _profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-ContactInformationEmailAddresses",
     val use: MgoCode? = null,
     val value: MgoString? = null
 ) {
 
     init {
-        require(system == cg_str0) { "system not constant value $cg_str0 - $system" }
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
     }
 
     companion object {
-        private const val cg_str0 = "email"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-ContactInformationEmailAddresses"
     }
 
 }

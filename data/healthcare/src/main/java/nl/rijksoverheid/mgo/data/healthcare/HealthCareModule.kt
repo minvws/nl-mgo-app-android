@@ -16,6 +16,8 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.DefaultMgoResourceReposi
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.DefaultHealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.HealthCareUrlCreator
+import nl.rijksoverheid.mgo.data.healthcare.models.mapper.DefaultUISchemaSectionMapper
+import nl.rijksoverheid.mgo.data.healthcare.models.mapper.UISchemaSectionMapper
 import javax.inject.Singleton
 
 @Module
@@ -44,4 +46,8 @@ internal abstract class HealthCareModule {
   @Binds
   @Singleton
   abstract fun provideHealthCareDataStatesStore(default: DefaultHealthCareDataStatesStore): HealthCareDataStatesStore
+
+  @Binds
+  @Singleton
+  abstract fun provideUiSchemaSectionMapper(default: DefaultUISchemaSectionMapper): UISchemaSectionMapper
 }

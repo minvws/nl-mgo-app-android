@@ -3,21 +3,21 @@ package nl.rijksoverheid.mgo.data.digid
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 internal abstract class DigidModule {
   @Binds
-  @ViewModelScoped
+  @Singleton
   abstract fun provideIsDigidAuthenticated(default: DefaultIsDigidAuthenticated): IsDigidAuthenticated
 
   @Binds
-  @ViewModelScoped
+  @Singleton
   abstract fun provideSetDigidAuthenticated(default: DefaultSetDigidAuthenticated): SetDigidAuthenticated
 
   @Binds
-  @ViewModelScoped
+  @Singleton
   abstract fun provideDigidRepository(default: DefaultDigidRepository): DigidRepository
 }

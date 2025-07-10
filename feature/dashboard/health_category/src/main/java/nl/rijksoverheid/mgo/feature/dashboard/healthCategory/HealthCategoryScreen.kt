@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,11 +13,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,26 +32,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object HealthCategoryScreenTestTag {
+  const val CARD = "HealthCategoryScreenCard"
+}
 
 /**
  * Composable that shows a list of all health care data for one [HealthCareCategory].
@@ -65,17 +78,61 @@ fun HealthCategoryScreen(
   onNavigateBack: () -> Unit,
   filterOrganization: MgoOrganization? = null,
 ) {
+  val context = LocalContext.current
   val viewModel =
     hiltViewModel<HealthCategoryScreenViewModel, HealthCategoryScreenViewModel.Factory>(
       creationCallback = { factory -> factory.create(category = category, filterOrganization = filterOrganization) },
     )
   val viewState by viewModel.viewState.collectAsState()
+
+  var pdfViewerState: PdfViewerState? by remember { mutableStateOf(null) }
+  pdfViewerState?.let { state ->
+    PdfViewerBottomSheet(
+      appBarTitle = context.getString(category.getTitle(context)),
+      state = state,
+      onDismissRequest = {
+        pdfViewerState = null
+      },
+    )
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.openPdfViewer.collectLatest { state ->
+      pdfViewerState = state
+    }
+  }
+
+  var showExportPdfDialog by remember { mutableStateOf(false) }
+  if (showExportPdfDialog) {
+    MgoAlertDialog(
+      heading = stringResource(CopyR.string.export_pdf_dialog_heading, context.getString(category.getTitle(context)).lowercase()),
+      subHeading = stringResource(CopyR.string.export_pdf_dialog_subheading),
+      positiveButtonText = stringResource(CopyR.string.export_pdf_dialog_create_document),
+      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      negativeButtonText = stringResource(CopyR.string.common_cancel),
+      negativeButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      onClickPositiveButton = {
+        showExportPdfDialog = false
+        viewModel.generatePdf()
+      },
+      onClickNegativeButton = {
+        showExportPdfDialog = false
+      },
+      onDismissRequest = {
+        showExportPdfDialog = false
+      },
+    )
+  }
+
   HealthCategoryScreenContent(
     viewState = viewState,
     onClickListItem = { organization, mgoResource ->
       onClickListItem(organization, mgoResource)
     },
     onRetry = { viewModel.retry() },
+    onGeneratePdf = {
+      showExportPdfDialog = true
+    },
     onNavigateBack = onNavigateBack,
   )
 }
@@ -85,8 +142,10 @@ private fun HealthCategoryScreenContent(
   viewState: HealthCategoryScreenViewState,
   onRetry: () -> Unit,
   onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onGeneratePdf: () -> Unit,
   onNavigateBack: () -> Unit,
 ) {
+  val context = LocalContext.current
   val lazyListState = rememberLazyListState()
   val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
   var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
@@ -95,9 +154,16 @@ private fun HealthCategoryScreenContent(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       MgoLargeTopAppBar(
-        title = stringResource(viewState.category.getTitle()),
+        title = stringResource(viewState.category.getTitle(context)),
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
+        actions = {
+          if (viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.Loaded) {
+            IconButton(onGeneratePdf) {
+              Icon(Icons.Outlined.PictureAsPdf, null)
+            }
+          }
+        },
       )
     },
     content = { contentPadding ->
@@ -280,7 +346,7 @@ private fun HealthCategoryCard(
   subtitle: String,
   modifier: Modifier = Modifier,
 ) {
-  MgoCard(modifier = modifier) {
+  MgoCard(modifier = modifier.testTag(HealthCategoryScreenTestTag.CARD)) {
     Column(modifier = Modifier.padding(16.dp)) {
       Text(
         text = title,
@@ -297,16 +363,6 @@ private fun HealthCategoryCard(
   }
 }
 
-@Composable
-@StringRes
-private fun HealthCareCategory.getTitle(): Int {
-  val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading")
-  if (stringResource == 0) {
-    return CopyR.string.common_unknown
-  }
-  return stringResource
-}
-
 @DefaultPreviews
 @Composable
 internal fun HealthCategoryScreenLoadingPreview() {
@@ -319,6 +375,7 @@ internal fun HealthCategoryScreenLoadingPreview() {
         ),
       onClickListItem = { _, _ -> },
       onRetry = {},
+      onGeneratePdf = {},
       onNavigateBack = {},
     )
   }
@@ -339,6 +396,7 @@ internal fun HealthCategoryScreenListItemsPreview() {
         ),
       onClickListItem = { _, _ -> },
       onRetry = {},
+      onGeneratePdf = {},
       onNavigateBack = {},
     )
   }
@@ -360,6 +418,7 @@ internal fun HealthCategoryScreenListItemsWithErrorPreview() {
         ),
       onClickListItem = { _, _ -> },
       onRetry = {},
+      onGeneratePdf = {},
       onNavigateBack = {},
     )
   }
@@ -377,6 +436,7 @@ internal fun HealthCategoryScreenNoDataPreview() {
         ),
       onClickListItem = { _, _ -> },
       onRetry = {},
+      onGeneratePdf = {},
       onNavigateBack = {},
     )
   }
@@ -395,6 +455,7 @@ internal fun HealthCategoryScreenNoDataWithErrorPreview() {
         ),
       onClickListItem = { _, _ -> },
       onRetry = {},
+      onGeneratePdf = {},
       onNavigateBack = {},
     )
   }

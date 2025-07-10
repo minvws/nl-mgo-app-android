@@ -16,32 +16,44 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibFunctionalOrMentalStatus(
     val identifier: List<MgoIdentifier>? = null,
-    val dataAbsentReason: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
+    val code: MgoCodeableConcept? = null,
     val effectivePeriod: MgoPeriod? = null,
-    val method: MgoCodeableConcept? = null,
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus",
+    val medicalDevice: List<MedicalDevice>,
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
-    val bodySite: MgoCodeableConcept? = null,
+    val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
     val comment: MgoString? = null,
     val id: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val resourceType: String,
-    val status: GpLaboratoryResultStatus? = null,
-    val valueQuantity: MgoQuantity? = null
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class MedicalDevice(
+        val reference: String? = null,
+        val display: String? = null,
+        val _type: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
     }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus"
-        private const val cg_str1 = "R3"
+        private const val cg_str1 = "reference"
+        private const val cg_str2 = "R3"
     }
 
 }

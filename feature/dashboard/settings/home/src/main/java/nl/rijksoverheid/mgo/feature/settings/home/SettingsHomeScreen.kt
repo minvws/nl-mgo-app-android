@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -42,11 +43,15 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderSecondary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreenTestTag.RESET_APP_BUTTON
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object SettingsHomeScreenTestTag {
+  const val RESET_APP_BUTTON = "SettingsHomeScreenResetAppButton"
+}
 
 /**
  * Composable that shows a screen where you can change different settings of the app.
@@ -122,7 +127,11 @@ private fun SettingsScreenContent(
     },
     content = { contentPadding ->
       Column(
-        modifier = Modifier.verticalScroll(scrollState).padding(contentPadding).padding(16.dp),
+        modifier =
+          Modifier
+            .verticalScroll(scrollState)
+            .padding(contentPadding)
+            .padding(16.dp),
       ) {
         Text(
           modifier = Modifier.padding(top = 8.dp),
@@ -159,6 +168,7 @@ private fun SettingsScreenContent(
                   .clickable { onClickSecuritySettings() },
               icon = Icons.Outlined.Lock,
               heading = CopyR.string.settings_security_heading,
+              hasDivider = viewState.isDebug,
             )
           }
           if (viewState.isDebug) {
@@ -210,7 +220,8 @@ private fun SettingsScreenContent(
         MgoCard(
           modifier =
             Modifier
-              .padding(top = 12.dp),
+              .padding(top = 12.dp)
+              .testTag(RESET_APP_BUTTON),
         ) {
           SettingsListItem(
             modifier =
@@ -261,7 +272,6 @@ private fun SettingsListItem(
     if (hasDivider) {
       HorizontalDivider(
         modifier = Modifier.padding(start = 56.dp),
-        color = MaterialTheme.colorScheme.borderSecondary(),
       )
     }
   }

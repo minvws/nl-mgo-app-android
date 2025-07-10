@@ -6,13 +6,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
+
+object MgoAlertDialogTestTag {
+  const val CONFIRM_BUTTON = "MgoAlertDialogConfirmButton"
+  const val DISMISS_BUTTON = "MgoAlertDialogDismissButton"
+}
 
 /**
  * Composable that shows a alert dialog.
@@ -42,6 +49,7 @@ fun MgoAlertDialog(
     onDismissRequest = onDismissRequest,
     confirmButton = {
       TextButton(
+        modifier = Modifier.testTag(MgoAlertDialogTestTag.CONFIRM_BUTTON),
         colors = ButtonDefaults.textButtonColors(contentColor = positiveButtonTextColor),
         onClick = onClickPositiveButton,
       ) {
@@ -54,6 +62,7 @@ fun MgoAlertDialog(
     dismissButton = {
       if (negativeButtonText != null && onClickNegativeButton != null) {
         TextButton(
+          modifier = Modifier.testTag(MgoAlertDialogTestTag.DISMISS_BUTTON),
           colors =
             ButtonDefaults.textButtonColors(
               contentColor = negativeButtonTextColor,

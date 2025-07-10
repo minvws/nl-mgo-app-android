@@ -19,7 +19,7 @@ data class ZibVaccinationRecommendation(
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation",
     val fhirVersion: String = "R3",
-    val orderStatus: MgoCodeableConcept? = null,
+    val orderStatus: OrderStatus? = null,
     val recommendation: List<Recommendation>? = null,
     val id: String? = null,
     val referenceId: String,
@@ -29,6 +29,20 @@ data class ZibVaccinationRecommendation(
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class OrderStatus(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
     }
 
     @Serializable
@@ -42,6 +56,7 @@ data class ZibVaccinationRecommendation(
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation"
         private const val cg_str1 = "R3"
+        private const val cg_str2 = "codeableConcept"
     }
 
 }

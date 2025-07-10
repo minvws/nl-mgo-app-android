@@ -106,7 +106,7 @@ private fun PinCodeLoginScreenContent(
               .fillMaxWidth()
               .focusRequester(subHeadingFocusRequester)
               .focusable(),
-          text = stringResource(id = CopyR.string.pincode_confirm_subheading),
+          text = stringResource(id = CopyR.string.pincode_validation_subheading),
           textAlign = TextAlign.Center,
           style = MaterialTheme.typography.bodyMedium,
         )

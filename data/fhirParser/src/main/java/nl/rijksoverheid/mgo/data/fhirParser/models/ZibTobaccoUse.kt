@@ -16,28 +16,46 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibTobaccoUse(
     val identifier: List<MgoIdentifier>? = null,
-    val dataAbsentReason: MgoCodeableConcept? = null,
+    val performer: List<MgoReference>? = null,
     val effectivePeriod: MgoPeriod? = null,
-    val method: MgoCodeableConcept? = null,
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse",
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
-    val bodySite: MgoCodeableConcept? = null,
+    val component: Component? = null,
+    val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
     val comment: MgoString? = null,
     val id: String? = null,
-    val category: List<MgoCodeableConcept>? = null,
-    val resourceType: String,
-    val status: GpLaboratoryResultStatus? = null,
-    val valueQuantity: MgoQuantity? = null
+    val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
+
+    @Serializable
+    data class Component(
+        val amount: List<Amount>? = null,
+        val typeOfTobaccoUsed: List<TypeOfTobaccoUsed>? = null,
+        val packYears: List<PackYear>? = null
+    )
+
+    @Serializable
+    data class Amount(
+        val valueQuantity: MgoQuantity? = null
+    )
+
+    @Serializable
+    data class TypeOfTobaccoUsed(
+        val valueCodeableConcept: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class PackYear(
+        val valueQuantity: MgoQuantity? = null
+    )
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse"

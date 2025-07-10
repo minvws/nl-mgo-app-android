@@ -9,8 +9,7 @@ import nl.rijksoverheid.mgo.feature.pincode.deleted.PinCodeDeletedScreen
 import nl.rijksoverheid.mgo.feature.pincode.forgot.PinCodeForgotScreen
 import nl.rijksoverheid.mgo.feature.pincode.login.PinCodeLoginScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
-import nl.rijksoverheid.mgo.navigation.mgoComposable
-import nl.rijksoverheid.mgo.navigation.mgoComposableDialog
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
 /**
  * Adds all the navigation destinations that can be found when logging in with a pin code.
@@ -21,7 +20,7 @@ fun NavGraphBuilder.addPinCodeLoginNavGraph(
   activity: MainActivity,
 ) {
   navigation<PinCodeLoginNavigation.Root>(PinCodeLoginNavigation.Login) {
-    mgoComposable<PinCodeLoginNavigation.Login> {
+    mgoComposableExt<PinCodeLoginNavigation.Login> {
       PinCodeLoginScreen(
         onNavigateForgotPin = {
           navController.navigate(PinCodeLoginNavigation.Forgot)
@@ -36,7 +35,7 @@ fun NavGraphBuilder.addPinCodeLoginNavGraph(
       )
     }
 
-    mgoComposableDialog<PinCodeLoginNavigation.LoginDialog> {
+    mgoComposableExt<PinCodeLoginNavigation.LoginDialog> {
       // This dialog is blocking, so quit the app if going back
       BackHandler {
         activity.finish()
@@ -52,7 +51,7 @@ fun NavGraphBuilder.addPinCodeLoginNavGraph(
       )
     }
 
-    mgoComposable<PinCodeLoginNavigation.Forgot> {
+    mgoComposableExt<PinCodeLoginNavigation.Forgot> {
       PinCodeForgotScreen(
         onNavigateToPinCodeDeleted = {
           navController.navigate(PinCodeLoginNavigation.Deleted) {
@@ -67,7 +66,7 @@ fun NavGraphBuilder.addPinCodeLoginNavGraph(
       )
     }
 
-    mgoComposable<PinCodeLoginNavigation.Deleted> {
+    mgoComposableExt<PinCodeLoginNavigation.Deleted> {
       PinCodeDeletedScreen(
         onNavigateToPinCodeCreate = {
           navController.navigate(PinCodeCreateNavigation.Create) {

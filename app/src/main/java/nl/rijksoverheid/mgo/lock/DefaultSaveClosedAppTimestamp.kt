@@ -14,10 +14,9 @@ import javax.inject.Named
 internal class DefaultSaveClosedAppTimestamp
   @Inject
   constructor(
-    private val clock: Clock,
+    @Named("systemUTC") private val clock: Clock,
     @Named("keyValueStore") private val keyValueStore: KeyValueStore,
-  ) :
-  SaveClosedAppTimestamp {
+  ) : SaveClosedAppTimestamp {
     override suspend fun invoke() {
       val currentTimestamp = clock.instant().epochSecond
       keyValueStore.setLong(KEY_APP_CLOSED_TIMESTAMP, currentTimestamp)

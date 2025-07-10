@@ -17,21 +17,22 @@ import kotlinx.serialization.Serializable
 data class ZibLaboratoryTestResultSpecimenIsolate(
     val container: List<Container>? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val parent: List<MgoReference>? = null,
     val note: List<MgoAnnotation>? = null,
     val subject: MgoReference? = null,
-    val receivedTime: MgoDateTime? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate",
-    val fhirVersion: String = "R3",
     val collection: Collection,
-    val id: String? = null,
     val type: MgoCodeableConcept? = null,
     val referenceId: String,
+    val receivedTime: MgoDateTime? = null,
+    val fhirVersion: String = "R3",
+    val id: String? = null,
     val resourceType: String
 ) {
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
     @Serializable
@@ -51,14 +52,43 @@ data class ZibLaboratoryTestResultSpecimenIsolate(
 
     @Serializable
     data class BodySite(
-        val morphology: MgoCodeableConcept? = null,
+        val morphology: Morphology? = null,
         val value: MgoCodeableConcept? = null,
-        val laterality: MgoCodeableConcept? = null
+        val laterality: Laterality? = null
     )
+
+    @Serializable
+    data class Morphology(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Laterality(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
+        }
+
+    }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate"
-        private const val cg_str1 = "R3"
+        private const val cg_str1 = "codeableConcept"
+        private const val cg_str2 = "R3"
     }
 
 }

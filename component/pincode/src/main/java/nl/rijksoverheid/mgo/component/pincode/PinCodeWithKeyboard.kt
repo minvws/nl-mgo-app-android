@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +36,10 @@ import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.framework.util.accessibilityAnnounce
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object PinCodeWithKeyboardTestTag {
+  const val HINT = "PinCodeWithKeyboardHint"
+}
 
 /**
  * A composable that shows both [Keyboard] and [PinCode] in a [Column].
@@ -118,7 +123,7 @@ private fun PinCodeWithKeyboardContent(
     }
     Spacer(modifier = Modifier.weight(1f))
     if (hint != null) {
-      TextButton(modifier = Modifier.padding(top = 48.dp, bottom = 8.dp), onClick = { onClickHint?.invoke() }) {
+      TextButton(modifier = Modifier.padding(top = 48.dp, bottom = 8.dp).testTag(PinCodeWithKeyboardTestTag.HINT), onClick = { onClickHint?.invoke() }) {
         Text(
           text = hint,
           style = MaterialTheme.typography.bodyMedium,

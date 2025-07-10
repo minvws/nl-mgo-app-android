@@ -12,6 +12,7 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.lifecycle.TestAppLifecycleRepository
 import nl.rijksoverheid.mgo.lock.TestAppLocked
 import nl.rijksoverheid.mgo.lock.TestSaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
@@ -27,7 +28,7 @@ internal class MainViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val featureToggleRepository = TestFeatureToggleRepository()
+  private val featureToggleRepository = TestFeatureToggleRepository(listOf())
   private val keyValueStore = TestKeyValueStore()
   private val hasSeenOnboarding = TestHasSeenOnboarding()
   private val hasPinCode = TestHasPinCode()
@@ -44,6 +45,7 @@ internal class MainViewModelTest {
       featureToggleRepository = featureToggleRepository,
       keyValueStore = keyValueStore,
       isDigidAuthenticated = isDigidAuthenticated,
+      appLifecycleRepository = TestAppLifecycleRepository(),
     )
   }
 

@@ -15,49 +15,100 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProblem(
-    val severity: MgoCodeableConcept? = null,
     val identifier: List<MgoIdentifier>? = null,
     val note: List<MgoAnnotation>? = null,
     val code: MgoCodeableConcept? = null,
-    val evidence: List<Evidence>? = null,
-    val verificationStatus: ZibProblemVerificationstatus? = null,
+    val verificationStatus: VerificationStatus,
     val subject: MgoReference? = null,
     val abatementDateTime: MgoDateTime? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem",
-    val clinicalStatus: ZibProblemClinicalstatus? = null,
     val onsetDateTime: MgoDateTime? = null,
-    val assertedDate: MgoDateTime? = null,
+    val clinicalStatus: ClinicalStatus,
     val referenceId: String,
-    val bodySite: List<MgoCodeableConcept>? = null,
+    val bodySite: List<BodySite>? = null,
     val asserter: MgoReference? = null,
-    val stage: Stage,
     val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
     val id: String? = null,
     val category: List<MgoCodeableConcept>? = null,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
     @Serializable
-    data class Evidence(
-        val code: List<MgoCodeableConcept>? = null,
-        val detail: List<MgoReference>? = null
+    data class VerificationStatus(
+        val verificatieStatusCodelijst: VerificatieStatusCodelijst? = null
     )
 
     @Serializable
-    data class Stage(
-        val summary: MgoCodeableConcept? = null,
-        val assessment: List<MgoReference>? = null
+    data class VerificatieStatusCodelijst(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class ClinicalStatus(
+        val problemStatusCodelist: ProblemStatusCodelist? = null
     )
 
+    @Serializable
+    data class ProblemStatusCodelist(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class BodySite(
+        val coding: List<MgoCodingProps>? = null,
+        val _type: String? = null,
+        val text: String? = null,
+        val laterality: Laterality? = null
+    ) {
+
+        init {
+            if (_type != null)
+                require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Laterality(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "codeableConcept"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem"
+        private const val cg_str2 = "R3"
     }
 
 }

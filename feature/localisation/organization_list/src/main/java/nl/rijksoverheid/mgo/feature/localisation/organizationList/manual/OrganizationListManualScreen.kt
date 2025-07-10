@@ -47,6 +47,10 @@ import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
+object OrganizationListManualScreenTestTag {
+  const val LIST = "OrganizationListManualScreenList"
+}
+
 /**
  * Composable that shows a screen to display health care providers. These health care providers are found when searching for them via a
  * name and city.
@@ -150,7 +154,7 @@ private fun OrganizationListManualScreenContent(
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {
         MgoAutoScrollLazyColumn(
-          modifier = Modifier.weight(1f),
+          modifier = Modifier.weight(1f).testTag(OrganizationListManualScreenTestTag.LIST),
           contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) { canScroll ->
@@ -227,8 +231,7 @@ private fun ResultContent(
   OrganizationListManualCard(
     modifier =
       modifier
-        .padding(bottom = 8.dp)
-        .testTag(TEST_TAG_ORGANIZATION_SEARCH_CARD),
+        .padding(bottom = 8.dp),
     searchResult = searchResult,
     onClick = onAddSearchResult,
     cardState = searchResult.getCardState(),

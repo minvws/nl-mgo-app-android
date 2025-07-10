@@ -26,12 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import getStringResourceByName
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
@@ -62,9 +64,14 @@ import nl.rijksoverheid.mgo.component.theme.supportWarning
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
-import nl.rijksoverheid.mgo.framework.util.getStringResourceByName
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object HealthCategoriesScreenTestTag {
+  const val LIST = "HealthCategoriesScreenList"
+  const val DELETE_ORGANIZATION_BUTTON = "HealthCategoriesScreenDeleteOrganizationButton"
+}
 
 /**
  * Composable that shows a screen with a list of health categories. These health categories are populated with either health cara data
@@ -152,7 +159,7 @@ private fun HealthCategoriesScreenContent(
         modifier = Modifier.padding(contentPadding),
       ) {
         MgoAutoScrollLazyColumn(
-          modifier = Modifier.weight(1f),
+          modifier = Modifier.weight(1f).testTag(HealthCategoriesScreenTestTag.LIST),
           contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) { canScroll ->
@@ -239,7 +246,7 @@ private fun LazyListScope.WithProviders(
           HealthCareCategory.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
           else -> HealthCategoriesListItemCardPosition.CENTER
         },
-      category = HealthCareCategory.entries.get(position),
+      category = HealthCareCategory.entries[position],
       onClickListItem = onClickListItem,
       filterOrganization = organization,
     )
@@ -247,7 +254,7 @@ private fun LazyListScope.WithProviders(
 
   if (organization != null) {
     item {
-      Column(modifier = Modifier.fillMaxWidth()) {
+      Column(modifier = Modifier.fillMaxWidth().testTag(DELETE_ORGANIZATION_BUTTON)) {
         MgoButton(
           modifier =
             Modifier

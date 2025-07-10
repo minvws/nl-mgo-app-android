@@ -98,7 +98,7 @@ private fun SettingsSecurityScreenContent(
               Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = stringResource(CopyR.string.settings_security_biometric_subheading),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.contentSecondary(),
               )
             }

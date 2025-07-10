@@ -15,11 +15,34 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlCoreHumanname(
-    val given: List<MgoString>? = null,
-    val period: MgoPeriod? = null,
-    val prefix: List<MgoString>? = null,
-    val use: MgoString? = null,
+    val given: Given,
+    val _profile: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-humanname",
+    val humannameAssemblyOrder: MgoCode? = null,
     val text: MgoString? = null,
-    val family: MgoString? = null,
-    val suffix: List<MgoString>? = null
-)
+    val family: Family
+) {
+
+    init {
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+    }
+
+    @Serializable
+    data class Given(
+        val initials: List<MgoString>? = null,
+        val callName: List<MgoString>? = null,
+        val birthName: List<MgoString>? = null
+    )
+
+    @Serializable
+    data class Family(
+        val humannamePartnerPrefix: MgoString? = null,
+        val humannameOwnPrefix: MgoString? = null,
+        val humannameOwnName: MgoString? = null,
+        val humannamePartnerName: MgoString? = null
+    )
+
+    companion object {
+        private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-humanname"
+    }
+
+}

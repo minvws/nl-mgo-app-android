@@ -6,11 +6,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,13 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.supportContacts
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
@@ -35,6 +34,10 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+
+object HealthCategoriesListItemTestTag {
+  const val LIST_ITEM = "HealthCategoriesListItem"
+}
 
 /**
  * Composable that shows a list item representing a health care category.
@@ -96,7 +99,7 @@ internal fun HealthCategoriesListItemContent(
   modifier: Modifier = Modifier,
   hasDivider: Boolean = true,
 ) {
-  Column(modifier = modifier.fillMaxWidth()) {
+  Column(modifier = modifier.fillMaxWidth().testTag(HealthCategoriesListItemTestTag.LIST_ITEM)) {
     Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
       Icon(painter = painterResource(id = icon), contentDescription = null, tint = iconColor)
       Text(
@@ -104,7 +107,7 @@ internal fun HealthCategoriesListItemContent(
         text = stringResource(id = title),
         style =
           MaterialTheme.typography
-            .bodySmall,
+            .bodyMedium,
       )
       when (listItemState) {
         HealthCategoriesListItemState.LOADING -> {
@@ -135,13 +138,11 @@ internal fun HealthCategoriesListItemContent(
       }
     }
     if (hasDivider) {
-      Divider(
+      HorizontalDivider(
         modifier =
           Modifier
             .fillMaxWidth()
-            .height(0.33.dp)
-            .padding(start = 16.dp),
-        color = MaterialTheme.colorScheme.borderPrimary(),
+            .padding(start = 58.dp),
       )
     }
   }

@@ -16,28 +16,120 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ZibAllergyIntolerance(
     val identifier: List<MgoIdentifier>? = null,
+    val note: List<MgoAnnotation>? = null,
+    val recorder: MgoReference? = null,
     val code: MgoCodeableConcept? = null,
+    val reaction: List<Reaction>? = null,
     val verificationStatus: ZibAllergyIntoleranceVerificationstatus? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance",
-    val criticality: ZibAllergyIntoleranceCriticality? = null,
-    val clinicalStatus: ZibAllergyIntoleranceClinicalstatus? = null,
-    val type: ZibAllergyIntoleranceType? = null,
+    val criticality: Criticality,
+    val source: MgoReference? = null,
+    val onsetDateTime: MgoDateTime? = null,
+    val clinicalStatus: ClinicalStatus,
     val referenceId: String,
     val patient: MgoReference? = null,
+    val lastOccurrence: MgoDateTime? = null,
     val fhirVersion: String = "R3",
     val id: String? = null,
-    val category: List<ZibAllergyIntoleranceCategory>? = null,
+    val category: List<Category>? = null,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class Reaction(
+        val severity: Severity,
+        val manifestation: List<MgoCodeableConcept>? = null,
+        val substance: MgoCodeableConcept? = null,
+        val description: MgoString? = null,
+        val onset: MgoDateTime? = null,
+        val exposureRoute: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Severity(
+        val severityCodelist: List<SeverityCodelist>
+    )
+
+    @Serializable
+    data class SeverityCodelist(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Criticality(
+        val criticalExtentCodelist: CriticalExtentCodelist? = null
+    )
+
+    @Serializable
+    data class CriticalExtentCodelist(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class ClinicalStatus(
+        val allergieStatusCodelijst: AllergieStatusCodelijst? = null
+    )
+
+    @Serializable
+    data class AllergieStatusCodelijst(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
+    }
+
+    @Serializable
+    data class Category(
+        val allergieCategorieCodelijst: AllergieCategorieCodelijst? = null
+    )
+
+    @Serializable
+    data class AllergieCategorieCodelijst(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
     }
 
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "codeableConcept"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
+        private const val cg_str2 = "R3"
     }
 
 }

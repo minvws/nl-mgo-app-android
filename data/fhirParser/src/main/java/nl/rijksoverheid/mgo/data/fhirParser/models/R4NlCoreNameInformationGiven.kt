@@ -17,6 +17,16 @@ import kotlinx.serialization.Serializable
 data class R4NlCoreNameInformationGiven(
     val given: List<MgoString>? = null,
     val period: MgoPeriod? = null,
-    val use: R4NlCoreNameInformationGivenUse,
+    val _profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-NameInformation.Given",
     val text: MgoString? = null
-) : R4NlCorePatientName, R4NlCoreHealthProfessionalPractitionerName
+) : R4NlCorePatientPropertiesContactItemsPropertiesName {
+
+    init {
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+    }
+
+    companion object {
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-NameInformation.Given"
+    }
+
+}

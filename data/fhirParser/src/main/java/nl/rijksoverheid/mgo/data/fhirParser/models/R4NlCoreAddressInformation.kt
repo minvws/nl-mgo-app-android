@@ -15,17 +15,38 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class R4NlCoreAddressInformation(
-    val additionalInformation: MgoString? = null,
-    val country: MgoString? = null,
-    val period: MgoPeriod? = null,
+    val country: Country,
+    val _profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-AddressInformation",
     val city: MgoString? = null,
-    val line: MgoString? = null,
-    val addressType: MgoCodeableConcept? = null,
+    val use: MgoCode? = null,
+    val line: List<Line>? = null,
+    val district: MgoString? = null,
     val postalCode: MgoString? = null,
-    val houseNumber: MgoString? = null,
-    val houseNumberAddition: MgoString? = null,
-    val streetName: MgoString? = null,
-    val houseNumberIndication: MgoString? = null,
-    val countryCode: MgoCodeableConcept? = null,
-    val district: MgoString? = null
-)
+    val type: MgoCode? = null
+) {
+
+    init {
+        require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
+    }
+
+    @Serializable
+    data class Country(
+        val countryCode: MgoCodeableConcept? = null
+    )
+
+    @Serializable
+    data class Line(
+        val additionalInformation: MgoString? = null,
+        val streetName: MgoString? = null,
+        val houseNumberLetter: MgoString? = null,
+        val countryCode: MgoString? = null,
+        val houseNumber: MgoString? = null,
+        val houseNumberAddition: MgoString? = null,
+        val houseNumberIndiciation: MgoString? = null
+    )
+
+    companion object {
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-AddressInformation"
+    }
+
+}

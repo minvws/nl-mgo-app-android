@@ -32,7 +32,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderSecondary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
@@ -166,7 +165,6 @@ private fun ThemeListItem(
     if (hasDivider) {
       HorizontalDivider(
         modifier = Modifier.padding(start = 56.dp),
-        color = MaterialTheme.colorScheme.borderSecondary(),
       )
     }
   }

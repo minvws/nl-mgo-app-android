@@ -19,6 +19,7 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepo
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import nl.rijksoverheid.mgo.lifecycle.AppLifecycleRepository
 import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
@@ -40,6 +41,7 @@ import javax.inject.Named
  * @param featureToggleRepository Repository that handles feature toggle actions.
  * @param keyValueStore Store to save a key value pair into.
  * @param isDigidAuthenticated Use case to check if the user has authenticated with DigiD.
+ * @param appLifecycleRepository Repository that can observe the app life cycle state.
  */
 @HiltViewModel
 internal class MainViewModel
@@ -53,6 +55,7 @@ internal class MainViewModel
     private val featureToggleRepository: FeatureToggleRepository,
     @Named("keyValueStore") val keyValueStore: KeyValueStore,
     val isDigidAuthenticated: IsDigidAuthenticated,
+    val appLifecycleRepository: AppLifecycleRepository,
   ) : ViewModel() {
     private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
     val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -84,8 +87,8 @@ internal class MainViewModel
     /**
      * Get the first navigation destination to show when launching the app.
      */
-    fun getStartDestination(): Any {
-      return when {
+    fun getStartDestination(): Any =
+      when {
         // If the user has not seen the onboarding, show the onboarding flow.
         !hasSeenOnboarding.invoke() -> {
           OnboardingNavigation.Root
@@ -111,7 +114,6 @@ internal class MainViewModel
           }
         }
       }
-    }
 
     /**
      * Check if the app needs to be locked.
@@ -141,7 +143,5 @@ internal class MainViewModel
     /**
      * @return True if the automatic localisation needs to be shown instead of the manual one.
      */
-    fun getAutomaticLocalisationEnabled(): Boolean {
-      return keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
-    }
+    fun getAutomaticLocalisationEnabled(): Boolean = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
   }

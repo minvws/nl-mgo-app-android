@@ -51,11 +51,11 @@ val flagSkipPinFeatureToggle =
 /**
  * If true, the use can not take screenshots.
  */
-val flagSecureFeatureToggle =
+fun flagSecureFeatureToggle(initialValue: Boolean) =
   FeatureToggle(
     id = FeatureToggleId.FlagSecure,
     preferenceKey = KEY_FLAG_SECURE,
-    initialValue = true,
+    initialValue = initialValue,
   )
 
 /**

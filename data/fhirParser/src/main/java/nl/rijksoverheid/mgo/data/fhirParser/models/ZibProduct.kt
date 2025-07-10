@@ -15,13 +15,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibProduct(
-    val code: MgoCodeableConcept? = null,
-    val ingredient: List<ZibProductIngredient>? = null,
-    val `package`: Package,
+    val code: Code,
+    val ingredient: List<Ingredient>? = null,
     val form: MgoCodeableConcept? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Product",
     val fhirVersion: String = "R3",
-    val description: MgoString? = null,
+    val description: Description? = null,
     val id: String? = null,
     val referenceId: String,
     val resourceType: String
@@ -33,19 +32,34 @@ data class ZibProduct(
     }
 
     @Serializable
-    data class Package(
-        val content: List<Content>? = null
+    data class Code(
+        val coding: List<MgoCoding>? = null,
+        val text: MgoString? = null
     )
 
     @Serializable
-    data class Content(
-        val reference: MgoReference? = null,
-        val item: MgoCodeableConcept? = null
+    data class Ingredient(
+        val amount: MgoRatio? = null,
+        val item_codeable_concept: MgoCodeableConcept? = null
     )
+
+    @Serializable
+    data class Description(
+        val _type: String,
+        val value: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Product"
         private const val cg_str1 = "R3"
+        private const val cg_str2 = "string"
     }
 
 }

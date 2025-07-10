@@ -15,42 +15,47 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibBloodPressure(
-    val dataAbsentReason: MgoCodeableConcept? = null,
-    val averageBloodPressureLOINC: AverageBloodPressureLOINC,
-    val diastolicEndpoint: DiastolicEndpoint,
-    val subject: MgoReference? = null,
-    val cuffTypeLOINC: CuffTypeLOINC,
-    val diastolicBP: DiastolicBP,
-    val referenceId: String,
-    val cuffTypeSNOMED: CuffTypeSNOMED,
-    val valueCodeableConcept: MgoCodeableConcept? = null,
-    val systolicBP: SystolicBP,
-    val fhirVersion: String = "R3",
-    val context: MgoReference? = null,
-    val id: String? = null,
-    val valueQuantity: MgoQuantity? = null,
     val identifier: List<MgoIdentifier>? = null,
+    val performer: List<MgoReference>? = null,
     val effectivePeriod: MgoPeriod? = null,
     val method: MgoCodeableConcept? = null,
+    val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure",
-    val positionSNOMED: PositionSNOMED,
+    val referenceId: String,
     val bodySite: MgoCodeableConcept? = null,
+    val component: Component? = null,
     val effectiveDateTime: MgoDateTime? = null,
+    val fhirVersion: String = "R3",
     val comment: MgoString? = null,
-    val averageBloodPressureSNOMED: AverageBloodPressureSNOMED,
-    val category: List<MgoCodeableConcept>? = null,
-    val positionLOINC: PositionLOINC,
-    val resourceType: String,
-    val status: GpLaboratoryResultStatus? = null
+    val id: String? = null,
+    val resourceType: String
 ) {
 
     init {
-        require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     @Serializable
-    data class AverageBloodPressureLOINC(
+    data class Component(
+        val averageBloodPressureLoinc: List<AverageBloodPressureLoinc>? = null,
+        val systolicBP: List<SystolicBP>? = null,
+        val diastolicEndpoint: List<DiastolicEndpoint>? = null,
+        val diastolicBP: List<DiastolicBP>? = null,
+        val cuffTypeLoinc: List<CuffTypeLoinc>? = null,
+        val averageBloodPressureSnomed: List<AverageBloodPressureSnomed>? = null,
+        val cuffTypeSnomed: List<CuffTypeSnomed>? = null,
+        val positionLoinc: List<PositionLoinc>? = null,
+        val positionSnomed: List<PositionSnomed>? = null
+    )
+
+    @Serializable
+    data class AverageBloodPressureLoinc(
+        val valueQuantity: MgoQuantity? = null
+    )
+
+    @Serializable
+    data class SystolicBP(
         val valueQuantity: MgoQuantity? = null
     )
 
@@ -60,43 +65,38 @@ data class ZibBloodPressure(
     )
 
     @Serializable
-    data class CuffTypeLOINC(
-        val valueCodeableConcept: MgoCodeableConcept? = null
-    )
-
-    @Serializable
     data class DiastolicBP(
         val valueQuantity: MgoQuantity? = null
     )
 
     @Serializable
-    data class CuffTypeSNOMED(
+    data class CuffTypeLoinc(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
     @Serializable
-    data class SystolicBP(
+    data class AverageBloodPressureSnomed(
         val valueQuantity: MgoQuantity? = null
     )
 
     @Serializable
-    data class PositionSNOMED(
+    data class CuffTypeSnomed(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
     @Serializable
-    data class AverageBloodPressureSNOMED(
-        val valueQuantity: MgoQuantity? = null
+    data class PositionLoinc(
+        val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
     @Serializable
-    data class PositionLOINC(
+    data class PositionSnomed(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
     companion object {
-        private const val cg_str0 = "R3"
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure"
+        private const val cg_str1 = "R3"
     }
 
 }

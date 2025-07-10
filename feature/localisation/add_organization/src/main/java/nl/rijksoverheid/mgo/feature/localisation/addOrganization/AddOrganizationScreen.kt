@@ -34,8 +34,10 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-const val TEST_TAG_NAME_TEXT_FIELD = "NAME_TEXT_FIELD"
-const val TEST_TAG_CITY_TEXT_FIELD = "CITY_TEXT_FIELD"
+object AddOrganizationScreenTestTag {
+  const val NAME_TEXTFIELD = "AddOrganizationScreenNameTextField"
+  const val CITY_TEXTFIELD = "AddOrganizationScreenCityTextField"
+}
 
 /**
  * Composable that shows a screen where you can add a health care provider.
@@ -122,7 +124,7 @@ private fun AddOrganizationScreenContent(
             keyboardActions = KeyboardActions(onNext = { cityFocusRequester.requestFocus() }),
             onValueChange = onSetName,
             error = viewState.nameError?.let { resource -> stringResource(id = resource) },
-            textFieldTestTag = TEST_TAG_NAME_TEXT_FIELD,
+            textFieldTestTag = AddOrganizationScreenTestTag.NAME_TEXTFIELD,
           )
 
           MgoBasicTextField(
@@ -142,7 +144,7 @@ private fun AddOrganizationScreenContent(
             keyboardActions = KeyboardActions(onSearch = { onSearch() }),
             onValueChange = onSetCity,
             error = viewState.cityError?.let { resource -> stringResource(id = resource) },
-            textFieldTestTag = TEST_TAG_CITY_TEXT_FIELD,
+            textFieldTestTag = AddOrganizationScreenTestTag.CITY_TEXTFIELD,
           )
         }
 

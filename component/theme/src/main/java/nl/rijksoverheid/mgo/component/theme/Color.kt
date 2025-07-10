@@ -85,14 +85,15 @@ fun ColorScheme.interactiveSecondaryDefaultBackground(isSystemDarkTheme: Boolean
 
 @Composable
 fun ColorScheme.interactiveSecondaryDefaultText(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) Color(0xFF7CCEFD) else Color(0xFF0162A3)
+  if (isSystemDarkTheme) Color(0xFF36b6fa) else Color(0xFF0162A3)
 
 @Composable
 fun ColorScheme.interactiveSecondaryCriticalBackground(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) {
     Color(0xFFFB786E).copy(alpha = 0.10f).compositeOver(Color.Black)
   } else {
-    Color(0xFFBC2519).copy(alpha = 0.10f)
+    Color(0xFFBC2519)
+      .copy(alpha = 0.10f)
       .compositeOver(Color.White)
   }
 
@@ -102,7 +103,7 @@ fun ColorScheme.interactiveSecondaryCriticalText(isSystemDarkTheme: Boolean = Lo
 
 @Composable
 fun ColorScheme.interactiveTertiaryDefaultText(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) Color(0xFF7CCEFD) else Color(0xFF0162A3)
+  if (isSystemDarkTheme) Color(0xFF36b6fa) else Color(0xFF0162A3)
 
 @Composable
 fun ColorScheme.interactiveTertiaryCriticalText(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =

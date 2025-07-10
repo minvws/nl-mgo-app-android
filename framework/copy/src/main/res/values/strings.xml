@@ -14,12 +14,12 @@
   <string name="dialog.remove_organization_no">Nee, toch tonen</string>
   <string name="dialog.remove_organization_subheading">We halen je dossier van deze zorgaanbieder niet op. Je kunt deze later alsnog toevoegen via je profiel.</string>
   <string name="dialog.remove_organization_yes">Ja, weglaten</string>
-  <string name="introduction.subheading">Eén app met alle gegevens die je huisarts, ziekenhuis en andere zorgaanbieders over jou hebben. Veilig en overzichtelijk.</string>
+  <string name="introduction.subheading">Eén app met alle gegevens die je huisarts, ziekenhuis en andere zorgaanbieders van jou hebben. Veilig en overzichtelijk.</string>
   <string name="lab_results.heading">Uitslagen</string>
   <string name="lab_results.subheading">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans.</string>
   <string name="login.digid">Log in met DigiD</string>
-  <string name="login.heading">Bewijs wie je bent</string>
-  <string name="login.subheading">Log in met DigiD. Zo kunnen we jouw gegevens veilig ophalen bij je huisarts, ziekenhuis en andere zorgaanbieders.</string>
+  <string name="login.heading">Log in met DigiD</string>
+  <string name="login.subheading">Met DigiD laat je weten wie je bent. Zo kunnen we je gegevens veilig ophalen. Bij je huisarts, het ziekenhuis en andere zorgaanbieders.</string>
   <string name="medication_use.heading">Medicijnen</string>
   <string name="medication_use.subheading">Een overzicht van de medicijnen die zijn voorgeschreven door je zorgaanbieder.</string>
   <string name="organization.diagnosis_heading">Klachten en diagnoses</string>
@@ -39,7 +39,7 @@
   <string name="proposition.statement_3"><![CDATA[<b>Je kiest zelf</b> hoe je je gegevens wilt gebruiken en of je ze deelt met anderen.]]></string>
   <string name="proposition.statement_4"><![CDATA[Je kunt de gegevens in je overzicht altijd <b>verwijderen of opnieuw ophalen</b>.]]></string>
   <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht jouw gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
-  <string name="proposition.heading">Zo gebruikt de app jouw gegevens</string>
+  <string name="proposition.heading">Hoe de app met jouw gegevens omgaat</string>
   <string name="update_required.heading">Tijd voor een update</string>
   <string name="update_required.subheading">Je hebt de nieuwste versie van de app nodig om verder te gaan.</string>
   <string name="update_required.download">Installeer update</string>
@@ -69,15 +69,15 @@
   <string name="pincode.empty.voiceover">Leeg</string>
   <string name="pincode.filled.voiceover">Gevuld</string>
   <string name="pincode.create.heading">Kies je toegangscode</string>
-  <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig. Gebruik geen simpele codes zoals 00000 of 12345.</string>
+  <string name="pincode.create.subheading">Je hebt een code van 5 cijfers nodig om de app te beveiligen. Gebruik geen simpele code zoals 00000 of 12345.</string>
   <string name="pincode.erase.voiceover">Leeg</string>
   <string name="pincode.forgot">Toegangscode vergeten?</string>
-  <string name="pincode.create.tooweak">Deze code is te simpel en dus onveilig</string>
+  <string name="pincode.create.tooweak">Code is te simpel en dus onveilig</string>
   <string name="pincode.confirm.heading">Bevestig je toegangscode</string>
-  <string name="pincode.confirm.subheading">Vul je toegangscode in om door te gaan</string>
-  <string name="pincode.confirm.mismatch">Deze code is anders dan de vorige</string>
+  <string name="pincode.confirm.subheading">Voer je 5-cijferige code nog een keer in.</string>
+  <string name="pincode.confirm.mismatch">Code is anders dan de vorige</string>
   <string name="pincode.validation.heading">Welkom terug</string>
-  <string name="pincode.validation.subheading">Vul je toegangscode in om door te gaan</string>
+  <string name="pincode.validation.subheading">Voer je toegangscode in om door te gaan</string>
   <string name="pincode.validation.wrong">Deze code klopt niet</string>
   <string name="pincode.voiceover" formatted="false">Veld %s van %s, %s</string>
   <string name="toast.organization_removed.heading">Zorgaanbieder verwijderd</string>
@@ -94,7 +94,7 @@
   <string name="health_category.empty.subheading">Er is hier niets opgeslagen.</string>
   <string name="account_removed.heading">Je account is verwijderd</string>
   <string name="account_removed.subheading">Je gegevens zijn verwijderd van je telefoon. Ze blijven wel veilig bewaard bij je zorgaanbieders. Als je een nieuw account maakt, kun je je gegevens opnieuw ophalen.</string>
-  <string name="account_removed.action">Oké, begrepen</string>
+  <string name="account_removed.action">Begrepen</string>
   <string name="biometric_setup.heading">Inloggen met je vingerafdruk</string>
   <string name="biometric_setup.subheading">Beveilig de app met je vingerafdruk. Zo log je de volgende keer sneller in. Je kunt ook je toegangscode blijven gebruiken.</string>
   <string name="biometric_setup.enable">Vingerafdruk aanzetten</string>
@@ -110,7 +110,7 @@
   <string name="common.previous">Vorige</string>
   <string name="common.required">(verplicht)</string>
   <string name="common.search">Zoeken</string>
-  <string name="common.unknown">Niet bekend</string>
+  <string name="common.unknown">Niet ingevuld</string>
   <string name="common.failed_to_load_data">Gegevens ophalen mislukt</string>
   <string name="common.error_in_system">Er ging iets mis in ons systeem.</string>
   <string name="common.try_again">Probeer opnieuw</string>
@@ -186,7 +186,7 @@
   <string name="zib_living_situation.heading">Leefomstandigheden</string>
   <string name="zib_medical_device.heading">Medische hulpmiddelen</string>
   <string name="zib_medication_agreement.heading">Afspraken over je medicijnen</string>
-  <string name="zib_medication_use.heading">Medicijnen die je gebruikt</string>
+  <string name="zib_medication_use.heading">Wat je nu gebruikt</string>
   <string name="zib_nutrition_advice.heading">Voedingsadvies</string>
   <string name="zib_patient.heading">Persoonsgegevens, Burgerlijke staat &amp; contactpersonen</string>
   <string name="zib_payer.heading">Betaalgegevens</string>
@@ -216,7 +216,7 @@
   <string name="settings.other.heading">Overige</string>
   <string name="settings.reset_app.heading">Stel app opnieuw in</string>
   <string name="settings.reset_app.subheading">Je verwijdert al je bewaarde zorgaanbieders en je toegangscode.</string>
-  <string name="settings.security.biometric.subheading">Gebruik dit in plaats van je toegangscode om veilig en nog sneller in te loggen.</string>
+  <string name="settings.security.biometric.subheading">Gebruik dit in plaats van je toegangscode om veilig en nog sneller in te loggen</string>
   <string name="settings.security.biometric.heading">Inloggen met vingerafdruk</string>
   <string name="settings.about_this_app.version">Versie</string>
   <string name="settings.about_this_app.safety">Veilig gebruik</string>
@@ -224,24 +224,26 @@
   <string name="settings.about_this_app.accessibility">Toegankelijkheid</string>
   <string name="settings.about_this_app.privacy">Je privacy en persoonsgegevens</string>
   <string name="settings.accessibility.heading">Toegankelijkheid</string>
-  <string name="settings.accessibility.subheading">De overheid vindt het belangrijk dat iedereen mee kan doen in de digitale samenleving. Daarom moeten websites en apps van de overheid voor iedereen toegankelijk zijn. Ook voor mensen met een beperking. Deze app volgt de internationale standaard voor toegankelijkheid.</string>
+  <string name="settings.accessibility.subheading">De Rijksoverheid vindt het belangrijk dat iedereen deze app goed kan gebruiken. Dus ook als je minder goed ziet, moeite hebt met lezen of navigeren, of technologie op een andere manier gebruikt. Daarom zorgen we ervoor dat de app zo toegankelijk mogelijk is.
+
+Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat het ons weten. Dan kijken we wat we kunnen verbeteren.</string>
   <string name="settings.accessibility.more_information">Meer informatie</string>
   <string name="settings.accessibility.more_information_url.test">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
   <string name="settings.accessibility.more_information_url.acc">https://web.acc.mgo.irealisatie.nl/toegankelijkheid</string>
   <string name="settings.accessibility.more_information_url.prod">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
-  <string name="settings.about_this_app.safety.subheading">De Rijksoverheid heeft deze app goed beveiligd. Maar u kunt zelf ook dingen doen om uw mobiel en gegevens veilig te houden. Hier zijn een paar tips:</string>
-  <string name="settings.about_this_app_safety.security_phone.heading">Beveilig uw mobiel</string>
-  <string name="settings.about_this_app_safety.security_phone.subheading">Als u uw mobiel verliest, wil u niet dat anderen toegang hebben tot uw gegevens. Zet daarom een sterk wachtwoord of pincode in die moeilijk te raden is.</string>
-  <string name="settings.about_this_app_safety.phone_yourself.heading">Houdt uw mobiel alleen voor uzelf</string>
-  <string name="settings.about_this_app_safety.phone_yourself.subheading">Deel uw wachtwoord of pincode nooit met anderen, ook niet met familie of vrienden. Uw gegevens zijn persoonlijk.</string>
+  <string name="settings.about_this_app.safety.subheading">De Rijksoverheid heeft deze app goed beveiligd. Maar je kunt zelf ook dingen doen om je mobiel en je gegevens veilig te houden. Hier zijn een paar tips:</string>
+  <string name="settings.about_this_app_safety.security_phone.heading">Beveilig je mobiel</string>
+  <string name="settings.about_this_app_safety.security_phone.subheading">Stel een sterk wachtwoord of een pincode in die moeilijk te raden is. Zo voorkom je dat anderen bij je gegevens kunnen als je je mobiel kwijtraakt.</string>
+  <string name="settings.about_this_app_safety.phone_yourself.heading">Houd je wachtwoord voor jezelf</string>
+  <string name="settings.about_this_app_safety.phone_yourself.subheading">Deel je wachtwoord of pincode nooit met anderen. Ook niet met familie of vrienden. Je gegevens zijn van jou.</string>
   <string name="settings.about_this_app_safety.install_updates.heading">Installeer updates</string>
-  <string name="settings.about_this_app_safety.install_updates.subheading">Houd uw mobiel en apps up-to-date. Zet automatische updates aan of controleer regelmatig de Google Play Store op nieuwe updates.</string>
-  <string name="settings.about_this_app_safety.public_wifi.heading">Vermijd openbare wifi-netwerken</string>
-  <string name="settings.about_this_app_safety.public_wifi.subheading">Gebruik liever geen openbare wifi-netwerken, zoals die in cafés of treinen. 4G of 5G is een veiliger alternatief en beschermt uw gegevens beter.</string>
+  <string name="settings.about_this_app_safety.install_updates.subheading">Houd je mobiel en apps up-to-date. Zet automatische updates aan of kijk regelmatig in de Google Play Store of er nieuwe updates zijn.</string>
+  <string name="settings.about_this_app_safety.public_wifi.heading">Gebruik liever geen openbare wifi</string>
+  <string name="settings.about_this_app_safety.public_wifi.subheading">Openbare wifi-netwerken, zoals in cafés of treinen, zijn minder veilig. Gebruik liever 4G of 5G. Dat beschermt je gegevens beter.</string>
   <string name="settings.about_this_app_safety.permissions.heading">Let op app-toestemmingen</string>
-  <string name="settings.about_this_app_safety.permissions.subheading">Sommige apps willen toegang tot uw locatie of persoonlijke gegevens. Kijk goed welke toestemming u aan apps geeft en of dat nodig is.</string>
+  <string name="settings.about_this_app_safety.permissions.subheading">Sommige apps vragen om toegang tot je locatie of andere persoonlijke gegevens. Kijk goed welke toestemming je geeft, en of dat echt nodig is.</string>
   <string name="settings.about_this_app_safety.safe_apps.heading">Download alleen veilige apps</string>
-  <string name="settings.about_this_app_safety.safe_apps.subheading">Installeer alleen apps uit de Google Play Store. Zo voorkomt u dat er virussen of nep-apps op uw mobiel komen.</string>
+  <string name="settings.about_this_app_safety.safe_apps.subheading">Gebruik alleen apps uit de Google Play Store. Zo voorkom je dat er virussen of nep-apps op je mobiel komen.</string>
   <string name="settings.about_this_app.privacy_url.test">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
   <string name="settings.about_this_app.privacy_url.acc">https://web.acc.mgo.irealisatie.nl/toegankelijkheid</string>
   <string name="settings.about_this_app.privacy_url.prod">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
@@ -249,6 +251,14 @@
   <string name="settings.reset_app.dialog.subheading">Je gegevens blijven altijd bewaard bij je zorgaanbieders. Je kunt de app later opnieuw instellen.</string>
   <string name="settings.about_this_app.logo__accessibility">Logo van het Ministerie van Volksgezondheid, Welzijn en Sport</string>
   <string name="screenshotalert.heading">Screenshot gemaakt</string>
-  <string name="screenshotalert.subheading">Je hebt een afbeelding van medische gegevens opgeslagen. Wees voorzichtig met delen of opslaan.</string>
-  <string name="screenshotalert.action">Begrepen</string>
+  <string name="screenshotalert.subheading">Je hebt een afbeelding opgeslagen van je medische gegevens. Wees voorzichtig met delen of opslaan.</string>
+  <string name="screenshotalert.action">OK</string>
+  <string name="export_pdf.page">Pagina %1$s van %2$s</string>
+  <string name="pdf_viewer.loading">Document maken…</string>
+  <string name="export_pdf.dialog.heading">Pdf maken van deze lijst?</string>
+  <string name="export_pdf.dialog.subheading">Je maakt een document met je medische gegevens. Die kun je daarna op je telefoon opslaan.</string>
+  <string name="export_pdf.dialog.create_document">Maak pdf</string>
+  <string name="export_pdf.subheading">Opgeslagen op %1$s om %2$s uur</string>
+  <string name="export_pdf.footer">Dit document is gemaakt met Mijn Gezondheidsoverzicht. Het bevat jouw medische gegevens,\nafkomstig van zorgaanbieders die jij hebt toegevoegd. Jij bent zelf verantwoordelijk voor wat je\nmet deze informatie doet. De gegevens zijn niet gecontroleerd op juistheid of volledigheid.</string>
+  <string name="export_pdf.no_data">Geen gegevens beschikbaar</string>
 </resources>

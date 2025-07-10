@@ -10,7 +10,7 @@ android {
     applicationId = "nl.rijksoverheid.mgo"
     versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 999999999
     versionName = "1.0"
-    testInstrumentationRunner = "nl.rijksoverheid.mgo.CustomTestRunner"
+    testInstrumentationRunner = "nl.rijksoverheid.mgo.runner.CustomTestRunner"
     buildConfigField("String", "BASIC_AUTH_USER", "\"\"")
     buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"\"")
   }
@@ -89,6 +89,10 @@ android {
   }
 
   buildTypes {
+    debug {
+      manifestPlaceholders["allowHttpTraffic"] = true
+      manifestPlaceholders["networkSecurityConfig"] = "@xml/network_config_http"
+    }
     release {
       isMinifyEnabled = true
       isShrinkResources = true
@@ -96,6 +100,8 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro",
       )
+      manifestPlaceholders["allowHttpTraffic"] = false
+      manifestPlaceholders["networkSecurityConfig"] = "@xml/network_config_https"
     }
   }
 
@@ -197,4 +203,14 @@ dependencies {
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.digid))
   testImplementation(testFixtures(projects.framework.featuretoggle))
+  testImplementation(testFixtures(projects.data.healthcare))
+  testImplementation(testFixtures(projects.data.fhirParser))
+
+  androidTestImplementation(libs.dagger.hilt.testing)
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.test.core)
+  androidTestImplementation(libs.compose.ui.test.junit4)
+  androidTestImplementation(projects.component.pincode)
 }

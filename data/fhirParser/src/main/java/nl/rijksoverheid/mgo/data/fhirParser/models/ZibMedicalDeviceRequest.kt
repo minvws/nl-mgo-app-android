@@ -15,17 +15,20 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZibMedicalDeviceRequest(
-    val codeReference: MgoReference? = null,
+    val requester: MgoReference? = null,
+    val identifier: List<MgoIdentifier>? = null,
     val subject: MgoReference? = null,
-    val perfomer: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest",
-    val fhirVersion: String = "R3",
-    val occurrence: MgoPeriod? = null,
-    val id: String? = null,
-    val intent: MgoCodeableConcept? = null,
-    val codeCodeableConcept: MgoCodeableConcept? = null,
+    val occurrenceTiming: MgoTiming? = null,
+    val performerType: PerformerType,
     val referenceId: String,
-    val status: MgoString? = null,
+    val codeReference: MgoReference? = null,
+    val occurrencePeriod: MgoPeriod? = null,
+    val fhirVersion: String = "R3",
+    val occurrenceDateTime: MgoDateTime? = null,
+    val id: String? = null,
+    val codeCodeableConcept: MgoCodeableConcept? = null,
+    val status: Status,
     val resourceType: String
 ) {
 
@@ -34,9 +37,34 @@ data class ZibMedicalDeviceRequest(
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
+    @Serializable
+    data class PerformerType(
+        val healthProfessionalRole: List<MgoCoding>? = null
+    )
+
+    @Serializable
+    data class Status(
+        val orderStatus: OrderStatus? = null
+    )
+
+    @Serializable
+    data class OrderStatus(
+        val coding: List<MgoCodingProps>,
+        val _type: String,
+        val text: String? = null,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+        }
+
+    }
+
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest"
         private const val cg_str1 = "R3"
+        private const val cg_str2 = "codeableConcept"
     }
 
 }

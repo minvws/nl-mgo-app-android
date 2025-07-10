@@ -9,6 +9,8 @@ android {
 dependencies {
   implementation(projects.data.healthcare)
   implementation(projects.data.localisation)
+  implementation(projects.component.pdfViewer)
+  implementation(libs.compose.navigation)
   testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.data.fhirParser))
 }

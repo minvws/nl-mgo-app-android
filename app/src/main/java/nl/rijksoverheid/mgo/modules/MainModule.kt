@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.modules
 
 import android.content.Context
+import android.os.Build
 import com.scottyab.rootbeer.RootBeer
 import dagger.Module
 import dagger.Provides
@@ -30,15 +31,17 @@ internal object MainModule {
   @Named("cacheDir")
   fun provideCacheDir(
     @ApplicationContext context: Context,
-  ): File {
-    return context.cacheDir
-  }
+  ): File = context.cacheDir
 
   @Provides
   @Singleton
-  fun provideClock(): Clock {
-    return Clock.systemUTC()
-  }
+  @Named("systemUTC")
+  fun provideClockUTC(): Clock = Clock.systemUTC()
+
+  @Provides
+  @Singleton
+  @Named("systemDefaultZone")
+  fun provideClockDefaultZone(): Clock = Clock.systemDefaultZone()
 
   @Provides
   @Singleton
@@ -52,33 +55,23 @@ internal object MainModule {
 
   @Named("appFlavor")
   @Provides
-  fun provideAppFlavor(): String {
-    return BuildConfig.FLAVOR
-  }
+  fun provideAppFlavor(): String = BuildConfig.FLAVOR
 
   @Named("isDebug")
   @Provides
-  fun provideIsDebug(): Boolean {
-    return BuildConfig.DEBUG
-  }
+  fun provideIsDebug(): Boolean = BuildConfig.DEBUG
 
   @Named("versionName")
   @Provides
-  fun provideVersionName(): String {
-    return BuildConfig.VERSION_NAME
-  }
+  fun provideVersionName(): String = BuildConfig.VERSION_NAME
 
   @Named("versionCode")
   @Provides
-  fun provideVersionCode(): Int {
-    return BuildConfig.VERSION_CODE
-  }
+  fun provideVersionCode(): Int = BuildConfig.VERSION_CODE
 
   @Named("deeplinkHost")
   @Provides
-  fun provideDeeplinkHost(): String {
-    return BuildConfig.DEEPLINK_HOST
-  }
+  fun provideDeeplinkHost(): String = BuildConfig.DEEPLINK_HOST
 
   @Provides
   fun provideMgoAuthentication(): MgoAuthentication {
@@ -92,24 +85,22 @@ internal object MainModule {
 
   @Provides
   fun provideAppLocked(
-    clock: Clock,
+    @Named("systemUTC") clock: Clock,
     @Named("keyValueStore") keyValueStore: KeyValueStore,
     @Named("secureKeyValueStore") secureKeyValueStore: KeyValueStore,
-  ): AppLocked {
-    return DefaultAppLocked(clock = clock, keyValueStore = keyValueStore, secureKeyValueStore = secureKeyValueStore)
-  }
+  ): AppLocked = DefaultAppLocked(clock = clock, keyValueStore = keyValueStore, secureKeyValueStore = secureKeyValueStore)
 
   @Provides
   fun provideSaveClosedAppTimestamp(
-    clock: Clock,
+    @Named("systemUTC") clock: Clock,
     @Named("keyValueStore") keyValueStore: KeyValueStore,
-  ): SaveClosedAppTimestamp {
-    return DefaultSaveClosedAppTimestamp(clock = clock, keyValueStore)
-  }
+  ): SaveClosedAppTimestamp = DefaultSaveClosedAppTimestamp(clock = clock, keyValueStore)
 
   @Provides
   @Named("ioDispatcher")
-  fun provideIoDispatcher(): CoroutineDispatcher {
-    return Dispatchers.IO
-  }
+  fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+  @Provides
+  @Named("sdkVersion")
+  fun provideSdkVersion() = Build.VERSION.SDK_INT
 }

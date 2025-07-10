@@ -20,7 +20,7 @@ data class ZibAlert(
     val code: MgoCodeableConcept? = null,
     val author: MgoReference? = null,
     val patient: MgoReference? = null,
-    val concernReference: MgoReference? = null,
+    val concernReference: ConcernReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert",
     val fhirVersion: String = "R3",
     val id: String? = null,
@@ -30,13 +30,28 @@ data class ZibAlert(
 ) {
 
     init {
-        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+    }
+
+    @Serializable
+    data class ConcernReference(
+        val reference: String? = null,
+        val display: String? = null,
+        val _type: String,
+        val _ext: Boolean
+    ) {
+
+        init {
+            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+        }
+
     }
 
     companion object {
-        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert"
-        private const val cg_str1 = "R3"
+        private const val cg_str0 = "reference"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert"
+        private const val cg_str2 = "R3"
     }
 
 }

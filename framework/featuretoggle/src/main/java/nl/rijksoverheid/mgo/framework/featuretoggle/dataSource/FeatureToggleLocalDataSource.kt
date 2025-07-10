@@ -22,8 +22,7 @@ class FeatureToggleLocalDataSource
   @Inject
   constructor(
     @Named("keyValueStore") private val keyValueStore: KeyValueStore,
-  ) :
-  FeatureToggleDataSource {
+  ) : FeatureToggleDataSource {
     private var flows: Map<FeatureToggleId, MutableStateFlow<Boolean>> = mapOf()
 
     /**
@@ -57,17 +56,13 @@ class FeatureToggleLocalDataSource
      * @param id The [FeatureToggleId] of the [FeatureToggle].
      * @return True if the [FeatureToggle] is enabled.
      */
-    override fun get(id: FeatureToggleId): Boolean {
-      return runBlocking { flows[id]?.value == true }
-    }
+    override fun get(id: FeatureToggleId): Boolean = runBlocking { flows[id]?.value == true }
 
     /**
      * @param id The [FeatureToggleId] of the [FeatureToggle].
      * @return Emits true if the [FeatureToggle] is enabled.
      */
-    override fun observe(id: FeatureToggleId): Flow<Boolean> {
-      return flows[id] ?: flow { emit(false) }
-    }
+    override fun observe(id: FeatureToggleId): Flow<Boolean> = flows[id] ?: flow { emit(false) }
 
     /**
      * Toggle the state of a feature toggle.

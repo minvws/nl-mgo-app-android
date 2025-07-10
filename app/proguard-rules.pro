@@ -32,3 +32,16 @@
 -keep class com.eclipsesource.v8.** { *; }
 -keep class nl.rijksoverheid.mgo.data.uiSchema.** {  *; }
 -keep class nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory { *; }
+# Keep all iText classes to prevent issues due to reflection or stripped classes
+-keep class com.itextpdf.** { *; }
+-dontwarn com.itextpdf.**
+
+# Keep interfaces and annotations used at runtime
+-keep @interface com.itextpdf.**
+-keep interface com.itextpdf.**
+
+# Keep font classes (important if using custom fonts)
+-keep class com.itextpdf.io.font.** { *; }
+
+# Required for layout (tables, paragraphs, document model)
+-keep class com.itextpdf.layout.** { *; }

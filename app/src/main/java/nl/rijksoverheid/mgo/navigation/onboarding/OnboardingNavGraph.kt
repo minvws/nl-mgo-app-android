@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.onboarding.introduction.IntroductionScreen
 import nl.rijksoverheid.mgo.feature.onboarding.proposition.PropositionOverviewScreen
-import nl.rijksoverheid.mgo.navigation.mgoComposable
+import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 
 /**
@@ -14,7 +14,7 @@ import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
  */
 fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
   navigation<OnboardingNavigation.Root>(OnboardingNavigation.Introduction) {
-    mgoComposable<OnboardingNavigation.Introduction> {
+    mgoComposableExt<OnboardingNavigation.Introduction> {
       IntroductionScreen(
         onNavigateToProposition = {
           navController.navigate(OnboardingNavigation.Proposition)
@@ -22,7 +22,7 @@ fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
       )
     }
 
-    mgoComposable<OnboardingNavigation.Proposition> {
+    mgoComposableExt<OnboardingNavigation.Proposition> {
       PropositionOverviewScreen(
         onNavigateBack = {
           navController.popBackStack()

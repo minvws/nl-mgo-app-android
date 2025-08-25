@@ -2,46 +2,29 @@ package nl.rijksoverheid.mgo.robots
 
 import androidx.test.core.app.launchActivity
 import kotlinx.coroutines.coroutineScope
-import nl.rijksoverheid.mgo.AppInitializer
 import nl.rijksoverheid.mgo.MainActivity
-import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
-import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
-import javax.inject.Inject
+import nl.rijksoverheid.mgo.MainApplication
 
-class LaunchAppRobot
-  @Inject
-  constructor(
-    private val appInitializer: AppInitializer,
-    private val authRobot: AuthRobot,
-    private val onboardingRobot: OnboardingRobot,
-    private val featureToggleRepository: FeatureToggleRepository,
-  ) {
-    suspend fun launchApp(
-      skipOnboarding: Boolean = false,
-      pinCode: List<Int>? = null,
-      digidAuthenticated: Boolean = false,
-      skipPinCodeLogin: Boolean = false,
-      block: () -> Unit,
-    ) = coroutineScope {
-      appInitializer(this)
+class LaunchAppRobot(
+  private val mainApplication: MainApplication,
+) {
+  suspend fun launchApp(
+    skipOnboarding: Boolean = false,
+    pinCode: List<Int>? = null,
+    digidAuthenticated: Boolean = false,
+    skipPinCodeLogin: Boolean = false,
+    block: () -> Unit,
+  ) = coroutineScope {
+    val appInitializer = mainApplication.appInitializer
+    appInitializer.override(
+      skipOnboarding = skipOnboarding,
+      pinCode = pinCode,
+      digidAuthenticated = digidAuthenticated,
+      skipPinCodeLogin = skipPinCodeLogin,
+    )
 
-      if (skipOnboarding) {
-        onboardingRobot
-          .skipOnboarding()
-      }
-
-      if (pinCode != null) {
-        authRobot.setPinCode(pinCode)
-      }
-
-      if (digidAuthenticated) {
-        authRobot.setAuthenticatedWithDigid()
-      }
-
-      featureToggleRepository.set(flagSkipPinFeatureToggle, skipPinCodeLogin)
-
-      launchActivity<MainActivity>().use {
-        block()
-      }
+    launchActivity<MainActivity>().use {
+      block()
     }
   }
+}

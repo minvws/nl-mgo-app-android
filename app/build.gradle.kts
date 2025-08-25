@@ -10,7 +10,6 @@ android {
     applicationId = "nl.rijksoverheid.mgo"
     versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 999999999
     versionName = "1.0"
-    testInstrumentationRunner = "nl.rijksoverheid.mgo.runner.CustomTestRunner"
     buildConfigField("String", "BASIC_AUTH_USER", "\"\"")
     buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"\"")
   }

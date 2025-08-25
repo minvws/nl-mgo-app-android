@@ -37,24 +37,35 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-      - name: Assemble Debug and Pull Screenshots
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          force-avd-creation: false
-          arch: x86_64
-          profile: Nexus 6
-          disable-animations: true
-          script: |
-            set -e
-            ./gradlew connectedTstDebugAndroidTest -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true || true
-            mkdir -p ./artifacts/screenshots
-            adb shell ls /sdcard/Android/data/nl.rijksoverheid.mgo.tst/files/Pictures/test_screenshots || true
-            adb pull /sdcard/Android/data/nl.rijksoverheid.mgo.tst/files/Pictures/test_screenshots ./artifacts/screenshots || true
-            ls -la ./artifacts/screenshots
-      - name: Upload screenshots as artifact
-        if: always()
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Run CI
+        run: ./gradlew runCI
+      - name: Run Sonar Scanner
+        run: ./gradlew sonar --info
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Download Keystore
+        run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore
+      - name: Build Apps
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+        run: ./gradlew assembleTstRelease assembleAccRelease assembleProdRelease assembleDemoRelease
+      - name: Archive Apps
         uses: actions/upload-artifact@v4
         with:
-          name: android-test-screenshots
-          path: ./artifacts/screenshots
+          name: apks
+          path: |
+            app/build/outputs/apk
+          retention-days: 5
+      - name: Set Release Notes
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+        run: |
+          if [ ${{ github.event_name }} = 'pull_request' ]; then
+            echo "RELEASE_NOTES=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+          else
+            echo "RELEASE_NOTES=main" >> $GITHUB_ENV
+          fi
+      - name: Distribute Apps
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern,valsplat --releaseNotes="${RELEASE_NOTES}" appDistributionUploadAccRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadProdRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadDemoRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}"

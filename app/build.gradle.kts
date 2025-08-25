@@ -125,6 +125,7 @@ dependencies {
   // LIBRARIES
   // ================================
   implementation(libs.rootbeer)
+  implementation(libs.androidx.startup.runtime)
 
   // ================================
   // FEATURES
@@ -205,6 +206,7 @@ dependencies {
   testImplementation(testFixtures(projects.framework.featuretoggle))
   testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.data.fhirParser))
+  testImplementation(libs.mockk.android)
 
   androidTestImplementation(libs.dagger.hilt.testing)
   androidTestImplementation(libs.junit)

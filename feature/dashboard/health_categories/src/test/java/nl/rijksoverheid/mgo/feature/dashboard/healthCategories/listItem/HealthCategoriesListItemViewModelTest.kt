@@ -15,7 +15,7 @@ import org.junit.Test
 
 internal class HealthCategoriesListItemViewModelTest {
   @get:Rule
-  val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
+  val mainDispatcherRule = MainDispatcherRule()
 
   private val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf())
 
@@ -83,11 +83,10 @@ internal class HealthCategoriesListItemViewModelTest {
       }
     }
 
-  private fun createViewModel(): HealthCategoriesListItemViewModel {
-    return HealthCategoriesListItemViewModel(
+  private fun createViewModel(): HealthCategoriesListItemViewModel =
+    HealthCategoriesListItemViewModel(
       filterOrganization = null,
       category = HealthCareCategory.MEDICATIONS,
       healthCareDataStatesRepository = healthCareDataStatesRepository,
     )
-  }
 }

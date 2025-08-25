@@ -8,10 +8,6 @@ android {
     enable = true
   }
 
-  defaultConfig {
-    testInstrumentationRunner = "nl.rijksoverheid.mgo.framework.test.HiltTestRunner"
-  }
-
   buildFeatures {
     buildConfig = true
   }

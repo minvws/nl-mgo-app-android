@@ -1,24 +1,29 @@
 package nl.rijksoverheid.mgo.feature.onboarding.proposition
 
-import android.app.Activity
-import android.app.Instrumentation
+import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performTouchInput
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import org.hamcrest.Matchers
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows
 
+@RunWith(RobolectricTestRunner::class)
 internal class PropositionScreenTest {
   @get:Rule
   val composeTestRule = createComposeRule()
 
   @Test
   fun privacyPolicyIsOpenedOnButtonClick() {
+    val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
+
     composeTestRule.setContent {
       MgoTheme {
         PropositionOverviewScreenContent(
@@ -29,22 +34,13 @@ internal class PropositionScreenTest {
       }
     }
 
-    // Assert link is opened
-    Intents.init()
-    val intentMatcher =
-      IntentMatchers.hasDataString(
-        Matchers.equalTo(
-          "https://www.google.nl",
-        ),
-      )
-    Intents.intending(intentMatcher).respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, null))
-
-    // When clicking the link
-    // Verify fragile test because compose does not have a ViewActions.openLinkWithText
-    composeTestRule.onNode(hasText("privacyverklaring", substring = true))
+    composeTestRule
+      .onNode(hasText("privacyverklaring", substring = true))
       .performTouchInput { click(percentOffset(0.1f, 0f)) }
 
-    Intents.intended(intentMatcher)
-    Intents.release()
+    val shadowActivity = Shadows.shadowOf(activity)
+    val startedIntent = shadowActivity.nextStartedActivity
+    assertNotNull(startedIntent)
+    assertEquals("https://www.google.nl", startedIntent.data.toString())
   }
 }

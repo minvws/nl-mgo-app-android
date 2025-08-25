@@ -188,7 +188,7 @@ private fun UiSchemaSection(
 
             is UISchemaRow.Reference -> {
               UiSchemaRowReference(
-                  modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
+                modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
                 row = row,
                 onClick = onClickReference,
               )
@@ -196,7 +196,7 @@ private fun UiSchemaSection(
 
             is UISchemaRow.Binary -> {
               UiSchemaRowBinary(
-                  modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
+                modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
                 row = row,
                 onClick = onClickFile,
               )
@@ -204,7 +204,7 @@ private fun UiSchemaSection(
 
             is UISchemaRow.Link -> {
               UiSchemaRowLink(
-                  modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
+                modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
                 row = row,
               )
             }

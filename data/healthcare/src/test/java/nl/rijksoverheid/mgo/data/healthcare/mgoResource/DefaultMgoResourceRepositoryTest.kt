@@ -87,13 +87,12 @@ class DefaultMgoResourceRepositoryTest {
       assertEquals(null, result.getOrNull())
     }
 
-  private fun createRepository(): DefaultMgoResourceRepository {
-    return DefaultMgoResourceRepository(
+  private fun createRepository(): DefaultMgoResourceRepository =
+    DefaultMgoResourceRepository(
       healthCareDataStatesStore = healthCareDataStatesStore,
       dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url()),
       urlCreator = TestHealthCareUrlCreator(),
       dvaApiBaseUrl = "",
       mgoResourceMapper = TestMgoResourceMapper(),
     )
-  }
 }

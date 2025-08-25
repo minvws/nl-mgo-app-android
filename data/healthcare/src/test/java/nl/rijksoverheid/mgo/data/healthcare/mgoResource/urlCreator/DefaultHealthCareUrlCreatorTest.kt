@@ -3,7 +3,10 @@ package nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class DefaultHealthCareUrlCreatorTest {
   private val urlCreator = DefaultHealthCareUrlCreator()
 

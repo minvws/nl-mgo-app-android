@@ -38,9 +38,7 @@ class LaunchAppRobot
         authRobot.setAuthenticatedWithDigid()
       }
 
-      if (skipPinCodeLogin) {
-        featureToggleRepository.set(flagSkipPinFeatureToggle, true)
-      }
+      featureToggleRepository.set(flagSkipPinFeatureToggle, skipPinCodeLogin)
 
       launchActivity<MainActivity>().use {
         block()

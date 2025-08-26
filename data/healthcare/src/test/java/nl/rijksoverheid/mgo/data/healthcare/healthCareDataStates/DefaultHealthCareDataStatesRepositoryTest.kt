@@ -5,7 +5,7 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TestHealthCareDataStateRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TestHealthCareDataStatesStore
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import org.junit.Test
 
@@ -22,7 +22,7 @@ class DefaultHealthCareDataStatesRepositoryTest {
   fun testCategoryAndOrganization() =
     runTest {
       val organization = TEST_MGO_ORGANIZATION
-      val category = HealthCareCategory.MEDICATIONS
+      val category = HealthCareCategoryId.MEDICATIONS
 
       // Given: Set loaded state
       healthCareDataStateRepository.setLoadedState(organization = organization, category = category)
@@ -31,7 +31,7 @@ class DefaultHealthCareDataStatesRepositoryTest {
       repository.refresh(organization = organization, category = category)
 
       // Then: Collect state
-      repository.observe(category = HealthCareCategory.MEDICATIONS, filterOrganization = TEST_MGO_ORGANIZATION).test {
+      repository.observe(category = HealthCareCategoryId.MEDICATIONS, filterOrganization = TEST_MGO_ORGANIZATION).test {
         val emit = awaitItem()
         assertEquals(1, emit.size)
         assertEquals(category, emit.first().category)
@@ -43,7 +43,7 @@ class DefaultHealthCareDataStatesRepositoryTest {
     runTest {
       val organization1 = TEST_MGO_ORGANIZATION.copy(id = "1")
       val organization2 = TEST_MGO_ORGANIZATION.copy(id = "2")
-      val category = HealthCareCategory.MEDICATIONS
+      val category = HealthCareCategoryId.MEDICATIONS
 
       // Given: Set loaded states
       healthCareDataStateRepository.setLoadedState(organization = organization1, category = category)
@@ -54,7 +54,7 @@ class DefaultHealthCareDataStatesRepositoryTest {
       repository.refresh(organization = organization2, category = category)
 
       // Then: Collect state
-      repository.observe(category = HealthCareCategory.MEDICATIONS, filterOrganization = null).test {
+      repository.observe(category = HealthCareCategoryId.MEDICATIONS, filterOrganization = null).test {
         val emit = awaitItem()
         assertEquals(2, emit.size)
         assertEquals("1", emit[0].organization.id)
@@ -66,7 +66,7 @@ class DefaultHealthCareDataStatesRepositoryTest {
   fun testDelete() =
     runTest {
       val organization = TEST_MGO_ORGANIZATION.copy(id = "1")
-      val category = HealthCareCategory.MEDICATIONS
+      val category = HealthCareCategoryId.MEDICATIONS
 
       // Given: Organization is stored
       healthCareDataStateRepository.setLoadedState(organization = organization, category = category)

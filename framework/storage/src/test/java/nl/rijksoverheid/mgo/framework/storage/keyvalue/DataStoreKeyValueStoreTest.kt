@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
@@ -101,6 +102,45 @@ internal class DataStoreKeyValueStoreTest {
 
         // Then: value is emitted
         assertEquals("321", awaitItem())
+      }
+    }
+
+  @Test
+  fun validateStringSet() =
+    runTest {
+      // Given
+      val preferenceKey1 = stringSetPreferencesKey("test1")
+      val preferenceKey2 = stringSetPreferencesKey("test2")
+      val keyValueStore = DataStoreKeyValueStore(dataStore = context.dataStore)
+
+      // When
+      keyValueStore.setStringSet(preferenceKey1, setOf("123", "456"))
+      keyValueStore.setStringSet(preferenceKey2, setOf("789", "123"))
+      keyValueStore.removeStringSet(preferenceKey2)
+
+      // Then
+      assertEquals(setOf("123", "456"), keyValueStore.getStringSet(preferenceKey1))
+      assertNull(keyValueStore.getStringSet(preferenceKey2))
+    }
+
+  @Test
+  fun validateObserveStringSet() =
+    runTest {
+      // Given: string set preference
+      val preferenceKey1 = stringSetPreferencesKey("test1")
+      val keyValueStore = DataStoreKeyValueStore(dataStore = context.dataStore)
+      keyValueStore.setStringSet(preferenceKey1, setOf("123", "456"))
+
+      // When: Observing string set preference
+      keyValueStore.observeStringSet(preferenceKey1).test {
+        // Then: value is emitted
+        assertEquals(setOf("123", "456"), awaitItem())
+
+        // When: updating string set
+        keyValueStore.setStringSet(preferenceKey1, setOf("789", "123"))
+
+        // Then: value is emitted
+        assertEquals(setOf("789", "123"), awaitItem())
       }
     }
 

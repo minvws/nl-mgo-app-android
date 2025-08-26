@@ -2,15 +2,15 @@ package nl.rijksoverheid.mgo.data.healthcare.healthCareDataState
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 class TestHealthCareDataStateRepository : HealthCareDataStateRepository {
-  private var states: MutableMap<Pair<MgoOrganization, HealthCareCategory>, HealthCareDataState> = mutableMapOf()
+  private var states: MutableMap<Pair<MgoOrganization, HealthCareCategoryId>, HealthCareDataState> = mutableMapOf()
 
   fun setLoadedState(
     organization: MgoOrganization,
-    category: HealthCareCategory,
+    category: HealthCareCategoryId,
   ) {
     this.states[Pair(organization, category)] =
       TEST_HEALTH_CARE_DATA_STATE_LOADED.copy(
@@ -21,7 +21,7 @@ class TestHealthCareDataStateRepository : HealthCareDataStateRepository {
 
   override fun get(
     organization: MgoOrganization,
-    category: HealthCareCategory,
+    category: HealthCareCategoryId,
   ): Flow<HealthCareDataState> {
     val state = this.states[Pair(organization, category)]
     return flow {

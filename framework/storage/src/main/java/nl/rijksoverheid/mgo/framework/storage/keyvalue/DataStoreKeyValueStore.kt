@@ -170,6 +170,57 @@ internal class DataStoreKeyValueStore(
   }
 
   /**
+   * Stores a string set value in the key-value store.
+   *
+   * @param key The key associated with the string set value.
+   * @param value The string set value to store.
+   */
+  override suspend fun setStringSet(
+    key: Preferences.Key<Set<String>>,
+    value: Set<String>,
+  ) {
+    dataStore.edit { preferences ->
+      preferences[key] = value
+    }
+  }
+
+  /**
+   * Observes a string value from the key-value store.
+   *
+   * @param key The key associated with the string value.
+   * @return A flow with the stored string value, or null if not found.
+   */
+  override fun observeStringSet(key: Preferences.Key<Set<String>>): Flow<Set<String>?> =
+    dataStore.data.map { preferences ->
+      preferences[key]
+    }
+
+  /**
+   * Retrieves a string set value from the key-value store.
+   *
+   * @param key The key associated with the string set value.
+   * @return The stored string set value, or null if not found.
+   */
+  override fun getStringSet(key: Preferences.Key<Set<String>>): Set<String>? =
+    runBlocking {
+      dataStore.data
+        .map { preferences ->
+          preferences[key]
+        }.firstOrNull()
+    }
+
+  /**
+   * Removes a string set value from the key-value store.
+   *
+   * @param key The key associated with the string set value to remove.
+   */
+  override suspend fun removeStringSet(key: Preferences.Key<Set<String>>) {
+    dataStore.edit { preferences ->
+      preferences.remove(key)
+    }
+  }
+
+  /**
    * Stores a long value in the key-value store.
    *
    * @param key The key associated with the long value.

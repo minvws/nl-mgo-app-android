@@ -1,110 +1,110 @@
 package nl.rijksoverheid.mgo.data.healthcare
 
 import nl.rijksoverheid.mgo.data.fhirParser.models.Profiles
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Documents
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Gp
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Vaccination
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getRequests
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.getProfiles
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.getRequests
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class HealthCareCategoryTest {
   @Test
   fun testGetRequests() {
-    val medicationsRequests = HealthCareCategory.MEDICATIONS.getRequests()
+    val medicationsRequests = HealthCareCategoryId.MEDICATIONS.getRequests()
     assertEquals(
       listOf(Bgz.MedicationUse, Bgz.MedicationAgreement, Bgz.AdministrationAgreement, Gp.CurrentMedication),
       medicationsRequests,
     )
 
-    val measurementsRequests = HealthCareCategory.MEASUREMENTS.getRequests()
+    val measurementsRequests = HealthCareCategoryId.MEASUREMENTS.getRequests()
     assertEquals(
       listOf(Bgz.BloodPressure, Bgz.BodyWeight, Bgz.BodyHeight, Gp.DiagnosticsAndLabResult),
       measurementsRequests,
     )
 
-    val labResultsRequests = HealthCareCategory.LAB_RESULTS.getRequests()
+    val labResultsRequests = HealthCareCategoryId.LAB_RESULTS.getRequests()
     assertEquals(
       listOf(Bgz.LaboratoryTestResult, Gp.DiagnosticsAndLabResult),
       labResultsRequests,
     )
 
-    val allergiesRequests = HealthCareCategory.ALLERGIES.getRequests()
+    val allergiesRequests = HealthCareCategoryId.ALLERGIES.getRequests()
     assertEquals(
       listOf(Bgz.AllergyIntolerance, Gp.AllergyIntolerance),
       allergiesRequests,
     )
 
-    val treatmentsRequests = HealthCareCategory.TREATMENTS.getRequests()
+    val treatmentsRequests = HealthCareCategoryId.TREATMENTS.getRequests()
     assertEquals(
       listOf(Bgz.Procedure, Bgz.PlannedProcedure, Gp.Episodes),
       treatmentsRequests,
     )
 
-    val appointmentRequests = HealthCareCategory.APPOINTMENTS.getRequests()
+    val appointmentRequests = HealthCareCategoryId.APPOINTMENTS.getRequests()
     assertEquals(
       listOf(Bgz.Encounter, Bgz.PlannedEncounters, Gp.Encounter, Gp.SoapEntries),
       appointmentRequests,
     )
 
-    val vaccinationsRequests = HealthCareCategory.VACCINATIONS.getRequests()
+    val vaccinationsRequests = HealthCareCategoryId.VACCINATIONS.getRequests()
     assertEquals(
       listOf(Bgz.Vaccination, Bgz.PlannedImmunization, Vaccination.Patient),
       vaccinationsRequests,
     )
 
-    val documentsRequests = HealthCareCategory.DOCUMENTS.getRequests()
+    val documentsRequests = HealthCareCategoryId.DOCUMENTS.getRequests()
     assertEquals(
       listOf(Documents.DocumentReference),
       documentsRequests,
     )
 
-    val complaintsRequests = HealthCareCategory.COMPLAINTS.getRequests()
+    val complaintsRequests = HealthCareCategoryId.COMPLAINTS.getRequests()
     assertEquals(
       listOf(Bgz.Problem),
       complaintsRequests,
     )
 
-    val patientRequests = HealthCareCategory.PATIENT.getRequests()
+    val patientRequests = HealthCareCategoryId.PATIENT.getRequests()
     assertEquals(
       listOf(Bgz.Patient, Gp.Patient),
       patientRequests,
     )
 
-    val mentalRequests = HealthCareCategory.MENTAL.getRequests()
+    val mentalRequests = HealthCareCategoryId.MENTAL.getRequests()
     assertEquals(
       listOf(Bgz.FunctionalOrMentalStatus),
       mentalRequests,
     )
 
-    val alertsRequests = HealthCareCategory.ALERTS.getRequests()
+    val alertsRequests = HealthCareCategoryId.ALERTS.getRequests()
     assertEquals(
       listOf(Bgz.Alert, Gp.Episodes),
       alertsRequests,
     )
 
-    val lifestyleRequests = HealthCareCategory.LIFESTYLE.getRequests()
+    val lifestyleRequests = HealthCareCategoryId.LIFESTYLE.getRequests()
     assertEquals(
       listOf(Bgz.LivingSituation, Bgz.DrugUse, Bgz.AlcoholUse, Bgz.TabacoUse, Bgz.NutritionAdvice),
       lifestyleRequests,
     )
 
-    val devicesRequests = HealthCareCategory.DEVICES.getRequests()
+    val devicesRequests = HealthCareCategoryId.DEVICES.getRequests()
     assertEquals(
       listOf(Bgz.MedicalDevice, Bgz.PlannedMedicalDevices),
       devicesRequests,
     )
 
-    val plansRequests = HealthCareCategory.PLANS.getRequests()
+    val plansRequests = HealthCareCategoryId.PLANS.getRequests()
     assertEquals(
       listOf(Bgz.TreatmentDirective, Bgz.AdvanceDirective),
       plansRequests,
     )
 
-    val paymentRequests = HealthCareCategory.PAYMENT.getRequests()
+    val paymentRequests = HealthCareCategoryId.PAYMENT.getRequests()
     assertEquals(
       listOf(Bgz.Payer),
       paymentRequests,
@@ -113,7 +113,7 @@ class HealthCareCategoryTest {
 
   @Test
   fun testGetProfiles() {
-    val medicationProfiles = HealthCareCategory.MEDICATIONS.getProfiles()
+    val medicationProfiles = HealthCareCategoryId.MEDICATIONS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibMedicationUse,
@@ -123,7 +123,7 @@ class HealthCareCategoryTest {
       medicationProfiles,
     )
 
-    val measurementsProfiles = HealthCareCategory.MEASUREMENTS.getProfiles()
+    val measurementsProfiles = HealthCareCategoryId.MEASUREMENTS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibBloodPressure,
@@ -134,7 +134,7 @@ class HealthCareCategoryTest {
       measurementsProfiles,
     )
 
-    val labResultsProfiles = HealthCareCategory.LAB_RESULTS.getProfiles()
+    val labResultsProfiles = HealthCareCategoryId.LAB_RESULTS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibLaboratoryTestResultObservation,
@@ -144,7 +144,7 @@ class HealthCareCategoryTest {
       labResultsProfiles,
     )
 
-    val allergiesProfiles = HealthCareCategory.ALLERGIES.getProfiles()
+    val allergiesProfiles = HealthCareCategoryId.ALLERGIES.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibAllergyIntolerance,
@@ -152,7 +152,7 @@ class HealthCareCategoryTest {
       allergiesProfiles,
     )
 
-    val treatmentsProfiles = HealthCareCategory.TREATMENTS.getProfiles()
+    val treatmentsProfiles = HealthCareCategoryId.TREATMENTS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibProcedure,
@@ -162,7 +162,7 @@ class HealthCareCategoryTest {
       treatmentsProfiles,
     )
 
-    val appointmentsProfiles = HealthCareCategory.APPOINTMENTS.getProfiles()
+    val appointmentsProfiles = HealthCareCategoryId.APPOINTMENTS.getProfiles()
     assertEquals(
       listOf(
         Profiles.eAfspraakAppointment,
@@ -173,7 +173,7 @@ class HealthCareCategoryTest {
       appointmentsProfiles,
     )
 
-    val vaccinationProfiles = HealthCareCategory.VACCINATIONS.getProfiles()
+    val vaccinationProfiles = HealthCareCategoryId.VACCINATIONS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibVaccination,
@@ -183,7 +183,7 @@ class HealthCareCategoryTest {
       vaccinationProfiles,
     )
 
-    val documentsProfiles = HealthCareCategory.DOCUMENTS.getProfiles()
+    val documentsProfiles = HealthCareCategoryId.DOCUMENTS.getProfiles()
     assertEquals(
       listOf(
         Profiles.iHEMHDMinimalDocumentReference,
@@ -191,7 +191,7 @@ class HealthCareCategoryTest {
       documentsProfiles,
     )
 
-    val complaintsProfiles = HealthCareCategory.COMPLAINTS.getProfiles()
+    val complaintsProfiles = HealthCareCategoryId.COMPLAINTS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibProblem,
@@ -199,7 +199,7 @@ class HealthCareCategoryTest {
       complaintsProfiles,
     )
 
-    val patientProfiles = HealthCareCategory.PATIENT.getProfiles()
+    val patientProfiles = HealthCareCategoryId.PATIENT.getProfiles()
     assertEquals(
       listOf(
         Profiles.nlCorePatient,
@@ -207,7 +207,7 @@ class HealthCareCategoryTest {
       patientProfiles,
     )
 
-    val paymentProfiles = HealthCareCategory.PAYMENT.getProfiles()
+    val paymentProfiles = HealthCareCategoryId.PAYMENT.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibPayer,
@@ -215,7 +215,7 @@ class HealthCareCategoryTest {
       paymentProfiles,
     )
 
-    val plansProfiles = HealthCareCategory.PLANS.getProfiles()
+    val plansProfiles = HealthCareCategoryId.PLANS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibTreatmentDirective,
@@ -224,7 +224,7 @@ class HealthCareCategoryTest {
       plansProfiles,
     )
 
-    val devicesProfiles = HealthCareCategory.DEVICES.getProfiles()
+    val devicesProfiles = HealthCareCategoryId.DEVICES.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibMedicalDevice,
@@ -233,7 +233,7 @@ class HealthCareCategoryTest {
       devicesProfiles,
     )
 
-    val mentalProfiles = HealthCareCategory.MENTAL.getProfiles()
+    val mentalProfiles = HealthCareCategoryId.MENTAL.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibFunctionalOrMentalStatus,
@@ -241,7 +241,7 @@ class HealthCareCategoryTest {
       mentalProfiles,
     )
 
-    val lifestyleProfiles = HealthCareCategory.LIFESTYLE.getProfiles()
+    val lifestyleProfiles = HealthCareCategoryId.LIFESTYLE.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibLivingSituation,
@@ -253,7 +253,7 @@ class HealthCareCategoryTest {
       lifestyleProfiles,
     )
 
-    val alertsProfiles = HealthCareCategory.ALERTS.getProfiles()
+    val alertsProfiles = HealthCareCategoryId.ALERTS.getProfiles()
     assertEquals(
       listOf(
         Profiles.zibAlert,

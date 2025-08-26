@@ -4,7 +4,7 @@ import app.cash.turbine.turbineScope
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Test
@@ -44,7 +44,7 @@ class CollectHealthCareDataStatesTest {
         coVerify {
           healthCareDataStatesRepository.refresh(
             organization = dummyProvider3,
-            category = HealthCareCategory.MEDICATIONS,
+            category = HealthCareCategoryId.MEDICATIONS,
           )
         }
 

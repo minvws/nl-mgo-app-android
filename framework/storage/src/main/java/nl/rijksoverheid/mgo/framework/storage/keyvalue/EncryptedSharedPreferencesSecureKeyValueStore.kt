@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -14,6 +15,11 @@ import javax.inject.Inject
  * Key that is linked to the stored pin code.
  */
 val KEY_PIN_CODE = stringPreferencesKey("pin_code")
+
+/**
+ * Holds all ids of health care categories that are marked as favorite.
+ */
+val KEY_FAVORITE_HEALTH_CARE_CATEGORIES = stringSetPreferencesKey("favorite_health_care_categories")
 
 /**
  * Key-value storage system that saves encrypted data using [SharedPreferences].
@@ -130,6 +136,60 @@ internal class EncryptedSharedPreferencesSecureKeyValueStore
      * @param key The key associated with the string value to remove.
      */
     override suspend fun removeString(key: Preferences.Key<String>) {
+      encryptedSharedPreferences.edit { remove(key.name) }
+    }
+
+    /**
+     * Stores a string set value in the key-value store.
+     *
+     * @param key The key associated with the string set value.
+     * @param value The string set value to store.
+     */
+    override suspend fun setStringSet(
+      key: Preferences.Key<Set<String>>,
+      value: Set<String>,
+    ) {
+      encryptedSharedPreferences.edit { putStringSet(key.name, value) }
+    }
+
+    /**
+     * Observes a string value from the key-value store.
+     *
+     * @param key The key associated with the string value.
+     * @return A flow with the stored string value, or null if not found.
+     */
+    override fun observeStringSet(key: Preferences.Key<Set<String>>): Flow<Set<String>?> =
+      callbackFlow {
+        val listener =
+          SharedPreferences.OnSharedPreferenceChangeListener { _, changedKey ->
+            if (changedKey == key.name) {
+              trySend(encryptedSharedPreferences.getStringSet(key.name, null))
+            }
+          }
+
+        encryptedSharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+
+        trySend(encryptedSharedPreferences.getStringSet(key.name, null))
+
+        awaitClose {
+          encryptedSharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+        }
+      }.distinctUntilChanged()
+
+    /**
+     * Retrieves a string set value from the key-value store.
+     *
+     * @param key The key associated with the string set value.
+     * @return The stored string set value, or null if not found.
+     */
+    override fun getStringSet(key: Preferences.Key<Set<String>>): Set<String>? = encryptedSharedPreferences.getStringSet(key.name, null)
+
+    /**
+     * Removes a string set value from the key-value store.
+     *
+     * @param key The key associated with the string set value to remove.
+     */
+    override suspend fun removeStringSet(key: Preferences.Key<Set<String>>) {
       encryptedSharedPreferences.edit { remove(key.name) }
     }
 

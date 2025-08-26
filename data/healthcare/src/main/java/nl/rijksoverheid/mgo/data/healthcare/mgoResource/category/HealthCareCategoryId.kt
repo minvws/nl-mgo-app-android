@@ -1,6 +1,7 @@
-package nl.rijksoverheid.mgo.data.healthcare.mgoResource
+package nl.rijksoverheid.mgo.data.healthcare.mgoResource.category
 
 import nl.rijksoverheid.mgo.data.fhirParser.models.Profiles
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Documents
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Gp
@@ -9,7 +10,9 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Vaccin
 /**
  * Enum representing various categories of health care data.
  */
-enum class HealthCareCategory(val id: String) {
+enum class HealthCareCategoryId(
+  val id: String,
+) {
   COMPLAINTS("complaints"), // Medische klachten
   LAB_RESULTS("lab_results"), // Uitslagen
   MEASUREMENTS("measurements"), // Metingen
@@ -29,90 +32,89 @@ enum class HealthCareCategory(val id: String) {
 }
 
 /**
- * Get a list of [HealthCareRequest] for a [HealthCareCategory].
+ * Get a list of [nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest] for a [HealthCareCategoryId].
  * These requests should be made to fill the category with health care data.
  *
  * @receiver The health care category for which requests are retrieved.
- * @return A list of [HealthCareRequest] objects corresponding to the category.
+ * @return A list of [nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest] objects corresponding to the category.
  */
-fun HealthCareCategory.getRequests(): List<HealthCareRequest> {
-  return when (this) {
-    HealthCareCategory.MEDICATIONS -> {
+fun HealthCareCategoryId.getRequests(): List<HealthCareRequest> =
+  when (this) {
+    HealthCareCategoryId.MEDICATIONS -> {
       listOf(Bgz.MedicationUse, Bgz.MedicationAgreement, Bgz.AdministrationAgreement, Gp.CurrentMedication)
     }
 
-    HealthCareCategory.MEASUREMENTS -> {
+    HealthCareCategoryId.MEASUREMENTS -> {
       listOf(Bgz.BloodPressure, Bgz.BodyWeight, Bgz.BodyHeight, Gp.DiagnosticsAndLabResult)
     }
 
-    HealthCareCategory.LAB_RESULTS -> {
+    HealthCareCategoryId.LAB_RESULTS -> {
       listOf(Bgz.LaboratoryTestResult, Gp.DiagnosticsAndLabResult)
     }
 
-    HealthCareCategory.ALLERGIES -> {
+    HealthCareCategoryId.ALLERGIES -> {
       listOf(Bgz.AllergyIntolerance, Gp.AllergyIntolerance)
     }
 
-    HealthCareCategory.TREATMENTS -> {
+    HealthCareCategoryId.TREATMENTS -> {
       listOf(Bgz.Procedure, Bgz.PlannedProcedure, Gp.Episodes)
     }
 
-    HealthCareCategory.APPOINTMENTS -> {
+    HealthCareCategoryId.APPOINTMENTS -> {
       listOf(Bgz.Encounter, Bgz.PlannedEncounters, Gp.Encounter, Gp.SoapEntries)
     }
 
-    HealthCareCategory.VACCINATIONS -> {
+    HealthCareCategoryId.VACCINATIONS -> {
       listOf(Bgz.Vaccination, Bgz.PlannedImmunization, Vaccination.Patient)
     }
 
-    HealthCareCategory.DOCUMENTS -> {
+    HealthCareCategoryId.DOCUMENTS -> {
       listOf(Documents.DocumentReference)
     }
 
-    HealthCareCategory.COMPLAINTS -> {
+    HealthCareCategoryId.COMPLAINTS -> {
       listOf(Bgz.Problem)
     }
 
-    HealthCareCategory.PATIENT -> {
+    HealthCareCategoryId.PATIENT -> {
       listOf(Bgz.Patient, Gp.Patient)
     }
 
-    HealthCareCategory.MENTAL -> {
+    HealthCareCategoryId.MENTAL -> {
       listOf(Bgz.FunctionalOrMentalStatus)
     }
 
-    HealthCareCategory.ALERTS -> {
+    HealthCareCategoryId.ALERTS -> {
       listOf(Bgz.Alert, Gp.Episodes)
     }
 
-    HealthCareCategory.LIFESTYLE -> {
+    HealthCareCategoryId.LIFESTYLE -> {
       listOf(Bgz.LivingSituation, Bgz.DrugUse, Bgz.AlcoholUse, Bgz.TabacoUse, Bgz.NutritionAdvice)
     }
 
-    HealthCareCategory.DEVICES -> {
+    HealthCareCategoryId.DEVICES -> {
       listOf(Bgz.MedicalDevice, Bgz.PlannedMedicalDevices)
     }
 
-    HealthCareCategory.PLANS -> {
+    HealthCareCategoryId.PLANS -> {
       listOf(Bgz.TreatmentDirective, Bgz.AdvanceDirective)
     }
 
-    HealthCareCategory.PAYMENT -> {
+    HealthCareCategoryId.PAYMENT -> {
       listOf(Bgz.Payer)
     }
   }
-}
 
 /**
- * Get a list of profiles for a [HealthCareCategory].
+ * Get a list of profiles for a [HealthCareCategoryId].
  * These profiles can be used to filter out which health care data to show for which category.
  *
  * @receiver The health care category for which profiles are retrieved.
  * @return A list of profile identifier strings corresponding to the category.
  */
-fun HealthCareCategory.getProfiles(): List<String> {
-  return when (this) {
-    HealthCareCategory.MEDICATIONS -> {
+fun HealthCareCategoryId.getProfiles(): List<String> =
+  when (this) {
+    HealthCareCategoryId.MEDICATIONS -> {
       listOf(
         Profiles.zibMedicationUse,
         Profiles.zibMedicationAgreement,
@@ -120,7 +122,7 @@ fun HealthCareCategory.getProfiles(): List<String> {
       )
     }
 
-    HealthCareCategory.MEASUREMENTS -> {
+    HealthCareCategoryId.MEASUREMENTS -> {
       listOf(
         Profiles.zibBloodPressure,
         Profiles.zibBodyWeight,
@@ -129,7 +131,7 @@ fun HealthCareCategory.getProfiles(): List<String> {
       )
     }
 
-    HealthCareCategory.LAB_RESULTS -> {
+    HealthCareCategoryId.LAB_RESULTS -> {
       listOf(
         Profiles.zibLaboratoryTestResultObservation,
         Profiles.zibLaboratoryTestResultSpecimen,
@@ -137,13 +139,13 @@ fun HealthCareCategory.getProfiles(): List<String> {
       )
     }
 
-    HealthCareCategory.ALLERGIES -> {
+    HealthCareCategoryId.ALLERGIES -> {
       listOf(
         Profiles.zibAllergyIntolerance,
       )
     }
 
-    HealthCareCategory.TREATMENTS -> {
+    HealthCareCategoryId.TREATMENTS -> {
       listOf(
         Profiles.zibProcedure,
         Profiles.zibProcedureRequest,
@@ -151,7 +153,7 @@ fun HealthCareCategory.getProfiles(): List<String> {
       )
     }
 
-    HealthCareCategory.APPOINTMENTS -> {
+    HealthCareCategoryId.APPOINTMENTS -> {
       listOf(
         Profiles.eAfspraakAppointment,
         Profiles.zibEncounter,
@@ -160,7 +162,7 @@ fun HealthCareCategory.getProfiles(): List<String> {
       )
     }
 
-    HealthCareCategory.VACCINATIONS -> {
+    HealthCareCategoryId.VACCINATIONS -> {
       listOf(
         Profiles.zibVaccination,
         Profiles.nlCoreVaccinationEvent,
@@ -168,51 +170,51 @@ fun HealthCareCategory.getProfiles(): List<String> {
       )
     }
 
-    HealthCareCategory.DOCUMENTS -> {
+    HealthCareCategoryId.DOCUMENTS -> {
       listOf(
         Profiles.iHEMHDMinimalDocumentReference,
       )
     }
 
-    HealthCareCategory.COMPLAINTS -> {
+    HealthCareCategoryId.COMPLAINTS -> {
       listOf(
         Profiles.zibProblem,
       )
     }
 
-    HealthCareCategory.PATIENT -> {
+    HealthCareCategoryId.PATIENT -> {
       listOf(
         Profiles.nlCorePatient,
       )
     }
 
-    HealthCareCategory.PAYMENT -> {
+    HealthCareCategoryId.PAYMENT -> {
       listOf(
         Profiles.zibPayer,
       )
     }
 
-    HealthCareCategory.PLANS -> {
+    HealthCareCategoryId.PLANS -> {
       listOf(
         Profiles.zibTreatmentDirective,
         Profiles.zibAdvanceDirective,
       )
     }
 
-    HealthCareCategory.DEVICES -> {
+    HealthCareCategoryId.DEVICES -> {
       listOf(
         Profiles.zibMedicalDevice,
         Profiles.zibMedicalDeviceRequest,
       )
     }
 
-    HealthCareCategory.MENTAL -> {
+    HealthCareCategoryId.MENTAL -> {
       listOf(
         Profiles.zibFunctionalOrMentalStatus,
       )
     }
 
-    HealthCareCategory.LIFESTYLE -> {
+    HealthCareCategoryId.LIFESTYLE -> {
       listOf(
         Profiles.zibLivingSituation,
         Profiles.zibDrugUse,
@@ -222,9 +224,8 @@ fun HealthCareCategory.getProfiles(): List<String> {
       )
     }
 
-    HealthCareCategory.ALERTS ->
+    HealthCareCategoryId.ALERTS ->
       listOf(
         Profiles.zibAlert,
       )
   }
-}

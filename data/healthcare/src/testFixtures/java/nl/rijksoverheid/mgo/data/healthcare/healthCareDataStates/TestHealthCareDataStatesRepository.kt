@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 class TestHealthCareDataStatesRepository(
@@ -21,13 +21,13 @@ class TestHealthCareDataStatesRepository(
 
   override suspend fun refresh(
     organization: MgoOrganization,
-    category: HealthCareCategory,
+    category: HealthCareCategoryId,
   ) {
     stateFlow.value = refreshData
   }
 
   override fun observe(
-    category: HealthCareCategory,
+    category: HealthCareCategoryId,
     filterOrganization: MgoOrganization?,
   ): Flow<List<HealthCareDataState>> = stateFlow
 

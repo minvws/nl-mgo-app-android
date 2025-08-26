@@ -42,8 +42,26 @@ internal class DataStoreKeyValueStoreTest {
       assertTrue(keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING))
       assertTrue(keyValueStore.getBoolean(KEY_LOGIN_WITH_BIOMETRIC_ENABLED))
       assertFalse(keyValueStore.getBoolean(KEY_IS_ROOT_CHECKED))
-      keyValueStore.observeBoolean(KEY_HAS_SEEN_ONBOARDING).test {
+    }
+
+  @Test
+  fun validateObserveBoolean() =
+    runTest {
+      // Given: boolean preference
+      val preferenceKey1 = booleanPreferencesKey("test1")
+      val keyValueStore = DataStoreKeyValueStore(dataStore = context.dataStore)
+      keyValueStore.setBoolean(preferenceKey1, true)
+
+      // When: Observing boolean preference
+      keyValueStore.observeBoolean(preferenceKey1).test {
+        // Then: value is emitted
         assertTrue(awaitItem())
+
+        // When: updating boolean
+        keyValueStore.setBoolean(preferenceKey1, false)
+
+        // Then: value is emitted
+        assertFalse(awaitItem())
       }
     }
 
@@ -63,8 +81,26 @@ internal class DataStoreKeyValueStoreTest {
       // Then
       assertEquals("123", keyValueStore.getString(preferenceKey1))
       assertNull(keyValueStore.getString(preferenceKey2))
+    }
+
+  @Test
+  fun validateObserveString() =
+    runTest {
+      // Given: string preference
+      val preferenceKey1 = stringPreferencesKey("test1")
+      val keyValueStore = DataStoreKeyValueStore(dataStore = context.dataStore)
+      keyValueStore.setString(preferenceKey1, "123")
+
+      // When: Observing string preference
       keyValueStore.observeString(preferenceKey1).test {
+        // Then: value is emitted
         assertEquals("123", awaitItem())
+
+        // When: updating string
+        keyValueStore.setString(preferenceKey1, "321")
+
+        // Then: value is emitted
+        assertEquals("321", awaitItem())
       }
     }
 

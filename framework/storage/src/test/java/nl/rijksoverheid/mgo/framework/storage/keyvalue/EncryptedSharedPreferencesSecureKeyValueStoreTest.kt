@@ -36,9 +36,25 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
       // Then
       assertTrue(keyValueStore.getBoolean(preferenceKey1))
       assertFalse(keyValueStore.getBoolean(preferenceKey2))
+    }
+
+  @Test
+  fun validateObserveBoolean() =
+    runTest {
+      // Given: boolean preference
+      val preferenceKey1 = booleanPreferencesKey("test1")
+      keyValueStore.setBoolean(preferenceKey1, true)
+
+      // When: Observing boolean preference
       keyValueStore.observeBoolean(preferenceKey1).test {
+        // Then: value is emitted
         assertTrue(awaitItem())
-        awaitComplete()
+
+        // When: updating boolean
+        keyValueStore.setBoolean(preferenceKey1, false)
+
+        // Then: value is emitted
+        assertFalse(awaitItem())
       }
     }
 
@@ -57,9 +73,25 @@ internal class EncryptedSharedPreferencesSecureKeyValueStoreTest {
       // Then
       assertEquals("123", keyValueStore.getString(preferenceKey1))
       assertNull(keyValueStore.getString(preferenceKey2))
+    }
+
+  @Test
+  fun validateObserveString() =
+    runTest {
+      // Given: string preference
+      val preferenceKey1 = stringPreferencesKey("test1")
+      keyValueStore.setString(preferenceKey1, "123")
+
+      // When: Observing string preference
       keyValueStore.observeString(preferenceKey1).test {
+        // Then: value is emitted
         assertEquals("123", awaitItem())
-        awaitComplete()
+
+        // When: updating string
+        keyValueStore.setString(preferenceKey1, "321")
+
+        // Then: value is emitted
+        assertEquals("321", awaitItem())
       }
     }
 

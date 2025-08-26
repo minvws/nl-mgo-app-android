@@ -46,6 +46,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
 
 object UiSchemaScreenTestTag {
   const val LIST = "UiSchemaScreenList"
+  const val LIST_ITEM = "UiSchemaScreenListItem"
 }
 
 /**
@@ -182,11 +183,12 @@ private fun UiSchemaSection(
         section.rows.forEachIndexed { index, row ->
           when (row) {
             is UISchemaRow.Static -> {
-              UiSchemaRowStatic(row = row)
+              UiSchemaRowStatic(modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM), row = row)
             }
 
             is UISchemaRow.Reference -> {
               UiSchemaRowReference(
+                modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
                 row = row,
                 onClick = onClickReference,
               )
@@ -194,6 +196,7 @@ private fun UiSchemaSection(
 
             is UISchemaRow.Binary -> {
               UiSchemaRowBinary(
+                modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
                 row = row,
                 onClick = onClickFile,
               )
@@ -201,6 +204,7 @@ private fun UiSchemaSection(
 
             is UISchemaRow.Link -> {
               UiSchemaRowLink(
+                modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
                 row = row,
               )
             }

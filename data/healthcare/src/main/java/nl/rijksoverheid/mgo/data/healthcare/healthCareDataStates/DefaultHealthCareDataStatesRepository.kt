@@ -26,9 +26,7 @@ internal class DefaultHealthCareDataStatesRepository
     /**
      * @return A list of [HealthCareDataState] that are stored.
      */
-    override fun get(): List<HealthCareDataState> {
-      return healthCareDataStatesStore.get()
-    }
+    override fun get(): List<HealthCareDataState> = healthCareDataStatesStore.get()
 
     /**
      * Fetches health care data and adds it to the store.
@@ -54,16 +52,16 @@ internal class DefaultHealthCareDataStatesRepository
     override fun observe(
       category: HealthCareCategory,
       filterOrganization: MgoOrganization?,
-    ): Flow<List<HealthCareDataState>> {
-      return healthCareDataStatesStore.observe(category = category, filterOrganization = filterOrganization)
-    }
+    ): Flow<List<HealthCareDataState>> = healthCareDataStatesStore.observe(category = category, filterOrganization = filterOrganization)
 
     /**
      * Deletes all [HealthCareDataState] in the store for a certain [MgoOrganization].
      *
      * @param organization The [MgoOrganization] to determine which [HealthCareDataState] objects need to be removed from the store.
      */
-    override suspend fun delete(organization: MgoOrganization) {
-      return healthCareDataStatesStore.delete(organization)
+    override suspend fun delete(organization: MgoOrganization) = healthCareDataStatesStore.delete(organization)
+
+    override suspend fun deleteAll() {
+      healthCareDataStatesStore.deleteAll()
     }
   }

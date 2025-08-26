@@ -9,11 +9,13 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaBottomSheetTestTag
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaScreenTestTag
+import nl.rijksoverheid.mgo.utils.waitForListItems
 
 class UiSchemaScreenRobot(
   private val composeTestRule: ComposeTestRule,
 ) {
   fun clickRow(name: String): UiSchemaScreenRobot {
+    composeTestRule.waitForListItems(UiSchemaScreenTestTag.LIST_ITEM)
     composeTestRule
       .onNodeWithTag(
         UiSchemaScreenTestTag.LIST,

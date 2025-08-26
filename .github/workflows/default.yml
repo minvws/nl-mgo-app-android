@@ -46,12 +46,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#      - name: Android Tests
-#        uses: reactivecircus/android-emulator-runner@v2
-#        with:
-#          api-level: 29
-#          script: ./gradlew runTests verifyPaparazziDebug
-#          profile: pixel
       - name: Download Keystore
         run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore
       - name: Build Apps

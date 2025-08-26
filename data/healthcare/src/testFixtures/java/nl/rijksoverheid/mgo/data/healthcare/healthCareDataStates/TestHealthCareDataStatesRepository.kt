@@ -6,8 +6,9 @@ import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataSt
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
-class TestHealthCareDataStatesRepository(initialData: List<HealthCareDataState>) :
-  HealthCareDataStatesRepository {
+class TestHealthCareDataStatesRepository(
+  initialData: List<HealthCareDataState>,
+) : HealthCareDataStatesRepository {
   private val refreshData = mutableListOf<HealthCareDataState>()
   private val stateFlow = MutableStateFlow(initialData)
 
@@ -16,9 +17,7 @@ class TestHealthCareDataStatesRepository(initialData: List<HealthCareDataState>)
     this.refreshData.addAll(data)
   }
 
-  override fun get(): List<HealthCareDataState> {
-    return stateFlow.value
-  }
+  override fun get(): List<HealthCareDataState> = stateFlow.value
 
   override suspend fun refresh(
     organization: MgoOrganization,
@@ -30,11 +29,14 @@ class TestHealthCareDataStatesRepository(initialData: List<HealthCareDataState>)
   override fun observe(
     category: HealthCareCategory,
     filterOrganization: MgoOrganization?,
-  ): Flow<List<HealthCareDataState>> {
-    return stateFlow
-  }
+  ): Flow<List<HealthCareDataState>> = stateFlow
 
   override suspend fun delete(organization: MgoOrganization) {
+    stateFlow.value = listOf()
+    refreshData.clear()
+  }
+
+  override suspend fun deleteAll() {
     stateFlow.value = listOf()
     refreshData.clear()
   }

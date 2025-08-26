@@ -9,16 +9,12 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 class TestHealthCareDataStatesStore : HealthCareDataStatesStore {
   private val stateFlow = MutableStateFlow(listOf<HealthCareDataState>())
 
-  override fun get(): List<HealthCareDataState> {
-    return stateFlow.value
-  }
+  override fun get(): List<HealthCareDataState> = stateFlow.value
 
   override fun observe(
     category: HealthCareCategory,
     filterOrganization: MgoOrganization?,
-  ): Flow<List<HealthCareDataState>> {
-    return stateFlow
-  }
+  ): Flow<List<HealthCareDataState>> = stateFlow
 
   override suspend fun add(
     organization: MgoOrganization,
@@ -30,6 +26,10 @@ class TestHealthCareDataStatesStore : HealthCareDataStatesStore {
   }
 
   override suspend fun delete(organization: MgoOrganization) {
+    stateFlow.value = listOf()
+  }
+
+  override suspend fun deleteAll() {
     stateFlow.value = listOf()
   }
 }

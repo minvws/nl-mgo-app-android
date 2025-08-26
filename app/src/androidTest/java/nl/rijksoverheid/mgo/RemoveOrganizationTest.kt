@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import kotlinx.coroutines.test.runTest
+import androidx.test.core.app.launchActivity
 import nl.rijksoverheid.mgo.robots.AddOrganizationScreenRobot
 import nl.rijksoverheid.mgo.robots.DashboardBottomBarScreenRobot
 import nl.rijksoverheid.mgo.robots.OrganizationsScreenRobot
-import nl.rijksoverheid.mgo.rules.LaunchAppRule
+import nl.rijksoverheid.mgo.rules.SetupAppRule
 import org.junit.Rule
 import org.junit.Test
 
@@ -14,36 +14,35 @@ import org.junit.Test
  */
 class RemoveOrganizationTest {
   @get:Rule
-  val launchAppRule = LaunchAppRule()
+  val setupAppRule =
+    SetupAppRule(
+      skipOnboarding = true,
+      pinCode = listOf(1, 2, 3, 4, 5),
+      digidAuthenticated = true,
+      skipPinCodeLogin = true,
+    )
 
   @get:Rule
   val composeTestRule = createComposeRule()
 
   @Test
   fun testRemoveOrganization() {
-    runTest {
-      launchAppRule.launchApp(
-        skipOnboarding = true,
-        pinCode = listOf(1, 2, 3, 4, 5),
-        digidAuthenticated = true,
-        skipPinCodeLogin = true,
-      ) {
-        DashboardBottomBarScreenRobot(composeTestRule)
-          .selectOrganizationsTab()
-          .gotoOrganizationsScreen()
-          .clickAddOrganizationButtonEmptyState()
-          .gotoAddOrganizationScreen()
-          .addOrganization("Kwalificatie Medmij: BGZ")
-          .assertAddedOrganization(amount = 1)
-          .clickFirstOrganization()
-          .gotoHealthCategoriesScreen()
-          .clickDeleteOrganizationButton()
-          .gotoRemoveOrganizationsScreen()
-          .clickRemoveButton()
-          .gotoOrganizationScreen()
-          .isDisplayedOrganizationRemovedSnackbar()
-          .assertNoAddedOrganizations()
-      }
+    launchActivity<MainActivity>().use {
+      DashboardBottomBarScreenRobot(composeTestRule)
+        .selectOrganizationsTab()
+        .gotoOrganizationsScreen()
+        .clickAddOrganizationButtonEmptyState()
+        .gotoAddOrganizationScreen()
+        .addOrganization("Kwalificatie Medmij: BGZ")
+        .assertAddedOrganization(amount = 1)
+        .clickFirstOrganization()
+        .gotoHealthCategoriesScreen()
+        .clickDeleteOrganizationButton()
+        .gotoRemoveOrganizationsScreen()
+        .clickRemoveButton()
+        .gotoOrganizationScreen()
+        .isDisplayedOrganizationRemovedSnackbar()
+        .assertNoAddedOrganizations()
     }
   }
 

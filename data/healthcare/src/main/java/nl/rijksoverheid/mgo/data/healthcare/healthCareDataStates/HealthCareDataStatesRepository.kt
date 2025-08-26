@@ -42,4 +42,6 @@ interface HealthCareDataStatesRepository {
    * @param organization The [MgoOrganization] to determine which [HealthCareDataState] objects need to be removed from the store.
    */
   suspend fun delete(organization: MgoOrganization)
+
+  suspend fun deleteAll()
 }

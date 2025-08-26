@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import kotlinx.coroutines.test.runTest
+import androidx.test.core.app.launchActivity
 import nl.rijksoverheid.mgo.robots.HealthCategoriesScreenRobot
-import nl.rijksoverheid.mgo.rules.LaunchAppRule
+import nl.rijksoverheid.mgo.rules.SetupAppRule
 import org.junit.Rule
 import org.junit.Test
 
@@ -14,104 +14,86 @@ import org.junit.Test
  */
 class AddOrganizationTest {
   @get:Rule
-  val launchAppRule = LaunchAppRule()
+  val setupAppRule =
+    SetupAppRule(
+      skipOnboarding = true,
+      pinCode = listOf(1, 2, 3, 4, 5),
+      digidAuthenticated = true,
+      skipPinCodeLogin = true,
+    )
 
   @get:Rule
   val composeTestRule = createComposeRule()
 
   @Test
-  fun testBgz() =
-    runTest {
-      launchAppRule.launchApp(
-        skipOnboarding = true,
-        pinCode = listOf(1, 2, 3, 4, 5),
-        digidAuthenticated = true,
-        skipPinCodeLogin = true,
-      ) {
-        HealthCategoriesScreenRobot(composeTestRule)
-          .clickAddOrganizationButton()
-          .gotoAddOrganizationScreen()
-          .setNameTextInput("test")
-          .setCityTextInput("test")
-          .clickSearchButton()
-          .gotoOrganizationListScreen()
-          .clickOrganization("Kwalificatie Medmij: BGZ")
-          .gotoHealthCareCategoriesScreen()
-          .clickCategory("Medische klachten")
-          .gotoHealthCategoryScreen()
-          .assertCardsExists()
-      }
+  fun testBgz() {
+    launchActivity<MainActivity>().use {
+      HealthCategoriesScreenRobot(composeTestRule)
+        .clickAddOrganizationButton()
+        .gotoAddOrganizationScreen()
+        .setNameTextInput("test")
+        .setCityTextInput("test")
+        .clickSearchButton()
+        .gotoOrganizationListScreen()
+        .clickOrganization("Kwalificatie Medmij: GPDATA")
+        .gotoHealthCareCategoriesScreen()
+        .clickCategory("Uitslagen")
+        .gotoHealthCategoryScreen()
+        .assertCardsExists()
     }
+  }
 
   @Test
-  fun testGp() =
-    runTest {
-      launchAppRule.launchApp(
-        skipOnboarding = true,
-        pinCode = listOf(1, 2, 3, 4, 5),
-        digidAuthenticated = true,
-        skipPinCodeLogin = true,
-      ) {
-        HealthCategoriesScreenRobot(composeTestRule)
-          .clickAddOrganizationButton()
-          .gotoAddOrganizationScreen()
-          .setNameTextInput("test")
-          .setCityTextInput("test")
-          .clickSearchButton()
-          .gotoOrganizationListScreen()
-          .clickOrganization("Kwalificatie Medmij: GPDATA")
-          .gotoHealthCareCategoriesScreen()
-          .clickCategory("Uitslagen")
-          .gotoHealthCategoryScreen()
-          .assertCardsExists()
-      }
+  fun testGp() {
+    launchActivity<MainActivity>().use {
+      HealthCategoriesScreenRobot(composeTestRule)
+        .clickAddOrganizationButton()
+        .gotoAddOrganizationScreen()
+        .setNameTextInput("test")
+        .setCityTextInput("test")
+        .clickSearchButton()
+        .gotoOrganizationListScreen()
+        .clickOrganization("Kwalificatie Medmij: GPDATA")
+        .gotoHealthCareCategoriesScreen()
+        .clickCategory("Uitslagen")
+        .gotoHealthCategoryScreen()
+        .assertCardsExists()
     }
+  }
 
   @Test
-  fun testDoc() =
-    runTest {
-      launchAppRule.launchApp(
-        skipOnboarding = true,
-        pinCode = listOf(1, 2, 3, 4, 5),
-        digidAuthenticated = true,
-        skipPinCodeLogin = true,
-      ) {
-        HealthCategoriesScreenRobot(composeTestRule)
-          .clickAddOrganizationButton()
-          .gotoAddOrganizationScreen()
-          .setNameTextInput("test")
-          .setCityTextInput("test")
-          .clickSearchButton()
-          .gotoOrganizationListScreen()
-          .clickOrganization("Kwalificatie Medmij: PDFA")
-          .gotoHealthCareCategoriesScreen()
-          .clickCategory("Documenten")
-          .gotoHealthCategoryScreen()
-          .assertCardsExists()
-      }
+  fun testDoc() {
+    launchActivity<MainActivity>().use {
+      HealthCategoriesScreenRobot(composeTestRule)
+        .clickAddOrganizationButton()
+        .gotoAddOrganizationScreen()
+        .setNameTextInput("test")
+        .setCityTextInput("test")
+        .clickSearchButton()
+        .gotoOrganizationListScreen()
+        .clickOrganization("Kwalificatie Medmij: PDFA")
+        .gotoHealthCareCategoriesScreen()
+        .clickCategory("Documenten")
+        .gotoHealthCategoryScreen()
+        .assertCardsExists()
     }
+  }
 
   @Test
-  fun testVaccinations() =
-    runTest {
-      launchAppRule.launchApp(
-        skipOnboarding = true,
-        pinCode = listOf(1, 2, 3, 4, 5),
-        digidAuthenticated = true,
-        skipPinCodeLogin = true,
-      ) {
-        HealthCategoriesScreenRobot(composeTestRule)
-          .clickAddOrganizationButton()
-          .gotoAddOrganizationScreen()
-          .setNameTextInput("test")
-          .setCityTextInput("test")
-          .clickSearchButton()
-          .gotoOrganizationListScreen()
-          .clickOrganization("Kwalificatie Medmij: VACCINATION_IMMUNIZATION")
-          .gotoHealthCareCategoriesScreen()
-          .clickCategory("Vaccinaties")
-          .gotoHealthCategoryScreen()
-          .assertCardsExists()
-      }
+  fun testVaccinations() {
+    launchActivity<MainActivity>().use {
+      HealthCategoriesScreenRobot(composeTestRule)
+        .clickAddOrganizationButton()
+        .gotoAddOrganizationScreen()
+        .setNameTextInput("test")
+        .setCityTextInput("test")
+        .clickSearchButton()
+        .gotoOrganizationListScreen()
+        .clickOrganization("Kwalificatie Medmij: VACCINATION_IMMUNIZATION")
+        .gotoHealthCareCategoriesScreen()
+        .clickCategory("Vaccinaties")
+        .gotoHealthCategoryScreen()
+        .assertCardsExists()
     }
+  }
 }

@@ -15,16 +15,17 @@ import javax.inject.Inject
 internal class DefaultHealthCareDataStatesStore
   @Inject
   constructor() : HealthCareDataStatesStore {
-    internal data class StateKey(val organization: MgoOrganization, val category: HealthCareCategory)
+    internal data class StateKey(
+      val organization: MgoOrganization,
+      val category: HealthCareCategory,
+    )
 
     private val statesFlow = MutableStateFlow<Map<StateKey, HealthCareDataState>>(mapOf())
 
     /**
      * @return A list of [HealthCareDataState] that are stored in [statesFlow].
      */
-    override fun get(): List<HealthCareDataState> {
-      return statesFlow.value.map { it.value }
-    }
+    override fun get(): List<HealthCareDataState> = statesFlow.value.map { it.value }
 
     /**
      * Observes changes to the stored [HealthCareDataState] based on the given parameters.
@@ -88,5 +89,9 @@ internal class DefaultHealthCareDataStatesStore
           }
         }
       }
+    }
+
+    override suspend fun deleteAll() {
+      statesFlow.update { mapOf() }
     }
   }

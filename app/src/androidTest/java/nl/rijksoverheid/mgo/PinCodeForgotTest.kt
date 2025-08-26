@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import kotlinx.coroutines.test.runTest
+import androidx.test.core.app.launchActivity
 import nl.rijksoverheid.mgo.robots.PinCodeLoginScreenRobot
-import nl.rijksoverheid.mgo.rules.LaunchAppRule
+import nl.rijksoverheid.mgo.rules.SetupAppRule
 import org.junit.Rule
 import org.junit.Test
 
@@ -12,27 +12,27 @@ import org.junit.Test
  */
 class PinCodeForgotTest {
   @get:Rule
-  val launchAppRule = LaunchAppRule()
+  val setupAppRule =
+    SetupAppRule(
+      skipOnboarding = true,
+      pinCode = listOf(1, 2, 3, 4, 5),
+      digidAuthenticated = true,
+    )
 
   @get:Rule
   val composeTestRule = createComposeRule()
 
   @Test
-  fun pinCodeForgotTest() =
-    runTest {
-      launchAppRule.launchApp(
-        skipOnboarding = true,
-        pinCode = listOf(1, 2, 3, 4, 5),
-        digidAuthenticated = true,
-      ) {
-        PinCodeLoginScreenRobot(composeTestRule)
-          .clickForgotPinCodeButton()
-          .clickCreateNewAccount()
-          .clickCreateNewAccountDialogConfirmButton()
-          .gotoPinCodeDeletedScreen()
-          .clickConfirmButton()
-          .gotoPinCodeCreateScreen()
-          .assertIsDisplayed()
-      }
+  fun pinCodeForgotTest() {
+    launchActivity<MainActivity>().use {
+      PinCodeLoginScreenRobot(composeTestRule)
+        .clickForgotPinCodeButton()
+        .clickCreateNewAccount()
+        .clickCreateNewAccountDialogConfirmButton()
+        .gotoPinCodeDeletedScreen()
+        .clickConfirmButton()
+        .gotoPinCodeCreateScreen()
+        .assertIsDisplayed()
     }
+  }
 }

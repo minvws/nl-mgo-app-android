@@ -30,18 +30,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-
-            <meta-data
-                android:name="nl.rijksoverheid.mgo.init.AppStartupInitializer"
-                android:value="androidx.startup" />
-
-        </provider>
-
         <activity
             android:name=".MainActivity"
             android:exported="true"

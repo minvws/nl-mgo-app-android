@@ -1,12 +1,11 @@
 package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.robots.AddOrganizationScreenRobot
 import nl.rijksoverheid.mgo.robots.DashboardBottomBarScreenRobot
-import nl.rijksoverheid.mgo.robots.LaunchAppRobot
 import nl.rijksoverheid.mgo.robots.OrganizationsScreenRobot
+import nl.rijksoverheid.mgo.rules.LaunchAppRule
 import org.junit.Rule
 import org.junit.Test
 
@@ -15,15 +14,15 @@ import org.junit.Test
  */
 class AddSecondOrganizationTest {
   @get:Rule
+  val launchAppRule = LaunchAppRule()
+
+  @get:Rule
   val composeTestRule = createComposeRule()
 
   @Test
   fun testAddSecondOrganization() {
     runTest {
-      val mainApplication = ApplicationProvider.getApplicationContext<MainApplication>()
-      val launchAppRobot = LaunchAppRobot(mainApplication)
-
-      launchAppRobot.launchApp(
+      launchAppRule.launchApp(
         skipOnboarding = true,
         pinCode = listOf(1, 2, 3, 4, 5),
         digidAuthenticated = true,

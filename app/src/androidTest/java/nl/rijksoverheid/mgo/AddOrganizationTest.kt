@@ -1,10 +1,9 @@
 package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.robots.HealthCategoriesScreenRobot
-import nl.rijksoverheid.mgo.robots.LaunchAppRobot
+import nl.rijksoverheid.mgo.rules.LaunchAppRule
 import org.junit.Rule
 import org.junit.Test
 
@@ -15,15 +14,15 @@ import org.junit.Test
  */
 class AddOrganizationTest {
   @get:Rule
+  val launchAppRule = LaunchAppRule()
+
+  @get:Rule
   val composeTestRule = createComposeRule()
 
   @Test
   fun testBgz() =
     runTest {
-      val mainApplication = ApplicationProvider.getApplicationContext<MainApplication>()
-      val launchAppRobot = LaunchAppRobot(mainApplication)
-
-      launchAppRobot.launchApp(
+      launchAppRule.launchApp(
         skipOnboarding = true,
         pinCode = listOf(1, 2, 3, 4, 5),
         digidAuthenticated = true,
@@ -47,10 +46,7 @@ class AddOrganizationTest {
   @Test
   fun testGp() =
     runTest {
-      val mainApplication = ApplicationProvider.getApplicationContext<MainApplication>()
-      val launchAppRobot = LaunchAppRobot(mainApplication)
-
-      launchAppRobot.launchApp(
+      launchAppRule.launchApp(
         skipOnboarding = true,
         pinCode = listOf(1, 2, 3, 4, 5),
         digidAuthenticated = true,
@@ -74,10 +70,7 @@ class AddOrganizationTest {
   @Test
   fun testDoc() =
     runTest {
-      val mainApplication = ApplicationProvider.getApplicationContext<MainApplication>()
-      val launchAppRobot = LaunchAppRobot(mainApplication)
-
-      launchAppRobot.launchApp(
+      launchAppRule.launchApp(
         skipOnboarding = true,
         pinCode = listOf(1, 2, 3, 4, 5),
         digidAuthenticated = true,
@@ -101,10 +94,7 @@ class AddOrganizationTest {
   @Test
   fun testVaccinations() =
     runTest {
-      val mainApplication = ApplicationProvider.getApplicationContext<MainApplication>()
-      val launchAppRobot = LaunchAppRobot(mainApplication)
-
-      launchAppRobot.launchApp(
+      launchAppRule.launchApp(
         skipOnboarding = true,
         pinCode = listOf(1, 2, 3, 4, 5),
         digidAuthenticated = true,

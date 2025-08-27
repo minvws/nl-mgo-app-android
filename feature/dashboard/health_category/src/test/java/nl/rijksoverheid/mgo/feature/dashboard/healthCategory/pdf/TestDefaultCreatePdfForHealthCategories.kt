@@ -4,7 +4,7 @@ import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.TestUiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenListItem
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenListItemsGroup
@@ -32,7 +32,7 @@ internal class TestDefaultCreatePdfForHealthCategories {
     runTest {
       val file =
         createPdf.invoke(
-          category = HealthCareCategory.MEDICATIONS,
+          category = HealthCareCategoryId.MEDICATIONS,
           listItemGroups =
             listOf(
               HealthCategoryScreenListItemsGroup(

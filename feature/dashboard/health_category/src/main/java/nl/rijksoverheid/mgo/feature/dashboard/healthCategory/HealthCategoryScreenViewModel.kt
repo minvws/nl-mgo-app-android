@@ -20,9 +20,9 @@ import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getProfiles
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.getProfiles
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
@@ -31,7 +31,7 @@ import javax.inject.Named
 /**
  * The [ViewModel] for [HealthCategoryScreen].
  *
- * @param category The [HealthCareCategory] to determine which health care data falls into this category.
+ * @param category The [HealthCareCategoryId] to determine which health care data falls into this category.
  * @param filterOrganization If not null, will observe health care data for this organization. If null will observe for all added
  * organizations.
  * @param context Application context.
@@ -46,7 +46,7 @@ import javax.inject.Named
 internal class HealthCategoryScreenViewModel
   @AssistedInject
   constructor(
-    @Assisted("category") private val category: HealthCareCategory,
+    @Assisted("category") private val category: HealthCareCategoryId,
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
@@ -58,7 +58,7 @@ internal class HealthCategoryScreenViewModel
     @AssistedFactory
     interface Factory {
       fun create(
-        @Assisted("category") category: HealthCareCategory,
+        @Assisted("category") category: HealthCareCategoryId,
         @Assisted("filterOrganization") filterOrganization: MgoOrganization? = null,
       ): HealthCategoryScreenViewModel
     }
@@ -137,7 +137,7 @@ internal class HealthCategoryScreenViewModel
 
     private suspend fun HealthCareDataState.toListItems(
       organization: MgoOrganization,
-      category: HealthCareCategory,
+      category: HealthCareCategoryId,
     ): List<HealthCategoryScreenListItemsGroup> {
       return if (this is HealthCareDataState.Loaded) {
         // Get all the mgo resources as one big list

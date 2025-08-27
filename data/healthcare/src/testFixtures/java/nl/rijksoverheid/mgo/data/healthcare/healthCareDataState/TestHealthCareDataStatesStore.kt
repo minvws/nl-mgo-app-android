@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.data.healthcare.healthCareDataState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.store.HealthCareDataStatesStore
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 class TestHealthCareDataStatesStore : HealthCareDataStatesStore {
@@ -12,13 +12,13 @@ class TestHealthCareDataStatesStore : HealthCareDataStatesStore {
   override fun get(): List<HealthCareDataState> = stateFlow.value
 
   override fun observe(
-    category: HealthCareCategory,
+    category: HealthCareCategoryId,
     filterOrganization: MgoOrganization?,
   ): Flow<List<HealthCareDataState>> = stateFlow
 
   override suspend fun add(
     organization: MgoOrganization,
-    category: HealthCareCategory,
+    category: HealthCareCategoryId,
     state: HealthCareDataState,
   ) {
     val currentList = stateFlow.value.toMutableList()

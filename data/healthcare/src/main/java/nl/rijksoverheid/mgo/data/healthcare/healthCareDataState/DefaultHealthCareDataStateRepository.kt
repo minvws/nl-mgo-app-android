@@ -3,9 +3,9 @@ package nl.rijksoverheid.mgo.data.healthcare.healthCareDataState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.getRequests
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.getRequests
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
 
@@ -16,18 +16,19 @@ import javax.inject.Inject
  */
 internal class DefaultHealthCareDataStateRepository
   @Inject
-  constructor(private val mgoResourceRepository: MgoResourceRepository) :
-  HealthCareDataStateRepository {
+  constructor(
+    private val mgoResourceRepository: MgoResourceRepository,
+  ) : HealthCareDataStateRepository {
     /**
      * Emits multiple [HealthCareDataState] that represent the current state of fetching health care data.
      *
      * @param organization The [MgoOrganization] to fetch health care data from.
-     * @param category The [HealthCareCategory] to fetch health care data from.
+     * @param category The [HealthCareCategoryId] to fetch health care data from.
      * @return [Flow] emits the current state of the health care data.
      */
     override fun get(
       organization: MgoOrganization,
-      category: HealthCareCategory,
+      category: HealthCareCategoryId,
     ): Flow<HealthCareDataState> =
       flow {
         // Emit loading state
@@ -41,9 +42,10 @@ internal class DefaultHealthCareDataStateRepository
             // For example if Provider X only has data service for BGZ, and we want to make a request to GP.
             // Do not execute that request.
             val endpoint =
-              organization.dataServices.firstOrNull { dataService ->
-                dataService.type == request.dataServiceType
-              }?.resourceEndpoint ?: return@mapNotNull null
+              organization.dataServices
+                .firstOrNull { dataService ->
+                  dataService.type == request.dataServiceType
+                }?.resourceEndpoint ?: return@mapNotNull null
 
             mgoResourceRepository.get(endpoint = endpoint, request = request)
           }

@@ -61,7 +61,9 @@ import nl.rijksoverheid.mgo.component.theme.supportTreatment
 import nl.rijksoverheid.mgo.component.theme.supportVaccinations
 import nl.rijksoverheid.mgo.component.theme.supportVitals
 import nl.rijksoverheid.mgo.component.theme.supportWarning
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.TEST_HEALTH_CARE_CATEGORIES
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
@@ -92,7 +94,7 @@ fun HealthCategoriesScreen(
   subHeading: String,
   onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
   onNavigateToLocalisation: () -> Unit,
-  onNavigateToHealthCategory: (category: HealthCareCategory, organization: MgoOrganization?) -> Unit,
+  onNavigateToHealthCategory: (category: HealthCareCategoryId, organization: MgoOrganization?) -> Unit,
   organization: MgoOrganization? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
@@ -115,7 +117,7 @@ private fun HealthCategoriesScreenContent(
   appBarTitle: String,
   subHeading: String,
   viewState: HealthCategoriesScreenViewState,
-  onClickListItem: (category: HealthCareCategory) -> Unit,
+  onClickListItem: (category: HealthCareCategoryId) -> Unit,
   onClickAddProvider: () -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
@@ -171,6 +173,7 @@ private fun HealthCategoriesScreenContent(
               onClickListItem = onClickListItem,
               onClickRemoveOrganization = onClickRemoveOrganization,
               organization = organization,
+              categories = viewState.categories,
             )
           }
         }
@@ -226,9 +229,10 @@ private fun LazyListScope.NoProviders(canScroll: Boolean) {
 @Suppress("ktlint:standard:function-naming")
 private fun LazyListScope.WithProviders(
   subHeading: String,
-  onClickListItem: (category: HealthCareCategory) -> Unit,
+  onClickListItem: (category: HealthCareCategoryId) -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
+  categories: List<HealthCareCategory>,
 ) {
   item {
     Text(
@@ -238,15 +242,15 @@ private fun LazyListScope.WithProviders(
     )
   }
 
-  items(HealthCareCategory.entries.size) { position ->
+  items(categories.size) { position ->
     HealthCategoriesListItemCard(
       position =
         when (position) {
           0 -> HealthCategoriesListItemCardPosition.TOP
-          HealthCareCategory.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
+          HealthCareCategoryId.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
           else -> HealthCategoriesListItemCardPosition.CENTER
         },
-      category = HealthCareCategory.entries[position],
+      category = categories[position].id,
       onClickListItem = onClickListItem,
       filterOrganization = organization,
     )
@@ -284,8 +288,8 @@ private enum class HealthCategoriesListItemCardPosition {
 @Composable
 private fun HealthCategoriesListItemCard(
   position: HealthCategoriesListItemCardPosition,
-  category: HealthCareCategory,
-  onClickListItem: (category: HealthCareCategory) -> Unit,
+  category: HealthCareCategoryId,
+  onClickListItem: (category: HealthCareCategoryId) -> Unit,
   filterOrganization: MgoOrganization?,
 ) {
   val shape =
@@ -332,7 +336,7 @@ private fun HealthCategoriesListItemCard(
 
 @Composable
 @StringRes
-private fun HealthCareCategory.getTitle(): Int {
+private fun HealthCareCategoryId.getTitle(): Int {
   val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading")
   if (stringResource == 0) {
     return CopyR.string.common_unknown
@@ -341,45 +345,45 @@ private fun HealthCareCategory.getTitle(): Int {
 }
 
 @DrawableRes
-private fun HealthCareCategory.getIcon(): Int =
+private fun HealthCareCategoryId.getIcon(): Int =
   when (this) {
-    HealthCareCategory.MEDICATIONS -> R.drawable.ic_medication
-    HealthCareCategory.MEASUREMENTS -> R.drawable.ic_measurements
-    HealthCareCategory.LAB_RESULTS -> R.drawable.ic_labresults
-    HealthCareCategory.ALLERGIES -> R.drawable.ic_allergies
-    HealthCareCategory.TREATMENTS -> R.drawable.ic_treatments
-    HealthCareCategory.APPOINTMENTS -> R.drawable.ic_appointments
-    HealthCareCategory.VACCINATIONS -> R.drawable.ic_vaccinations
-    HealthCareCategory.DOCUMENTS -> R.drawable.ic_documents
-    HealthCareCategory.COMPLAINTS -> R.drawable.ic_complaints
-    HealthCareCategory.PATIENT -> R.drawable.ic_patient
-    HealthCareCategory.ALERTS -> R.drawable.ic_alerts
-    HealthCareCategory.PAYMENT -> R.drawable.ic_payment
-    HealthCareCategory.PLANS -> R.drawable.ic_plans
-    HealthCareCategory.DEVICES -> R.drawable.ic_devices
-    HealthCareCategory.MENTAL -> R.drawable.ic_mental
-    HealthCareCategory.LIFESTYLE -> R.drawable.ic_lifestyle
+    HealthCareCategoryId.MEDICATIONS -> R.drawable.ic_medication
+    HealthCareCategoryId.MEASUREMENTS -> R.drawable.ic_measurements
+    HealthCareCategoryId.LAB_RESULTS -> R.drawable.ic_labresults
+    HealthCareCategoryId.ALLERGIES -> R.drawable.ic_allergies
+    HealthCareCategoryId.TREATMENTS -> R.drawable.ic_treatments
+    HealthCareCategoryId.APPOINTMENTS -> R.drawable.ic_appointments
+    HealthCareCategoryId.VACCINATIONS -> R.drawable.ic_vaccinations
+    HealthCareCategoryId.DOCUMENTS -> R.drawable.ic_documents
+    HealthCareCategoryId.COMPLAINTS -> R.drawable.ic_complaints
+    HealthCareCategoryId.PATIENT -> R.drawable.ic_patient
+    HealthCareCategoryId.ALERTS -> R.drawable.ic_alerts
+    HealthCareCategoryId.PAYMENT -> R.drawable.ic_payment
+    HealthCareCategoryId.PLANS -> R.drawable.ic_plans
+    HealthCareCategoryId.DEVICES -> R.drawable.ic_devices
+    HealthCareCategoryId.MENTAL -> R.drawable.ic_mental
+    HealthCareCategoryId.LIFESTYLE -> R.drawable.ic_lifestyle
   }
 
 @Composable
-private fun HealthCareCategory.getIconColor(): Color =
+private fun HealthCareCategoryId.getIconColor(): Color =
   when (this) {
-    HealthCareCategory.MEDICATIONS -> MaterialTheme.colorScheme.supportMedication()
-    HealthCareCategory.MEASUREMENTS -> MaterialTheme.colorScheme.supportVitals()
-    HealthCareCategory.LAB_RESULTS -> MaterialTheme.colorScheme.supportLaboratory()
-    HealthCareCategory.ALLERGIES -> MaterialTheme.colorScheme.supportAllergies()
-    HealthCareCategory.TREATMENTS -> MaterialTheme.colorScheme.supportTreatment()
-    HealthCareCategory.APPOINTMENTS -> MaterialTheme.colorScheme.supportContacts()
-    HealthCareCategory.VACCINATIONS -> MaterialTheme.colorScheme.supportVaccinations()
-    HealthCareCategory.DOCUMENTS -> MaterialTheme.colorScheme.supportDocuments()
-    HealthCareCategory.COMPLAINTS -> MaterialTheme.colorScheme.supportProblems()
-    HealthCareCategory.PATIENT -> MaterialTheme.colorScheme.supportPersonal()
-    HealthCareCategory.ALERTS -> MaterialTheme.colorScheme.supportWarning()
-    HealthCareCategory.PAYMENT -> MaterialTheme.colorScheme.supportPayer()
-    HealthCareCategory.PLANS -> MaterialTheme.colorScheme.supportProcedures()
-    HealthCareCategory.DEVICES -> MaterialTheme.colorScheme.supportDevice()
-    HealthCareCategory.MENTAL -> MaterialTheme.colorScheme.supportFunctional()
-    HealthCareCategory.LIFESTYLE -> MaterialTheme.colorScheme.supportLifestyle()
+    HealthCareCategoryId.MEDICATIONS -> MaterialTheme.colorScheme.supportMedication()
+    HealthCareCategoryId.MEASUREMENTS -> MaterialTheme.colorScheme.supportVitals()
+    HealthCareCategoryId.LAB_RESULTS -> MaterialTheme.colorScheme.supportLaboratory()
+    HealthCareCategoryId.ALLERGIES -> MaterialTheme.colorScheme.supportAllergies()
+    HealthCareCategoryId.TREATMENTS -> MaterialTheme.colorScheme.supportTreatment()
+    HealthCareCategoryId.APPOINTMENTS -> MaterialTheme.colorScheme.supportContacts()
+    HealthCareCategoryId.VACCINATIONS -> MaterialTheme.colorScheme.supportVaccinations()
+    HealthCareCategoryId.DOCUMENTS -> MaterialTheme.colorScheme.supportDocuments()
+    HealthCareCategoryId.COMPLAINTS -> MaterialTheme.colorScheme.supportProblems()
+    HealthCareCategoryId.PATIENT -> MaterialTheme.colorScheme.supportPersonal()
+    HealthCareCategoryId.ALERTS -> MaterialTheme.colorScheme.supportWarning()
+    HealthCareCategoryId.PAYMENT -> MaterialTheme.colorScheme.supportPayer()
+    HealthCareCategoryId.PLANS -> MaterialTheme.colorScheme.supportProcedures()
+    HealthCareCategoryId.DEVICES -> MaterialTheme.colorScheme.supportDevice()
+    HealthCareCategoryId.MENTAL -> MaterialTheme.colorScheme.supportFunctional()
+    HealthCareCategoryId.LIFESTYLE -> MaterialTheme.colorScheme.supportLifestyle()
   }
 
 @DefaultPreviews
@@ -389,7 +393,13 @@ internal fun OverviewScreenNoProvidersPreview() {
     HealthCategoriesScreenContent(
       appBarTitle = stringResource(CopyR.string.overview_heading),
       subHeading = stringResource(CopyR.string.overview_subheading),
-      viewState = HealthCategoriesScreenViewState(name = "", providers = listOf(), automaticLocalisationEnabled = false),
+      viewState =
+        HealthCategoriesScreenViewState(
+          name = "",
+          providers = listOf(),
+          automaticLocalisationEnabled = false,
+          categories = TEST_HEALTH_CARE_CATEGORIES,
+        ),
       onNavigateBack = {},
       onClickAddProvider = {},
       onClickListItem = {},
@@ -410,6 +420,7 @@ internal fun OverviewScreenWithProvidersPreview() {
           name = "",
           providers = listOf(TEST_MGO_ORGANIZATION),
           automaticLocalisationEnabled = false,
+          categories = TEST_HEALTH_CARE_CATEGORIES,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},

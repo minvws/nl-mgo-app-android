@@ -60,6 +60,7 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
               .RemoveOrganization(organizationId = organization.id, organizationName = organization.name),
           )
         },
+        onShowBottomSheet = null,
         onNavigateBack = { navController.popBackStack() },
       )
     }

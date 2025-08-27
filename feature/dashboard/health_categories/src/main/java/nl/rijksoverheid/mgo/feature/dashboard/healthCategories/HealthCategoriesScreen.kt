@@ -16,11 +16,16 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -86,6 +91,7 @@ object HealthCategoriesScreenTestTag {
  * @param onNavigateToHealthCategory Called when requested to navigate to the screen where you can view health care data.
  * @param organization If not null, will only show only health care data for this organization. If null will show for all added
  * organizations.
+ * @param onShowBottomSheet If not null, shows an bottom sheet where you can edit the overview screen.
  * @param onNavigateBack Called when requested to navigate back.
  */
 @Composable
@@ -96,10 +102,12 @@ fun HealthCategoriesScreen(
   onNavigateToLocalisation: () -> Unit,
   onNavigateToHealthCategory: (category: HealthCareCategoryId, organization: MgoOrganization?) -> Unit,
   organization: MgoOrganization? = null,
+  onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
   val viewModel = hiltViewModel<HealthCategoriesScreenViewModel>()
   val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+
   HealthCategoriesScreenContent(
     appBarTitle = appBarTitle,
     subHeading = subHeading,
@@ -108,6 +116,7 @@ fun HealthCategoriesScreen(
     onClickAddProvider = onNavigateToLocalisation,
     onClickListItem = { category -> onNavigateToHealthCategory(category, organization) },
     onClickRemoveOrganization = onNavigateRemoveOrganization,
+    onShowBottomSheet = onShowBottomSheet,
     organization = organization,
   )
 }
@@ -121,6 +130,7 @@ private fun HealthCategoriesScreenContent(
   onClickAddProvider: () -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
+  onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
   val lazyListState = rememberLazyListState()
@@ -154,6 +164,13 @@ private fun HealthCategoriesScreenContent(
         title = appBarTitle,
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
+        actions = {
+          if (viewState.providers.isNotEmpty() && onShowBottomSheet != null) {
+            IconButton(onShowBottomSheet) {
+              Icon(Icons.Default.MoreHoriz, null)
+            }
+          }
+        },
       )
     },
     content = { contentPadding ->
@@ -404,6 +421,7 @@ internal fun OverviewScreenNoProvidersPreview() {
       onClickAddProvider = {},
       onClickListItem = {},
       onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
     )
   }
 }
@@ -426,6 +444,7 @@ internal fun OverviewScreenWithProvidersPreview() {
       onClickAddProvider = {},
       onClickListItem = {},
       onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
     )
   }
 }

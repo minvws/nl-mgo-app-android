@@ -14,6 +14,8 @@ import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.store.DefaultHe
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.store.HealthCareDataStatesStore
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.DefaultMgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.DefaultHealthCareCategoriesRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.DefaultHealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.HealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.healthcare.models.mapper.DefaultUISchemaSectionMapper
@@ -50,4 +52,8 @@ internal abstract class HealthCareModule {
   @Binds
   @Singleton
   abstract fun provideUiSchemaSectionMapper(default: DefaultUISchemaSectionMapper): UISchemaSectionMapper
+
+  @Binds
+  @Singleton
+  abstract fun provideHealthCareCategoriesRepository(default: DefaultHealthCareCategoriesRepository): HealthCareCategoriesRepository
 }

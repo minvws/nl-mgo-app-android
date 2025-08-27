@@ -14,6 +14,9 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 
 @Composable
 fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
@@ -33,5 +36,13 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
 private fun EditOverviewBottomSheetContent() {
   Scaffold(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.95f)) { innerPadding ->
     Box(modifier = Modifier.fillMaxSize().background(Color.Red).padding(innerPadding))
+  }
+}
+
+@DefaultPreviews
+@Composable
+private fun EditOverviewBottomSheetPreview() {
+  MgoTheme {
+    EditOverviewBottomSheetContent()
   }
 }

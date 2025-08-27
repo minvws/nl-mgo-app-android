@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.data.healthcare.category.TestHealthCareCategoriesRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -12,10 +13,11 @@ import org.junit.Test
 
 internal class HealthCategoriesScreenViewModelTest {
   @get:Rule
-  val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
+  val mainDispatcherRule = MainDispatcherRule()
 
   private val organizationRepository = TestOrganizationRepository()
   private val keyValueStore = TestKeyValueStore()
+  private val healthCareCategoriesRepository = TestHealthCareCategoriesRepository()
 
   @Test
   fun `Given stored providers, When collecting on view state, Then emit view state with providers`() =
@@ -28,6 +30,7 @@ internal class HealthCategoriesScreenViewModelTest {
         HealthCategoriesScreenViewModel(
           organizationRepository = organizationRepository,
           keyValueStore = keyValueStore,
+          healthCareCategoriesRepository = healthCareCategoriesRepository,
         )
       viewModel.viewState.test {
         // Then

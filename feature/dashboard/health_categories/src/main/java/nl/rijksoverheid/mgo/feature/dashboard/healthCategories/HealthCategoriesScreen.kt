@@ -61,7 +61,9 @@ import nl.rijksoverheid.mgo.component.theme.supportTreatment
 import nl.rijksoverheid.mgo.component.theme.supportVaccinations
 import nl.rijksoverheid.mgo.component.theme.supportVitals
 import nl.rijksoverheid.mgo.component.theme.supportWarning
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.TEST_HEALTH_CARE_CATEGORIES
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
@@ -171,6 +173,7 @@ private fun HealthCategoriesScreenContent(
               onClickListItem = onClickListItem,
               onClickRemoveOrganization = onClickRemoveOrganization,
               organization = organization,
+              categories = viewState.categories,
             )
           }
         }
@@ -229,6 +232,7 @@ private fun LazyListScope.WithProviders(
   onClickListItem: (category: HealthCareCategoryId) -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
+  categories: List<HealthCareCategory>,
 ) {
   item {
     Text(
@@ -238,7 +242,7 @@ private fun LazyListScope.WithProviders(
     )
   }
 
-  items(HealthCareCategoryId.entries.size) { position ->
+  items(categories.size) { position ->
     HealthCategoriesListItemCard(
       position =
         when (position) {
@@ -246,7 +250,7 @@ private fun LazyListScope.WithProviders(
           HealthCareCategoryId.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
           else -> HealthCategoriesListItemCardPosition.CENTER
         },
-      category = HealthCareCategoryId.entries[position],
+      category = categories[position].id,
       onClickListItem = onClickListItem,
       filterOrganization = organization,
     )
@@ -389,7 +393,13 @@ internal fun OverviewScreenNoProvidersPreview() {
     HealthCategoriesScreenContent(
       appBarTitle = stringResource(CopyR.string.overview_heading),
       subHeading = stringResource(CopyR.string.overview_subheading),
-      viewState = HealthCategoriesScreenViewState(name = "", providers = listOf(), automaticLocalisationEnabled = false),
+      viewState =
+        HealthCategoriesScreenViewState(
+          name = "",
+          providers = listOf(),
+          automaticLocalisationEnabled = false,
+          categories = TEST_HEALTH_CARE_CATEGORIES,
+        ),
       onNavigateBack = {},
       onClickAddProvider = {},
       onClickListItem = {},
@@ -410,6 +420,7 @@ internal fun OverviewScreenWithProvidersPreview() {
           name = "",
           providers = listOf(TEST_MGO_ORGANIZATION),
           automaticLocalisationEnabled = false,
+          categories = TEST_HEALTH_CARE_CATEGORIES,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},

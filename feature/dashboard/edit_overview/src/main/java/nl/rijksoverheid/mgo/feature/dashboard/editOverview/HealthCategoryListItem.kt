@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -25,12 +26,14 @@ import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.component.theme.sentimentPositive
+import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 
 @Composable
 internal fun HealthCategoryListItem(
   category: HealthCareCategoryId,
   state: HealthCategoryListItemState,
+  draggable: Boolean,
   modifier: Modifier = Modifier,
   onClick: () -> Unit,
   hasDivider: Boolean = true,
@@ -62,6 +65,11 @@ internal fun HealthCategoryListItem(
         text = stringResource(id = category.getTitle()),
         style = MaterialTheme.typography.bodyMedium,
       )
+      if (draggable) {
+        IconButton({}) {
+          Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
+        }
+      }
     }
     if (hasDivider) {
       HorizontalDivider(
@@ -83,12 +91,14 @@ internal fun HealthCategoryListItemPreview() {
         category = HealthCareCategoryId.MEDICATIONS,
         state = HealthCategoryListItemState.ADD,
         onClick = {},
+        draggable = false,
       )
       HealthCategoryListItem(
         category = HealthCareCategoryId.APPOINTMENTS,
         state = HealthCategoryListItemState.REMOVE,
         hasDivider = false,
         onClick = {},
+        draggable = false,
       )
     }
   }

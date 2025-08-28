@@ -154,6 +154,7 @@ private fun FavoritesCard(
           onClick = {
             onClickHealthCategory(category, false)
           },
+          draggable = true,
           hasDivider = index != favorites.lastIndex,
         )
       }
@@ -176,6 +177,7 @@ private fun CategoriesCard(
           onClick = {
             onClickHealthCategory(category, true)
           },
+          draggable = false,
           hasDivider = index != categories.lastIndex,
         )
       }

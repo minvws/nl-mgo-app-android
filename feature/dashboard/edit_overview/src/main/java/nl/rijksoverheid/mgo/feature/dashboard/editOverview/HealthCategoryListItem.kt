@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.dashboard.editOverview
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +35,7 @@ internal fun HealthCategoryListItem(
   onClick: () -> Unit,
   hasDivider: Boolean = true,
 ) {
-  Column(modifier = modifier.fillMaxWidth().clickable { onClick() }) {
+  Column(modifier = modifier.fillMaxWidth()) {
     Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
       IconButton(onClick) {
         val icon =
@@ -83,13 +82,13 @@ internal fun HealthCategoryListItemPreview() {
       HealthCategoryListItem(
         category = HealthCareCategoryId.MEDICATIONS,
         state = HealthCategoryListItemState.ADD,
-          onClick = {}
+        onClick = {},
       )
       HealthCategoryListItem(
         category = HealthCareCategoryId.APPOINTMENTS,
         state = HealthCategoryListItemState.REMOVE,
         hasDivider = false,
-          onClick = {}
+        onClick = {},
       )
     }
   }

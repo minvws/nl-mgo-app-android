@@ -1,7 +1,5 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,9 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,7 +34,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import getStringResourceByName
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIcon
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIconColor
 import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
@@ -53,22 +48,6 @@ import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.supportAllergies
-import nl.rijksoverheid.mgo.component.theme.supportContacts
-import nl.rijksoverheid.mgo.component.theme.supportDevice
-import nl.rijksoverheid.mgo.component.theme.supportDocuments
-import nl.rijksoverheid.mgo.component.theme.supportFunctional
-import nl.rijksoverheid.mgo.component.theme.supportLaboratory
-import nl.rijksoverheid.mgo.component.theme.supportLifestyle
-import nl.rijksoverheid.mgo.component.theme.supportMedication
-import nl.rijksoverheid.mgo.component.theme.supportPayer
-import nl.rijksoverheid.mgo.component.theme.supportPersonal
-import nl.rijksoverheid.mgo.component.theme.supportProblems
-import nl.rijksoverheid.mgo.component.theme.supportProcedures
-import nl.rijksoverheid.mgo.component.theme.supportTreatment
-import nl.rijksoverheid.mgo.component.theme.supportVaccinations
-import nl.rijksoverheid.mgo.component.theme.supportVitals
-import nl.rijksoverheid.mgo.component.theme.supportWarning
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.TEST_HEALTH_CARE_CATEGORIES

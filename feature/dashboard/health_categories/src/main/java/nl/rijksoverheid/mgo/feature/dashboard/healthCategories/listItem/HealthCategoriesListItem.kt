@@ -32,7 +32,6 @@ import nl.rijksoverheid.mgo.component.theme.supportContacts
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.component.healthCareCategory.R as HealthCategoryR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 

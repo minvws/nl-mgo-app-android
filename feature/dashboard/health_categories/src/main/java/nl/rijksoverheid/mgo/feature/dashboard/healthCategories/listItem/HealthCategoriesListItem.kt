@@ -33,6 +33,7 @@ import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
+import nl.rijksoverheid.mgo.component.healthCareCategory.R as HealthCategoryR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoriesListItemTestTag {
@@ -153,7 +154,7 @@ internal fun HealthCategoriesListItemContent(
 internal fun HealthCategoriesListItemLoadingPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = R.drawable.ic_medication,
+      icon = HealthCategoryR.drawable.ic_medication,
       title = CopyR.string.hc_medication_heading,
       iconColor = MaterialTheme.colorScheme.supportContacts(),
       listItemState = HealthCategoriesListItemState.LOADING,
@@ -166,7 +167,7 @@ internal fun HealthCategoriesListItemLoadingPreview() {
 internal fun HealthCategoriesListItemNoDataPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = R.drawable.ic_medication,
+      icon = HealthCategoryR.drawable.ic_medication,
       title = CopyR.string.hc_medication_heading,
       iconColor = MaterialTheme.colorScheme.supportContacts(),
       listItemState = HealthCategoriesListItemState.NO_DATA,
@@ -179,7 +180,7 @@ internal fun HealthCategoriesListItemNoDataPreview() {
 internal fun HealthCategoriesListItemLoadedPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = R.drawable.ic_medication,
+      icon = HealthCategoryR.drawable.ic_medication,
       title = CopyR.string.hc_medication_heading,
       iconColor = MaterialTheme.colorScheme.supportContacts(),
       listItemState = HealthCategoriesListItemState.LOADED,

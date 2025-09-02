@@ -8,18 +8,15 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCateg
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 
 class TestHealthCareCategoriesRepository : HealthCareCategoriesRepository {
-  private val flow = MutableStateFlow<List<HealthCareCategory>>(HealthCareCategoryId.entries.map { id -> HealthCareCategory(id = id, favorite = false) })
+  private val flow = MutableStateFlow<List<HealthCareCategory>>(HealthCareCategoryId.entries.map { id -> HealthCareCategory(id = id, favoritePosition = -1) })
 
   override fun observe(): Flow<List<HealthCareCategory>> = flow
 
-  override suspend fun favorite(
-    categoryId: HealthCareCategoryId,
-    favorite: Boolean,
-  ) {
+  override suspend fun setFavorites(categories: List<HealthCareCategoryId>) {
     val updated =
       flow.value.map { category ->
-        if (category.id == categoryId) {
-          category.copy(favorite = favorite)
+        if (categories.contains(category.id)) {
+          category.copy(favoritePosition = categories.indexOf(category.id))
         } else {
           category
         }

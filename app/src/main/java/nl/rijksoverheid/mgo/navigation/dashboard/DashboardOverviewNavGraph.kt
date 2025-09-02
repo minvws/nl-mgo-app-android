@@ -1,10 +1,15 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import nl.rijksoverheid.mgo.feature.dashboard.editOverview.EditOverviewBottomSheet
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaScreen
@@ -23,7 +28,15 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
   navController: NavController,
 ) {
   navigation<DashboardNavigation.Overview.Root>(DashboardNavigation.Overview.HealthCareCategories) {
-    mgoComposableExt<DashboardNavigation.Overview.HealthCareCategories>(animate = false) {
+    mgoComposableExt<DashboardNavigation.Overview.HealthCareCategories>(animate = false) { backStackEntry ->
+      // Edit overview bottomsheet
+      var showBottomSheet by remember { mutableStateOf(false) }
+      if (showBottomSheet) {
+        EditOverviewBottomSheet {
+          showBottomSheet = false
+        }
+      }
+
       HealthCategoriesScreen(
         appBarTitle = stringResource(R.string.overview_heading),
         subHeading = stringResource(R.string.overview_subheading),
@@ -36,6 +49,9 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
           )
         },
         onNavigateRemoveOrganization = { },
+        onShowBottomSheet = {
+          showBottomSheet = true
+        },
       )
     }
 

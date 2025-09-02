@@ -21,19 +21,18 @@ class DefaultHealthCareCategoriesRepositoryTest {
       // When: Observing categories
       repository.observe().test {
         // Then: All categories are emitted with no favorites
-        val expected1: List<HealthCareCategory> = HealthCareCategoryId.entries.map { id -> HealthCareCategory(id = id, favorite = false) }
+        val expected1: List<HealthCareCategory> = HealthCareCategoryId.entries.map { id -> HealthCareCategory(id = id, favoritePosition = -1) }
         assertEquals(expected1, awaitItem())
 
         // When: Marking a category as favorite
-        repository.favorite(HealthCareCategoryId.MEDICATIONS, true)
+        repository.setFavorites(listOf(HealthCareCategoryId.MEDICATIONS))
 
         // Then: All categories are emitted with medication marked as favorite
         val expected2: List<HealthCareCategory> =
           HealthCareCategoryId.entries.map { id ->
             HealthCareCategory(
               id = id,
-              favorite =
-                id == HealthCareCategoryId.MEDICATIONS,
+              favoritePosition = if (id == HealthCareCategoryId.MEDICATIONS) 0 else -1,
             )
           }
 

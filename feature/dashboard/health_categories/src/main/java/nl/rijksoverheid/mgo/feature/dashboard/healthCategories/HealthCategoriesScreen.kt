@@ -1,7 +1,5 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,16 +14,19 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,7 +34,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import getStringResourceByName
+import nl.rijksoverheid.mgo.component.healthCareCategory.getIcon
+import nl.rijksoverheid.mgo.component.healthCareCategory.getIconColor
+import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
@@ -45,22 +48,6 @@ import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.supportAllergies
-import nl.rijksoverheid.mgo.component.theme.supportContacts
-import nl.rijksoverheid.mgo.component.theme.supportDevice
-import nl.rijksoverheid.mgo.component.theme.supportDocuments
-import nl.rijksoverheid.mgo.component.theme.supportFunctional
-import nl.rijksoverheid.mgo.component.theme.supportLaboratory
-import nl.rijksoverheid.mgo.component.theme.supportLifestyle
-import nl.rijksoverheid.mgo.component.theme.supportMedication
-import nl.rijksoverheid.mgo.component.theme.supportPayer
-import nl.rijksoverheid.mgo.component.theme.supportPersonal
-import nl.rijksoverheid.mgo.component.theme.supportProblems
-import nl.rijksoverheid.mgo.component.theme.supportProcedures
-import nl.rijksoverheid.mgo.component.theme.supportTreatment
-import nl.rijksoverheid.mgo.component.theme.supportVaccinations
-import nl.rijksoverheid.mgo.component.theme.supportVitals
-import nl.rijksoverheid.mgo.component.theme.supportWarning
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.TEST_HEALTH_CARE_CATEGORIES
@@ -86,6 +73,7 @@ object HealthCategoriesScreenTestTag {
  * @param onNavigateToHealthCategory Called when requested to navigate to the screen where you can view health care data.
  * @param organization If not null, will only show only health care data for this organization. If null will show for all added
  * organizations.
+ * @param onShowBottomSheet If not null, shows an bottom sheet where you can edit the overview screen.
  * @param onNavigateBack Called when requested to navigate back.
  */
 @Composable
@@ -96,10 +84,12 @@ fun HealthCategoriesScreen(
   onNavigateToLocalisation: () -> Unit,
   onNavigateToHealthCategory: (category: HealthCareCategoryId, organization: MgoOrganization?) -> Unit,
   organization: MgoOrganization? = null,
+  onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
   val viewModel = hiltViewModel<HealthCategoriesScreenViewModel>()
   val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
+
   HealthCategoriesScreenContent(
     appBarTitle = appBarTitle,
     subHeading = subHeading,
@@ -108,6 +98,7 @@ fun HealthCategoriesScreen(
     onClickAddProvider = onNavigateToLocalisation,
     onClickListItem = { category -> onNavigateToHealthCategory(category, organization) },
     onClickRemoveOrganization = onNavigateRemoveOrganization,
+    onShowBottomSheet = onShowBottomSheet,
     organization = organization,
   )
 }
@@ -121,6 +112,7 @@ private fun HealthCategoriesScreenContent(
   onClickAddProvider: () -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
+  onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
   val lazyListState = rememberLazyListState()
@@ -154,6 +146,13 @@ private fun HealthCategoriesScreenContent(
         title = appBarTitle,
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
+        actions = {
+          if (viewState.providers.isNotEmpty() && onShowBottomSheet != null) {
+            IconButton(onShowBottomSheet) {
+              Icon(Icons.Default.MoreHoriz, null)
+            }
+          }
+        },
       )
     },
     content = { contentPadding ->
@@ -334,58 +333,6 @@ private fun HealthCategoriesListItemCard(
   }
 }
 
-@Composable
-@StringRes
-private fun HealthCareCategoryId.getTitle(): Int {
-  val stringResource = LocalContext.current.getStringResourceByName("hc_$id.heading")
-  if (stringResource == 0) {
-    return CopyR.string.common_unknown
-  }
-  return stringResource
-}
-
-@DrawableRes
-private fun HealthCareCategoryId.getIcon(): Int =
-  when (this) {
-    HealthCareCategoryId.MEDICATIONS -> R.drawable.ic_medication
-    HealthCareCategoryId.MEASUREMENTS -> R.drawable.ic_measurements
-    HealthCareCategoryId.LAB_RESULTS -> R.drawable.ic_labresults
-    HealthCareCategoryId.ALLERGIES -> R.drawable.ic_allergies
-    HealthCareCategoryId.TREATMENTS -> R.drawable.ic_treatments
-    HealthCareCategoryId.APPOINTMENTS -> R.drawable.ic_appointments
-    HealthCareCategoryId.VACCINATIONS -> R.drawable.ic_vaccinations
-    HealthCareCategoryId.DOCUMENTS -> R.drawable.ic_documents
-    HealthCareCategoryId.COMPLAINTS -> R.drawable.ic_complaints
-    HealthCareCategoryId.PATIENT -> R.drawable.ic_patient
-    HealthCareCategoryId.ALERTS -> R.drawable.ic_alerts
-    HealthCareCategoryId.PAYMENT -> R.drawable.ic_payment
-    HealthCareCategoryId.PLANS -> R.drawable.ic_plans
-    HealthCareCategoryId.DEVICES -> R.drawable.ic_devices
-    HealthCareCategoryId.MENTAL -> R.drawable.ic_mental
-    HealthCareCategoryId.LIFESTYLE -> R.drawable.ic_lifestyle
-  }
-
-@Composable
-private fun HealthCareCategoryId.getIconColor(): Color =
-  when (this) {
-    HealthCareCategoryId.MEDICATIONS -> MaterialTheme.colorScheme.supportMedication()
-    HealthCareCategoryId.MEASUREMENTS -> MaterialTheme.colorScheme.supportVitals()
-    HealthCareCategoryId.LAB_RESULTS -> MaterialTheme.colorScheme.supportLaboratory()
-    HealthCareCategoryId.ALLERGIES -> MaterialTheme.colorScheme.supportAllergies()
-    HealthCareCategoryId.TREATMENTS -> MaterialTheme.colorScheme.supportTreatment()
-    HealthCareCategoryId.APPOINTMENTS -> MaterialTheme.colorScheme.supportContacts()
-    HealthCareCategoryId.VACCINATIONS -> MaterialTheme.colorScheme.supportVaccinations()
-    HealthCareCategoryId.DOCUMENTS -> MaterialTheme.colorScheme.supportDocuments()
-    HealthCareCategoryId.COMPLAINTS -> MaterialTheme.colorScheme.supportProblems()
-    HealthCareCategoryId.PATIENT -> MaterialTheme.colorScheme.supportPersonal()
-    HealthCareCategoryId.ALERTS -> MaterialTheme.colorScheme.supportWarning()
-    HealthCareCategoryId.PAYMENT -> MaterialTheme.colorScheme.supportPayer()
-    HealthCareCategoryId.PLANS -> MaterialTheme.colorScheme.supportProcedures()
-    HealthCareCategoryId.DEVICES -> MaterialTheme.colorScheme.supportDevice()
-    HealthCareCategoryId.MENTAL -> MaterialTheme.colorScheme.supportFunctional()
-    HealthCareCategoryId.LIFESTYLE -> MaterialTheme.colorScheme.supportLifestyle()
-  }
-
 @DefaultPreviews
 @Composable
 internal fun OverviewScreenNoProvidersPreview() {
@@ -404,6 +351,7 @@ internal fun OverviewScreenNoProvidersPreview() {
       onClickAddProvider = {},
       onClickListItem = {},
       onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
     )
   }
 }
@@ -426,6 +374,7 @@ internal fun OverviewScreenWithProvidersPreview() {
       onClickAddProvider = {},
       onClickListItem = {},
       onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
     )
   }
 }

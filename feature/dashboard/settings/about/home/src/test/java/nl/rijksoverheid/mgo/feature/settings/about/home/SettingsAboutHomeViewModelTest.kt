@@ -29,7 +29,7 @@ internal class SettingsAboutHomeViewModelTest {
         assertEquals(1, viewState.appVersionCode)
         assertEquals("1.0.0", viewState.appVersionName)
         assertEquals(expectedFhirVersion, viewState.fhirParserVersion)
-        assertEquals(CopyR.string.settings_about_this_app_privacy_url_test, viewState.privacyUrl)
+        assertEquals(CopyR.string.privacy_link_test, viewState.privacyUrl)
       }
     }
 }

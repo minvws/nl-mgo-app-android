@@ -12,13 +12,9 @@ interface HealthCareCategoriesRepository {
   fun observe(): Flow<List<HealthCareCategory>>
 
   /**
-   * Mark this [HealthCareCategory] as a favorite.
+   * Marks a list of [HealthCareCategory] as favorite.
    *
-   * @param categoryId The [HealthCareCategoryId].
-   * @param favorite True if you want to favorite, false if not.
+   * @param categories The list of [HealthCareCategoryId] you want to mark as favorite.
    */
-  suspend fun favorite(
-    categoryId: HealthCareCategoryId,
-    favorite: Boolean,
-  )
+  suspend fun setFavorites(categories: List<HealthCareCategoryId>)
 }

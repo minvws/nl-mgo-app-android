@@ -20,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.core.view.HapticFeedbackConstantsCompat
+import androidx.core.view.ViewCompat
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIcon
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIconColor
 import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
@@ -33,10 +35,10 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCateg
 internal fun HealthCategoryListItem(
   category: HealthCareCategoryId,
   state: HealthCategoryListItemState,
-  draggable: Boolean,
-  modifier: Modifier = Modifier,
   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
   hasDivider: Boolean = true,
+  dragIcon: @Composable (() -> Unit)? = null,
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
     Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -65,10 +67,8 @@ internal fun HealthCategoryListItem(
         text = stringResource(id = category.getTitle()),
         style = MaterialTheme.typography.bodyMedium,
       )
-      if (draggable) {
-        IconButton({}) {
-          Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
-        }
+      dragIcon?.let { composable ->
+        composable()
       }
     }
     if (hasDivider) {
@@ -91,14 +91,19 @@ internal fun HealthCategoryListItemPreview() {
         category = HealthCareCategoryId.MEDICATIONS,
         state = HealthCategoryListItemState.ADD,
         onClick = {},
-        draggable = false,
       )
       HealthCategoryListItem(
         category = HealthCareCategoryId.APPOINTMENTS,
         state = HealthCategoryListItemState.REMOVE,
         hasDivider = false,
         onClick = {},
-        draggable = false,
+          dragIcon = {
+            IconButton(
+                onClick = {},
+            ) {
+              Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
+            }
+          }
       )
     }
   }

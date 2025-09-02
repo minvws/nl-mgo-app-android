@@ -4,5 +4,5 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCateg
 
 data class EditOverviewBottomSheetViewState(
   val favorites: List<HealthCareCategoryId>,
-  val categories: List<HealthCareCategoryId>,
+  val nonFavorites: List<HealthCareCategoryId>,
 )

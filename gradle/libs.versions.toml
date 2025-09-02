@@ -57,6 +57,7 @@ bcutil = "1.79"
 itext7 = "9.2.0"
 zoomable = "2.8.0"
 androidx-startup-runtime = "1.2.0"
+reorderable = "3.0.0"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -118,6 +119,7 @@ bcutil = { group = "org.bouncycastle", name = "bcutil-jdk18on", version.ref = "b
 itext7-core = { group = "com.itextpdf", name = "itext7-core", version.ref = "itext7"}
 zoomable = { group = "net.engawapg.lib", name = "zoomable", version.ref = "zoomable" }
 androidx-startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidx-startup-runtime" }
+reoderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

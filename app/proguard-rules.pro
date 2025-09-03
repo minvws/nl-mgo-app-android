@@ -45,3 +45,4 @@
 
 # Required for layout (tables, paragraphs, document model)
 -keep class com.itextpdf.layout.** { *; }
+

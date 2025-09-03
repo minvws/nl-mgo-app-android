@@ -55,6 +55,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesNoFavoriteCard
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoriesScreenTestTag {
@@ -171,6 +172,7 @@ private fun HealthCategoriesScreenContent(
               subHeading = subHeading,
               onClickListItem = onClickListItem,
               onClickRemoveOrganization = onClickRemoveOrganization,
+              onClickAddFavorite = { onShowBottomSheet?.invoke() },
               organization = organization,
               categories = viewState.categories,
             )
@@ -228,17 +230,40 @@ private fun LazyListScope.NoProviders(canScroll: Boolean) {
 @Suppress("ktlint:standard:function-naming")
 private fun LazyListScope.WithProviders(
   subHeading: String,
+  onClickAddFavorite: () -> Unit,
   onClickListItem: (category: HealthCareCategoryId) -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
   categories: List<HealthCareCategory>,
 ) {
-  item {
-    Text(
-      modifier = Modifier.padding(bottom = 8.dp),
-      text = subHeading,
-      style = MaterialTheme.typography.bodyMedium,
-    )
+  if (organization == null) {
+    item {
+      Text(
+        text = stringResource(CopyR.string.overview_favorites_heading),
+        style = MaterialTheme.typography.headlineSmall,
+      )
+    }
+
+    item {
+      HealthCategoriesNoFavoriteCard(
+        modifier = Modifier.padding(top = 12.dp).fillMaxWidth().height(150.dp),
+        onClickAddFavorite = onClickAddFavorite,
+      )
+    }
+  }
+
+  if (organization == null) {
+    item {
+      Text(modifier = Modifier.padding(top = 32.dp, bottom = 8.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
+    }
+  } else {
+    item {
+      Text(
+        modifier = Modifier.padding(bottom = 8.dp),
+        text = subHeading,
+        style = MaterialTheme.typography.bodyMedium,
+      )
+    }
   }
 
   items(categories.size) { position ->

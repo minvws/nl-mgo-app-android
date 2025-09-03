@@ -141,7 +141,7 @@
   <string name="hc_mental.heading_detail">All mentaal welzijngegevens</string>
   <string name="hc_patient.heading">Persoonlijke gegevens</string>
   <string name="hc_patient.heading_detail">Alle persoonlijke gegevens</string>
-  <string name="hc_payment.heading">Betaalgegevens</string>
+  <string name="hc_payment.heading">Zorgkosten</string>
   <string name="hc_payment.heading_detail">Alle betaalgegevens</string>
   <string name="hc_plans.heading">Behandelplan</string>
   <string name="hc_plans.heading_detail">Alle behandelwens/plan gegevens</string>
@@ -268,8 +268,8 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="mhc_care_treatment.heading">Zorg en behandeling</string>
   <string name="mhc_examinations_results.heading">Onderzoeken en uitslagen</string>
   <string name="mhc_health.heading">Gezondheid</string>
-  <string name="overview.favorites.action">Voeg favorieten toe</string>
-  <string name="overview.favorites.heading">Voeg hier je favorieten toe.\nZo staan die altijd bovenaan.</string>
+  <string name="overview.favorites.empty.action">Voeg favorieten toe</string>
+  <string name="overview.favorites.empty.heading">Voeg hier je favorieten toe.\nZo staan die altijd bovenaan.</string>
   <string name="overview.menu">menu</string>
   <string name="edit_overview.heading">Overzicht aanpassen</string>
   <string name="edit_overview.save">Opslaan</string>
@@ -292,4 +292,5 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="hc_devices.subheading">Zorgspullen die je gebruikt, zoals een bril of rollator</string>
   <string name="hc_patient.subheading">Je naam, adres, geboortedatum en gezinssituatie</string>
   <string name="hc_payment.subheading">Je betalingen en verzekeringen</string>
+  <string name="overview.favorites.heading">Favorieten</string>
 </resources>

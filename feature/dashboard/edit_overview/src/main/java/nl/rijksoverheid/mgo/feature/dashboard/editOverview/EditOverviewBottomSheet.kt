@@ -135,7 +135,7 @@ private fun EditOverviewBottomSheetContent(
       }
 
       item {
-        Text(modifier = Modifier.padding(top = 24.dp), text = "Categorieën", style = MaterialTheme.typography.headlineSmall)
+        Text(modifier = Modifier.padding(top = 24.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
       }
 
       item {

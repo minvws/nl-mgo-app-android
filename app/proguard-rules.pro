@@ -46,6 +46,3 @@
 # Required for layout (tables, paragraphs, document model)
 -keep class com.itextpdf.layout.** { *; }
 
-# Keep all enums
--keepclassmembers enum * { *; }
-

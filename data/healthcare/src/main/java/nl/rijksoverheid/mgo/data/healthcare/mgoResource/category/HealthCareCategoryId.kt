@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthcare.mgoResource.category
 
+import androidx.annotation.Keep
 import nl.rijksoverheid.mgo.data.fhirParser.models.Profiles
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Bgz
@@ -10,6 +11,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareRequest.Vaccin
 /**
  * Enum representing various categories of health care data.
  */
+@Keep
 enum class HealthCareCategoryId(
   val id: String,
 ) {

@@ -20,8 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.core.view.HapticFeedbackConstantsCompat
-import androidx.core.view.ViewCompat
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIcon
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIconColor
 import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
@@ -97,13 +95,13 @@ internal fun HealthCategoryListItemPreview() {
         state = HealthCategoryListItemState.REMOVE,
         hasDivider = false,
         onClick = {},
-          dragIcon = {
-            IconButton(
-                onClick = {},
-            ) {
-              Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
-            }
+        dragIcon = {
+          IconButton(
+            onClick = {},
+          ) {
+            Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
           }
+        },
       )
     }
   }

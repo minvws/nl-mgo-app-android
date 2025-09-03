@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_FAVORITE_HEALTH_CARE_CATEGORIES
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 

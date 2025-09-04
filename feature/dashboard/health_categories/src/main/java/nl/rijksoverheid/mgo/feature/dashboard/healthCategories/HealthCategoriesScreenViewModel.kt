@@ -45,6 +45,7 @@ internal class HealthCategoriesScreenViewModel
           providers = providers,
           automaticLocalisationEnabled = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION),
           categories = categories,
+          favorites = categories.filter { category -> category.favoritePosition != -1 }.sortedBy { category -> category.favoritePosition },
         )
       }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
   }

@@ -2,15 +2,19 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.Flow
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIcon
 import nl.rijksoverheid.mgo.component.healthCareCategory.getIconColor
 import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
@@ -175,6 +180,7 @@ private fun HealthCategoriesScreenContent(
               onClickAddFavorite = { onShowBottomSheet?.invoke() },
               organization = organization,
               categories = viewState.categories,
+              favorites = viewState.favorites,
             )
           }
         }
@@ -235,20 +241,39 @@ private fun LazyListScope.WithProviders(
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
   categories: List<HealthCareCategory>,
+  favorites: List<HealthCareCategory>,
 ) {
   if (organization == null) {
     item {
       Text(
+        modifier = Modifier.padding(bottom = 12.dp),
         text = stringResource(CopyR.string.overview_favorites_heading),
         style = MaterialTheme.typography.headlineSmall,
       )
     }
 
-    item {
-      HealthCategoriesNoFavoriteCard(
-        modifier = Modifier.padding(top = 12.dp).fillMaxWidth().height(150.dp),
-        onClickAddFavorite = onClickAddFavorite,
-      )
+    if (favorites.isEmpty()) {
+      item {
+        HealthCategoriesNoFavoriteCard(
+          modifier = Modifier.fillMaxWidth(),
+          onClickAddFavorite = onClickAddFavorite,
+        )
+      }
+    } else {
+      items(favorites.size) { position ->
+        HealthCategoriesListItemCard(
+          position =
+            when {
+              favorites.size == 1 -> HealthCategoriesListItemCardPosition.SINGLE_ITEM
+              position == 0 -> HealthCategoriesListItemCardPosition.TOP
+              position == favorites.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
+              else -> HealthCategoriesListItemCardPosition.CENTER
+            },
+          category = favorites[position].id,
+          onClickListItem = onClickListItem,
+          filterOrganization = null,
+        )
+      }
     }
   }
 
@@ -307,6 +332,7 @@ private enum class HealthCategoriesListItemCardPosition {
   TOP,
   CENTER,
   BOTTOM,
+  SINGLE_ITEM,
 }
 
 @Composable
@@ -344,6 +370,15 @@ private fun HealthCategoriesListItemCard(
           bottomEnd = 16.dp,
         )
       }
+
+      HealthCategoriesListItemCardPosition.SINGLE_ITEM -> {
+        RoundedCornerShape(
+          topStart = 16.dp,
+          topEnd = 16.dp,
+          bottomStart = 16.dp,
+          bottomEnd = 16.dp,
+        )
+      }
     }
 
   MgoCard(shape = shape) {
@@ -354,6 +389,7 @@ private fun HealthCategoriesListItemCard(
       iconColor = category.getIconColor(),
       category = category,
       filterOrganization = filterOrganization,
+      hasDivider = position != HealthCategoriesListItemCardPosition.BOTTOM && position != HealthCategoriesListItemCardPosition.SINGLE_ITEM,
     )
   }
 }
@@ -371,6 +407,7 @@ internal fun OverviewScreenNoProvidersPreview() {
           providers = listOf(),
           automaticLocalisationEnabled = false,
           categories = TEST_HEALTH_CARE_CATEGORIES,
+          favorites = listOf(),
         ),
       onNavigateBack = {},
       onClickAddProvider = {},
@@ -394,6 +431,31 @@ internal fun OverviewScreenWithProvidersPreview() {
           providers = listOf(TEST_MGO_ORGANIZATION),
           automaticLocalisationEnabled = false,
           categories = TEST_HEALTH_CARE_CATEGORIES,
+          favorites = listOf(),
+        ),
+      onNavigateBack = {},
+      onClickAddProvider = {},
+      onClickListItem = {},
+      onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
+    )
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun OverviewScreenWithProvidersAndFavoritesPreview() {
+  MgoTheme {
+    HealthCategoriesScreenContent(
+      appBarTitle = stringResource(CopyR.string.overview_heading),
+      subHeading = stringResource(CopyR.string.overview_subheading),
+      viewState =
+        HealthCategoriesScreenViewState(
+          name = "",
+          providers = listOf(TEST_MGO_ORGANIZATION),
+          automaticLocalisationEnabled = false,
+          categories = TEST_HEALTH_CARE_CATEGORIES,
+          favorites = listOf(TEST_HEALTH_CARE_CATEGORIES.first()),
         ),
       onNavigateBack = {},
       onClickAddProvider = {},

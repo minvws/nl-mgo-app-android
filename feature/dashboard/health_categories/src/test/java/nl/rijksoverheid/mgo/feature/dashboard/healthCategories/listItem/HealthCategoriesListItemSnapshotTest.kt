@@ -1,7 +1,5 @@
-package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
+package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItemLoadedPreview
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItemNoDataPreview
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotDevices
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule

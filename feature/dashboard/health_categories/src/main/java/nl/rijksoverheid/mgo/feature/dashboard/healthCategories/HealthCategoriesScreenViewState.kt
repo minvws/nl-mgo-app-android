@@ -14,6 +14,7 @@ data class HealthCategoriesScreenViewState(
   val name: String,
   val providers: List<MgoOrganization>,
   val categories: List<HealthCareCategory>,
+  val favorites: List<HealthCareCategory>,
   val automaticLocalisationEnabled: Boolean,
 ) {
   companion object {
@@ -26,6 +27,7 @@ data class HealthCategoriesScreenViewState(
       providers = providers,
       automaticLocalisationEnabled = automaticLocalisationEnabled,
       categories = categories,
+      favorites = categories.filter { category -> category.favoritePosition != -1 },
     )
   }
 }

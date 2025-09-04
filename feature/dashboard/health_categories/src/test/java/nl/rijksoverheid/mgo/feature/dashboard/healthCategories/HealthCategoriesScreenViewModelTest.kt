@@ -3,11 +3,14 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.healthcare.category.TestHealthCareCategoriesRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,6 +21,14 @@ internal class HealthCategoriesScreenViewModelTest {
   private val organizationRepository = TestOrganizationRepository()
   private val keyValueStore = TestKeyValueStore()
   private val healthCareCategoriesRepository = TestHealthCareCategoriesRepository()
+
+  @Before
+  fun setup() =
+    runTest {
+      // Set two categories as favorite
+      val categories = listOf(HealthCareCategoryId.MEDICATIONS, HealthCareCategoryId.APPOINTMENTS)
+      healthCareCategoriesRepository.setFavorites(categories)
+    }
 
   @Test
   fun `Given stored providers, When collecting on view state, Then emit view state with providers`() =

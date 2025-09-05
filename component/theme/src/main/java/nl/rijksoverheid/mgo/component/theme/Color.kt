@@ -31,7 +31,7 @@ fun ColorScheme.contentSecondary(isSystemDarkTheme: Boolean = LocalAppThemeProvi
 
 @Composable
 fun ColorScheme.contentInvert(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) Color(0xFF000000) else Color(0xFFFFFFFF)
+  if (isSystemDarkTheme) Color(0xFF242424) else Color(0xFFFFFFFF)
 
 // Symbols
 
@@ -175,7 +175,7 @@ fun ColorScheme.supportPersonal(isSystemDarkTheme: Boolean = LocalAppThemeProvid
 
 @Composable
 fun ColorScheme.supportRijkslint(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) Color(0xFF8CBDED) else Color(0xFF154273)
+  if (isSystemDarkTheme) Color(0xFF738EAB) else Color(0xFF154273)
 
 @Composable
 fun ColorScheme.supportWarning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =

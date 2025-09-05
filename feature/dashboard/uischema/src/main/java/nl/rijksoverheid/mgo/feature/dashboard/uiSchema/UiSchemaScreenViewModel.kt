@@ -68,9 +68,15 @@ internal class UiSchemaScreenViewModel
       viewModelScope.launch {
         val uiSchema =
           if (isSummary) {
-            uiSchemaMapper.getSummary(mgoResource)
+            uiSchemaMapper.getSummary(
+              healthCareOrganizationName = organization.name,
+              mgoResource = mgoResource,
+            )
           } else {
-            uiSchemaMapper.getDetail(mgoResource)
+            uiSchemaMapper.getDetail(
+              healthCareOrganizationName = organization.name,
+              mgoResource = mgoResource,
+            )
           }
         val uiSchemaSections = uiSchemaSectionMapper.map(uiSchema)
         _viewState.update { viewState ->

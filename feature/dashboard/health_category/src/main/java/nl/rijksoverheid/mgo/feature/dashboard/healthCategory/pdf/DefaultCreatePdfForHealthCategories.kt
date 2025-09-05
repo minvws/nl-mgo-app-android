@@ -89,7 +89,7 @@ internal class DefaultCreatePdfForHealthCategories
         val pdfTables =
           itemsGroup.items.map { listItem ->
             uiSchemaMapper
-              .getSummary(listItem.mgoResource)
+              .getSummary(healthCareOrganizationName = listItem.organization.name, mgoResource = listItem.mgoResource)
               .toSections()
               .map { section ->
                 PdfSubTable(

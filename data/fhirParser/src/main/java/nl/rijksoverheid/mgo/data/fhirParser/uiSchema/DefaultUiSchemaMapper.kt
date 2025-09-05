@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.data.fhirParser.uiSchema
 
+import android.annotation.SuppressLint
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
@@ -28,28 +30,36 @@ internal class DefaultUiSchemaMapper
     /**
      * Retrieves a summarized version of the most important healthcare data from an [MgoResource].
      *
+     * @param healthCareOrganizationName The name of the health care organization.
      * @param mgoResource The [MgoResource] created in [MgoResourceMapper].
      * @return [HealthUiSchema].
      */
-    override suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema {
-      return getUiSchemas(
+    override suspend fun getSummary(
+      healthCareOrganizationName: String,
+      mgoResource: MgoResource,
+    ): HealthUiSchema =
+      getUiSchemas(
+        healthCareProviderName = healthCareOrganizationName,
         mgoResource = mgoResource,
         jsFunctionName = "getSummaryJson",
       )
-    }
 
     /**
      * Retrieves the complete set of healthcare data from an [MgoResource].
      *
+     * @param healthCareOrganizationName The name of the health care organization.
      * @param mgoResource The [MgoResource] created in [MgoResourceMapper].
      * @return [HealthUiSchema].
      */
-    override suspend fun getDetail(mgoResource: MgoResource): HealthUiSchema {
-      return getUiSchemas(
+    override suspend fun getDetail(
+      healthCareOrganizationName: String,
+      mgoResource: MgoResource,
+    ): HealthUiSchema =
+      getUiSchemas(
+        healthCareProviderName = healthCareOrganizationName,
         mgoResource = mgoResource,
         jsFunctionName = "getDetailsJson",
       )
-    }
 
     /**
      * Executes a JavaScript function to retrieve a UI schema based on an [MgoResource].
@@ -63,15 +73,31 @@ internal class DefaultUiSchemaMapper
      * @return [HealthUiSchema].
      */
     private suspend fun getUiSchemas(
+      healthCareProviderName: String,
       mgoResource: MgoResource,
       jsFunctionName: String,
     ): HealthUiSchema {
+      val organizationJson = json.encodeToString(OrganizationJson(organization = OrganizationJson.Organization(healthCareProviderName)))
       val mgoResourceJson = base64Util.decode(mgoResource.jsonBase64)
       val uiSchemaJson =
         jsRuntimeRepository.executeStringFunction(
           jsFunctionName,
-          listOf(mgoResourceJson),
+          listOf(mgoResourceJson, organizationJson),
         )
       return json.decodeFromString<HealthUiSchema>(uiSchemaJson)
     }
   }
+
+/**
+ * Wrapper class to send our organization name to the javascript function in the correct json format.
+ */
+@SuppressLint("UnsafeOptInUsageError")
+@Serializable
+data class OrganizationJson(
+  val organization: Organization,
+) {
+  @Serializable
+  data class Organization(
+    val name: String,
+  )
+}

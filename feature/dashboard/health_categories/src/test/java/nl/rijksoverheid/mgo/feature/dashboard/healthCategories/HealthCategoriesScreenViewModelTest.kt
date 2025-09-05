@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.healthcare.category.TestHealthCareCategoriesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore

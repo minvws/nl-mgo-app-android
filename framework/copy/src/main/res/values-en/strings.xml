@@ -293,4 +293,6 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="hc_patient.subheading">Je naam, adres, geboortedatum en gezinssituatie</string>
   <string name="hc_payment.subheading">Je betalingen en verzekeringen</string>
   <string name="overview.favorites.heading">Favorieten</string>
+  <string name="login_failed.dialog.heading">Inloggen niet gelukt</string>
+  <string name="login_failed.dialog.subheading">Inloggen met DigiD is niet gelukt. Probeer het opnieuw.</string>
 </resources>

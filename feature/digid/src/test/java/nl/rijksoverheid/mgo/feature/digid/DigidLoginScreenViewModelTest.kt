@@ -89,14 +89,19 @@ internal class DigidLoginScreenViewModelTest {
       turbineScope {
         val loginFinishedFlow = viewModel.loginFinished.testIn(backgroundScope)
 
-        // Given: valid uri string
+        // Given: null uri string
         val uriString = null
 
-        // When: Calling handleDeeplink
-        viewModel.handleDeeplink(uriString)
+        viewModel.loginFailed.test {
+          // When: Calling handleDeeplink
+          viewModel.handleDeeplink(uriString)
 
-        // Then: Login is not finished
-        loginFinishedFlow.expectNoEvents()
+          // Then: Error dialog is shown
+          assertEquals(Unit, awaitItem())
+
+          // Then: Login is not finished
+          loginFinishedFlow.expectNoEvents()
+        }
       }
     }
 }

@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,12 +32,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -49,6 +54,22 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
   val viewModel: DigidLoginScreenViewModel = hiltViewModel()
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
+  var showLoginFailedDialog by remember { mutableStateOf(false) }
+  if (showLoginFailedDialog) {
+    MgoAlertDialog(
+      heading = stringResource(CopyR.string.login_failed_dialog_heading),
+      subHeading = stringResource(CopyR.string.login_failed_dialog_subheading),
+      positiveButtonText = stringResource(CopyR.string.common_ok),
+      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      onClickPositiveButton = {
+        showLoginFailedDialog = false
+      },
+      onDismissRequest = {
+        showLoginFailedDialog = false
+      },
+    )
+  }
+
   DisposableEffect(Unit) {
     val listener =
       Consumer<Intent> { intent ->
@@ -61,6 +82,12 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
   LaunchedEffect(Unit) {
     viewModel.navigateToUrl.collectLatest { url ->
       activity.launchBrowser(url)
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.loginFailed.collectLatest {
+      showLoginFailedDialog = true
     }
   }
 

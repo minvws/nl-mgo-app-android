@@ -200,7 +200,3 @@ fun ColorScheme.supportProcedures(isSystemDarkTheme: Boolean = LocalAppThemeProv
 @Composable
 fun ColorScheme.supportLifestyle(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) Color(0xFFA0F75F) else Color(0xFF46A808)
-
-// Other
-
-fun ColorScheme.digid() = Color(0xFFE17000)

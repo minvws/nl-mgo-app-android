@@ -267,10 +267,10 @@ private fun LazyListScope.LoadedContent(
           modifier =
             Modifier
               .fillMaxWidth()
-              .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
               .padding(bottom = 16.dp),
           title = listItem.title,
           subtitle = listItem.subtitle,
+          onClick = { onClickListItem(listItem.organization, listItem.mgoResource) },
         )
       }
     }
@@ -344,9 +344,10 @@ private fun LazyItemScope.NoDataContent(
 private fun HealthCategoryCard(
   title: String,
   subtitle: String,
+  onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  MgoCard(modifier = modifier.testTag(HealthCategoryScreenTestTag.CARD)) {
+  MgoCard(modifier = modifier.testTag(HealthCategoryScreenTestTag.CARD), onClick = onClick) {
     Column(modifier = Modifier.padding(16.dp)) {
       Text(
         text = title,

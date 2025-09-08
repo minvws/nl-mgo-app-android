@@ -28,7 +28,7 @@ fun HealthCategoriesFavoriteCard(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  MgoCard(modifier = modifier.width(182.dp).height(102.dp).clickable { onClick() }) {
+  MgoCard(modifier = modifier.width(182.dp).height(102.dp), onClick = onClick) {
     Column(modifier = Modifier.padding(16.dp)) {
       Icon(painterResource(category.getIcon()), tint = category.getIconColor(), contentDescription = null)
       Text(modifier = Modifier.fillMaxWidth().padding(top = 16.dp), text = stringResource(category.getTitle()), maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -42,7 +42,7 @@ internal fun HealthCategoriesFavoriteCardPreview() {
   MgoTheme {
     HealthCategoriesFavoriteCard(
       category = HealthCareCategoryId.MEDICATIONS,
-        onClick = {}
+      onClick = {},
     )
   }
 }

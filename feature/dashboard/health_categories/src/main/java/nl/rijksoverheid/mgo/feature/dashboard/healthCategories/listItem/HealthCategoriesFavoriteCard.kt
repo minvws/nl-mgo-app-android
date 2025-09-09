@@ -13,7 +13,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,8 +31,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalInspectionMode
 
 @Composable
 fun HealthCategoriesFavoriteCard(
@@ -38,22 +38,23 @@ fun HealthCategoriesFavoriteCard(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val loading = if (LocalInspectionMode.current) {
-    false
-  } else {
-    val viewModel =
+  val loading =
+    if (LocalInspectionMode.current) {
+      false
+    } else {
+      val viewModel =
         hiltViewModel<HealthCategoriesFavoriteCardViewModel, HealthCategoriesFavoriteCardViewModel.Factory>(
-            creationCallback = { factory -> factory.create(category = category) },
-            key = "favorite_card_$category",
+          creationCallback = { factory -> factory.create(category = category) },
+          key = "favorite_card_$category",
         )
-    val loading by viewModel.isLoading.collectAsStateWithLifecycle()
-    loading
-  }
+      val loading by viewModel.isLoading.collectAsStateWithLifecycle()
+      loading
+    }
   HealthCategoriesFavoriteCardContent(
-      loading = loading,
-      category = category,
-      onClick = onClick,
-      modifier = modifier
+    loading = loading,
+    category = category,
+    onClick = onClick,
+    modifier = modifier,
   )
 }
 
@@ -70,10 +71,10 @@ private fun HealthCategoriesFavoriteCardContent(
         Icon(painterResource(category.getIcon()), tint = category.getIconColor(), contentDescription = null)
         if (loading) {
           CircularProgressIndicator(
-              modifier = Modifier.size(24.dp),
-              strokeWidth = 2.dp,
-              trackColor = MaterialTheme.colorScheme.backgroundTertiary().copy(alpha = 0.5f),
-              color = MaterialTheme.colorScheme.symbolsSecondary(),
+            modifier = Modifier.size(24.dp),
+            strokeWidth = 2.dp,
+            trackColor = MaterialTheme.colorScheme.backgroundTertiary().copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.symbolsSecondary(),
           )
         }
       }
@@ -89,7 +90,7 @@ internal fun HealthCategoriesFavoriteCardPreview() {
     HealthCategoriesFavoriteCardContent(
       category = HealthCareCategoryId.MEDICATIONS,
       onClick = {},
-        loading = false
+      loading = false,
     )
   }
 }
@@ -101,7 +102,7 @@ internal fun HealthCategoriesFavoriteCardLoadingPreview() {
     HealthCategoriesFavoriteCardContent(
       category = HealthCareCategoryId.MEDICATIONS,
       onClick = {},
-        loading = true
+      loading = true,
     )
   }
 }

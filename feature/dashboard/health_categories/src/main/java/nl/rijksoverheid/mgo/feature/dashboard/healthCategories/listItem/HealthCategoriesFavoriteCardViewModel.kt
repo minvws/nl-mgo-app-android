@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
@@ -27,9 +25,7 @@ internal class HealthCategoriesFavoriteCardViewModel
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
-      fun create(
-        category: HealthCareCategoryId,
-      ): HealthCategoriesFavoriteCardViewModel
+      fun create(category: HealthCareCategoryId): HealthCategoriesFavoriteCardViewModel
     }
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(true)

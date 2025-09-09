@@ -2,8 +2,10 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -54,6 +56,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.TEST_HEALTH_CAR
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesNoFavoriteCard
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -255,19 +258,15 @@ private fun LazyListScope.WithProviders(
         )
       }
     } else {
-      items(favorites.size) { position ->
-        HealthCategoriesListItemCard(
-          position =
-            when {
-              favorites.size == 1 -> HealthCategoriesListItemCardPosition.SINGLE_ITEM
-              position == 0 -> HealthCategoriesListItemCardPosition.TOP
-              position == favorites.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
-              else -> HealthCategoriesListItemCardPosition.CENTER
-            },
-          category = favorites[position].id,
-          onClickListItem = onClickListItem,
-          filterOrganization = null,
-        )
+      item {
+        FlowRow(horizontalArrangement = spacedBy(8.dp), verticalArrangement = spacedBy(8.dp)) {
+          favorites.forEach { favorite ->
+            HealthCategoriesFavoriteCard(
+              category = favorite.id,
+              onClick = { onClickListItem(favorite.id) },
+            )
+          }
+        }
       }
     }
   }

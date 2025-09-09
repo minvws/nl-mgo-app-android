@@ -18,20 +18,33 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
  *
  * @param modifier the [Modifier] to be applied.
  * @param shape The [Shape] of the [Card].
+ * @param onClick If not null, called when clicked on the card.
  */
 @Composable
 fun MgoCard(
   modifier: Modifier = Modifier,
   shape: Shape = CardDefaults.shape,
+  onClick: (() -> Unit)? = null,
   content: @Composable ColumnScope.() -> Unit,
 ) {
-  Card(
-    modifier = modifier,
-    shape = shape,
-    colors = CardDefaults.outlinedCardColors(),
-    elevation = CardDefaults.elevatedCardElevation(),
-    content = content,
-  )
+  if (onClick == null) {
+    Card(
+      modifier = modifier,
+      shape = shape,
+      colors = CardDefaults.outlinedCardColors(),
+      elevation = CardDefaults.elevatedCardElevation(),
+      content = content,
+    )
+  } else {
+    Card(
+      modifier = modifier,
+      shape = shape,
+      colors = CardDefaults.outlinedCardColors(),
+      elevation = CardDefaults.elevatedCardElevation(),
+      onClick = onClick,
+      content = content,
+    )
+  }
 }
 
 @PreviewLightDark

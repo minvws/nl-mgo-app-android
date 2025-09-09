@@ -11,16 +11,24 @@ interface UiSchemaMapper {
   /**
    * Retrieves a summarized version of the most important healthcare data from an [MgoResource].
    *
+   * @param healthCareOrganizationName The name of the health care organization.
    * @param mgoResource The [MgoResource] created in [MgoResourceMapper].
    * @return [HealthUiSchema].
    */
-  suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema
+  suspend fun getSummary(
+    healthCareOrganizationName: String,
+    mgoResource: MgoResource,
+  ): HealthUiSchema
 
   /**
    * Retrieves the complete set of healthcare data from an [MgoResource].
    *
+   * @param healthCareOrganizationName The name of the health care organization.
    * @param mgoResource The [MgoResource] created in [MgoResourceMapper].
    * @return [HealthUiSchema].
    */
-  suspend fun getDetail(mgoResource: MgoResource): HealthUiSchema
+  suspend fun getDetail(
+    healthCareOrganizationName: String,
+    mgoResource: MgoResource,
+  ): HealthUiSchema
 }

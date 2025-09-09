@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.digid
 
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +34,9 @@ internal class DigidLoginScreenViewModel
     private val _navigateToUrl = MutableSharedFlow<String>(extraBufferCapacity = 1)
     val navigateToUrl = _navigateToUrl.asSharedFlow()
 
+    private val _loginFailed = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val loginFailed = _loginFailed.asSharedFlow()
+
     private val _loginFinished = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val loginFinished = _loginFinished.asSharedFlow()
 
@@ -44,12 +47,12 @@ internal class DigidLoginScreenViewModel
     fun login() {
       viewModelScope.launch {
         _viewState.update { viewState -> viewState.copy(loading = true) }
-        digidRepository.login()
+        digidRepository
+          .login()
           .onSuccess { url ->
             _viewState.update { viewState -> viewState.copy(loading = false) }
             _navigateToUrl.tryEmit(url)
-          }
-          .onFailure { error ->
+          }.onFailure { error ->
             _viewState.update { viewState -> viewState.copy(loading = false) }
             Timber.e(error, "Failed to get url to login to digid")
           }
@@ -64,16 +67,14 @@ internal class DigidLoginScreenViewModel
      */
     fun handleDeeplink(uriString: String?) {
       viewModelScope.launch {
-        try {
-          val uri = Uri.parse(uriString)
-          val userInfoBase64 = uri.getQueryParameter("userinfo")
-          if (userInfoBase64 != null) {
-            val userInfo = base64Util.decode(userInfoBase64)
-            Timber.v("User info: $userInfo")
-            _loginFinished.tryEmit(Unit)
-          }
-        } catch (e: Exception) {
-          Timber.e(e, "Failed to get user info")
+        val uri = uriString?.toUri()
+        val userInfoBase64 = uri?.getQueryParameter("userinfo")
+        if (userInfoBase64 == null) {
+          _loginFailed.tryEmit(Unit)
+        } else {
+          val userInfo = base64Util.decode(userInfoBase64)
+          Timber.v("User info: $userInfo")
+          _loginFinished.tryEmit(Unit)
         }
       }
     }

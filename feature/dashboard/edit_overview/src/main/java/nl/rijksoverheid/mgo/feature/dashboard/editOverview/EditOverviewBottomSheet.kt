@@ -134,16 +134,18 @@ private fun EditOverviewBottomSheetContent(
         }
       }
 
-      item {
-        Text(modifier = Modifier.padding(top = 24.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
-      }
+      if (viewState.nonFavorites.isNotEmpty()) {
+        item {
+          Text(modifier = Modifier.padding(top = 24.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
+        }
 
-      item {
-        CategoriesCard(
-          modifier = Modifier.padding(top = 8.dp).animateItem(),
-          categories = viewState.nonFavorites,
-          onClickHealthCategory = onClickHealthCategory,
-        )
+        item {
+          CategoriesCard(
+            modifier = Modifier.padding(top = 8.dp).animateItem(),
+            categories = viewState.nonFavorites,
+            onClickHealthCategory = onClickHealthCategory,
+          )
+        }
       }
     }
   }

@@ -87,4 +87,8 @@ class EditOverviewBottomSheetViewModel
         _closeBottomSheet.tryEmit(Unit)
       }
     }
+
+    fun onClear() {
+      _viewState.tryEmit(initialState)
+    }
   }

@@ -295,7 +295,7 @@ private fun LazyListScope.WithProviders(
           when {
             categories.size == 1 -> HealthCategoriesListItemCardPosition.SINGLE_ITEM
             position == 0 -> HealthCategoriesListItemCardPosition.TOP
-            position == HealthCareCategoryId.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
+            position == categories.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
             else -> HealthCategoriesListItemCardPosition.CENTER
           },
         category = categories[position].id,

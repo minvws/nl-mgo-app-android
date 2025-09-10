@@ -171,13 +171,16 @@ private fun HealthCategoriesScreenContent(
           if (viewState.providers.isEmpty()) {
             NoProviders(canScroll)
           } else {
+            // If we are on the overview screen, we split the view into favorites and non favorites. If looking at a specific organization,
+            // we just show all the categories.
+            val categories = if (organization == null) viewState.categories.filter { category -> category.favoritePosition == -1 } else viewState.categories
             WithProviders(
               subHeading = subHeading,
               onClickListItem = onClickListItem,
               onClickRemoveOrganization = onClickRemoveOrganization,
               onClickAddFavorite = { onShowBottomSheet?.invoke() },
               organization = organization,
-              categories = viewState.categories,
+              categories = categories,
               favorites = viewState.favorites,
             )
           }

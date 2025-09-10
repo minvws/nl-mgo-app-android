@@ -20,9 +20,9 @@ data class ZibMedicalDevice(
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice",
     val source: MgoReference? = null,
-    val healthCareProvider: HealthCareProvider? = null,
+    val healthCareProvider: ExtensionValue_Of_MgoReference? = null,
     val referenceId: String,
-    val healthProfessional: HealthProfessional? = null,
+    val healthProfessional: ExtensionValue_Of_MgoReference? = null,
     val bodySite: BodySite,
     val whenUsed: MgoPeriod? = null,
     val indicationProblem: List<IndicationProblem>? = null,
@@ -34,57 +34,15 @@ data class ZibMedicalDevice(
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
-    }
-
-    @Serializable
-    data class HealthCareProvider(
-        val reference: String? = null,
-        val display: String? = null,
-        val _type: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class HealthProfessional(
-        val reference: String? = null,
-        val display: String? = null,
-        val _type: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
     @Serializable
     data class BodySite(
         val coding: List<MgoCoding>? = null,
         val text: MgoString? = null,
-        val laterality: Laterality? = null
+        val laterality: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class Laterality(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class IndicationProblem(
@@ -103,8 +61,7 @@ data class ZibMedicalDevice(
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDevice"
         private const val cg_str1 = "reference"
-        private const val cg_str2 = "codeableConcept"
-        private const val cg_str3 = "R3"
+        private const val cg_str2 = "R3"
     }
 
 }

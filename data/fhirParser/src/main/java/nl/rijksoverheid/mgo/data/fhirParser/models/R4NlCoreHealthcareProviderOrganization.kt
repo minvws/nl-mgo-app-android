@@ -20,7 +20,7 @@ data class R4NlCoreHealthcareProviderOrganization(
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider-Organization",
     val fhirVersion: String = "R4",
     val name: MgoString? = null,
-    val telecom: Telecom,
+    val telecom: R4NlCoreContactInformation,
     val id: String? = null,
     val type: Type,
     val referenceId: String,
@@ -37,11 +37,11 @@ data class R4NlCoreHealthcareProviderOrganization(
         val country: Country,
         val _profile: String,
         val city: MgoString? = null,
-        val use: NlCoreOrganizationTelecomSystem? = null,
+        val use: MgoCode_Of_string? = null,
         val line: List<Line>? = null,
         val district: MgoString? = null,
         val postalCode: MgoString? = null,
-        val type: NlCoreOrganizationTelecomSystem? = null
+        val type: MgoCode_Of_string? = null
     ) {
 
         init {
@@ -64,12 +64,6 @@ data class R4NlCoreHealthcareProviderOrganization(
         val houseNumber: MgoString? = null,
         val houseNumberAddition: MgoString? = null,
         val houseNumberIndiciation: MgoString? = null
-    )
-
-    @Serializable
-    data class Telecom(
-        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
-        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
     )
 
     @Serializable

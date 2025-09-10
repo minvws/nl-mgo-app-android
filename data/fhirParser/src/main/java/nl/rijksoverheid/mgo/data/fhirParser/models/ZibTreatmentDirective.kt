@@ -18,7 +18,7 @@ data class ZibTreatmentDirective(
     val dateTime: MgoDateTime? = null,
     val sourceReference: MgoReference? = null,
     val identifier: MgoIdentifier? = null,
-    val treatment: Treatment? = null,
+    val treatment: ExtensionValue_Of_MgoCodeableConcept? = null,
     val period: MgoPeriod? = null,
     val sourceIdentifier: MgoIdentifier? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective",
@@ -29,30 +29,16 @@ data class ZibTreatmentDirective(
     val consentingParty: List<MgoReference>? = null,
     val patient: MgoReference? = null,
     val fhirVersion: String = "R3",
-    val treatmentPermitted: TreatmentPermitted? = null,
-    val comment: Comment? = null,
+    val treatmentPermitted: ExtensionValue_Of_MgoCodeableConcept? = null,
+    val comment: ExtensionValue_Of_MgoString? = null,
     val id: String? = null,
-    val verification: Verification? = null,
+    val verification: ExtensionValue_Of_structure_0_6164971912924972? = null,
     val resourceType: String
 ) {
 
     init {
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
-    }
-
-    @Serializable
-    data class Treatment(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
     @Serializable
@@ -63,7 +49,7 @@ data class ZibTreatmentDirective(
     ) {
 
         init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
         }
 
     }
@@ -76,88 +62,10 @@ data class ZibTreatmentDirective(
         val _ext: Boolean
     )
 
-    @Serializable
-    data class TreatmentPermitted(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Comment(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Verification(
-        val verifiedWith: VerifiedWith? = null,
-        val verified: Verified? = null,
-        val _ext: Boolean,
-        val verificationDate: VerificationDate? = null
-    )
-
-    @Serializable
-    data class VerifiedWith(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Verified(
-        val _type: String,
-        val value: Boolean,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str4) { "_type not constant value $cg_str4 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class VerificationDate(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str5) { "_type not constant value $cg_str5 - $_type" }
-        }
-
-    }
-
     companion object {
-        private const val cg_str0 = "codeableConcept"
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"
-        private const val cg_str2 = "string"
-        private const val cg_str3 = "R3"
-        private const val cg_str4 = "boolean"
-        private const val cg_str5 = "dateTime"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"
+        private const val cg_str1 = "string"
+        private const val cg_str2 = "R3"
     }
 
 }

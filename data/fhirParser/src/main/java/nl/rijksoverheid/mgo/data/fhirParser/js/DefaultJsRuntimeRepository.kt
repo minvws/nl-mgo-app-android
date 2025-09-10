@@ -42,7 +42,7 @@ internal class DefaultJsRuntimeRepository
     override suspend fun load() {
       withContext(v8Dispatcher) {
         val jsCode =
-          context.assets.open("mgo-fhir-data.iife.js").bufferedReader().use { reader ->
+          context.assets.open("mgo-hcim-api.iife.js").bufferedReader().use { reader ->
             reader.readText()
           }
         val runtime = V8.createV8Runtime()
@@ -64,9 +64,9 @@ internal class DefaultJsRuntimeRepository
     ): String =
       withContext(v8Dispatcher) {
         val v8 = get()
-        val mgoFhirData = v8.getObject("MgoFhirData")
+        val hcimApi = v8.getObject("HcimApi")
         val v8Parameters = v8.createParameters(parameters)
-        mgoFhirData.executeStringFunction(name, v8Parameters)
+        hcimApi.executeStringFunction(name, v8Parameters)
       }
 
     /**

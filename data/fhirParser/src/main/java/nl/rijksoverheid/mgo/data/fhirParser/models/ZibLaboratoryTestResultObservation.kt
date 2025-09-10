@@ -41,8 +41,8 @@ data class ZibLaboratoryTestResultObservation(
     val valueString: MgoString? = null,
     val interpretation: Interpretation,
     val effectiveDateTime: MgoDateTime? = null,
-    val valueSampledData: MgoSampledData? = null,
     val valuePeriod: MgoPeriod? = null,
+    val valueSampledData: MgoSampledData? = null,
     val comment: MgoString? = null,
     val category: Category,
     val status: Status,
@@ -79,30 +79,16 @@ data class ZibLaboratoryTestResultObservation(
 
     @Serializable
     data class Status(
-        val testResultStatus: TestResultStatus? = null,
+        val testResultStatus: ExtensionValue_Of_MgoCodeableConcept? = null,
         val _type: String? = null,
         val value: String? = null
     ) {
 
         init {
             if (_type != null)
-                require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
+                require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
             if (value != null)
-                require(value in cg_array4) { "value not in enumerated values - $value" }
-        }
-
-    }
-
-    @Serializable
-    data class TestResultStatus(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
+                require(value in cg_array3) { "value not in enumerated values - $value" }
         }
 
     }
@@ -110,16 +96,15 @@ data class ZibLaboratoryTestResultObservation(
     companion object {
         private const val cg_str0 = "R3"
         private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Observation"
-        private const val cg_str2 = "codeableConcept"
-        private const val cg_str3 = "code"
-        private val cg_array4 = setOf(
-            "cancelled",
-            "entered-in-error",
+        private const val cg_str2 = "code"
+        private val cg_array3 = setOf(
             "registered",
             "preliminary",
             "final",
             "amended",
             "corrected",
+            "cancelled",
+            "entered-in-error",
             "unknown"
         )
     }

@@ -22,7 +22,7 @@ data class ZibNutritionAdvice(
     val orderer: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice",
     val fhirVersion: String = "R3",
-    val comment: Comment? = null,
+    val comment: ExtensionValue_Of_MgoString? = null,
     val id: String? = null,
     val referenceId: String,
     val resourceType: String
@@ -46,23 +46,9 @@ data class ZibNutritionAdvice(
         val modifier: MgoCodeableConcept? = null
     )
 
-    @Serializable
-    data class Comment(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
-        }
-
-    }
-
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"
         private const val cg_str1 = "R3"
-        private const val cg_str2 = "string"
     }
 
 }

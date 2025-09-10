@@ -51,8 +51,7 @@ class FhirParserPlugin : Plugin<Project> {
       Request
         .Builder()
         .url(
-          "https://api.github.com/repos/minvws/nl-mgo-app-web-private/actions/workflows/114414377/runs?status=completed&branch" +
-            "=main",
+          "https://api.github.com/repos/minvws/nl-mgo-app-web-private/actions/workflows/187656206/runs?branch=main&status=success",
         ).addHeader("Authorization", "Bearer $githubToken")
         .addHeader("Accept", "application/vnd.github+json")
         .build()
@@ -119,14 +118,14 @@ class FhirParserPlugin : Plugin<Project> {
     val destinationVersionFile = File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.version.json")
     targetVersionFile.renameTo(destinationVersionFile)
 
-    // Move mgo-fhir-data.iife.js to correct location
-    val targetJsFile = File(workingDir, "js/mgo-fhir-data.iife.js")
-    val destinationJsFile = File(project.rootDir, "data/fhirParser/src/main/assets/mgo-fhir-data.iife.js")
+    // Move mgo-hcim-api.iife.js to correct location
+    val targetJsFile = File(workingDir, "mgo-hcim-api.iife.js")
+    val destinationJsFile = File(project.rootDir, "data/fhirParser/src/main/assets/mgo-hcim-api.iife.js")
     targetJsFile.renameTo(destinationJsFile)
   }
 
   private fun modifyJsonSchema(workingDir: File): JSONObject {
-    val typesFile = File(workingDir, "schema/json/types.json")
+    val typesFile = File(workingDir, "mgo-hcim-api.types.json")
     val originalJson = JSONObject(typesFile.readText())
 
     val modifiedJson = JSONObject(originalJson.toString().replace("anyOf", "oneOf"))

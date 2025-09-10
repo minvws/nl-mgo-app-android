@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.data.healthcare.category.TestHealthCareCategoriesRep
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -93,6 +94,19 @@ class EditOverviewBottomSheetViewModelTest {
             )
           }
         assertEquals(expected, awaitItem())
+      }
+    }
+
+  @Test
+  fun testOnClear() =
+    runTest {
+      // When: Calling onClear
+      viewModel.onClear()
+
+      // Then: state is reset
+      viewModel.viewState.test {
+        val viewState = awaitItem()
+        assertEquals(0, viewState.favorites.size)
       }
     }
 }

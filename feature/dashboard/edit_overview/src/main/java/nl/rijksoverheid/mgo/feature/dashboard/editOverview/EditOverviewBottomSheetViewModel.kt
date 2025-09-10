@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -55,7 +56,11 @@ class EditOverviewBottomSheetViewModel
           } else {
             viewState.copy(
               favorites = viewState.favorites.toMutableList().also { it.remove(categoryId) },
-              nonFavorites = viewState.nonFavorites.toMutableList().also { it.add(HealthCareCategoryId.entries.indexOf(categoryId), categoryId) },
+              nonFavorites =
+                viewState.nonFavorites
+                  .toMutableList()
+                  .also { it.add(categoryId) }
+                  .sortedBy { HealthCareCategoryId.entries.indexOf(it) },
             )
           }
         }

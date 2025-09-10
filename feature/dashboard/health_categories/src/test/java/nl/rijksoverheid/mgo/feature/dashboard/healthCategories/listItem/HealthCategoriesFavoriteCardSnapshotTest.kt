@@ -22,4 +22,11 @@ internal class HealthCategoriesFavoriteCardSnapshotTest {
       HealthCategoriesFavoriteCardLoadingPreview()
     }
   }
+
+  @Test
+  fun multiLine() {
+    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+      HealthCategoriesFavoriteMultilineCardPreview()
+    }
+  }
 }

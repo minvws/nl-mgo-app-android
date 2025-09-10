@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 

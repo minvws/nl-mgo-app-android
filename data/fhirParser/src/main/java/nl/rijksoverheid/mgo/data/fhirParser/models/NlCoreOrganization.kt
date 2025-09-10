@@ -39,12 +39,12 @@ data class NlCoreOrganization(
         val _profile: String,
         val city: MgoString? = null,
         val addressType: MgoCodeableConcept? = null,
-        val use: NlCoreOrganizationTelecomSystem? = null,
+        val use: MgoCode_Of_string? = null,
         val line: List<Line>? = null,
         val district: MgoString? = null,
         val postalCode: MgoString? = null,
         val official: MgoBoolean? = null,
-        val type: NlCoreOrganizationTelecomSystem? = null
+        val type: MgoCode_Of_string? = null
     ) {
 
         init {
@@ -64,9 +64,9 @@ data class NlCoreOrganization(
 
     @Serializable
     data class Telecom(
-        val system: NlCoreOrganizationTelecomSystem? = null,
+        val system: MgoCode_Of_string? = null,
         val _profile: String,
-        val use: NlCoreOrganizationTelecomSystem? = null,
+        val use: MgoCode_Of_string? = null,
         val telecomType: MgoCodeableConcept? = null,
         val value: MgoString? = null
     ) {

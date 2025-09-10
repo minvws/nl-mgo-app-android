@@ -30,7 +30,7 @@ data class IheMhdMinimalDocumentReference(
     val id: String? = null,
     val relatesTo: List<RelatesTo>? = null,
     val `class`: MgoCodeableConcept? = null,
-    val status: IheMhdMinimalDocumentReferenceStatus? = null,
+    val status: MgoCode_Of_entered_in_error_current_superseded? = null,
     val resourceType: String
 ) {
 

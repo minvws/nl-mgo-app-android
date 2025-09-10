@@ -44,27 +44,12 @@ data class ZibMedicalDeviceRequest(
 
     @Serializable
     data class Status(
-        val orderStatus: OrderStatus? = null
+        val orderStatus: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class OrderStatus(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
-        }
-
-    }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest"
         private const val cg_str1 = "R3"
-        private const val cg_str2 = "codeableConcept"
     }
 
 }

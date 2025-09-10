@@ -52,7 +52,7 @@ data class ZibProcedureRequest(
     @Serializable
     data class BodySite(
         val coding: List<MgoCodingProps>? = null,
-        val procedureLaterality: ProcedureLaterality? = null,
+        val procedureLaterality: ExtensionValue_Of_MgoCodeableConcept? = null,
         val _type: String? = null,
         val text: String? = null
     ) {
@@ -65,37 +65,9 @@ data class ZibProcedureRequest(
     }
 
     @Serializable
-    data class ProcedureLaterality(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
     data class Status(
-        val orderStatus: OrderStatus? = null
+        val orderStatus: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class OrderStatus(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest"

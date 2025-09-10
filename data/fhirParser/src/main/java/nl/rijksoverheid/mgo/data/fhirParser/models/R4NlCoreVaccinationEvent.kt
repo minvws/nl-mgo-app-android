@@ -19,7 +19,7 @@ data class R4NlCoreVaccinationEvent(
     val identifier: List<MgoIdentifier>? = null,
     val performer: List<Performer>? = null,
     val doseQuantity: MgoQuantity? = null,
-    val pharmaceuticalProduct: PharmaceuticalProduct? = null,
+    val pharmaceuticalProduct: ExtensionValue_Of_MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event",
     val referenceId: String,
     val route: MgoCodeableConcept? = null,
@@ -37,8 +37,8 @@ data class R4NlCoreVaccinationEvent(
 ) {
 
     init {
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     @Serializable
@@ -50,20 +50,6 @@ data class R4NlCoreVaccinationEvent(
     data class Administrator(
         val actor: MgoReference? = null
     )
-
-    @Serializable
-    data class PharmaceuticalProduct(
-        val reference: String? = null,
-        val display: String? = null,
-        val _type: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class ProtocolApplied(
@@ -82,9 +68,8 @@ data class R4NlCoreVaccinationEvent(
     )
 
     companion object {
-        private const val cg_str0 = "reference"
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event"
-        private const val cg_str2 = "R4"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event"
+        private const val cg_str1 = "R4"
     }
 
 }

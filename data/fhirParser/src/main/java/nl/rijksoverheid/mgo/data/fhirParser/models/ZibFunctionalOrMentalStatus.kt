@@ -21,7 +21,7 @@ data class ZibFunctionalOrMentalStatus(
     val effectivePeriod: MgoPeriod? = null,
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus",
-    val medicalDevice: List<MedicalDevice>,
+    val medicalDevice: List<ExtensionValue_Of_MgoReference>,
     val referenceId: String,
     val valueCodeableConcept: MgoCodeableConcept? = null,
     val effectiveDateTime: MgoDateTime? = null,
@@ -33,27 +33,12 @@ data class ZibFunctionalOrMentalStatus(
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
-    }
-
-    @Serializable
-    data class MedicalDevice(
-        val reference: String? = null,
-        val display: String? = null,
-        val _type: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-FunctionalOrMentalStatus"
-        private const val cg_str1 = "reference"
-        private const val cg_str2 = "R3"
+        private const val cg_str1 = "R3"
     }
 
 }

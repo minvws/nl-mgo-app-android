@@ -27,7 +27,7 @@ data class GpDiagnosticResult(
     val related: List<Related>? = null,
     val fhirVersion: String = "R3",
     val valueDateTime: MgoDateTime? = null,
-    val episodeOfCare: List<EpisodeOfCare>,
+    val episodeOfCare: List<ExtensionValue_Of_MgoReference>,
     val id: String? = null,
     val valueQuantity: MgoQuantity? = null,
     val identifier: List<MgoIdentifier>? = null,
@@ -38,8 +38,8 @@ data class GpDiagnosticResult(
     val bodySite: MgoCodeableConcept? = null,
     val valueString: MgoString? = null,
     val effectiveDateTime: MgoDateTime? = null,
-    val valueSampledData: MgoSampledData? = null,
     val valuePeriod: MgoPeriod? = null,
+    val valueSampledData: MgoSampledData? = null,
     val comment: MgoString? = null,
     val status: Status,
     val resourceType: String
@@ -47,53 +47,23 @@ data class GpDiagnosticResult(
 
     init {
         require(fhirVersion == cg_str0) { "fhirVersion not constant value $cg_str0 - $fhirVersion" }
-        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
     }
 
     @Serializable
     data class Related(
-        val type: GpDiagnosticResultRelatedType? = null,
+        val type: MgoCode_Of_has_member_derived_from_sequel_to_replaces_qualified_by_interfered_by? = null,
         val target: MgoReference? = null
     )
 
     @Serializable
-    data class EpisodeOfCare(
-        val reference: String? = null,
-        val display: String? = null,
-        val _type: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
     data class Status(
-        val resultStatusCodelist: ResultStatusCodelist? = null
+        val resultStatusCodelist: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class ResultStatusCodelist(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
-        }
-
-    }
 
     companion object {
         private const val cg_str0 = "R3"
-        private const val cg_str1 = "reference"
-        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult"
-        private const val cg_str3 = "codeableConcept"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult"
     }
 
 }

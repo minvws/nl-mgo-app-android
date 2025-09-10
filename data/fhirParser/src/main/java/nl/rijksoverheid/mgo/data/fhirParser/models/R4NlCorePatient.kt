@@ -23,13 +23,13 @@ data class R4NlCorePatient(
     val birthDate: MgoDate? = null,
     val referenceId: String,
     val deceasedBoolean: MgoBoolean? = null,
-    val nationality: List<Nationality>,
+    val nationality: List<ExtensionValue_Of_structure_0_04577354127746314>,
     val multipleBirthInteger: MgoInteger? = null,
     val contact: List<Contact>? = null,
     val deceasedDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R4",
     val name: List<R4NlCorePatientName>? = null,
-    val telecom: Telecom1,
+    val telecom: R4NlCoreContactInformation,
     val id: String? = null,
     val communication: List<Communication>? = null,
     val maritalStatus: MgoCodeableConcept? = null,
@@ -37,8 +37,8 @@ data class R4NlCorePatient(
 ) {
 
     init {
-        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
-        require(fhirVersion == cg_str5) { "fhirVersion not constant value $cg_str5 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
     }
 
     @Serializable
@@ -51,11 +51,11 @@ data class R4NlCorePatient(
         val country: Country,
         val _profile: String,
         val city: MgoString? = null,
-        val use: NlCoreOrganizationTelecomSystem? = null,
+        val use: MgoCode_Of_string? = null,
         val line: List<Line>? = null,
         val district: MgoString? = null,
         val postalCode: MgoString? = null,
-        val type: NlCoreOrganizationTelecomSystem? = null
+        val type: MgoCode_Of_string? = null
     ) {
 
         init {
@@ -82,78 +82,23 @@ data class R4NlCorePatient(
 
     @Serializable
     data class Gender(
-        val genderCodeList: GenderCodeList? = null
+        val genderCodelist: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class GenderCodeList(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Nationality(
-        val period: Period? = null,
-        val code: Code? = null,
-        val _ext: Boolean
-    )
-
-    @Serializable
-    data class Period(
-        val _type: String,
-        val start: String? = null,
-        val end: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Code(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class Contact(
         val address: R4NlCoreAddressInformation,
         val _profile: String,
         val name: List<R4NlCorePatientPropertiesContactItemsPropertiesName>,
-        val telecom: Telecom,
+        val telecom: R4NlCoreContactInformation,
         val relationship: Relationship
     ) {
 
         init {
-            require(_profile == cg_str4) { "_profile not constant value $cg_str4 - $_profile" }
+            require(_profile == cg_str2) { "_profile not constant value $cg_str2 - $_profile" }
         }
 
     }
-
-    @Serializable
-    data class Telecom(
-        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
-        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
-    )
 
     @Serializable
     data class Relationship(
@@ -162,15 +107,9 @@ data class R4NlCorePatient(
     )
 
     @Serializable
-    data class Telecom1(
-        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
-        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
-    )
-
-    @Serializable
     data class Communication(
         val languageProficiency: LanguageProficiency,
-        val comment: List<Comment>,
+        val comment: List<ExtensionValue_Of_MgoString>,
         val language: MgoCodeableConcept? = null
     )
 
@@ -181,27 +120,11 @@ data class R4NlCorePatient(
         val languageControlSpeaking: MgoCoding? = null
     )
 
-    @Serializable
-    data class Comment(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str6) { "_type not constant value $cg_str6 - $_type" }
-        }
-
-    }
-
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-AddressInformation"
-        private const val cg_str1 = "codeableConcept"
-        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"
-        private const val cg_str3 = "period"
-        private const val cg_str4 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-ContactPerson"
-        private const val cg_str5 = "R4"
-        private const val cg_str6 = "string"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"
+        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-ContactPerson"
+        private const val cg_str3 = "R4"
     }
 
 }

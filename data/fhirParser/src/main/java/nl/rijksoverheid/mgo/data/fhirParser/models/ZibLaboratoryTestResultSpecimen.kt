@@ -53,43 +53,15 @@ data class ZibLaboratoryTestResultSpecimen(
     @Serializable
     data class BodySite(
         val coding: List<MgoCodingProps>? = null,
-        val morphology: List<Morphology>,
+        val morphology: List<ExtensionValue_Of_MgoCodeableConcept>,
         val _type: String? = null,
         val text: String? = null,
-        val laterality: List<Laterality>
+        val laterality: List<ExtensionValue_Of_MgoCodeableConcept>
     ) {
 
         init {
             if (_type != null)
                 require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Morphology(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Laterality(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
         }
 
     }

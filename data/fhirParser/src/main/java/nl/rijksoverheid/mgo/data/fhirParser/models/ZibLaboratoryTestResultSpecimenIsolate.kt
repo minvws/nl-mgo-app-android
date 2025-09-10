@@ -32,7 +32,7 @@ data class ZibLaboratoryTestResultSpecimenIsolate(
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     @Serializable
@@ -52,43 +52,14 @@ data class ZibLaboratoryTestResultSpecimenIsolate(
 
     @Serializable
     data class BodySite(
-        val morphology: Morphology? = null,
+        val morphology: ExtensionValue_Of_MgoCodeableConcept? = null,
         val value: MgoCodeableConcept? = null,
-        val laterality: Laterality? = null
+        val laterality: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class Morphology(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Laterality(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Specimen-Isolate"
-        private const val cg_str1 = "codeableConcept"
-        private const val cg_str2 = "R3"
+        private const val cg_str1 = "R3"
     }
 
 }

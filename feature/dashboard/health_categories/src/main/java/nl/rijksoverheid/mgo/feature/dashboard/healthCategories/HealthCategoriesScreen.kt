@@ -274,32 +274,35 @@ private fun LazyListScope.WithProviders(
     }
   }
 
-  if (organization == null) {
-    item {
-      Text(modifier = Modifier.padding(top = 32.dp, bottom = 8.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
+  if (categories.isNotEmpty()) {
+    if (organization == null) {
+      item {
+        Text(modifier = Modifier.padding(top = 32.dp, bottom = 8.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
+      }
+    } else {
+      item {
+        Text(
+          modifier = Modifier.padding(bottom = 8.dp),
+          text = subHeading,
+          style = MaterialTheme.typography.bodyMedium,
+        )
+      }
     }
-  } else {
-    item {
-      Text(
-        modifier = Modifier.padding(bottom = 8.dp),
-        text = subHeading,
-        style = MaterialTheme.typography.bodyMedium,
+
+    items(categories.size) { position ->
+      HealthCategoriesListItemCard(
+        position =
+          when {
+            categories.size == 1 -> HealthCategoriesListItemCardPosition.SINGLE_ITEM
+            position == 0 -> HealthCategoriesListItemCardPosition.TOP
+            position == HealthCareCategoryId.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
+            else -> HealthCategoriesListItemCardPosition.CENTER
+          },
+        category = categories[position].id,
+        onClickListItem = onClickListItem,
+        filterOrganization = organization,
       )
     }
-  }
-
-  items(categories.size) { position ->
-    HealthCategoriesListItemCard(
-      position =
-        when (position) {
-          0 -> HealthCategoriesListItemCardPosition.TOP
-          HealthCareCategoryId.entries.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
-          else -> HealthCategoriesListItemCardPosition.CENTER
-        },
-      category = categories[position].id,
-      onClickListItem = onClickListItem,
-      filterOrganization = organization,
-    )
   }
 
   if (organization != null) {

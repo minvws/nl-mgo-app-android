@@ -55,7 +55,11 @@ class EditOverviewBottomSheetViewModel
           } else {
             viewState.copy(
               favorites = viewState.favorites.toMutableList().also { it.remove(categoryId) },
-              nonFavorites = viewState.nonFavorites.toMutableList().also { it.add(HealthCareCategoryId.entries.indexOf(categoryId), categoryId) },
+              nonFavorites =
+                viewState.nonFavorites
+                  .toMutableList()
+                  .also { it.add(categoryId) }
+                  .sortedBy { HealthCareCategoryId.entries.indexOf(it) },
             )
           }
         }

@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -65,7 +66,7 @@ private fun HealthCategoriesFavoriteCardContent(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  MgoCard(modifier = modifier.width(182.dp).height(102.dp), onClick = onClick) {
+  MgoCard(modifier = modifier.width(182.dp).height(116.dp), onClick = onClick) {
     Column(modifier = Modifier.padding(16.dp)) {
       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Icon(painterResource(category.getIcon()), tint = category.getIconColor(), contentDescription = null)
@@ -78,7 +79,14 @@ private fun HealthCategoriesFavoriteCardContent(
           )
         }
       }
-      Text(modifier = Modifier.fillMaxWidth().padding(top = 16.dp), text = stringResource(category.getTitle()), maxLines = 1, overflow = TextOverflow.Ellipsis)
+      Spacer(modifier = Modifier.weight(1f))
+      Text(
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+        text = stringResource(category.getTitle()),
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        style = MaterialTheme.typography.bodyMedium,
+      )
     }
   }
 }
@@ -89,6 +97,18 @@ internal fun HealthCategoriesFavoriteCardPreview() {
   MgoTheme {
     HealthCategoriesFavoriteCardContent(
       category = HealthCareCategoryId.MEDICATIONS,
+      onClick = {},
+      loading = false,
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesFavoriteMultilineCardPreview() {
+  MgoTheme {
+    HealthCategoriesFavoriteCardContent(
+      category = HealthCareCategoryId.PATIENT,
       onClick = {},
       loading = false,
     )

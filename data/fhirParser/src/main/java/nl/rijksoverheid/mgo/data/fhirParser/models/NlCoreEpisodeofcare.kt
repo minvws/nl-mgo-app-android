@@ -22,7 +22,7 @@ data class NlCoreEpisodeofcare(
     val fhirVersion: String = "R3",
     val id: String? = null,
     val type: List<MgoCodeableConcept>? = null,
-    val title: Title? = null,
+    val title: ExtensionValue_Of_MgoString? = null,
     val referenceId: String,
     val resourceType: String
 ) {
@@ -32,23 +32,9 @@ data class NlCoreEpisodeofcare(
         require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
-    @Serializable
-    data class Title(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
-        }
-
-    }
-
     companion object {
         private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare"
         private const val cg_str1 = "R3"
-        private const val cg_str2 = "string"
     }
 
 }

@@ -26,7 +26,7 @@ data class GpJournalEntry(
     val valueString: MgoString? = null,
     val effectiveDateTime: MgoDateTime? = null,
     val fhirVersion: String = "R3",
-    val episodeOfCare: List<EpisodeOfCare>,
+    val episodeOfCare: List<ExtensionValue_Of_MgoReference>,
     val id: String? = null,
     val resourceType: String
 ) {
@@ -52,24 +52,9 @@ data class GpJournalEntry(
         val valueCodeableConcept: MgoCodeableConcept? = null
     )
 
-    @Serializable
-    data class EpisodeOfCare(
-        val reference: String? = null,
-        val display: String? = null,
-        val _type: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str2) { "_type not constant value $cg_str2 - $_type" }
-        }
-
-    }
-
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/gp-JournalEntry"
         private const val cg_str1 = "R3"
-        private const val cg_str2 = "reference"
     }
 
 }

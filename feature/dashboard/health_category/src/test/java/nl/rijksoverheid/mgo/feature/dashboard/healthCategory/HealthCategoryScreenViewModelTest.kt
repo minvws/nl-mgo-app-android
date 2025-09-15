@@ -7,8 +7,8 @@ import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.TestUiSchemaMapper
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_ERROR
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_LOADED
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.TestHealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.TestMgoResourceRepository
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -44,7 +44,7 @@ internal class HealthCategoryScreenViewModelTest {
 
       // Given: Health care data state has loaded state
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
 
       // When: Creating viewmodel
       val viewModel = createViewModel(TEST_MGO_ORGANIZATION)
@@ -64,7 +64,7 @@ internal class HealthCategoryScreenViewModelTest {
 
       // Given: Health care data state has error state
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_ERROR))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
 
       // Given: Upon next refresh data state is loaded
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
@@ -87,7 +87,7 @@ internal class HealthCategoryScreenViewModelTest {
 
       // Given: Health care data state has error state
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_ERROR))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
 
       // Given: Upon next refresh data state is loaded
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
@@ -117,7 +117,7 @@ internal class HealthCategoryScreenViewModelTest {
 
   private fun createViewModel(organization: MgoOrganization?): HealthCategoryScreenViewModel =
     HealthCategoryScreenViewModel(
-      category = HealthCareCategory.MEDICATIONS,
+      category = HealthCareCategoryId.MEDICATIONS,
       filterOrganization = organization,
       healthCareDataStatesRepository = healthCareDataStatesRepository,
       organizationRepository = organizationRepository,

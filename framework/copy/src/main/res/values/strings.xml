@@ -14,7 +14,7 @@
   <string name="dialog.remove_organization_no">Nee, toch tonen</string>
   <string name="dialog.remove_organization_subheading">We halen je dossier van deze zorgaanbieder niet op. Je kunt deze later alsnog toevoegen via je profiel.</string>
   <string name="dialog.remove_organization_yes">Ja, weglaten</string>
-  <string name="introduction.subheading">Eén app met alle gegevens die je huisarts, ziekenhuis en andere zorgaanbieders van jou hebben. Veilig en overzichtelijk.</string>
+  <string name="introduction.subheading">Met deze app heb je je gezondheidsgegevens van de overheid en je zorgaanbieders altijd bij de hand. Veilig en overzichtelijk, op één plek.</string>
   <string name="lab_results.heading">Uitslagen</string>
   <string name="lab_results.subheading">Resultaten van jouw onderzoeken, (röntgen)foto\'s en scans.</string>
   <string name="login.digid">Log in met DigiD</string>
@@ -38,8 +38,8 @@
   <string name="proposition.statement_1"><![CDATA[Je gegevens worden <b>beveiligd</b> en via een <b>veilige verbinding</b> opgehaald.]]></string>
   <string name="proposition.statement_3"><![CDATA[<b>Je kiest zelf</b> hoe je je gegevens wilt gebruiken en of je ze deelt met anderen.]]></string>
   <string name="proposition.statement_4"><![CDATA[Je kunt de gegevens in je overzicht altijd <b>verwijderen of opnieuw ophalen</b>.]]></string>
-  <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht jouw gegevens gebruikt. Dit zijn de belangrijkste punten:]]></string>
-  <string name="proposition.heading">Hoe de app met jouw gegevens omgaat</string>
+  <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht je gegevens gebruikt en beschermt. Dit zijn de belangrijkste punten:]]></string>
+  <string name="proposition.heading">Hoe de app omgaat met je gegevens</string>
   <string name="update_required.heading">Tijd voor een update</string>
   <string name="update_required.subheading">Je hebt de nieuwste versie van de app nodig om verder te gaan.</string>
   <string name="update_required.download">Installeer update</string>
@@ -59,8 +59,11 @@
   <string name="bottombar.overview">Overzicht</string>
   <string name="bottombar.settings">Instellingen</string>
   <string name="overview.no_organizations_found">Je overzicht is nog leeg, omdat je nog geen zorgaanbieders hebt toegevoegd.</string>
-  <string name="introduction.heading">Welkom in Mijn Gezondheidsoverzicht</string>
+  <string name="introduction.heading">Welkom bij Mijn Gezondheidsoverzicht</string>
   <string name="overview.subheading">Je gegevens van alle zorgaanbieders</string>
+  <string name="privacy.link.test">https://web.test.mgo.irealisatie.nl/privacy</string>
+  <string name="privacy.link.acc">https://web.acc.mgo.irealisatie.nl/privacy</string>
+  <string name="privacy.link.prod">https://web.test.mgo.irealisatie.nl/privacy</string>
   <string name="forgot_pincode.heading">Je kunt je toegangscode niet aanpassen</string>
   <string name="forgot_pincode.subheading">Je kunt wel een nieuwe toegangscode instellen als je een nieuw account aanmaakt.</string>
   <string name="forgot_pincode.button">Maak een nieuw account</string>
@@ -96,7 +99,7 @@
   <string name="account_removed.subheading">Je gegevens zijn verwijderd van je telefoon. Ze blijven wel veilig bewaard bij je zorgaanbieders. Als je een nieuw account maakt, kun je je gegevens opnieuw ophalen.</string>
   <string name="account_removed.action">Begrepen</string>
   <string name="biometric_setup.heading">Inloggen met je vingerafdruk</string>
-  <string name="biometric_setup.subheading">Beveilig de app met je vingerafdruk. Zo log je de volgende keer sneller in. Je kunt ook je toegangscode blijven gebruiken.</string>
+  <string name="biometric_setup.subheading">Beveilig de app met je vingerafdruk. Zo log je de volgende keer sneller in. Je kunt je toegangscode ook blijven gebruiken.</string>
   <string name="biometric_setup.enable">Vingerafdruk aanzetten</string>
   <string name="pincode.biometric.voiceover">Biometrisch inloggen</string>
   <string name="biometric_prompt.heading">Log in met je vingerafdruk</string>
@@ -138,7 +141,7 @@
   <string name="hc_mental.heading_detail">All mentaal welzijngegevens</string>
   <string name="hc_patient.heading">Persoonlijke gegevens</string>
   <string name="hc_patient.heading_detail">Alle persoonlijke gegevens</string>
-  <string name="hc_payment.heading">Betaalgegevens</string>
+  <string name="hc_payment.heading">Zorgkosten</string>
   <string name="hc_payment.heading_detail">Alle betaalgegevens</string>
   <string name="hc_plans.heading">Behandelplan</string>
   <string name="hc_plans.heading_detail">Alle behandelwens/plan gegevens</string>
@@ -153,7 +156,7 @@
   <string name="common.clear">Wis inhoud</string>
   <string name="common.close">Sluiten</string>
   <string name="common.error_subheading">Sorry, maar het lijkt erop dat we geen verbinding kunnen maken met ons systeem. Probeer het opnieuw.</string>
-  <string name="common.skip">Overslaan</string>
+  <string name="common.skip">Niet nu</string>
   <string name="common.ok">OK</string>
   <string name="common.search_again">Opnieuw zoeken</string>
   <string name="common.no_organizations_heading">Je hebt nog geen zorgaanbieders toegevoegd</string>
@@ -214,7 +217,7 @@
   <string name="settings.information.heading">Informatie</string>
   <string name="settings.about_this_app.heading">Over deze app</string>
   <string name="settings.other.heading">Overige</string>
-  <string name="settings.reset_app.heading">Stel app opnieuw in</string>
+  <string name="settings.reset_app.heading">App leegmaken</string>
   <string name="settings.reset_app.subheading">Je verwijdert al je bewaarde zorgaanbieders en je toegangscode.</string>
   <string name="settings.security.biometric.subheading">Gebruik dit in plaats van je toegangscode om veilig en nog sneller in te loggen</string>
   <string name="settings.security.biometric.heading">Inloggen met vingerafdruk</string>
@@ -244,11 +247,8 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="settings.about_this_app_safety.permissions.subheading">Sommige apps vragen om toegang tot je locatie of andere persoonlijke gegevens. Kijk goed welke toestemming je geeft, en of dat echt nodig is.</string>
   <string name="settings.about_this_app_safety.safe_apps.heading">Download alleen veilige apps</string>
   <string name="settings.about_this_app_safety.safe_apps.subheading">Gebruik alleen apps uit de Google Play Store. Zo voorkom je dat er virussen of nep-apps op je mobiel komen.</string>
-  <string name="settings.about_this_app.privacy_url.test">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
-  <string name="settings.about_this_app.privacy_url.acc">https://web.acc.mgo.irealisatie.nl/toegankelijkheid</string>
-  <string name="settings.about_this_app.privacy_url.prod">https://web.test.mgo.irealisatie.nl/toegankelijkheid</string>
-  <string name="settings.reset_app.dialog.heading">App opnieuw instellen?</string>
-  <string name="settings.reset_app.dialog.subheading">Je gegevens blijven altijd bewaard bij je zorgaanbieders. Je kunt de app later opnieuw instellen.</string>
+  <string name="settings.reset_app.dialog.heading">Wil je de app leegmaken?</string>
+  <string name="settings.reset_app.dialog.subheading">Je verwijdert je zorgaanbieders en toegangscode. Je gegevens blijven bij je zorgaanbieders bewaard.</string>
   <string name="settings.about_this_app.logo__accessibility">Logo van het Ministerie van Volksgezondheid, Welzijn en Sport</string>
   <string name="screenshotalert.heading">Screenshot gemaakt</string>
   <string name="screenshotalert.subheading">Je hebt een afbeelding opgeslagen van je medische gegevens. Wees voorzichtig met delen of opslaan.</string>
@@ -261,4 +261,38 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="export_pdf.subheading">Opgeslagen op %1$s om %2$s uur</string>
   <string name="export_pdf.footer">Dit document is gemaakt met Mijn Gezondheidsoverzicht. Het bevat jouw medische gegevens,\nafkomstig van zorgaanbieders die jij hebt toegevoegd. Jij bent zelf verantwoordelijk voor wat je\nmet deze informatie doet. De gegevens zijn niet gecontroleerd op juistheid of volledigheid.</string>
   <string name="export_pdf.no_data">Geen gegevens beschikbaar</string>
+  <string name="export_pdf.close">Gereed</string>
+  <string name="export_pdf.share">Deel deze pdf</string>
+  <string name="export_pdf.menu.save_pdf">Opslaan als pdf</string>
+  <string name="mhc_personal_administration.heading">Persoonlijk en administratie</string>
+  <string name="mhc_care_treatment.heading">Zorg en behandeling</string>
+  <string name="mhc_examinations_results.heading">Onderzoeken en uitslagen</string>
+  <string name="mhc_health.heading">Gezondheid</string>
+  <string name="overview.favorites.empty.action">Voeg favorieten toe</string>
+  <string name="overview.favorites.empty.heading">Voeg hier je favorieten toe.\nZo staan die altijd bovenaan.</string>
+  <string name="overview.menu">menu</string>
+  <string name="edit_overview.heading">Overzicht aanpassen</string>
+  <string name="edit_overview.save">Opslaan</string>
+  <string name="edit_overview.favorites.heading">Favorieten</string>
+  <string name="edit_overview.favorites.empty">Je hebt nog geen favorieten gekozen. Klik op het plusje (+) om iets toe te voegen.</string>
+  <string name="hc_problems.heading">Gezondheidsproblemen</string>
+  <string name="hc_problems.subheading">Dingen waar je last van hebt, zoals pijn of ziekte</string>
+  <string name="hc_allergies.subheading">Dingen waar je niet tegen kunt, zoals medicijnen of eten</string>
+  <string name="hc_alerts.subheading">Belangrijke dingen waar zorgverleners op moeten letten</string>
+  <string name="hc_vaccinations.subheading">Prikken die je hebt gehad, zoals tegen griep of corona</string>
+  <string name="hc_lifestyle.subheading">Bijvoorbeeld of je rookt of drinkt, wat je eet en hoeveel je beweegt</string>
+  <string name="hc_mental.subheading">Hoe het geestelijk met je gaat, zoals stress en somberheid</string>
+  <string name="hc_measurements.subheading">Zoals bloeddruk, hartslag, lengte en gewicht</string>
+  <string name="hc_lab_results.subheading">Resultaten van onderzoeken en tests die je hebt gehad</string>
+  <string name="hc_treatments.subheading">Behandelingen en operaties die je hebt gehad of nog krijgt</string>
+  <string name="hc_medication.subheading">Die je nu of eerder hebt gebruikt</string>
+  <string name="hc_appointments.subheading">Die je al hebt gehad of die nog komen</string>
+  <string name="hc_documents.subheading">Brieven, verslagen en medische beelden zoals foto\'s of scans</string>
+  <string name="hc_plans.subheading">Wat je belangrijk vindt in je behandeling zoals wensen en doelen</string>
+  <string name="hc_devices.subheading">Zorgspullen die je gebruikt, zoals een bril of rollator</string>
+  <string name="hc_patient.subheading">Je naam, adres, geboortedatum en gezinssituatie</string>
+  <string name="hc_payment.subheading">Je betalingen en verzekeringen</string>
+  <string name="overview.favorites.heading">Favorieten</string>
+  <string name="login_failed.dialog.heading">Inloggen niet gelukt</string>
+  <string name="login_failed.dialog.subheading">Inloggen met DigiD is niet gelukt. Probeer het opnieuw.</string>
 </resources>

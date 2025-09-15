@@ -13,4 +13,3 @@ This module contains reusable UI components that are used in this project. It in
 - **MgoCheckbox**: Use instead of androidx.compose.material3.Checkbox.
 - **MgoHtmlText**: Use to show text that has HTML.
 - **MgoScaffold**: Use instead of androidx.compose.material3.Scaffold.
-- **MgoVibrator**: Use to let the phone vibrate (helper methods, non UI component).

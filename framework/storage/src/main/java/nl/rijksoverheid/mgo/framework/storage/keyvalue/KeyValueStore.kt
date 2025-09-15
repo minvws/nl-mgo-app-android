@@ -80,6 +80,40 @@ interface KeyValueStore {
   suspend fun removeString(key: Preferences.Key<String>)
 
   /**
+   * Stores a string set value in the key-value store.
+   *
+   * @param key The key associated with the string set value.
+   * @param value The string set value to store.
+   */
+  suspend fun setStringSet(
+    key: Preferences.Key<Set<String>>,
+    value: Set<String>,
+  )
+
+  /**
+   * Observes a string value from the key-value store.
+   *
+   * @param key The key associated with the string value.
+   * @return A flow with the stored string value, or null if not found.
+   */
+  fun observeStringSet(key: Preferences.Key<Set<String>>): Flow<Set<String>?>
+
+  /**
+   * Retrieves a string set value from the key-value store.
+   *
+   * @param key The key associated with the string set value.
+   * @return The stored string set value, or null if not found.
+   */
+  fun getStringSet(key: Preferences.Key<Set<String>>): Set<String>?
+
+  /**
+   * Removes a string set value from the key-value store.
+   *
+   * @param key The key associated with the string set value to remove.
+   */
+  suspend fun removeStringSet(key: Preferences.Key<Set<String>>)
+
+  /**
    * Stores a long value in the key-value store.
    *
    * @param key The key associated with the long value.

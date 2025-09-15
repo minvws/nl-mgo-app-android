@@ -6,6 +6,7 @@ import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TestMgoResourceMapper
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_LOADED
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TestHealthCareDataStatesStore
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.urlCreator.TestHealthCareUrlCreator
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
@@ -63,7 +64,7 @@ class DefaultMgoResourceRepositoryTest {
       // Given: Resource exists in store
       healthCareDataStatesStore.add(
         organization = TEST_MGO_ORGANIZATION,
-        category = HealthCareCategory.MEDICATIONS,
+        category = HealthCareCategoryId.MEDICATIONS,
         state = TEST_HEALTH_CARE_DATA_STATE_LOADED,
       )
 
@@ -87,13 +88,12 @@ class DefaultMgoResourceRepositoryTest {
       assertEquals(null, result.getOrNull())
     }
 
-  private fun createRepository(): DefaultMgoResourceRepository {
-    return DefaultMgoResourceRepository(
+  private fun createRepository(): DefaultMgoResourceRepository =
+    DefaultMgoResourceRepository(
       healthCareDataStatesStore = healthCareDataStatesStore,
       dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url()),
       urlCreator = TestHealthCareUrlCreator(),
       dvaApiBaseUrl = "",
       mgoResourceMapper = TestMgoResourceMapper(),
     )
-  }
 }

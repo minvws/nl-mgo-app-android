@@ -9,6 +9,7 @@ class PinCodeCreateScreenRobot(
   private val composeTestRule: ComposeTestRule,
 ) {
   fun assertIsDisplayed(): PinCodeCreateScreenRobot {
+    composeTestRule.waitForIdle()
     composeTestRule
       .onNodeWithTag(PinCodeCreateScreenTestTag.SCREEN)
       .assertIsDisplayed()

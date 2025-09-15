@@ -29,77 +29,29 @@ data class ZibPayer(
 ) {
 
     init {
-        require(profile == cg_str2) { "profile not constant value $cg_str2 - $profile" }
-        require(fhirVersion == cg_str3) { "fhirVersion not constant value $cg_str3 - $fhirVersion" }
+        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
     @Serializable
     data class Payor(
         val reference: String? = null,
-        val bankInformation: List<BankInformation>,
+        val bankInformation: List<ExtensionValue_Of_structure_0_9215048426710553>,
         val display: String? = null,
         val _type: String? = null
     ) {
 
         init {
             if (_type != null)
-                require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class BankInformation(
-        val bankName: BankName? = null,
-        val accountNumber: AccountNumber? = null,
-        val _ext: Boolean,
-        val bankcode: Bankcode? = null
-    )
-
-    @Serializable
-    data class BankName(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class AccountNumber(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Bankcode(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+                require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
         }
 
     }
 
     companion object {
-        private const val cg_str0 = "string"
-        private const val cg_str1 = "reference"
-        private const val cg_str2 = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer"
-        private const val cg_str3 = "R3"
+        private const val cg_str0 = "reference"
+        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-Payer"
+        private const val cg_str2 = "R3"
     }
 
 }

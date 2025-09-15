@@ -47,6 +47,7 @@ data object Profiles {
     val zibProcedure: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure"
     val zibTobaccoUse: String = "http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse"
     val zibAllergyIntolerance: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
+    val zibGeneralMeasurement: String = "http://nictiz.nl/fhir/StructureDefinition/zib-GeneralMeasurement"
     val zibVaccinationRecommendation: String = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation"
     val nlCorePharmaceuticalProduct: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-PharmaceuticalProduct"
     val zibProduct: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Product"

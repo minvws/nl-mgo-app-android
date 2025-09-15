@@ -31,7 +31,7 @@
 
 -keep class com.eclipsesource.v8.** { *; }
 -keep class nl.rijksoverheid.mgo.data.uiSchema.** {  *; }
--keep class nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory { *; }
+-keep class nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory { *; }
 # Keep all iText classes to prevent issues due to reflection or stripped classes
 -keep class com.itextpdf.** { *; }
 -dontwarn com.itextpdf.**
@@ -45,3 +45,4 @@
 
 # Required for layout (tables, paragraphs, document model)
 -keep class com.itextpdf.layout.** { *; }
+

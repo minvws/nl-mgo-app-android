@@ -18,19 +18,13 @@ data class MgoIdentifier(
     val system: String? = null,
     val use: String? = null,
     val _type: String = "identifier",
-    val type: Type? = null,
+    val type: MgoCodeableConceptProps? = null,
     val value: String? = null
 ) {
 
     init {
         require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
     }
-
-    @Serializable
-    data class Type(
-        val coding: List<MgoCodingProps>,
-        val text: String? = null
-    )
 
     companion object {
         private const val cg_str0 = "identifier"

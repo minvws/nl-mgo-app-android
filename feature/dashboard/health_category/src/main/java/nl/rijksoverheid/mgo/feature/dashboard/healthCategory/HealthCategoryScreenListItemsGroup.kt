@@ -23,13 +23,12 @@ typealias MgoResourceGroupHeading = Int
 internal suspend fun Map<MgoResourceGroupHeading, List<MgoResource>>.toListItemsGroup(
   uiSchemaMapper: UiSchemaMapper,
   organization: MgoOrganization,
-) = map {
-    mgoResourcesMap ->
+) = map { mgoResourcesMap ->
   HealthCategoryScreenListItemsGroup(
     heading = mgoResourcesMap.key,
     items =
       mgoResourcesMap.value.map { mgoResource ->
-        val uiSchema = uiSchemaMapper.getSummary(mgoResource)
+        val uiSchema = uiSchemaMapper.getSummary(organization.name, mgoResource)
         HealthCategoryScreenListItem(
           title = uiSchema.label,
           subtitle = organization.name,
@@ -45,8 +44,8 @@ internal suspend fun Map<MgoResourceGroupHeading, List<MgoResource>>.toListItems
  * @return The heading of the [MgoResource].
  */
 @StringRes
-internal fun MgoResource.getGroupHeading(): MgoResourceGroupHeading {
-  return when (profile) {
+internal fun MgoResource.getGroupHeading(): MgoResourceGroupHeading =
+  when (profile) {
     Profiles.zibMedicationUse -> {
       R.string.zib_medication_use_heading
     }
@@ -160,4 +159,3 @@ internal fun MgoResource.getGroupHeading(): MgoResourceGroupHeading {
     }
     else -> R.string.common_error_heading
   }
-}

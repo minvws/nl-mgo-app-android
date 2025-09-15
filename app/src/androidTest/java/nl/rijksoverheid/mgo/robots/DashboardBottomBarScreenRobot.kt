@@ -11,6 +11,7 @@ class DashboardBottomBarScreenRobot(
   private val composeTestRule: ComposeTestRule,
 ) {
   fun assertIsDisplayed(): DashboardBottomBarScreenRobot {
+    composeTestRule.waitForIdle()
     composeTestRule
       .onNodeWithTag(DashboardBottomBarScreenTestTag.SCREEN)
       .assertIsDisplayed()

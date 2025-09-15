@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.navigation.dashboard
 import kotlinx.serialization.Serializable
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory as HealthCareCategoryModel
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId as HealthCareCategoryModel
 
 /**
  * Represents all navigation destinations in the dashboard (the screen that shows the bottom bar).
@@ -24,7 +24,9 @@ sealed class DashboardNavigation {
     data object HealthCareCategories : Overview()
 
     @Serializable
-    data class HealthCareCategory(val category: HealthCareCategoryModel) : Overview()
+    data class HealthCareCategory(
+      val category: HealthCareCategoryModel,
+    ) : Overview()
 
     @Serializable
     data class UiSchema(
@@ -43,10 +45,15 @@ sealed class DashboardNavigation {
     data object List : Organizations()
 
     @Serializable
-    data class HealthCareCategories(val organization: MgoOrganization) : Organizations()
+    data class HealthCareCategories(
+      val organization: MgoOrganization,
+    ) : Organizations()
 
     @Serializable
-    data class HealthCareCategory(val category: HealthCareCategoryModel, val filterOrganization: MgoOrganization) : Organizations()
+    data class HealthCareCategory(
+      val category: HealthCareCategoryModel,
+      val filterOrganization: MgoOrganization,
+    ) : Organizations()
 
     @Serializable
     data class UiSchema(
@@ -56,7 +63,10 @@ sealed class DashboardNavigation {
     ) : Organizations()
 
     @Serializable
-    data class RemoveOrganization(val organizationId: String, val organizationName: String) : Organizations()
+    data class RemoveOrganization(
+      val organizationId: String,
+      val organizationName: String,
+    ) : Organizations()
   }
 
   @Serializable

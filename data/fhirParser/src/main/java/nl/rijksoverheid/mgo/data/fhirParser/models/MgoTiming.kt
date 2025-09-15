@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MgoTiming(
     val code: MgoCodeableConcept? = null,
-    val repeat: Repeat,
+    val repeat: MgoTimingRepeat,
     val _type: String = "timing",
     val event: List<MgoDateTime>? = null
 ) {
@@ -24,27 +24,6 @@ data class MgoTiming(
     init {
         require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
     }
-
-    @Serializable
-    data class Repeat(
-        val boundsRange: MgoRange? = null,
-        val period: MgoDecimal? = null,
-        val offset: MgoUnsignedInt? = null,
-        val frequencyMax: MgoInteger? = null,
-        val countMax: MgoInteger? = null,
-        val periodMax: MgoDecimal? = null,
-        val count: MgoInteger? = null,
-        val periodUnit: MgoString? = null,
-        val `when`: List<MgoString>? = null,
-        val frequency: MgoInteger? = null,
-        val boundsDuration: MgoDuration? = null,
-        val duration: MgoDecimal? = null,
-        val durationMax: MgoDecimal? = null,
-        val dayOfWeek: List<MgoString>? = null,
-        val boundsPeriod: MgoPeriod? = null,
-        val durationUnit: MgoString? = null,
-        val timeOfDay: List<MgoString>? = null
-    )
 
     companion object {
         private const val cg_str0 = "timing"

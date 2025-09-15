@@ -88,11 +88,10 @@ internal class DataStoreKeyValueStore(
    * @param key The key associated with the boolean value.
    * @return A flow with the stored boolean value, or a default value if not found.
    */
-  override fun observeBoolean(key: Preferences.Key<Boolean>): Flow<Boolean> {
-    return dataStore.data.map { preferences ->
-      preferences[key] ?: false
+  override fun observeBoolean(key: Preferences.Key<Boolean>): Flow<Boolean> =
+    dataStore.data.map { preferences ->
+      preferences[key] == true
     }
-  }
 
   /**
    * Retrieves a boolean value from the key-value store.
@@ -100,13 +99,13 @@ internal class DataStoreKeyValueStore(
    * @param key The key associated with the boolean value.
    * @return The stored boolean value, or a default value if not found.
    */
-  override fun getBoolean(key: Preferences.Key<Boolean>): Boolean {
-    return runBlocking {
-      dataStore.data.map { preferences ->
-        preferences[key]
-      }.first() == true
+  override fun getBoolean(key: Preferences.Key<Boolean>): Boolean =
+    runBlocking {
+      dataStore.data
+        .map { preferences ->
+          preferences[key]
+        }.first() == true
     }
-  }
 
   /**
    * Removes a boolean value from the key-value store.
@@ -140,11 +139,10 @@ internal class DataStoreKeyValueStore(
    * @param key The key associated with the string value.
    * @return A flow with the stored string value, or null if not found.
    */
-  override fun observeString(key: Preferences.Key<String>): Flow<String?> {
-    return dataStore.data.map { preferences ->
+  override fun observeString(key: Preferences.Key<String>): Flow<String?> =
+    dataStore.data.map { preferences ->
       preferences[key]
     }
-  }
 
   /**
    * Retrieves a string value from the key-value store.
@@ -152,13 +150,13 @@ internal class DataStoreKeyValueStore(
    * @param key The key associated with the string value.
    * @return The stored string value, or null if not found.
    */
-  override fun getString(key: Preferences.Key<String>): String? {
-    return runBlocking {
-      dataStore.data.map { preferences ->
-        preferences[key]
-      }.firstOrNull()
+  override fun getString(key: Preferences.Key<String>): String? =
+    runBlocking {
+      dataStore.data
+        .map { preferences ->
+          preferences[key]
+        }.firstOrNull()
     }
-  }
 
   /**
    * Removes a string value from the key-value store.
@@ -166,6 +164,57 @@ internal class DataStoreKeyValueStore(
    * @param key The key associated with the string value to remove.
    */
   override suspend fun removeString(key: Preferences.Key<String>) {
+    dataStore.edit { preferences ->
+      preferences.remove(key)
+    }
+  }
+
+  /**
+   * Stores a string set value in the key-value store.
+   *
+   * @param key The key associated with the string set value.
+   * @param value The string set value to store.
+   */
+  override suspend fun setStringSet(
+    key: Preferences.Key<Set<String>>,
+    value: Set<String>,
+  ) {
+    dataStore.edit { preferences ->
+      preferences[key] = value
+    }
+  }
+
+  /**
+   * Observes a string value from the key-value store.
+   *
+   * @param key The key associated with the string value.
+   * @return A flow with the stored string value, or null if not found.
+   */
+  override fun observeStringSet(key: Preferences.Key<Set<String>>): Flow<Set<String>?> =
+    dataStore.data.map { preferences ->
+      preferences[key]
+    }
+
+  /**
+   * Retrieves a string set value from the key-value store.
+   *
+   * @param key The key associated with the string set value.
+   * @return The stored string set value, or null if not found.
+   */
+  override fun getStringSet(key: Preferences.Key<Set<String>>): Set<String>? =
+    runBlocking {
+      dataStore.data
+        .map { preferences ->
+          preferences[key]
+        }.firstOrNull()
+    }
+
+  /**
+   * Removes a string set value from the key-value store.
+   *
+   * @param key The key associated with the string set value to remove.
+   */
+  override suspend fun removeStringSet(key: Preferences.Key<Set<String>>) {
     dataStore.edit { preferences ->
       preferences.remove(key)
     }
@@ -192,13 +241,13 @@ internal class DataStoreKeyValueStore(
    * @param key The key associated with the long value.
    * @return The stored long value, or null if not found.
    */
-  override fun getLong(key: Preferences.Key<Long>): Long? {
-    return runBlocking {
-      dataStore.data.map { preferences ->
-        preferences[key]
-      }.firstOrNull()
+  override fun getLong(key: Preferences.Key<Long>): Long? =
+    runBlocking {
+      dataStore.data
+        .map { preferences ->
+          preferences[key]
+        }.firstOrNull()
     }
-  }
 
   /**
    * Removes a long value from the key-value store.

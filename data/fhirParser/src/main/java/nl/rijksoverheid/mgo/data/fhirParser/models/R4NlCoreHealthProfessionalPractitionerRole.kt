@@ -19,7 +19,7 @@ data class R4NlCoreHealthProfessionalPractitionerRole(
     val organization: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole",
     val fhirVersion: String = "R4",
-    val telecom: Telecom,
+    val telecom: R4NlCoreContactInformation,
     val id: String? = null,
     val referenceId: String,
     val resourceType: String
@@ -33,12 +33,6 @@ data class R4NlCoreHealthProfessionalPractitionerRole(
     @Serializable
     data class Specialty(
         val specialty: MgoCodeableConcept? = null
-    )
-
-    @Serializable
-    data class Telecom(
-        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
-        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
     )
 
     companion object {

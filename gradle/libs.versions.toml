@@ -42,7 +42,7 @@ lokalise = "5.2.0"
 json = "20210307"
 rootbeer = "0.1.0"
 mockk = "1.13.11"
-j2v8 = "6.2.1"
+j2v8 = "6.2.1-16kb.2"
 bcrypt = "0.4"
 biometric = "1.4.0-alpha02"
 security-crypto = "1.0.0"
@@ -56,6 +56,8 @@ about-libraries = "11.6.3"
 bcutil = "1.79"
 itext7 = "9.2.0"
 zoomable = "2.8.0"
+androidx-startup-runtime = "1.2.0"
+reorderable = "3.0.0"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -102,7 +104,13 @@ lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "
 json = { group = "org.json", name = "json", version.ref = "json" }
 rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
-j2v8 = { group = "com.eclipsesource.j2v8", name = "j2v8", version.ref = "j2v8" }
+
+# Google will start forcing 16 KB page sizes (https://developer.android.com/guide/practices/page-sizes#kotlin).
+# The eclipse j2v8 library is not 16 KB page aligned, but somebody made a fork that is.
+# Until eclipse fixes there build, this fork is used for j2v8 with version 6.2.1-16kb.2 instead of 6.2.1.
+# j2v8 = { group = "com.eclipsesource.j2v8", name = "j2v8", version.ref = "j2v8" }
+j2v8 = { group = "com.github.ynab", name = "j2v8", version.ref = "j2v8" }
+
 bcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "bcrypt" }
 biometric = { group = "androidx.biometric", name = "biometric-ktx", version.ref = "biometric" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
@@ -116,6 +124,8 @@ aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compos
 bcutil = { group = "org.bouncycastle", name = "bcutil-jdk18on", version.ref = "bcutil"}
 itext7-core = { group = "com.itextpdf", name = "itext7-core", version.ref = "itext7"}
 zoomable = { group = "net.engawapg.lib", name = "zoomable", version.ref = "zoomable" }
+androidx-startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidx-startup-runtime" }
+reoderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

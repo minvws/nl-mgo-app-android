@@ -50,6 +50,7 @@ import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreenTestTag.RESE
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object SettingsHomeScreenTestTag {
+  const val LIST = "SettingsHomeScreenList"
   const val RESET_APP_BUTTON = "SettingsHomeScreenResetAppButton"
 }
 
@@ -131,7 +132,8 @@ private fun SettingsScreenContent(
           Modifier
             .verticalScroll(scrollState)
             .padding(contentPadding)
-            .padding(16.dp),
+            .padding(16.dp)
+            .testTag(SettingsHomeScreenTestTag.LIST),
       ) {
         Text(
           modifier = Modifier.padding(top = 8.dp),

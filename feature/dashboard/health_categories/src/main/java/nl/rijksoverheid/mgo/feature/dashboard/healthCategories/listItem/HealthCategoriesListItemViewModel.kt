@@ -15,16 +15,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 /**
  * The [ViewModel] for [HealthCategoriesListItem].
- * Observes health care data for the [HealthCareCategory].
+ * Observes health care data for the [HealthCareCategoryId].
  *
  * @param filterOrganization If not null, will observe health care data for this organization. If null will observe for all added
  * organizations.
- * @param category The [HealthCareCategory] to determine which health care data falls into this category.
+ * @param category The [HealthCareCategoryId] to determine which health care data falls into this category.
  * @param healthCareDataStatesRepository The [HealthCareDataStatesRepository] that is responsible for fetching the health care data.
  */
 @HiltViewModel(assistedFactory = HealthCategoriesListItemViewModel.Factory::class)
@@ -32,14 +32,14 @@ internal class HealthCategoriesListItemViewModel
   @AssistedInject
   constructor(
     @Assisted private val filterOrganization: MgoOrganization?,
-    @Assisted private val category: HealthCareCategory,
+    @Assisted private val category: HealthCareCategoryId,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
       fun create(
         filterOrganization: MgoOrganization?,
-        category: HealthCareCategory,
+        category: HealthCareCategoryId,
       ): HealthCategoriesListItemViewModel
     }
 
@@ -51,7 +51,9 @@ internal class HealthCategoriesListItemViewModel
 
     init {
       viewModelScope.launch {
-        healthCareDataStatesRepository.observe(category = category, filterOrganization = filterOrganization).distinctUntilChanged()
+        healthCareDataStatesRepository
+          .observe(category = category, filterOrganization = filterOrganization)
+          .distinctUntilChanged()
           .collectLatest { states ->
             if (states.isNotEmpty()) {
               val loading = states.any { state -> state is HealthCareDataState.Loading }

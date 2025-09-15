@@ -16,7 +16,6 @@ import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
 import javax.inject.Inject
 
-@VisibleForTesting
 class DefaultUISchemaSectionMapper
   @Inject
   constructor(
@@ -101,7 +100,7 @@ class DefaultUISchemaSectionMapper
     private suspend fun isReferenceClickable(reference: String): Boolean =
       mgoResourceRepository.get(reference).getOrNull()?.let { mgoResource ->
         try {
-          uiSchemaMapper.getDetail(mgoResource)
+          uiSchemaMapper.getDetail("", mgoResource)
           true
         } catch (e: Exception) {
           false

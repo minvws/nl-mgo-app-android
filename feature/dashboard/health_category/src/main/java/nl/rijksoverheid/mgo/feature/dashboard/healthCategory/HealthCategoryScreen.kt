@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,7 +53,7 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -63,9 +62,9 @@ object HealthCategoryScreenTestTag {
 }
 
 /**
- * Composable that shows a list of all health care data for one [HealthCareCategory].
+ * Composable that shows a list of all health care data for one [HealthCareCategoryId].
  *
- * @param category The [HealthCareCategory] to get the health cara data for.
+ * @param category The [HealthCareCategoryId] to get the health cara data for.
  * @param onClickListItem Called when a list item has been clicked.
  * @param onNavigateBack Called when requested to navigate back.
  * @param filterOrganization If not null, will only show only health care data for this organization. If null will show for all added
@@ -73,7 +72,7 @@ object HealthCategoryScreenTestTag {
  */
 @Composable
 fun HealthCategoryScreen(
-  category: HealthCareCategory,
+  category: HealthCareCategoryId,
   onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
   onNavigateBack: () -> Unit,
   filterOrganization: MgoOrganization? = null,
@@ -267,10 +266,10 @@ private fun LazyListScope.LoadedContent(
           modifier =
             Modifier
               .fillMaxWidth()
-              .clickable { onClickListItem(listItem.organization, listItem.mgoResource) }
               .padding(bottom = 16.dp),
           title = listItem.title,
           subtitle = listItem.subtitle,
+          onClick = { onClickListItem(listItem.organization, listItem.mgoResource) },
         )
       }
     }
@@ -344,9 +343,10 @@ private fun LazyItemScope.NoDataContent(
 private fun HealthCategoryCard(
   title: String,
   subtitle: String,
+  onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  MgoCard(modifier = modifier.testTag(HealthCategoryScreenTestTag.CARD)) {
+  MgoCard(modifier = modifier.testTag(HealthCategoryScreenTestTag.CARD), onClick = onClick) {
     Column(modifier = Modifier.padding(16.dp)) {
       Text(
         text = title,
@@ -369,8 +369,8 @@ internal fun HealthCategoryScreenLoadingPreview() {
   MgoTheme {
     HealthCategoryScreenContent(
       viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-          category = HealthCareCategory.MEDICATIONS,
+        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+          category = HealthCareCategoryId.MEDICATIONS,
           listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
         ),
       onClickListItem = { _, _ -> },
@@ -387,8 +387,8 @@ internal fun HealthCategoryScreenListItemsPreview() {
   MgoTheme {
     HealthCategoryScreenContent(
       viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-          category = HealthCareCategory.MEDICATIONS,
+        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+          category = HealthCareCategoryId.MEDICATIONS,
           listItemsState =
             HealthCategoryScreenViewState.ListItemsState.Loaded(
               listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
@@ -408,8 +408,8 @@ internal fun HealthCategoryScreenListItemsWithErrorPreview() {
   MgoTheme {
     HealthCategoryScreenContent(
       viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-          category = HealthCareCategory.MEDICATIONS,
+        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+          category = HealthCareCategoryId.MEDICATIONS,
           listItemsState =
             HealthCategoryScreenViewState.ListItemsState.Loaded(
               listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
@@ -430,8 +430,8 @@ internal fun HealthCategoryScreenNoDataPreview() {
   MgoTheme {
     HealthCategoryScreenContent(
       viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-          category = HealthCareCategory.MEDICATIONS,
+        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+          category = HealthCareCategoryId.MEDICATIONS,
           listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
         ),
       onClickListItem = { _, _ -> },
@@ -448,8 +448,8 @@ internal fun HealthCategoryScreenNoDataWithErrorPreview() {
   MgoTheme {
     HealthCategoryScreenContent(
       viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategory.MEDICATIONS).copy(
-          category = HealthCareCategory.MEDICATIONS,
+        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+          category = HealthCareCategoryId.MEDICATIONS,
           listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
           showErrorBanner = true,
         ),

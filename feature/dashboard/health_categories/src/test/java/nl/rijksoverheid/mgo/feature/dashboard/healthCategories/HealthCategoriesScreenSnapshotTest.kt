@@ -21,4 +21,11 @@ internal class HealthCategoriesScreenSnapshotTest {
       OverviewScreenNoProvidersPreview()
     }
   }
+
+  @Test
+  fun withFavorites() {
+    snapshotTestRule.snapshots {
+      OverviewScreenWithProvidersAndFavoritesPreview()
+    }
+  }
 }

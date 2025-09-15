@@ -33,9 +33,9 @@ data class NlCorePractitionerRole(
 
     @Serializable
     data class Telecom(
-        val system: NlCoreOrganizationTelecomSystem? = null,
+        val system: MgoCode_Of_string? = null,
         val _profile: String,
-        val use: NlCoreOrganizationTelecomSystem? = null,
+        val use: MgoCode_Of_string? = null,
         val telecomType: MgoCodeableConcept? = null,
         val value: MgoString? = null
     ) {

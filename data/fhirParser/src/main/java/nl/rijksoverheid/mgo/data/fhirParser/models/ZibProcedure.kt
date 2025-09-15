@@ -20,7 +20,7 @@ data class ZibProcedure(
     val performer: List<Performer>? = null,
     val subject: MgoReference? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure",
-    val procedureMethod: ProcedureMethod? = null,
+    val procedureMethod: ExtensionValue_Of_MgoCodeableConcept? = null,
     val reasonReference: List<MgoReference>? = null,
     val focalDevice: List<FocalDevice>? = null,
     val performedPeriod: MgoPeriod? = null,
@@ -36,57 +36,17 @@ data class ZibProcedure(
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
-
-    @Serializable
-    data class Performer(
-        val actor: MgoReference? = null,
-        val healthProfessionalRole: MgoCodeableConcept? = null
-    )
-
-    @Serializable
-    data class ProcedureMethod(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class FocalDevice(
-        val manipulated: MgoReference? = null
-    )
 
     @Serializable
     data class BodySite(
-        val procedureLaterality: ProcedureLaterality? = null
+        val procedureLaterality: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class ProcedureLaterality(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure"
-        private const val cg_str1 = "codeableConcept"
-        private const val cg_str2 = "R3"
+        private const val cg_str1 = "R3"
     }
 
 }

@@ -23,7 +23,7 @@ class DefaultUiSchemaMapperTest {
       } returns "{\"label\":\"label\",\"children\":[]}"
 
       // When: calling get
-      val uiSchema = uiSchemaMapper.getSummary(mgoResource = TEST_MGO_RESOURCE)
+      val uiSchema = uiSchemaMapper.getSummary(mgoResource = TEST_MGO_RESOURCE, healthCareOrganizationName = "Zorgaanbieder")
 
       // Then: UI Schema is parsed
       assertEquals("label", uiSchema.label)
@@ -38,7 +38,7 @@ class DefaultUiSchemaMapperTest {
       } returns "{\"label\":\"label\",\"children\":[]}"
 
       // When: calling get
-      val uiSchema = uiSchemaMapper.getDetail(mgoResource = TEST_MGO_RESOURCE)
+      val uiSchema = uiSchemaMapper.getDetail(mgoResource = TEST_MGO_RESOURCE, healthCareOrganizationName = "Zorgaanbieder")
 
       // Then: UI Schema is parsed
       assertEquals("label", uiSchema.label)

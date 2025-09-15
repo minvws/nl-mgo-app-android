@@ -5,14 +5,13 @@ import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Array
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,7 +30,7 @@ internal class DefaultJsRuntimeRepository
     @ApplicationContext private val context: Context,
   ) : JsRuntimeRepository {
     @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
-    private val v8Dispatcher = newSingleThreadContext("V8Thread")
+    private val v8Dispatcher: ExecutorCoroutineDispatcher = newSingleThreadContext("V8Thread")
     private val jsRuntime: MutableStateFlow<V8?> = MutableStateFlow(null)
 
     /**
@@ -39,11 +38,13 @@ internal class DefaultJsRuntimeRepository
      * Since this file is large, it should ideally be loaded during app launch for performance reasons.
      * Once loaded, the [jsRuntime] emits the initialized V8 runtime instance.
      */
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun load() {
       withContext(v8Dispatcher) {
-        val reader1 =
-          BufferedReader(InputStreamReader(context.assets.open("mgo-fhir-data.iife.js")))
-        val jsCode = reader1.use { it.readText() }
+        val jsCode =
+          context.assets.open("mgo-hcim-api.iife.js").bufferedReader().use { reader ->
+            reader.readText()
+          }
         val runtime = V8.createV8Runtime()
         runtime.executeVoidScript(jsCode)
         jsRuntime.value = runtime
@@ -60,14 +61,13 @@ internal class DefaultJsRuntimeRepository
     override suspend fun executeStringFunction(
       name: String,
       parameters: List<String>,
-    ): String {
-      return withContext(v8Dispatcher) {
+    ): String =
+      withContext(v8Dispatcher) {
         val v8 = get()
-        val mgoFhirData = v8.getObject("MgoFhirData")
+        val hcimApi = v8.getObject("HcimApi")
         val v8Parameters = v8.createParameters(parameters)
-        mgoFhirData.executeStringFunction(name, v8Parameters)
+        hcimApi.executeStringFunction(name, v8Parameters)
       }
-    }
 
     /**
      * Converts a list of string parameters into a V8Array, which can be passed to JavaScript functions.
@@ -89,9 +89,8 @@ internal class DefaultJsRuntimeRepository
      *
      * @return The initialized V8 runtime instance.
      */
-    private suspend fun get(): V8 {
-      return withContext(v8Dispatcher) {
+    private suspend fun get(): V8 =
+      withContext(v8Dispatcher) {
         jsRuntime.filterNotNull().first()
       }
-    }
   }

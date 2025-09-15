@@ -9,6 +9,7 @@ class IntroductionScreenRobot(
   private val composeTestRule: ComposeTestRule,
 ) {
   fun assertIsDisplayed(): IntroductionScreenRobot {
+    composeTestRule.waitForIdle()
     composeTestRule
       .onNodeWithTag(IntroductionScreenTestTag.SCREEN)
       .assertIsDisplayed()

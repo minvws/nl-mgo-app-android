@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.digid
 import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalBackground
 import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalText
 import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultBackground
@@ -180,37 +179,34 @@ enum class MgoButtonTheme {
 }
 
 @Composable
-private fun MgoButtonTheme.getBackgroundColor(): Color {
-  return when (this) {
+private fun MgoButtonTheme.getBackgroundColor(): Color =
+  when (this) {
     MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
     MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalBackground()
     MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
     MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalBackground()
-    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.digid()
+    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
     MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
     MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
     MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
   }
-}
 
-private fun MgoButtonTheme.getMaterialIcon(): ImageVector? {
-  return when (this) {
+private fun MgoButtonTheme.getMaterialIcon(): ImageVector? =
+  when (this) {
     MgoButtonTheme.LINK -> Icons.AutoMirrored.Outlined.OpenInNew
     else -> null
   }
-}
 
 @DrawableRes
-private fun MgoButtonTheme.getIcon(): Int? {
-  return when (this) {
+private fun MgoButtonTheme.getIcon(): Int? =
+  when (this) {
     MgoButtonTheme.DIGID -> R.drawable.ic_digid
     else -> null
   }
-}
 
 @Composable
-private fun MgoButtonTheme.getContentColor(): Color {
-  return when (this) {
+private fun MgoButtonTheme.getContentColor(): Color =
+  when (this) {
     MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultText()
     MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalText()
     MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
@@ -220,7 +216,6 @@ private fun MgoButtonTheme.getContentColor(): Color {
     MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultText(true)
     MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
   }
-}
 
 @PreviewLightDark
 @Composable

@@ -6,7 +6,7 @@ import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_LOADED
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_LOADING
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.TestHealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertTrue
@@ -15,7 +15,7 @@ import org.junit.Test
 
 internal class HealthCategoriesListItemViewModelTest {
   @get:Rule
-  val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
+  val mainDispatcherRule = MainDispatcherRule()
 
   private val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf())
 
@@ -24,7 +24,7 @@ internal class HealthCategoriesListItemViewModelTest {
     runTest {
       // Given: Health care data state is loading
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
 
       // When: Creating viewmodel
       val viewModel = createViewModel()
@@ -40,7 +40,7 @@ internal class HealthCategoriesListItemViewModelTest {
     runTest {
       // Given: Health care data state has loading and loaded
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING, TEST_HEALTH_CARE_DATA_STATE_LOADED))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
 
       // When: Creating viewmodel
       val viewModel = createViewModel()
@@ -56,7 +56,7 @@ internal class HealthCategoriesListItemViewModelTest {
     runTest {
       // Given: Health care data state has loading and loaded
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
 
       // When: Creating viewmodel
       val viewModel = createViewModel()
@@ -72,7 +72,7 @@ internal class HealthCategoriesListItemViewModelTest {
     runTest {
       // Given: Health care data state has empty
       healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_EMPTY))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategory.MEDICATIONS)
+      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
 
       // When: Creating viewmodel
       val viewModel = createViewModel()
@@ -83,11 +83,10 @@ internal class HealthCategoriesListItemViewModelTest {
       }
     }
 
-  private fun createViewModel(): HealthCategoriesListItemViewModel {
-    return HealthCategoriesListItemViewModel(
+  private fun createViewModel(): HealthCategoriesListItemViewModel =
+    HealthCategoriesListItemViewModel(
       filterOrganization = null,
-      category = HealthCareCategory.MEDICATIONS,
+      category = HealthCareCategoryId.MEDICATIONS,
       healthCareDataStatesRepository = healthCareDataStatesRepository,
     )
-  }
 }

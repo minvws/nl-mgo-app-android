@@ -20,7 +20,7 @@ data class ZibAllergyIntolerance(
     val recorder: MgoReference? = null,
     val code: MgoCodeableConcept? = null,
     val reaction: List<Reaction>? = null,
-    val verificationStatus: ZibAllergyIntoleranceVerificationstatus? = null,
+    val verificationStatus: MgoCode_Of_entered_in_error_unconfirmed_confirmed_refuted? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance",
     val criticality: Criticality,
     val source: MgoReference? = null,
@@ -36,8 +36,8 @@ data class ZibAllergyIntolerance(
 ) {
 
     init {
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     @Serializable
@@ -52,84 +52,27 @@ data class ZibAllergyIntolerance(
 
     @Serializable
     data class Severity(
-        val severityCodelist: List<SeverityCodelist>
+        val severityCodelist: List<ExtensionValue_Of_MgoCodeableConcept>
     )
-
-    @Serializable
-    data class SeverityCodelist(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class Criticality(
-        val criticalExtentCodelist: CriticalExtentCodelist? = null
+        val criticalExtentCodelist: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class CriticalExtentCodelist(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class ClinicalStatus(
-        val allergieStatusCodelijst: AllergieStatusCodelijst? = null
+        val allergieStatusCodelijst: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class AllergieStatusCodelijst(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class Category(
-        val allergieCategorieCodelijst: AllergieCategorieCodelijst? = null
+        val allergieCategorieCodelijst: ExtensionValue_Of_MgoCodeableConcept? = null
     )
 
-    @Serializable
-    data class AllergieCategorieCodelijst(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
-
     companion object {
-        private const val cg_str0 = "codeableConcept"
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
-        private const val cg_str2 = "R3"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
+        private const val cg_str1 = "R3"
     }
 
 }

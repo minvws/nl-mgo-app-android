@@ -8,7 +8,7 @@ import nl.rijksoverheid.mgo.component.pdfViewer.PdfGroupedTables
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfSubTable
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfTable
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.healthcare.models.toSections
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenListItemsGroup
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.getTitle
@@ -32,7 +32,7 @@ internal class DefaultCreatePdfForHealthCategories
     private val pdfGenerator: PdfGenerator,
   ) : CreatePdfForHealthCategories {
     override suspend fun invoke(
-      category: HealthCareCategory,
+      category: HealthCareCategoryId,
       listItemGroups: List<HealthCategoryScreenListItemsGroup>,
     ): File {
       val categoryTitle = context.getString(category.getTitle(context))
@@ -89,7 +89,7 @@ internal class DefaultCreatePdfForHealthCategories
         val pdfTables =
           itemsGroup.items.map { listItem ->
             uiSchemaMapper
-              .getSummary(listItem.mgoResource)
+              .getSummary(healthCareOrganizationName = listItem.organization.name, mgoResource = listItem.mgoResource)
               .toSections()
               .map { section ->
                 PdfSubTable(

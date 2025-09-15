@@ -21,9 +21,15 @@ class TestUiSchemaMapper : UiSchemaMapper {
     this.detailError = error
   }
 
-  override suspend fun getSummary(mgoResource: MgoResource): HealthUiSchema = summary
+  override suspend fun getSummary(
+    healthCareOrganizationName: String,
+    mgoResource: MgoResource,
+  ): HealthUiSchema = summary
 
-  override suspend fun getDetail(mgoResource: MgoResource): HealthUiSchema {
+  override suspend fun getDetail(
+    healthCareOrganizationName: String,
+    mgoResource: MgoResource,
+  ): HealthUiSchema {
     detailError?.let { error -> throw error }
     return detail
   }

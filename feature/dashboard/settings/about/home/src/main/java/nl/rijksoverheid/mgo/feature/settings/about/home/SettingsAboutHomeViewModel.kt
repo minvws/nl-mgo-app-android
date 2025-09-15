@@ -35,11 +35,11 @@ internal class SettingsAboutHomeViewModel
           fhirParserVersion = getFhirParserVersion(),
           privacyUrl =
             when (environmentRepository.getEnvironment()) {
-              is Environment.Acc -> CopyR.string.settings_about_this_app_privacy_url_acc
-              is Environment.Custom -> CopyR.string.settings_about_this_app_privacy_url_test
-              is Environment.Demo -> CopyR.string.settings_about_this_app_privacy_url_acc
-              is Environment.Prod -> CopyR.string.settings_about_this_app_privacy_url_prod
-              is Environment.Tst -> CopyR.string.settings_about_this_app_privacy_url_test
+              is Environment.Acc -> CopyR.string.privacy_link_acc
+              is Environment.Custom -> CopyR.string.privacy_link_test
+              is Environment.Demo -> CopyR.string.privacy_link_acc
+              is Environment.Prod -> CopyR.string.privacy_link_prod
+              is Environment.Tst -> CopyR.string.privacy_link_test
             },
         ),
       )

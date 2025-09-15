@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
 
@@ -15,28 +15,29 @@ import javax.inject.Inject
 internal class DefaultHealthCareDataStatesStore
   @Inject
   constructor() : HealthCareDataStatesStore {
-    internal data class StateKey(val organization: MgoOrganization, val category: HealthCareCategory)
+    internal data class StateKey(
+      val organization: MgoOrganization,
+      val category: HealthCareCategoryId,
+    )
 
     private val statesFlow = MutableStateFlow<Map<StateKey, HealthCareDataState>>(mapOf())
 
     /**
      * @return A list of [HealthCareDataState] that are stored in [statesFlow].
      */
-    override fun get(): List<HealthCareDataState> {
-      return statesFlow.value.map { it.value }
-    }
+    override fun get(): List<HealthCareDataState> = statesFlow.value.map { it.value }
 
     /**
      * Observes changes to the stored [HealthCareDataState] based on the given parameters.
      *
-     * @param category The [HealthCareCategory] to filter the observed states.
+     * @param category The [HealthCareCategoryId] to filter the observed states.
      * @param filterOrganization If provided, only observes [HealthCareDataState] associated with this [MgoOrganization].
      * @return A [Flow] that emits the latest list of [HealthCareDataState] objects matching the given criteria.
      *         - If [filterOrganization] is null, it returns all states matching the specified [category].
      *         - If [filterOrganization] is provided, it returns only the state associated with the given organization and category.
      */
     override fun observe(
-      category: HealthCareCategory,
+      category: HealthCareCategoryId,
       filterOrganization: MgoOrganization?,
     ): Flow<List<HealthCareDataState>> {
       if (filterOrganization == null) {
@@ -62,12 +63,12 @@ internal class DefaultHealthCareDataStatesStore
      * Add a [HealthCareDataState] to the store.
      *
      * @param organization The [MgoOrganization] in [HealthCareDataState] used for caching purposes.
-     * @param category The [HealthCareCategory] in [HealthCareDataState] used for caching purposes.
+     * @param category The [HealthCareCategoryId] in [HealthCareDataState] used for caching purposes.
      * @param state The [HealthCareDataState] to add to the store.
      */
     override suspend fun add(
       organization: MgoOrganization,
-      category: HealthCareCategory,
+      category: HealthCareCategoryId,
       state: HealthCareDataState,
     ) {
       val stateKey = StateKey(organization = organization, category = category)
@@ -88,5 +89,9 @@ internal class DefaultHealthCareDataStatesStore
           }
         }
       }
+    }
+
+    override suspend fun deleteAll() {
+      statesFlow.update { mapOf() }
     }
   }

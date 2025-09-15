@@ -30,9 +30,9 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.supportContacts
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
+import nl.rijksoverheid.mgo.component.healthCareCategory.R as HealthCategoryR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoriesListItemTestTag {
@@ -49,7 +49,7 @@ object HealthCategoriesListItemTestTag {
  * @param title The title to show in the list item.
  * @Param filterOrganization If not null, will only show only health care data for this organization. If null will show for all added
  * organizations.
- * @param category The [HealthCareCategory] for this list item.
+ * @param category The [HealthCareCategoryId] for this list item.
  * @param modifier The modifier to be applied.
  * @param hasDivider If the list item has a divider.
  */
@@ -59,7 +59,7 @@ internal fun HealthCategoriesListItem(
   @ColorRes iconColor: Color,
   @StringRes title: Int,
   filterOrganization: MgoOrganization?,
-  category: HealthCareCategory,
+  category: HealthCareCategoryId,
   modifier: Modifier = Modifier,
   hasDivider: Boolean = true,
 ) {
@@ -153,7 +153,7 @@ internal fun HealthCategoriesListItemContent(
 internal fun HealthCategoriesListItemLoadingPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = R.drawable.ic_medication,
+      icon = HealthCategoryR.drawable.ic_medication,
       title = CopyR.string.hc_medication_heading,
       iconColor = MaterialTheme.colorScheme.supportContacts(),
       listItemState = HealthCategoriesListItemState.LOADING,
@@ -166,7 +166,7 @@ internal fun HealthCategoriesListItemLoadingPreview() {
 internal fun HealthCategoriesListItemNoDataPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = R.drawable.ic_medication,
+      icon = HealthCategoryR.drawable.ic_medication,
       title = CopyR.string.hc_medication_heading,
       iconColor = MaterialTheme.colorScheme.supportContacts(),
       listItemState = HealthCategoriesListItemState.NO_DATA,
@@ -179,7 +179,7 @@ internal fun HealthCategoriesListItemNoDataPreview() {
 internal fun HealthCategoriesListItemLoadedPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = R.drawable.ic_medication,
+      icon = HealthCategoryR.drawable.ic_medication,
       title = CopyR.string.hc_medication_heading,
       iconColor = MaterialTheme.colorScheme.supportContacts(),
       listItemState = HealthCategoriesListItemState.LOADED,

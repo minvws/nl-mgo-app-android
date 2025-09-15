@@ -17,11 +17,11 @@ import kotlinx.serialization.Serializable
 data class R4NlCoreHealthProfessionalPractitioner(
     val identifier: List<MgoIdentifier>? = null,
     val address: List<Addres>? = null,
-    val gender: R4NlCoreHealthProfessionalPractitionerGender? = null,
+    val gender: MgoCode_Of_unknown_male_female_other? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner",
     val fhirVersion: String = "R4",
     val name: List<R4NlCoreHealthProfessionalPractitionerName>? = null,
-    val telecom: Telecom,
+    val telecom: R4NlCoreContactInformation,
     val id: String? = null,
     val referenceId: String,
     val resourceType: String
@@ -37,11 +37,11 @@ data class R4NlCoreHealthProfessionalPractitioner(
         val country: Country,
         val _profile: String,
         val city: MgoString? = null,
-        val use: NlCoreOrganizationTelecomSystem? = null,
+        val use: MgoCode_Of_string? = null,
         val line: List<Line>? = null,
         val district: MgoString? = null,
         val postalCode: MgoString? = null,
-        val type: NlCoreOrganizationTelecomSystem? = null
+        val type: MgoCode_Of_string? = null
     ) {
 
         init {
@@ -64,12 +64,6 @@ data class R4NlCoreHealthProfessionalPractitioner(
         val houseNumber: MgoString? = null,
         val houseNumberAddition: MgoString? = null,
         val houseNumberIndiciation: MgoString? = null
-    )
-
-    @Serializable
-    data class Telecom(
-        val emailAddresses: List<R4NlCoreContactInformationEmailAddresses>,
-        val telephoneNumbers: List<R4NlCoreContactInformationTelephoneNumbers>
     )
 
     companion object {

@@ -34,80 +34,38 @@ data class ZibProblem(
 ) {
 
     init {
-        require(profile == cg_str1) { "profile not constant value $cg_str1 - $profile" }
+        require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
         require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
     }
 
     @Serializable
     data class VerificationStatus(
-        val verificatieStatusCodelijst: VerificatieStatusCodelijst? = null
+        val verificatieStatusCodelijst: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class VerificatieStatusCodelijst(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class ClinicalStatus(
-        val problemStatusCodelist: ProblemStatusCodelist? = null
+        val problemStatusCodelist: ExtensionValue_Of_MgoCodeableConcept? = null
     )
-
-    @Serializable
-    data class ProblemStatusCodelist(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
 
     @Serializable
     data class BodySite(
         val coding: List<MgoCodingProps>? = null,
         val _type: String? = null,
         val text: String? = null,
-        val laterality: Laterality? = null
+        val laterality: ExtensionValue_Of_MgoCodeableConcept? = null
     ) {
 
         init {
             if (_type != null)
-                require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Laterality(
-        val coding: List<MgoCodingProps>,
-        val _type: String,
-        val text: String? = null,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str0) { "_type not constant value $cg_str0 - $_type" }
+                require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
         }
 
     }
 
     companion object {
-        private const val cg_str0 = "codeableConcept"
-        private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem"
+        private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem"
+        private const val cg_str1 = "codeableConcept"
         private const val cg_str2 = "R3"
     }
 

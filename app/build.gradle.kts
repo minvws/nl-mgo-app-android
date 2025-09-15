@@ -10,7 +10,6 @@ android {
     applicationId = "nl.rijksoverheid.mgo"
     versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 999999999
     versionName = "1.0"
-    testInstrumentationRunner = "nl.rijksoverheid.mgo.runner.CustomTestRunner"
     buildConfigField("String", "BASIC_AUTH_USER", "\"\"")
     buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"\"")
   }
@@ -125,6 +124,7 @@ dependencies {
   // LIBRARIES
   // ================================
   implementation(libs.rootbeer)
+  implementation(libs.androidx.startup.runtime)
 
   // ================================
   // FEATURES
@@ -146,6 +146,7 @@ dependencies {
   implementation(projects.feature.dashboard.bottombar)
   implementation(projects.feature.dashboard.organizations)
   implementation(projects.feature.dashboard.healthCategories)
+  implementation(projects.feature.dashboard.editOverview)
   implementation(projects.feature.dashboard.healthCategory)
   implementation(projects.feature.dashboard.uischema)
   implementation(projects.feature.dashboard.removeOrganization)
@@ -205,6 +206,7 @@ dependencies {
   testImplementation(testFixtures(projects.framework.featuretoggle))
   testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.data.fhirParser))
+  testImplementation(libs.mockk.android)
 
   androidTestImplementation(libs.dagger.hilt.testing)
   androidTestImplementation(libs.junit)

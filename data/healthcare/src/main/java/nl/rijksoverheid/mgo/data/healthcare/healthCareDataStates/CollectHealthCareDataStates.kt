@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
@@ -27,15 +27,15 @@ class CollectHealthCareDataStates
     @VisibleForTesting
     var previousStoredOrganizations: List<MgoOrganization> = runBlocking { organizationRepository.get() }
 
-    operator fun invoke(): Flow<List<MgoOrganization>> {
-      return organizationRepository.storedOrganizationsFlow.onEach { organizations ->
+    operator fun invoke(): Flow<List<MgoOrganization>> =
+      organizationRepository.storedOrganizationsFlow.onEach { organizations ->
         val removedOrganizations = previousStoredOrganizations - organizations.toSet()
 
         for (organization in removedOrganizations) {
           healthCareDataStatesRepository.delete(organization)
         }
 
-        for (category in HealthCareCategory.entries) {
+        for (category in HealthCareCategoryId.entries) {
           for (organization in organizations) {
             healthCareDataStatesRepository.refresh(organization = organization, category = category)
           }
@@ -43,5 +43,4 @@ class CollectHealthCareDataStates
 
         previousStoredOrganizations = organizations
       }
-    }
   }

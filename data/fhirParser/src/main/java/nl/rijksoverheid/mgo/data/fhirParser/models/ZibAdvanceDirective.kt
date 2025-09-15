@@ -22,10 +22,10 @@ data class ZibAdvanceDirective(
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective",
     val sourceAttachment: MgoAttachment? = null,
     val referenceId: String,
-    val disorder: List<Disorder>,
+    val disorder: List<ExtensionValue_Of_MgoReference>,
     val consentingParty: MgoReference? = null,
     val fhirVersion: String = "R3",
-    val comment: Comment? = null,
+    val comment: ExtensionValue_Of_MgoString? = null,
     val id: String? = null,
     val category: Category,
     val resourceType: String
@@ -33,34 +33,7 @@ data class ZibAdvanceDirective(
 
     init {
         require(profile == cg_str0) { "profile not constant value $cg_str0 - $profile" }
-        require(fhirVersion == cg_str2) { "fhirVersion not constant value $cg_str2 - $fhirVersion" }
-    }
-
-    @Serializable
-    data class Disorder(
-        val reference: String? = null,
-        val display: String? = null,
-        val _type: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str1) { "_type not constant value $cg_str1 - $_type" }
-        }
-
-    }
-
-    @Serializable
-    data class Comment(
-        val _type: String,
-        val value: String,
-        val _ext: Boolean
-    ) {
-
-        init {
-            require(_type == cg_str3) { "_type not constant value $cg_str3 - $_type" }
-        }
-
+        require(fhirVersion == cg_str1) { "fhirVersion not constant value $cg_str1 - $fhirVersion" }
     }
 
     @Serializable
@@ -70,9 +43,7 @@ data class ZibAdvanceDirective(
 
     companion object {
         private const val cg_str0 = "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective"
-        private const val cg_str1 = "reference"
-        private const val cg_str2 = "R3"
-        private const val cg_str3 = "string"
+        private const val cg_str1 = "R3"
     }
 
 }

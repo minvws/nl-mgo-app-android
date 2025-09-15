@@ -24,12 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalView
@@ -39,8 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.core.view.ViewCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -58,12 +57,6 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
   val viewModel: EditOverviewBottomSheetViewModel = hiltViewModel()
-  DisposableEffect(Unit) {
-    onDispose {
-      viewModel.onClear()
-    }
-  }
-
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
   val coroutineScope = rememberCoroutineScope()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -83,10 +76,7 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
   ) {
     EditOverviewBottomSheetContent(
       viewState = viewState,
-      onClickSave = { viewModel.save() },
-      onClickHealthCategory = { categoryId, favorite ->
-        viewModel.clickFavorite(categoryId, favorite)
-      },
+      onClickSave = { favorites, nonFavorites -> viewModel.save(favorites = favorites, nonFavorites = nonFavorites) },
       onReorderFavorites = { fromIndex, toIndex -> viewModel.reorderFavorites(fromIndex, toIndex) },
       onNavigateBack = {
         coroutineScope.launch {
@@ -101,11 +91,13 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
 @Composable
 private fun EditOverviewBottomSheetContent(
   viewState: EditOverviewBottomSheetViewState,
-  onClickSave: () -> Unit,
-  onClickHealthCategory: (categoryId: HealthCareCategoryId, favorite: Boolean) -> Unit,
+  onClickSave: (favorites: List<HealthCareCategoryId>, nonFavorites: List<HealthCareCategoryId>) -> Unit,
   onReorderFavorites: (fromIndex: Int, toIndex: Int) -> Unit,
   onNavigateBack: () -> Unit,
 ) {
+  var favorites by remember { mutableStateOf(viewState.favorites) }
+  var nonFavorites by remember { mutableStateOf(viewState.nonFavorites) }
+
   Scaffold(
     modifier = Modifier.fillMaxWidth().fillMaxHeight(0.95f),
     topBar = {
@@ -116,7 +108,7 @@ private fun EditOverviewBottomSheetContent(
         navigationIcon = Icons.Default.Close,
         actions = {
           TextButton(
-            { onClickSave() },
+            { onClickSave(favorites, nonFavorites) },
             colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.supportRijkslint()),
           ) {
             Text(text = stringResource(CopyR.string.edit_overview_save), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
@@ -129,7 +121,7 @@ private fun EditOverviewBottomSheetContent(
       item {
         Text(text = stringResource(CopyR.string.edit_overview_favorites_heading), style = MaterialTheme.typography.headlineSmall)
       }
-      if (viewState.favorites.isEmpty()) {
+      if (favorites.isEmpty()) {
         item {
           FavoriteEmptyCard(modifier = Modifier.padding(top = 8.dp))
         }
@@ -137,14 +129,21 @@ private fun EditOverviewBottomSheetContent(
         item {
           FavoritesCard(
             modifier = Modifier.padding(top = 8.dp).animateItem(),
-            favorites = viewState.favorites,
-            onClickHealthCategory = onClickHealthCategory,
+            favorites = favorites,
+            onClickHealthCategory = { categoryId, favorite ->
+              favorites = favorites.toMutableList().also { it.remove(categoryId) }
+              nonFavorites =
+                nonFavorites
+                  .toMutableList()
+                  .also { it.add(categoryId) }
+                  .sortedBy { HealthCareCategoryId.entries.indexOf(it) }
+            },
             onReorderFavorites = onReorderFavorites,
           )
         }
       }
 
-      if (viewState.nonFavorites.isNotEmpty()) {
+      if (nonFavorites.isNotEmpty()) {
         item {
           Text(modifier = Modifier.padding(top = 24.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
         }
@@ -152,8 +151,11 @@ private fun EditOverviewBottomSheetContent(
         item {
           CategoriesCard(
             modifier = Modifier.padding(top = 8.dp).animateItem(),
-            categories = viewState.nonFavorites,
-            onClickHealthCategory = onClickHealthCategory,
+            categories = nonFavorites,
+            onClickHealthCategory = { categoryId, favorite ->
+              favorites = favorites.toMutableList().also { it.add(categoryId) }
+              nonFavorites = nonFavorites.toMutableList().also { it.remove(categoryId) }
+            },
           )
         }
       }
@@ -265,8 +267,7 @@ internal fun EditOverviewBottomSheetNoFavoritesPreview() {
           favorites = listOf(),
           nonFavorites = HealthCareCategoryId.entries,
         ),
-      onClickSave = {},
-      onClickHealthCategory = { categoryId, favorite -> },
+      onClickSave = { _, _ -> },
       onReorderFavorites = { fromIndex, toIndex -> },
       onNavigateBack = {},
     )
@@ -283,8 +284,7 @@ internal fun EditOverviewBottomSheetFavoritesPreview() {
           favorites = listOf(HealthCareCategoryId.MEDICATIONS, HealthCareCategoryId.APPOINTMENTS),
           nonFavorites = HealthCareCategoryId.entries - HealthCareCategoryId.MEDICATIONS - HealthCareCategoryId.APPOINTMENTS,
         ),
-      onClickSave = {},
-      onClickHealthCategory = { categoryId, favorite -> },
+      onClickSave = { _, _ -> },
       onReorderFavorites = { fromIndex, toIndex -> },
       onNavigateBack = {},
     )

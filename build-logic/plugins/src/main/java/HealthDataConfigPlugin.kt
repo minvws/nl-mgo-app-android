@@ -1,14 +1,12 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 
-class CategoriesPlugin : Plugin<Project> {
+class HealthDataConfigPlugin : Plugin<Project> {
   override fun apply(target: Project) {
-    target.tasks.register("updateCategories") {
+    target.tasks.register("updateHealthDataConfig") {
       // Files are downloaded to this directory
-      val workingDir = File(target.rootDir, "categoriesTmp")
+      val workingDir = File(target.rootDir, "healthDataConfigTmp")
       workingDir.mkdir()
 
       // Step 1: Download Files
@@ -26,17 +24,17 @@ class CategoriesPlugin : Plugin<Project> {
     // Move version.json to correct location
     val targetVersionFile = File(workingDir, "version.json")
     println("Downloaded categories. Version: ${targetVersionFile.readText()}")
-    val destinationVersionFile = File(project.rootDir, "data/categories/src/main/assets/version.json")
+    val destinationVersionFile = File(project.rootDir, "data/healthData/src/main/assets/version.json")
     targetVersionFile.renameTo(destinationVersionFile)
 
     // Move health-categories.json to correct location
     val targetHealthCategoriesFile = File(workingDir, "health-categories.json")
-    val destinationHealthCategoriesFile = File(project.rootDir, "data/categories/src/main/assets/health-categories.json")
+    val destinationHealthCategoriesFile = File(project.rootDir, "data/healthData/src/main/assets/health-categories.json")
     targetHealthCategoriesFile.renameTo(destinationHealthCategoriesFile)
 
     // Move data-services folder to correct location
     val targetDataServicesFile = File(workingDir, "data-services")
-    val destinationDataServicesFile = File(project.rootDir, "data/categories/src/main/assets/data-services")
+    val destinationDataServicesFile = File(project.rootDir, "data/healthData/src/main/assets/data-services")
     targetDataServicesFile.renameTo(destinationDataServicesFile)
   }
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-  namespace = "nl.rijksoverheid.mgo.data.categories"
+  namespace = "nl.rijksoverheid.mgo.data.healthData"
   testFixtures {
     enable = true
   }

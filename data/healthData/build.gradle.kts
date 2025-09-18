@@ -16,10 +16,12 @@ dependencies {
   implementation(projects.data.api.dva)
   implementation(projects.framework.copy)
   implementation(projects.framework.storage)
+  implementation(projects.framework.util)
   testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.data.fhirParser))
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.healthcare))
+  testImplementation(testFixtures(projects.framework.util))
   testFixturesImplementation(projects.data.localisation)
   testFixturesImplementation(projects.data.fhirParser)
 }

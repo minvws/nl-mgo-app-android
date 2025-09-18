@@ -36,3 +36,10 @@ data class DataSetConfig(
     val profiles: List<String>,
   )
 }
+
+val TEST_ENDPOINT =
+  DataSetConfig.Endpoint(
+    id = "1",
+    url = "",
+    profiles = listOf(),
+  )

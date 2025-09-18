@@ -23,7 +23,7 @@ class HealthDataConfigPlugin : Plugin<Project> {
   private fun Project.moveFiles(workingDir: File) {
     // Move version.json to correct location
     val targetVersionFile = File(workingDir, "version.json")
-    println("Downloaded categories. Version: ${targetVersionFile.readText()}")
+    println("Downloaded health data configuration files. Version: ${targetVersionFile.readText()}")
     val destinationVersionFile = File(project.rootDir, "data/healthData/src/main/assets/version.json")
     targetVersionFile.renameTo(destinationVersionFile)
 

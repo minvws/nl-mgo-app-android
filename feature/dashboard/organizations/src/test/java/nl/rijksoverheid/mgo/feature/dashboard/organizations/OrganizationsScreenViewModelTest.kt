@@ -14,7 +14,7 @@ import org.junit.Test
 
 internal class OrganizationsScreenViewModelTest {
   @get:Rule
-  val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
+  val mainDispatcherRule = MainDispatcherRule()
 
   private val organizationRepository = TestOrganizationRepository()
   private val keyValueStore = TestKeyValueStore()

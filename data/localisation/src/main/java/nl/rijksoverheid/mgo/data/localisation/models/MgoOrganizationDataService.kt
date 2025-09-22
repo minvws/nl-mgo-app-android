@@ -4,6 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
+typealias MgoOrganizationDataServiceId = String
+
 /**
  * Represents the data service for a [MgoOrganization]. This is the source of where the get the health care data from.
  *
@@ -13,6 +15,7 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class MgoOrganizationDataService(
+  val id: MgoOrganizationDataServiceId,
   val resourceEndpoint: String,
   val type: MgoOrganizationDataServiceType,
 ) : Parcelable

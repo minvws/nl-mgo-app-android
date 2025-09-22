@@ -1,11 +1,8 @@
-package nl.rijksoverheid.mgo.data.healthData.configuration
+package nl.rijksoverheid.mgo.data.healthData.fhir
 
-import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
 import nl.rijksoverheid.mgo.data.healthData.configuration.models.TEST_ENDPOINT
-import nl.rijksoverheid.mgo.data.healthData.fhir.DefaultFhirDataRepository
-import nl.rijksoverheid.mgo.data.healthData.fhir.models.JsonResponseState
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -25,21 +22,15 @@ class DefaultFhirDataRepositoryTest {
   @Test
   fun testFetchSuccess() =
     runTest {
-      // Given: Request returns error
+      // Given: Request returns json
       testServer.enqueueJson("{}")
 
       // When: Calling fetch
       val repository = getRepository()
-      repository
-        .fetch(
-          endpoint = TEST_ENDPOINT,
-          fhirVersion = "3.0",
-        ).test {
-          assertTrue(awaitItem() is JsonResponseState.Loading)
-          assertTrue(awaitItem() is JsonResponseState.Success)
-          assertTrue(cacheFileStore.assertFileSaved())
-          awaitComplete()
-        }
+      val result = repository.fetch(endpoint = TEST_ENDPOINT, fhirVersion = "3.0")
+
+      // Then: Return success result
+      assertTrue(result.isSuccess)
     }
 
   @Test
@@ -50,15 +41,10 @@ class DefaultFhirDataRepositoryTest {
 
       // When: Calling fetch
       val repository = getRepository()
-      repository
-        .fetch(
-          endpoint = TEST_ENDPOINT,
-          fhirVersion = "3.0",
-        ).test {
-          assertTrue(awaitItem() is JsonResponseState.Loading)
-          assertTrue(awaitItem() is JsonResponseState.Error)
-          awaitComplete()
-        }
+      val result = repository.fetch(endpoint = TEST_ENDPOINT, fhirVersion = "3.0")
+
+      // Then: Return success result
+      assertTrue(result.isFailure)
     }
 
   private fun getRepository(): DefaultFhirDataRepository =

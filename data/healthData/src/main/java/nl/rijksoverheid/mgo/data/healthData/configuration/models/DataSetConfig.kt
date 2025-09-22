@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.healthData.configuration.models
 
+import androidx.annotation.VisibleForTesting
 import kotlinx.serialization.Serializable
 
 typealias DataSetConfigEndpointId = String
@@ -33,7 +34,7 @@ data class DataSetConfig(
   data class Endpoint(
     val id: DataSetConfigEndpointId,
     val url: String,
-    val profiles: List<String>,
+    val profiles: List<HealthCategoryProfile>,
   )
 }
 
@@ -41,5 +42,42 @@ val TEST_ENDPOINT =
   DataSetConfig.Endpoint(
     id = "1",
     url = "",
-    profiles = listOf(),
+    profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Problem"),
+  )
+
+@VisibleForTesting
+val TEST_COMMON_CLINICAL_DATA_SET =
+  DataSetConfig(
+    id = "48",
+    name = "Common Clinical Dataset",
+    fhirVersion = "R3",
+    endpoints =
+      listOf(
+        DataSetConfig.Endpoint(
+          id = "problem",
+          url = "/Condition",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Problem"),
+        ),
+        DataSetConfig.Endpoint(
+          id = "alert",
+          url = "/Flag",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Alert"),
+        ),
+      ),
+  )
+
+@VisibleForTesting
+val TEST_GENERAL_PRACTITIONER_DATA =
+  DataSetConfig(
+    id = "49",
+    name = "General Practitioner Data",
+    fhirVersion = "R3",
+    endpoints =
+      listOf(
+        DataSetConfig.Endpoint(
+          id = "episodes",
+          url = "/EpisodeOfCare",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Alert", "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare"),
+        ),
+      ),
   )

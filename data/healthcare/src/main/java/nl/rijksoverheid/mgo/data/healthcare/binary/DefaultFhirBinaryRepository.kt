@@ -5,6 +5,7 @@ import nl.rijksoverheid.mgo.data.api.dva.DvaApi
 import nl.rijksoverheid.mgo.data.healthcare.models.FhirBinary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
+import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import javax.inject.Inject
 
 /**
@@ -12,12 +13,14 @@ import javax.inject.Inject
  *
  * @param cacheFileStore The [CacheFileStore] to save the binary in.
  * @param dvaApi The [DvaApi] to communicate with the server.
+ * @param base64Util The [Base64Util] to decode the response from the server.
  */
 internal class DefaultFhirBinaryRepository
   @Inject
   constructor(
     private val cacheFileStore: CacheFileStore,
     private val dvaApi: DvaApi,
+    private val base64Util: Base64Util,
   ) : FhirBinaryRepository {
     /**
      * Downloads a binary from the server.
@@ -43,7 +46,7 @@ internal class DefaultFhirBinaryRepository
             cacheFileStore.saveFile(
               name = binaryResponse.id,
               contentType = binaryResponse.contentType,
-              base64Content = binaryResponse.content,
+              content = base64Util.decode(binaryResponse.content),
             )
           FhirBinary(
             file = file,

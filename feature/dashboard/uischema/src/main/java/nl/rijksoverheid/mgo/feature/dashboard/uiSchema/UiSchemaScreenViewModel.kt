@@ -21,6 +21,7 @@ import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import nl.rijksoverheid.mgo.data.healthcare.models.mapper.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
+import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import timber.log.Timber
 
 /**
@@ -45,6 +46,7 @@ internal class UiSchemaScreenViewModel
     private val uiSchemaMapper: UiSchemaMapper,
     private val mgoResourceRepository: MgoResourceRepository,
     private val uiSchemaSectionMapper: UISchemaSectionMapper,
+    private val base64Util: Base64Util,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {

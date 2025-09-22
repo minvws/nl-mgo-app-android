@@ -78,7 +78,7 @@ internal class DefaultUiSchemaMapper
       jsFunctionName: String,
     ): HealthUiSchema {
       val organizationJson = json.encodeToString(OrganizationJson(organization = OrganizationJson.Organization(healthCareProviderName)))
-      val mgoResourceJson = base64Util.decode(mgoResource.jsonBase64)
+      val mgoResourceJson = String(base64Util.decode(mgoResource.jsonBase64), Charsets.UTF_8)
       val uiSchemaJson =
         jsRuntimeRepository.executeStringFunction(
           jsFunctionName,

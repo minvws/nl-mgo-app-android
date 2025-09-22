@@ -4,9 +4,7 @@ import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
 import nl.rijksoverheid.mgo.data.healthData.configuration.models.DataSetConfig
 import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
-import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import java.io.File
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -16,17 +14,17 @@ class DefaultFhirDataRepository
     private val dvaApi: DvaApi,
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     private val cacheFileStore: CacheFileStore,
-    private val base64Util: Base64Util,
   ) : FhirDataRepository {
     override suspend fun fetch(
+      resourceEndpoint: String,
       endpoint: DataSetConfig.Endpoint,
       fhirVersion: String,
     ): Result<File> {
       val result =
         executeNetworkRequest {
           dvaApi.get(
-            resourceEndpoint = endpoint.url,
-            url = dvaApiBaseUrl,
+            resourceEndpoint = resourceEndpoint,
+            url = "$dvaApiBaseUrl/fhir${endpoint.url}",
             accept = "application/fhir+json; fhirVersion=$fhirVersion",
           )
         }
@@ -35,9 +33,9 @@ class DefaultFhirDataRepository
         val responseJson = responseBody.string()
         val file =
           cacheFileStore.saveFile(
-            name = UUID.randomUUID().toString(),
+            name = endpoint.id,
             contentType = "application/json",
-            base64Util.encode(responseJson),
+            responseJson.toByteArray(Charsets.UTF_8),
           )
         file
       }

@@ -58,7 +58,7 @@ internal fun UiSchemaRowBinary(
 ) {
   var openPdfViewer: File? by remember { mutableStateOf(null) }
   openPdfViewer?.let { file ->
-    if (LocalInspectionMode.current == false) {
+    if (!LocalInspectionMode.current) {
       PdfViewerBottomSheet(
         appBarTitle = file.name,
         state = PdfViewerState.Loaded(file),

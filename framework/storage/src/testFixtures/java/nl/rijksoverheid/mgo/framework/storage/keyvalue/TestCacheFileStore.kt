@@ -20,7 +20,7 @@ class TestCacheFileStore : CacheFileStore {
   override fun saveFile(
     name: String,
     contentType: String,
-    base64Content: String,
+    content: ByteArray,
   ): File {
     savedFiles++
     return File("")

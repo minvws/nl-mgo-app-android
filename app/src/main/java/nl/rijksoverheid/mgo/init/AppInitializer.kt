@@ -34,10 +34,10 @@ class AppInitializer
     private val healthDataRepository: HealthDataRepository,
   ) {
     suspend fun init() {
+      // cacheFileStore.deleteAll()
       healthDataRepository.init()
       featureToggleLocalDataSource.init(featureToggleRepository.getAll())
       jsRuntimeRepository.load()
-      cacheFileStore.deleteAll()
     }
 
     /**

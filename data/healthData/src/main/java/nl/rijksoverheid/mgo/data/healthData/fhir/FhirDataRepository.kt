@@ -5,6 +5,7 @@ import java.io.File
 
 interface FhirDataRepository {
   suspend fun fetch(
+    resourceEndpoint: String,
     endpoint: DataSetConfig.Endpoint,
     fhirVersion: String,
   ): Result<File>

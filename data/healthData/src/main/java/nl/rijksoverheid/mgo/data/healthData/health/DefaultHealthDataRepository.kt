@@ -92,7 +92,7 @@ internal class DefaultHealthDataRepository
               }
 
             // Do the request
-            val result = fhirDataRepository.fetch(endpoint = endpoint, fhirVersion = fhirVersion)
+            val result = fhirDataRepository.fetch(resourceEndpoint = dataService.resourceEndpoint, endpoint = endpoint, fhirVersion = fhirVersion)
 
             // If request succeeded, emit success state
             result.getOrNull()?.let { fhirResponse ->

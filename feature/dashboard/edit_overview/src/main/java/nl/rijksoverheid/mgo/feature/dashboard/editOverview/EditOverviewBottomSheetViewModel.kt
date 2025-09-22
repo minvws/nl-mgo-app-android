@@ -41,31 +41,6 @@ class EditOverviewBottomSheetViewModel
     private val _closeBottomSheet = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val closeBottomSheet = _closeBottomSheet.asSharedFlow()
 
-    fun clickFavorite(
-      categoryId: HealthCareCategoryId,
-      favorite: Boolean,
-    ) {
-      viewModelScope.launch {
-        _viewState.update { viewState ->
-          if (favorite) {
-            viewState.copy(
-              favorites = viewState.favorites.toMutableList().also { it.add(categoryId) },
-              nonFavorites = viewState.nonFavorites.toMutableList().also { it.remove(categoryId) },
-            )
-          } else {
-            viewState.copy(
-              favorites = viewState.favorites.toMutableList().also { it.remove(categoryId) },
-              nonFavorites =
-                viewState.nonFavorites
-                  .toMutableList()
-                  .also { it.add(categoryId) }
-                  .sortedBy { HealthCareCategoryId.entries.indexOf(it) },
-            )
-          }
-        }
-      }
-    }
-
     fun reorderFavorites(
       fromIndex: Int,
       toIndex: Int,
@@ -80,15 +55,14 @@ class EditOverviewBottomSheetViewModel
       }
     }
 
-    fun save() {
+    fun save(
+      favorites: List<HealthCareCategoryId>,
+      nonFavorites: List<HealthCareCategoryId>,
+    ) {
       viewModelScope.launch {
-        val favorites = _viewState.value.favorites
         healthCareCategoryRepository.setFavorites(favorites)
+        _viewState.update { viewState -> viewState.copy(favorites = favorites, nonFavorites = nonFavorites) }
         _closeBottomSheet.tryEmit(Unit)
       }
-    }
-
-    fun onClear() {
-      _viewState.tryEmit(initialState)
     }
   }

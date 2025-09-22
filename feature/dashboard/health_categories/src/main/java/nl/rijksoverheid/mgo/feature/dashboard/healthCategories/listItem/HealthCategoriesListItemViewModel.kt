@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.data.healthData.health.HealthDataRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
@@ -34,7 +33,6 @@ internal class HealthCategoriesListItemViewModel
   constructor(
     @Assisted private val filterOrganization: MgoOrganization?,
     @Assisted private val category: HealthCareCategoryId,
-    private val healthDataRepository: HealthDataRepository,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
   ) : ViewModel() {
     @AssistedFactory
@@ -72,12 +70,6 @@ internal class HealthCategoriesListItemViewModel
               }
             }
           }
-      }
-
-      viewModelScope.launch {
-        if (category.id == "complaints") {
-          healthDataRepository.fetch("problems")
-        }
       }
     }
   }

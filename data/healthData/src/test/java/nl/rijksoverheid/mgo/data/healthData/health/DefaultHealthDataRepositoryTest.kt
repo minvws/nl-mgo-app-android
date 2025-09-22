@@ -9,14 +9,17 @@ import nl.rijksoverheid.mgo.data.healthData.health.models.HealthData
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_BGZ_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.io.File
 
 class DefaultHealthDataRepositoryTest {
+  private val cacheFileStore = TestCacheFileStore()
   private val organizationRepository = TestOrganizationRepository()
   private val configurationRepository = TestHealthDataConfigurationRepository()
   private val fhirDataRepository = TestFhirDataRepository()
@@ -26,6 +29,7 @@ class DefaultHealthDataRepositoryTest {
       organizationRepository = organizationRepository,
       configurationRepository = configurationRepository,
       fhirDataRepository = fhirDataRepository,
+      cacheFileStore = cacheFileStore,
     )
 
   @Before
@@ -58,7 +62,7 @@ class DefaultHealthDataRepositoryTest {
   fun testFetchProblemsSuccess() =
     runTest {
       // Given: Network requests are successful
-      fhirDataRepository.setFetchResult(Result.success(File("")))
+      fhirDataRepository.setFetchResult(Result.success("{}".toResponseBody("application/json".toMediaType())))
 
       // When: Fetching all data for the problems category
       repository.fetch("problems")
@@ -93,7 +97,7 @@ class DefaultHealthDataRepositoryTest {
   fun testFetchAlertsSuccess() =
     runTest {
       // Given: Network requests are successful
-      fhirDataRepository.setFetchResult(Result.success(File("")))
+      fhirDataRepository.setFetchResult(Result.success("{}".toResponseBody("application/json".toMediaType())))
 
       // When: Fetching all data for the problems category
       repository.fetch("problems")

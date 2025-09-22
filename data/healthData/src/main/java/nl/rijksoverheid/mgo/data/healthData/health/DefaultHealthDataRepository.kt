@@ -6,10 +6,14 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import nl.rijksoverheid.mgo.data.healthData.configuration.HealthDataConfigurationRepository
+import nl.rijksoverheid.mgo.data.healthData.configuration.models.DataSetConfig
 import nl.rijksoverheid.mgo.data.healthData.configuration.models.HealthCategoryId
 import nl.rijksoverheid.mgo.data.healthData.fhir.FhirDataRepository
 import nl.rijksoverheid.mgo.data.healthData.health.models.HealthData
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
+import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import javax.inject.Inject
 
 /**
@@ -21,6 +25,7 @@ internal class DefaultHealthDataRepository
     private val organizationRepository: OrganizationRepository,
     private val configurationRepository: HealthDataConfigurationRepository,
     private val fhirDataRepository: FhirDataRepository,
+    private val cacheFileStore: CacheFileStore,
   ) : HealthDataRepository {
     private val groups = configurationRepository.getGroups()
     private val cachedHealthData = MutableStateFlow<List<HealthData>>(listOf())
@@ -92,17 +97,24 @@ internal class DefaultHealthDataRepository
               }
 
             // Do the request
-            val result = fhirDataRepository.fetch(resourceEndpoint = dataService.resourceEndpoint, endpoint = endpoint, fhirVersion = fhirVersion)
+            val responseBodyResult = fhirDataRepository.fetch(resourceEndpoint = dataService.resourceEndpoint, endpoint = endpoint, fhirVersion = fhirVersion)
 
             // If request succeeded, emit success state
-            result.getOrNull()?.let { fhirResponse ->
+            responseBodyResult.getOrNull()?.let { responseBody ->
+              val file =
+                cacheFileStore.saveFile(
+                  name = getFhirResponseFileName(organization = organization, dataService = dataService, endpoint = endpoint),
+                  contentType = "application/json",
+                  responseBody.string().toByteArray(Charsets.UTF_8),
+                )
+
               updateCachedHealthData(
-                HealthData.Success(organization = organization, dataServiceId = dataService.id, profiles = endpoint.profiles, fhirResponse = fhirResponse),
+                HealthData.Success(organization = organization, dataServiceId = dataService.id, profiles = endpoint.profiles, fhirResponse = file),
               )
             }
 
             // If request failed, emit failed state
-            result.exceptionOrNull()?.let { error ->
+            responseBodyResult.exceptionOrNull()?.let { error ->
               updateCachedHealthData(
                 HealthData.Error(organization = organization, dataServiceId = dataService.id, profiles = endpoint.profiles, error = error),
               )
@@ -111,6 +123,12 @@ internal class DefaultHealthDataRepository
         }
       }
     }
+
+    private fun getFhirResponseFileName(
+      organization: MgoOrganization,
+      dataService: MgoOrganizationDataService,
+      endpoint: DataSetConfig.Endpoint,
+    ): String = "${organization.id}_${dataService.id}_${endpoint.id}"
 
     private fun HealthCategoryId.getProfiles(): List<String> =
       groups

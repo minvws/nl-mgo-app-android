@@ -3,10 +3,8 @@ package nl.rijksoverheid.mgo.data.healthData.fhir
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.api.dva.createDvaApi
 import nl.rijksoverheid.mgo.data.healthData.configuration.models.TEST_ENDPOINT
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
-import nl.rijksoverheid.mgo.framework.util.base64.TestBase64Util
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -17,8 +15,6 @@ class DefaultFhirDataRepositoryTest {
 
   private val testServer = testServerRule.testServer
 
-  private val cacheFileStore = TestCacheFileStore()
-
   @Test
   fun testFetchSuccess() =
     runTest {
@@ -27,7 +23,7 @@ class DefaultFhirDataRepositoryTest {
 
       // When: Calling fetch
       val repository = getRepository()
-      val result = repository.fetch(endpoint = TEST_ENDPOINT, fhirVersion = "3.0")
+      val result = repository.fetch(endpoint = TEST_ENDPOINT, fhirVersion = "3.0", resourceEndpoint = "")
 
       // Then: Return success result
       assertTrue(result.isSuccess)
@@ -41,7 +37,7 @@ class DefaultFhirDataRepositoryTest {
 
       // When: Calling fetch
       val repository = getRepository()
-      val result = repository.fetch(endpoint = TEST_ENDPOINT, fhirVersion = "3.0")
+      val result = repository.fetch(endpoint = TEST_ENDPOINT, fhirVersion = "3.0", resourceEndpoint = "")
 
       // Then: Return success result
       assertTrue(result.isFailure)
@@ -51,7 +47,5 @@ class DefaultFhirDataRepositoryTest {
     DefaultFhirDataRepository(
       dvaApi = createDvaApi(okHttpClient = TEST_OKHTTP_CLIENT, baseUrl = testServer.url()),
       dvaApiBaseUrl = "",
-      cacheFileStore = cacheFileStore,
-      base64Util = TestBase64Util(),
     )
 }

@@ -29,21 +29,21 @@ internal class DefaultCacheFileStoreTest {
 
   @Test
   fun testGetFile() {
-    fileStore.saveFile("file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
+    fileStore.saveFile("file.pdf", contentType = "application/pdf", content = "SGVsbG8gV29ybGQ=".toByteArray())
     val expectedFile = File(context.cacheDir, "mgo/file.pdf")
     assertEquals(expectedFile, fileStore.getFile("file.pdf"))
   }
 
   @Test
   fun testSaveFile() {
-    val file = fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
+    val file = fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", content = "SGVsbG8gV29ybGQ=".toByteArray())
     assertTrue(file.exists())
   }
 
   @Test
   fun testDeleteAll() {
     // Given: file exists in cache dir
-    fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", base64Content = "SGVsbG8gV29ybGQ=")
+    fileStore.saveFile(name = "file.pdf", contentType = "application/pdf", content = "SGVsbG8gV29ybGQ=".toByteArray())
 
     // When: Calling deleteAll
     fileStore.deleteAll()

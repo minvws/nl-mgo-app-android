@@ -50,14 +50,17 @@ internal class DefaultOrganizationRepositoryTest {
             dataServices =
               listOf(
                 MgoOrganizationDataService(
+                  id = "51",
                   resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/51",
                   type = MgoOrganizationDataServiceType.DOCUMENTS,
                 ),
                 MgoOrganizationDataService(
+                  id = "49",
                   resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/49",
                   type = MgoOrganizationDataServiceType.GP,
                 ),
                 MgoOrganizationDataService(
+                  id = "48",
                   resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
                   type = MgoOrganizationDataServiceType.BGZ,
                 ),
@@ -92,14 +95,17 @@ internal class DefaultOrganizationRepositoryTest {
             dataServices =
               listOf(
                 MgoOrganizationDataService(
+                  id = "51",
                   resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/51",
                   type = MgoOrganizationDataServiceType.DOCUMENTS,
                 ),
                 MgoOrganizationDataService(
+                  id = "49",
                   resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/49",
                   type = MgoOrganizationDataServiceType.GP,
                 ),
                 MgoOrganizationDataService(
+                  id = "48",
                   resourceEndpoint = "https://dva-mock.test.mgo.prolocation.net/48",
                   type = MgoOrganizationDataServiceType.BGZ,
                 ),

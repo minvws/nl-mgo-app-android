@@ -24,4 +24,5 @@ dependencies {
   testImplementation(testFixtures(projects.framework.util))
   testFixturesImplementation(projects.data.localisation)
   testFixturesImplementation(projects.data.fhirParser)
+  testFixturesImplementation(libs.retrofit)
 }

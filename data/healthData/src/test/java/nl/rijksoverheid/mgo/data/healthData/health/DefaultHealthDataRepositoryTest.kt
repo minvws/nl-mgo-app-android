@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthData.health
 
 import app.cash.turbine.test
+import app.cash.turbine.turbineScope
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.healthData.configuration.TestHealthDataConfigurationRepository
 import nl.rijksoverheid.mgo.data.healthData.fhir.TestFhirDataRepository
@@ -32,6 +33,26 @@ class DefaultHealthDataRepositoryTest {
     val organization1 = TEST_MGO_ORGANIZATION.copy(id = "1", name = "Organization 1", dataServices = listOf(TEST_BGZ_DATA_SERVICE, TEST_GP_DATA_SERVICE))
     organizationRepository.setStoredProviders(listOf(organization1))
   }
+
+  @Test
+  fun testInit() =
+    runTest {
+      // When: Calling init
+      repository.init()
+
+      // Then: Loading states are emitted
+      turbineScope {
+        val healthDataForProblemsFlow = repository.observe("problems").testIn(backgroundScope)
+        val healthDataForAlertsFlow = repository.observe("alerts").testIn(backgroundScope)
+        val healthDataForProblems = healthDataForProblemsFlow.awaitItem()
+        val healthDataForAlerts = healthDataForAlertsFlow.awaitItem()
+        assertEquals(1, healthDataForProblems.size)
+        assertTrue(healthDataForProblems.first() is HealthData.Loading)
+        assertEquals(2, healthDataForAlerts.size)
+        assertTrue(healthDataForAlerts[0] is HealthData.Loading)
+        assertTrue(healthDataForAlerts[1] is HealthData.Loading)
+      }
+    }
 
   @Test
   fun testFetchProblemsSuccess() =

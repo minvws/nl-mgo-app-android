@@ -193,6 +193,7 @@ dependencies {
   implementation(projects.data.healthcare)
   implementation(projects.data.pincode)
   implementation(projects.data.digid)
+  implementation(projects.data.healthData)
   implementation(libs.androidx.lifecycle.process)
 
   // ================================

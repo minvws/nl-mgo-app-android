@@ -9,7 +9,9 @@ import nl.rijksoverheid.mgo.data.healthData.configuration.HealthDataConfiguratio
 import nl.rijksoverheid.mgo.data.healthData.fhir.DefaultFhirDataRepository
 import nl.rijksoverheid.mgo.data.healthData.fhir.FhirDataRepository
 import nl.rijksoverheid.mgo.data.healthData.health.DefaultHealthDataRepository
+import nl.rijksoverheid.mgo.data.healthData.health.DefaultInitHealthDataFetching
 import nl.rijksoverheid.mgo.data.healthData.health.HealthDataRepository
+import nl.rijksoverheid.mgo.data.healthData.health.InitHealthDataFetching
 import javax.inject.Singleton
 
 @Module
@@ -26,4 +28,8 @@ internal abstract class HealthDataModule {
   @Binds
   @Singleton
   abstract fun provideHealthDataRepository(default: DefaultHealthDataRepository): HealthDataRepository
+
+  @Binds
+  @Singleton
+  abstract fun provideInitHealthDataFetching(default: DefaultInitHealthDataFetching): InitHealthDataFetching
 }

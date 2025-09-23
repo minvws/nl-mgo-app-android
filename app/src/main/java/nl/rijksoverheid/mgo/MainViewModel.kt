@@ -4,14 +4,17 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
+import nl.rijksoverheid.mgo.data.healthData.health.InitHealthDataFetching
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
@@ -35,6 +38,7 @@ import javax.inject.Named
 /**
  * Viewmodel that is attached to the only activity in the app. Handles functionality that is related to navigation when
  * launching the app.
+ * @param ioDispatcher Background dispatcher in which the fetching of health data is started.
  * @param showDeviceRootedDialog Use case that checks if the device has been rooted.
  * @param appLocked Use case that checks if the app should be locked.
  * @param saveClosedAppTimestamp Use case that saves locally saves a timestamp. The timestamp represents the last time the app was closed.
@@ -49,6 +53,7 @@ import javax.inject.Named
 internal class MainViewModel
   @Inject
   constructor(
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     val showDeviceRootedDialog: ShowDeviceRootedDialog,
     private val appLocked: AppLocked,
     private val saveClosedAppTimestamp: SaveClosedAppTimestamp,
@@ -59,6 +64,7 @@ internal class MainViewModel
     val isDigidAuthenticated: IsDigidAuthenticated,
     val appLifecycleRepository: AppLifecycleRepository,
     val cacheFileStore: CacheFileStore,
+    val initHealthDataFetching: InitHealthDataFetching,
   ) : ViewModel() {
     private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
     val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -83,6 +89,10 @@ internal class MainViewModel
           keyValueStore.observeString(KEY_APP_THEME).collectLatest { appThemeString ->
             _appTheme.emit(getAppTheme(appThemeString))
           }
+        }
+
+        launch(ioDispatcher) {
+          initHealthDataFetching.invoke().collect()
         }
       }
     }

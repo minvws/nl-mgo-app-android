@@ -10,7 +10,7 @@ interface CacheFileStore {
    * Get a file from cache.
    * @param name The file of the file (with extension).
    */
-  fun getFile(name: String): File
+  fun getFile(name: String): File?
 
   /**
    * Saves a file to the cache directory.

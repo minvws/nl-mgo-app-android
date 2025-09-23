@@ -1,7 +1,9 @@
 package nl.rijksoverheid.mgo.data.healthData.health.models
 
+import androidx.annotation.VisibleForTesting
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceId
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import java.io.File
 
 sealed class HealthData(
@@ -29,3 +31,11 @@ sealed class HealthData(
     val error: Throwable,
   ) : HealthData(organization, dataServiceId, profiles)
 }
+
+@VisibleForTesting
+val TEST_HEALTH_DATA_LOADING =
+  HealthData.Loading(
+    organization = TEST_MGO_ORGANIZATION,
+    dataServiceId = "1",
+    profiles = listOf(),
+  )

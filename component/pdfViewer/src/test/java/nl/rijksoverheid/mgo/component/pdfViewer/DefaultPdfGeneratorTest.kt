@@ -25,15 +25,28 @@ class DefaultPdfGeneratorTest {
 
   @Before
   fun setUp() {
-    cacheFileStore.setFile(File(context.cacheDir, "test.pdf"))
     context.cacheDir?.listFiles()?.forEach { file ->
       file.delete()
     }
   }
 
+  @Test(expected = IllegalStateException::class)
+  fun testNoFile() =
+    runTest {
+      // Given: no pdf exists
+
+      // When: pdf is generated
+      generator.invoke(pdf = Pdf(heading = "", subHeading = "", groupedTables = listOf(), footer = ""), fileName = "test.pdf")
+
+      // Then: Expect error
+    }
+
   @Test
   fun testGeneratePdf() =
     runTest {
+      // Given: test.pdf exists
+      cacheFileStore.setFile(File(context.cacheDir, "test.pdf"))
+
       val pdf =
         Pdf(
           heading = "Heading",
@@ -105,8 +118,10 @@ class DefaultPdfGeneratorTest {
           footer = "Footer",
         )
 
+      // When: generating pdf
       generator.invoke(pdf = pdf, fileName = "test.pdf")
 
+      // Then: expected pdf is generated
       val createdPdfFile = File(context.cacheDir, "test.pdf")
       val expectedPdfFile =
         javaClass.classLoader!!

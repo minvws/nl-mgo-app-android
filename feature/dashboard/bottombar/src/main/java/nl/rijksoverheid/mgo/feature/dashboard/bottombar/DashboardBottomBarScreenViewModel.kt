@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.CollectHealthCareDataStates
 import javax.inject.Inject
@@ -27,7 +26,8 @@ internal class DashboardBottomBarScreenViewModel
   ) : ViewModel() {
     init {
       viewModelScope.launch(ioDispatcher) {
-        collectHealthCareDataStates.invoke().collect()
+
+        // collectHealthCareDataStates.invoke().collect()
       }
     }
   }

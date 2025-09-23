@@ -207,6 +207,7 @@ dependencies {
   testImplementation(testFixtures(projects.framework.featuretoggle))
   testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.data.fhirParser))
+  testImplementation(testFixtures(projects.data.healthData))
   testImplementation(libs.mockk.android)
 
   androidTestImplementation(libs.dagger.hilt.testing)

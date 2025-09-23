@@ -52,35 +52,39 @@ data class HealthCategoryGroupConfig(
 }
 
 @VisibleForTesting
+val TEST_HEALTH_CATEGORY_ALERTS =
+  HealthCategoryGroupConfig.HealthCategory(
+    id = "alerts",
+    heading = "hc_alerts.heading",
+    subheading = "hc_alerts.subheading",
+    subcategories =
+      listOf(
+        HealthCategoryGroupConfig.HealthCategory.Subcategory(
+          heading = "zib_alert.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Alert"),
+        ),
+      ),
+  )
+
+@VisibleForTesting
+val TEST_HEALTH_CATEGORY_PROBLEMS =
+  HealthCategoryGroupConfig.HealthCategory(
+    id = "problems",
+    heading = "hc_problems.heading",
+    subheading = "hc_problems.subheading",
+    subcategories =
+      listOf(
+        HealthCategoryGroupConfig.HealthCategory.Subcategory(
+          heading = "zib_problem.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Problem"),
+        ),
+      ),
+  )
+
+@VisibleForTesting
 val TEST_HEALTH_CATEGORY_GROUP_HEALTH =
   HealthCategoryGroupConfig(
     id = "health",
     heading = "mhc_health.heading",
-    categories =
-      listOf(
-        HealthCategoryGroupConfig.HealthCategory(
-          id = "alerts",
-          heading = "hc_alerts.heading",
-          subheading = "hc_alerts.subheading",
-          subcategories =
-            listOf(
-              HealthCategoryGroupConfig.HealthCategory.Subcategory(
-                heading = "zib_alert.heading",
-                profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Alert"),
-              ),
-            ),
-        ),
-        HealthCategoryGroupConfig.HealthCategory(
-          id = "problems",
-          heading = "hc_problems.heading",
-          subheading = "hc_problems.subheading",
-          subcategories =
-            listOf(
-              HealthCategoryGroupConfig.HealthCategory.Subcategory(
-                heading = "zib_problem.heading",
-                profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Problem"),
-              ),
-            ),
-        ),
-      ),
+    categories = listOf(TEST_HEALTH_CATEGORY_ALERTS, TEST_HEALTH_CATEGORY_PROBLEMS),
   )

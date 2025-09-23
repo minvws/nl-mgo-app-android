@@ -5,7 +5,6 @@ import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
-import nl.rijksoverheid.mgo.data.healthData.health.HealthDataRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
@@ -50,9 +49,6 @@ class AppInitializerTest {
   @RelaxedMockK
   private lateinit var organizationRepository: OrganizationRepository
 
-  @RelaxedMockK
-  private lateinit var healthDataRepository: HealthDataRepository
-
   private lateinit var appInitializer: AppInitializer
 
   @Before
@@ -68,7 +64,6 @@ class AppInitializerTest {
         setDigidAuthenticated,
         healthCareDataStatesRepository,
         organizationRepository,
-        healthDataRepository,
       )
   }
 
@@ -83,7 +78,6 @@ class AppInitializerTest {
       coVerify { featureToggleLocalDataSource.init(toggles) }
       coVerify { jsRuntimeRepository.load() }
       coVerify { cacheFileStore.deleteAll() }
-      coVerify { healthDataRepository.init() }
     }
 
   @Test

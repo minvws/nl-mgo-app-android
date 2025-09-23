@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.digid.TestIsDigidAuthenticated
+import nl.rijksoverheid.mgo.data.healthData.health.TestInitHealthDataFetching
 import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
@@ -49,6 +50,8 @@ internal class MainViewModelTest {
       isDigidAuthenticated = isDigidAuthenticated,
       appLifecycleRepository = TestAppLifecycleRepository(),
       cacheFileStore = cacheFileStore,
+      ioDispatcher = mainDispatcherRule.testDispatcher,
+      initHealthDataFetching = TestInitHealthDataFetching(),
     )
   }
 

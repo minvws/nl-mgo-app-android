@@ -4,7 +4,7 @@ import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import java.io.File
 
 class TestCacheFileStore : CacheFileStore {
-  private var file: File = File("")
+  private var file: File? = null
   private var savedFiles: Int = 0
 
   fun setFile(file: File) {
@@ -15,7 +15,7 @@ class TestCacheFileStore : CacheFileStore {
 
   fun assertNoFilesSaved(): Boolean = savedFiles == 0
 
-  override fun getFile(name: String): File = file
+  override fun getFile(name: String): File? = file
 
   override fun saveFile(
     name: String,

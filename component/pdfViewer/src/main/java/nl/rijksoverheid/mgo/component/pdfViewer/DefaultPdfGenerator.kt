@@ -56,7 +56,7 @@ internal class DefaultPdfGenerator
       fileName: String,
     ): File {
       // Initialize the PDF writer and document with A4 landscape orientation.
-      val file = cacheFileStore.getFile(fileName)
+      val file = cacheFileStore.getFile(fileName) ?: error("PDF File should exist in cache")
       val pdfWriter = PdfWriter(file)
       val pdfDoc = PdfDocument(pdfWriter)
       val document = Document(pdfDoc, PageSize.A4, false)

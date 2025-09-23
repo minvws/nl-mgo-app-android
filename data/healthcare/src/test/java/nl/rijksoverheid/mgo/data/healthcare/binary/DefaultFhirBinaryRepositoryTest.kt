@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.data.api.dva.BinaryResponse
 import nl.rijksoverheid.mgo.data.api.dva.DvaApi
 import nl.rijksoverheid.mgo.data.healthcare.models.FhirBinary
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
+import nl.rijksoverheid.mgo.framework.util.base64.TestBase64Util
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -24,6 +25,7 @@ internal class DefaultFhirBinaryRepositoryTest {
     DefaultFhirBinaryRepository(
       cacheFileStore = cacheFileStore,
       dvaApi = dvaApi,
+      base64Util = TestBase64Util(),
     )
 
   @Test

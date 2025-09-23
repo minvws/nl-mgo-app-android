@@ -54,7 +54,7 @@ internal class SettingsHomeScreenViewModelTest {
       // Given: Saved preferences and files
       keyValueStore.setBoolean(KEY_HAS_SEEN_ONBOARDING, true)
       secureKeyValueStore.setString(KEY_PIN_CODE, "123")
-      cacheFileStore.saveFile("file1.json", "", "")
+      cacheFileStore.saveFile("file1.json", "", "".toByteArray())
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: View model

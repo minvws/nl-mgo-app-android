@@ -13,15 +13,18 @@ interface CacheFileStore {
   fun getFile(name: String): File
 
   /**
-   * Save a file in cache.
-   * @param name The name of the file (without extension).
-   * @param contentType The contentType, to be used in the [name].
-   * @Param base64Content The contents of the file, base64 encoded.
+   * Saves a file to the cache directory.
+   *
+   * @param name The name of the file, without the extension.
+   * @param contentType The MIME type of the file, used to determine the file extension.
+   * @param content The file contents as a [ByteArray].
+   *
+   * @return The saved [File] instance.
    */
   fun saveFile(
     name: String,
     contentType: String,
-    base64Content: String,
+    content: ByteArray,
   ): File
 
   /**

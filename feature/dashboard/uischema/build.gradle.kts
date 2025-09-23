@@ -13,4 +13,5 @@ dependencies {
   implementation(libs.compose.navigation)
   testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.data.fhirParser))
+  testImplementation(testFixtures(projects.framework.util))
 }

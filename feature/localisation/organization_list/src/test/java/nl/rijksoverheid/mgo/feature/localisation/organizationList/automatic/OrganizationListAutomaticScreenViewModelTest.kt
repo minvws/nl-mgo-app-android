@@ -14,7 +14,9 @@ import org.junit.Test
 
 internal class OrganizationListAutomaticScreenViewModelTest {
   @get:Rule
-  val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
+  val mainDispatcherRule =
+    nl.rijksoverheid.mgo.framework.test.rules
+      .MainDispatcherRule()
 
   private val organizationRepository = TestOrganizationRepository()
   private val viewModel by lazy {

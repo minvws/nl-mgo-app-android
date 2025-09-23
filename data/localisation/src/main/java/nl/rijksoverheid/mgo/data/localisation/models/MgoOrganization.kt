@@ -32,17 +32,17 @@ data class MgoOrganization(
   val dataServices: List<MgoOrganizationDataService>,
 ) : Parcelable
 
-fun MgoOrganization.getDocumentsResourceEndpoint(): String? {
-  return dataServices.firstOrNull { service -> service.type == MgoOrganizationDataServiceType.DOCUMENTS }?.resourceEndpoint
-}
+fun MgoOrganization.getDocumentsResourceEndpoint(): String? =
+  dataServices.firstOrNull { service -> service.type == MgoOrganizationDataServiceType.DOCUMENTS }?.resourceEndpoint
 
-val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
-val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)
-val TEST_DOCUMENTS_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.DOCUMENTS)
-val TEST_VACCINATION_DATA_SERVICE = MgoOrganizationDataService(resourceEndpoint = "", type = MgoOrganizationDataServiceType.VACCINATION)
+val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(id = "48", resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
+val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(id = "49", resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)
+val TEST_DOCUMENTS_DATA_SERVICE = MgoOrganizationDataService(id = "1", resourceEndpoint = "", type = MgoOrganizationDataServiceType.DOCUMENTS)
+val TEST_VACCINATION_DATA_SERVICE = MgoOrganizationDataService(id = "1", resourceEndpoint = "", type = MgoOrganizationDataServiceType.VACCINATION)
 
 val TEST_NOT_IMPLEMENTED_DATA_SERVICE =
   MgoOrganizationDataService(
+    id = "1",
     resourceEndpoint = "",
     type = MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
   )
@@ -57,8 +57,8 @@ val TEST_MGO_ORGANIZATION =
     dataServices = listOf(TEST_BGZ_DATA_SERVICE),
   )
 
-internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoOrganization {
-  return MgoOrganization(
+internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoOrganization =
+  MgoOrganization(
     id = id,
     name = displayName ?: "",
     address = addresses.firstOrNull()?.address,
@@ -69,34 +69,38 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
         when (dataService.id) {
           DATA_SERVICE_BGZ ->
             MgoOrganizationDataService(
+              id = dataService.id,
               resourceEndpoint = dataService.roles.first().resourceEndpoint,
               MgoOrganizationDataServiceType.BGZ,
             )
 
           DATA_SERVICE_GP ->
             MgoOrganizationDataService(
+              id = dataService.id,
               resourceEndpoint = dataService.roles.first().resourceEndpoint,
               MgoOrganizationDataServiceType.GP,
             )
 
           DATA_SERVICE_DOCUMENTS ->
             MgoOrganizationDataService(
+              id = dataService.id,
               resourceEndpoint = dataService.roles.first().resourceEndpoint,
               MgoOrganizationDataServiceType.DOCUMENTS,
             )
 
           DATA_SERVICE_VACCINATION ->
             MgoOrganizationDataService(
+              id = dataService.id,
               resourceEndpoint = dataService.roles.first().resourceEndpoint,
               MgoOrganizationDataServiceType.VACCINATION,
             )
 
           else ->
             MgoOrganizationDataService(
+              id = dataService.id,
               resourceEndpoint = dataService.roles.first().resourceEndpoint,
               MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
             )
         }
       },
   )
-}

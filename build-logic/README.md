@@ -17,3 +17,4 @@ This module contains plugins for Gradle, providing structured automation and enh
 - **LintPlugin**
 - **LokalisePlugin**
 - **SnapshotsPlugin**
+- **[HealthDataConfigPlugin](#HEALTH_DATA_CONFIG.md)**

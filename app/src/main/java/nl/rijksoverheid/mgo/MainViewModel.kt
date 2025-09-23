@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
@@ -91,7 +92,7 @@ internal class MainViewModel
         }
 
         launch(ioDispatcher) {
-          initHealthDataFetching.invoke()
+          initHealthDataFetching.invoke().collect()
         }
       }
     }

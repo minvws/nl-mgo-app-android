@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.hcimParser
 
 import android.annotation.SuppressLint
 import com.whl.quickjs.wrapper.QuickJSContext
+import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import java.io.File
 
 class JvmQuickJsRepository : QuickJsRepository {
@@ -18,7 +19,7 @@ class JvmQuickJsRepository : QuickJsRepository {
     // Load javascript file with functions that we share between clients
     val jsCode =
       this::class.java.classLoader
-        ?.getResource("script.js")!!
+        ?.getResource("mgo-hcim-api.iife.js")!!
         .readText(Charsets.UTF_8)
 
     // Create QuickJS

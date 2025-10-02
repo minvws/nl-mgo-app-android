@@ -98,9 +98,8 @@ class QuickJsRunner(
       Timber.v("Bla " + test)
 
       // 5️⃣ Functie aanroepen
-      val safeJson = escapeJsonForJs(fhirJson)
 
-      val scriptCall = "HcimApi.getBundleResourcesJson(\"$safeJson\");"
+      val scriptCall = "HcimApi;"
       val result = jsContext.evaluate(scriptCall) as String
       Timber.v("Result: " + result)
       return result
@@ -111,13 +110,4 @@ class QuickJsRunner(
       jsContext.destroy()
     }
   }
-}
-
-fun escapeJsonForJs(json: String): String {
-  return json
-    .replace("\\", "\\\\") // backslash escapen
-    .replace("\"", "\\\"") // dubbele quotes escapen
-    .replace("\n", "\\n") // nieuwe regels escapen
-    .replace("\r", "\\r") // carriage return escapen
-    .replace("\t", "\\t") // tabs escapen
 }

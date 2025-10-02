@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.data.hcimParser
 
 import com.whl.quickjs.wrapper.QuickJSContext
 import com.whl.quickjs.wrapper.QuickJSException
-import java.io.File
 
 class QuickJsRunnerJvm {
   fun callGetBundleResourcesJson(): String {

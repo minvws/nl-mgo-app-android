@@ -1,11 +1,9 @@
 package nl.rijksoverheid.mgo
 
-import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +14,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
-import nl.rijksoverheid.mgo.data.hcimParser.QuickJsRunner
 import nl.rijksoverheid.mgo.data.healthData.health.InitHealthDataFetching
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
@@ -56,7 +53,6 @@ import javax.inject.Named
 internal class MainViewModel
   @Inject
   constructor(
-    @ApplicationContext val context: Context,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     val showDeviceRootedDialog: ShowDeviceRootedDialog,
     private val appLocked: AppLocked,
@@ -97,11 +93,6 @@ internal class MainViewModel
 
         launch(ioDispatcher) {
           initHealthDataFetching.invoke().collect()
-        }
-
-        launch(ioDispatcher) {
-          val runner = QuickJsRunner(context)
-          runner.callGetBundleResourcesJson()
         }
       }
     }

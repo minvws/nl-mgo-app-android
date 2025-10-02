@@ -217,4 +217,6 @@ dependencies {
   androidTestImplementation(libs.androidx.test.core)
   androidTestImplementation(libs.compose.ui.test.junit4)
   androidTestImplementation(projects.component.pincode)
+
+  implementation(projects.data.hcimParser)
 }

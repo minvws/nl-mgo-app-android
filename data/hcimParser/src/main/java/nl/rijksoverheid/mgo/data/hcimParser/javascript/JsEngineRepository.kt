@@ -23,7 +23,6 @@ class JsEngineRepository
       val returnedString = functionCall.call(*parameters.toTypedArray()) as String
 
       // Release objects
-      globalObject.release()
       functionCall.release()
 
       // Return the output of the function

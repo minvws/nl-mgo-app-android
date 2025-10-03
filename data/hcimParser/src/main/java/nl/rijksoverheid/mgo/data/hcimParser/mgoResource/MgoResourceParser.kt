@@ -4,8 +4,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import nl.rijksoverheid.mgo.data.hcimParser.fhir.FhirVersion
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
+import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import javax.inject.Inject
 
 class MgoResourceParser

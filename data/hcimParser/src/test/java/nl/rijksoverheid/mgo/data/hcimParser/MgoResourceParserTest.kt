@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.data.hcimParser
 
-import nl.rijksoverheid.mgo.data.hcimParser.fhir.FhirVersion
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
+import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

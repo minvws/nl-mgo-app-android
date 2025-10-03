@@ -20,6 +20,13 @@ class JsEngineRepository
       val functionCall = hcimApi.getJSFunction(functionName)
 
       // Execute function call
-      return functionCall.call(*parameters.toTypedArray()) as String
+      val returnedString = functionCall.call(*parameters.toTypedArray()) as String
+
+      // Release objects
+      globalObject.release()
+      functionCall.release()
+
+      // Return the output of the function
+      return returnedString
     }
   }

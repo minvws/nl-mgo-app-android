@@ -18,8 +18,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("SINGLE_VALUE")
-                data class SingleValue(
-    val display: List<SingleValuePropertiesDisplay>? = null,
+data class SingleValue(
+    val display: String? = null,
     val label: String,
     val type: String = "SINGLE_VALUE"
 ) : UiElement {

@@ -66,4 +66,4 @@ data object Profiles {
     val zibMedicalDeviceProduct: String = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct"
     val gpEncounterReport: String = "http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport"
     val nlCoreOrganization: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization"
- } 
+ }

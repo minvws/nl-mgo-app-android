@@ -11,7 +11,7 @@ android {
 }
 
 dependencies {
-  api("wang.harlon.quickjs:wrapper-android:3.2.3")
-  testImplementation("wang.harlon.quickjs:wrapper-java:3.2.3")
+  api(libs.quickjs.wrapper.android)
+  testImplementation(libs.quickjs.wrapper.java)
   testImplementation(testFixtures(projects.data.hcimParser))
 }

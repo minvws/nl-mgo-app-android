@@ -11,4 +11,5 @@ android {
 }
 
 dependencies {
+  testFixturesImplementation(libs.kotlinx.serialization.json)
 }

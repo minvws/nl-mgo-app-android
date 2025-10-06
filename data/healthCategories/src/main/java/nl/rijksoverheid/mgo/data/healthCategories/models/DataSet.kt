@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.healthCategories.models
 
 import kotlinx.serialization.Serializable
 
+typealias DataSetId = String
 typealias DataSetConfigEndpointId = String
 
 /**
@@ -17,7 +18,7 @@ typealias DataSetConfigEndpointId = String
  */
 @Serializable
 data class DataSet(
-  val id: String,
+  val id: DataSetId,
   val name: String,
   val fhirVersion: String,
   val endpoints: List<Endpoint>,

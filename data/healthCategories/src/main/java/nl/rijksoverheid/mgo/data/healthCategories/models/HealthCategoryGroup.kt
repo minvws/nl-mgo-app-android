@@ -49,3 +49,15 @@ data class HealthCategoryGroup(
     )
   }
 }
+
+fun HealthCategoryGroup.HealthCategory.getEndpoints(dataSets: List<DataSet>): List<EndpointsWithDataSetId> {
+  val profilesForCategory = this.subcategories.map { subcategory -> subcategory.profiles }.flatten()
+  return dataSets
+    .map { dataSet ->
+      val endpoints = dataSet.endpoints.filter { endpoint -> endpoint.profiles.any { it in profilesForCategory } }
+      EndpointsWithDataSetId(
+        id = dataSet.id,
+        endpoints = endpoints,
+      )
+    }.filter { it.endpoints.isNotEmpty() }
+}

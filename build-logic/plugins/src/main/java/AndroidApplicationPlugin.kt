@@ -36,7 +36,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
       apply(LintPlugin::class.java)
       apply(LokalisePlugin::class.java)
       apply(HcimParserPlugin::class.java)
-      apply(HealthDataConfigPlugin::class.java)
+      apply(HealthCategoriesPlugin::class.java)
       apply(CiPlugin::class.java)
     }
   }

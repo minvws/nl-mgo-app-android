@@ -193,7 +193,6 @@ dependencies {
   implementation(projects.data.healthcare)
   implementation(projects.data.pincode)
   implementation(projects.data.digid)
-  implementation(projects.data.healthData)
   implementation(libs.androidx.lifecycle.process)
 
   // ================================
@@ -207,7 +206,6 @@ dependencies {
   testImplementation(testFixtures(projects.framework.featuretoggle))
   testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.data.fhirParser))
-  testImplementation(testFixtures(projects.data.healthData))
   testImplementation(libs.mockk.android)
 
   androidTestImplementation(libs.dagger.hilt.testing)

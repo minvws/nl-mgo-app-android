@@ -1,24 +1,24 @@
 package nl.rijksoverheid.mgo.data.healthCategories
 
-import nl.rijksoverheid.mgo.data.healthCategories.models.getEndpoints
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class HealthCategoryGroupTest {
-  private val healthCategoriesRepository = JvmHealthCategoriesRepository()
+class GetEndpointsForHealthCategoryTest {
+  private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
+  private val usecase =
+    GetEndpointsForHealthCategory(
+      getDataSetsFromDisk = JvmGetDataSetsFromDisk(),
+    )
 
   @Test
   fun testGetEndpoints() {
-    // Given: Groups and data sets
-    val groups = healthCategoriesRepository.getGroups()
-    val dataSets = healthCategoriesRepository.getDataSets()
-
     // Given: The lifestyle health category
+    val groups = getHealthCategoriesFromDisk()
     val categories = groups.map { group -> group.categories }.flatten()
     val category = categories.first { category -> category.id == "lifestyle" }
 
     // When: Calling get endpoints
-    val endpointsWithDataSetId = category.getEndpoints(dataSets)
+    val endpointsWithDataSetId = usecase.invoke(category)
 
     // Then: Correct endpoints for that category are returned
     assertEquals(1, endpointsWithDataSetId.size)

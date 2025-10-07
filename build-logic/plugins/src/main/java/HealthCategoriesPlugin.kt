@@ -39,8 +39,10 @@ class HealthCategoriesPlugin : Plugin<Project> {
     // Move data-services folder to correct location
     val targetDataServicesFile = File(workingDir, "data-services")
     val destinationDataServicesFileMain = File(project.rootDir, "data/healthCategories/src/main/assets/data-services")
+    val destinationDataServicesFileTest = File(project.rootDir, "data/healthCategories/src/test/assets/data-services")
     val destinationDataServicesFileTestFixtures = File(project.rootDir, "data/healthCategories/src/testFixtures/resources/data-services")
     copyDirectoryRecursively(targetDataServicesFile, destinationDataServicesFileMain)
+    copyDirectoryRecursively(targetDataServicesFile, destinationDataServicesFileTest)
     copyDirectoryRecursively(targetDataServicesFile, destinationDataServicesFileTestFixtures)
   }
 }

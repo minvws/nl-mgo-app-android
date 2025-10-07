@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,9 +51,9 @@ class FhirRepository
           .addHeader("Accept", "application/fhir+json; fhirVersion=${fhirVersion.stringValue}")
           .build()
 
-      val response = okHttpClient.newCall(request).execute()
+      try {
+        val response = okHttpClient.newCall(request).execute()
 
-      if (response.isSuccessful) {
         // Get the response
         val json = response.body?.string() ?: "{}"
 
@@ -68,7 +69,7 @@ class FhirRepository
             jsonSource = jsonSource,
           )
         updateCachedFhirResponse(fhirResponse = fhirResponse)
-      } else {
+      } catch (e: IOException) {
         // Update the cached response with error state
         val fhirResponse =
           FhirResponse.Error(

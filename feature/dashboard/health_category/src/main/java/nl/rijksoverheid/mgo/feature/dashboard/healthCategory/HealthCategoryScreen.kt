@@ -269,7 +269,7 @@ private fun LazyListScope.LoadedContent(
               .padding(bottom = 16.dp),
           title = listItem.title,
           subtitle = listItem.subtitle,
-          onClick = { onClickListItem(listItem.organization, listItem.mgoResource) },
+          onClick = { },
         )
       }
     }

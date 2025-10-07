@@ -15,7 +15,7 @@ class MgoResourceParser
   ) {
     private val json = Json { ignoreUnknownKeys = true }
 
-    operator fun invoke(
+    suspend operator fun invoke(
       fhirResponse: String,
       fhirVersion: FhirVersion,
     ): List<MgoResource> {
@@ -53,9 +53,17 @@ class MgoResourceParser
             ?.jsonPrimitive
             ?.content ?: ""
 
+        val profile =
+          json
+            .parseToJsonElement(getMgoResourceJsonOutput)
+            .jsonObject["profile"]
+            ?.jsonPrimitive
+            ?.content ?: ""
+
         val mgoResource =
           MgoResource(
             referenceId = referenceId,
+            profile = profile,
             json = getMgoResourceJsonOutput,
           )
 

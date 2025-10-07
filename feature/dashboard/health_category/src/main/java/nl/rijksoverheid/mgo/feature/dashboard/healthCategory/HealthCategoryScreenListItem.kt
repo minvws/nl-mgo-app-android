@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.TEST_MGO_RESOURCE
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR

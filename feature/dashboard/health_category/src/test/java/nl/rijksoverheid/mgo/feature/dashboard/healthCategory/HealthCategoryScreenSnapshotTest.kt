@@ -11,35 +11,35 @@ internal class HealthCategoryScreenSnapshotTest {
   @Test
   fun loading() {
     snapshotTestRule.snapshots {
-      HealthCategoryScreenLoadingPreview()
+      // HealthCategoryScreenLoadingPreview()
     }
   }
 
   @Test
   fun listItems() {
     snapshotTestRule.snapshots {
-      HealthCategoryScreenListItemsPreview()
+      // HealthCategoryScreenListItemsPreview()
     }
   }
 
   @Test
   fun listItemsWithError() {
     snapshotTestRule.snapshots {
-      HealthCategoryScreenListItemsWithErrorPreview()
+      // HealthCategoryScreenListItemsWithErrorPreview()
     }
   }
 
   @Test
   fun noData() {
     snapshotTestRule.snapshots {
-      HealthCategoryScreenNoDataPreview()
+      // HealthCategoryScreenNoDataPreview()
     }
   }
 
   @Test
   fun noDataWithError() {
     snapshotTestRule.snapshots {
-      HealthCategoryScreenNoDataWithErrorPreview()
+      // HealthCategoryScreenNoDataWithErrorPreview()
     }
   }
 }

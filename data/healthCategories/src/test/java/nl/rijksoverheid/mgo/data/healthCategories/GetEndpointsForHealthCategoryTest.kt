@@ -18,7 +18,7 @@ class GetEndpointsForHealthCategoryTest {
     val category = categories.first { category -> category.id == "lifestyle" }
 
     // When: Calling get endpoints
-    val endpointsWithDataSetId = usecase.invoke(category)
+    val endpointsWithDataSetId = usecase.invoke(category = category, filterDataSetIds = listOf("48"))
 
     // Then: Correct endpoints for that category are returned
     assertEquals(1, endpointsWithDataSetId.size)

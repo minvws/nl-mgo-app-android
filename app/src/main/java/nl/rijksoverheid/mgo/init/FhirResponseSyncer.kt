@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -31,11 +32,12 @@ class FhirResponseSyncer
       val categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten()
       val dataServices = dataServices.map { dataService -> dataService }
       for (category in categories) {
-        val endpointsWithDataSet = getEndpointsForHealthCategory(category = category)
+        val endpointsWithDataSet = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataServices.map { it.id })
 
         for (endpointWithDataSet in endpointsWithDataSet) {
           for (endpoint in endpointWithDataSet.endpoints) {
             for (dataService in dataServices) {
+              Timber.v("Data service: " + dataService.id)
               fhirRepository.fetch(
                 organizationId = id,
                 dataServiceId = dataService.id,

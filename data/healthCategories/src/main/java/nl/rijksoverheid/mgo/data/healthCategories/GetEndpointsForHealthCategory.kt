@@ -9,8 +9,11 @@ class GetEndpointsForHealthCategory
   constructor(
     private val getDataSetsFromDisk: GetDataSetsFromDisk,
   ) {
-    operator fun invoke(category: HealthCategoryGroup.HealthCategory): List<EndpointsWithDataSet> {
-      val dataSets = getDataSetsFromDisk()
+    operator fun invoke(
+      category: HealthCategoryGroup.HealthCategory,
+      filterDataSetIds: List<String>,
+    ): List<EndpointsWithDataSet> {
+      val dataSets = getDataSetsFromDisk().filter { dataSet -> filterDataSetIds.contains(dataSet.id) }
       val profilesForCategory = category.subcategories.map { subcategory -> subcategory.profiles }.flatten()
       return dataSets
         .map { dataSet ->

@@ -14,17 +14,17 @@ class UiSchemaParser
   ) {
     private val json = Json { ignoreUnknownKeys = true }
 
-    fun getSummary(
+    suspend fun getSummary(
       mgoResourceJson: String,
       organizationName: String,
     ): HealthUiSchema = getUiSchema(functionName = "getSummaryJson", mgoResourceJson = mgoResourceJson, organizationName = organizationName)
 
-    fun getDetails(
+    suspend fun getDetails(
       mgoResourceJson: String,
       organizationName: String,
     ): HealthUiSchema = getUiSchema(functionName = "getDetailsJson", mgoResourceJson = mgoResourceJson, organizationName = organizationName)
 
-    private fun getUiSchema(
+    private suspend fun getUiSchema(
       functionName: String,
       mgoResourceJson: String,
       organizationName: String,

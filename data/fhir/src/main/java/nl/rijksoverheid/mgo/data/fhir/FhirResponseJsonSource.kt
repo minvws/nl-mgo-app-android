@@ -11,3 +11,9 @@ sealed class FhirResponseJsonSource {
     val json: String,
   ) : FhirResponseJsonSource()
 }
+
+fun FhirResponseJsonSource.getJsonString() =
+  when (this) {
+    is FhirResponseJsonSource.Disk -> this.json.readText()
+    is FhirResponseJsonSource.Memory -> this.json
+  }

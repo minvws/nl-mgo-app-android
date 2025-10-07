@@ -11,12 +11,15 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
-import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
@@ -25,6 +28,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCateg
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
+import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import javax.inject.Named
 
 /**
@@ -48,6 +52,7 @@ internal class HealthCategoryScreenViewModel
     @Assisted("category") private val category: HealthCategoryGroup.HealthCategory,
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
+    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     private val organizationRepository: OrganizationRepository,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val mgoResourceRepository: MgoResourceRepository,
@@ -55,7 +60,7 @@ internal class HealthCategoryScreenViewModel
     private val createPdf: CreatePdfForHealthCategories,
     private val fhirRepository: FhirRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
-    private val mgoResourceParser: MgoResourceParser,
+    private val listItemGroupMapper: ListItemGroupMapper,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -73,21 +78,68 @@ internal class HealthCategoryScreenViewModel
     val openPdfViewer = _openPdfViewer.asSharedFlow()
 
     init {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
+        organizationRepository.storedOrganizationsFlow.collectLatest { organizations ->
+          // Get all the fhir responses for this category that we can observe
+          val fhirResponseFlows =
+            organizations
+              .map { organization ->
+                val dataSetIds = organization.dataServices.map { it.id }
+                val endpointsForCategory = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataSetIds).map { it.endpoints }.flatten()
+                organization.dataServices.map { dataService ->
+                  endpointsForCategory.map { endpoint ->
+                    fhirRepository.observe(
+                      organizationId = organization.id,
+                      dataServiceId = dataService.id,
+                      endpointId = endpoint.id,
+                    )
+                  }
+                }
+              }.flatten()
+              .flatten()
+
+          // Observe the fhir responses
+          combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest { responses ->
+            // True if not all data was fetched
+            val hasError = responses.filterIsInstance<FhirResponse.Error>().isNotEmpty()
+
+            // Get all the responses that are successful
+            val successResponses = responses.filterIsInstance<FhirResponse.Success>()
+
+            // Create list items from them to show in the UI
+            val listItemGroups = listItemGroupMapper.invoke(category = category, fhirResponses = successResponses)
+
+            // Update view state
+            _viewState.update { viewState ->
+              viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.Loaded(listItemGroups), showErrorBanner = hasError)
+            }
+          }
+        }
       }
     }
 
     fun retry() {
-//      viewModelScope.launch {
-//        if (filterOrganization == null) {
-//          val organizations = organizationRepository.get()
-//          for (organization in organizations) {
-//            healthCareDataStatesRepository.refresh(category = category, organization = organization)
-//          }
-//        } else {
-//          healthCareDataStatesRepository.refresh(category = category, organization = filterOrganization)
-//        }
-//      }
+      viewModelScope.launch(ioDispatcher) {
+        val organizations = organizationRepository.get()
+        for (organization in organizations) {
+          val dataSetIds = organization.dataServices.map { it.id }
+          val endpointsWithDataSet = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataSetIds)
+          for (endpointWithDataSet in endpointsWithDataSet) {
+            for (endpoint in endpointWithDataSet.endpoints) {
+              for (dataService in organization.dataServices) {
+                fhirRepository.fetch(
+                  organizationId = organization.id,
+                  dataServiceId = dataService.id,
+                  endpointId = endpoint.id,
+                  resourceEndpoint = dataService.resourceEndpoint,
+                  fhirVersion = FhirVersion.valueOf(endpointWithDataSet.dataSet.fhirVersion),
+                  url = "$dvaApiBaseUrl/fhir${endpoint.url}",
+                )
+              }
+            }
+          }
+        }
+      }
     }
 
     fun generatePdf() {

@@ -61,8 +61,6 @@ internal class HealthCategoriesListItemViewModel
 
     init {
       viewModelScope.launch(ioDispatcher) {
-        val endpointsForCategory = getEndpointsForHealthCategory(category).map { it.endpoints }.flatten()
-
         organizationRepository.storedOrganizationsFlow.collectLatest { organizations ->
           // Always start with loading state whenever a organization has been added
           _listItemState.update { HealthCategoriesListItemState.LOADING }
@@ -71,6 +69,8 @@ internal class HealthCategoriesListItemViewModel
           val fhirResponseFlows =
             organizations
               .map { organization ->
+                val dataSetIds = organization.dataServices.map { it.id }
+                val endpointsForCategory = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataSetIds).map { it.endpoints }.flatten()
                 organization.dataServices.map { dataService ->
                   endpointsForCategory.map { endpoint ->
                     fhirRepository.observe(

@@ -2,11 +2,9 @@ package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
+import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
@@ -36,18 +34,14 @@ class AppInitializer
     private val setDigidAuthenticated: SetDigidAuthenticated,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val organizationRepository: OrganizationRepository,
-    private val fhirResponseSyncer: FhirResponseSyncer,
+    private val quickJsRepository: QuickJsRepository,
   ) {
-    suspend fun init() =
-      withContext(ioDispatcher) {
-        launch {
-          fhirResponseSyncer().collect()
-        }
-
-        cacheFileStore.deleteAll()
-        featureToggleLocalDataSource.init(featureToggleRepository.getAll())
-        jsRuntimeRepository.load()
-      }
+    suspend fun init() {
+      quickJsRepository.create()
+      cacheFileStore.deleteAll()
+      featureToggleLocalDataSource.init(featureToggleRepository.getAll())
+      jsRuntimeRepository.load()
+    }
 
     /**
      * Can be used to set a certain state of the app when launching. Useful for e2e tests.

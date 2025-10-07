@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
@@ -39,21 +38,16 @@ class AppInitializer
     private val organizationRepository: OrganizationRepository,
     private val fhirResponseSyncer: FhirResponseSyncer,
   ) {
-    suspend fun init() {
-      // Async
+    suspend fun init() =
       withContext(ioDispatcher) {
         launch {
           fhirResponseSyncer().collect()
         }
-      }
 
-      // Sync
-      runBlocking {
         cacheFileStore.deleteAll()
         featureToggleLocalDataSource.init(featureToggleRepository.getAll())
         jsRuntimeRepository.load()
       }
-    }
 
     /**
      * Can be used to set a certain state of the app when launching. Useful for e2e tests.

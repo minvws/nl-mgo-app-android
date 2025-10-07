@@ -6,9 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoriesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
@@ -29,13 +29,15 @@ internal class HealthCategoriesScreenViewModel
   constructor(
     healthCareCategoriesRepository: HealthCareCategoriesRepository,
     organizationRepository: OrganizationRepository,
+    getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     @Named("keyValueStore") keyValueStore: KeyValueStore,
   ) : ViewModel() {
+    private val groups = getHealthCategoriesFromDisk()
     private val initialViewState =
       HealthCategoriesScreenViewState.initialState(
         providers = runBlocking { organizationRepository.get() },
         automaticLocalisationEnabled = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION),
-        categories = runBlocking { healthCareCategoriesRepository.observe().first() },
+        groups = groups,
       )
     private val _viewState = MutableStateFlow(initialViewState)
     val viewState =
@@ -44,8 +46,7 @@ internal class HealthCategoriesScreenViewModel
           name = viewState.name,
           providers = providers,
           automaticLocalisationEnabled = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION),
-          categories = categories,
-          favorites = categories.filter { category -> category.favoritePosition != -1 }.sortedBy { category -> category.favoritePosition },
+          groups = groups,
         )
       }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
   }

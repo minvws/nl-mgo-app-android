@@ -2,8 +2,9 @@ package nl.rijksoverheid.mgo.data.fhir
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,13 +24,14 @@ class FhirRepository
       organizationId: String,
       dataServiceId: String,
       endpointId: String,
-    ): Flow<FhirResponse?> =
-      cachedFhirResponses.map { responses ->
-        responses.firstOrNull { response ->
-          response.organizationId == organizationId && response.dataServiceId == dataServiceId &&
-            response.endpointId == endpointId
-        }
-      }
+    ): Flow<FhirResponse> =
+      cachedFhirResponses
+        .mapNotNull { responses ->
+          responses.firstOrNull { response ->
+            response.organizationId == organizationId && response.dataServiceId == dataServiceId &&
+              response.endpointId == endpointId
+          }
+        }.distinctUntilChanged()
 
     suspend fun fetch(
       organizationId: String,

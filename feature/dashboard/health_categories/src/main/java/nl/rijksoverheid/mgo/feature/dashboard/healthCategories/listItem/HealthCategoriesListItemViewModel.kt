@@ -6,17 +6,23 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
+import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import javax.inject.Named
 
 /**
  * The [ViewModel] for [HealthCategoriesListItem].
@@ -32,14 +38,18 @@ internal class HealthCategoriesListItemViewModel
   @AssistedInject
   constructor(
     @Assisted private val filterOrganization: MgoOrganization?,
-    @Assisted private val category: HealthCareCategoryId,
+    @Assisted private val category: HealthCategoryGroup.HealthCategory,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
+    private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
+    private val organizationRepository: OrganizationRepository,
+    private val fhirRepository: FhirRepository,
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
       fun create(
         filterOrganization: MgoOrganization?,
-        category: HealthCareCategoryId,
+        category: HealthCategoryGroup.HealthCategory,
       ): HealthCategoriesListItemViewModel
     }
 
@@ -50,26 +60,34 @@ internal class HealthCategoriesListItemViewModel
     val listItemState = _listItemState.stateIn(viewModelScope, SharingStarted.Lazily, HealthCategoriesListItemState.LOADING)
 
     init {
-      viewModelScope.launch {
-        healthCareDataStatesRepository
-          .observe(category = category, filterOrganization = filterOrganization)
-          .distinctUntilChanged()
-          .collectLatest { states ->
-            if (states.isNotEmpty()) {
-              val loading = states.any { state -> state is HealthCareDataState.Loading }
-              val empty = states.all { state -> state is HealthCareDataState.Empty }
-              val amountOfItems =
-                states
-                  .filterIsInstance<HealthCareDataState.Loaded>()
-                  .sumOf { state -> state.results.sumOf { it.getOrNull()?.size ?: 0 } }
-              when {
-                loading -> _listItemState.update { HealthCategoriesListItemState.LOADING }
-                empty -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
-                amountOfItems == 0 -> _listItemState.update { HealthCategoriesListItemState.NO_DATA }
-                else -> _listItemState.update { HealthCategoriesListItemState.LOADED }
-              }
-            }
+      viewModelScope.launch(ioDispatcher) {
+        val endpointsForCategory = getEndpointsForHealthCategory(category).map { it.endpoints }.flatten()
+
+        organizationRepository.storedOrganizationsFlow.collectLatest { organizations ->
+          // Always start with loading state whenever a organization has been added
+          _listItemState.update { HealthCategoriesListItemState.LOADING }
+
+          // Get all the fhir responses for this category that we can observe
+          val fhirResponseFlows =
+            organizations
+              .map { organization ->
+                organization.dataServices.map { dataService ->
+                  endpointsForCategory.map { endpoint ->
+                    fhirRepository.observe(
+                      organizationId = organization.id,
+                      dataServiceId = dataService.id,
+                      endpointId = endpoint.id,
+                    )
+                  }
+                }
+              }.flatten()
+              .flatten()
+
+          // Observe the fhir responses
+          combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest {
+            _listItemState.update { HealthCategoriesListItemState.LOADED }
           }
+        }
       }
     }
   }

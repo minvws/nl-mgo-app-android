@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 /**
@@ -13,21 +13,19 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 data class HealthCategoriesScreenViewState(
   val name: String,
   val providers: List<MgoOrganization>,
-  val categories: List<HealthCareCategory>,
-  val favorites: List<HealthCareCategory>,
+  val groups: List<HealthCategoryGroup>,
   val automaticLocalisationEnabled: Boolean,
 ) {
   companion object {
     fun initialState(
-      categories: List<HealthCareCategory>,
+      groups: List<HealthCategoryGroup>,
       providers: List<MgoOrganization>,
       automaticLocalisationEnabled: Boolean,
     ) = HealthCategoriesScreenViewState(
       name = "Wendy de Bruijn",
       providers = providers,
       automaticLocalisationEnabled = automaticLocalisationEnabled,
-      categories = categories,
-      favorites = categories.filter { category -> category.favoritePosition != -1 },
+      groups = groups,
     )
   }
 }

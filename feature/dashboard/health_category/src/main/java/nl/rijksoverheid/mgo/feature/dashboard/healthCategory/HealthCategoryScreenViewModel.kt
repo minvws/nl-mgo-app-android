@@ -11,18 +11,17 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
+import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
+import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.getProfiles
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
@@ -46,7 +45,7 @@ import javax.inject.Named
 internal class HealthCategoryScreenViewModel
   @AssistedInject
   constructor(
-    @Assisted("category") private val category: HealthCareCategoryId,
+    @Assisted("category") private val category: HealthCategoryGroup.HealthCategory,
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
@@ -54,11 +53,14 @@ internal class HealthCategoryScreenViewModel
     private val mgoResourceRepository: MgoResourceRepository,
     private val uiSchemaMapper: UiSchemaMapper,
     private val createPdf: CreatePdfForHealthCategories,
+    private val fhirRepository: FhirRepository,
+    private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
+    private val mgoResourceParser: MgoResourceParser,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
       fun create(
-        @Assisted("category") category: HealthCareCategoryId,
+        @Assisted("category") category: HealthCategoryGroup.HealthCategory,
         @Assisted("filterOrganization") filterOrganization: MgoOrganization? = null,
       ): HealthCategoryScreenViewModel
     }
@@ -72,92 +74,32 @@ internal class HealthCategoryScreenViewModel
 
     init {
       viewModelScope.launch {
-        healthCareDataStatesRepository
-          .observe(
-            category = category,
-            filterOrganization = filterOrganization,
-          ).distinctUntilChanged()
-          .collectLatest { states ->
-            val loading = states.any { state -> state is HealthCareDataState.Loading }
-            val empty = states.all { state -> state is HealthCareDataState.Empty }
-            val listItems =
-              states
-                .map { state ->
-                  state.toListItems(
-                    organization = state.organization,
-                    category = state.category,
-                  )
-                }.flatten()
-            val error =
-              states
-                .filterIsInstance<HealthCareDataState.Loaded>()
-                .any { state -> state.results.any { result -> result.isFailure } }
-            _viewState.update {
-              val listItemState =
-                when {
-                  loading -> HealthCategoryScreenViewState.ListItemsState.Loading
-                  empty -> HealthCategoryScreenViewState.ListItemsState.NoData
-                  else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
-                }
-              HealthCategoryScreenViewState(
-                category = category,
-                showErrorBanner = error,
-                listItemsState = listItemState,
-              )
-            }
-          }
       }
     }
 
     fun retry() {
-      viewModelScope.launch {
-        if (filterOrganization == null) {
-          val organizations = organizationRepository.get()
-          for (organization in organizations) {
-            healthCareDataStatesRepository.refresh(category = category, organization = organization)
-          }
-        } else {
-          healthCareDataStatesRepository.refresh(category = category, organization = filterOrganization)
-        }
-      }
+//      viewModelScope.launch {
+//        if (filterOrganization == null) {
+//          val organizations = organizationRepository.get()
+//          for (organization in organizations) {
+//            healthCareDataStatesRepository.refresh(category = category, organization = organization)
+//          }
+//        } else {
+//          healthCareDataStatesRepository.refresh(category = category, organization = filterOrganization)
+//        }
+//      }
     }
 
     fun generatePdf() {
-      viewModelScope.launch(ioDispatcher) {
-        _openPdfViewer.tryEmit(PdfViewerState.Loading)
-        val listItemGroups = (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup ?: listOf()
-        val file =
-          createPdf.invoke(
-            category = category,
-            listItemGroups = listItemGroups,
-          )
-        _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
-      }
-    }
-
-    private suspend fun HealthCareDataState.toListItems(
-      organization: MgoOrganization,
-      category: HealthCareCategoryId,
-    ): List<HealthCategoryScreenListItemsGroup> {
-      return if (this is HealthCareDataState.Loaded) {
-        // Get all the mgo resources as one big list
-        val mgoResources =
-          this.results
-            .mapNotNull { result -> result.getOrNull() }
-            .flatten()
-
-        // Filter them to only display the onces we want to show
-        val filteredMgoResources = mgoResourceRepository.filter(resources = mgoResources, profiles = category.getProfiles())
-
-        // Group them by category
-        val groupedMgoResources =
-          filteredMgoResources
-            .groupBy { mgoResource -> mgoResource.getGroupHeading() }
-
-        // Map it to own list items group class
-        return groupedMgoResources.toListItemsGroup(uiSchemaMapper = uiSchemaMapper, organization = organization)
-      } else {
-        listOf()
-      }
+//      viewModelScope.launch(ioDispatcher) {
+//        _openPdfViewer.tryEmit(PdfViewerState.Loading)
+//        val listItemGroups = (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup ?: listOf()
+//        val file =
+//          createPdf.invoke(
+//            category = category,
+//            listItemGroups = listItemGroups,
+//          )
+//        _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
+//      }
     }
   }

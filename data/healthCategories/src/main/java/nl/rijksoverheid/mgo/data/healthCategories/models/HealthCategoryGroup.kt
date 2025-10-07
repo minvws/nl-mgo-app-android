@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.data.healthCategories.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 typealias HealthCategoryProfile = String
@@ -30,12 +32,13 @@ data class HealthCategoryGroup(
    * @property subcategories List of [Subcategory] objects associated with this category.
    */
   @Serializable
+  @Parcelize
   data class HealthCategory(
     val id: HealthCategoryId,
     val heading: String,
     val subheading: String,
     val subcategories: List<Subcategory>,
-  ) {
+  ) : Parcelable {
     /**
      * Represents a leaf-level subcategory within a [HealthCategory].
      *
@@ -43,9 +46,10 @@ data class HealthCategoryGroup(
      * @param profiles The profiles of the category. Read more about profiles and how they are used in the README.md of this module.
      */
     @Serializable
+    @Parcelize
     data class Subcategory(
       val heading: String,
       val profiles: List<String>,
-    )
+    ) : Parcelable
   }
 }

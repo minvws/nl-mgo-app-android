@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import getStringResourceByName
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
@@ -48,11 +49,10 @@ import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
-import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
-import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -72,7 +72,7 @@ object HealthCategoryScreenTestTag {
  */
 @Composable
 fun HealthCategoryScreen(
-  category: HealthCareCategoryId,
+  category: HealthCategoryGroup.HealthCategory,
   onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
   onNavigateBack: () -> Unit,
   filterOrganization: MgoOrganization? = null,
@@ -87,7 +87,7 @@ fun HealthCategoryScreen(
   var pdfViewerState: PdfViewerState? by remember { mutableStateOf(null) }
   pdfViewerState?.let { state ->
     PdfViewerBottomSheet(
-      appBarTitle = context.getString(category.getTitle(context)),
+      appBarTitle = context.getString(context.getStringResourceByName(category.heading)),
       state = state,
       onDismissRequest = {
         pdfViewerState = null
@@ -104,7 +104,7 @@ fun HealthCategoryScreen(
   var showExportPdfDialog by remember { mutableStateOf(false) }
   if (showExportPdfDialog) {
     MgoAlertDialog(
-      heading = stringResource(CopyR.string.export_pdf_dialog_heading, context.getString(category.getTitle(context)).lowercase()),
+      heading = stringResource(CopyR.string.export_pdf_dialog_heading, context.getString(context.getStringResourceByName(category.heading)).lowercase()),
       subHeading = stringResource(CopyR.string.export_pdf_dialog_subheading),
       positiveButtonText = stringResource(CopyR.string.export_pdf_dialog_create_document),
       positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
@@ -153,7 +153,7 @@ private fun HealthCategoryScreenContent(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       MgoLargeTopAppBar(
-        title = stringResource(viewState.category.getTitle(context)),
+        title = stringResource(context.getStringResourceByName(viewState.category.heading)),
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
         actions = {
@@ -363,100 +363,100 @@ private fun HealthCategoryCard(
   }
 }
 
-@DefaultPreviews
-@Composable
-internal fun HealthCategoryScreenLoadingPreview() {
-  MgoTheme {
-    HealthCategoryScreenContent(
-      viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
-          category = HealthCareCategoryId.MEDICATIONS,
-          listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
-        ),
-      onClickListItem = { _, _ -> },
-      onRetry = {},
-      onGeneratePdf = {},
-      onNavigateBack = {},
-    )
-  }
-}
-
-@DefaultPreviews
-@Composable
-internal fun HealthCategoryScreenListItemsPreview() {
-  MgoTheme {
-    HealthCategoryScreenContent(
-      viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
-          category = HealthCareCategoryId.MEDICATIONS,
-          listItemsState =
-            HealthCategoryScreenViewState.ListItemsState.Loaded(
-              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
-            ),
-        ),
-      onClickListItem = { _, _ -> },
-      onRetry = {},
-      onGeneratePdf = {},
-      onNavigateBack = {},
-    )
-  }
-}
-
-@DefaultPreviews
-@Composable
-internal fun HealthCategoryScreenListItemsWithErrorPreview() {
-  MgoTheme {
-    HealthCategoryScreenContent(
-      viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
-          category = HealthCareCategoryId.MEDICATIONS,
-          listItemsState =
-            HealthCategoryScreenViewState.ListItemsState.Loaded(
-              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
-            ),
-          showErrorBanner = true,
-        ),
-      onClickListItem = { _, _ -> },
-      onRetry = {},
-      onGeneratePdf = {},
-      onNavigateBack = {},
-    )
-  }
-}
-
-@DefaultPreviews
-@Composable
-internal fun HealthCategoryScreenNoDataPreview() {
-  MgoTheme {
-    HealthCategoryScreenContent(
-      viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
-          category = HealthCareCategoryId.MEDICATIONS,
-          listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
-        ),
-      onClickListItem = { _, _ -> },
-      onRetry = {},
-      onGeneratePdf = {},
-      onNavigateBack = {},
-    )
-  }
-}
-
-@DefaultPreviews
-@Composable
-internal fun HealthCategoryScreenNoDataWithErrorPreview() {
-  MgoTheme {
-    HealthCategoryScreenContent(
-      viewState =
-        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
-          category = HealthCareCategoryId.MEDICATIONS,
-          listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
-          showErrorBanner = true,
-        ),
-      onClickListItem = { _, _ -> },
-      onRetry = {},
-      onGeneratePdf = {},
-      onNavigateBack = {},
-    )
-  }
-}
+// @DefaultPreviews
+// @Composable
+// internal fun HealthCategoryScreenLoadingPreview() {
+//  MgoTheme {
+//    HealthCategoryScreenContent(
+//      viewState =
+//        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+//          category = HealthCareCategoryId.MEDICATIONS,
+//          listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
+//        ),
+//      onClickListItem = { _, _ -> },
+//      onRetry = {},
+//      onGeneratePdf = {},
+//      onNavigateBack = {},
+//    )
+//  }
+// }
+//
+// @DefaultPreviews
+// @Composable
+// internal fun HealthCategoryScreenListItemsPreview() {
+//  MgoTheme {
+//    HealthCategoryScreenContent(
+//      viewState =
+//        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+//          category = HealthCareCategoryId.MEDICATIONS,
+//          listItemsState =
+//            HealthCategoryScreenViewState.ListItemsState.Loaded(
+//              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
+//            ),
+//        ),
+//      onClickListItem = { _, _ -> },
+//      onRetry = {},
+//      onGeneratePdf = {},
+//      onNavigateBack = {},
+//    )
+//  }
+// }
+//
+// @DefaultPreviews
+// @Composable
+// internal fun HealthCategoryScreenListItemsWithErrorPreview() {
+//  MgoTheme {
+//    HealthCategoryScreenContent(
+//      viewState =
+//        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+//          category = HealthCareCategoryId.MEDICATIONS,
+//          listItemsState =
+//            HealthCategoryScreenViewState.ListItemsState.Loaded(
+//              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_1),
+//            ),
+//          showErrorBanner = true,
+//        ),
+//      onClickListItem = { _, _ -> },
+//      onRetry = {},
+//      onGeneratePdf = {},
+//      onNavigateBack = {},
+//    )
+//  }
+// }
+//
+// @DefaultPreviews
+// @Composable
+// internal fun HealthCategoryScreenNoDataPreview() {
+//  MgoTheme {
+//    HealthCategoryScreenContent(
+//      viewState =
+//        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+//          category = HealthCareCategoryId.MEDICATIONS,
+//          listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
+//        ),
+//      onClickListItem = { _, _ -> },
+//      onRetry = {},
+//      onGeneratePdf = {},
+//      onNavigateBack = {},
+//    )
+//  }
+// }
+//
+// @DefaultPreviews
+// @Composable
+// internal fun HealthCategoryScreenNoDataWithErrorPreview() {
+//  MgoTheme {
+//    HealthCategoryScreenContent(
+//      viewState =
+//        HealthCategoryScreenViewState.initialState(HealthCareCategoryId.MEDICATIONS).copy(
+//          category = HealthCareCategoryId.MEDICATIONS,
+//          listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
+//          showErrorBanner = true,
+//        ),
+//      onClickListItem = { _, _ -> },
+//      onRetry = {},
+//      onGeneratePdf = {},
+//      onNavigateBack = {},
+//    )
+//  }
+// }

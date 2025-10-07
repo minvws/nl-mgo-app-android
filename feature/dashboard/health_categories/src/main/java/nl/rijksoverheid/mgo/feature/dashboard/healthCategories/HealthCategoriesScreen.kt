@@ -49,7 +49,6 @@ import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
@@ -82,7 +81,7 @@ fun HealthCategoriesScreen(
   subHeading: String,
   onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
   onNavigateToLocalisation: () -> Unit,
-  onNavigateToHealthCategory: (category: HealthCareCategoryId, organization: MgoOrganization?) -> Unit,
+  onNavigateToHealthCategory: (category: HealthCategoryGroup.HealthCategory, organization: MgoOrganization?) -> Unit,
   organization: MgoOrganization? = null,
   onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
@@ -108,7 +107,7 @@ private fun HealthCategoriesScreenContent(
   appBarTitle: String,
   subHeading: String,
   viewState: HealthCategoriesScreenViewState,
-  onClickListItem: (category: HealthCareCategoryId) -> Unit,
+  onClickListItem: (category: HealthCategoryGroup.HealthCategory) -> Unit,
   onClickAddProvider: () -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
@@ -236,7 +235,7 @@ private fun LazyListScope.NoProviders(canScroll: Boolean) {
 private fun LazyListScope.WithProviders(
   subHeading: String,
   onClickAddFavorite: () -> Unit,
-  onClickListItem: (category: HealthCareCategoryId) -> Unit,
+  onClickListItem: (category: HealthCategoryGroup.HealthCategory) -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
   groups: List<HealthCategoryGroup>,
@@ -264,7 +263,7 @@ private fun LazyListScope.WithProviders(
           favorites.forEach { favorite ->
             HealthCategoriesFavoriteCard(
               category = favorite.id,
-              onClick = { onClickListItem(favorite.id) },
+              onClick = { },
             )
           }
         }
@@ -292,7 +291,7 @@ private fun LazyListScope.WithProviders(
             else -> HealthCategoriesListItemCardPosition.CENTER
           },
         category = category,
-        onClickListItem = { },
+        onClickListItem = onClickListItem,
         filterOrganization = organization,
       )
     }

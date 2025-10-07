@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.data.hcimParser.javascript
 import android.content.Context
 import com.whl.quickjs.android.QuickJSLoader
 import com.whl.quickjs.wrapper.QuickJSContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,7 +12,7 @@ import javax.inject.Singleton
 internal class AndroidQuickJsRepository
   @Inject
   constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
   ) : QuickJsRepository {
     private var quickJs: QuickJSContext? = null
 

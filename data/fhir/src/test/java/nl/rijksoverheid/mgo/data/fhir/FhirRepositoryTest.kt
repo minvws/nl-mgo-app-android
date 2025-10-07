@@ -29,6 +29,7 @@ class FhirRepositoryTest {
       // When: Calling fetch
       repository.fetch(
         organizationId = "1",
+        dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
@@ -37,13 +38,14 @@ class FhirRepositoryTest {
 
       // Fhir response is stored
       val expectedStored = FhirResponseJsonSource.Memory("")
-      assertEquals(expectedStored, fhirResponseJsonStore.get(organizationId = "1", endpointId = "1"))
+      assertEquals(expectedStored, fhirResponseJsonStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", endpointId = "1").test {
+      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
         val expectedEmit =
           FhirResponse.Success(
             organizationId = "1",
+            dataServiceId = "1",
             endpointId = "1",
             jsonSource = FhirResponseJsonSource.Memory(""),
           )
@@ -60,6 +62,7 @@ class FhirRepositoryTest {
       // When: Calling fetch
       repository.fetch(
         organizationId = "1",
+        dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
@@ -67,10 +70,10 @@ class FhirRepositoryTest {
       )
 
       // Fhir response is not stored
-      assertNull(fhirResponseJsonStore.get(organizationId = "1", endpointId = "1"))
+      assertNull(fhirResponseJsonStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", endpointId = "1").test {
+      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
         val emit = awaitItem()
         assertTrue(emit is FhirResponse.Error)
       }
@@ -83,6 +86,7 @@ class FhirRepositoryTest {
       testServer.enqueue500()
       repository.fetch(
         organizationId = "1",
+        dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
@@ -95,6 +99,7 @@ class FhirRepositoryTest {
       // When: Calling fetch
       repository.fetch(
         organizationId = "1",
+        dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
@@ -102,7 +107,7 @@ class FhirRepositoryTest {
       )
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", endpointId = "1").test {
+      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
         assertTrue(awaitItem() is FhirResponse.Success)
       }
     }

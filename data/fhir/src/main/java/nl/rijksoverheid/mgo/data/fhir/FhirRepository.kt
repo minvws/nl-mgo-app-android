@@ -21,17 +21,19 @@ class FhirRepository
 
     fun observe(
       organizationId: String,
+      dataServiceId: String,
       endpointId: String,
     ): Flow<FhirResponse?> =
       cachedFhirResponses.map { responses ->
         responses.firstOrNull { response ->
-          response.organizationId == organizationId &&
+          response.organizationId == organizationId && response.dataServiceId == dataServiceId &&
             response.endpointId == endpointId
         }
       }
 
     suspend fun fetch(
       organizationId: String,
+      dataServiceId: String,
       endpointId: String,
       resourceEndpoint: String,
       fhirVersion: FhirVersion,
@@ -53,16 +55,23 @@ class FhirRepository
         val json = response.body?.string() ?: "{}"
 
         // Store the response
-        val jsonSource = fhirResponseJsonStore.store(organizationId = organizationId, endpointId = endpointId, json = json)
+        val jsonSource = fhirResponseJsonStore.store(organizationId = organizationId, dataServiceId = dataServiceId, endpointId = endpointId, json = json)
 
         // Update the cached response with success state
-        val fhirResponse = FhirResponse.Success(organizationId = organizationId, endpointId = endpointId, jsonSource = jsonSource)
+        val fhirResponse =
+          FhirResponse.Success(
+            organizationId = organizationId,
+            dataServiceId = dataServiceId,
+            endpointId = endpointId,
+            jsonSource = jsonSource,
+          )
         updateCachedFhirResponse(fhirResponse = fhirResponse)
       } else {
         // Update the cached response with error state
         val fhirResponse =
           FhirResponse.Error(
             organizationId = organizationId,
+            dataServiceId = dataServiceId,
             endpointId = endpointId,
             error = IllegalStateException("Something went wrong with fetching the fhir resource"),
           )

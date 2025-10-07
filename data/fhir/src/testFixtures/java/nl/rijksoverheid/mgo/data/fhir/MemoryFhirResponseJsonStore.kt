@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.data.fhir
 class MemoryFhirResponseJsonStore : FhirResponseJsonStore {
   data class MemoryFhirResponseJsonKey(
     val organizationId: String,
+    val dataServiceId: String,
     val endpointId: String,
   )
 
@@ -10,18 +11,20 @@ class MemoryFhirResponseJsonStore : FhirResponseJsonStore {
 
   override suspend fun get(
     organizationId: String,
+    dataServiceId: String,
     endpointId: String,
   ): FhirResponseJsonSource? {
-    val key = MemoryFhirResponseJsonKey(organizationId = organizationId, endpointId = endpointId)
+    val key = MemoryFhirResponseJsonKey(organizationId = organizationId, dataServiceId = dataServiceId, endpointId = endpointId)
     return cachedFhirResponses[key]?.let { FhirResponseJsonSource.Memory(it) }
   }
 
   override suspend fun store(
     organizationId: String,
+    dataServiceId: String,
     endpointId: String,
     json: String,
   ): FhirResponseJsonSource {
-    val key = MemoryFhirResponseJsonKey(organizationId = organizationId, endpointId = endpointId)
+    val key = MemoryFhirResponseJsonKey(organizationId = organizationId, dataServiceId = dataServiceId, endpointId = endpointId)
     cachedFhirResponses[key] = json
     return FhirResponseJsonSource.Memory(json)
   }

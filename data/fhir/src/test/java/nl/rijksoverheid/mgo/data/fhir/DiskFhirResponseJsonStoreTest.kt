@@ -21,11 +21,12 @@ class DiskFhirResponseJsonStoreTest {
         diskStore.store(
           organizationId = "1",
           endpointId = "1",
+          dataServiceId = "1",
           json = "",
         )
 
       // Then: When getting, file is retrieved that is stored
-      val expectedJsonSource = diskStore.get(organizationId = "1", endpointId = "1")
+      val expectedJsonSource = diskStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1")
       assertEquals(expectedJsonSource, jsonSource)
     }
 }

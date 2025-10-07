@@ -21,18 +21,20 @@ class DiskFhirResponseJsonStore
 
     override suspend fun get(
       organizationId: String,
+      dataServiceId: String,
       endpointId: String,
     ): FhirResponseJsonSource {
-      val file = File(rootDir, "$organizationId/$endpointId.json")
+      val file = File(rootDir, "$organizationId/$dataServiceId/$endpointId.json")
       return FhirResponseJsonSource.Disk(file)
     }
 
     override suspend fun store(
       organizationId: String,
+      dataServiceId: String,
       endpointId: String,
       json: FhirResponseJson,
     ): FhirResponseJsonSource {
-      val file = File(rootDir, "$organizationId/$endpointId.json")
+      val file = File(rootDir, "$organizationId/$dataServiceId/$endpointId.json")
       file.parentFile?.mkdirs()
 
       file.outputStream().use { outputStream ->

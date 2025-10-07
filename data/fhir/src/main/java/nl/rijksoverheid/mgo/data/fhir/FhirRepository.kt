@@ -8,7 +8,9 @@ import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FhirRepository
   @Inject
   constructor(

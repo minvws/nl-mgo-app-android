@@ -11,6 +11,7 @@ dependencies {
   implementation(projects.data.healthcare)
   implementation(projects.framework.storage)
   implementation(projects.component.healthCareCategory)
+  implementation(projects.data.healthCategories)
   testImplementation(testFixtures((projects.data.localisation)))
   testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.framework.storage))

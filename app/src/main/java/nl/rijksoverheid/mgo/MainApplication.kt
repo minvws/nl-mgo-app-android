@@ -2,7 +2,10 @@ package nl.rijksoverheid.mgo
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.init.AppInitializer
 import timber.log.Timber
@@ -11,6 +14,8 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class MainApplication : Application() {
+  private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
   @Inject
   lateinit var appInitializer: AppInitializer
 
@@ -22,7 +27,7 @@ class MainApplication : Application() {
     if (BuildConfig.DEBUG) {
       plant(Timber.DebugTree())
     }
-    runBlocking {
+    applicationScope.launch {
       appInitializer.init()
     }
   }

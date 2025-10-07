@@ -1,6 +1,11 @@
 package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
@@ -12,6 +17,7 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * This class needs to be called before the app shows any UI since it does a bunch of initialization steps that need to be ready before the app is shown
@@ -21,6 +27,7 @@ import javax.inject.Inject
 class AppInitializer
   @Inject
   constructor(
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val featureToggleRepository: FeatureToggleRepository,
     private val featureToggleLocalDataSource: FeatureToggleLocalDataSource,
     private val jsRuntimeRepository: JsRuntimeRepository,
@@ -30,11 +37,22 @@ class AppInitializer
     private val setDigidAuthenticated: SetDigidAuthenticated,
     private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val organizationRepository: OrganizationRepository,
+    private val fhirResponseSyncer: FhirResponseSyncer,
   ) {
     suspend fun init() {
-      cacheFileStore.deleteAll()
-      featureToggleLocalDataSource.init(featureToggleRepository.getAll())
-      jsRuntimeRepository.load()
+      // Async
+      withContext(ioDispatcher) {
+        launch {
+          fhirResponseSyncer().collect()
+        }
+      }
+
+      // Sync
+      runBlocking {
+        cacheFileStore.deleteAll()
+        featureToggleLocalDataSource.init(featureToggleRepository.getAll())
+        jsRuntimeRepository.load()
+      }
     }
 
     /**

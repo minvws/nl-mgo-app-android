@@ -58,6 +58,7 @@ private fun getExcludePaths(): String =
     add("**/res/**/") // Resources folder
     add("**/*Module*.kt") // Dagger modules
     add("**/*NavGraph*.kt") // NavGraph classes
+    add("app/src/main/java/nl/rijksoverheid/mgo/**") // MGO module
     add("app/src/main/java/nl/rijksoverheid/mgo/navigation/**") // Navigation classes
     add("app/src/main/java/nl/rijksoverheid/mgo/lifecycle/**") // Lifecycle classes
     add("framework/util/src/main/java/nl/rijksoverheid/mgo/framework/util/**") // Util module

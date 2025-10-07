@@ -45,7 +45,7 @@ class FhirRepository
           .url(url)
           .get()
           .addHeader("x-mgo-dva-target", resourceEndpoint)
-          .addHeader("Accept", "application/fhir+json; fhirVersion=$fhirVersion")
+          .addHeader("Accept", "application/fhir+json; fhirVersion=${fhirVersion.stringValue}")
           .build()
 
       val response = okHttpClient.newCall(request).execute()

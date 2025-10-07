@@ -217,4 +217,7 @@ dependencies {
   androidTestImplementation(projects.component.pincode)
 
   implementation(projects.data.hcimParser)
+  implementation(projects.data.fhir)
+  implementation(projects.data.healthCategories)
+  implementation(projects.framework.fhir)
 }

@@ -11,5 +11,5 @@ import javax.inject.Singleton
 internal abstract class FhirModule {
   @Binds
   @Singleton
-  abstract fun bindFhirResponseJsonStore(default: FhirResponseJsonStore): FhirResponseJsonStore
+  abstract fun bindFhirResponseJsonStore(default: DiskFhirResponseJsonStore): FhirResponseJsonStore
 }

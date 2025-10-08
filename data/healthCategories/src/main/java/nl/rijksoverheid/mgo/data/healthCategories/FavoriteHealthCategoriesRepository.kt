@@ -9,7 +9,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryId
 import javax.inject.Inject
@@ -26,9 +25,11 @@ class FavoriteHealthCategoriesRepository
   ) {
     fun observe(): Flow<List<HealthCategoryId>> =
       context.dataStore.data
-        .mapNotNull { preferences ->
+        .map { preferences ->
           preferences[KEY_FAVORITE_HEALTH_CARE_CATEGORIES]
-        }.map { it.split(",") }
+            ?.split(",")
+            ?: emptyList()
+        }
 
     fun store(favorites: List<HealthCategoryId>) =
       runBlocking {

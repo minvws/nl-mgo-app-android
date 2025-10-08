@@ -1,50 +1,55 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.healthcare.category.TestHealthCareCategoriesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
+import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 internal class HealthCategoriesScreenViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
+  private val context = ApplicationProvider.getApplicationContext<Context>()
+  private val favoriteRepository = FavoriteHealthCategoriesRepository(context)
   private val organizationRepository = TestOrganizationRepository()
+  private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val keyValueStore = TestKeyValueStore()
-  private val healthCareCategoriesRepository = TestHealthCareCategoriesRepository()
-
-  @Before
-  fun setup() =
-    runTest {
-      // Set two categories as favorite
-      val categories = listOf(HealthCareCategoryId.MEDICATIONS, HealthCareCategoryId.APPOINTMENTS)
-      healthCareCategoriesRepository.setFavorites(categories)
-    }
 
   @Test
-  fun `Given stored providers, When collecting on view state, Then emit view state with providers`() =
+  fun testCreateViewModel() =
     runTest {
-      // Given
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      // Given: First category is marked as favorite
+      val firstCategory = getHealthCategoriesFromDisk()[0].categories[0].id
+      favoriteRepository.store(listOf(firstCategory))
 
-      // When
-      val viewModel =
-        HealthCategoriesScreenViewModel(
-          organizationRepository = organizationRepository,
-          keyValueStore = keyValueStore,
-          healthCareCategoriesRepository = healthCareCategoriesRepository,
-        )
+      // Given: Viewmodel
+      val viewModel = createViewModel()
+
+      // Then: View state is updated
       viewModel.viewState.test {
-        // Then
-        assertEquals(listOf(TEST_MGO_ORGANIZATION), awaitItem().providers)
+        val viewState = awaitItem()
+        assertEquals(1, viewState.favorites.size)
+        assertEquals(4, viewState.groups.size)
       }
     }
+
+  private fun createViewModel() =
+    HealthCategoriesScreenViewModel(
+      favoriteRepository = favoriteRepository,
+      organizationRepository = organizationRepository,
+      getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
+      keyValueStore = keyValueStore,
+      ioDispatcher = mainDispatcherRule.testDispatcher,
+    )
 }

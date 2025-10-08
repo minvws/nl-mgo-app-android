@@ -33,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +42,7 @@ import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.core.view.ViewCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import getStringResourceByName
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
@@ -75,7 +77,6 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
     EditOverviewBottomSheetContent(
       viewState = viewState,
       onClickSave = { favorites, nonFavorites -> viewModel.save(favorites = favorites, nonFavorites = nonFavorites) },
-      onReorderFavorites = { fromIndex, toIndex -> viewModel.reorderFavorites(fromIndex, toIndex) },
       onNavigateBack = {
         coroutineScope.launch {
           sheetState.hide()
@@ -89,8 +90,7 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
 @Composable
 private fun EditOverviewBottomSheetContent(
   viewState: EditOverviewBottomSheetViewState,
-  onClickSave: (favorites: List<HealthCategoryGroup.HealthCategory>, nonFavorites: List<HealthCategoryGroup.HealthCategory>) -> Unit,
-  onReorderFavorites: (fromIndex: Int, toIndex: Int) -> Unit,
+  onClickSave: (favorites: List<HealthCategoryGroup.HealthCategory>, nonFavorites: List<HealthCategoryGroup>) -> Unit,
   onNavigateBack: () -> Unit,
 ) {
   var favorites by remember { mutableStateOf(viewState.favorites) }
@@ -128,32 +128,54 @@ private fun EditOverviewBottomSheetContent(
           FavoritesCard(
             modifier = Modifier.padding(top = 8.dp).animateItem(),
             favorites = favorites,
-            onClickHealthCategory = { categoryId, favorite ->
-              favorites = favorites.toMutableList().also { it.remove(categoryId) }
+            onClickHealthCategory = { category ->
+              val group = viewState.groups.first { group -> group.categories.contains(category) }
+              favorites = favorites.toMutableList().also { it.remove(category) }
               nonFavorites =
-                nonFavorites
-                  .toMutableList()
-                  .also { it.add(categoryId) }
+                nonFavorites.map { nonFavoriteGroup ->
+                  if (nonFavoriteGroup.id == group.id) {
+                    nonFavoriteGroup.copy(
+                      categories =
+                        nonFavoriteGroup.categories
+                          .toMutableList()
+                          .also { it.add(category) }
+                          .sortedBy { group.categories.indexOf(it) },
+                    )
+                  } else {
+                    nonFavoriteGroup
+                  }
+                }
             },
-            onReorderFavorites = onReorderFavorites,
+            onReorderFavorites = { fromIndex, toIndex ->
+              val updatedFavorites = favorites.toMutableList()
+              val item = updatedFavorites.removeAt(fromIndex)
+              updatedFavorites.add(toIndex, item)
+              favorites = updatedFavorites
+            },
           )
         }
       }
 
-      if (nonFavorites.isNotEmpty()) {
-        item {
-          Text(modifier = Modifier.padding(top = 24.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
-        }
+      nonFavorites.forEach { group ->
+        if (group.categories.isNotEmpty()) {
+          item {
+            Text(
+              modifier = Modifier.padding(top = 24.dp),
+              text = stringResource(LocalContext.current.getStringResourceByName(group.heading)),
+              style = MaterialTheme.typography.headlineSmall,
+            )
+          }
 
-        item {
-          CategoriesCard(
-            modifier = Modifier.padding(top = 8.dp).animateItem(),
-            categories = nonFavorites,
-            onClickHealthCategory = { categoryId, favorite ->
-              favorites = favorites.toMutableList().also { it.add(categoryId) }
-              nonFavorites = nonFavorites.toMutableList().also { it.remove(categoryId) }
-            },
-          )
+          item {
+            CategoriesCard(
+              modifier = Modifier.padding(top = 8.dp).animateItem(),
+              categories = group.categories,
+              onClickHealthCategory = { category, _ ->
+                favorites = favorites.toMutableList().also { it.add(category) }
+                nonFavorites = nonFavorites.map { group -> group.copy(categories = group.categories.filter { it != category }) }
+              },
+            )
+          }
         }
       }
     }
@@ -175,7 +197,7 @@ private fun FavoriteEmptyCard(modifier: Modifier = Modifier) {
 @Composable
 private fun FavoritesCard(
   favorites: List<HealthCategoryGroup.HealthCategory>,
-  onClickHealthCategory: (categoryId: HealthCategoryGroup.HealthCategory, favorite: Boolean) -> Unit,
+  onClickHealthCategory: (category: HealthCategoryGroup.HealthCategory) -> Unit,
   onReorderFavorites: (fromIndex: Int, toIndex: Int) -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -199,7 +221,7 @@ private fun FavoritesCard(
               category = item,
               state = HealthCategoryListItemState.REMOVE,
               onClick = {
-                onClickHealthCategory(item, false)
+                onClickHealthCategory(item)
               },
               dragIcon = {
                 IconButton(
@@ -235,7 +257,7 @@ private fun FavoritesCard(
 @Composable
 private fun CategoriesCard(
   categories: List<HealthCategoryGroup.HealthCategory>,
-  onClickHealthCategory: (categoryId: HealthCategoryGroup.HealthCategory, favorite: Boolean) -> Unit,
+  onClickHealthCategory: (category: HealthCategoryGroup.HealthCategory, favorite: Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
@@ -259,14 +281,14 @@ private fun CategoriesCard(
 // internal fun EditOverviewBottomSheetNoFavoritesPreview() {
 //  MgoTheme {
 //    EditOverviewBottomSheetContent(
-//      viewState =
-//        EditOverviewBottomSheetViewState(
-//          favorites = listOf(),
-//          nonFavorites = HealthCareCategoryId.entries,
-//        ),
-//      onClickSave = { _, _ -> },
-//      onReorderFavorites = { fromIndex, toIndex -> },
-//      onNavigateBack = {},
+//        viewState =
+//            EditOverviewBottomSheetViewState(
+//                groups = listOf(),
+//                favorites = listOf(),
+//                nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH),
+//            ),
+//        onClickSave = { _, _ -> },
+//        onNavigateBack = {},
 //    )
 //  }
 // }
@@ -276,14 +298,14 @@ private fun CategoriesCard(
 // internal fun EditOverviewBottomSheetFavoritesPreview() {
 //  MgoTheme {
 //    EditOverviewBottomSheetContent(
-//      viewState =
-//        EditOverviewBottomSheetViewState(
-//          favorites = listOf(HealthCareCategoryId.MEDICATIONS, HealthCareCategoryId.APPOINTMENTS),
-//          nonFavorites = HealthCareCategoryId.entries - HealthCareCategoryId.MEDICATIONS - HealthCareCategoryId.APPOINTMENTS,
-//        ),
-//      onClickSave = { _, _ -> },
-//      onReorderFavorites = { fromIndex, toIndex -> },
-//      onNavigateBack = {},
+//        viewState =
+//            EditOverviewBottomSheetViewState(
+//                groups = listOf(),
+//                favorites = listOf(TEST_HEALTH_CATEGORY_ALERTS),
+//                nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.copy(categories = listOf(TEST_HEALTH_CATEGORY_PROBLEMS))),
+//            ),
+//        onClickSave = { _, _ -> },
+//        onNavigateBack = {},
 //    )
 //  }
 // }

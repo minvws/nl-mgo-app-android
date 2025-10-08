@@ -26,4 +26,16 @@ class FavoriteHealthCategoriesRepositoryTest {
         assertEquals(listOf("1", "2", "3"), awaitItem())
       }
     }
+
+  @Test
+  fun testGetFavoritesEmpty() =
+    runTest {
+      // Given: No favorites are stored
+
+      // When: Observing favorites
+      repository.observe().test {
+        // Then: Favorites are emitted
+        assertEquals(listOf<String>(), awaitItem())
+      }
+    }
 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryId
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -24,14 +25,15 @@ class EditOverviewBottomSheetViewModel
   constructor(
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
-    private val favoriteHealthCategoriesRepository: FavoriteHealthCategoriesRepository,
+    private val favoriteRepository: FavoriteHealthCategoriesRepository,
   ) : ViewModel() {
-    private val groups = getHealthCategoriesFromDisk()
-    private val initialFavorites = runBlocking(ioDispatcher) { favoriteHealthCategoriesRepository.observe().first() }
+    private val groups = runBlocking(ioDispatcher) { getHealthCategoriesFromDisk() }
+    private val initialFavorites = runBlocking(ioDispatcher) { favoriteRepository.observe().first() }
     private val initialState =
       EditOverviewBottomSheetViewState(
-        favorites = groups.filter { category -> initialFavorites.contains(category.id) }.map { group -> group.categories }.flatten(),
-        nonFavorites = groups.filter { category -> !initialFavorites.contains(category.id) }.map { group -> group.categories }.flatten(),
+        groups = groups,
+        favorites = groups.getFavorites(initialFavorites),
+        nonFavorites = groups.filterFavorites(initialFavorites),
       )
     private val _viewState = MutableStateFlow(initialState)
     val viewState = _viewState.asStateFlow()
@@ -39,29 +41,22 @@ class EditOverviewBottomSheetViewModel
     private val _closeBottomSheet = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val closeBottomSheet = _closeBottomSheet.asSharedFlow()
 
-    fun reorderFavorites(
-      fromIndex: Int,
-      toIndex: Int,
-    ) {
-      viewModelScope.launch {
-        _viewState.update { viewState ->
-          val updatedFavorites = viewState.favorites.toMutableList()
-          val item = updatedFavorites.removeAt(fromIndex)
-          updatedFavorites.add(toIndex, item)
-          viewState.copy(favorites = updatedFavorites)
-        }
-      }
-    }
-
     fun save(
       favorites: List<HealthCategoryGroup.HealthCategory>,
-      nonFavorites: List<HealthCategoryGroup.HealthCategory>,
+      nonFavorites: List<HealthCategoryGroup>,
     ) {
-      viewModelScope.launch {
-        val favoriteIds = favorites.map { favorite -> favorite.id }
-        favoriteHealthCategoriesRepository.store(favoriteIds)
+      viewModelScope.launch(ioDispatcher) {
+        favoriteRepository.store(
+          favorites = favorites.map { favorite -> favorite.id },
+        )
         _viewState.update { viewState -> viewState.copy(favorites = favorites, nonFavorites = nonFavorites) }
         _closeBottomSheet.tryEmit(Unit)
       }
     }
+
+    private fun List<HealthCategoryGroup>.filterFavorites(favorites: List<HealthCategoryId>): List<HealthCategoryGroup> =
+      this.map { group -> group.copy(categories = group.categories.filter { category -> !favorites.contains(category.id) }) }
+
+    private fun List<HealthCategoryGroup>.getFavorites(favorites: List<HealthCategoryId>): List<HealthCategoryGroup.HealthCategory> =
+      favorites.mapNotNull { categoryId -> this.map { group -> group.categories }.flatten().firstOrNull { it.id == categoryId } }
   }

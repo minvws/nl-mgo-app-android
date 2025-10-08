@@ -60,20 +60,6 @@ object HealthCategoriesScreenTestTag {
   const val DELETE_ORGANIZATION_BUTTON = "HealthCategoriesScreenDeleteOrganizationButton"
 }
 
-/**
- * Composable that shows a screen with a list of health categories. These health categories are populated with either health cara data
- * for all added health providers, or just a single one.
- *
- * @param appBarTitle The title of the app bar.
- * @param subHeading Text under the app bar that contains a small explanation about this screen.
- * @param onNavigateRemoveOrganization Called when requested to navigate to the screen where you can remove an organization.
- * @param onNavigateToLocalisation Called when requested to navigate to the screen where you can search for organizations.
- * @param onNavigateToHealthCategory Called when requested to navigate to the screen where you can view health care data.
- * @param organization If not null, will only show only health care data for this organization. If null will show for all added
- * organizations.
- * @param onShowBottomSheet If not null, shows an bottom sheet where you can edit the overview screen.
- * @param onNavigateBack Called when requested to navigate back.
- */
 @Composable
 fun HealthCategoriesScreen(
   appBarTitle: String,
@@ -177,7 +163,7 @@ private fun HealthCategoriesScreenContent(
               onClickAddFavorite = { onShowBottomSheet?.invoke() },
               organization = organization,
               groups = viewState.groups,
-              favorites = listOf(),
+              favorites = viewState.favorites,
             )
           }
         }
@@ -262,7 +248,7 @@ private fun LazyListScope.WithProviders(
           favorites.forEach { favorite ->
             HealthCategoriesFavoriteCard(
               category = favorite,
-              onClick = { },
+              onClick = { onClickListItem(favorite) },
             )
           }
         }

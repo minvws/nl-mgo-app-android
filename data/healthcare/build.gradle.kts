@@ -17,6 +17,7 @@ dependencies {
   implementation(projects.framework.copy)
   implementation(projects.framework.storage)
   implementation(projects.framework.util)
+  implementation(projects.data.hcimParser)
   testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.data.fhirParser))
   testImplementation(testFixtures(projects.framework.storage))

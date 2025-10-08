@@ -1,16 +1,16 @@
 package nl.rijksoverheid.mgo.data.healthcare.models.mapper
 
 import androidx.annotation.VisibleForTesting
-import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadBinary
-import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadLink
-import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
-import nl.rijksoverheid.mgo.data.fhirParser.models.MultipleGroupedValues
-import nl.rijksoverheid.mgo.data.fhirParser.models.MultipleValues
-import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceLink
-import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceValue
-import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
-import nl.rijksoverheid.mgo.data.fhirParser.models.UiElement
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleGroupedValues
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.UiElement
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
@@ -47,20 +47,20 @@ class DefaultUISchemaSectionMapper
           }
 
         is SingleValue -> {
-          this.display?.let { display ->
+          this.value?.display?.let { display ->
             UISchemaRow.Static(heading = this.label, value = display)
           }
         }
 
         is MultipleValues -> {
-          this.display?.let { display ->
+          this.value?.map { it.display }?.let { display ->
             UISchemaRow.Static(heading = this.label, value = display.joinToString(", "))
           }
         }
 
         is MultipleGroupedValues -> {
-          this.display?.let { display ->
-            UISchemaRow.Static(heading = this.label, value = display.flatten().joinToString(", "))
+          this.value?.map { values -> values.map { value -> value.display } }?.flatten()?.let { display ->
+            UISchemaRow.Static(heading = this.label, value = display.joinToString(", "))
           }
         }
 

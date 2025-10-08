@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
@@ -31,7 +31,7 @@ sealed class DashboardNavigation {
     @Serializable
     data class UiSchema(
       val organization: MgoOrganization,
-      val mgoResource: MgoResource,
+      val referenceId: MgoResourceReferenceId,
       val isSummary: Boolean,
     ) : Overview()
   }
@@ -58,7 +58,7 @@ sealed class DashboardNavigation {
     @Serializable
     data class UiSchema(
       val organization: MgoOrganization,
-      val mgoResource: MgoResource,
+      val referenceId: MgoResourceReferenceId,
       val isSummary: Boolean,
     ) : Organizations()
 

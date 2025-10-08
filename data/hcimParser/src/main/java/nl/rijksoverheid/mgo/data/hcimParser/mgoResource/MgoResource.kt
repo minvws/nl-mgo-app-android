@@ -1,7 +1,9 @@
 package nl.rijksoverheid.mgo.data.hcimParser.mgoResource
 
+typealias MgoResourceReferenceId = String
+
 data class MgoResource(
-  val referenceId: String,
+  val referenceId: MgoResourceReferenceId,
   val profile: String,
   val json: String,
 )

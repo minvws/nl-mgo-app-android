@@ -63,7 +63,7 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
           navController.navigate(
             DashboardNavigation.Overview.UiSchema(
               organization = organization,
-              mgoResource = uiSchema,
+              referenceId = uiSchema,
               isSummary = true,
             ),
           )
@@ -78,13 +78,13 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
       val route = backStackEntry.toRoute<DashboardNavigation.Overview.UiSchema>()
       UiSchemaScreen(
         organization = route.organization,
-        mgoResource = route.mgoResource,
+        referenceId = route.referenceId,
         isSummary = route.isSummary,
-        onNavigateToDetail = { organization, mgoResource ->
+        onNavigateToDetail = { organization, referenceId ->
           val uiSchema =
             DashboardNavigation.Overview.UiSchema(
               organization = organization,
-              mgoResource = mgoResource,
+              referenceId = referenceId,
               isSummary = false,
             )
           navController.navigate(uiSchema)

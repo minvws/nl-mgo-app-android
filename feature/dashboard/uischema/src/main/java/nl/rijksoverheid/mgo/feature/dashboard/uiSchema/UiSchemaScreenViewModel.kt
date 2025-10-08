@@ -15,6 +15,9 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
@@ -39,23 +42,25 @@ internal class UiSchemaScreenViewModel
   @AssistedInject
   constructor(
     @Assisted val organization: MgoOrganization,
-    @Assisted private val mgoResource: MgoResource,
+    @Assisted private val referenceId: MgoResourceReferenceId,
     @Assisted private val isSummary: Boolean,
     private val fhirBinaryRepository: FhirBinaryRepository,
     private val uiSchemaMapper: UiSchemaMapper,
     private val mgoResourceRepository: MgoResourceRepository,
     private val uiSchemaSectionMapper: UISchemaSectionMapper,
+    private val uiSchemaParser: UiSchemaParser,
+    private val mgoResourceStore: MgoResourceStore,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
       fun create(
         organization: MgoOrganization,
-        mgoResource: MgoResource,
+        referenceId: MgoResourceReferenceId,
         isSummary: Boolean,
       ): UiSchemaScreenViewModel
     }
 
-    private val _navigate = MutableSharedFlow<MgoResource>(extraBufferCapacity = 1)
+    private val _navigate = MutableSharedFlow<MgoResourceReferenceId>(extraBufferCapacity = 1)
     val navigate = _navigate.asSharedFlow()
 
     private val _viewState = MutableStateFlow(UiSchemaScreenViewState(toolbarTitle = "", sections = listOf()))
@@ -66,16 +71,17 @@ internal class UiSchemaScreenViewModel
      */
     init {
       viewModelScope.launch {
+        val mgoResource = mgoResourceStore.get(referenceId)
         val uiSchema =
           if (isSummary) {
-            uiSchemaMapper.getSummary(
-              healthCareOrganizationName = organization.name,
-              mgoResource = mgoResource,
+            uiSchemaParser.getSummary(
+              mgoResourceJson = mgoResource.json,
+              organizationName = organization.name,
             )
           } else {
-            uiSchemaMapper.getDetail(
-              healthCareOrganizationName = organization.name,
-              mgoResource = mgoResource,
+            uiSchemaParser.getDetails(
+              mgoResourceJson = mgoResource.json,
+              organizationName = organization.name,
             )
           }
         val uiSchemaSections = uiSchemaSectionMapper.map(uiSchema)
@@ -91,13 +97,8 @@ internal class UiSchemaScreenViewModel
      */
     fun onClickReferenceRow(row: UISchemaRow.Reference) {
       viewModelScope.launch {
-        mgoResourceRepository
-          .get(row.referenceId)
-          .onSuccess { mgoResource ->
-            _navigate.tryEmit(mgoResource)
-          }.onFailure { error ->
-            Timber.e(error, "Failed to get mgo resource")
-          }
+        val mgoResource = mgoResourceStore.get(row.referenceId)
+        _navigate.tryEmit(mgoResource.referenceId)
       }
     }
 

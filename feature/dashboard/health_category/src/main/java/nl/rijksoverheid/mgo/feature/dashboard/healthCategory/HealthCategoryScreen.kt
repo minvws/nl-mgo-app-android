@@ -51,7 +51,7 @@ import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -73,7 +73,7 @@ object HealthCategoryScreenTestTag {
 @Composable
 fun HealthCategoryScreen(
   category: HealthCategoryGroup.HealthCategory,
-  onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onClickListItem: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
   onNavigateBack: () -> Unit,
   filterOrganization: MgoOrganization? = null,
 ) {
@@ -125,8 +125,8 @@ fun HealthCategoryScreen(
 
   HealthCategoryScreenContent(
     viewState = viewState,
-    onClickListItem = { organization, mgoResource ->
-      onClickListItem(organization, mgoResource)
+    onClickListItem = { organization, referenceId ->
+      onClickListItem(organization, referenceId)
     },
     onRetry = { viewModel.retry() },
     onGeneratePdf = {
@@ -140,7 +140,7 @@ fun HealthCategoryScreen(
 private fun HealthCategoryScreenContent(
   viewState: HealthCategoryScreenViewState,
   onRetry: () -> Unit,
-  onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onClickListItem: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
   onGeneratePdf: () -> Unit,
   onNavigateBack: () -> Unit,
 ) {
@@ -230,7 +230,7 @@ private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
 @Suppress("ktlint:standard:function-naming")
 private fun LazyListScope.LoadedContent(
   listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
-  onClickListItem: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onClickListItem: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
   showErrorBanner: Boolean,
   onRetryClick: () -> Unit,
   onDismissErrorBanner: () -> Unit,
@@ -269,7 +269,7 @@ private fun LazyListScope.LoadedContent(
               .padding(bottom = 16.dp),
           title = listItem.title,
           subtitle = listItem.subtitle,
-          onClick = { },
+          onClick = { onClickListItem(listItem.organization, listItem.mgoResource.referenceId) },
         )
       }
     }

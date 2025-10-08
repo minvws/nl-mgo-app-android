@@ -15,6 +15,7 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import nl.rijksoverheid.mgo.component.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlin.reflect.typeOf
 
@@ -24,7 +25,7 @@ data object Root
 @Serializable
 data class UiSchema(
   val organization: MgoOrganization,
-  val mgoResource: MgoResource,
+  val referenceId: MgoResourceReferenceId,
 )
 
 object UiSchemaBottomSheetTestTag {
@@ -34,7 +35,7 @@ object UiSchemaBottomSheetTestTag {
 @Composable
 fun UiSchemaBottomSheet(
   organization: MgoOrganization,
-  mgoResource: MgoResource,
+  referenceId: MgoResourceReferenceId,
   onDismissRequest: () -> Unit,
 ) {
   val navController = rememberNavController()
@@ -59,16 +60,15 @@ fun UiSchemaBottomSheet(
           mapOf(
             typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
             typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-            typeOf<MgoResource>() to JsonNavType(MgoResource::class.java, MgoResource.serializer()),
           ),
       ) {
         UiSchemaScreen(
           organization = organization,
-          mgoResource = mgoResource,
+          referenceId = referenceId,
           isSummary = false,
           isBottomSheet = true,
-          onNavigateToDetail = { organization, mgoResource ->
-            navController.navigate(UiSchema(organization, mgoResource))
+          onNavigateToDetail = { organization, referenceId ->
+            navController.navigate(UiSchema(organization, referenceId))
           },
           onNavigateBack = null,
         )
@@ -85,7 +85,7 @@ fun UiSchemaBottomSheet(
         val route = backStackEntry.toRoute<UiSchema>()
         UiSchemaScreen(
           organization = route.organization,
-          mgoResource = route.mgoResource,
+          referenceId = route.referenceId,
           isSummary = false,
           isBottomSheet = true,
           onNavigateToDetail = { organization, mgoResource ->

@@ -21,9 +21,9 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
 import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
 import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
-import nl.rijksoverheid.mgo.data.healthcare.models.mapper.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaSectionMapper
 import timber.log.Timber
 
 /**
@@ -45,8 +45,6 @@ internal class UiSchemaScreenViewModel
     @Assisted private val referenceId: MgoResourceReferenceId,
     @Assisted private val isSummary: Boolean,
     private val fhirBinaryRepository: FhirBinaryRepository,
-    private val uiSchemaMapper: UiSchemaMapper,
-    private val mgoResourceRepository: MgoResourceRepository,
     private val uiSchemaSectionMapper: UISchemaSectionMapper,
     private val uiSchemaParser: UiSchemaParser,
     private val mgoResourceStore: MgoResourceStore,

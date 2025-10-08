@@ -4,6 +4,7 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DisplayValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleGroupedValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
 import org.junit.Assert.assertEquals
@@ -69,5 +70,38 @@ class UISchemaSectionMapperTest {
     assertEquals(1, sections.size)
     assertEquals("Label", sections[0].rows[0].heading)
     assertEquals("Display 1, Display 2", sections[0].rows[0].value)
+  }
+
+  @Test
+  fun testMultipleGroupedValues() {
+    // Given: Ui schema
+    val uiSchema =
+      HealthUiSchema(
+        label = "Label",
+        children =
+          listOf(
+            HealthUiGroup(
+              children =
+                listOf(
+                  MultipleGroupedValues(
+                    label = "Label",
+                    value =
+                      listOf(
+                        listOf(DisplayValue(display = "Display 1"), DisplayValue(display = "Display 2")),
+                        listOf(DisplayValue(display = "Display 3"), DisplayValue(display = "Display 4")),
+                      ),
+                  ),
+                ),
+            ),
+          ),
+      )
+
+    // When: Calling map
+    val sections = mapper.map(uiSchema)
+
+    // Then: Sections are returned
+    assertEquals(1, sections.size)
+    assertEquals("Label", sections[0].rows[0].heading)
+    assertEquals("Display 1, Display 2, Display 3, Display 4", sections[0].rows[0].value)
   }
 }

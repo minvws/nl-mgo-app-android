@@ -20,12 +20,6 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaRow
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 
-/**
- * Composable that shows a list item that represents a file that can be downloaded via a url.
- *
- * @param row The [UISchemaRow.Link].
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun UiSchemaRowLink(
   row: UISchemaRow.Link,

@@ -49,17 +49,6 @@ object UiSchemaScreenTestTag {
   const val LIST_ITEM = "UiSchemaScreenListItem"
 }
 
-/**
- * Composable that shows a screen that displays health care data.
- * Health care data is showed via a list of [UISchemaRow].
- *
- * @param organization The [MgoOrganization] for the health care data.
- * @param mgoResource The [MgoResource] to get the health care data from.
- * @param isSummary If this screen shows a summary of the health care data, or the complete set.
- * @param isBottomSheet Indicate whether or not this composable is nested inside a bottom sheet.
- * @param onNavigateToDetail Called when navigating to the same UI Schema but the detail page.
- * @param onNavigateBack Called when requested to navigate back. If null, does not show a back button.
- */
 @Composable
 fun UiSchemaScreen(
   organization: MgoOrganization,

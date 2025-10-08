@@ -2,15 +2,17 @@ package nl.rijksoverheid.mgo.data.hcimParser
 
 import android.annotation.SuppressLint
 import com.whl.quickjs.wrapper.QuickJSContext
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import java.io.File
 
-class JvmQuickJsRepository : QuickJsRepository {
+class JvmQuickJsRepository(
+  dispatcher: CoroutineDispatcher = newSingleThreadContext("QuickJsThread"),
+) : QuickJsRepository {
   private var quickJs: QuickJSContext? = null
-  override val quickJsDispatcher: ExecutorCoroutineDispatcher = newSingleThreadContext("QuickJsThread")
+  override var quickJsDispatcher: CoroutineDispatcher = dispatcher
 
   @SuppressLint("UnsafeDynamicallyLoadedCode")
   override suspend fun create() =

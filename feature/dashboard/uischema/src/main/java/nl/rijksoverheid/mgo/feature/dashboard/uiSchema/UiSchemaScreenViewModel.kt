@@ -24,17 +24,6 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaSectionMap
 import timber.log.Timber
 import javax.inject.Named
 
-/**
- * The [ViewModel] for [UiSchemaScreen].
- *
- * @param organization The [MgoOrganization] for the health care data.
- * @param mgoResource The [MgoResource] to get the health care data from.
- * @param isSummary If this screen shows a summary of the health care data, or the complete set.
- * @param fhirBinaryRepository The [FhirBinaryRepository] to download files.
- * @param uiSchemaMapper The [UiSchemaMapper] to map [MgoResource] to [HealthUiSchema].
- * @param mgoResourceRepository The [MgoResourceRepository] to get new [MgoResource] from.
- * @param uiSchemaSectionMapper The [UISchemaSectionMapper] to map [HealthUiSchema] to [UiSchemaSection].
- */
 @HiltViewModel(assistedFactory = UiSchemaScreenViewModel.Factory::class)
 internal class UiSchemaScreenViewModel
   @AssistedInject
@@ -64,9 +53,6 @@ internal class UiSchemaScreenViewModel
     private val _viewState = MutableStateFlow(UiSchemaScreenViewState(toolbarTitle = "", sections = listOf()))
     val viewState = _viewState.asStateFlow()
 
-    /**
-     * Get the [HealthUiSchema] from a [MgoResource] to be able to display health care data.
-     */
     init {
       viewModelScope.launch(ioDispatcher) {
         val mgoResource = mgoResourceStore.get(referenceId)
@@ -89,10 +75,6 @@ internal class UiSchemaScreenViewModel
       }
     }
 
-    /**
-     * When clicking on a reference, get the [MgoResource] and navigate to the [UiSchemaScreen] to show the new health care data.
-     * @param row The clicked reference row.
-     */
     fun onClickReferenceRow(row: UISchemaRow.Reference) {
       viewModelScope.launch {
         val mgoResource = mgoResourceStore.get(row.referenceId)
@@ -100,10 +82,6 @@ internal class UiSchemaScreenViewModel
       }
     }
 
-    /**
-     * When clicking on a file, download the binary and update the view state to reflect the state of downloading.
-     * @param row The clicked file row.
-     */
     fun onClickFileRow(row: UISchemaRow.Binary.NotDownloaded) {
       viewModelScope.launch(ioDispatcher) {
         // This organization should have a document resource endpoint to get the binary from

@@ -1,10 +1,10 @@
 package nl.rijksoverheid.mgo.data.hcimParser.javascript
 
 import com.whl.quickjs.wrapper.QuickJSContext
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 
 interface QuickJsRepository {
-  val quickJsDispatcher: ExecutorCoroutineDispatcher
+  val quickJsDispatcher: CoroutineDispatcher
 
   suspend fun create()
 

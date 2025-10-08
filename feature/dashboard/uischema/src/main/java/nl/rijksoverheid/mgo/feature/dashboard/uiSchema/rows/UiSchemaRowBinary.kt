@@ -43,13 +43,6 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaRow
 import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a list item that represents a file that can be downloaded or opened.
- *
- * @param row The [UISchemaRow.Binary].
- * @param onClick Called when is requested to downloaded the file.
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun UiSchemaRowBinary(
   row: UISchemaRow.Binary,

@@ -9,9 +9,9 @@ android {
 dependencies {
   implementation(projects.data.localisation)
   implementation(projects.framework.storage)
-  implementation(projects.component.healthCareCategory)
   implementation(projects.data.healthCategories)
   implementation(projects.data.fhir)
+  implementation(projects.component.healthCategories)
   testImplementation(testFixtures((projects.data.localisation)))
   testImplementation(testFixtures(projects.framework.storage))
 }

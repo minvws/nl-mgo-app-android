@@ -9,7 +9,6 @@ android {
 dependencies {
   implementation(projects.data.localisation)
   implementation(projects.framework.storage)
-  implementation(projects.component.healthCareCategory)
   implementation(projects.data.healthCategories)
   implementation(libs.reoderable)
   testImplementation(testFixtures((projects.data.localisation)))

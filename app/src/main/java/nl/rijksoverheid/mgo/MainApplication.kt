@@ -33,9 +33,9 @@ class MainApplication : Application() {
     if (BuildConfig.DEBUG) {
       plant(Timber.DebugTree())
     }
+    runBlocking { appInitializer.init() }
     applicationScope.launch(Dispatchers.IO) {
       fhirResponseSyncer.invoke().collect()
     }
-    runBlocking { appInitializer.init() }
   }
 }

@@ -48,7 +48,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
@@ -239,7 +238,7 @@ private fun LazyListScope.WithProviders(
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
   organization: MgoOrganization? = null,
   groups: List<HealthCategoryGroup>,
-  favorites: List<HealthCareCategory>,
+  favorites: List<HealthCategoryGroup.HealthCategory>,
 ) {
   if (organization == null) {
     item {
@@ -262,7 +261,7 @@ private fun LazyListScope.WithProviders(
         FlowRow(horizontalArrangement = spacedBy(8.dp), verticalArrangement = spacedBy(8.dp)) {
           favorites.forEach { favorite ->
             HealthCategoriesFavoriteCard(
-              category = favorite.id,
+              category = favorite,
               onClick = { },
             )
           }

@@ -45,12 +45,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
-import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
-import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.supportRijkslint
 import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import sh.calvin.reorderable.ReorderableColumn
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -91,7 +89,7 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
 @Composable
 private fun EditOverviewBottomSheetContent(
   viewState: EditOverviewBottomSheetViewState,
-  onClickSave: (favorites: List<HealthCareCategoryId>, nonFavorites: List<HealthCareCategoryId>) -> Unit,
+  onClickSave: (favorites: List<HealthCategoryGroup.HealthCategory>, nonFavorites: List<HealthCategoryGroup.HealthCategory>) -> Unit,
   onReorderFavorites: (fromIndex: Int, toIndex: Int) -> Unit,
   onNavigateBack: () -> Unit,
 ) {
@@ -136,7 +134,6 @@ private fun EditOverviewBottomSheetContent(
                 nonFavorites
                   .toMutableList()
                   .also { it.add(categoryId) }
-                  .sortedBy { HealthCareCategoryId.entries.indexOf(it) }
             },
             onReorderFavorites = onReorderFavorites,
           )
@@ -177,8 +174,8 @@ private fun FavoriteEmptyCard(modifier: Modifier = Modifier) {
 
 @Composable
 private fun FavoritesCard(
-  favorites: List<HealthCareCategoryId>,
-  onClickHealthCategory: (categoryId: HealthCareCategoryId, favorite: Boolean) -> Unit,
+  favorites: List<HealthCategoryGroup.HealthCategory>,
+  onClickHealthCategory: (categoryId: HealthCategoryGroup.HealthCategory, favorite: Boolean) -> Unit,
   onReorderFavorites: (fromIndex: Int, toIndex: Int) -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -237,8 +234,8 @@ private fun FavoritesCard(
 
 @Composable
 private fun CategoriesCard(
-  categories: List<HealthCareCategoryId>,
-  onClickHealthCategory: (categoryId: HealthCareCategoryId, favorite: Boolean) -> Unit,
+  categories: List<HealthCategoryGroup.HealthCategory>,
+  onClickHealthCategory: (categoryId: HealthCategoryGroup.HealthCategory, favorite: Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
@@ -257,36 +254,36 @@ private fun CategoriesCard(
   }
 }
 
-@DefaultPreviews
-@Composable
-internal fun EditOverviewBottomSheetNoFavoritesPreview() {
-  MgoTheme {
-    EditOverviewBottomSheetContent(
-      viewState =
-        EditOverviewBottomSheetViewState(
-          favorites = listOf(),
-          nonFavorites = HealthCareCategoryId.entries,
-        ),
-      onClickSave = { _, _ -> },
-      onReorderFavorites = { fromIndex, toIndex -> },
-      onNavigateBack = {},
-    )
-  }
-}
-
-@DefaultPreviews
-@Composable
-internal fun EditOverviewBottomSheetFavoritesPreview() {
-  MgoTheme {
-    EditOverviewBottomSheetContent(
-      viewState =
-        EditOverviewBottomSheetViewState(
-          favorites = listOf(HealthCareCategoryId.MEDICATIONS, HealthCareCategoryId.APPOINTMENTS),
-          nonFavorites = HealthCareCategoryId.entries - HealthCareCategoryId.MEDICATIONS - HealthCareCategoryId.APPOINTMENTS,
-        ),
-      onClickSave = { _, _ -> },
-      onReorderFavorites = { fromIndex, toIndex -> },
-      onNavigateBack = {},
-    )
-  }
-}
+// @DefaultPreviews
+// @Composable
+// internal fun EditOverviewBottomSheetNoFavoritesPreview() {
+//  MgoTheme {
+//    EditOverviewBottomSheetContent(
+//      viewState =
+//        EditOverviewBottomSheetViewState(
+//          favorites = listOf(),
+//          nonFavorites = HealthCareCategoryId.entries,
+//        ),
+//      onClickSave = { _, _ -> },
+//      onReorderFavorites = { fromIndex, toIndex -> },
+//      onNavigateBack = {},
+//    )
+//  }
+// }
+//
+// @DefaultPreviews
+// @Composable
+// internal fun EditOverviewBottomSheetFavoritesPreview() {
+//  MgoTheme {
+//    EditOverviewBottomSheetContent(
+//      viewState =
+//        EditOverviewBottomSheetViewState(
+//          favorites = listOf(HealthCareCategoryId.MEDICATIONS, HealthCareCategoryId.APPOINTMENTS),
+//          nonFavorites = HealthCareCategoryId.entries - HealthCareCategoryId.MEDICATIONS - HealthCareCategoryId.APPOINTMENTS,
+//        ),
+//      onClickSave = { _, _ -> },
+//      onReorderFavorites = { fromIndex, toIndex -> },
+//      onNavigateBack = {},
+//    )
+//  }
+// }

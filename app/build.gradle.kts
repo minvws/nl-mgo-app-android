@@ -190,7 +190,6 @@ dependencies {
   implementation(projects.data.onboarding)
   implementation(projects.data.localisation)
   implementation(projects.data.fhirParser)
-  implementation(projects.data.healthcare)
   implementation(projects.data.pincode)
   implementation(projects.data.digid)
   implementation(libs.androidx.lifecycle.process)
@@ -204,7 +203,6 @@ dependencies {
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.digid))
   testImplementation(testFixtures(projects.framework.featuretoggle))
-  testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.data.fhirParser))
   testImplementation(libs.mockk.android)
 
@@ -220,4 +218,5 @@ dependencies {
   implementation(projects.data.fhir)
   implementation(projects.data.healthCategories)
   implementation(projects.framework.fhir)
+  implementation(projects.data.api.dva)
 }

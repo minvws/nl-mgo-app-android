@@ -5,7 +5,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.StorePinCode
@@ -32,7 +31,6 @@ class AppInitializer
     private val setHasSeenOnboarding: SetHasSeenOnboarding,
     private val storePinCode: StorePinCode,
     private val setDigidAuthenticated: SetDigidAuthenticated,
-    private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val organizationRepository: OrganizationRepository,
     private val quickJsRepository: QuickJsRepository,
   ) {
@@ -74,6 +72,5 @@ class AppInitializer
     @VisibleForTesting
     suspend fun clear() {
       organizationRepository.deleteAll()
-      healthCareDataStatesRepository.deleteAll()
     }
   }

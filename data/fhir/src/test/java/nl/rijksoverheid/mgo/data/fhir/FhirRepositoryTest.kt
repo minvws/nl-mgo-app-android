@@ -1,7 +1,12 @@
 package nl.rijksoverheid.mgo.data.fhir
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
+import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
@@ -10,15 +15,19 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class FhirRepositoryTest {
   @get:Rule
   val testServerRule = TestServerRule()
 
+  private val context = ApplicationProvider.getApplicationContext<Context>()
   private val okHttpClient = OkHttpClient.Builder().build()
   private val testServer = testServerRule.testServer
   private val fhirResponseJsonStore = MemoryFhirResponseJsonStore()
-  private val repository = FhirRepository(okHttpClient = okHttpClient, fhirResponseJsonStore = fhirResponseJsonStore)
+  private val repository = FhirRepository(okHttpClient = okHttpClient, fhirResponseJsonStore = fhirResponseJsonStore, context = context)
 
   @Test
   fun testFetchSuccess() =
@@ -111,4 +120,44 @@ class FhirRepositoryTest {
         assertTrue(awaitItem() is FhirResponse.Success)
       }
     }
+
+  @Test
+  fun testFetchBinarySuccess() {
+    // Given: Request returns response
+    val responseJson =
+      buildJsonObject {
+        put("id", "file")
+        put("content", "SGVsbG8gV29ybGQ=")
+        put("contentType", "application/pdf")
+      }
+    testServer.enqueueJson(responseJson.toStr())
+
+    // When: calling fetch binary
+    val result =
+      repository.fetchBinary(
+        resourceEndpoint = "",
+        url = testServer.url(),
+      )
+
+    // Then: Success result is returned
+    assertTrue(result.isSuccess)
+    assertEquals("file.pdf", result.getOrNull()?.file?.name)
+    assertEquals("application/pdf", result.getOrNull()?.contentType)
+  }
+
+  @Test
+  fun testFetchBinaryFailure() {
+    // Given: Request fails
+    testServer.enqueue500()
+
+    // When: calling fetch binary
+    val result =
+      repository.fetchBinary(
+        resourceEndpoint = "",
+        url = testServer.url(),
+      )
+
+    // Then: Failure result is returned
+    assertTrue(result.isFailure)
+  }
 }

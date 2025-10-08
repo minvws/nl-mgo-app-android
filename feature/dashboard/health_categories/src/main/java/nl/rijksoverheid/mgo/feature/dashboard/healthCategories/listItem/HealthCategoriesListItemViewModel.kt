@@ -18,28 +18,16 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Named
 
-/**
- * The [ViewModel] for [HealthCategoriesListItem].
- * Observes health care data for the [HealthCareCategoryId].
- *
- * @param filterOrganization If not null, will observe health care data for this organization. If null will observe for all added
- * organizations.
- * @param category The [HealthCareCategoryId] to determine which health care data falls into this category.
- * @param healthCareDataStatesRepository The [HealthCareDataStatesRepository] that is responsible for fetching the health care data.
- */
 @HiltViewModel(assistedFactory = HealthCategoriesListItemViewModel.Factory::class)
 internal class HealthCategoriesListItemViewModel
   @AssistedInject
   constructor(
     @Assisted private val filterOrganization: MgoOrganization?,
     @Assisted private val category: HealthCategoryGroup.HealthCategory,
-    private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     private val organizationRepository: OrganizationRepository,
     private val fhirRepository: FhirRepository,

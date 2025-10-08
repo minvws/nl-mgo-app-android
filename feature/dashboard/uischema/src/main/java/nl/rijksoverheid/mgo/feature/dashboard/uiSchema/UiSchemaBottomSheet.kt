@@ -14,7 +14,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import nl.rijksoverheid.mgo.component.mgo.navigation.mgoComposable
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlin.reflect.typeOf
@@ -79,7 +78,6 @@ fun UiSchemaBottomSheet(
           mapOf(
             typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
             typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-            typeOf<MgoResource>() to JsonNavType(MgoResource::class.java, MgoResource.serializer()),
           ),
       ) { backStackEntry ->
         val route = backStackEntry.toRoute<UiSchema>()

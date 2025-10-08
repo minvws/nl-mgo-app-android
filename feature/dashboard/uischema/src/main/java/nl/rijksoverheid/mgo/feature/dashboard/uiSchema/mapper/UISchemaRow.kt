@@ -1,16 +1,6 @@
-package nl.rijksoverheid.mgo.data.healthcare.models
+package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper
 
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResourceReferenceId
-import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadBinary
-import nl.rijksoverheid.mgo.data.fhirParser.models.DownloadLink
-import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
-import nl.rijksoverheid.mgo.data.fhirParser.models.MultipleGroupedValues
-import nl.rijksoverheid.mgo.data.fhirParser.models.MultipleValues
-import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceLink
-import nl.rijksoverheid.mgo.data.fhirParser.models.ReferenceValue
-import nl.rijksoverheid.mgo.data.fhirParser.models.SingleValue
-import nl.rijksoverheid.mgo.data.fhirParser.models.UiElement
+import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 
 /**
  * Represents a list item that is build from a [HealthUiSchema].
@@ -147,47 +137,3 @@ sealed class UISchemaRow(
     val url: String,
   ) : UISchemaRow(heading, value)
 }
-
-fun UiElement.toRow(): UISchemaRow =
-  when (this) {
-    is ReferenceLink -> {
-      UISchemaRow.Reference(heading = null, value = this.label, referenceId = this.reference)
-    }
-
-    is DownloadLink -> {
-      UISchemaRow.Link(heading = null, value = this.label, this.url ?: "")
-    }
-
-    is SingleValue -> {
-      UISchemaRow.Static(heading = this.label, value = this.display ?: "")
-    }
-
-    is MultipleValues -> {
-      UISchemaRow.Static(heading = this.label, value = this.display?.joinToString(", ") ?: "")
-    }
-
-    is MultipleGroupedValues -> {
-      UISchemaRow.Static(heading = this.label, value = this.display?.joinToString(", ") ?: "")
-    }
-
-    is ReferenceValue -> {
-      UISchemaRow.Reference(
-        heading = this.label,
-        value = this.display ?: "",
-        referenceId = this.reference ?: "",
-      )
-    }
-
-    is DownloadBinary -> {
-      val reference = this.reference
-      if (reference == null) {
-        UISchemaRow.Binary.Empty(heading = null, value = this.label)
-      } else {
-        UISchemaRow.Binary.NotDownloaded.Idle(
-          heading = null,
-          value = this.label,
-          binary = reference,
-        )
-      }
-    }
-  }

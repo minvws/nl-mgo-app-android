@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoriesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
+import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -22,20 +23,17 @@ class EditOverviewBottomSheetViewModel
   @Inject
   constructor(
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
-    private val healthCareCategoryRepository: HealthCareCategoriesRepository,
+    getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
+    private val favoriteHealthCategoriesRepository: FavoriteHealthCategoriesRepository,
   ) : ViewModel() {
-    private val initialCategories = runBlocking(ioDispatcher) { healthCareCategoryRepository.observe().first() }
+    private val groups = getHealthCategoriesFromDisk()
+    private val initialFavorites = runBlocking(ioDispatcher) { favoriteHealthCategoriesRepository.observe().first() }
     private val initialState =
       EditOverviewBottomSheetViewState(
-        favorites =
-          initialCategories
-            .filter { category ->
-              category.favoritePosition != -1
-            }.sortedBy { category -> category.favoritePosition }
-            .map { category -> category.id },
-        nonFavorites = initialCategories.filter { category -> category.favoritePosition == -1 }.map { category -> category.id },
+        favorites = groups.filter { category -> initialFavorites.contains(category.id) }.map { group -> group.categories }.flatten(),
+        nonFavorites = groups.filter { category -> !initialFavorites.contains(category.id) }.map { group -> group.categories }.flatten(),
       )
-    private val _viewState = MutableStateFlow<EditOverviewBottomSheetViewState>(initialState)
+    private val _viewState = MutableStateFlow(initialState)
     val viewState = _viewState.asStateFlow()
 
     private val _closeBottomSheet = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
@@ -56,11 +54,12 @@ class EditOverviewBottomSheetViewModel
     }
 
     fun save(
-      favorites: List<HealthCareCategoryId>,
-      nonFavorites: List<HealthCareCategoryId>,
+      favorites: List<HealthCategoryGroup.HealthCategory>,
+      nonFavorites: List<HealthCategoryGroup.HealthCategory>,
     ) {
       viewModelScope.launch {
-        healthCareCategoryRepository.setFavorites(favorites)
+        val favoriteIds = favorites.map { favorite -> favorite.id }
+        favoriteHealthCategoriesRepository.store(favoriteIds)
         _viewState.update { viewState -> viewState.copy(favorites = favorites, nonFavorites = nonFavorites) }
         _closeBottomSheet.tryEmit(Unit)
       }

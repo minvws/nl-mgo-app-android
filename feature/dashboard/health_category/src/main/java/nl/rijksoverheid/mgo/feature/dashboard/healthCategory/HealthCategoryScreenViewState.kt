@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 
 /**
  * The view state for [HealthCategoryScreen].

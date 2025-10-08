@@ -12,7 +12,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue

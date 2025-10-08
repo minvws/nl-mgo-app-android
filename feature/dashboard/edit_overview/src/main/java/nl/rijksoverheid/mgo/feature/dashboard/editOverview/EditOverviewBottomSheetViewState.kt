@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.feature.dashboard.editOverview
 
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
 data class EditOverviewBottomSheetViewState(
-  val favorites: List<HealthCareCategoryId>,
-  val nonFavorites: List<HealthCareCategoryId>,
+  val favorites: List<HealthCategoryGroup.HealthCategory>,
+  val nonFavorites: List<HealthCategoryGroup.HealthCategory>,
 )

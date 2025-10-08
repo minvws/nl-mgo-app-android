@@ -9,36 +9,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.healthCareCategory.getIcon
-import nl.rijksoverheid.mgo.component.healthCareCategory.getIconColor
-import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
+import getStringResourceByName
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
-import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
 @Composable
 fun HealthCategoriesFavoriteCard(
-  category: HealthCareCategoryId,
+  category: HealthCategoryGroup.HealthCategory,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -65,14 +59,14 @@ fun HealthCategoriesFavoriteCard(
 @Composable
 private fun HealthCategoriesFavoriteCardContent(
   loading: Boolean,
-  category: HealthCareCategoryId,
+  category: HealthCategoryGroup.HealthCategory,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   MgoCard(modifier = modifier.width(182.dp), onClick = onClick) {
     Column(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Icon(painterResource(category.getIcon()), tint = category.getIconColor(), contentDescription = null)
+        // Icon(painterResource(category.getIcon()), tint = category.getIconColor(), contentDescription = null)
         if (loading) {
           CircularProgressIndicator(
             modifier = Modifier.size(24.dp),
@@ -90,7 +84,7 @@ private fun HealthCategoriesFavoriteCardContent(
       // To work around this, we use a layout modifier to check if the text occupies only one line,
       // and if so, we adjust its position so it is vertically centered.
       val textMeasurer = rememberTextMeasurer()
-      val text = stringResource(category.getTitle())
+      val text = stringResource(LocalContext.current.getStringResourceByName(category.heading))
       val textStyle = MaterialTheme.typography.bodyMedium
       Text(
         modifier =
@@ -122,38 +116,38 @@ private fun HealthCategoriesFavoriteCardContent(
   }
 }
 
-@PreviewLightDark
-@Composable
-internal fun HealthCategoriesFavoriteCardPreview() {
-  MgoTheme {
-    HealthCategoriesFavoriteCardContent(
-      category = HealthCareCategoryId.MEDICATIONS,
-      onClick = {},
-      loading = false,
-    )
-  }
-}
-
-@DefaultPreviews
-@Composable
-internal fun HealthCategoriesFavoriteMultilineCardPreview() {
-  MgoTheme {
-    HealthCategoriesFavoriteCardContent(
-      category = HealthCareCategoryId.PATIENT,
-      onClick = {},
-      loading = false,
-    )
-  }
-}
-
-@PreviewLightDark
-@Composable
-internal fun HealthCategoriesFavoriteCardLoadingPreview() {
-  MgoTheme {
-    HealthCategoriesFavoriteCardContent(
-      category = HealthCareCategoryId.MEDICATIONS,
-      onClick = {},
-      loading = true,
-    )
-  }
-}
+// @PreviewLightDark
+// @Composable
+// internal fun HealthCategoriesFavoriteCardPreview() {
+//  MgoTheme {
+//    HealthCategoriesFavoriteCardContent(
+//      category = HealthCareCategoryId.MEDICATIONS,
+//      onClick = {},
+//      loading = false,
+//    )
+//  }
+// }
+//
+// @DefaultPreviews
+// @Composable
+// internal fun HealthCategoriesFavoriteMultilineCardPreview() {
+//  MgoTheme {
+//    HealthCategoriesFavoriteCardContent(
+//      category = HealthCareCategoryId.PATIENT,
+//      onClick = {},
+//      loading = false,
+//    )
+//  }
+// }
+//
+// @PreviewLightDark
+// @Composable
+// internal fun HealthCategoriesFavoriteCardLoadingPreview() {
+//  MgoTheme {
+//    HealthCategoriesFavoriteCardContent(
+//      category = HealthCareCategoryId.MEDICATIONS,
+//      onClick = {},
+//      loading = true,
+//    )
+//  }
+// }

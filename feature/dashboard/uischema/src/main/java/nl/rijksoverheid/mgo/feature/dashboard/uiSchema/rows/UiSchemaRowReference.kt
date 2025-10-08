@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaRow
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**

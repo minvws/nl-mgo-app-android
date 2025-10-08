@@ -11,8 +11,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.UiElement
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
 import javax.inject.Inject
 
 class UISchemaSectionMapper
@@ -28,7 +26,7 @@ class UISchemaSectionMapper
         )
       }
 
-    fun UiElement.toRow(): UISchemaRow? =
+    private fun UiElement.toRow(): UISchemaRow? =
       when (this) {
         is ReferenceLink -> {
           if (isReferenceClickable(reference)) {

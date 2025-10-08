@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoriesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
@@ -27,7 +27,7 @@ import javax.inject.Named
 internal class HealthCategoriesScreenViewModel
   @Inject
   constructor(
-    healthCareCategoriesRepository: HealthCareCategoriesRepository,
+    favoriteHealthCategoriesRepository: FavoriteHealthCategoriesRepository,
     organizationRepository: OrganizationRepository,
     getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     @Named("keyValueStore") keyValueStore: KeyValueStore,
@@ -41,7 +41,7 @@ internal class HealthCategoriesScreenViewModel
       )
     private val _viewState = MutableStateFlow(initialViewState)
     val viewState =
-      combine(_viewState, organizationRepository.storedOrganizationsFlow, healthCareCategoriesRepository.observe()) { viewState, providers, categories ->
+      combine(_viewState, organizationRepository.storedOrganizationsFlow, favoriteHealthCategoriesRepository.observe()) { viewState, providers, categories ->
         HealthCategoriesScreenViewState(
           name = viewState.name,
           providers = providers,

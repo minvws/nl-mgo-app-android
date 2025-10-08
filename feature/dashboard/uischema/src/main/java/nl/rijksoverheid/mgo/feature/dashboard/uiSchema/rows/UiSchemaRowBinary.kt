@@ -37,9 +37,9 @@ import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.component.theme.sentimentInformative
-import nl.rijksoverheid.mgo.data.healthcare.models.TEST_FHIR_BINARY
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaRow
 import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -221,7 +221,7 @@ internal fun UiSchemaRowBinaryLoadingPreview() {
 internal fun UiSchemaRowBinaryDownloadedPreview() {
   MgoTheme {
     UiSchemaRowBinary(
-      row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = TEST_FHIR_BINARY),
+      row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = FhirBinary(file = File(""), contentType = "application/pdf")),
       onClick = {},
     )
   }

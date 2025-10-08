@@ -19,13 +19,9 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
@@ -55,9 +51,6 @@ internal class HealthCategoryScreenViewModel
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     private val organizationRepository: OrganizationRepository,
-    private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
-    private val mgoResourceRepository: MgoResourceRepository,
-    private val uiSchemaMapper: UiSchemaMapper,
     private val createPdf: CreatePdfForHealthCategories,
     private val fhirRepository: FhirRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,

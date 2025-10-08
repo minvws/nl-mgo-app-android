@@ -43092,7 +43092,7 @@ ${indent}}` : "}";
     return {
       type: "SINGLE_VALUE",
       label: formatMessage2(`summary.organization`),
-      display: organization2?.name
+      value: { display: organization2?.name }
     };
   }
   function summaryOptions({ formatMessage: formatMessage2 }, i18n2, resource) {
@@ -49779,10 +49779,10 @@ ${indent}}` : "}";
       case "DOWNLOAD_BINARY":
         return isNullish(uiField.reference);
       case "SINGLE_VALUE":
-        return isNullish(uiField.display);
+        return isNullish(uiField.value?.display);
       case "MULTIPLE_VALUES":
       case "MULTIPLE_GROUPED_VALUES":
-        return isNullish(uiField.display) || !uiField.display.flat().length;
+        return isNullish(uiField.value) || !uiField.value.flat().length;
       case "DOWNLOAD_LINK":
         return isNullish(uiField.url);
       default:
@@ -49801,7 +49801,7 @@ ${indent}}` : "}";
         return isEmptyUiEntry(entry) && !["DOWNLOAD_LINK", "DOWNLOAD_BINARY"].includes(entry.type) ? {
           label: entry.label,
           type: "SINGLE_VALUE",
-          display: formatMessage2("fhir.empty_value")
+          value: { display: formatMessage2("fhir.empty_value") }
         } : entry;
       })
     };
@@ -49839,19 +49839,21 @@ ${indent}}` : "}";
     return value2?.startsWith("Binary/");
   }
   const annotationDisplay = (value2) => {
-    return value2?.text;
+    return {
+      display: value2?.text
+    };
   };
   const annotation = ({ formatLabel }) => (label, value2, options = {}) => {
     if (Array.isArray(value2)) {
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2.map(annotationDisplay).filter(isNonNullish)
+        value: value2.map(annotationDisplay).filter(isNonNullish)
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
-      display: annotationDisplay(value2),
+      value: annotationDisplay(value2),
       type: "SINGLE_VALUE"
     };
   };
@@ -49860,7 +49862,7 @@ ${indent}}` : "}";
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: isNonNullish(value2?.value) ? truthyString : void 0
+      value: isNonNullish(value2?.value) ? { display: truthyString } : void 0
     };
   };
   function valueOf(value2) {
@@ -49883,21 +49885,21 @@ ${indent}}` : "}";
           return;
         }
         if (i18nCode && hasMessage(i18nKey)) {
-          return formatMessage2(i18nKey);
+          return { display: formatMessage2(i18nKey) };
         }
-        return codeValue;
+        return { display: codeValue };
       }
       if (Array.isArray(value2)) {
         return {
           label: formatLabel(label, value2, defaultLabel),
           type: "MULTIPLE_VALUES",
-          display: value2.map(translateCode).filter(isNonNullish)
+          value: value2.map(translateCode).filter(isNonNullish)
         };
       }
       return {
         label: formatLabel(label, value2, defaultLabel),
         type: "SINGLE_VALUE",
-        display: translateCode(value2)
+        value: translateCode(value2)
       };
     };
   }
@@ -49944,13 +49946,13 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2.map(formatCoding).filter((item) => isNonNullish(item.display))
+        value: value2.map(formatCoding).filter((item) => isNonNullish(item.display))
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: formatCoding(value2)
+      value: formatCoding(value2)
     };
   };
   const codeableConcept = (context) => (label, value2, options = {}) => {
@@ -49963,13 +49965,13 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_GROUPED_VALUES",
-        display: value2.map(formatCodeableConcept).filter(isNonNullish)
+        value: value2.map(formatCodeableConcept).filter(isNonNullish)
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "MULTIPLE_VALUES",
-      display: formatCodeableConcept(value2)
+      value: formatCodeableConcept(value2)
     };
   };
   const milliseconds = /T\d\d:\d\d:\d\d\.\d+/i;
@@ -50021,7 +50023,7 @@ ${indent}}` : "}";
     return {
       label: i18nContext.formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: date$1(i18nContext)(value2?.value)
+      value: { display: date$1(i18nContext)(value2?.value) }
     };
   };
   const dateTime = (context) => (label, value2, options = {}) => {
@@ -50031,20 +50033,20 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2.map((x) => formatDate2(valueOf(x))).filter(isNonNullish)
+        value: value2.map((x) => ({ display: formatDate2(valueOf(x)) }))
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: formatDate2(valueOf(value2))
+      value: { display: formatDate2(valueOf(value2)) }
     };
   };
   const decimal = ({ formatLabel }) => (label, value2, options = {}) => {
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: numberToString(value2?.value)
+      value: { display: numberToString(value2?.value) }
     };
   };
   const systemValue = ({ formatMessage: formatMessage2, hasMessage }) => (value2) => {
@@ -50066,7 +50068,7 @@ ${indent}}` : "}";
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: `SINGLE_VALUE`,
-      display: systemValue(context)(value2)
+      value: { display: systemValue(context)(value2) }
     };
   };
   const duration = quantity;
@@ -50075,13 +50077,13 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2?.map((x) => x?.value).filter(isNonNullish)
+        value: value2.map((x) => ({ display: x?.value }))
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: value2?.value
+      value: { display: value2?.value }
     };
   };
   const instant = (context) => (label, value2, options = {}) => {
@@ -50091,27 +50093,27 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2.map((x) => formatDate2(x.value)).filter(isNonNullish)
+        value: value2.map((x) => ({ display: formatDate2(x.value) }))
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: formatDate2(value2?.value)
+      value: { display: formatDate2(value2?.value) }
     };
   };
   const integer = ({ formatLabel }) => (label, value2, options = {}) => {
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: numberToString(value2?.value)
+      value: { display: numberToString(value2?.value) }
     };
   };
   const integer64 = ({ formatLabel }) => (label, value2, options = {}) => {
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: numberToString(value2?.value)
+      value: { display: numberToString(value2?.value) }
     };
   };
   const period = (context) => (label, value2) => {
@@ -50123,12 +50125,12 @@ ${indent}}` : "}";
       {
         label: formatLabel(startLabel, value2, `fhir.period.start`),
         type: `SINGLE_VALUE`,
-        display: formatDate2(value2?.start)
+        value: { display: formatDate2(value2?.start) }
       },
       {
         label: formatLabel(endLabel, value2, `fhir.period.end`),
         type: `SINGLE_VALUE`,
-        display: formatDate2(value2?.end)
+        value: { display: formatDate2(value2?.end) }
       }
     ];
   };
@@ -50136,7 +50138,7 @@ ${indent}}` : "}";
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: numberToString(value2?.value)
+      value: { display: numberToString(value2?.value) }
     };
   };
   const range = (context) => (label, value2) => {
@@ -50148,12 +50150,12 @@ ${indent}}` : "}";
       {
         label: formatLabel(lowLabel, value2, `fhir.range.low`),
         type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.low)
+        value: { display: formatSystemValue(value2?.low) }
       },
       {
         label: formatLabel(highLabel, value2, `fhir.range.high`),
         type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.high)
+        value: { display: formatSystemValue(value2?.high) }
       }
     ];
   };
@@ -50166,12 +50168,12 @@ ${indent}}` : "}";
       {
         label: formatLabel(numeratorLabel, value2, `fhir.ratio.numerator`),
         type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.numerator)
+        value: { display: formatSystemValue(value2?.numerator) }
       },
       {
         label: formatLabel(denominatorLabel, value2, `fhir.ratio.denominator`),
         type: `SINGLE_VALUE`,
-        display: formatSystemValue(value2?.denominator)
+        value: { display: formatSystemValue(value2?.denominator) }
       }
     ];
   };
@@ -50180,14 +50182,14 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2.map((x) => x.display).filter(isNonNullish)
+        value: value2.map((x) => ({ display: x.display }))
       };
     }
     if (isSummary) {
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "SINGLE_VALUE",
-        display: value2?.display
+        value: { display: value2?.display }
       };
     }
     return {
@@ -50202,7 +50204,7 @@ ${indent}}` : "}";
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: `SINGLE_VALUE`,
-      display: systemValue(context)(value2)
+      value: { display: systemValue(context)(value2) }
     };
   };
   const string = ({ formatLabel }) => (label, value2, options = {}) => {
@@ -50210,13 +50212,13 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2.map((x) => valueOf(x)).filter(isNonNullish)
+        value: value2.map((x) => ({ display: valueOf(x) }))
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: valueOf(value2)
+      value: { display: valueOf(value2) }
     };
   };
   const sampledData = (context) => (label, value2) => {
@@ -50258,20 +50260,20 @@ ${indent}}` : "}";
       return {
         label: formatLabel(label, value2, options.defaultLabel),
         type: "MULTIPLE_VALUES",
-        display: value2.map(valueOf).filter(isNonNullish)
+        value: value2.map((x) => ({ display: valueOf(x) }))
       };
     }
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: valueOf(value2)
+      value: { display: valueOf(value2) }
     };
   };
   const unsignedInt = ({ formatLabel }) => (label, value2, options = {}) => {
     return {
       label: formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
-      display: numberToString(valueOf(value2))
+      value: { display: numberToString(valueOf(value2)) }
     };
   };
   const timing = (context) => (label, value2) => {
@@ -50406,14 +50408,14 @@ ${indent}}` : "}";
   const valueWithMax = ({ formatLabel }) => (label, value2, max2) => {
     return {
       label: formatLabel(label, value2),
-      display: format.valueWithMaxValue(value2, max2),
+      value: { display: format.valueWithMaxValue(value2, max2) },
       type: "SINGLE_VALUE"
     };
   };
   const valueWithUnit = ({ formatLabel }) => (label, value2, unit) => {
     return {
       label: formatLabel(label, value2),
-      display: format.valueWithUnit(valueOf(value2), valueOf(unit)),
+      value: { display: format.valueWithUnit(valueOf(value2), valueOf(unit)) },
       type: "SINGLE_VALUE"
     };
   };
@@ -50562,7 +50564,7 @@ ${indent}}` : "}";
       {
         label: context.formatLabel(path, null),
         type: "SINGLE_VALUE",
-        display: void 0
+        value: void 0
       }
     ];
   }
@@ -50618,7 +50620,7 @@ ${indent}}` : "}";
         elements.push({
           label: context.formatLabel(valuePath, null),
           type: "SINGLE_VALUE",
-          display: void 0
+          value: void 0
         });
       } else {
         elements.push(...processValue(context, valuePath, value3));

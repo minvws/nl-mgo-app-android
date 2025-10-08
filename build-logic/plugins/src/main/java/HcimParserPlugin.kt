@@ -16,7 +16,7 @@ class HcimParserPlugin : Plugin<Project> {
         workingDir.mkdir()
 
         // Step 1: Download Files
-        downloadGithubArtifact(workflowId = "187656206", workingDir = workingDir)
+        // downloadGithubArtifact(workflowId = "187656206", workingDir = workingDir)
 
         // Step 2: Move Files
         target.moveFiles(workingDir)

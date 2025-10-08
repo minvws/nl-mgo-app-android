@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
+  implementation(libs.dagger.hilt.android)
   implementation(projects.framework.fhir)
   testImplementation(projects.framework.test)
 }

@@ -20,6 +20,7 @@ import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
@@ -61,6 +62,7 @@ internal class HealthCategoryScreenViewModel
     private val fhirRepository: FhirRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     private val listItemGroupMapper: ListItemGroupMapper,
+    private val mgoResourceStore: MgoResourceStore,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -109,6 +111,12 @@ internal class HealthCategoryScreenViewModel
             // Create list items from them to show in the UI
             val listItemGroups = listItemGroupMapper.invoke(category = category, fhirResponses = successResponses)
 
+            // Store all mgo resources in a store, because we need them in the ui schema screen
+            val mgoResources = listItemGroups.map { group -> group.items.map { item -> item.mgoResource } }.flatten()
+            for (mgoResource in mgoResources) {
+              mgoResourceStore.store(mgoResource)
+            }
+
             // Update view state
             _viewState.update { viewState ->
               viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.Loaded(listItemGroups), showErrorBanner = hasError)
@@ -153,5 +161,10 @@ internal class HealthCategoryScreenViewModel
 //          )
 //        _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
 //      }
+    }
+
+    override fun onCleared() {
+      super.onCleared()
+      mgoResourceStore.clear()
     }
   }

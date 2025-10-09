@@ -67,3 +67,33 @@ val TEST_HEALTH_CATEGORY_PROBLEMS =
         ),
       ),
   )
+
+val TEST_HEALTH_CATEGORY_LIFESTYLE =
+  HealthCategoryGroup.HealthCategory(
+    id = "lifestyle",
+    heading = "hc_lifestyle.heading",
+    subheading = "hc_lifestyle.subheading",
+    subcategories =
+      listOf(
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_living_situation.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation"),
+        ),
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_drug_use.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse"),
+        ),
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_alcohol_use.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse"),
+        ),
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_tobacco_use.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse"),
+        ),
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_nutrition_advice.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"),
+        ),
+      ),
+  )

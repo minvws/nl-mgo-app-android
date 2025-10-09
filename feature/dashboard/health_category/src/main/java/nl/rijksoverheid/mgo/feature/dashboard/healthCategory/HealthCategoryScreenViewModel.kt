@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -70,7 +71,7 @@ internal class HealthCategoryScreenViewModel
     private val _viewState: MutableStateFlow<HealthCategoryScreenViewState> = MutableStateFlow(initialState)
     val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
-    private val _openPdfViewer = MutableSharedFlow<PdfViewerState>(extraBufferCapacity = 1)
+    private val _openPdfViewer = MutableSharedFlow<PdfViewerState>(extraBufferCapacity = 2)
     val openPdfViewer = _openPdfViewer.asSharedFlow()
 
     init {
@@ -173,6 +174,11 @@ internal class HealthCategoryScreenViewModel
 
     override fun onCleared() {
       super.onCleared()
+      clear()
+    }
+
+    @VisibleForTesting
+    fun clear() {
       mgoResourceStore.clear()
     }
   }

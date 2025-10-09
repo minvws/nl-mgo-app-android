@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
@@ -77,6 +78,7 @@ class DefaultFhirRepository
               dataServiceId = dataServiceId,
               endpointId = endpointId,
               jsonSource = jsonSource,
+              isEmpty = isBundleEmpty(json),
             )
           updateCachedFhirResponse(fhirResponse = fhirResponse)
         } else {
@@ -101,6 +103,12 @@ class DefaultFhirRepository
           )
         updateCachedFhirResponse(fhirResponse = fhirResponse)
       }
+    }
+
+    private fun isBundleEmpty(bundleJson: String): Boolean {
+      val json = Json.parseToJsonElement(bundleJson).jsonObject
+      val entry = json["entry"]?.jsonArray
+      return entry.isNullOrEmpty()
     }
 
     override suspend fun fetchBinary(

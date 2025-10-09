@@ -70,9 +70,13 @@ internal class HealthCategoriesListItemViewModel
               }.flatten()
               .flatten()
 
-          // Observe the fhir responses
-          combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest {
-            _listItemState.update { HealthCategoriesListItemState.LOADED }
+          if (fhirResponseFlows.isEmpty()) {
+            _listItemState.update { HealthCategoriesListItemState.NO_DATA }
+          } else {
+            // Observe the fhir responses
+            combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest {
+              _listItemState.update { HealthCategoriesListItemState.LOADED }
+            }
           }
         }
       }

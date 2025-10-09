@@ -13,7 +13,7 @@ class TestFhirRepository : FhirRepository {
     endpointId: String,
   ): Flow<FhirResponse> =
     flow {
-      emit(FhirResponse.Success(organizationId = "1", dataServiceId = "1", endpointId = "1", jsonSource = FhirResponseJsonSource.Memory("")))
+      emit(FhirResponse.Success(organizationId = "1", dataServiceId = "1", endpointId = "1", jsonSource = FhirResponseJsonSource.Memory(""), isEmpty = false))
     }
 
   override suspend fun fetch(

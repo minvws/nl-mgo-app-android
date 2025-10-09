@@ -10,6 +10,7 @@ sealed class FhirResponse(
     override val dataServiceId: String,
     override val endpointId: String,
     val jsonSource: FhirResponseJsonSource,
+    val isEmpty: Boolean,
   ) : FhirResponse(organizationId, dataServiceId, endpointId)
 
   data class Error(

@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper
 
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DisplayValue

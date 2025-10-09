@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper
+package nl.rijksoverheid.mgo.component.uiSchema
 
 import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 

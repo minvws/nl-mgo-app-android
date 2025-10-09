@@ -2,6 +2,8 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 import nl.rijksoverheid.mgo.data.fhir.TestFhirRepository
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
@@ -13,8 +15,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaRow
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert

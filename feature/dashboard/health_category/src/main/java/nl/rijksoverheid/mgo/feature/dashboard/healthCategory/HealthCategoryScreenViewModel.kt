@@ -159,16 +159,16 @@ internal class HealthCategoryScreenViewModel
     }
 
     fun generatePdf() {
-//      viewModelScope.launch(ioDispatcher) {
-//        _openPdfViewer.tryEmit(PdfViewerState.Loading)
-//        val listItemGroups = (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup ?: listOf()
-//        val file =
-//          createPdf.invoke(
-//            category = category,
-//            listItemGroups = listItemGroups,
-//          )
-//        _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
-//      }
+      viewModelScope.launch(ioDispatcher) {
+        _openPdfViewer.tryEmit(PdfViewerState.Loading)
+        val listItemGroups = (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup ?: listOf()
+        val file =
+          createPdf.invoke(
+            category = category,
+            listItemGroups = listItemGroups,
+          )
+        _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
+      }
     }
 
     override fun onCleared() {

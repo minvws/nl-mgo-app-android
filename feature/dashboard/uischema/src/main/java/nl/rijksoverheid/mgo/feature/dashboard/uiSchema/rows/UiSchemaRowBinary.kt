@@ -37,9 +37,9 @@ import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.component.theme.sentimentInformative
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
-import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper.UISchemaRow
 import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 

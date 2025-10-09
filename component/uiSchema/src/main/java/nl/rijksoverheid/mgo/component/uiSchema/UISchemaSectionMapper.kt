@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper
+package nl.rijksoverheid.mgo.component.uiSchema
 
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
@@ -30,32 +30,52 @@ class UISchemaSectionMapper
       when (this) {
         is ReferenceLink -> {
           if (isReferenceClickable(reference)) {
-            UISchemaRow.Reference(heading = null, value = this.label, referenceId = this.reference)
+            UISchemaRow.Reference(
+              heading = null,
+              value = this.label,
+              referenceId = this.reference,
+            )
           } else {
-            UISchemaRow.Static(heading = this.label, value = this.reference)
+            UISchemaRow.Static(
+              heading = this.label,
+              value = this.reference,
+            )
           }
         }
 
         is DownloadLink ->
           this.url?.let { url ->
-            UISchemaRow.Link(heading = null, value = this.label, url = url)
+            UISchemaRow.Link(
+              heading = null,
+              value = this.label,
+              url = url,
+            )
           }
 
         is SingleValue -> {
           this.value?.display?.let { display ->
-            UISchemaRow.Static(heading = this.label, value = display)
+            UISchemaRow.Static(
+              heading = this.label,
+              value = display,
+            )
           }
         }
 
         is MultipleValues -> {
           this.value?.map { it.display }?.let { display ->
-            UISchemaRow.Static(heading = this.label, value = display.joinToString(", "))
+            UISchemaRow.Static(
+              heading = this.label,
+              value = display.joinToString(", "),
+            )
           }
         }
 
         is MultipleGroupedValues -> {
           this.value?.map { values -> values.map { value -> value.display } }?.flatten()?.let { display ->
-            UISchemaRow.Static(heading = this.label, value = display.joinToString(", "))
+            UISchemaRow.Static(
+              heading = this.label,
+              value = display.joinToString(", "),
+            )
           }
         }
 
@@ -64,9 +84,16 @@ class UISchemaSectionMapper
           val display = this.display
           if (reference != null && display != null) {
             if (isReferenceClickable(reference)) {
-              UISchemaRow.Reference(heading = this.label, value = display, referenceId = reference)
+              UISchemaRow.Reference(
+                heading = this.label,
+                value = display,
+                referenceId = reference,
+              )
             } else {
-              UISchemaRow.Static(heading = this.label, value = display)
+              UISchemaRow.Static(
+                heading = this.label,
+                value = display,
+              )
             }
           } else {
             null
@@ -76,7 +103,10 @@ class UISchemaSectionMapper
         is DownloadBinary -> {
           val reference = this.reference
           if (reference == null) {
-            UISchemaRow.Binary.Empty(heading = null, value = this.label)
+            UISchemaRow.Binary.Empty(
+              heading = null,
+              value = this.label,
+            )
           } else {
             UISchemaRow.Binary.NotDownloaded.Idle(
               heading = null,

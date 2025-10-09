@@ -53,3 +53,17 @@ data class HealthCategoryGroup(
     ) : Parcelable
   }
 }
+
+val TEST_HEALTH_CATEGORY_PROBLEMS =
+  HealthCategoryGroup.HealthCategory(
+    id = "problems",
+    heading = "hc_problems.heading",
+    subheading = "hc_problems.subheading",
+    subcategories =
+      listOf(
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_problem.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Problem"),
+        ),
+      ),
+  )

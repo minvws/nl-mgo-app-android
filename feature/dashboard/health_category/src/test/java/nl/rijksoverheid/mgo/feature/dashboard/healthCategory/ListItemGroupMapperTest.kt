@@ -61,30 +61,35 @@ class ListItemGroupMapperTest {
             dataServiceId = "48",
             endpointId = "1",
             jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("livingSituation.json")),
+            isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
             jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("alcoholUse.json")),
+            isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
             jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("drugUse.json")),
+            isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
             jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("tobaccoUse.json")),
+            isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
             jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("nutritionAdvice.json")),
+            isEmpty = false,
           ),
         )
 

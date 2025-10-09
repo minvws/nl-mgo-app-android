@@ -6,6 +6,9 @@ import getStringResourceByName
 import nl.rijksoverheid.mgo.component.pdfViewer.Pdf
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGenerator
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGroupedTables
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfSubTable
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfTable
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenListItemsGroup
@@ -26,6 +29,7 @@ internal class DefaultCreatePdfForHealthCategories
     @ApplicationContext private val context: Context,
     @Named("systemDefaultZone") private val clock: Clock,
     private val uiSchemaParser: UiSchemaParser,
+    private val uiSchemaSectionMapper: UISchemaSectionMapper,
     private val pdfGenerator: PdfGenerator,
   ) : CreatePdfForHealthCategories {
     override suspend fun invoke(
@@ -81,34 +85,32 @@ internal class DefaultCreatePdfForHealthCategories
       append(".pdf")
     }
 
-//    private suspend fun List<HealthCategoryScreenListItemsGroup>.toPdfTables(): List<PdfGroupedTables> =
-//      map { itemsGroup ->
-//        val pdfTables =
-//          itemsGroup.items.map { listItem ->
-//            uiSchemaParser
-//              .getSummary(organizationName = listItem.organization.name, mgoResourceJson = listItem.mgoResource.json)
-//              .toSections()
-//              .map { section ->
-//                PdfSubTable(
-//                  heading = section.heading,
-//                  data =
-//                    section.rows.mapNotNull { row ->
-//                      (row.heading ?: return@mapNotNull null) to row.value
-//                    },
-//                )
-//              }.filter { it.data.isNotEmpty() }
-//              .let { subTables ->
-//                PdfTable(
-//                  heading = listItem.title,
-//                  subTables = subTables,
-//                )
-//              }
-//          }
-//        PdfGroupedTables(
-//          heading = context.getString(itemsGroup.heading),
-//          tables = pdfTables,
-//        )
-//      }
-
-    private suspend fun List<HealthCategoryScreenListItemsGroup>.toPdfTables(): List<PdfGroupedTables> = listOf()
+    private suspend fun List<HealthCategoryScreenListItemsGroup>.toPdfTables(): List<PdfGroupedTables> =
+      map { itemsGroup ->
+        val pdfTables =
+          itemsGroup.items.map { listItem ->
+            uiSchemaParser
+              .getSummary(organizationName = listItem.organization.name, mgoResourceJson = listItem.mgoResource.json)
+              .let { uiSchemaSectionMapper.map(it) }
+              .map { section ->
+                PdfSubTable(
+                  heading = section.heading,
+                  data =
+                    section.rows.mapNotNull { row ->
+                      (row.heading ?: return@mapNotNull null) to row.value
+                    },
+                )
+              }.filter { it.data.isNotEmpty() }
+              .let { subTables ->
+                PdfTable(
+                  heading = listItem.title,
+                  subTables = subTables,
+                )
+              }
+          }
+        PdfGroupedTables(
+          heading = context.getString(itemsGroup.heading),
+          tables = pdfTables,
+        )
+      }
   }

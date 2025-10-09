@@ -17,8 +17,16 @@ import java.io.File
  */
 @SuppressLint("DiscouragedApi") // Suppresses warning about getIdentifier usage
 @StringRes
-fun Context.getStringResourceByName(aString: String): Int =
-  resources.getIdentifier(aString, "string", packageName)
+fun Context.getStringResourceByName(aString: String): Int {
+  val alteredString =
+    when {
+      aString.startsWith("mhc") -> "mhc_" + aString.drop(4)
+      aString.startsWith("hc") -> "hc_" + aString.drop(3)
+      aString.startsWith("zib") -> "zib_" + aString.drop(4)
+      else -> aString
+    }
+  return resources.getIdentifier(alteredString, "string", packageName)
+}
 
 /**
  * Opens a file using a compatible external application.

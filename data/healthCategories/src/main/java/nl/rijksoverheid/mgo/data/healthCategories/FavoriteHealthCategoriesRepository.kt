@@ -28,6 +28,7 @@ class FavoriteHealthCategoriesRepository
         .map { preferences ->
           preferences[KEY_FAVORITE_HEALTH_CARE_CATEGORIES]
             ?.split(",")
+            ?.mapNotNull { it.takeIf { it.isNotBlank() } }
             ?: emptyList()
         }
 

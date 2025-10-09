@@ -31,11 +31,12 @@ class FavoriteHealthCategoriesRepositoryTest {
   fun testGetFavoritesEmpty() =
     runTest {
       // Given: No favorites are stored
+      repository.store(listOf())
 
       // When: Observing favorites
       repository.observe().test {
         // Then: Favorites are emitted
-        assertEquals(listOf<String>(), awaitItem())
+        assertEquals(0, awaitItem().size)
       }
     }
 }

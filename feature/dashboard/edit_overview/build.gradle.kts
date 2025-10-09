@@ -14,4 +14,5 @@ dependencies {
   implementation(projects.component.healthCategories)
   testImplementation(testFixtures((projects.data.localisation)))
   testImplementation(testFixtures(projects.framework.storage))
+  testImplementation(testFixtures(projects.data.healthCategories))
 }

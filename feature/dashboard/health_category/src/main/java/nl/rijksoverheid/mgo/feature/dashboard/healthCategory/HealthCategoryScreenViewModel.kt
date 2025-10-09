@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -74,7 +75,21 @@ internal class HealthCategoryScreenViewModel
 
     init {
       viewModelScope.launch(ioDispatcher) {
-        organizationRepository.storedOrganizationsFlow.collectLatest { organizations ->
+        val organizationsFlow =
+          if (filterOrganization == null) {
+            // If we do not want to filter on a specific organization, observe all stored organizations
+            organizationRepository.storedOrganizationsFlow
+          } else {
+            // If we want to filter on a specific organization, filter on that one
+            organizationRepository.storedOrganizationsFlow.map { organizations ->
+              organizations.filter {
+                it.id ==
+                  filterOrganization.id
+              }
+            }
+          }
+
+        organizationsFlow.collectLatest { organizations ->
           // Get all the fhir responses for this category that we can observe
           val fhirResponseFlows =
             organizations

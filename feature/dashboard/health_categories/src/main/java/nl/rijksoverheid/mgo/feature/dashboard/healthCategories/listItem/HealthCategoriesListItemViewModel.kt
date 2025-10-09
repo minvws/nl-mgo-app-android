@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -48,7 +50,21 @@ internal class HealthCategoriesListItemViewModel
 
     init {
       viewModelScope.launch(ioDispatcher) {
-        organizationRepository.storedOrganizationsFlow.collectLatest { organizations ->
+        val organizationsFlow =
+          if (filterOrganization == null) {
+            // If we do not want to filter on a specific organization, observe all stored organizations
+            organizationRepository.storedOrganizationsFlow
+          } else {
+            // If we want to filter on a specific organization, filter on that one
+            organizationRepository.storedOrganizationsFlow.map { organizations ->
+              organizations.filter {
+                it.id ==
+                  filterOrganization.id
+              }
+            }
+          }
+
+        organizationsFlow.collectLatest { organizations ->
           // Always start with loading state whenever a organization has been added
           _listItemState.update { HealthCategoriesListItemState.LOADING }
 

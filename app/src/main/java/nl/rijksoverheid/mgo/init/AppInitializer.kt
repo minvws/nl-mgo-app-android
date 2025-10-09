@@ -1,9 +1,7 @@
 package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
-import kotlinx.coroutines.CoroutineDispatcher
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
-import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
@@ -13,7 +11,6 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * This class needs to be called before the app shows any UI since it does a bunch of initialization steps that need to be ready before the app is shown
@@ -23,10 +20,8 @@ import javax.inject.Named
 class AppInitializer
   @Inject
   constructor(
-    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val featureToggleRepository: FeatureToggleRepository,
     private val featureToggleLocalDataSource: FeatureToggleLocalDataSource,
-    private val jsRuntimeRepository: JsRuntimeRepository,
     private val cacheFileStore: CacheFileStore,
     private val setHasSeenOnboarding: SetHasSeenOnboarding,
     private val storePinCode: StorePinCode,
@@ -38,7 +33,6 @@ class AppInitializer
       quickJsRepository.create()
       cacheFileStore.deleteAll()
       featureToggleLocalDataSource.init(featureToggleRepository.getAll())
-      jsRuntimeRepository.load()
     }
 
     /**

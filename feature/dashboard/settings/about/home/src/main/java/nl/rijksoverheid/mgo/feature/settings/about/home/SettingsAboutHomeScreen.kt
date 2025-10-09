@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -90,7 +89,7 @@ private fun SettingsAboutHomeScreenContent(
       positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
       onClickPositiveButton = { showFhirParserVersionDialog = false },
       heading = stringResource(CopyR.string.settings_about_this_app_version),
-      subHeading = viewState.fhirParserVersion,
+      subHeading = viewState.hcimParserVersion,
     )
   }
 
@@ -216,7 +215,7 @@ internal fun SettingsAboutHomeScreenPreview() {
         SettingsAboutHomeScreenViewState(
           appVersionCode = 1,
           appVersionName = "1.0.0",
-          fhirParserVersion =
+          hcimParserVersion =
             "{ \"version\": \"main\", \"git_ref\": \"d2c2081aefcaa7c0e8c413a1b8c654bcdcbe7705\"," +
               " \"created\": \"2025-03-21T16:01:38\"}",
           privacyUrl = 0,

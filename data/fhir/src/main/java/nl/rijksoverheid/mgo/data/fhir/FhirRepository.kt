@@ -19,6 +19,8 @@ interface FhirRepository {
     url: String,
   )
 
+  suspend fun delete(organizationId: String)
+
   suspend fun fetchBinary(
     resourceEndpoint: String,
     url: String,

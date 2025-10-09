@@ -28,4 +28,9 @@ class MemoryFhirResponseJsonStore : FhirResponseJsonStore {
     cachedFhirResponses[key] = json
     return FhirResponseJsonSource.Memory(json)
   }
+
+  override suspend fun delete(organizationId: String) {
+    val keyToRemove = cachedFhirResponses.keys.find { it.organizationId == organizationId }
+    cachedFhirResponses.remove(keyToRemove)
+  }
 }

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.init
 
+import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
@@ -20,11 +21,22 @@ class FhirResponseSyncer
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
   ) {
+    @VisibleForTesting
+    var previousStoredOrganizations: List<MgoOrganization> = listOf()
+
     operator fun invoke(): Flow<List<MgoOrganization>> =
       organizationRepository.storedOrganizationsFlow.onEach { organizations ->
+        // If any organizations were deleted, also remove the fhir data for it.
+        val removedOrganizations = previousStoredOrganizations - organizations.toSet()
+        for (organization in removedOrganizations) {
+          fhirRepository.delete(organization.id)
+        }
+
+        // Fetch fhir data for added organizations
         for (organization in organizations) {
           organization.fetchFhirResponses()
         }
+        previousStoredOrganizations = organizations
       }
 
     private suspend fun MgoOrganization.fetchFhirResponses() {

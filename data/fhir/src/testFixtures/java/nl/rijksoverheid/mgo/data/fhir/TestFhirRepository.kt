@@ -26,6 +26,9 @@ class TestFhirRepository : FhirRepository {
   ) {
   }
 
+  override suspend fun delete(organizationId: String) {
+  }
+
   override suspend fun fetchBinary(
     resourceEndpoint: String,
     url: String,

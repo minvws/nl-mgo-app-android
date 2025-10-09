@@ -43,4 +43,9 @@ class DiskFhirResponseJsonStore
 
       return FhirResponseJsonSource.Disk(file)
     }
+
+    override suspend fun delete(organizationId: String) {
+      val file = File(rootDir, organizationId)
+      file.deleteRecursively()
+    }
   }

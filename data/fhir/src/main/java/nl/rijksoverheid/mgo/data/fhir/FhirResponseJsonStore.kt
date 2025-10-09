@@ -15,4 +15,6 @@ interface FhirResponseJsonStore {
     endpointId: String,
     json: String,
   ): FhirResponseJsonSource
+
+  suspend fun delete(organizationId: String)
 }

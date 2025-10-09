@@ -161,6 +161,28 @@ class DefaultFhirRepositoryTest {
     }
 
   @Test
+  fun testDelete() =
+    runTest {
+      // Given: Fhir response is fetched
+      val alcoholUseJson = readResourceFile("alcoholUse.json")
+      testServer.enqueueJson(alcoholUseJson)
+      repository.fetch(
+        organizationId = "1",
+        dataServiceId = "1",
+        endpointId = "1",
+        resourceEndpoint = "",
+        fhirVersion = FhirVersion.R3,
+        url = testServer.url(),
+      )
+
+      // When: Calling delete for organization
+      repository.delete("1")
+
+      // Then: Fhir response is no longer cached
+      assertNull(fhirResponseJsonStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1"))
+    }
+
+  @Test
   fun testFetchBinarySuccess() =
     runTest {
       // Given: Request returns response

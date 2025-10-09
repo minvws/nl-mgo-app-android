@@ -105,6 +105,10 @@ class DefaultFhirRepository
       }
     }
 
+    override suspend fun delete(organizationId: String) {
+      fhirResponseJsonStore.delete(organizationId)
+    }
+
     private fun isBundleEmpty(bundleJson: String): Boolean {
       val json = Json.parseToJsonElement(bundleJson).jsonObject
       val entry = json["entry"]?.jsonArray

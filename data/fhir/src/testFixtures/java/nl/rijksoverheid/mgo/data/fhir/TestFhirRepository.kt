@@ -5,7 +5,12 @@ import kotlinx.coroutines.flow.flow
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 
 class TestFhirRepository : FhirRepository {
+  private var observeResult: FhirResponse = TEST_FHIR_RESPONSE_SUCCESS(false)
   private var fetchBinaryResult: Result<FhirBinary> = Result.failure(IllegalStateException("Not set"))
+
+  fun setObserveResult(response: FhirResponse) {
+    this.observeResult = response
+  }
 
   override fun observe(
     organizationId: String,
@@ -13,7 +18,7 @@ class TestFhirRepository : FhirRepository {
     endpointId: String,
   ): Flow<FhirResponse> =
     flow {
-      emit(FhirResponse.Success(organizationId = "1", dataServiceId = "1", endpointId = "1", jsonSource = FhirResponseJsonSource.Memory(""), isEmpty = false))
+      emit(observeResult)
     }
 
   override suspend fun fetch(

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
@@ -90,8 +91,13 @@ internal class HealthCategoriesListItemViewModel
             _listItemState.update { HealthCategoriesListItemState.NO_DATA }
           } else {
             // Observe the fhir responses
-            combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest {
-              _listItemState.update { HealthCategoriesListItemState.LOADED }
+            combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest { responses ->
+              val allEmpty = responses.filterIsInstance<FhirResponse.Success>().all { response -> response.isEmpty }
+              if (allEmpty) {
+                _listItemState.update { HealthCategoriesListItemState.NO_DATA }
+              } else {
+                _listItemState.update { HealthCategoriesListItemState.LOADED }
+              }
             }
           }
         }

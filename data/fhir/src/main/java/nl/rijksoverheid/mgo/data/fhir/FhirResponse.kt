@@ -20,3 +20,13 @@ sealed class FhirResponse(
     val error: Throwable,
   ) : FhirResponse(organizationId, dataServiceId, endpointId)
 }
+
+@Suppress("ktlint:standard:function-naming")
+fun TEST_FHIR_RESPONSE_SUCCESS(isEmpty: Boolean = false) =
+  FhirResponse.Success(
+    organizationId = "1",
+    dataServiceId = "1",
+    endpointId = "1",
+    jsonSource = FhirResponseJsonSource.Memory(""),
+    isEmpty = isEmpty,
+  )

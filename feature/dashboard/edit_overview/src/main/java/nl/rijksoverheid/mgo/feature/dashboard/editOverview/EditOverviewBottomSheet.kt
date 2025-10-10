@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -51,7 +49,6 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.supportRijkslint
-import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_ALLERGIES
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
@@ -228,28 +225,21 @@ private fun FavoritesCard(
               onClick = {
                 onClickHealthCategory(item)
               },
-              dragIcon = {
-                IconButton(
-                  modifier =
-                    Modifier.draggableHandle(
-                      onDragStarted = {
-                        ViewCompat.performHapticFeedback(
-                          view,
-                          HapticFeedbackConstantsCompat.GESTURE_START,
-                        )
-                      },
-                      onDragStopped = {
-                        ViewCompat.performHapticFeedback(
-                          view,
-                          HapticFeedbackConstantsCompat.GESTURE_END,
-                        )
-                      },
-                    ),
-                  onClick = {},
-                ) {
-                  Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
-                }
-              },
+              dragHandleModifier =
+                Modifier.draggableHandle(
+                  onDragStarted = {
+                    ViewCompat.performHapticFeedback(
+                      view,
+                      HapticFeedbackConstantsCompat.GESTURE_START,
+                    )
+                  },
+                  onDragStopped = {
+                    ViewCompat.performHapticFeedback(
+                      view,
+                      HapticFeedbackConstantsCompat.GESTURE_END,
+                    )
+                  },
+                ),
               hasDivider = !isDragging && favorites.indexOf(item) != favorites.lastIndex,
             )
           }

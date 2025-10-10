@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -21,13 +22,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.healthCategories.getIcon
 import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
 import nl.rijksoverheid.mgo.component.healthCategories.getString
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.component.theme.sentimentPositive
+import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_ALLERGIES
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 
 @Composable
 internal fun HealthCategoryListItem(
@@ -35,8 +41,8 @@ internal fun HealthCategoryListItem(
   state: HealthCategoryListItemState,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
+  dragHandleModifier: Modifier = Modifier,
   hasDivider: Boolean = true,
-  dragIcon: @Composable (() -> Unit)? = null,
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
     Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -72,8 +78,11 @@ internal fun HealthCategoryListItem(
         text = LocalContext.current.getString(category.heading),
         style = MaterialTheme.typography.bodyMedium,
       )
-      dragIcon?.let { composable ->
-        composable()
+      IconButton(
+        modifier = dragHandleModifier,
+        onClick = {},
+      ) {
+        Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
       }
     }
     if (hasDivider) {
@@ -87,29 +96,22 @@ internal fun HealthCategoryListItem(
   }
 }
 
-// @PreviewLightDark
-// @Composable
-// internal fun HealthCategoryListItemPreview() {
-//  MgoTheme {
-//    Column {
-//      HealthCategoryListItem(
-//        category = HealthCareCategoryId.MEDICATIONS,
-//        state = HealthCategoryListItemState.ADD,
-//        onClick = {},
-//      )
-//      HealthCategoryListItem(
-//        category = HealthCareCategoryId.APPOINTMENTS,
-//        state = HealthCategoryListItemState.REMOVE,
-//        hasDivider = false,
-//        onClick = {},
-//        dragIcon = {
-//          IconButton(
-//            onClick = {},
-//          ) {
-//            Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
-//          }
-//        },
-//      )
-//    }
-//  }
-// }
+@PreviewLightDark
+@Composable
+internal fun HealthCategoryListItemPreview() {
+  MgoTheme {
+    Column {
+      HealthCategoryListItem(
+        category = TEST_HEALTH_CATEGORY_PROBLEMS,
+        state = HealthCategoryListItemState.ADD,
+        onClick = {},
+      )
+      HealthCategoryListItem(
+        category = TEST_HEALTH_CATEGORY_ALLERGIES,
+        state = HealthCategoryListItemState.REMOVE,
+        hasDivider = false,
+        onClick = {},
+      )
+    }
+  }
+}

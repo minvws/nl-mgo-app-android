@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,9 +33,12 @@ import nl.rijksoverheid.mgo.component.healthCategories.getIcon
 import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 
 @Composable
 fun HealthCategoriesFavoriteCard(
@@ -128,38 +131,38 @@ private fun HealthCategoriesFavoriteCardContent(
   }
 }
 
-// @PreviewLightDark
-// @Composable
-// internal fun HealthCategoriesFavoriteCardPreview() {
-//  MgoTheme {
-//    HealthCategoriesFavoriteCardContent(
-//      category = HealthCareCategoryId.MEDICATIONS,
-//      onClick = {},
-//      loading = false,
-//    )
-//  }
-// }
-//
-// @DefaultPreviews
-// @Composable
-// internal fun HealthCategoriesFavoriteMultilineCardPreview() {
-//  MgoTheme {
-//    HealthCategoriesFavoriteCardContent(
-//      category = HealthCareCategoryId.PATIENT,
-//      onClick = {},
-//      loading = false,
-//    )
-//  }
-// }
-//
-// @PreviewLightDark
-// @Composable
-// internal fun HealthCategoriesFavoriteCardLoadingPreview() {
-//  MgoTheme {
-//    HealthCategoriesFavoriteCardContent(
-//      category = HealthCareCategoryId.MEDICATIONS,
-//      onClick = {},
-//      loading = true,
-//    )
-//  }
-// }
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesFavoriteCardPreview() {
+  MgoTheme {
+    HealthCategoriesFavoriteCardContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      onClick = {},
+      loading = false,
+    )
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoriesFavoriteMultilineCardPreview() {
+  MgoTheme {
+    HealthCategoriesFavoriteCardContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      onClick = {},
+      loading = false,
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesFavoriteCardLoadingPreview() {
+  MgoTheme {
+    HealthCategoriesFavoriteCardContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      onClick = {},
+      loading = true,
+    )
+  }
+}

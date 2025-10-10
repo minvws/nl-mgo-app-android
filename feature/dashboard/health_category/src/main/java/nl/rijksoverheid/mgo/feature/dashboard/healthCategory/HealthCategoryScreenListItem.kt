@@ -36,7 +36,7 @@ val TEST_LIST_ITEM_3 =
     organization = TEST_MGO_ORGANIZATION,
   )
 
-val TEST_LIST_ITEM_GROUP_1 =
+val TEST_LIST_ITEM_GROUP =
   HealthCategoryScreenListItemsGroup(
     heading = "Wat je nu gebruikt",
     items = listOf(TEST_LIST_ITEM_1, TEST_LIST_ITEM_2, TEST_LIST_ITEM_3),

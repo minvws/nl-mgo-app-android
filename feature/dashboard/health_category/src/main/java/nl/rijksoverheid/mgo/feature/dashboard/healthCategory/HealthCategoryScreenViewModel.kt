@@ -67,7 +67,8 @@ internal class HealthCategoryScreenViewModel
       ): HealthCategoryScreenViewModel
     }
 
-    private val initialState = HealthCategoryScreenViewState.initialState(category)
+    private val initialState =
+      HealthCategoryScreenViewState(category = category, showErrorBanner = false, listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading)
     private val _viewState: MutableStateFlow<HealthCategoryScreenViewState> = MutableStateFlow(initialState)
     val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 

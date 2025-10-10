@@ -37,13 +37,4 @@ internal data class HealthCategoryScreenViewState(
      */
     data object NoData : ListItemsState()
   }
-
-  companion object {
-    fun initialState(category: HealthCategoryGroup.HealthCategory): HealthCategoryScreenViewState =
-      HealthCategoryScreenViewState(
-        category = category,
-        showErrorBanner = false,
-        listItemsState = ListItemsState.Loading,
-      )
-  }
 }

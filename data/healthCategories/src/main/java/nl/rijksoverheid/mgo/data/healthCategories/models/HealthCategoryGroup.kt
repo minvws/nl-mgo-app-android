@@ -113,6 +113,28 @@ val TEST_HEALTH_CATEGORY_LIFESTYLE =
       ),
   )
 
+val TEST_HEALTH_CATEGORY_MEDICATION =
+  HealthCategoryGroup.HealthCategory(
+    id = "medication",
+    heading = "hc_medication.heading",
+    subheading = "hc_medication.subheading",
+    subcategories =
+      listOf(
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_medication_use.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse"),
+        ),
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_medication_agreement.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement"),
+        ),
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_administration_agreement.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"),
+        ),
+      ),
+  )
+
 val TEST_HEALTH_CATEGORY_GROUP_HEALTH =
   HealthCategoryGroup(
     id = "health",

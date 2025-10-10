@@ -47,10 +47,15 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.supportRijkslint
 import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_ALLERGIES
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import sh.calvin.reorderable.ReorderableColumn
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -276,36 +281,36 @@ private fun CategoriesCard(
   }
 }
 
-// @DefaultPreviews
-// @Composable
-// internal fun EditOverviewBottomSheetNoFavoritesPreview() {
-//  MgoTheme {
-//    EditOverviewBottomSheetContent(
-//        viewState =
-//            EditOverviewBottomSheetViewState(
-//                groups = listOf(),
-//                favorites = listOf(),
-//                nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH),
-//            ),
-//        onClickSave = { _, _ -> },
-//        onNavigateBack = {},
-//    )
-//  }
-// }
-//
-// @DefaultPreviews
-// @Composable
-// internal fun EditOverviewBottomSheetFavoritesPreview() {
-//  MgoTheme {
-//    EditOverviewBottomSheetContent(
-//        viewState =
-//            EditOverviewBottomSheetViewState(
-//                groups = listOf(),
-//                favorites = listOf(TEST_HEALTH_CATEGORY_ALERTS),
-//                nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.copy(categories = listOf(TEST_HEALTH_CATEGORY_PROBLEMS))),
-//            ),
-//        onClickSave = { _, _ -> },
-//        onNavigateBack = {},
-//    )
-//  }
-// }
+@DefaultPreviews
+@Composable
+internal fun EditOverviewBottomSheetNoFavoritesPreview() {
+  MgoTheme {
+    EditOverviewBottomSheetContent(
+      viewState =
+        EditOverviewBottomSheetViewState(
+          groups = listOf(),
+          favorites = listOf(),
+          nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH),
+        ),
+      onClickSave = { _, _ -> },
+      onNavigateBack = {},
+    )
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun EditOverviewBottomSheetFavoritesPreview() {
+  MgoTheme {
+    EditOverviewBottomSheetContent(
+      viewState =
+        EditOverviewBottomSheetViewState(
+          groups = listOf(),
+          favorites = listOf(TEST_HEALTH_CATEGORY_PROBLEMS),
+          nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.copy(categories = listOf(TEST_HEALTH_CATEGORY_ALLERGIES))),
+        ),
+      onClickSave = { _, _ -> },
+      onNavigateBack = {},
+    )
+  }
+}

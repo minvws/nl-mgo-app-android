@@ -21,7 +21,6 @@ import org.robolectric.RobolectricTestRunner
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
-import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @RunWith(RobolectricTestRunner::class)
 internal class TestDefaultCreatePdfForHealthCategories {
@@ -49,7 +48,7 @@ internal class TestDefaultCreatePdfForHealthCategories {
           listItemGroups =
             listOf(
               HealthCategoryScreenListItemsGroup(
-                heading = CopyR.string.app_name,
+                heading = "Gezondheidsproblemen",
                 items =
                   listOf(
                     HealthCategoryScreenListItem(

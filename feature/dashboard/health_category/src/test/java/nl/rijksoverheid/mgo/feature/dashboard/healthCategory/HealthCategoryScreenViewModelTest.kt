@@ -19,6 +19,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_LIFESTYLE
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
@@ -69,32 +70,60 @@ class HealthCategoryScreenViewModelTest {
   fun setup() =
     runTest {
       quickJsRepository.create()
-
-      // Cache fhir responses for lifestyle category
-      fetchFhirResponseSuccess(
-        responseJson = readResourceFile("alcoholUse.json"),
-        endpointId = "alcoholUse",
-      )
-
-      fetchFhirResponseSuccess(
-        responseJson = readResourceFile("drugUse.json"),
-        endpointId = "drugUse",
-      )
-
-      fetchFhirResponseSuccess(
-        responseJson = readResourceFile("livingSituation.json"),
-        endpointId = "livingSituation",
-      )
-
-      fetchFhirResponseSuccess(
-        responseJson = readResourceFile("nutritionAdvice.json"),
-        endpointId = "nutritionAdvice",
-      )
-
-      fetchFhirResponseFailed(
-        endpointId = "tobaccoUse",
-      )
     }
+
+  private suspend fun enqueueEmptyBundles() {
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("emptyBundle.json"),
+      endpointId = "alcoholUse",
+    )
+
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("emptyBundle.json"),
+      endpointId = "drugUse",
+    )
+
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("emptyBundle.json"),
+      endpointId = "livingSituation",
+    )
+
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("emptyBundle.json"),
+      endpointId = "nutritionAdvice",
+    )
+
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("emptyBundle.json"),
+      endpointId = "tobaccoUse",
+    )
+  }
+
+  private suspend fun enqueueLifestyleResponses() {
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("alcoholUse.json"),
+      endpointId = "alcoholUse",
+    )
+
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("drugUse.json"),
+      endpointId = "drugUse",
+    )
+
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("livingSituation.json"),
+      endpointId = "livingSituation",
+    )
+
+    fetchFhirResponseSuccess(
+      responseJson = readResourceFile("nutritionAdvice.json"),
+      endpointId = "nutritionAdvice",
+    )
+
+    fetchFhirResponseFailed(
+      endpointId = "tobaccoUse",
+    )
+  }
 
   private suspend fun fetchFhirResponseSuccess(
     responseJson: String,
@@ -124,10 +153,33 @@ class HealthCategoryScreenViewModelTest {
   }
 
   @Test
+  fun testEmpty() =
+    runTest {
+      // Given: Stored organization that does not have any data for the lifestyle category
+      val organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_GP_DATA_SERVICE))
+      organizationRepository.setStoredProviders(listOf(organization))
+
+      // Given: Lifestyle responses
+      enqueueLifestyleResponses()
+
+      // When: Creating viewmodel
+      val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
+
+      // Then: View state is updated
+      viewModel.viewState.test {
+        val viewState = awaitItem()
+        assertTrue(viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.NoData)
+      }
+    }
+
+  @Test
   fun testLoaded() =
     runTest {
       // Given: Stored organization
       organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+
+      // Given: Lifestyle responses
+      enqueueLifestyleResponses()
 
       // When: Creating viewmodel
       val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
@@ -143,10 +195,32 @@ class HealthCategoryScreenViewModelTest {
     }
 
   @Test
+  fun testLoadedAllEmpty() =
+    runTest {
+      // Given: Stored organization
+      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+
+      // Given: Lifestyle responses
+      enqueueEmptyBundles()
+
+      // When: Creating viewmodel
+      val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
+
+      // Then: View state is updated
+      viewModel.viewState.test {
+        val viewState = awaitItem()
+        assertTrue(viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.NoData)
+      }
+    }
+
+  @Test
   fun testLoadedFilterOrganization() =
     runTest {
       // Given: Stored organization
       organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+
+      // Given: Lifestyle responses
+      enqueueLifestyleResponses()
 
       // When: Creating viewmodel
       val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
@@ -166,6 +240,9 @@ class HealthCategoryScreenViewModelTest {
     runTest {
       // Given: Stored organization
       organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+
+      // Given: Lifestyle responses
+      enqueueLifestyleResponses()
 
       // When: Creating viewmodel
       val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)

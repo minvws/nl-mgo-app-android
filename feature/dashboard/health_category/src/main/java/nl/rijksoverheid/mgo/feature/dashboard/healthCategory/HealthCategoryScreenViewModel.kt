@@ -109,26 +109,38 @@ internal class HealthCategoryScreenViewModel
               }.flatten()
               .flatten()
 
-          // Observe the fhir responses
-          combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest { responses ->
-            // True if not all data was fetched
-            val hasError = responses.filterIsInstance<FhirResponse.Error>().isNotEmpty()
+          if (fhirResponseFlows.isEmpty()) {
+            _viewState.update { viewState -> viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData) }
+          } else {
+            // Observe the fhir responses
+            combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest { responses ->
+              // True if not all data was fetched
+              val hasError = responses.filterIsInstance<FhirResponse.Error>().isNotEmpty()
 
-            // Get all the responses that are successful
-            val successResponses = responses.filterIsInstance<FhirResponse.Success>()
+              // Get all the responses that are successful
+              val successResponses = responses.filterIsInstance<FhirResponse.Success>()
 
-            // Create list items from them to show in the UI
-            val listItemGroups = listItemGroupMapper.invoke(category = category, fhirResponses = successResponses)
+              // If there is not data show empty state
+              val allEmpty = responses.filterIsInstance<FhirResponse.Success>().all { response -> response.isEmpty }
+              if (allEmpty) {
+                _viewState.update { viewState ->
+                  viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData)
+                }
+              } else {
+                // Create list items from them to show in the UI
+                val listItemGroups = listItemGroupMapper.invoke(category = category, fhirResponses = successResponses)
 
-            // Store all mgo resources in a store, because we need them in the ui schema screen
-            val mgoResources = listItemGroups.map { group -> group.items.map { item -> item.mgoResource } }.flatten()
-            for (mgoResource in mgoResources) {
-              mgoResourceStore.store(mgoResource)
-            }
+                // Store all mgo resources in a store, because we need them in the ui schema screen
+                val mgoResources = listItemGroups.map { group -> group.items.map { item -> item.mgoResource } }.flatten()
+                for (mgoResource in mgoResources) {
+                  mgoResourceStore.store(mgoResource)
+                }
 
-            // Update view state
-            _viewState.update { viewState ->
-              viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.Loaded(listItemGroups), showErrorBanner = hasError)
+                // Update view state
+                _viewState.update { viewState ->
+                  viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.Loaded(listItemGroups), showErrorBanner = hasError)
+                }
+              }
             }
           }
         }

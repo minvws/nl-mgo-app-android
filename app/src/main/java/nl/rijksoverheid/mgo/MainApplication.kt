@@ -8,6 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.init.AppInitializer
 import nl.rijksoverheid.mgo.init.FhirResponseSyncer
@@ -28,6 +29,9 @@ class MainApplication : Application() {
   @Inject
   lateinit var fhirResponseSyncer: FhirResponseSyncer
 
+  @Inject
+  lateinit var quickJsRepository: QuickJsRepository
+
   override fun onCreate() {
     super.onCreate()
     if (BuildConfig.DEBUG) {
@@ -35,7 +39,8 @@ class MainApplication : Application() {
     }
     runBlocking { appInitializer.init() }
     applicationScope.launch(Dispatchers.IO) {
-      fhirResponseSyncer.invoke().collect()
+      launch { quickJsRepository.create() }
+      launch { fhirResponseSyncer.invoke().collect() }
     }
   }
 }

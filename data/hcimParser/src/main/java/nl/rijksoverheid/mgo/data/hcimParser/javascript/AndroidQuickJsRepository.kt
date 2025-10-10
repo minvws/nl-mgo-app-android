@@ -4,7 +4,12 @@ import android.content.Context
 import com.whl.quickjs.android.QuickJSLoader
 import com.whl.quickjs.wrapper.QuickJSContext
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -18,9 +23,10 @@ internal class AndroidQuickJsRepository
   constructor(
     @ApplicationContext private val context: Context,
   ) : QuickJsRepository {
+    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
     override val quickJsDispatcher: ExecutorCoroutineDispatcher = newSingleThreadContext("QuickJsThread")
 
-    private var quickJs: QuickJSContext? = null
+    private var quickJs: MutableStateFlow<QuickJSContext?> = MutableStateFlow(null)
 
     override suspend fun create() =
       withContext(quickJsDispatcher) {
@@ -41,10 +47,10 @@ internal class AndroidQuickJsRepository
         quickJs.evaluate(jsCode)
 
         // Make Quick JS statically available
-        this@AndroidQuickJsRepository.quickJs = quickJs
+        this@AndroidQuickJsRepository.quickJs.tryEmit(quickJs)
 
-        Timber.v("Quick JS created")
+        Timber.d("Quick JS initialized")
       }
 
-    override suspend fun get(): QuickJSContext = withContext(quickJsDispatcher) { requireNotNull(quickJs) { "QuickJS is not created" } }
+    override suspend fun get(): QuickJSContext = withContext(quickJsDispatcher) { quickJs.filterNotNull().first() }
   }

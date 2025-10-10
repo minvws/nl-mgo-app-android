@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
-import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.StorePinCode
@@ -27,10 +26,8 @@ class AppInitializer
     private val storePinCode: StorePinCode,
     private val setDigidAuthenticated: SetDigidAuthenticated,
     private val organizationRepository: OrganizationRepository,
-    private val quickJsRepository: QuickJsRepository,
   ) {
     suspend fun init() {
-      quickJsRepository.create()
       cacheFileStore.deleteAll()
       featureToggleLocalDataSource.init(featureToggleRepository.getAll())
     }

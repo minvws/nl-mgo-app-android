@@ -24,16 +24,19 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.healthCategories.getIcon
 import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
 import nl.rijksoverheid.mgo.component.healthCategories.getString
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -135,41 +138,38 @@ internal fun HealthCategoriesListItemContent(
   }
 }
 
-// @PreviewLightDark
-// @Composable
-// internal fun HealthCategoriesListItemLoadingPreview() {
-//  MgoTheme {
-//    HealthCategoriesListItemContent(
-//      icon = HealthCategoryR.drawable.ic_medication,
-//      title = CopyR.string.hc_medication_heading,
-//      iconColor = MaterialTheme.colorScheme.supportContacts(),
-//      listItemState = HealthCategoriesListItemState.LOADING,
-//    )
-//  }
-// }
-//
-// @PreviewLightDark
-// @Composable
-// internal fun HealthCategoriesListItemNoDataPreview() {
-//  MgoTheme {
-//    HealthCategoriesListItemContent(
-//      icon = HealthCategoryR.drawable.ic_medication,
-//      title = CopyR.string.hc_medication_heading,
-//      iconColor = MaterialTheme.colorScheme.supportContacts(),
-//      listItemState = HealthCategoriesListItemState.NO_DATA,
-//    )
-//  }
-// }
-//
-// @PreviewLightDark
-// @Composable
-// internal fun HealthCategoriesListItemLoadedPreview() {
-//  MgoTheme {
-//    HealthCategoriesListItemContent(
-//      icon = HealthCategoryR.drawable.ic_medication,
-//      title = CopyR.string.hc_medication_heading,
-//      iconColor = MaterialTheme.colorScheme.supportContacts(),
-//      listItemState = HealthCategoriesListItemState.LOADED,
-//    )
-//  }
-// }
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesListItemLoadingPreview() {
+  MgoTheme {
+    HealthCategoriesListItemContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      listItemState = HealthCategoriesListItemState.LOADING,
+      hasDivider = false,
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesListItemNoDataPreview() {
+  MgoTheme {
+    HealthCategoriesListItemContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      listItemState = HealthCategoriesListItemState.NO_DATA,
+      hasDivider = false,
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesListItemLoadedPreview() {
+  MgoTheme {
+    HealthCategoriesListItemContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      listItemState = HealthCategoriesListItemState.LOADED,
+      hasDivider = false,
+    )
+  }
+}

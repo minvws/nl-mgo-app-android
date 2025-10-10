@@ -67,7 +67,6 @@ object HealthCategoriesScreenTestTag {
 @Composable
 fun HealthCategoriesScreen(
   appBarTitle: String,
-  subHeading: String,
   onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
   onNavigateToLocalisation: () -> Unit,
   onNavigateToHealthCategory: (category: HealthCategoryGroup.HealthCategory, organization: MgoOrganization?) -> Unit,
@@ -80,7 +79,6 @@ fun HealthCategoriesScreen(
 
   HealthCategoriesScreenContent(
     appBarTitle = appBarTitle,
-    subHeading = subHeading,
     viewState = viewState,
     onNavigateBack = onNavigateBack,
     onClickAddProvider = onNavigateToLocalisation,
@@ -94,7 +92,6 @@ fun HealthCategoriesScreen(
 @Composable
 private fun HealthCategoriesScreenContent(
   appBarTitle: String,
-  subHeading: String,
   viewState: HealthCategoriesScreenViewState,
   onClickListItem: (category: HealthCategoryGroup.HealthCategory) -> Unit,
   onClickAddProvider: () -> Unit,
@@ -161,7 +158,6 @@ private fun HealthCategoriesScreenContent(
             // If we are on the overview screen, we split the view into favorites and non favorites. If looking at a specific organization,
             // we just show all the categories.
             WithProviders(
-              subHeading = subHeading,
               onClickListItem = onClickListItem,
               onClickRemoveOrganization = onClickRemoveOrganization,
               onClickAddFavorite = { onShowBottomSheet?.invoke() },
@@ -222,7 +218,6 @@ private fun LazyListScope.NoProviders(canScroll: Boolean) {
 
 @Suppress("ktlint:standard:function-naming")
 private fun LazyListScope.WithProviders(
-  subHeading: String,
   onClickAddFavorite: () -> Unit,
   onClickListItem: (category: HealthCategoryGroup.HealthCategory) -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
@@ -242,13 +237,13 @@ private fun LazyListScope.WithProviders(
     if (favorites.isEmpty()) {
       item {
         HealthCategoriesNoFavoriteCard(
-          modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp),
           onClickAddFavorite = onClickAddFavorite,
         )
       }
     } else {
       item {
-        FlowRow(horizontalArrangement = spacedBy(8.dp), verticalArrangement = spacedBy(8.dp)) {
+        FlowRow(modifier = Modifier.padding(bottom = 32.dp), horizontalArrangement = spacedBy(8.dp), verticalArrangement = spacedBy(8.dp)) {
           favorites.forEach { favorite ->
             HealthCategoriesFavoriteCard(
               category = favorite,
@@ -263,7 +258,7 @@ private fun LazyListScope.WithProviders(
   for (group in groups) {
     item {
       Text(
-        modifier = Modifier.padding(top = 32.dp, bottom = 12.dp),
+        modifier = Modifier.padding(bottom = 12.dp),
         text = LocalContext.current.getString(group.heading),
         style = MaterialTheme.typography.headlineMedium,
       )
@@ -284,6 +279,10 @@ private fun LazyListScope.WithProviders(
         filterOrganization = organization,
       )
     }
+
+    item {
+      Spacer(modifier = Modifier.height(32.dp))
+    }
   }
 
   if (organization != null) {
@@ -297,7 +296,6 @@ private fun LazyListScope.WithProviders(
         MgoButton(
           modifier =
             Modifier
-              .padding(bottom = 16.dp)
               .align(Alignment.CenterHorizontally),
           buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
           onClick = {
@@ -306,10 +304,6 @@ private fun LazyListScope.WithProviders(
           buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
         )
       }
-    }
-  } else {
-    item {
-      Spacer(modifier = Modifier.height(16.dp))
     }
   }
 }
@@ -383,7 +377,6 @@ internal fun OverviewScreenNoProvidersPreview() {
   MgoTheme {
     HealthCategoriesScreenContent(
       appBarTitle = stringResource(CopyR.string.overview_heading),
-      subHeading = stringResource(CopyR.string.overview_subheading),
       viewState =
         HealthCategoriesScreenViewState(
           name = "",
@@ -407,7 +400,6 @@ internal fun OverviewScreenWithProvidersPreview() {
   MgoTheme {
     HealthCategoriesScreenContent(
       appBarTitle = stringResource(CopyR.string.overview_heading),
-      subHeading = stringResource(CopyR.string.overview_subheading),
       viewState =
         HealthCategoriesScreenViewState(
           name = "",
@@ -431,7 +423,6 @@ internal fun OverviewScreenWithProvidersAndFavoritesPreview() {
   MgoTheme {
     HealthCategoriesScreenContent(
       appBarTitle = stringResource(CopyR.string.overview_heading),
-      subHeading = stringResource(CopyR.string.overview_subheading),
       viewState =
         HealthCategoriesScreenViewState(
           name = "",

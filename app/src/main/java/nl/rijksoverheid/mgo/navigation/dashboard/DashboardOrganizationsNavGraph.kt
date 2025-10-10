@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
@@ -11,7 +10,6 @@ import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScree
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
 import nl.rijksoverheid.mgo.feature.dashboard.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaScreen
-import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
@@ -41,7 +39,6 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
       val route = backStackEntry.toRoute<DashboardNavigation.Organizations.HealthCareCategories>()
       HealthCategoriesScreen(
         appBarTitle = route.organization.name,
-        subHeading = stringResource(R.string.overview_organizations_subheading),
         organization = route.organization,
         onNavigateToLocalisation = {
           rootNavController.navigate(LocalisationNavigation.Root(false))

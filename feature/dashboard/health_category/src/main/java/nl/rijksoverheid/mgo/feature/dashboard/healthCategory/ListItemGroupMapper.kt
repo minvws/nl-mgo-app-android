@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import getStringResourceByName
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhir.getJsonString
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
@@ -61,7 +61,7 @@ internal class ListItemGroupMapper
     private suspend fun Map<HealthCategoryGroup.HealthCategory.Subcategory, List<MgoResourceWithOrganization>>.toListItems() =
       map {
         HealthCategoryScreenListItemsGroup(
-          heading = context.getStringResourceByName(it.key.heading),
+          heading = context.getString(it.key.heading),
           items =
             it.value.map { mgoResourceWithOrganization ->
               val organization = mgoResourceWithOrganization.organization

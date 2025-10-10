@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
+typealias HealthCategoryStringResource = String
 typealias HealthCategoryProfile = String
 typealias HealthCategoryId = String
 
@@ -20,7 +21,7 @@ typealias HealthCategoryId = String
 @Serializable
 data class HealthCategoryGroup(
   val id: String,
-  val heading: String,
+  val heading: HealthCategoryStringResource,
   val categories: List<HealthCategory>,
 ) {
   /**
@@ -35,8 +36,8 @@ data class HealthCategoryGroup(
   @Parcelize
   data class HealthCategory(
     val id: HealthCategoryId,
-    val heading: String,
-    val subheading: String,
+    val heading: HealthCategoryStringResource,
+    val subheading: HealthCategoryStringResource,
     val subcategories: List<Subcategory>,
   ) : Parcelable {
     /**
@@ -48,7 +49,7 @@ data class HealthCategoryGroup(
     @Serializable
     @Parcelize
     data class Subcategory(
-      val heading: String,
+      val heading: HealthCategoryStringResource,
       val profiles: List<String>,
     ) : Parcelable
   }

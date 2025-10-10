@@ -38,8 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import getStringResourceByName
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
@@ -60,15 +60,6 @@ object HealthCategoryScreenTestTag {
   const val CARD = "HealthCategoryScreenCard"
 }
 
-/**
- * Composable that shows a list of all health care data for one [HealthCareCategoryId].
- *
- * @param category The [HealthCareCategoryId] to get the health cara data for.
- * @param onClickListItem Called when a list item has been clicked.
- * @param onNavigateBack Called when requested to navigate back.
- * @param filterOrganization If not null, will only show only health care data for this organization. If null will show for all added
- * organizations.
- */
 @Composable
 fun HealthCategoryScreen(
   category: HealthCategoryGroup.HealthCategory,
@@ -86,7 +77,7 @@ fun HealthCategoryScreen(
   var pdfViewerState: PdfViewerState? by remember { mutableStateOf(null) }
   pdfViewerState?.let { state ->
     PdfViewerBottomSheet(
-      appBarTitle = context.getString(context.getStringResourceByName(category.heading)),
+      appBarTitle = LocalContext.current.getString(category.heading),
       state = state,
       onDismissRequest = {
         pdfViewerState = null
@@ -103,7 +94,7 @@ fun HealthCategoryScreen(
   var showExportPdfDialog by remember { mutableStateOf(false) }
   if (showExportPdfDialog) {
     MgoAlertDialog(
-      heading = stringResource(CopyR.string.export_pdf_dialog_heading, context.getString(context.getStringResourceByName(category.heading)).lowercase()),
+      heading = stringResource(CopyR.string.export_pdf_dialog_heading, LocalContext.current.getString(category.heading).lowercase()),
       subHeading = stringResource(CopyR.string.export_pdf_dialog_subheading),
       positiveButtonText = stringResource(CopyR.string.export_pdf_dialog_create_document),
       positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
@@ -152,7 +143,7 @@ private fun HealthCategoryScreenContent(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       MgoLargeTopAppBar(
-        title = stringResource(context.getStringResourceByName(viewState.category.heading)),
+        title = LocalContext.current.getString(viewState.category.heading),
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
         actions = {
@@ -255,7 +246,7 @@ private fun LazyListScope.LoadedContent(
     item {
       Text(
         modifier = Modifier.padding(bottom = 8.dp),
-        text = stringResource(listItemGroup.heading),
+        text = listItemGroup.heading,
         style = MaterialTheme.typography.bodyMedium,
       )
     }

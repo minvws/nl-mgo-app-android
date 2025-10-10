@@ -23,16 +23,15 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import getStringResourceByName
 import nl.rijksoverheid.mgo.component.healthCategories.getIcon
 import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
@@ -97,7 +96,7 @@ private fun HealthCategoriesFavoriteCardContent(
       // To work around this, we use a layout modifier to check if the text occupies only one line,
       // and if so, we adjust its position so it is vertically centered.
       val textMeasurer = rememberTextMeasurer()
-      val text = stringResource(LocalContext.current.getStringResourceByName(category.heading))
+      val text = LocalContext.current.getString(category.heading)
       val textStyle = MaterialTheme.typography.bodyMedium
       Text(
         modifier =

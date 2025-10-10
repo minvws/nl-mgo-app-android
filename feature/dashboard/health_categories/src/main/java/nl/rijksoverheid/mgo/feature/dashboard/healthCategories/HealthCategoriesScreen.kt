@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import getStringResourceByName
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
@@ -260,7 +260,7 @@ private fun LazyListScope.WithProviders(
     item {
       Text(
         modifier = Modifier.padding(top = 32.dp, bottom = 12.dp),
-        text = stringResource(LocalContext.current.getStringResourceByName(group.heading)),
+        text = LocalContext.current.getString(group.heading),
         style = MaterialTheme.typography.headlineMedium,
       )
     }

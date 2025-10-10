@@ -26,9 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import getStringResourceByName
 import nl.rijksoverheid.mgo.component.healthCategories.getIcon
 import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.contentPrimary
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -88,7 +88,7 @@ internal fun HealthCategoriesListItemContent(
       }
       Column(modifier = Modifier.weight(1f).padding(horizontal = 16.dp)) {
         Text(
-          text = stringResource(id = LocalContext.current.getStringResourceByName(category.heading)),
+          text = LocalContext.current.getString(category.heading),
           style =
             MaterialTheme.typography
               .bodyMedium,
@@ -97,13 +97,13 @@ internal fun HealthCategoriesListItemContent(
         )
         val subheadingText =
           if (listItemState == HealthCategoriesListItemState.NO_DATA) {
-            CopyR.string.common_no_data
+            stringResource(CopyR.string.common_no_data)
           } else {
-            LocalContext.current.getStringResourceByName(category.subheading)
+            LocalContext.current.getString(category.subheading)
           }
         Text(
           modifier = Modifier.padding(top = 4.dp),
-          text = stringResource(id = subheadingText),
+          text = subheadingText,
           style =
             MaterialTheme.typography
               .bodyMedium,

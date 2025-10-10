@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.component.healthCategories
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,6 +22,27 @@ import nl.rijksoverheid.mgo.component.theme.categoriesVaccinations
 import nl.rijksoverheid.mgo.component.theme.categoriesVital
 import nl.rijksoverheid.mgo.component.theme.categoriesWarnings
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryStringResource
+
+@SuppressLint("DiscouragedApi")
+fun Context.getString(stringResource: HealthCategoryStringResource): String {
+  // We dynamically get the string based on a key that exists in a JSON file.
+  // If we do it like that, R8 will shrink all the strings in the strings.xml file that exist in that JSON file, since they appear unused.
+  // To solve this, the prefix needs to exist in the code so that the shrinking knows these strings do not need to be removed.
+  val stringResourceName =
+    when {
+      stringResource.startsWith("mhc") -> "mhc_" + stringResource.drop(4)
+      stringResource.startsWith("hc") -> "hc_" + stringResource.drop(3)
+      stringResource.startsWith("zib") -> "zib_" + stringResource.drop(4)
+      else -> stringResource
+    }
+  val stringResourceWithPrefix = resources.getIdentifier(stringResourceName, "string", packageName)
+  return try {
+    getString(stringResourceWithPrefix)
+  } catch (e: Exception) {
+    ""
+  }
+}
 
 @DrawableRes
 fun HealthCategoryGroup.HealthCategory.getIcon() =

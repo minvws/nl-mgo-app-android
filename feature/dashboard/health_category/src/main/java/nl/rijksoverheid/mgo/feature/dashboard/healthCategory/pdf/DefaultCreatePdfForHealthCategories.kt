@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import getStringResourceByName
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.pdfViewer.Pdf
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGenerator
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGroupedTables
@@ -36,7 +36,7 @@ internal class DefaultCreatePdfForHealthCategories
       category: HealthCategoryGroup.HealthCategory,
       listItemGroups: List<HealthCategoryScreenListItemsGroup>,
     ): File {
-      val categoryTitle = context.getString(context.getStringResourceByName(category.heading))
+      val categoryTitle = context.getString(category.heading)
       val deviceLocale = Locale.getDefault()
       val now = LocalDateTime.now(clock)
       val mediumDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(deviceLocale)

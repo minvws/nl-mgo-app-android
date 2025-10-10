@@ -42,9 +42,9 @@ import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.core.view.ViewCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import getStringResourceByName
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -161,7 +161,7 @@ private fun EditOverviewBottomSheetContent(
           item {
             Text(
               modifier = Modifier.padding(top = 24.dp),
-              text = stringResource(LocalContext.current.getStringResourceByName(group.heading)),
+              text = LocalContext.current.getString(group.heading),
               style = MaterialTheme.typography.headlineSmall,
             )
           }

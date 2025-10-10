@@ -69,6 +69,20 @@ val TEST_HEALTH_CATEGORY_PROBLEMS =
       ),
   )
 
+val TEST_HEALTH_CATEGORY_ALLERGIES =
+  HealthCategoryGroup.HealthCategory(
+    id = "allergies",
+    heading = "hc_allergies.heading",
+    subheading = "hc_allergies.subheading",
+    subcategories =
+      listOf(
+        HealthCategoryGroup.HealthCategory.Subcategory(
+          heading = "zib_allergy_intolerance.heading",
+          profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"),
+        ),
+      ),
+  )
+
 val TEST_HEALTH_CATEGORY_LIFESTYLE =
   HealthCategoryGroup.HealthCategory(
     id = "lifestyle",
@@ -96,5 +110,16 @@ val TEST_HEALTH_CATEGORY_LIFESTYLE =
           heading = "zib_nutrition_advice.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"),
         ),
+      ),
+  )
+
+val TEST_HEALTH_CATEGORY_GROUP_HEALTH =
+  HealthCategoryGroup(
+    id = "health",
+    heading = "mhc_health.heading",
+    categories =
+      listOf(
+        TEST_HEALTH_CATEGORY_PROBLEMS,
+        TEST_HEALTH_CATEGORY_ALLERGIES,
       ),
   )

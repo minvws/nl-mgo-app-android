@@ -46,9 +46,13 @@ import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
@@ -373,74 +377,74 @@ private fun HealthCategoriesListItemCard(
   }
 }
 
-// @DefaultPreviews
-// @Composable
-// internal fun OverviewScreenNoProvidersPreview() {
-//  MgoTheme {
-//    HealthCategoriesScreenContent(
-//      appBarTitle = stringResource(CopyR.string.overview_heading),
-//      subHeading = stringResource(CopyR.string.overview_subheading),
-//      viewState =
-//        HealthCategoriesScreenViewState(
-//          name = "",
-//          providers = listOf(),
-//          automaticLocalisationEnabled = false,
-//          categories = TEST_HEALTH_CARE_CATEGORIES,
-//          favorites = listOf(),
-//        ),
-//      onNavigateBack = {},
-//      onClickAddProvider = {},
-//      onClickListItem = {},
-//      onClickRemoveOrganization = {},
-//      onShowBottomSheet = {},
-//    )
-//  }
-// }
-//
-// @DefaultPreviews
-// @Composable
-// internal fun OverviewScreenWithProvidersPreview() {
-//  MgoTheme {
-//    HealthCategoriesScreenContent(
-//      appBarTitle = stringResource(CopyR.string.overview_heading),
-//      subHeading = stringResource(CopyR.string.overview_subheading),
-//      viewState =
-//        HealthCategoriesScreenViewState(
-//          name = "",
-//          providers = listOf(TEST_MGO_ORGANIZATION),
-//          automaticLocalisationEnabled = false,
-//          categories = TEST_HEALTH_CARE_CATEGORIES,
-//          favorites = listOf(),
-//        ),
-//      onNavigateBack = {},
-//      onClickAddProvider = {},
-//      onClickListItem = {},
-//      onClickRemoveOrganization = {},
-//      onShowBottomSheet = {},
-//    )
-//  }
-// }
-//
-// @DefaultPreviews
-// @Composable
-// internal fun OverviewScreenWithProvidersAndFavoritesPreview() {
-//  MgoTheme {
-//    HealthCategoriesScreenContent(
-//      appBarTitle = stringResource(CopyR.string.overview_heading),
-//      subHeading = stringResource(CopyR.string.overview_subheading),
-//      viewState =
-//        HealthCategoriesScreenViewState(
-//          name = "",
-//          providers = listOf(TEST_MGO_ORGANIZATION),
-//          automaticLocalisationEnabled = false,
-//          categories = TEST_HEALTH_CARE_CATEGORIES,
-//          favorites = listOf(TEST_HEALTH_CARE_CATEGORIES.first()),
-//        ),
-//      onNavigateBack = {},
-//      onClickAddProvider = {},
-//      onClickListItem = {},
-//      onClickRemoveOrganization = {},
-//      onShowBottomSheet = {},
-//    )
-//  }
-// }
+@DefaultPreviews
+@Composable
+internal fun OverviewScreenNoProvidersPreview() {
+  MgoTheme {
+    HealthCategoriesScreenContent(
+      appBarTitle = stringResource(CopyR.string.overview_heading),
+      subHeading = stringResource(CopyR.string.overview_subheading),
+      viewState =
+        HealthCategoriesScreenViewState(
+          name = "",
+          providers = listOf(),
+          automaticLocalisationEnabled = false,
+          groups = listOf(),
+          favorites = listOf(),
+        ),
+      onNavigateBack = {},
+      onClickAddProvider = {},
+      onClickListItem = {},
+      onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
+    )
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun OverviewScreenWithProvidersPreview() {
+  MgoTheme {
+    HealthCategoriesScreenContent(
+      appBarTitle = stringResource(CopyR.string.overview_heading),
+      subHeading = stringResource(CopyR.string.overview_subheading),
+      viewState =
+        HealthCategoriesScreenViewState(
+          name = "",
+          providers = listOf(TEST_MGO_ORGANIZATION),
+          automaticLocalisationEnabled = false,
+          groups = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH),
+          favorites = listOf(),
+        ),
+      onNavigateBack = {},
+      onClickAddProvider = {},
+      onClickListItem = {},
+      onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
+    )
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun OverviewScreenWithProvidersAndFavoritesPreview() {
+  MgoTheme {
+    HealthCategoriesScreenContent(
+      appBarTitle = stringResource(CopyR.string.overview_heading),
+      subHeading = stringResource(CopyR.string.overview_subheading),
+      viewState =
+        HealthCategoriesScreenViewState(
+          name = "",
+          providers = listOf(TEST_MGO_ORGANIZATION),
+          automaticLocalisationEnabled = false,
+          groups = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.copy(categories = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.categories[0]))),
+          favorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.categories[1]),
+        ),
+      onNavigateBack = {},
+      onClickAddProvider = {},
+      onClickListItem = {},
+      onClickRemoveOrganization = {},
+      onShowBottomSheet = {},
+    )
+  }
+}

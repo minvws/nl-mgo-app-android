@@ -37,19 +37,12 @@ import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
 import nl.rijksoverheid.mgo.component.theme.sentimentInformative
-import nl.rijksoverheid.mgo.data.healthcare.models.TEST_FHIR_BINARY
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
+import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 import java.io.File
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a list item that represents a file that can be downloaded or opened.
- *
- * @param row The [UISchemaRow.Binary].
- * @param onClick Called when is requested to downloaded the file.
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun UiSchemaRowBinary(
   row: UISchemaRow.Binary,
@@ -221,7 +214,7 @@ internal fun UiSchemaRowBinaryLoadingPreview() {
 internal fun UiSchemaRowBinaryDownloadedPreview() {
   MgoTheme {
     UiSchemaRowBinary(
-      row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = TEST_FHIR_BINARY),
+      row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = FhirBinary(file = File(""), contentType = "application/pdf")),
       onClick = {},
     )
   }

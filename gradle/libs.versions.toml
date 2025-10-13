@@ -58,6 +58,7 @@ itext7 = "9.2.0"
 zoomable = "2.8.0"
 androidx-startup-runtime = "1.2.0"
 reorderable = "3.0.0"
+quickjs-wrapper = "3.2.3"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -104,6 +105,8 @@ lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "
 json = { group = "org.json", name = "json", version.ref = "json" }
 rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+quickjs-wrapper-java = { group = "wang.harlon.quickjs", name = "wrapper-java", version.ref = "quickjs-wrapper" }
+quickjs-wrapper-android = { group = "wang.harlon.quickjs", name = "wrapper-android", version.ref = "quickjs-wrapper" }
 
 # Google will start forcing 16 KB page sizes (https://developer.android.com/guide/practices/page-sizes#kotlin).
 # The eclipse j2v8 library is not 16 KB page aligned, but somebody made a fork that is.

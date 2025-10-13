@@ -2,91 +2,92 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_EMPTY
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_LOADED
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.TEST_HEALTH_CARE_DATA_STATE_LOADING
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.TestHealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_RESPONSE_SUCCESS
+import nl.rijksoverheid.mgo.data.fhir.TestFhirRepository
+import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
+import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
+import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-internal class HealthCategoriesListItemViewModelTest {
+class HealthCategoriesListItemViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val healthCareDataStatesRepository = TestHealthCareDataStatesRepository(listOf())
+  private val organizationRepository = TestOrganizationRepository()
+  private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
+  private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
+  private val fhirRepository = TestFhirRepository()
 
   @Test
-  fun testLoadingState() =
+  fun testLoaded() =
     runTest {
-      // Given: Health care data state is loading
-      healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
+      // Given: stored organization
+      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
 
-      // When: Creating viewmodel
-      val viewModel = createViewModel()
+      // Given: Fhir repository returns success that is non empty
+      fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = false))
 
-      // Then: List item state is loading
-      viewModel.listItemState.test {
-        assertTrue(awaitItem() == HealthCategoriesListItemState.LOADING)
-      }
-    }
+      // When: Creating viewmodel and not filtering on organization
+      val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_PROBLEMS)
 
-  @Test
-  fun testOneLoadingState() =
-    runTest {
-      // Given: Health care data state has loading and loaded
-      healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADING, TEST_HEALTH_CARE_DATA_STATE_LOADED))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
-
-      // When: Creating viewmodel
-      val viewModel = createViewModel()
-
-      // Then: List item state is loading
-      viewModel.listItemState.test {
-        assertTrue(awaitItem() == HealthCategoriesListItemState.LOADING)
-      }
-    }
-
-  @Test
-  fun testLoadedState() =
-    runTest {
-      // Given: Health care data state has loading and loaded
-      healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_LOADED))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
-
-      // When: Creating viewmodel
-      val viewModel = createViewModel()
-
-      // Then: List item state is loading
+      // Then: List item state is loaded
       viewModel.listItemState.test {
         assertTrue(awaitItem() == HealthCategoriesListItemState.LOADED)
       }
     }
 
   @Test
-  fun testNoDataState() =
+  fun testLoadedFilterOrganization() =
     runTest {
-      // Given: Health care data state has empty
-      healthCareDataStatesRepository.setRefreshData(listOf(TEST_HEALTH_CARE_DATA_STATE_EMPTY))
-      healthCareDataStatesRepository.refresh(organization = TEST_MGO_ORGANIZATION, category = HealthCareCategoryId.MEDICATIONS)
+      // Given: stored organization
+      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
 
-      // When: Creating viewmodel
-      val viewModel = createViewModel()
+      // Given: Fhir repository returns success that is non empty
+      fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = false))
 
-      // Then: List item state is no data
+      // When: Creating viewmodel and filtering on organization
+      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_PROBLEMS)
+
+      // Then: List item state is loaded
+      viewModel.listItemState.test {
+        assertTrue(awaitItem() == HealthCategoriesListItemState.LOADED)
+      }
+    }
+
+  @Test
+  fun testNoData() =
+    runTest {
+      // Given: stored organization
+      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+
+      // Given: Fhir repository returns success that is non empty
+      fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = true))
+
+      // When: Creating viewmodel and filtering on organization
+      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_PROBLEMS)
+
+      // Then: List item state is loaded
       viewModel.listItemState.test {
         assertTrue(awaitItem() == HealthCategoriesListItemState.NO_DATA)
       }
     }
 
-  private fun createViewModel(): HealthCategoriesListItemViewModel =
-    HealthCategoriesListItemViewModel(
-      filterOrganization = null,
-      category = HealthCareCategoryId.MEDICATIONS,
-      healthCareDataStatesRepository = healthCareDataStatesRepository,
-    )
+  private fun createViewModel(
+    filterOrganization: MgoOrganization?,
+    category: HealthCategoryGroup.HealthCategory,
+  ) = HealthCategoriesListItemViewModel(
+    filterOrganization = filterOrganization,
+    category = category,
+    getEndpointsForHealthCategory = getEndpointsForHealthCategory,
+    organizationRepository = organizationRepository,
+    fhirRepository = fhirRepository,
+    ioDispatcher = mainDispatcherRule.testDispatcher,
+  )
 }

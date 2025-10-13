@@ -9,5 +9,4 @@ android {
 dependencies {
   implementation(libs.kotlin.reflect)
   implementation(projects.data.localisation)
-  implementation(projects.data.healthcare)
 }

@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -33,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,14 +42,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.supportRijkslint
-import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_ALLERGIES
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import sh.calvin.reorderable.ReorderableColumn
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -77,7 +79,6 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
     EditOverviewBottomSheetContent(
       viewState = viewState,
       onClickSave = { favorites, nonFavorites -> viewModel.save(favorites = favorites, nonFavorites = nonFavorites) },
-      onReorderFavorites = { fromIndex, toIndex -> viewModel.reorderFavorites(fromIndex, toIndex) },
       onNavigateBack = {
         coroutineScope.launch {
           sheetState.hide()
@@ -91,8 +92,7 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
 @Composable
 private fun EditOverviewBottomSheetContent(
   viewState: EditOverviewBottomSheetViewState,
-  onClickSave: (favorites: List<HealthCareCategoryId>, nonFavorites: List<HealthCareCategoryId>) -> Unit,
-  onReorderFavorites: (fromIndex: Int, toIndex: Int) -> Unit,
+  onClickSave: (favorites: List<HealthCategoryGroup.HealthCategory>, nonFavorites: List<HealthCategoryGroup>) -> Unit,
   onNavigateBack: () -> Unit,
 ) {
   var favorites by remember { mutableStateOf(viewState.favorites) }
@@ -130,33 +130,54 @@ private fun EditOverviewBottomSheetContent(
           FavoritesCard(
             modifier = Modifier.padding(top = 8.dp).animateItem(),
             favorites = favorites,
-            onClickHealthCategory = { categoryId, favorite ->
-              favorites = favorites.toMutableList().also { it.remove(categoryId) }
+            onClickHealthCategory = { category ->
+              val group = viewState.groups.first { group -> group.categories.contains(category) }
+              favorites = favorites.toMutableList().also { it.remove(category) }
               nonFavorites =
-                nonFavorites
-                  .toMutableList()
-                  .also { it.add(categoryId) }
-                  .sortedBy { HealthCareCategoryId.entries.indexOf(it) }
+                nonFavorites.map { nonFavoriteGroup ->
+                  if (nonFavoriteGroup.id == group.id) {
+                    nonFavoriteGroup.copy(
+                      categories =
+                        nonFavoriteGroup.categories
+                          .toMutableList()
+                          .also { it.add(category) }
+                          .sortedBy { group.categories.indexOf(it) },
+                    )
+                  } else {
+                    nonFavoriteGroup
+                  }
+                }
             },
-            onReorderFavorites = onReorderFavorites,
+            onReorderFavorites = { fromIndex, toIndex ->
+              val updatedFavorites = favorites.toMutableList()
+              val item = updatedFavorites.removeAt(fromIndex)
+              updatedFavorites.add(toIndex, item)
+              favorites = updatedFavorites
+            },
           )
         }
       }
 
-      if (nonFavorites.isNotEmpty()) {
-        item {
-          Text(modifier = Modifier.padding(top = 24.dp), text = "Alle categorieën", style = MaterialTheme.typography.headlineSmall)
-        }
+      nonFavorites.forEach { group ->
+        if (group.categories.isNotEmpty()) {
+          item {
+            Text(
+              modifier = Modifier.padding(top = 24.dp),
+              text = LocalContext.current.getString(group.heading),
+              style = MaterialTheme.typography.headlineSmall,
+            )
+          }
 
-        item {
-          CategoriesCard(
-            modifier = Modifier.padding(top = 8.dp).animateItem(),
-            categories = nonFavorites,
-            onClickHealthCategory = { categoryId, favorite ->
-              favorites = favorites.toMutableList().also { it.add(categoryId) }
-              nonFavorites = nonFavorites.toMutableList().also { it.remove(categoryId) }
-            },
-          )
+          item {
+            CategoriesCard(
+              modifier = Modifier.padding(top = 8.dp).animateItem(),
+              categories = group.categories,
+              onClickHealthCategory = { category, _ ->
+                favorites = favorites.toMutableList().also { it.add(category) }
+                nonFavorites = nonFavorites.map { group -> group.copy(categories = group.categories.filter { it != category }) }
+              },
+            )
+          }
         }
       }
     }
@@ -177,8 +198,8 @@ private fun FavoriteEmptyCard(modifier: Modifier = Modifier) {
 
 @Composable
 private fun FavoritesCard(
-  favorites: List<HealthCareCategoryId>,
-  onClickHealthCategory: (categoryId: HealthCareCategoryId, favorite: Boolean) -> Unit,
+  favorites: List<HealthCategoryGroup.HealthCategory>,
+  onClickHealthCategory: (category: HealthCategoryGroup.HealthCategory) -> Unit,
   onReorderFavorites: (fromIndex: Int, toIndex: Int) -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -202,30 +223,23 @@ private fun FavoritesCard(
               category = item,
               state = HealthCategoryListItemState.REMOVE,
               onClick = {
-                onClickHealthCategory(item, false)
+                onClickHealthCategory(item)
               },
-              dragIcon = {
-                IconButton(
-                  modifier =
-                    Modifier.draggableHandle(
-                      onDragStarted = {
-                        ViewCompat.performHapticFeedback(
-                          view,
-                          HapticFeedbackConstantsCompat.GESTURE_START,
-                        )
-                      },
-                      onDragStopped = {
-                        ViewCompat.performHapticFeedback(
-                          view,
-                          HapticFeedbackConstantsCompat.GESTURE_END,
-                        )
-                      },
-                    ),
-                  onClick = {},
-                ) {
-                  Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
-                }
-              },
+              dragHandleModifier =
+                Modifier.draggableHandle(
+                  onDragStarted = {
+                    ViewCompat.performHapticFeedback(
+                      view,
+                      HapticFeedbackConstantsCompat.GESTURE_START,
+                    )
+                  },
+                  onDragStopped = {
+                    ViewCompat.performHapticFeedback(
+                      view,
+                      HapticFeedbackConstantsCompat.GESTURE_END,
+                    )
+                  },
+                ),
               hasDivider = !isDragging && favorites.indexOf(item) != favorites.lastIndex,
             )
           }
@@ -237,8 +251,8 @@ private fun FavoritesCard(
 
 @Composable
 private fun CategoriesCard(
-  categories: List<HealthCareCategoryId>,
-  onClickHealthCategory: (categoryId: HealthCareCategoryId, favorite: Boolean) -> Unit,
+  categories: List<HealthCategoryGroup.HealthCategory>,
+  onClickHealthCategory: (category: HealthCategoryGroup.HealthCategory, favorite: Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
@@ -264,11 +278,11 @@ internal fun EditOverviewBottomSheetNoFavoritesPreview() {
     EditOverviewBottomSheetContent(
       viewState =
         EditOverviewBottomSheetViewState(
+          groups = listOf(),
           favorites = listOf(),
-          nonFavorites = HealthCareCategoryId.entries,
+          nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH),
         ),
       onClickSave = { _, _ -> },
-      onReorderFavorites = { fromIndex, toIndex -> },
       onNavigateBack = {},
     )
   }
@@ -281,11 +295,11 @@ internal fun EditOverviewBottomSheetFavoritesPreview() {
     EditOverviewBottomSheetContent(
       viewState =
         EditOverviewBottomSheetViewState(
-          favorites = listOf(HealthCareCategoryId.MEDICATIONS, HealthCareCategoryId.APPOINTMENTS),
-          nonFavorites = HealthCareCategoryId.entries - HealthCareCategoryId.MEDICATIONS - HealthCareCategoryId.APPOINTMENTS,
+          groups = listOf(),
+          favorites = listOf(TEST_HEALTH_CATEGORY_PROBLEMS),
+          nonFavorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.copy(categories = listOf(TEST_HEALTH_CATEGORY_ALLERGIES))),
         ),
       onClickSave = { _, _ -> },
-      onReorderFavorites = { fromIndex, toIndex -> },
       onNavigateBack = {},
     )
   }

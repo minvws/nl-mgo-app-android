@@ -2,8 +2,6 @@ package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
-import nl.rijksoverheid.mgo.data.fhirParser.js.JsRuntimeRepository
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.StorePinCode
@@ -23,18 +21,15 @@ class AppInitializer
   constructor(
     private val featureToggleRepository: FeatureToggleRepository,
     private val featureToggleLocalDataSource: FeatureToggleLocalDataSource,
-    private val jsRuntimeRepository: JsRuntimeRepository,
     private val cacheFileStore: CacheFileStore,
     private val setHasSeenOnboarding: SetHasSeenOnboarding,
     private val storePinCode: StorePinCode,
     private val setDigidAuthenticated: SetDigidAuthenticated,
-    private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
     private val organizationRepository: OrganizationRepository,
   ) {
     suspend fun init() {
       cacheFileStore.deleteAll()
       featureToggleLocalDataSource.init(featureToggleRepository.getAll())
-      jsRuntimeRepository.load()
     }
 
     /**
@@ -68,6 +63,5 @@ class AppInitializer
     @VisibleForTesting
     suspend fun clear() {
       organizationRepository.deleteAll()
-      healthCareDataStatesRepository.deleteAll()
     }
   }

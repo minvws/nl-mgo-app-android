@@ -19,16 +19,9 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a list item that represents a reference to another screen with health care data.
- *
- * @param row The [UISchemaRow.Reference].
- * @param onClick Called when is requested to open the reference.
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun UiSchemaRowReference(
   row: UISchemaRow.Reference,

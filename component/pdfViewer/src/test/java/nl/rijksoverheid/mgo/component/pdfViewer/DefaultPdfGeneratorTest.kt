@@ -30,17 +30,6 @@ class DefaultPdfGeneratorTest {
     }
   }
 
-  @Test(expected = IllegalStateException::class)
-  fun testNoFile() =
-    runTest {
-      // Given: no pdf exists
-
-      // When: pdf is generated
-      generator.invoke(pdf = Pdf(heading = "", subHeading = "", groupedTables = listOf(), footer = ""), fileName = "test.pdf")
-
-      // Then: Expect error
-    }
-
   @Test
   fun testGeneratePdf() =
     runTest {

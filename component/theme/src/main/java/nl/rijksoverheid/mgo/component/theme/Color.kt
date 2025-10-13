@@ -200,3 +200,67 @@ fun ColorScheme.supportProcedures(isSystemDarkTheme: Boolean = LocalAppThemeProv
 @Composable
 fun ColorScheme.supportLifestyle(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) Color(0xFFA0F75F) else Color(0xFF46A808)
+
+@Composable
+fun ColorScheme.categoriesProblems(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFE67F78) else Color(0xFFD52B1E)
+
+@Composable
+fun ColorScheme.categoriesAllergies(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFEDA966) else Color(0xFFE17000)
+
+@Composable
+fun ColorScheme.categoriesWarnings(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFFDD370) else Color(0xFFB74E06)
+
+@Composable
+fun ColorScheme.categoriesVaccinations(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFADE4D3) else Color(0xFF247D68)
+
+@Composable
+fun ColorScheme.categoriesLifestyle(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFF88B76D) else Color(0xFF39870C)
+
+@Composable
+fun ColorScheme.categoriesMental(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFF8D729F) else Color(0xFF42145F)
+
+@Composable
+fun ColorScheme.categoriesVital(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFDF669D) else Color(0xFFCA005D)
+
+@Composable
+fun ColorScheme.categoriesLaboratory(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFF66AFDD) else Color(0xFF007BC7)
+
+@Composable
+fun ColorScheme.categoriesProcedures(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFCB66A0) else Color(0xFFA90061)
+
+@Composable
+fun ColorScheme.categoriesMedication(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFF7D9B87) else Color(0xFF275937)
+
+@Composable
+fun ColorScheme.categoriesContacts(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFF66A4C3) else Color(0xFF01689B)
+
+@Composable
+fun ColorScheme.categoriesDocuments(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFA3847D) else Color(0xFF673327)
+
+@Composable
+fun ColorScheme.categoriesPlan(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFBFA96C) else Color(0xFF94710A)
+
+@Composable
+fun ColorScheme.categoriesDevice(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFADAF66) else Color(0xFF777B00)
+
+@Composable
+fun ColorScheme.categoriesPersonal(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFF6BDE1) else Color(0xFFD13189)
+
+@Composable
+fun ColorScheme.categoriesPayer(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Color(0xFFBCDFF0) else Color(0xFF2279A7)

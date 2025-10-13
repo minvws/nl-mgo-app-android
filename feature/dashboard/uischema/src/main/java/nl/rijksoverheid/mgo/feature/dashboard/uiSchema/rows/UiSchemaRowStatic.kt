@@ -12,14 +12,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 
-/**
- * Composable that shows a list item that displays some data.
- *
- * @param row The [UISchemaRow.Static].
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun UiSchemaRowStatic(
   row: UISchemaRow.Static,

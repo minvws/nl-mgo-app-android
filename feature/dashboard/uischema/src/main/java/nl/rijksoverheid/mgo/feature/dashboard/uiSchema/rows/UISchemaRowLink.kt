@@ -16,16 +16,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 
-/**
- * Composable that shows a list item that represents a file that can be downloaded via a url.
- *
- * @param row The [UISchemaRow.Link].
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun UiSchemaRowLink(
   row: UISchemaRow.Link,

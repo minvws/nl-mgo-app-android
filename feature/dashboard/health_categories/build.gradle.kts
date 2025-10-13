@@ -8,11 +8,12 @@ android {
 
 dependencies {
   implementation(projects.data.localisation)
-  implementation(projects.data.healthcare)
-  implementation(projects.data.healthData)
   implementation(projects.framework.storage)
-  implementation(projects.component.healthCareCategory)
+  implementation(projects.data.healthCategories)
+  implementation(projects.data.fhir)
+  implementation(projects.component.healthCategories)
   testImplementation(testFixtures((projects.data.localisation)))
-  testImplementation(testFixtures(projects.data.healthcare))
   testImplementation(testFixtures(projects.framework.storage))
+  testImplementation(testFixtures(projects.data.healthCategories))
+  testImplementation(testFixtures(projects.data.fhir))
 }

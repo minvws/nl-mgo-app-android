@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
 /**
  * The view state for [HealthCategoryScreen].
@@ -10,7 +10,7 @@ import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCateg
  * @param listItemsState The [ListItemsState].
  */
 internal data class HealthCategoryScreenViewState(
-  val category: HealthCareCategoryId,
+  val category: HealthCategoryGroup.HealthCategory,
   val showErrorBanner: Boolean,
   val listItemsState: ListItemsState,
 ) {
@@ -36,14 +36,5 @@ internal data class HealthCategoryScreenViewState(
      * Indicates that there is no data to display.
      */
     data object NoData : ListItemsState()
-  }
-
-  companion object {
-    fun initialState(category: HealthCareCategoryId): HealthCategoryScreenViewState =
-      HealthCategoryScreenViewState(
-        category = category,
-        showErrorBanner = false,
-        listItemsState = ListItemsState.Loading,
-      )
   }
 }

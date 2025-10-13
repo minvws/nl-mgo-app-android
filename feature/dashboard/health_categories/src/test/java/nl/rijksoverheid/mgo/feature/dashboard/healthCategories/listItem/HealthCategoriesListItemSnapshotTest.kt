@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
-import nl.rijksoverheid.mgo.framework.snapshots.SnapshotDevices
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
@@ -11,14 +10,14 @@ internal class HealthCategoriesListItemSnapshotTest {
 
   @Test
   fun loading() {
-    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      HealthCategoriesListItemLoadedPreview()
+    snapshotTestRule.snapshots {
+      HealthCategoriesListItemLoadingPreview()
     }
   }
 
   @Test
   fun noData() {
-    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
+    snapshotTestRule.snapshots {
       HealthCategoriesListItemNoDataPreview()
     }
   }

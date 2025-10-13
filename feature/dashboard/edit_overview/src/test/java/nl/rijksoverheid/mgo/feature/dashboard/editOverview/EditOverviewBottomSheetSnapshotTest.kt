@@ -4,19 +4,19 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-class EditOverviewBottomSheetSnapshotTest {
+internal class EditOverviewBottomSheetSnapshotTest {
   @get:Rule
   val snapshotTestRule = SnapshotTestRule()
 
   @Test
-  fun noFavoritesPreview() {
+  fun noFavorites() {
     snapshotTestRule.snapshots {
       EditOverviewBottomSheetNoFavoritesPreview()
     }
   }
 
   @Test
-  fun favoritesPreview() {
+  fun favorites() {
     snapshotTestRule.snapshots {
       EditOverviewBottomSheetFavoritesPreview()
     }

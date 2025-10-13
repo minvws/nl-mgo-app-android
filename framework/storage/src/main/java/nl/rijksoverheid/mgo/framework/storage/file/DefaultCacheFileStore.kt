@@ -19,14 +19,7 @@ internal class DefaultCacheFileStore(
       }
     }
 
-  override fun getFile(name: String): File? {
-    val file = File(cacheDir, name)
-    return if (file.exists()) {
-      file
-    } else {
-      null
-    }
-  }
+  override fun getFile(name: String): File = File(cacheDir, name)
 
   /**
    * Saves a file to the cache directory.

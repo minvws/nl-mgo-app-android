@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.settings.about.home
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.fhirParser.version.TestGetFhirParserVersion
+import nl.rijksoverheid.mgo.data.hcimParser.TestGetHcimParserVersion
 import nl.rijksoverheid.mgo.framework.environment.TestEnvironmentRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -17,7 +17,7 @@ internal class SettingsAboutHomeViewModelTest {
         SettingsAboutHomeViewModel(
           versionCode = 1,
           versionName = "1.0.0",
-          getFhirParserVersion = TestGetFhirParserVersion(),
+          getHcimParserVersion = TestGetHcimParserVersion(),
           environmentRepository = TestEnvironmentRepository(),
         )
 
@@ -28,7 +28,7 @@ internal class SettingsAboutHomeViewModelTest {
         val viewState = awaitItem()
         assertEquals(1, viewState.appVersionCode)
         assertEquals("1.0.0", viewState.appVersionName)
-        assertEquals(expectedFhirVersion, viewState.fhirParserVersion)
+        assertEquals(expectedFhirVersion, viewState.hcimParserVersion)
         assertEquals(CopyR.string.privacy_link_test, viewState.privacyUrl)
       }
     }

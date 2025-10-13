@@ -13,9 +13,15 @@ android {
 dependencies {
   implementation(projects.data.localisation)
   implementation(projects.framework.environment)
-  implementation(projects.data.healthcare)
   implementation(projects.component.pdfViewer)
+  implementation(projects.data.fhir)
+  implementation(projects.data.healthCategories)
+  implementation(projects.data.hcimParser)
+  implementation(projects.framework.fhir)
+  implementation(projects.component.uiSchema)
+  implementation(projects.component.healthCategories)
   testImplementation(testFixtures(projects.data.localisation))
-  testImplementation(testFixtures(projects.data.healthcare))
-  testImplementation(testFixtures(projects.data.fhirParser))
+  testImplementation(testFixtures(projects.data.hcimParser))
+  testImplementation(testFixtures(projects.data.healthCategories))
+  testImplementation(testFixtures(projects.data.fhir))
 }

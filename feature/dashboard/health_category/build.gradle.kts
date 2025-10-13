@@ -20,6 +20,7 @@ dependencies {
   implementation(projects.framework.fhir)
   implementation(projects.component.uiSchema)
   implementation(projects.component.healthCategories)
+  implementation(projects.framework.storage)
   testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.data.hcimParser))
   testImplementation(testFixtures(projects.data.healthCategories))

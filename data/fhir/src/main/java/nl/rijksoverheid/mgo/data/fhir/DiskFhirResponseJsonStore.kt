@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.fhir
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import nl.rijksoverheid.mgo.framework.storage.FileStorage
 import java.io.File
 import javax.inject.Inject
 
@@ -9,6 +10,7 @@ class DiskFhirResponseJsonStore
   @Inject
   constructor(
     @ApplicationContext private val context: Context,
+    private val fileStorage: FileStorage,
   ) : FhirResponseJsonStore {
     private val rootDir =
       File(context.filesDir, "fhir").also {

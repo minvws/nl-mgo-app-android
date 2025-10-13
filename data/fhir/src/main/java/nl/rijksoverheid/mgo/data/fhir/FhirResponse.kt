@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.data.fhir
 
+import nl.rijksoverheid.mgo.framework.storage.FileStorageCacheKey
+
 sealed class FhirResponse(
   open val organizationId: String,
   open val dataServiceId: String,
@@ -9,7 +11,7 @@ sealed class FhirResponse(
     override val organizationId: String,
     override val dataServiceId: String,
     override val endpointId: String,
-    val jsonSource: FhirResponseJsonSource,
+    val json: FileStorageCacheKey,
     val isEmpty: Boolean,
   ) : FhirResponse(organizationId, dataServiceId, endpointId)
 
@@ -27,6 +29,6 @@ fun TEST_FHIR_RESPONSE_SUCCESS(isEmpty: Boolean = false) =
     organizationId = "1",
     dataServiceId = "1",
     endpointId = "1",
-    jsonSource = FhirResponseJsonSource.Memory(""),
+    json = "",
     isEmpty = isEmpty,
   )

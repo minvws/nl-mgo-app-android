@@ -12,7 +12,7 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
-import nl.rijksoverheid.mgo.framework.storage.FileStorage
+import nl.rijksoverheid.mgo.framework.storage.MgoStorage
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import timber.log.Timber
@@ -29,7 +29,7 @@ class DefaultFhirRepository
   constructor(
     @ApplicationContext private val context: Context,
     private val okHttpClient: OkHttpClient,
-    @Named("encryptedFileStorage") private val fileStorage: FileStorage,
+    @Named("encryptedFileStorage") private val mgoStorage: MgoStorage,
   ) : FhirRepository {
     private val json = Json.Default
     private val cachedFhirResponses = MutableStateFlow<List<FhirResponse>>(listOf())
@@ -73,7 +73,7 @@ class DefaultFhirRepository
 
           // Store the response
           val cacheKey = "$organizationId/$dataServiceId/$endpointId.json"
-          fileStorage.save(name = cacheKey, content = responseBytes)
+          mgoStorage.save(name = cacheKey, content = responseBytes)
 
           // Update the cached response with success state
           val fhirResponse =
@@ -81,7 +81,7 @@ class DefaultFhirRepository
               organizationId = organizationId,
               dataServiceId = dataServiceId,
               endpointId = endpointId,
-              json = cacheKey,
+              cacheKey = cacheKey,
               isEmpty = isBundleEmpty(responseBytes.toString(Charsets.UTF_8)),
             )
           updateCachedFhirResponse(fhirResponse = fhirResponse)
@@ -111,7 +111,7 @@ class DefaultFhirRepository
     }
 
     override suspend fun delete(organizationId: String) {
-      fileStorage.delete(organizationId)
+      mgoStorage.delete(organizationId)
     }
 
     private fun isBundleEmpty(bundleJson: String): Boolean {

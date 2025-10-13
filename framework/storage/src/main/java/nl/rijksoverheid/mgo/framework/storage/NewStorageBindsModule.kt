@@ -13,10 +13,10 @@ internal abstract class NewStorageBindsModule {
   @Binds
   @Singleton
   @Named("encryptedFileStorage")
-  abstract fun bindEncryptedFileStorage(default: EncryptedFileStorage): FileStorage
+  abstract fun bindEncryptedFileStorage(default: EncryptedMgoStorage): MgoStorage
 
   @Binds
   @Singleton
   @Named("memoryFileStorage")
-  abstract fun bindMemoryFileStorage(default: MemoryFileStorage): FileStorage
+  abstract fun bindMemoryFileStorage(default: MemoryMgoStorage): MgoStorage
 }

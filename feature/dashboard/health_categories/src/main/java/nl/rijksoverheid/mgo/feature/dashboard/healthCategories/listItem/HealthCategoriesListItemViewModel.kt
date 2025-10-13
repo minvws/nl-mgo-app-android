@@ -22,7 +22,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import timber.log.Timber
 import javax.inject.Named
 
 @HiltViewModel(assistedFactory = HealthCategoriesListItemViewModel.Factory::class)

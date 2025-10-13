@@ -9,14 +9,14 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class EncryptedFileStorage
+class EncryptedMgoStorage
   @Inject
   constructor(
     @ApplicationContext private val context: Context,
     @Named("masterKeyAlias") private val masterKeyAlias: String,
-  ) : FileStorage {
+  ) : MgoStorage {
     override suspend fun save(
-      name: FileStorageCacheKey,
+      name: MgoStorageCacheKey,
       content: ByteArray,
     ) {
       // Get file
@@ -39,7 +39,7 @@ class EncryptedFileStorage
       }
     }
 
-    override suspend fun get(name: FileStorageCacheKey): ByteArray? {
+    override suspend fun get(name: MgoStorageCacheKey): ByteArray? {
       // Get file
       val file = File(context.filesDir, name)
       if (!file.exists()) {
@@ -61,7 +61,7 @@ class EncryptedFileStorage
       }
     }
 
-    override suspend fun delete(name: FileStorageCacheKey) {
+    override suspend fun delete(name: MgoStorageCacheKey) {
       // Get file
       val file = File(context.filesDir, name)
 

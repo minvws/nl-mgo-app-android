@@ -4,7 +4,6 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
-import nl.rijksoverheid.mgo.data.fhir.getJsonString
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
@@ -13,7 +12,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
-import nl.rijksoverheid.mgo.framework.storage.FileStorage
+import nl.rijksoverheid.mgo.framework.storage.MgoStorage
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -31,7 +30,7 @@ internal class ListItemGroupMapper
     private val mgoResourceParser: MgoResourceParser,
     private val uiSchemaParser: UiSchemaParser,
     private val organizationRepository: OrganizationRepository,
-    @Named("encryptedFileStorage") private val fileStorage: FileStorage,
+    @Named("encryptedFileStorage") private val mgoStorage: MgoStorage,
     getDataSetsFromDisk: GetDataSetsFromDisk,
   ) {
     private val dataSets = getDataSetsFromDisk()
@@ -59,7 +58,7 @@ internal class ListItemGroupMapper
       // Create the mgo resources
       val mgoResources =
         mgoResourceParser.invoke(
-          fhirResponse = fileStorage.get(this.json)?.toString(Charsets.UTF_8) ?: "{}",
+          fhirResponse = mgoStorage.get(this.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
           fhirVersion = FhirVersion.valueOf(dataSet.fhirVersion),
         )
       return mgoResources.map { mgoResource -> MgoResourceWithOrganization(mgoResource = mgoResource, organization = organization) }

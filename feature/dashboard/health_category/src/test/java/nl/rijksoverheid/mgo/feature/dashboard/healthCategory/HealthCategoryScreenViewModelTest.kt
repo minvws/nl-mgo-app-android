@@ -7,7 +7,6 @@ import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
-import nl.rijksoverheid.mgo.data.fhir.MemoryFhirResponseJsonStore
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
@@ -22,6 +21,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
+import nl.rijksoverheid.mgo.framework.storage.MemoryMgoStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -48,8 +48,8 @@ class HealthCategoryScreenViewModelTest {
   private val organizationRepository = TestOrganizationRepository()
   private val createPdfForHealthCategories = TestCreatePdfForHealthCategories()
   private val okHttpClient = OkHttpClient.Builder().build()
-  private val fhirResponseJsonStore = MemoryFhirResponseJsonStore()
-  private val fhirRepository = DefaultFhirRepository(context = context, okHttpClient = okHttpClient, fhirResponseJsonStore = fhirResponseJsonStore)
+  private val mgoStorage = MemoryMgoStorage()
+  private val fhirRepository = DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoStorage = mgoStorage)
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val quickJsRepository = JvmQuickJsRepository(dispatcher = mainDispatcherRule.testDispatcher)
@@ -63,6 +63,7 @@ class HealthCategoryScreenViewModelTest {
       uiSchemaParser = uiSchemaParser,
       organizationRepository = organizationRepository,
       getDataSetsFromDisk = getDataSetsFromDisk,
+      mgoStorage = mgoStorage,
     )
   private val mgoResourceStore = MgoResourceStore()
 

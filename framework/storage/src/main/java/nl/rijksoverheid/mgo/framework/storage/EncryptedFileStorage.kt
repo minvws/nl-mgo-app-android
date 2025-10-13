@@ -21,6 +21,7 @@ class EncryptedFileStorage
     ) {
       // Get file
       val file = File(context.filesDir, name)
+      file.parentFile?.mkdirs()
 
       // Get encrypted file
       val encryptedFile =
@@ -66,7 +67,21 @@ class EncryptedFileStorage
 
       // Delete
       if (file.exists()) {
-        check(file.delete()) { "Could not delete file" }
+        deleteDirectoryRecursively(file)
       }
+    }
+
+    private fun deleteDirectoryRecursively(dir: File): Boolean {
+      if (!dir.exists()) return true
+      if (!dir.isDirectory) return dir.delete()
+
+      dir.listFiles()?.forEach { file ->
+        if (file.isDirectory) {
+          deleteDirectoryRecursively(file)
+        } else {
+          file.delete()
+        }
+      }
+      return dir.delete()
     }
   }

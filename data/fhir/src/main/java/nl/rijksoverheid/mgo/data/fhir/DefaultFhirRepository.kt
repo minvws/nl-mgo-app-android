@@ -15,6 +15,7 @@ import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.storage.FileStorage
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.util.Base64
@@ -80,7 +81,7 @@ class DefaultFhirRepository
               organizationId = organizationId,
               dataServiceId = dataServiceId,
               endpointId = endpointId,
-              json = "",
+              json = cacheKey,
               isEmpty = isBundleEmpty(responseBytes.toString(Charsets.UTF_8)),
             )
           updateCachedFhirResponse(fhirResponse = fhirResponse)
@@ -96,6 +97,7 @@ class DefaultFhirRepository
           updateCachedFhirResponse(fhirResponse = fhirResponse)
         }
       } catch (e: IOException) {
+        Timber.e(e, "Failed to parse fhir")
         // Update the cached response with error state
         val fhirResponse =
           FhirResponse.Error(

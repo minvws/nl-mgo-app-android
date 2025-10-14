@@ -260,7 +260,7 @@ private fun LazyListScope.WithProviders(
       Text(
         modifier = Modifier.padding(bottom = 12.dp),
         text = LocalContext.current.getString(group.heading),
-        style = MaterialTheme.typography.headlineMedium,
+        style = MaterialTheme.typography.headlineSmall,
       )
     }
 

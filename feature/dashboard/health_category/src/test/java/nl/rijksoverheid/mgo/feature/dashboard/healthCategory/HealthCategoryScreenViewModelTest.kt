@@ -138,6 +138,7 @@ class HealthCategoryScreenViewModelTest {
       resourceEndpoint = "",
       fhirVersion = FhirVersion.R3,
       url = testServerRule.testServer.url().toStr(),
+      forceRefresh = true,
     )
   }
 
@@ -150,6 +151,7 @@ class HealthCategoryScreenViewModelTest {
       resourceEndpoint = "",
       fhirVersion = FhirVersion.R3,
       url = testServerRule.testServer.url().toStr(),
+      forceRefresh = true,
     )
   }
 

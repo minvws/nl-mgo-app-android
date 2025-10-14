@@ -46,6 +46,46 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
+      )
+
+      // Fhir response is stored
+      val expectedStored = fileStorage.get("1/1/alcoholUse.json")
+      assertEquals(expectedStored, fileStorage.get("1/1/alcoholUse.json"))
+
+      // Fhir response is emitted in flow and can be observed
+      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "alcoholUse").test {
+        val expectedEmit =
+          FhirResponse.Success(
+            organizationId = "1",
+            dataServiceId = "1",
+            endpointId = "alcoholUse",
+            cacheKey = "1/1/alcoholUse.json",
+            isEmpty = false,
+          )
+        assertEquals(expectedEmit, awaitItem())
+      }
+    }
+
+  @Test
+  fun testFetchSuccessCached() =
+    runTest {
+      // Given: Request success
+      val alcoholUseJson = readResourceFile("alcoholUse.json")
+      testServer.enqueueJson(alcoholUseJson)
+
+      // Given: Alcohol use already stored
+      fileStorage.save(name = "1/1/alcoholUse.json", content = alcoholUseJson.toByteArray())
+
+      // When: Calling fetch with forceRefresh set to false
+      repository.fetch(
+        organizationId = "1",
+        dataServiceId = "1",
+        endpointId = "alcoholUse",
+        resourceEndpoint = "",
+        fhirVersion = FhirVersion.R3,
+        url = testServer.url(),
+        forceRefresh = false,
       )
 
       // Fhir response is stored
@@ -81,6 +121,7 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Fhir response is stored
@@ -115,6 +156,7 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Fhir response is not stored
@@ -139,6 +181,7 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Given: Request success
@@ -153,6 +196,7 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Fhir response is emitted in flow and can be observed
@@ -174,6 +218,7 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // When: Calling delete for organization

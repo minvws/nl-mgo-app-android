@@ -54,7 +54,24 @@ class DefaultFhirRepository
       resourceEndpoint: String,
       fhirVersion: FhirVersion,
       url: String,
+      forceRefresh: Boolean,
     ) {
+      val cacheKey = "$organizationId/$dataServiceId/$endpointId.json"
+      val cachedResponseBytes = mgoStorage.get(name = cacheKey)
+      if (cachedResponseBytes != null && !forceRefresh) {
+        // Update the cached response with success state
+        val fhirResponse =
+          FhirResponse.Success(
+            organizationId = organizationId,
+            dataServiceId = dataServiceId,
+            endpointId = endpointId,
+            cacheKey = cacheKey,
+            isEmpty = isBundleEmpty(cachedResponseBytes.toString(Charsets.UTF_8)),
+          )
+        updateCachedFhirResponse(fhirResponse = fhirResponse)
+        return
+      }
+
       val request =
         Request
           .Builder()
@@ -72,7 +89,7 @@ class DefaultFhirRepository
           val responseBytes = response.body?.bytes() ?: "{}".toByteArray()
 
           // Store the response
-          val cacheKey = "$organizationId/$dataServiceId/$endpointId.json"
+          mgoStorage.delete(cacheKey)
           mgoStorage.save(name = cacheKey, content = responseBytes)
 
           // Update the cached response with success state

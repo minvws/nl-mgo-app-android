@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.framework.storage
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -27,6 +28,12 @@ internal object StorageProvidesModule {
   @Provides
   @Named("masterKeyAlias")
   fun provideMasterKeyAlias(): String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+
+  @Singleton
+  @Provides
+  fun provideSharedPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences = context.getSharedPreferences("mgo_shared_preferences", Context.MODE_PRIVATE)
 
   @Provides
   @Singleton

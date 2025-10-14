@@ -29,7 +29,7 @@ class DefaultFhirRepository
   constructor(
     @ApplicationContext private val context: Context,
     private val okHttpClient: OkHttpClient,
-    @Named("encryptedFileStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
+    @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : FhirRepository {
     private val json = Json.Default
     private val cachedFhirResponses = MutableStateFlow<List<FhirResponse>>(listOf())

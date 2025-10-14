@@ -30,7 +30,7 @@ internal class ListItemGroupMapper
     private val mgoResourceParser: MgoResourceParser,
     private val uiSchemaParser: UiSchemaParser,
     private val organizationRepository: OrganizationRepository,
-    @Named("encryptedFileStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
+    @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
     getDataSetsFromDisk: GetDataSetsFromDisk,
   ) {
     private val dataSets = getDataSetsFromDisk()

@@ -10,7 +10,10 @@ class PdfFileRepository
   constructor(
     @ApplicationContext private val context: Context,
   ) {
-    private val dir = File(context.cacheDir, "pdf")
+    private val dir =
+      File(context.cacheDir, "pdf").apply {
+        if (!exists()) mkdirs()
+      }
 
     fun get(fileName: String): File = File(dir, fileName)
 

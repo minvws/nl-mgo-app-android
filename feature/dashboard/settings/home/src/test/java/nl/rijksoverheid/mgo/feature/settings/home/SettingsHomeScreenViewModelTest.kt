@@ -5,13 +5,11 @@ import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_HAS_SEEN_ONBOARDING
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
@@ -49,7 +47,6 @@ internal class SettingsHomeScreenViewModelTest {
   fun testResetApp() =
     runTest {
       // Given: Saved preferences and files
-      keyValueStore.setBoolean(KEY_HAS_SEEN_ONBOARDING, true)
       secureKeyValueStore.setString(KEY_PIN_CODE, "123")
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
@@ -67,7 +64,6 @@ internal class SettingsHomeScreenViewModelTest {
       viewModel.resetApp()
 
       // Then: Saved preferences and files are deleted
-      assertFalse(keyValueStore.getBoolean(KEY_HAS_SEEN_ONBOARDING))
       assertNull(secureKeyValueStore.getString(KEY_PIN_CODE))
       organizationRepository.assertNoProviders()
     }

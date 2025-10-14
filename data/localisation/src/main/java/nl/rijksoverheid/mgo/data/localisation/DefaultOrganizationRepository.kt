@@ -22,7 +22,7 @@ internal class DefaultOrganizationRepository
   @Inject
   constructor(
     private val loadApi: LoadApi,
-    @Named("encryptedFileStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
+    @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : OrganizationRepository {
     private val json = Json.Default
     private val fileName = "organizations.json"

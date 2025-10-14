@@ -164,6 +164,7 @@ internal class HealthCategoryScreenViewModel
                   resourceEndpoint = dataService.resourceEndpoint,
                   fhirVersion = FhirVersion.valueOf(endpointWithDataSet.dataSet.fhirVersion),
                   url = "$dvaApiBaseUrl/fhir${endpoint.url}",
+                  forceRefresh = true,
                 )
               }
             }

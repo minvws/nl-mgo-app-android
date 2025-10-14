@@ -13,7 +13,6 @@ import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
-import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
@@ -32,7 +31,6 @@ internal class SettingsHomeScreenViewModel
     @Named("keyValueStore") private val keyValueStore: KeyValueStore,
     @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
     @Named("isDebug") isDebug: Boolean,
-    private val cacheFileStore: CacheFileStore,
     private val organizationRepository: OrganizationRepository,
     deviceHasBiometric: DeviceHasBiometric,
   ) : ViewModel() {
@@ -46,7 +44,8 @@ internal class SettingsHomeScreenViewModel
         isDebug = isDebug,
       )
     private val _viewState =
-      keyValueStore.observeString(KEY_APP_THEME)
+      keyValueStore
+        .observeString(KEY_APP_THEME)
         .map { appThemeString -> getAppTheme(appThemeString) }
         .map { appTheme ->
           SettingsHomeScreenViewState(appTheme = appTheme, isDebug = isDebug, deviceHasBiometric = deviceHasBiometric.invoke())
@@ -58,7 +57,6 @@ internal class SettingsHomeScreenViewModel
       viewModelScope.launch {
         keyValueStore.clear()
         secureKeyValueStore.clear()
-        cacheFileStore.deleteAll()
         organizationRepository.deleteAll()
         _navigateToOnboarding.tryEmit(Unit)
       }

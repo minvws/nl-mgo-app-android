@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
@@ -27,8 +28,8 @@ class DefaultFhirRepositoryTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
   private val okHttpClient = OkHttpClient.Builder().build()
   private val testServer = testServerRule.testServer
-  private val fhirResponseJsonStore = MemoryFhirResponseJsonStore()
-  private val repository = DefaultFhirRepository(okHttpClient = okHttpClient, fhirResponseJsonStore = fhirResponseJsonStore, context = context)
+  private val fileStorage = MemoryMgoByteArrayStorage()
+  private val repository = DefaultFhirRepository(okHttpClient = okHttpClient, mgoByteArrayStorage = fileStorage, context = context)
 
   @Test
   fun testFetchSuccess() =
@@ -41,24 +42,64 @@ class DefaultFhirRepositoryTest {
       repository.fetch(
         organizationId = "1",
         dataServiceId = "1",
-        endpointId = "1",
+        endpointId = "alcoholUse",
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Fhir response is stored
-      val expectedStored = FhirResponseJsonSource.Memory(alcoholUseJson)
-      assertEquals(expectedStored, fhirResponseJsonStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1"))
+      val expectedStored = fileStorage.get("1/1/alcoholUse.json")
+      assertEquals(expectedStored, fileStorage.get("1/1/alcoholUse.json"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
+      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "alcoholUse").test {
         val expectedEmit =
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "1",
-            endpointId = "1",
-            jsonSource = FhirResponseJsonSource.Memory(alcoholUseJson),
+            endpointId = "alcoholUse",
+            cacheKey = "1/1/alcoholUse.json",
+            isEmpty = false,
+          )
+        assertEquals(expectedEmit, awaitItem())
+      }
+    }
+
+  @Test
+  fun testFetchSuccessCached() =
+    runTest {
+      // Given: Request success
+      val alcoholUseJson = readResourceFile("alcoholUse.json")
+      testServer.enqueueJson(alcoholUseJson)
+
+      // Given: Alcohol use already stored
+      fileStorage.save(name = "1/1/alcoholUse.json", content = alcoholUseJson.toByteArray())
+
+      // When: Calling fetch with forceRefresh set to false
+      repository.fetch(
+        organizationId = "1",
+        dataServiceId = "1",
+        endpointId = "alcoholUse",
+        resourceEndpoint = "",
+        fhirVersion = FhirVersion.R3,
+        url = testServer.url(),
+        forceRefresh = false,
+      )
+
+      // Fhir response is stored
+      val expectedStored = fileStorage.get("1/1/alcoholUse.json")
+      assertEquals(expectedStored, fileStorage.get("1/1/alcoholUse.json"))
+
+      // Fhir response is emitted in flow and can be observed
+      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "alcoholUse").test {
+        val expectedEmit =
+          FhirResponse.Success(
+            organizationId = "1",
+            dataServiceId = "1",
+            endpointId = "alcoholUse",
+            cacheKey = "1/1/alcoholUse.json",
             isEmpty = false,
           )
         assertEquals(expectedEmit, awaitItem())
@@ -76,24 +117,25 @@ class DefaultFhirRepositoryTest {
       repository.fetch(
         organizationId = "1",
         dataServiceId = "1",
-        endpointId = "1",
+        endpointId = "emptyBundle",
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Fhir response is stored
-      val expectedStored = FhirResponseJsonSource.Memory(emptyBundleJson)
-      assertEquals(expectedStored, fhirResponseJsonStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1"))
+      val expectedStored = fileStorage.get("1/1/emptyBundle.json")
+      assertEquals(expectedStored, fileStorage.get("1/1/emptyBundle.json"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
+      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "emptyBundle").test {
         val expectedEmit =
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "1",
-            endpointId = "1",
-            jsonSource = FhirResponseJsonSource.Memory(emptyBundleJson),
+            endpointId = "emptyBundle",
+            cacheKey = "1/1/emptyBundle.json",
             isEmpty = true,
           )
         assertEquals(expectedEmit, awaitItem())
@@ -114,10 +156,11 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Fhir response is not stored
-      assertNull(fhirResponseJsonStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1"))
+      assertNull(fileStorage.get("1/1/1.json"))
 
       // Fhir response is emitted in flow and can be observed
       repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
@@ -138,6 +181,7 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Given: Request success
@@ -152,6 +196,7 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // Fhir response is emitted in flow and can be observed
@@ -173,13 +218,14 @@ class DefaultFhirRepositoryTest {
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
         url = testServer.url(),
+        forceRefresh = true,
       )
 
       // When: Calling delete for organization
       repository.delete("1")
 
       // Then: Fhir response is no longer cached
-      assertNull(fhirResponseJsonStore.get(organizationId = "1", dataServiceId = "1", endpointId = "1"))
+      assertNull(fileStorage.get("1/1/1.json"))
     }
 
   @Test

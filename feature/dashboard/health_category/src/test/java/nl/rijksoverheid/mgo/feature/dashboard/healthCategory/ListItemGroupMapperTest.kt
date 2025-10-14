@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
-import nl.rijksoverheid.mgo.data.fhir.FhirResponseJsonSource
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
@@ -12,6 +11,7 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,6 +29,7 @@ class ListItemGroupMapperTest {
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val organizationRepository = TestOrganizationRepository()
+  private val fileStorage = MemoryMgoByteArrayStorage()
   private val mapper =
     ListItemGroupMapper(
       context = context,
@@ -36,6 +37,7 @@ class ListItemGroupMapperTest {
       uiSchemaParser = uiSchemaParser,
       getDataSetsFromDisk = getDataSetsFromDisk,
       organizationRepository = organizationRepository,
+      mgoByteArrayStorage = fileStorage,
     )
 
   @Before
@@ -53,42 +55,53 @@ class ListItemGroupMapperTest {
       // Given: The lifestyle category
       val category = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten().first { category -> category.id == "lifestyle" }
 
-      // Given: Five fhir responses that are part of the lifestyle category
+      // Given: Five fhir responses that are part of the lifestyle category are cached
+      val livingSitutationJson = getFhirResourceJson("livingSituation.json").toByteArray()
+      fileStorage.save("livingSituation.json", livingSitutationJson)
+      val alcoholUseJson = getFhirResourceJson("alcoholUse.json").toByteArray()
+      fileStorage.save("alcoholUse.json", alcoholUseJson)
+      val drugUseJson = getFhirResourceJson("drugUse.json").toByteArray()
+      fileStorage.save("drugUse.json", drugUseJson)
+      val tobaccoUseJson = getFhirResourceJson("tobaccoUse.json").toByteArray()
+      fileStorage.save("tobaccoUse.json", tobaccoUseJson)
+      val nutritionAdvice = getFhirResourceJson("nutritionAdvice.json").toByteArray()
+      fileStorage.save("nutritionAdvice.json", nutritionAdvice)
+
       val fhirResponses =
         listOf(
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
-            jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("livingSituation.json")),
+            cacheKey = "livingSituation.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
-            jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("alcoholUse.json")),
+            cacheKey = "alcoholUse.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
-            jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("drugUse.json")),
+            cacheKey = "drugUse.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
-            jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("tobaccoUse.json")),
+            cacheKey = "tobaccoUse.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
             organizationId = "1",
             dataServiceId = "48",
             endpointId = "1",
-            jsonSource = FhirResponseJsonSource.Memory(json = getFhirResourceJson("nutritionAdvice.json")),
+            cacheKey = "nutritionAdvice.json",
             isEmpty = false,
           ),
         )

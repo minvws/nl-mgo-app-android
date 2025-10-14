@@ -22,6 +22,9 @@ class FhirResponseSyncer
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
   ) {
     @VisibleForTesting
+    var firstSync: Boolean = true
+
+    @VisibleForTesting
     var previousStoredOrganizations: List<MgoOrganization> = listOf()
 
     operator fun invoke(): Flow<List<MgoOrganization>> =
@@ -37,6 +40,7 @@ class FhirResponseSyncer
           organization.fetchFhirResponses()
         }
         previousStoredOrganizations = organizations
+        firstSync = false
       }
 
     private suspend fun MgoOrganization.fetchFhirResponses() {
@@ -55,6 +59,7 @@ class FhirResponseSyncer
                 resourceEndpoint = dataService.resourceEndpoint,
                 fhirVersion = FhirVersion.valueOf(endpointWithDataSet.dataSet.fhirVersion),
                 url = "$dvaApiBaseUrl/fhir${endpoint.url}",
+                forceRefresh = firstSync,
               )
             }
           }

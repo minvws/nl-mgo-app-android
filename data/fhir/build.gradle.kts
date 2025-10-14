@@ -11,8 +11,8 @@ android {
 }
 
 dependencies {
-  implementation(libs.dagger.hilt.android)
+  implementation(projects.framework.storage)
   implementation(projects.framework.fhir)
-  testFixturesImplementation(projects.framework.fhir)
   testImplementation(projects.framework.test)
+  testFixturesImplementation(projects.framework.fhir)
 }

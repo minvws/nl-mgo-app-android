@@ -4,13 +4,14 @@ import app.cash.turbine.test
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.digid.TestIsDigidAuthenticated
-import nl.rijksoverheid.mgo.data.onboarding.TestHasSeenOnboarding
+import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
+import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.TestHasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.TestFeatureToggleRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.lifecycle.TestAppLifecycleRepository
@@ -31,12 +32,13 @@ internal class MainViewModelTest {
 
   private val featureToggleRepository = TestFeatureToggleRepository(listOf())
   private val keyValueStore = TestKeyValueStore()
-  private val hasSeenOnboarding = TestHasSeenOnboarding()
+  private val keyValueStorage = MemoryMgoKeyValueStorage()
+  private val hasSeenOnboarding = HasSeenOnboarding(keyValueStorage)
+  private val setHasSeenOnboarding = SetHasSeenOnboarding(keyValueStorage)
   private val hasPinCode = TestHasPinCode()
   private val appLocked = TestAppLocked()
   private val isDigidAuthenticated = TestIsDigidAuthenticated()
   private val saveClosedAppTimestamp = TestSaveClosedAppTimestamp()
-  private val cacheFileStore = TestCacheFileStore()
   private val viewModel by lazy {
     MainViewModel(
       hasSeenOnboarding = hasSeenOnboarding,
@@ -48,7 +50,6 @@ internal class MainViewModelTest {
       keyValueStore = keyValueStore,
       isDigidAuthenticated = isDigidAuthenticated,
       appLifecycleRepository = TestAppLifecycleRepository(),
-      cacheFileStore = cacheFileStore,
       ioDispatcher = mainDispatcherRule.testDispatcher,
     )
   }
@@ -56,7 +57,7 @@ internal class MainViewModelTest {
   @Test
   fun testStartDestinationOnboarding() {
     // Given: Onboarding not seen
-    hasSeenOnboarding.set(false)
+    setHasSeenOnboarding.invoke(false)
 
     // When: Getting start destination
     val startDestination = viewModel.getStartDestination()
@@ -68,7 +69,7 @@ internal class MainViewModelTest {
   @Test
   fun testStartDestinationPinCodeCreate() {
     // Given: Onboarding seen
-    hasSeenOnboarding.set(true)
+    setHasSeenOnboarding.invoke(true)
 
     // Given: No pin code
     hasPinCode.set(false)
@@ -83,7 +84,7 @@ internal class MainViewModelTest {
   @Test
   fun testStartDestinationDigid() {
     // Given: Onboarding seen
-    hasSeenOnboarding.set(true)
+    setHasSeenOnboarding.invoke(true)
 
     // Given: Has pin code
     hasPinCode.set(true)
@@ -102,7 +103,7 @@ internal class MainViewModelTest {
   fun testStartDestinationPinCodeLogin() =
     runTest {
       // Given: Onboarding seen
-      hasSeenOnboarding.set(true)
+      setHasSeenOnboarding.invoke(true)
 
       // Given: Has pin code
       hasPinCode.set(true)
@@ -124,7 +125,7 @@ internal class MainViewModelTest {
   fun testStartDestinationDashboard() =
     runTest {
       // Given: Onboarding seen
-      hasSeenOnboarding.set(true)
+      setHasSeenOnboarding.invoke(true)
 
       // Given: Has pin code
       hasPinCode.set(true)
@@ -192,18 +193,5 @@ internal class MainViewModelTest {
 
       // Then: return true
       assertEquals(true, enabled)
-    }
-
-  @Test
-  fun testClear() =
-    runTest {
-      // Given: File is saved in cache
-      cacheFileStore.saveFile(name = "test.json", contentType = "application/json", content = "".toByteArray())
-
-      // When: Calling clear
-      viewModel.clear()
-
-      // Then: Files are removed from cache
-      cacheFileStore.assertNoFilesSaved()
     }
 }

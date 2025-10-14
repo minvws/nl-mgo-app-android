@@ -28,6 +28,7 @@ class TestFhirRepository : FhirRepository {
     resourceEndpoint: String,
     fhirVersion: FhirVersion,
     url: String,
+    forceRefresh: Boolean,
   ) {
   }
 

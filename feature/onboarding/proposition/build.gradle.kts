@@ -12,4 +12,5 @@ dependencies {
   testImplementation(testFixtures(projects.data.onboarding))
   testImplementation(testFixtures(projects.framework.environment))
   testImplementation(libs.compose.ui.test.junit4)
+  testImplementation(projects.framework.storage)
 }

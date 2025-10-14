@@ -12,12 +12,15 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.util.Base64
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
@@ -26,7 +29,7 @@ class DefaultFhirRepository
   constructor(
     @ApplicationContext private val context: Context,
     private val okHttpClient: OkHttpClient,
-    private val fhirResponseJsonStore: FhirResponseJsonStore,
+    @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : FhirRepository {
     private val json = Json.Default
     private val cachedFhirResponses = MutableStateFlow<List<FhirResponse>>(listOf())
@@ -51,7 +54,24 @@ class DefaultFhirRepository
       resourceEndpoint: String,
       fhirVersion: FhirVersion,
       url: String,
+      forceRefresh: Boolean,
     ) {
+      val cacheKey = "$organizationId/$dataServiceId/$endpointId.json"
+      val cachedResponseBytes = mgoByteArrayStorage.get(name = cacheKey)
+      if (cachedResponseBytes != null && !forceRefresh) {
+        // Update the cached response with success state
+        val fhirResponse =
+          FhirResponse.Success(
+            organizationId = organizationId,
+            dataServiceId = dataServiceId,
+            endpointId = endpointId,
+            cacheKey = cacheKey,
+            isEmpty = isBundleEmpty(cachedResponseBytes.toString(Charsets.UTF_8)),
+          )
+        updateCachedFhirResponse(fhirResponse = fhirResponse)
+        return
+      }
+
       val request =
         Request
           .Builder()
@@ -66,10 +86,11 @@ class DefaultFhirRepository
 
         if (response.isSuccessful) {
           // Get the response
-          val json = response.body?.string() ?: "{}"
+          val responseBytes = response.body?.bytes() ?: "{}".toByteArray()
 
           // Store the response
-          val jsonSource = fhirResponseJsonStore.store(organizationId = organizationId, dataServiceId = dataServiceId, endpointId = endpointId, json = json)
+          mgoByteArrayStorage.delete(cacheKey)
+          mgoByteArrayStorage.save(name = cacheKey, content = responseBytes)
 
           // Update the cached response with success state
           val fhirResponse =
@@ -77,8 +98,8 @@ class DefaultFhirRepository
               organizationId = organizationId,
               dataServiceId = dataServiceId,
               endpointId = endpointId,
-              jsonSource = jsonSource,
-              isEmpty = isBundleEmpty(json),
+              cacheKey = cacheKey,
+              isEmpty = isBundleEmpty(responseBytes.toString(Charsets.UTF_8)),
             )
           updateCachedFhirResponse(fhirResponse = fhirResponse)
         } else {
@@ -93,6 +114,7 @@ class DefaultFhirRepository
           updateCachedFhirResponse(fhirResponse = fhirResponse)
         }
       } catch (e: IOException) {
+        Timber.e(e, "Failed to parse fhir")
         // Update the cached response with error state
         val fhirResponse =
           FhirResponse.Error(
@@ -106,7 +128,7 @@ class DefaultFhirRepository
     }
 
     override suspend fun delete(organizationId: String) {
-      fhirResponseJsonStore.delete(organizationId)
+      mgoByteArrayStorage.delete(organizationId)
     }
 
     private fun isBundleEmpty(bundleJson: String): Boolean {

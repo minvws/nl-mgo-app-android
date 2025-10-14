@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfFileRepository
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
@@ -8,7 +9,6 @@ import nl.rijksoverheid.mgo.data.pincode.StorePinCode
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
-import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import javax.inject.Inject
 
 /**
@@ -21,14 +21,14 @@ class AppInitializer
   constructor(
     private val featureToggleRepository: FeatureToggleRepository,
     private val featureToggleLocalDataSource: FeatureToggleLocalDataSource,
-    private val cacheFileStore: CacheFileStore,
     private val setHasSeenOnboarding: SetHasSeenOnboarding,
     private val storePinCode: StorePinCode,
     private val setDigidAuthenticated: SetDigidAuthenticated,
     private val organizationRepository: OrganizationRepository,
+    private val pdfFileRepository: PdfFileRepository,
   ) {
     suspend fun init() {
-      cacheFileStore.deleteAll()
+      pdfFileRepository.clearAll()
       featureToggleLocalDataSource.init(featureToggleRepository.getAll())
     }
 

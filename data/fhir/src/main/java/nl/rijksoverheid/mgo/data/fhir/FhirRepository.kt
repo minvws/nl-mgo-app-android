@@ -17,6 +17,7 @@ interface FhirRepository {
     resourceEndpoint: String,
     fhirVersion: FhirVersion,
     url: String,
+    forceRefresh: Boolean,
   )
 
   suspend fun delete(organizationId: String)

@@ -2,13 +2,14 @@ package nl.rijksoverheid.mgo.data.localisation
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
 import nl.rijksoverheid.mgo.data.api.load.createLoadApi
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestEncryptedFileStore
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -22,8 +23,9 @@ internal class DefaultOrganizationRepositoryTest {
   @get:Rule
   val testServerRule = TestServerRule()
 
+  private val json = Json.Default
   private val testServer = testServerRule.testServer
-  private val fileStore = TestEncryptedFileStore()
+  private val mgoStorage = MemoryMgoByteArrayStorage()
 
   @Test
   fun `Given loadApi request is successful, When calling search, Then emit health providers`() =
@@ -151,7 +153,7 @@ internal class DefaultOrganizationRepositoryTest {
   fun `Given health care providers saved, When collecting providers flow, Then emit health care providers`() =
     runTest {
       // Given
-      val storedMgoOrganizations =
+      val organizations =
         MgoOrganizations(
           providers =
             listOf(
@@ -160,14 +162,15 @@ internal class DefaultOrganizationRepositoryTest {
               TEST_MGO_ORGANIZATION.copy(id = "3"),
             ),
         )
-      fileStore.saveFile(storedMgoOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
+      val organizationsJson = json.encodeToString<MgoOrganizations>(organizations)
+      mgoStorage.save(name = "organizations.json", content = organizationsJson.toByteArray())
 
       // When
       val repository = getRepository()
 
       // Then
       repository.storedOrganizationsFlow.test {
-        assertEquals(storedMgoOrganizations.providers, awaitItem())
+        assertEquals(organizations.providers, awaitItem())
       }
     }
 
@@ -190,8 +193,9 @@ internal class DefaultOrganizationRepositoryTest {
     runTest {
       // Given: Organization is saved
       val organization = TEST_MGO_ORGANIZATION
-      val storedOrganizations = MgoOrganizations(providers = listOf(organization))
-      fileStore.saveFile(storedOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
+      val organizations = MgoOrganizations(providers = listOf(organization))
+      val organizationsJson = json.encodeToString<MgoOrganizations>(organizations)
+      mgoStorage.save(name = "organizations.json", content = organizationsJson.toByteArray())
 
       // When: Calling save for same organization
       val repository = getRepository()
@@ -223,8 +227,8 @@ internal class DefaultOrganizationRepositoryTest {
   @Test
   fun `Given health care provider, When calling delete, Then delete health care provider from storage`() =
     runTest {
-      // Given
-      val storedMgoOrganizations =
+      // Given stored organizations
+      val organizations =
         MgoOrganizations(
           providers =
             listOf(
@@ -233,15 +237,16 @@ internal class DefaultOrganizationRepositoryTest {
               TEST_MGO_ORGANIZATION.copy(id = "3"),
             ),
         )
-      fileStore.saveFile(storedMgoOrganizations, name = "organizations.json", clazz = MgoOrganizations::class)
+      val organizationsJson = json.encodeToString<MgoOrganizations>(organizations)
+      mgoStorage.save(name = "organizations.json", content = organizationsJson.toByteArray())
 
-      // When
+      // When: Deleting organization
       val repository = getRepository()
-      repository.delete(storedMgoOrganizations.providers.first().id)
+      repository.delete(organizations.providers.first().id)
 
-      // Then
+      // Then: Organization is deleted
       repository.storedOrganizationsFlow.test {
-        val expectedProviders = storedMgoOrganizations.providers.drop(1)
+        val expectedProviders = organizations.providers.drop(1)
         val storedProviders = awaitItem()
         assertEquals(expectedProviders, storedProviders)
       }
@@ -251,7 +256,7 @@ internal class DefaultOrganizationRepositoryTest {
   fun `Given stored organizations, When calling deleteAll, Then delete all health care provider from storage`() =
     runTest {
       // Given: saved mgo organizations
-      val storedMgoOrganizations =
+      val organizations =
         MgoOrganizations(
           providers =
             listOf(
@@ -261,13 +266,14 @@ internal class DefaultOrganizationRepositoryTest {
             ),
         )
       val repository = getRepository()
-      storedMgoOrganizations.providers.forEach { provider -> repository.save(provider) }
+      organizations.providers.forEach { provider -> repository.save(provider) }
 
       // When: deleting all organizations
       repository.deleteAll()
 
       // Then: Organizations file is removed
-      assertNull(fileStore.getFile(MgoOrganizations::class, "organizations.json"))
+      val expected = mgoStorage.get("organizations.json")?.toString(Charsets.UTF_8)
+      assertNull(expected)
 
       // Then: Flow is empty
       assertEquals(listOf<MgoOrganization>(), repository.get())
@@ -276,6 +282,6 @@ internal class DefaultOrganizationRepositoryTest {
   private fun getRepository(): DefaultOrganizationRepository {
     val okHttpClient = TEST_OKHTTP_CLIENT
     val loadApi = createLoadApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-    return DefaultOrganizationRepository(loadApi = loadApi, encryptedFileStore = fileStore)
+    return DefaultOrganizationRepository(loadApi = loadApi, mgoByteArrayStorage = mgoStorage)
   }
 }

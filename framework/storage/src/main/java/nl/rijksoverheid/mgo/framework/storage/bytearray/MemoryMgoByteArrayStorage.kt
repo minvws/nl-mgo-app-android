@@ -1,10 +1,10 @@
-package nl.rijksoverheid.mgo.framework.storage
+package nl.rijksoverheid.mgo.framework.storage.bytearray
 
 import javax.inject.Inject
 
-class MemoryMgoStorage
+class MemoryMgoByteArrayStorage
   @Inject
-  constructor() : MgoStorage {
+  constructor() : MgoByteArrayStorage {
     private val cache: MutableMap<String, ByteArray> = mutableMapOf()
 
     override suspend fun save(

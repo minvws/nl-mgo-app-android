@@ -10,7 +10,6 @@ import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.TestFeatureToggleRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestCacheFileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.lifecycle.TestAppLifecycleRepository
@@ -36,7 +35,6 @@ internal class MainViewModelTest {
   private val appLocked = TestAppLocked()
   private val isDigidAuthenticated = TestIsDigidAuthenticated()
   private val saveClosedAppTimestamp = TestSaveClosedAppTimestamp()
-  private val cacheFileStore = TestCacheFileStore()
   private val viewModel by lazy {
     MainViewModel(
       hasSeenOnboarding = hasSeenOnboarding,
@@ -48,7 +46,6 @@ internal class MainViewModelTest {
       keyValueStore = keyValueStore,
       isDigidAuthenticated = isDigidAuthenticated,
       appLifecycleRepository = TestAppLifecycleRepository(),
-      cacheFileStore = cacheFileStore,
       ioDispatcher = mainDispatcherRule.testDispatcher,
     )
   }
@@ -192,18 +189,5 @@ internal class MainViewModelTest {
 
       // Then: return true
       assertEquals(true, enabled)
-    }
-
-  @Test
-  fun testClear() =
-    runTest {
-      // Given: File is saved in cache
-      cacheFileStore.saveFile(name = "test.json", contentType = "application/json", content = "".toByteArray())
-
-      // When: Calling clear
-      viewModel.clear()
-
-      // Then: Files are removed from cache
-      cacheFileStore.assertNoFilesSaved()
     }
 }

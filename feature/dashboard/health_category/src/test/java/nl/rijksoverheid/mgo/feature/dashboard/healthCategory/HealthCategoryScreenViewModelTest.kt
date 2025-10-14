@@ -21,7 +21,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
-import nl.rijksoverheid.mgo.framework.storage.MemoryMgoStorage
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -48,8 +48,8 @@ class HealthCategoryScreenViewModelTest {
   private val organizationRepository = TestOrganizationRepository()
   private val createPdfForHealthCategories = TestCreatePdfForHealthCategories()
   private val okHttpClient = OkHttpClient.Builder().build()
-  private val mgoStorage = MemoryMgoStorage()
-  private val fhirRepository = DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoStorage = mgoStorage)
+  private val mgoStorage = MemoryMgoByteArrayStorage()
+  private val fhirRepository = DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoByteArrayStorage = mgoStorage)
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val quickJsRepository = JvmQuickJsRepository(dispatcher = mainDispatcherRule.testDispatcher)
@@ -63,7 +63,7 @@ class HealthCategoryScreenViewModelTest {
       uiSchemaParser = uiSchemaParser,
       organizationRepository = organizationRepository,
       getDataSetsFromDisk = getDataSetsFromDisk,
-      mgoStorage = mgoStorage,
+      mgoByteArrayStorage = mgoStorage,
     )
   private val mgoResourceStore = MgoResourceStore()
 

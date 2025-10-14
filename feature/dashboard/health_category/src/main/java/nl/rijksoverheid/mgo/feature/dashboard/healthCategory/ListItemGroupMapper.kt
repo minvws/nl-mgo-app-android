@@ -12,7 +12,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
-import nl.rijksoverheid.mgo.framework.storage.MgoStorage
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -30,7 +30,7 @@ internal class ListItemGroupMapper
     private val mgoResourceParser: MgoResourceParser,
     private val uiSchemaParser: UiSchemaParser,
     private val organizationRepository: OrganizationRepository,
-    @Named("encryptedFileStorage") private val mgoStorage: MgoStorage,
+    @Named("encryptedFileStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
     getDataSetsFromDisk: GetDataSetsFromDisk,
   ) {
     private val dataSets = getDataSetsFromDisk()
@@ -58,7 +58,7 @@ internal class ListItemGroupMapper
       // Create the mgo resources
       val mgoResources =
         mgoResourceParser.invoke(
-          fhirResponse = mgoStorage.get(this.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
+          fhirResponse = mgoByteArrayStorage.get(this.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
           fhirVersion = FhirVersion.valueOf(dataSet.fhirVersion),
         )
       return mgoResources.map { mgoResource -> MgoResourceWithOrganization(mgoResource = mgoResource, organization = organization) }

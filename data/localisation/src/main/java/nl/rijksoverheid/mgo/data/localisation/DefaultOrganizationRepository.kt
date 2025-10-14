@@ -12,7 +12,7 @@ import nl.rijksoverheid.mgo.data.api.load.SearchRequestBody
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.toMgoOrganization
-import nl.rijksoverheid.mgo.framework.storage.MgoStorage
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -22,7 +22,7 @@ internal class DefaultOrganizationRepository
   @Inject
   constructor(
     private val loadApi: LoadApi,
-    @Named("encryptedFileStorage") private val mgoStorage: MgoStorage,
+    @Named("encryptedFileStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : OrganizationRepository {
     private val json = Json.Default
     private val fileName = "organizations.json"
@@ -61,7 +61,7 @@ internal class DefaultOrganizationRepository
     }
 
     override suspend fun get(): List<MgoOrganization> {
-      val organizationsJson = mgoStorage.get(fileName)?.toString(Charsets.UTF_8)
+      val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
       if (organizationsJson == null) {
         return listOf()
       } else {
@@ -72,7 +72,7 @@ internal class DefaultOrganizationRepository
 
     override suspend fun save(provider: MgoOrganization) {
       // Get stored health care providers
-      val organizationsJson = mgoStorage.get(fileName)?.toString(Charsets.UTF_8)
+      val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
       val organizations = if (organizationsJson == null) MgoOrganizations(listOf()) else json.decodeFromString<MgoOrganizations>(organizationsJson)
 
       // Add our provider we want to save
@@ -85,8 +85,8 @@ internal class DefaultOrganizationRepository
 
       // Save new file
       val newOrganizationsJson = json.encodeToString(newStoredOrganizations).toByteArray()
-      mgoStorage.delete(fileName)
-      mgoStorage.save(name = fileName, content = newOrganizationsJson)
+      mgoByteArrayStorage.delete(fileName)
+      mgoByteArrayStorage.save(name = fileName, content = newOrganizationsJson)
 
       // Update flow
       storedOrganizationsFlow.value = newStoredOrganizations.providers
@@ -94,7 +94,7 @@ internal class DefaultOrganizationRepository
 
     override suspend fun delete(providerId: String) {
       // Get stored health care providers
-      val organizationsJson = mgoStorage.get(fileName)?.toString(Charsets.UTF_8)
+      val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
       val organizations = if (organizationsJson == null) MgoOrganizations(listOf()) else json.decodeFromString<MgoOrganizations>(organizationsJson)
 
       // Delete the provider from the file
@@ -104,8 +104,8 @@ internal class DefaultOrganizationRepository
 
       // Save new file
       val newOrganizationsJson = json.encodeToString(newStoredOrganizations).toByteArray()
-      mgoStorage.delete(fileName)
-      mgoStorage.save(name = fileName, content = newOrganizationsJson)
+      mgoByteArrayStorage.delete(fileName)
+      mgoByteArrayStorage.save(name = fileName, content = newOrganizationsJson)
 
       // Update flow
       storedOrganizationsFlow.value = newStoredOrganizations.providers
@@ -116,6 +116,6 @@ internal class DefaultOrganizationRepository
       storedOrganizationsFlow.value = listOf()
 
       // Delete file
-      mgoStorage.delete(fileName)
+      mgoByteArrayStorage.delete(fileName)
     }
   }

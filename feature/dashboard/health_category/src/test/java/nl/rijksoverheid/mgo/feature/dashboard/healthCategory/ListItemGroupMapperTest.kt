@@ -11,7 +11,7 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.storage.MemoryMgoStorage
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,7 +29,7 @@ class ListItemGroupMapperTest {
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val organizationRepository = TestOrganizationRepository()
-  private val fileStorage = MemoryMgoStorage()
+  private val fileStorage = MemoryMgoByteArrayStorage()
   private val mapper =
     ListItemGroupMapper(
       context = context,
@@ -37,7 +37,7 @@ class ListItemGroupMapperTest {
       uiSchemaParser = uiSchemaParser,
       getDataSetsFromDisk = getDataSetsFromDisk,
       organizationRepository = organizationRepository,
-      mgoStorage = fileStorage,
+      mgoByteArrayStorage = fileStorage,
     )
 
   @Before

@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
-import nl.rijksoverheid.mgo.framework.storage.MemoryMgoStorage
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
@@ -28,8 +28,8 @@ class DefaultFhirRepositoryTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
   private val okHttpClient = OkHttpClient.Builder().build()
   private val testServer = testServerRule.testServer
-  private val fileStorage = MemoryMgoStorage()
-  private val repository = DefaultFhirRepository(okHttpClient = okHttpClient, mgoStorage = fileStorage, context = context)
+  private val fileStorage = MemoryMgoByteArrayStorage()
+  private val repository = DefaultFhirRepository(okHttpClient = okHttpClient, mgoByteArrayStorage = fileStorage, context = context)
 
   @Test
   fun testFetchSuccess() =

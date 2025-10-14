@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.framework.storage
+package nl.rijksoverheid.mgo.framework.storage.bytearray
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
@@ -9,12 +9,12 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class EncryptedMgoStorage
+class EncryptedMgoByteArrayStorage
   @Inject
   constructor(
     @ApplicationContext private val context: Context,
     @Named("masterKeyAlias") private val masterKeyAlias: String,
-  ) : MgoStorage {
+  ) : MgoByteArrayStorage {
     override suspend fun save(
       name: MgoStorageCacheKey,
       content: ByteArray,

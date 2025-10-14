@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,6 @@ import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
-import nl.rijksoverheid.mgo.framework.storage.file.CacheFileStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
@@ -61,7 +59,6 @@ internal class MainViewModel
     @Named("keyValueStore") val keyValueStore: KeyValueStore,
     val isDigidAuthenticated: IsDigidAuthenticated,
     val appLifecycleRepository: AppLifecycleRepository,
-    val cacheFileStore: CacheFileStore,
   ) : ViewModel() {
     private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
     val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -150,14 +147,4 @@ internal class MainViewModel
      * @return True if the automatic localisation needs to be shown instead of the manual one.
      */
     fun getAutomaticLocalisationEnabled(): Boolean = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
-
-    override fun onCleared() {
-      super.onCleared()
-      clear()
-    }
-
-    @VisibleForTesting
-    fun clear() {
-      cacheFileStore.deleteAll()
-    }
   }

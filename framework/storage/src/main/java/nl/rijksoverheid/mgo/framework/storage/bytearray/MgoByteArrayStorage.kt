@@ -1,8 +1,8 @@
-package nl.rijksoverheid.mgo.framework.storage
+package nl.rijksoverheid.mgo.framework.storage.bytearray
 
 typealias MgoStorageCacheKey = String
 
-interface MgoStorage {
+interface MgoByteArrayStorage {
   suspend fun save(
     name: MgoStorageCacheKey,
     content: ByteArray,

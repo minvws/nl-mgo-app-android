@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.data.fhir
 
-import nl.rijksoverheid.mgo.framework.storage.MgoStorageCacheKey
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoStorageCacheKey
 
 sealed class FhirResponse(
   open val organizationId: String,

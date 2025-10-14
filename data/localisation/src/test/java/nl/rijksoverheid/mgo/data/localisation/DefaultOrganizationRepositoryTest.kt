@@ -9,7 +9,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataService
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizationDataServiceType
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.storage.MemoryMgoStorage
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -25,7 +25,7 @@ internal class DefaultOrganizationRepositoryTest {
 
   private val json = Json.Default
   private val testServer = testServerRule.testServer
-  private val mgoStorage = MemoryMgoStorage()
+  private val mgoStorage = MemoryMgoByteArrayStorage()
 
   @Test
   fun `Given loadApi request is successful, When calling search, Then emit health providers`() =
@@ -282,6 +282,6 @@ internal class DefaultOrganizationRepositoryTest {
   private fun getRepository(): DefaultOrganizationRepository {
     val okHttpClient = TEST_OKHTTP_CLIENT
     val loadApi = createLoadApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-    return DefaultOrganizationRepository(loadApi = loadApi, mgoStorage = mgoStorage)
+    return DefaultOrganizationRepository(loadApi = loadApi, mgoByteArrayStorage = mgoStorage)
   }
 }

@@ -12,7 +12,7 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
-import nl.rijksoverheid.mgo.framework.storage.MgoStorage
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import timber.log.Timber
@@ -29,7 +29,7 @@ class DefaultFhirRepository
   constructor(
     @ApplicationContext private val context: Context,
     private val okHttpClient: OkHttpClient,
-    @Named("encryptedFileStorage") private val mgoStorage: MgoStorage,
+    @Named("encryptedFileStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : FhirRepository {
     private val json = Json.Default
     private val cachedFhirResponses = MutableStateFlow<List<FhirResponse>>(listOf())
@@ -57,7 +57,7 @@ class DefaultFhirRepository
       forceRefresh: Boolean,
     ) {
       val cacheKey = "$organizationId/$dataServiceId/$endpointId.json"
-      val cachedResponseBytes = mgoStorage.get(name = cacheKey)
+      val cachedResponseBytes = mgoByteArrayStorage.get(name = cacheKey)
       if (cachedResponseBytes != null && !forceRefresh) {
         // Update the cached response with success state
         val fhirResponse =
@@ -89,8 +89,8 @@ class DefaultFhirRepository
           val responseBytes = response.body?.bytes() ?: "{}".toByteArray()
 
           // Store the response
-          mgoStorage.delete(cacheKey)
-          mgoStorage.save(name = cacheKey, content = responseBytes)
+          mgoByteArrayStorage.delete(cacheKey)
+          mgoByteArrayStorage.save(name = cacheKey, content = responseBytes)
 
           // Update the cached response with success state
           val fhirResponse =
@@ -128,7 +128,7 @@ class DefaultFhirRepository
     }
 
     override suspend fun delete(organizationId: String) {
-      mgoStorage.delete(organizationId)
+      mgoByteArrayStorage.delete(organizationId)
     }
 
     private fun isBundleEmpty(bundleJson: String): Boolean {

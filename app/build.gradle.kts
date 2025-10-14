@@ -192,6 +192,7 @@ dependencies {
   implementation(projects.data.pincode)
   implementation(projects.data.digid)
   implementation(libs.androidx.lifecycle.process)
+  implementation(projects.component.pdfViewer)
 
   // ================================
   // TESTING

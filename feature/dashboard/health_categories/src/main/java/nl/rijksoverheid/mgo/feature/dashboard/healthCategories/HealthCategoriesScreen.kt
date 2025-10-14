@@ -256,32 +256,34 @@ private fun LazyListScope.WithProviders(
   }
 
   for (group in groups) {
-    item {
-      Text(
-        modifier = Modifier.padding(bottom = 12.dp),
-        text = LocalContext.current.getString(group.heading),
-        style = MaterialTheme.typography.headlineMedium,
-      )
-    }
+    if (group.categories.isNotEmpty()) {
+      item {
+        Text(
+          modifier = Modifier.padding(bottom = 12.dp),
+          text = LocalContext.current.getString(group.heading),
+          style = MaterialTheme.typography.headlineMedium,
+        )
+      }
 
-    items(group.categories.size) { position ->
-      val category = group.categories[position]
-      HealthCategoriesListItemCard(
-        position =
-          when {
-            group.categories.size == 1 -> HealthCategoriesListItemCardPosition.SINGLE_ITEM
-            position == 0 -> HealthCategoriesListItemCardPosition.TOP
-            position == group.categories.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
-            else -> HealthCategoriesListItemCardPosition.CENTER
-          },
-        category = category,
-        onClickListItem = onClickListItem,
-        filterOrganization = organization,
-      )
-    }
+      items(group.categories.size) { position ->
+        val category = group.categories[position]
+        HealthCategoriesListItemCard(
+          position =
+            when {
+              group.categories.size == 1 -> HealthCategoriesListItemCardPosition.SINGLE_ITEM
+              position == 0 -> HealthCategoriesListItemCardPosition.TOP
+              position == group.categories.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
+              else -> HealthCategoriesListItemCardPosition.CENTER
+            },
+          category = category,
+          onClickListItem = onClickListItem,
+          filterOrganization = organization,
+        )
+      }
 
-    item {
-      Spacer(modifier = Modifier.height(32.dp))
+      item {
+        Spacer(modifier = Modifier.height(32.dp))
+      }
     }
   }
 

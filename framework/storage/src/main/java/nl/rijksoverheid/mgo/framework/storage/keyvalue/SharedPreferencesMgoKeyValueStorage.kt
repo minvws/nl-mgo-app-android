@@ -2,6 +2,9 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class SharedPreferencesMgoKeyValueStorage
@@ -35,6 +38,25 @@ class SharedPreferencesMgoKeyValueStorage
         else -> throw IllegalArgumentException("Unsupported type: ${value::class}")
       }
     }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any> observe(key: KeyValueStorageKey): Flow<T> =
+      callbackFlow {
+        get<T>(key)?.let { trySend(it) }
+        val listener =
+          SharedPreferences.OnSharedPreferenceChangeListener { prefs, changedKey ->
+            if (changedKey == key) {
+              val newValue = prefs.all[changedKey]
+              if (newValue != null) {
+                trySend(newValue as T)
+              }
+            }
+          }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+        awaitClose {
+          sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+        }
+      }
 
     override fun delete(key: String) {
       sharedPreferences.edit { remove(key) }

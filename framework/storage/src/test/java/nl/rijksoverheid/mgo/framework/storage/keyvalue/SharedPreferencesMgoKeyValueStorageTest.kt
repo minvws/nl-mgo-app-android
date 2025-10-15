@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -22,22 +23,29 @@ class SharedPreferencesMgoKeyValueStorageTest {
   }
 
   @Test
-  fun testDelete() =
+  fun testObserve() =
     runTest {
       keyValueStorage.save(key = "key", value = true)
-      keyValueStorage.delete("key")
-      assertNull(keyValueStorage.get("key"))
+      keyValueStorage.observe<Boolean>("key").test {
+        assertEquals(awaitItem(), true)
+      }
     }
 
   @Test
-  fun testDeleteAll() =
-    runTest {
-      keyValueStorage.save(key = "key", value = true)
-      keyValueStorage.save(key = "key2", value = true)
-      keyValueStorage.save(key = "key3", value = true)
-      keyValueStorage.deleteAll()
-      assertNull(keyValueStorage.get("key"))
-      assertNull(keyValueStorage.get("key2"))
-      assertNull(keyValueStorage.get("key3"))
-    }
+  fun testDelete() {
+    keyValueStorage.save(key = "key", value = true)
+    keyValueStorage.delete("key")
+    assertNull(keyValueStorage.get("key"))
+  }
+
+  @Test
+  fun testDeleteAll() {
+    keyValueStorage.save(key = "key", value = true)
+    keyValueStorage.save(key = "key2", value = true)
+    keyValueStorage.save(key = "key3", value = true)
+    keyValueStorage.deleteAll()
+    assertNull(keyValueStorage.get("key"))
+    assertNull(keyValueStorage.get("key2"))
+    assertNull(keyValueStorage.get("key3"))
+  }
 }

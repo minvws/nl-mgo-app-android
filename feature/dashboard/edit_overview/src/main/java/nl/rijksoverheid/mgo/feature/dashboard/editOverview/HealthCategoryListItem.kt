@@ -45,7 +45,7 @@ internal fun HealthCategoryListItem(
   hasDivider: Boolean = true,
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
-    Row(modifier = Modifier.padding(start = 2.dp, top = 4.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
       IconButton(onClick) {
         val icon =
           when (state) {
@@ -62,7 +62,6 @@ internal fun HealthCategoryListItem(
       Box(
         modifier =
           Modifier
-            .padding(start = 4.dp)
             .size(32.dp)
             .background(color = category.getIconColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center,
@@ -74,7 +73,7 @@ internal fun HealthCategoryListItem(
         )
       }
       Text(
-        modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
+        modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
         text = LocalContext.current.getString(category.heading),
         style = MaterialTheme.typography.bodyMedium,
       )

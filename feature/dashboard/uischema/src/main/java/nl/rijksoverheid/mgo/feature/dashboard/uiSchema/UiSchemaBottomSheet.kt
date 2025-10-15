@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
 import nl.rijksoverheid.mgo.component.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -47,6 +48,7 @@ fun UiSchemaBottomSheet(
     sheetState = sheetState,
     dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
+    SetCorrectStatusBarIconColor()
     NavHost(
       navController = navController,
       startDestination = Root,

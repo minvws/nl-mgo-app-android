@@ -41,7 +41,7 @@ internal fun HealthCategoryListItem(
   state: HealthCategoryListItemState,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
-  dragHandleModifier: Modifier = Modifier,
+  dragHandleModifier: Modifier? = null,
   hasDivider: Boolean = true,
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
@@ -78,11 +78,13 @@ internal fun HealthCategoryListItem(
         text = LocalContext.current.getString(category.heading),
         style = MaterialTheme.typography.bodyMedium,
       )
-      IconButton(
-        modifier = dragHandleModifier,
-        onClick = {},
-      ) {
-        Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
+      if (dragHandleModifier != null) {
+        IconButton(
+          modifier = dragHandleModifier,
+          onClick = {},
+        ) {
+          Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
+        }
       }
     }
     if (hasDivider) {

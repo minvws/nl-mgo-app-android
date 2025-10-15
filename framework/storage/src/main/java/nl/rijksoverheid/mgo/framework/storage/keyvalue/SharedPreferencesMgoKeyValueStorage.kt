@@ -32,11 +32,7 @@ class SharedPreferencesMgoKeyValueStorage
     override fun <T : Any> get(key: String): T? {
       val allPrefs = sharedPreferences.all
       val value = allPrefs[key] ?: return null
-
-      return when (value) {
-        is String, is Int, is Boolean, is Float, is Long -> value as T
-        else -> throw IllegalArgumentException("Unsupported type: ${value::class}")
-      }
+      return value as T
     }
 
     @Suppress("UNCHECKED_CAST")

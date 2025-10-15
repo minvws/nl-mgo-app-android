@@ -6,6 +6,7 @@ import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -15,6 +16,11 @@ class SharedPreferencesMgoKeyValueStorageTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
   private val sharedPreferences = context.getSharedPreferences("test_shared_preferences", Context.MODE_PRIVATE)
   private val keyValueStorage = SharedPreferencesMgoKeyValueStorage(sharedPreferences)
+
+  @Before
+  fun setup() {
+    keyValueStorage.deleteAll()
+  }
 
   @Test
   fun testSave() {
@@ -47,8 +53,8 @@ class SharedPreferencesMgoKeyValueStorageTest {
   @Test
   fun testObserve() =
     runTest {
-      keyValueStorage.save(key = "key", value = true)
       keyValueStorage.observe<Boolean>("key").test {
+        keyValueStorage.save(key = "key", value = true)
         assertEquals(awaitItem(), true)
       }
     }

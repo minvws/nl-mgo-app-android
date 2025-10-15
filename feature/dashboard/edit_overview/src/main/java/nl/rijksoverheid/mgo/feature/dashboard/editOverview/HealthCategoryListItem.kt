@@ -91,7 +91,7 @@ internal fun HealthCategoryListItem(
         modifier =
           Modifier
             .fillMaxWidth()
-            .padding(start = 96.dp),
+            .padding(start = 88.dp),
       )
     }
   }

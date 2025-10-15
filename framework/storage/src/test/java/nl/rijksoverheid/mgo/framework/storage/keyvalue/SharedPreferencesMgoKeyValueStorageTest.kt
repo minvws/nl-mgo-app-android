@@ -18,8 +18,30 @@ class SharedPreferencesMgoKeyValueStorageTest {
 
   @Test
   fun testSave() {
+    // Boolean
     keyValueStorage.save(key = "key", value = true)
     assertEquals(true, keyValueStorage.get("key"))
+
+    // String
+    keyValueStorage.save(key = "key", value = "Hello World")
+    assertEquals("Hello World", keyValueStorage.get("key"))
+
+    // Int
+    keyValueStorage.save(key = "key", value = 1)
+    assertEquals(1, keyValueStorage.get("key"))
+
+    // Long
+    keyValueStorage.save(key = "key", value = 1L)
+    assertEquals(1L, keyValueStorage.get("key"))
+
+    // Float
+    keyValueStorage.save(key = "key", value = 1f)
+    assertEquals(1f, keyValueStorage.get("key"))
+  }
+
+  @Test(expected = IllegalArgumentException::class)
+  fun testSaveError() {
+    keyValueStorage.save(key = "key", value = listOf<String>())
   }
 
   @Test

@@ -6,14 +6,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import nl.nl.rijksoverheid.mgo.framework.network.executeRequest
 import nl.rijksoverheid.mgo.data.api.load.DataServiceId
-import nl.rijksoverheid.mgo.data.api.load.LoadApi
-import nl.rijksoverheid.mgo.data.api.load.SearchRequestBody
+import nl.rijksoverheid.mgo.data.api.load.SearchResponse
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.toMgoOrganization
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -22,10 +27,11 @@ import javax.inject.Singleton
 class OrganizationRepository
   @Inject
   constructor(
-    private val loadApi: LoadApi,
+    private val okHttpClient: OkHttpClient,
+    @Named("loadApiBaseUrl") private val baseUrl: String,
     @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) {
-    private val json = Json.Default
+    private val json = Json { ignoreUnknownKeys = true }
     private val fileName = "organizations.json"
 
     val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(runBlocking { get() })
@@ -35,12 +41,29 @@ class OrganizationRepository
       city: String,
       supportedDataServiceIds: List<DataServiceId>,
     ): Flow<List<MgoOrganization>> {
-      val requestBody =
-        SearchRequestBody(name = name.trim(), city = city.trim())
       val searchResponseFlow =
         flow {
-          val result = executeNetworkRequest { loadApi.search(requestBody) }
-          emit(result.getOrThrow())
+          val requestBodyJson =
+            buildJsonObject {
+              put("name", name.trim())
+              put("city", city.trim())
+            }
+          val requestBodyString = json.encodeToString(requestBodyJson)
+          val request =
+            Request
+              .Builder()
+              .url("$baseUrl/localization/organization/search")
+              .post(requestBodyString.toRequestBody("application/json".toMediaType()))
+              .build()
+          okHttpClient
+            .executeRequest(request)
+            .onSuccess { response ->
+              val responseJson = response.body?.string() ?: throw RuntimeException("Empty response body")
+              val searchResponse = json.decodeFromString<SearchResponse>(responseJson)
+              emit(searchResponse)
+            }.onFailure { error ->
+              throw error
+            }
         }
       return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
         searchResponse.organizations.map { organization ->
@@ -58,8 +81,21 @@ class OrganizationRepository
     fun searchDemo(supportedDataServiceIds: List<DataServiceId>): Flow<List<MgoOrganization>> {
       val searchResponseFlow =
         flow {
-          val result = executeNetworkRequest { loadApi.searchDemo() }
-          emit(result.getOrThrow())
+          val request =
+            Request
+              .Builder()
+              .url("$baseUrl/localization/organization/search-demo")
+              .post("".toRequestBody("application/json".toMediaType()))
+              .build()
+          okHttpClient
+            .executeRequest(request)
+            .onSuccess { response ->
+              val responseJson = response.body?.string() ?: throw RuntimeException("Empty response body")
+              val searchResponse = json.decodeFromString<SearchResponse>(responseJson)
+              emit(searchResponse)
+            }.onFailure { error ->
+              throw error
+            }
         }
       return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
         searchResponse.organizations.map { organization ->

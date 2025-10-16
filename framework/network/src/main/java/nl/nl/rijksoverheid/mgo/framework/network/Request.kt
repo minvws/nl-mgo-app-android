@@ -1,6 +1,8 @@
 package nl.nl.rijksoverheid.mgo.framework.network
 
-import retrofit2.HttpException
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import java.io.IOException
 
 /**
@@ -12,8 +14,8 @@ import java.io.IOException
  * @param block A lambda function representing the network request to execute.
  * @return A [Result] containing either the successful result or an error.
  */
-inline fun <T : Any> executeNetworkRequest(block: () -> T): Result<T> {
-  return try {
+inline fun <T : Any> executeNetworkRequest(block: () -> T): Result<T> =
+  try {
     // Execute the network request and wrap the successful result.
     Result.success(block())
   } catch (networkError: IOException) {
@@ -23,4 +25,16 @@ inline fun <T : Any> executeNetworkRequest(block: () -> T): Result<T> {
     // Handle HTTP errors (e.g., 4xx and 5xx responses).
     Result.failure(httpError)
   }
-}
+
+fun OkHttpClient.executeRequest(request: Request): Result<Response> =
+  try {
+    val response = newCall(request).execute()
+    if (response.isSuccessful) {
+      Result.success(response)
+    } else {
+      val httpException = HttpException(code = response.code)
+      Result.failure(httpException)
+    }
+  } catch (e: IOException) {
+    Result.failure(e)
+  }

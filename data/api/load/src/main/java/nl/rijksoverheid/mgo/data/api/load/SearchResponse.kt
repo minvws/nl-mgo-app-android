@@ -5,9 +5,6 @@ import kotlinx.serialization.Serializable
 
 typealias DataServiceId = String
 
-/**
- * Json returned from [LoadApi] when getting health care providers.
- */
 @Serializable
 class SearchResponse(
   val organizations: List<Organization>,

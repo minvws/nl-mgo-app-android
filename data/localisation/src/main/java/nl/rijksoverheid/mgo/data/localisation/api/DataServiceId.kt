@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.api.load
+package nl.rijksoverheid.mgo.data.localisation.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

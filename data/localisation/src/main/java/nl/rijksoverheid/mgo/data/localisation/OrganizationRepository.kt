@@ -9,8 +9,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import nl.nl.rijksoverheid.mgo.framework.network.executeRequest
-import nl.rijksoverheid.mgo.data.api.load.DataServiceId
-import nl.rijksoverheid.mgo.data.api.load.SearchResponse
+import nl.rijksoverheid.mgo.data.localisation.api.DataServiceId
+import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.models.toMgoOrganization

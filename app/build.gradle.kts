@@ -217,5 +217,4 @@ dependencies {
   implementation(projects.data.fhir)
   implementation(projects.data.healthCategories)
   implementation(projects.framework.fhir)
-  implementation(projects.data.api.dva)
 }

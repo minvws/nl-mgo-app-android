@@ -3,7 +3,7 @@ package nl.rijksoverheid.mgo.data.localisation.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.data.api.load.SearchResponse
+import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
 
 typealias MgoOrganizationId = String
 

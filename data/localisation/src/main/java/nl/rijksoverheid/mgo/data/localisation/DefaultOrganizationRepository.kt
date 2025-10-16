@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import nl.nl.rijksoverheid.mgo.framework.network.executeNetworkRequest
+import nl.rijksoverheid.mgo.data.api.load.DataServiceId
 import nl.rijksoverheid.mgo.data.api.load.LoadApi
 import nl.rijksoverheid.mgo.data.api.load.SearchRequestBody
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -32,6 +33,7 @@ internal class DefaultOrganizationRepository
     override fun search(
       name: String,
       city: String,
+      supportedDataServiceIds: List<DataServiceId>,
     ): Flow<List<MgoOrganization>> {
       val requestBody =
         SearchRequestBody(name = name.trim(), city = city.trim())
@@ -42,12 +44,18 @@ internal class DefaultOrganizationRepository
         }
       return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
         searchResponse.organizations.map { organization ->
-          organization.toMgoOrganization(added = storedOrganizations.any { provider -> provider.id == organization.id })
+          organization.toMgoOrganization(
+            added =
+              storedOrganizations.any { provider ->
+                provider.id == organization.id
+              },
+            supportedDataServiceIds = supportedDataServiceIds,
+          )
         }
       }
     }
 
-    override suspend fun searchDemo(): Flow<List<MgoOrganization>> {
+    override suspend fun searchDemo(supportedDataServiceIds: List<DataServiceId>): Flow<List<MgoOrganization>> {
       val searchResponseFlow =
         flow {
           val result = executeNetworkRequest { loadApi.searchDemo() }
@@ -55,7 +63,13 @@ internal class DefaultOrganizationRepository
         }
       return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
         searchResponse.organizations.map { organization ->
-          organization.toMgoOrganization(added = storedOrganizations.any { provider -> provider.id == organization.id })
+          organization.toMgoOrganization(
+            added =
+              storedOrganizations.any { provider ->
+                provider.id == organization.id
+              },
+            supportedDataServiceIds = supportedDataServiceIds,
+          )
         }
       }
     }

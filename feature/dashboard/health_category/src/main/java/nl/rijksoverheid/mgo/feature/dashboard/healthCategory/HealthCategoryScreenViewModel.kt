@@ -27,7 +27,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import javax.inject.Named
 
 /**
@@ -162,8 +161,8 @@ internal class HealthCategoryScreenViewModel
                   dataServiceId = dataService.id,
                   endpointId = endpoint.id,
                   resourceEndpoint = dataService.resourceEndpoint,
-                  fhirVersion = FhirVersion.valueOf(endpointWithDataSet.dataSet.fhirVersion),
-                  url = "$dvaApiBaseUrl/fhir${endpoint.url}",
+                  fhirVersion = endpointWithDataSet.dataSet.fhirVersion,
+                  url = "$dvaApiBaseUrl/fhir${endpoint.path}",
                   forceRefresh = true,
                 )
               }

@@ -7,8 +7,10 @@ android {
 }
 
 dependencies {
-  implementation(project(":data:localisation"))
-  implementation(project(":framework:environment"))
+  implementation(projects.data.localisation)
+  implementation(projects.framework.environment)
+  implementation(projects.data.healthCategories)
   testImplementation(testFixtures((projects.data.localisation)))
   testImplementation(testFixtures((projects.framework.environment)))
+  testImplementation(testFixtures(projects.data.healthCategories))
 }

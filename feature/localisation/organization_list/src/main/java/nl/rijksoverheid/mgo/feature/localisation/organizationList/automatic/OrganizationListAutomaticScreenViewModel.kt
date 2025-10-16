@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,9 +13,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * The [ViewModel] for [OrganizationListAutomaticSearchScreen].
@@ -25,7 +28,9 @@ import javax.inject.Inject
 internal class OrganizationListAutomaticScreenViewModel
   @Inject
   constructor(
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
+    private val getDataSetsFromDisk: GetDataSetsFromDisk,
   ) : ViewModel() {
     private val _navigation = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val navigation = _navigation.asSharedFlow()
@@ -42,14 +47,14 @@ internal class OrganizationListAutomaticScreenViewModel
      * Get health care providers and reflect the result in the UI.
      */
     fun getSearchResults() {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
         _viewState.value = _viewState.value.copy(loading = true, results = listOf(), error = null)
+        val supportedDataServiceIds = getDataSetsFromDisk().map { it.id }
         organizationRepository
-          .searchDemo()
+          .searchDemo(supportedDataServiceIds)
           .catch { error ->
             _viewState.value = _viewState.value.copy(loading = false, error = error)
-          }
-          .collectLatest { results ->
+          }.collectLatest { results ->
             _viewState.value = _viewState.value.copy(loading = false, results = results, error = null)
           }
       }
@@ -83,7 +88,7 @@ internal class OrganizationListAutomaticScreenViewModel
      * Call to save or delete organizations based on if the checkbox was checked.
      */
     fun updateOrganizations() {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
         val checkedOrganizations = _viewState.value.results.filter { organization -> organization.added }
         val unCheckedOrganizations = _viewState.value.results.filter { organization -> !organization.added }
 

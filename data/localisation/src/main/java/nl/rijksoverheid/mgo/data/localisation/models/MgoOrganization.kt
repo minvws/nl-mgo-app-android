@@ -3,24 +3,10 @@ package nl.rijksoverheid.mgo.data.localisation.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_BGZ
-import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_DOCUMENTS
-import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_GP
-import nl.rijksoverheid.mgo.data.api.load.DATA_SERVICE_VACCINATION
 import nl.rijksoverheid.mgo.data.api.load.SearchResponse
 
 typealias MgoOrganizationId = String
 
-/**
- * Represents a health care provider.
- *
- * @param id The id of the health care provider.
- * @param name The name of the health care provider.
- * @param address The address of the health care provider.
- * @param category The category of the health care provider.
- * @param added If this health care provider has been added.
- * @param dataServices A list of [MgoOrganizationDataService] associated to the health care provider.
- */
 @Parcelize
 @Serializable
 data class MgoOrganization(
@@ -32,20 +18,7 @@ data class MgoOrganization(
   val dataServices: List<MgoOrganizationDataService>,
 ) : Parcelable
 
-fun MgoOrganization.getDocumentsResourceEndpoint(): String? =
-  dataServices.firstOrNull { service -> service.type == MgoOrganizationDataServiceType.DOCUMENTS }?.resourceEndpoint
-
-val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(id = "48", resourceEndpoint = "", type = MgoOrganizationDataServiceType.BGZ)
-val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(id = "49", resourceEndpoint = "", type = MgoOrganizationDataServiceType.GP)
-val TEST_DOCUMENTS_DATA_SERVICE = MgoOrganizationDataService(id = "1", resourceEndpoint = "", type = MgoOrganizationDataServiceType.DOCUMENTS)
-val TEST_VACCINATION_DATA_SERVICE = MgoOrganizationDataService(id = "1", resourceEndpoint = "", type = MgoOrganizationDataServiceType.VACCINATION)
-
-val TEST_NOT_IMPLEMENTED_DATA_SERVICE =
-  MgoOrganizationDataService(
-    id = "1",
-    resourceEndpoint = "",
-    type = MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
-  )
+fun MgoOrganization.getDocumentsResourceEndpoint(): String? = dataServices.firstOrNull { service -> service.id == "61" }?.resourceEndpoint
 
 val TEST_MGO_ORGANIZATION =
   MgoOrganization(
@@ -57,7 +30,10 @@ val TEST_MGO_ORGANIZATION =
     dataServices = listOf(TEST_BGZ_DATA_SERVICE),
   )
 
-internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoOrganization =
+internal fun SearchResponse.Organization.toMgoOrganization(
+  added: Boolean,
+  supportedDataServiceIds: List<String>,
+): MgoOrganization =
   MgoOrganization(
     id = id,
     name = displayName ?: "",
@@ -66,41 +42,10 @@ internal fun SearchResponse.Organization.toMgoOrganization(added: Boolean): MgoO
     added = added,
     dataServices =
       dataServices.map { dataService ->
-        when (dataService.id) {
-          DATA_SERVICE_BGZ ->
-            MgoOrganizationDataService(
-              id = dataService.id,
-              resourceEndpoint = dataService.roles.first().resourceEndpoint,
-              MgoOrganizationDataServiceType.BGZ,
-            )
-
-          DATA_SERVICE_GP ->
-            MgoOrganizationDataService(
-              id = dataService.id,
-              resourceEndpoint = dataService.roles.first().resourceEndpoint,
-              MgoOrganizationDataServiceType.GP,
-            )
-
-          DATA_SERVICE_DOCUMENTS ->
-            MgoOrganizationDataService(
-              id = dataService.id,
-              resourceEndpoint = dataService.roles.first().resourceEndpoint,
-              MgoOrganizationDataServiceType.DOCUMENTS,
-            )
-
-          DATA_SERVICE_VACCINATION ->
-            MgoOrganizationDataService(
-              id = dataService.id,
-              resourceEndpoint = dataService.roles.first().resourceEndpoint,
-              MgoOrganizationDataServiceType.VACCINATION,
-            )
-
-          else ->
-            MgoOrganizationDataService(
-              id = dataService.id,
-              resourceEndpoint = dataService.roles.first().resourceEndpoint,
-              MgoOrganizationDataServiceType.NOT_IMPLEMENTED,
-            )
-        }
+        MgoOrganizationDataService(
+          id = dataService.id,
+          resourceEndpoint = dataService.roles.first().resourceEndpoint,
+          isSupported = supportedDataServiceIds.contains(dataService.id),
+        )
       },
   )

@@ -12,5 +12,6 @@ android {
 
 dependencies {
   implementation(libs.datastore.preference)
+  implementation(projects.framework.fhir)
   testFixturesImplementation(libs.kotlinx.serialization.json)
 }

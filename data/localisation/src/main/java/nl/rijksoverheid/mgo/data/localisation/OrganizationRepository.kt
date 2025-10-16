@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.localisation
 
 import kotlinx.coroutines.flow.Flow
+import nl.rijksoverheid.mgo.data.api.load.DataServiceId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 /**
@@ -19,6 +20,7 @@ interface OrganizationRepository {
   fun search(
     name: String,
     city: String,
+    supportedDataServiceIds: List<DataServiceId>,
   ): Flow<List<MgoOrganization>>
 
   /**
@@ -27,7 +29,7 @@ interface OrganizationRepository {
    *
    * @return [Flow] containing a list of [MgoOrganization] representing a health care provider.
    */
-  suspend fun searchDemo(): Flow<List<MgoOrganization>>
+  suspend fun searchDemo(supportedDataServiceIds: List<DataServiceId>): Flow<List<MgoOrganization>>
 
   /**
    * @return All the [MgoOrganization] that are stored.

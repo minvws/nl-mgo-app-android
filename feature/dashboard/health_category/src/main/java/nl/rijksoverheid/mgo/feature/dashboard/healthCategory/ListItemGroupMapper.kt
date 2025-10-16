@@ -11,7 +11,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Inject
 import javax.inject.Named
@@ -59,7 +58,7 @@ internal class ListItemGroupMapper
       val mgoResources =
         mgoResourceParser.invoke(
           fhirResponse = mgoByteArrayStorage.get(this.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
-          fhirVersion = FhirVersion.valueOf(dataSet.fhirVersion),
+          fhirVersion = dataSet.fhirVersion,
         )
       return mgoResources.map { mgoResource -> MgoResourceWithOrganization(mgoResource = mgoResource, organization = organization) }
     }

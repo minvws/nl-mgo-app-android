@@ -27,8 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nl.rijksoverheid.mgo.component.healthCategories.getIcon
-import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
+import nl.rijksoverheid.mgo.component.healthCategories.getColor
+import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
@@ -84,10 +84,10 @@ internal fun HealthCategoriesListItemContent(
   Column(modifier = modifier.fillMaxWidth().testTag(HealthCategoriesListItemTestTag.LIST_ITEM)) {
     Row(modifier = Modifier.padding(16.dp)) {
       Box(
-        modifier = Modifier.size(32.dp).background(color = category.getIconColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
+        modifier = Modifier.size(32.dp).background(color = category.icon.getColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center,
       ) {
-        Icon(painter = painterResource(id = category.getIcon()), contentDescription = null, tint = category.getIconColor())
+        Icon(painter = painterResource(id = category.icon.getDrawable()), contentDescription = null, tint = category.icon.getColor())
       }
       Column(modifier = Modifier.weight(1f).padding(horizontal = 16.dp)) {
         Text(

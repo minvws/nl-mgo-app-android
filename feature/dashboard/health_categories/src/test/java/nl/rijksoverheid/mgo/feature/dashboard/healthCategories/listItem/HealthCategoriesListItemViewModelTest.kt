@@ -11,7 +11,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PR
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test

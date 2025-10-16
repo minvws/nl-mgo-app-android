@@ -11,11 +11,6 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import javax.inject.Inject
 
-/**
- * This class needs to be called before the app shows any UI since it does a bunch of initialization steps that need to be ready before the app is shown
- * to the user. This is now done in the [nl.rijksoverheid.mgo.MainApplication] class, but preferably should be done in [nl.rijksoverheid.mgo.MainActivity]
- * so it does not block the main thread.
- */
 class AppInitializer
   @Inject
   constructor(

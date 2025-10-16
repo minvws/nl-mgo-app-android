@@ -29,20 +29,6 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
 import javax.inject.Named
 
-/**
- * The [ViewModel] for [HealthCategoryScreen].
- *
- * @param category The [HealthCareCategoryId] to determine which health care data falls into this category.
- * @param filterOrganization If not null, will observe health care data for this organization. If null will observe for all added
- * organizations.
- * @param context Application context.
- * @param organizationRepository The [OrganizationRepository] to fetch the added organizations.
- * @param healthCareDataStatesRepository The [HealthCareDataStatesRepository] that is responsible for fetching the health care data.
- * @param mgoResourceRepository The [MgoResourceRepository] that is used to filter out resources so that only the resources are shown
- * that we want to show.
- * @param uiSchemaMapper The [UiSchemaMapper] to get models for displaying the health care data.
- * @param createPdf The [CreatePdfForHealthCategories] to generate a presentable pdf.
- */
 @HiltViewModel(assistedFactory = HealthCategoryScreenViewModel.Factory::class)
 internal class HealthCategoryScreenViewModel
   @AssistedInject

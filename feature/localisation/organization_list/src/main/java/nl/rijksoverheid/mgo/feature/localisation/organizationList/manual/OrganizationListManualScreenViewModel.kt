@@ -51,9 +51,6 @@ internal class OrganizationListManualScreenViewModel
       getSearchResults()
     }
 
-    /**
-     * Search for health care providers based on provided [name] and [city]. Reflects the result in the UI.
-     */
     fun getSearchResults() {
       viewModelScope.launch(ioDispatcher) {
         _viewState.update { viewState -> viewState.copy(loading = true, results = listOf(), error = null) }
@@ -68,11 +65,6 @@ internal class OrganizationListManualScreenViewModel
       }
     }
 
-    /**
-     * Save this organization in the app. Updates [navigation] when completed.
-     *
-     * @param provider The [MgoOrganization] to save.
-     */
     fun addOrganization(provider: MgoOrganization) {
       viewModelScope.launch(ioDispatcher) {
         organizationRepository.save(provider)

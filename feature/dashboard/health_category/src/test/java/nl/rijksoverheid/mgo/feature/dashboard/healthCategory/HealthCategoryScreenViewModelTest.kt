@@ -25,7 +25,6 @@ import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorag
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
-import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

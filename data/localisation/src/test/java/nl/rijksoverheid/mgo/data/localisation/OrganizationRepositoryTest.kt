@@ -19,7 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
 
-internal class DefaultOrganizationRepositoryTest {
+internal class OrganizationRepositoryTest {
   @get:Rule
   val testServerRule = TestServerRule()
 
@@ -279,9 +279,9 @@ internal class DefaultOrganizationRepositoryTest {
       assertEquals(listOf<MgoOrganization>(), repository.get())
     }
 
-  private fun getRepository(): DefaultOrganizationRepository {
+  private fun getRepository(): OrganizationRepository {
     val okHttpClient = TEST_OKHTTP_CLIENT
     val loadApi = createLoadApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-    return DefaultOrganizationRepository(loadApi = loadApi, mgoByteArrayStorage = mgoStorage)
+    return OrganizationRepository(loadApi = loadApi, mgoByteArrayStorage = mgoStorage)
   }
 }

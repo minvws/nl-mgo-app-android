@@ -41,11 +41,11 @@ internal fun HealthCategoryListItem(
   state: HealthCategoryListItemState,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
-  dragHandleModifier: Modifier = Modifier,
+  dragHandleModifier: Modifier? = null,
   hasDivider: Boolean = true,
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
-    Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
       IconButton(onClick) {
         val icon =
           when (state) {
@@ -62,7 +62,6 @@ internal fun HealthCategoryListItem(
       Box(
         modifier =
           Modifier
-            .padding(start = 8.dp)
             .size(32.dp)
             .background(color = category.getIconColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center,
@@ -74,15 +73,17 @@ internal fun HealthCategoryListItem(
         )
       }
       Text(
-        modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
+        modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
         text = LocalContext.current.getString(category.heading),
         style = MaterialTheme.typography.bodyMedium,
       )
-      IconButton(
-        modifier = dragHandleModifier,
-        onClick = {},
-      ) {
-        Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
+      if (dragHandleModifier != null) {
+        IconButton(
+          modifier = dragHandleModifier,
+          onClick = {},
+        ) {
+          Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
+        }
       }
     }
     if (hasDivider) {
@@ -90,7 +91,7 @@ internal fun HealthCategoryListItem(
         modifier =
           Modifier
             .fillMaxWidth()
-            .padding(start = 96.dp),
+            .padding(start = 88.dp),
       )
     }
   }

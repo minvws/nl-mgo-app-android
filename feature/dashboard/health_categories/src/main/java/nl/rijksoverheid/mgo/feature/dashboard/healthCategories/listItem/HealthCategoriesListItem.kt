@@ -117,8 +117,8 @@ internal fun HealthCategoriesListItemContent(
         CircularProgressIndicator(
           modifier =
             Modifier
-              .size(24.dp)
-              .padding(start = 8.dp),
+              .padding(start = 8.dp)
+              .size(24.dp),
           strokeWidth = 2.dp,
           trackColor = MaterialTheme.colorScheme.backgroundTertiary().copy(alpha = 0.5f),
           color = MaterialTheme.colorScheme.symbolsSecondary(),

@@ -4,6 +4,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 
 /**
+ * The key used in shared preferences to store the selected app theme.
+ */
+const val KEY_APP_THEME = "KEY_APP_THEME"
+
+/**
  * Represents the theme the app is currently in.
  */
 enum class AppTheme {
@@ -27,13 +32,12 @@ enum class AppTheme {
  * Checks if the app has a dark theme set. Always use this instead of [isSystemInDarkTheme].
  */
 @Composable
-fun AppTheme.isDarkTheme(): Boolean {
-  return when (this) {
+fun AppTheme.isDarkTheme(): Boolean =
+  when (this) {
     AppTheme.SYSTEM -> isSystemInDarkTheme()
     AppTheme.LIGHT -> false
     AppTheme.DARK -> true
   }
-}
 
 /**
  * The app theme is stored as a string in the local storage. This function gets the [AppTheme] from that stored string.

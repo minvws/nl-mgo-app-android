@@ -3,14 +3,17 @@ package nl.rijksoverheid.mgo.feature.settings.home
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
+import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,7 +23,13 @@ internal class SettingsHomeScreenViewModelTest {
 
   private val keyValueStore = TestKeyValueStore()
   private val secureKeyValueStore = TestKeyValueStore()
-  private val organizationRepository = TestOrganizationRepository()
+  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
+
+  @Before
+  fun setup() =
+    runTest {
+      organizationRepository.deleteAll()
+    }
 
   @Test
   fun testViewState() =
@@ -65,6 +74,6 @@ internal class SettingsHomeScreenViewModelTest {
 
       // Then: Saved preferences and files are deleted
       assertNull(secureKeyValueStore.getString(KEY_PIN_CODE))
-      organizationRepository.assertNoProviders()
+      assertEquals(0, organizationRepository.get().size)
     }
 }

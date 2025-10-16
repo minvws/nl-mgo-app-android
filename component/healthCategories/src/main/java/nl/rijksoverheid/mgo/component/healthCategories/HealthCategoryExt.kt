@@ -21,7 +21,7 @@ import nl.rijksoverheid.mgo.component.theme.categoriesProcedures
 import nl.rijksoverheid.mgo.component.theme.categoriesVaccinations
 import nl.rijksoverheid.mgo.component.theme.categoriesVital
 import nl.rijksoverheid.mgo.component.theme.categoriesWarnings
-import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryIcon
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryStringResource
 
 @SuppressLint("DiscouragedApi")
@@ -45,45 +45,45 @@ fun Context.getString(stringResource: HealthCategoryStringResource): String {
 }
 
 @DrawableRes
-fun HealthCategoryGroup.HealthCategory.getIcon() =
-  when (this.id) {
-    "problems" -> R.drawable.ic_health_cross
-    "allergies" -> R.drawable.ic_allergy
-    "alerts" -> R.drawable.ic_emergency_home
-    "vaccinations" -> R.drawable.ic_syringe
-    "lifestyle" -> R.drawable.ic_nutrition
-    "mental_wellbeing" -> R.drawable.ic_psychology
-    "measurements" -> R.drawable.ic_vital_signs
-    "lab_results" -> R.drawable.ic_labs
-    "treatments" -> R.drawable.ic_medical_services
-    "medication" -> R.drawable.ic_pill
-    "appointments" -> R.drawable.ic_calendar_today
-    "documents" -> R.drawable.ic_folder
-    "plans" -> R.drawable.ic_patient_list
-    "medical_devices" -> R.drawable.ic_health_and_safety
-    "patient" -> R.drawable.ic_person
-    "payment" -> R.drawable.ic_account_balance
+fun HealthCategoryIcon.getDrawable() =
+  when (this) {
+    "health_cross" -> R.drawable.ic_health_cross
+    "allergy" -> R.drawable.ic_allergy
+    "emergency_home" -> R.drawable.ic_emergency_home
+    "syringe" -> R.drawable.ic_syringe
+    "nutrition" -> R.drawable.ic_nutrition
+    "psychology" -> R.drawable.ic_psychology
+    "vital_signs" -> R.drawable.ic_vital_signs
+    "labs" -> R.drawable.ic_labs
+    "medical_services" -> R.drawable.ic_medical_services
+    "pill" -> R.drawable.ic_pill
+    "calendar_today" -> R.drawable.ic_calendar_today
+    "folder" -> R.drawable.ic_folder
+    "patient_list" -> R.drawable.ic_patient_list
+    "health_and_safety" -> R.drawable.ic_health_and_safety
+    "person" -> R.drawable.ic_person
+    "account_balance" -> R.drawable.ic_account_balance
     else -> R.drawable.ic_health_cross
   }
 
 @Composable
-fun HealthCategoryGroup.HealthCategory.getIconColor() =
-  when (this.id) {
-    "problems" -> MaterialTheme.colorScheme.categoriesProblems()
-    "allergies" -> MaterialTheme.colorScheme.categoriesAllergies()
-    "alerts" -> MaterialTheme.colorScheme.categoriesWarnings()
-    "vaccinations" -> MaterialTheme.colorScheme.categoriesVaccinations()
-    "lifestyle" -> MaterialTheme.colorScheme.categoriesLifestyle()
-    "mental_wellbeing" -> MaterialTheme.colorScheme.categoriesMental()
-    "measurements" -> MaterialTheme.colorScheme.categoriesVital()
-    "lab_results" -> MaterialTheme.colorScheme.categoriesLaboratory()
-    "treatments" -> MaterialTheme.colorScheme.categoriesProcedures()
-    "medication" -> MaterialTheme.colorScheme.categoriesMedication()
-    "appointments" -> MaterialTheme.colorScheme.categoriesContacts()
-    "documents" -> MaterialTheme.colorScheme.categoriesDocuments()
-    "plans" -> MaterialTheme.colorScheme.categoriesPlan()
-    "medical_devices" -> MaterialTheme.colorScheme.categoriesDevice()
-    "patient" -> MaterialTheme.colorScheme.categoriesPersonal()
-    "payment" -> MaterialTheme.colorScheme.categoriesPayer()
+fun HealthCategoryIcon.getColor() =
+  when (this) {
+    "health_cross" -> MaterialTheme.colorScheme.categoriesProblems()
+    "allergy" -> MaterialTheme.colorScheme.categoriesAllergies()
+    "emergency_home" -> MaterialTheme.colorScheme.categoriesWarnings()
+    "syringe" -> MaterialTheme.colorScheme.categoriesVaccinations()
+    "nutrition" -> MaterialTheme.colorScheme.categoriesLifestyle()
+    "psychology" -> MaterialTheme.colorScheme.categoriesMental()
+    "vital_signs" -> MaterialTheme.colorScheme.categoriesVital()
+    "labs" -> MaterialTheme.colorScheme.categoriesLaboratory()
+    "medical_services" -> MaterialTheme.colorScheme.categoriesProcedures()
+    "pill" -> MaterialTheme.colorScheme.categoriesMedication()
+    "calendar_today" -> MaterialTheme.colorScheme.categoriesContacts()
+    "folder" -> MaterialTheme.colorScheme.categoriesDocuments()
+    "patient_list" -> MaterialTheme.colorScheme.categoriesPlan()
+    "health_and_safety" -> MaterialTheme.colorScheme.categoriesDevice()
+    "person" -> MaterialTheme.colorScheme.categoriesPersonal()
+    "account_balance" -> MaterialTheme.colorScheme.categoriesPayer()
     else -> MaterialTheme.colorScheme.categoriesProblems()
   }

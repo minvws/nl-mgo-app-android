@@ -24,8 +24,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.healthCategories.getIcon
-import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
+import nl.rijksoverheid.mgo.component.healthCategories.getColor
+import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.sentimentCritical
@@ -63,13 +63,13 @@ internal fun HealthCategoryListItem(
         modifier =
           Modifier
             .size(32.dp)
-            .background(color = category.getIconColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
+            .background(color = category.icon.getColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center,
       ) {
         Icon(
-          painter = painterResource(id = category.getIcon()),
+          painter = painterResource(id = category.icon.getDrawable()),
           contentDescription = null,
-          tint = category.getIconColor(),
+          tint = category.icon.getColor(),
         )
       }
       Text(

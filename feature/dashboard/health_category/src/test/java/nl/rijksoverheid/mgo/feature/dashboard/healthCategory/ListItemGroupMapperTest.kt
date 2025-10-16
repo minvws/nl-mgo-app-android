@@ -10,9 +10,11 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
-import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
+import nl.rijksoverheid.mgo.framework.test.readResourceFile
+import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -28,8 +30,8 @@ class ListItemGroupMapperTest {
   private val uiSchemaParser = UiSchemaParser(jsEngineRepository)
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
-  private val organizationRepository = TestOrganizationRepository()
-  private val fileStorage = MemoryMgoByteArrayStorage()
+  private val mgoByteArrayStorage = MemoryMgoByteArrayStorage()
+  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = mgoByteArrayStorage)
   private val mapper =
     ListItemGroupMapper(
       context = context,
@@ -37,35 +39,36 @@ class ListItemGroupMapperTest {
       uiSchemaParser = uiSchemaParser,
       getDataSetsFromDisk = getDataSetsFromDisk,
       organizationRepository = organizationRepository,
-      mgoByteArrayStorage = fileStorage,
+      mgoByteArrayStorage = mgoByteArrayStorage,
     )
 
   @Before
   fun setup() =
     runTest {
       jvmQuickJsRepository.create()
+      organizationRepository.deleteAll()
     }
 
   @Test
   fun testInvoke() =
     runTest {
       // Given: A organization is stored
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: The lifestyle category
       val category = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten().first { category -> category.id == "lifestyle" }
 
       // Given: Five fhir responses that are part of the lifestyle category are cached
-      val livingSitutationJson = getFhirResourceJson("livingSituation.json").toByteArray()
-      fileStorage.save("livingSituation.json", livingSitutationJson)
-      val alcoholUseJson = getFhirResourceJson("alcoholUse.json").toByteArray()
-      fileStorage.save("alcoholUse.json", alcoholUseJson)
-      val drugUseJson = getFhirResourceJson("drugUse.json").toByteArray()
-      fileStorage.save("drugUse.json", drugUseJson)
-      val tobaccoUseJson = getFhirResourceJson("tobaccoUse.json").toByteArray()
-      fileStorage.save("tobaccoUse.json", tobaccoUseJson)
-      val nutritionAdvice = getFhirResourceJson("nutritionAdvice.json").toByteArray()
-      fileStorage.save("nutritionAdvice.json", nutritionAdvice)
+      val livingSitutationJson = readResourceFile("livingSituation.json").toByteArray()
+      mgoByteArrayStorage.save("livingSituation.json", livingSitutationJson)
+      val alcoholUseJson = readResourceFile("alcoholUse.json").toByteArray()
+      mgoByteArrayStorage.save("alcoholUse.json", alcoholUseJson)
+      val drugUseJson = readResourceFile("drugUse.json").toByteArray()
+      mgoByteArrayStorage.save("drugUse.json", drugUseJson)
+      val tobaccoUseJson = readResourceFile("tobaccoUse.json").toByteArray()
+      mgoByteArrayStorage.save("tobaccoUse.json", tobaccoUseJson)
+      val nutritionAdvice = readResourceFile("nutritionAdvice.json").toByteArray()
+      mgoByteArrayStorage.save("nutritionAdvice.json", nutritionAdvice)
 
       val fhirResponses =
         listOf(
@@ -121,9 +124,4 @@ class ListItemGroupMapperTest {
       assertEquals(1, groups[3].items.size)
       assertEquals(1, groups[4].items.size)
     }
-
-  private fun getFhirResourceJson(fileName: String) =
-    this::class.java.classLoader
-      ?.getResource(fileName)!!
-      .readText(Charsets.UTF_8)
 }

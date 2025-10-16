@@ -255,29 +255,31 @@ private fun LazyListScope.WithProviders(
   }
 
   for (group in groups) {
-    item {
-      Text(
-        modifier = Modifier.padding(bottom = 12.dp),
-        text = LocalContext.current.getString(group.heading),
-        style = MaterialTheme.typography.headlineSmall,
-      )
-    }
+    if (group.categories.isNotEmpty()) {
+      item {
+        Text(
+          modifier = Modifier.padding(bottom = 12.dp),
+          text = LocalContext.current.getString(group.heading),
+          style = MaterialTheme.typography.headlineSmall,
+        )
+      }
 
-    item {
-      MgoCard {
-        group.categories.forEachIndexed { index, category ->
-          HealthCategoriesListItem(
-            modifier = Modifier.clickable { onClickListItem(category) },
-            category = category,
-            filterOrganization = organization,
-            hasDivider = index != group.categories.lastIndex,
-          )
+      item {
+        MgoCard {
+          group.categories.forEachIndexed { index, category ->
+            HealthCategoriesListItem(
+              modifier = Modifier.clickable { onClickListItem(category) },
+              category = category,
+              filterOrganization = organization,
+              hasDivider = index != group.categories.lastIndex,
+            )
+          }
         }
       }
-    }
 
-    item {
-      Spacer(modifier = Modifier.height(32.dp))
+      item {
+        Spacer(modifier = Modifier.height(32.dp))
+      }
     }
   }
 

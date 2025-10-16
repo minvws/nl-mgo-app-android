@@ -6,24 +6,14 @@ import kotlinx.serialization.Serializable
 
 typealias MgoOrganizationDataServiceId = String
 
-/**
- * Represents the data service for a [MgoOrganization]. This is the source of where the get the health care data from.
- *
- * @param resourceEndpoint The endpoint of the source to get the health care data from.
- * @param type The name of the source.
- */
 @Parcelize
 @Serializable
 data class MgoOrganizationDataService(
   val id: MgoOrganizationDataServiceId,
   val resourceEndpoint: String,
-  val type: MgoOrganizationDataServiceType,
+  val isSupported: Boolean,
 ) : Parcelable
 
-enum class MgoOrganizationDataServiceType {
-  BGZ,
-  GP,
-  DOCUMENTS,
-  VACCINATION,
-  NOT_IMPLEMENTED,
-}
+val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(id = "48", resourceEndpoint = "", isSupported = true)
+val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(id = "49", resourceEndpoint = "", isSupported = true)
+val TEST_DOCUMENTS_DATA_SERVICE = MgoOrganizationDataService(id = "51", resourceEndpoint = "", isSupported = true)

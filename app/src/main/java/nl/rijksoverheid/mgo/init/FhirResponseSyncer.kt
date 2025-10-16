@@ -8,7 +8,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -56,7 +55,7 @@ class FhirResponseSyncer
           endpointsWithDataSet.map { item ->
             val uniqueEndpoints =
               item.endpoints.filter { endpoint ->
-                seenUrls.add(endpoint.url)
+                seenUrls.add(endpoint.path)
               }
             item.copy(endpoints = uniqueEndpoints)
           }
@@ -69,8 +68,8 @@ class FhirResponseSyncer
                 dataServiceId = dataService.id,
                 endpointId = endpoint.id,
                 resourceEndpoint = dataService.resourceEndpoint,
-                fhirVersion = FhirVersion.valueOf(endpointWithDataSet.dataSet.fhirVersion),
-                url = "$dvaApiBaseUrl/fhir${endpoint.url}",
+                fhirVersion = endpointWithDataSet.dataSet.fhirVersion,
+                url = "$dvaApiBaseUrl/fhir${endpoint.path}",
                 forceRefresh = firstSync,
               )
             }

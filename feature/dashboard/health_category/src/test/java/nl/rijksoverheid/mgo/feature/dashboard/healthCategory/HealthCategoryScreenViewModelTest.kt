@@ -17,6 +17,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_LIFESTYLE
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
@@ -25,7 +26,6 @@ import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorag
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
-import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -45,10 +45,10 @@ class HealthCategoryScreenViewModelTest {
   val testServerRule = TestServerRule()
 
   private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val organizationRepository = TestOrganizationRepository()
+  private val mgoStorage = MemoryMgoByteArrayStorage()
+  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = mgoStorage)
   private val createPdfForHealthCategories = TestCreatePdfForHealthCategories()
   private val okHttpClient = OkHttpClient.Builder().build()
-  private val mgoStorage = MemoryMgoByteArrayStorage()
   private val fhirRepository = DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoByteArrayStorage = mgoStorage)
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
@@ -71,6 +71,7 @@ class HealthCategoryScreenViewModelTest {
   fun setup() =
     runTest {
       quickJsRepository.create()
+      organizationRepository.deleteAll()
     }
 
   private suspend fun enqueueEmptyBundles() {
@@ -160,7 +161,7 @@ class HealthCategoryScreenViewModelTest {
     runTest {
       // Given: Stored organization that does not have any data for the lifestyle category
       val organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_GP_DATA_SERVICE))
-      organizationRepository.setStoredProviders(listOf(organization))
+      organizationRepository.save(organization)
 
       // Given: Lifestyle responses
       enqueueLifestyleResponses()
@@ -179,7 +180,7 @@ class HealthCategoryScreenViewModelTest {
   fun testLoaded() =
     runTest {
       // Given: Stored organization
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: Lifestyle responses
       enqueueLifestyleResponses()
@@ -201,7 +202,7 @@ class HealthCategoryScreenViewModelTest {
   fun testLoadedAllEmpty() =
     runTest {
       // Given: Stored organization
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: Lifestyle responses
       enqueueEmptyBundles()
@@ -220,7 +221,7 @@ class HealthCategoryScreenViewModelTest {
   fun testLoadedFilterOrganization() =
     runTest {
       // Given: Stored organization
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: Lifestyle responses
       enqueueLifestyleResponses()
@@ -242,7 +243,7 @@ class HealthCategoryScreenViewModelTest {
   fun testRetry() =
     runTest {
       // Given: Stored organization
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: Lifestyle responses
       enqueueLifestyleResponses()

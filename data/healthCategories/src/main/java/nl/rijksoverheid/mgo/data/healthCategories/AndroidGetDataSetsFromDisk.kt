@@ -11,7 +11,7 @@ class AndroidGetDataSetsFromDisk
   constructor(
     @ApplicationContext private val context: Context,
   ) : GetDataSetsFromDisk {
-    private val json = Json.Default
+    private val json = Json { ignoreUnknownKeys = true }
 
     override fun invoke(): List<DataSet> {
       val assetDir = "data-services"

@@ -11,7 +11,6 @@ android {
 }
 
 dependencies {
-  api(libs.retrofit)
   api(libs.okhttp)
   debugImplementation(libs.chucker)
   releaseImplementation(libs.chucker.no.op)

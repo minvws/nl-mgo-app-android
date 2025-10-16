@@ -1,16 +1,16 @@
-package nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic
+package nl.rijksoverheid.mgo.feature.localisation.organizationList.manual
 
 import app.cash.turbine.test
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -37,7 +37,9 @@ internal class OrganizationListAutomaticScreenViewModelTest {
   }
 
   private fun createViewModel() =
-    OrganizationListAutomaticScreenViewModel(
+    OrganizationListManualScreenViewModel(
+      name = "Tandarts",
+      city = "Roermond",
       ioDispatcher = mainDispatcherRule.testDispatcher,
       organizationRepository = organizationRepository,
       getDataSetsFromDisk = getDataSetsFromDisk,
@@ -80,54 +82,17 @@ internal class OrganizationListAutomaticScreenViewModelTest {
     }
 
   @Test
-  fun testUpdateOrganization() =
+  fun `Given viewmodel, When saving health care provider, Then navigate`() =
     runTest {
       // Given
-      testServerRule.testServer.enqueueJson(json = readResourceFile("load_search_response.json"))
       val viewModel = createViewModel()
 
-      viewModel.viewState.test {
-        assertFalse(awaitItem().results.first().added)
-
+      viewModel.navigation.test {
         // When
-        val firstOrganization =
-          viewModel.viewState.value.results
-            .first()
-        viewModel.updateOrganization(organization = firstOrganization, added = true)
+        viewModel.addOrganization(TEST_MGO_ORGANIZATION)
 
         // Then
-        assertTrue(awaitItem().results.first().added)
+        assertEquals(Unit, awaitItem())
       }
-    }
-
-  @Test
-  fun testUpdateOrganizations() =
-    runTest {
-      // Given: Organizations
-      testServerRule.testServer.enqueueJson(json = readResourceFile("load_search_response.json"))
-      val viewModel = createViewModel()
-      val viewState = runBlocking { viewModel.viewState.first() }
-
-      val firstOrganization = viewState.results[0]
-      val secondOrganization = viewState.results[1]
-
-      // Given: First organization stored
-      organizationRepository.save(firstOrganization)
-
-      // Given: First organization removed (in the UI)
-      viewModel.updateOrganization(organization = firstOrganization, added = false)
-
-      // Given: Second organization added (in the UI)
-      viewModel.updateOrganization(organization = secondOrganization, added = true)
-
-      // When: Calling updateOrganizations
-      viewModel.updateOrganizations()
-
-      // Then: First organization is not added
-      val storedOrganizations = organizationRepository.get()
-      assertFalse(storedOrganizations[0].added)
-
-      // Then: Second organization is added
-      assertTrue(storedOrganizations[1].added)
     }
 }

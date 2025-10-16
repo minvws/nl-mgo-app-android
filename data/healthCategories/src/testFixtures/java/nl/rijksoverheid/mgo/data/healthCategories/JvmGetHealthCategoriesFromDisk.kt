@@ -4,7 +4,7 @@ import kotlinx.serialization.json.Json
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
 class JvmGetHealthCategoriesFromDisk : GetHealthCategoriesFromDisk {
-  private val json = Json.Default
+  private val json = Json { ignoreUnknownKeys = true }
 
   override fun invoke(): List<HealthCategoryGroup> {
     val jsonFile =

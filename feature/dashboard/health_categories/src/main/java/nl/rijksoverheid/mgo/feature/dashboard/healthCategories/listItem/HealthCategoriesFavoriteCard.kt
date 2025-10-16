@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.healthCategories.getIcon
-import nl.rijksoverheid.mgo.component.healthCategories.getIconColor
+import nl.rijksoverheid.mgo.component.healthCategories.getColor
+import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -77,10 +77,10 @@ private fun HealthCategoriesFavoriteCardContent(
     Column(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Box(
-          modifier = Modifier.size(32.dp).background(color = category.getIconColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
+          modifier = Modifier.size(32.dp).background(color = category.icon.getColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
           contentAlignment = Alignment.Center,
         ) {
-          Icon(painterResource(category.getIcon()), tint = category.getIconColor(), contentDescription = null)
+          Icon(painterResource(category.icon.getDrawable()), tint = category.icon.getColor(), contentDescription = null)
         }
         if (loading) {
           CircularProgressIndicator(

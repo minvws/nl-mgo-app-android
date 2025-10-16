@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
@@ -18,12 +17,6 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import javax.inject.Named
 
-/**
- * The [ViewModel] for [SettingsHomeScreen].
- *
- * @param keyValueStore The [KeyValueStore] to get and set the [AppTheme].
- * @param deviceHasBiometric The [DeviceHasBiometric] to check if the device has biometric capabilities.
- */
 @HiltViewModel
 internal class SettingsHomeScreenViewModel
   @Inject

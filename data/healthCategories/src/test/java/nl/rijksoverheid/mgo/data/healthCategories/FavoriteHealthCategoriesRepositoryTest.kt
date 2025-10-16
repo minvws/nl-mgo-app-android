@@ -1,18 +1,23 @@
 package nl.rijksoverheid.mgo.data.healthCategories
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class FavoriteHealthCategoriesRepositoryTest {
-  private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val repository = FavoriteHealthCategoriesRepository(context)
+  private val keyValueStorage = MemoryMgoKeyValueStorage()
+  private val repository = FavoriteHealthCategoriesRepository(keyValueStorage)
+
+  @Before
+  fun setup() {
+    keyValueStorage.deleteAll()
+  }
 
   @Test
   fun testGetFavorites() =

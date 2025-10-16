@@ -1,26 +1,22 @@
 package nl.rijksoverheid.mgo.feature.dashboard.editOverview
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class EditOverviewBottomSheetViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val context = ApplicationProvider.getApplicationContext<Context>()
+  private val keyValueStorage = MemoryMgoKeyValueStorage()
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
-  private val favoriteRepository = FavoriteHealthCategoriesRepository(context)
+  private val favoriteRepository = FavoriteHealthCategoriesRepository(keyValueStorage)
   private val groups = getHealthCategoriesFromDisk()
 
   @Test

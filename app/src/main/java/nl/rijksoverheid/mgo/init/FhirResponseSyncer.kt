@@ -46,10 +46,22 @@ class FhirResponseSyncer
     private suspend fun MgoOrganization.fetchFhirResponses() {
       val categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten()
       val dataServices = dataServices.map { dataService -> dataService }
+
+      val seenUrls = mutableSetOf<String>()
       for (category in categories) {
         val endpointsWithDataSet = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataServices.map { it.id })
 
-        for (endpointWithDataSet in endpointsWithDataSet) {
+        // Do not do the same request twice
+        val uniqueEndpointsWithDataSet =
+          endpointsWithDataSet.map { item ->
+            val uniqueEndpoints =
+              item.endpoints.filter { endpoint ->
+                seenUrls.add(endpoint.url)
+              }
+            item.copy(endpoints = uniqueEndpoints)
+          }
+
+        for (endpointWithDataSet in uniqueEndpointsWithDataSet) {
           for (endpoint in endpointWithDataSet.endpoints) {
             for (dataService in dataServices) {
               fhirRepository.fetch(

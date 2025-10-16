@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -45,6 +44,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
@@ -76,6 +76,7 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
     sheetState = sheetState,
     dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
+    SetCorrectStatusBarIconColor()
     EditOverviewBottomSheetContent(
       viewState = viewState,
       onClickSave = { favorites, nonFavorites -> viewModel.save(favorites = favorites, nonFavorites = nonFavorites) },

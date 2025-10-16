@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Icon
@@ -256,34 +255,29 @@ private fun LazyListScope.WithProviders(
   }
 
   for (group in groups) {
-    if (group.categories.isNotEmpty()) {
-      item {
-        Text(
-          modifier = Modifier.padding(bottom = 12.dp),
-          text = LocalContext.current.getString(group.heading),
-          style = MaterialTheme.typography.headlineMedium,
-        )
-      }
+    item {
+      Text(
+        modifier = Modifier.padding(bottom = 12.dp),
+        text = LocalContext.current.getString(group.heading),
+        style = MaterialTheme.typography.headlineSmall,
+      )
+    }
 
-      items(group.categories.size) { position ->
-        val category = group.categories[position]
-        HealthCategoriesListItemCard(
-          position =
-            when {
-              group.categories.size == 1 -> HealthCategoriesListItemCardPosition.SINGLE_ITEM
-              position == 0 -> HealthCategoriesListItemCardPosition.TOP
-              position == group.categories.lastIndex -> HealthCategoriesListItemCardPosition.BOTTOM
-              else -> HealthCategoriesListItemCardPosition.CENTER
-            },
-          category = category,
-          onClickListItem = onClickListItem,
-          filterOrganization = organization,
-        )
+    item {
+      MgoCard {
+        group.categories.forEachIndexed { index, category ->
+          HealthCategoriesListItem(
+            modifier = Modifier.clickable { onClickListItem(category) },
+            category = category,
+            filterOrganization = organization,
+            hasDivider = index != group.categories.lastIndex,
+          )
+        }
       }
+    }
 
-      item {
-        Spacer(modifier = Modifier.height(32.dp))
-      }
+    item {
+      Spacer(modifier = Modifier.height(32.dp))
     }
   }
 
@@ -307,69 +301,6 @@ private fun LazyListScope.WithProviders(
         )
       }
     }
-  }
-}
-
-private enum class HealthCategoriesListItemCardPosition {
-  TOP,
-  CENTER,
-  BOTTOM,
-  SINGLE_ITEM,
-}
-
-@Composable
-private fun HealthCategoriesListItemCard(
-  position: HealthCategoriesListItemCardPosition,
-  category: HealthCategoryGroup.HealthCategory,
-  onClickListItem: (category: HealthCategoryGroup.HealthCategory) -> Unit,
-  filterOrganization: MgoOrganization?,
-) {
-  val shape =
-    when (position) {
-      HealthCategoriesListItemCardPosition.TOP -> {
-        RoundedCornerShape(
-          topStart = 16.dp,
-          topEnd = 16.dp,
-          bottomStart = 0.dp,
-          bottomEnd = 0.dp,
-        )
-      }
-
-      HealthCategoriesListItemCardPosition.CENTER -> {
-        RoundedCornerShape(
-          topStart = 0.dp,
-          topEnd = 0.dp,
-          bottomStart = 0.dp,
-          bottomEnd = 0.dp,
-        )
-      }
-
-      HealthCategoriesListItemCardPosition.BOTTOM -> {
-        RoundedCornerShape(
-          topStart = 0.dp,
-          topEnd = 0.dp,
-          bottomStart = 16.dp,
-          bottomEnd = 16.dp,
-        )
-      }
-
-      HealthCategoriesListItemCardPosition.SINGLE_ITEM -> {
-        RoundedCornerShape(
-          topStart = 16.dp,
-          topEnd = 16.dp,
-          bottomStart = 16.dp,
-          bottomEnd = 16.dp,
-        )
-      }
-    }
-
-  MgoCard(shape = shape) {
-    HealthCategoriesListItem(
-      modifier = Modifier.clickable { onClickListItem(category) },
-      category = category,
-      filterOrganization = filterOrganization,
-      hasDivider = position != HealthCategoriesListItemCardPosition.BOTTOM && position != HealthCategoriesListItemCardPosition.SINGLE_ITEM,
-    )
   }
 }
 

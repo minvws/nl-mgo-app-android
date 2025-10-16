@@ -49,6 +49,7 @@ import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomableWithScroll
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import sendFileToOtherApp
@@ -79,6 +80,7 @@ fun PdfViewerBottomSheet(
     sheetState = sheetState,
     dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
+    SetCorrectStatusBarIconColor()
     Scaffold(
       modifier = Modifier.fillMaxWidth().fillMaxHeight(0.95f),
       topBar = {

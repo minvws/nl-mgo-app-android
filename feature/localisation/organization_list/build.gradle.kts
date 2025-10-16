@@ -10,6 +10,7 @@ dependencies {
   implementation(projects.data.localisation)
   implementation(projects.framework.environment)
   implementation(projects.data.healthCategories)
+  testImplementation(projects.framework.storage)
   testImplementation(testFixtures((projects.data.localisation)))
   testImplementation(testFixtures((projects.framework.environment)))
   testImplementation(testFixtures(projects.data.healthCategories))

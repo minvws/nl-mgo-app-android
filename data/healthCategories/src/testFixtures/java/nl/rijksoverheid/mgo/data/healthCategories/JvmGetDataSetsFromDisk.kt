@@ -5,7 +5,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.DataSet
 import java.io.File
 
 class JvmGetDataSetsFromDisk : GetDataSetsFromDisk {
-  private val json = Json.Default
+  private val json = Json { ignoreUnknownKeys = true }
 
   override fun invoke(): List<DataSet> {
     val resourceDir = "data-services"

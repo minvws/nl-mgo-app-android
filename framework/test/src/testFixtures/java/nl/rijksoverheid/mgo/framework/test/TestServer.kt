@@ -87,9 +87,3 @@ class TestServer {
     server?.shutdown()
   }
 }
-
-/**
- * Helper method to load json from the resources folder for a unit test.
- * Useful for example unit tests where you want to load local json files into a mock web server.
- */
-fun getTestServerBodyForUnitTest(filePath: String): TestServerBody = getJsonFromResources(filePath)

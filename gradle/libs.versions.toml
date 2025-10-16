@@ -24,9 +24,6 @@ ksp = "2.1.21-2.0.2"
 dagger = "5.0.1"
 okhttp = "4.12.0"
 chucker = "4.0.0"
-retrofit = "2.11.0"
-moshi = "1.15.1"
-moshi-sealed = "0.28.0"
 kotlinx-coroutines = "1.10.2"
 turbine = "1.1.0"
 androidx-browser = "1.8.0"
@@ -86,8 +83,6 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "dag
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 chucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-no-op = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref ="retrofit" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }
 coroutines-bom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinx-coroutines" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }

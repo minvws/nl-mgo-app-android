@@ -4,6 +4,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -14,6 +15,7 @@ import nl.rijksoverheid.mgo.data.digid.DigidRepository
 import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * The [ViewModel] for [DigidLoginScreen].
@@ -25,6 +27,7 @@ import javax.inject.Inject
 internal class DigidLoginScreenViewModel
   @Inject
   constructor(
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val digidRepository: DigidRepository,
     private val base64Util: Base64Util,
   ) : ViewModel() {
@@ -45,7 +48,7 @@ internal class DigidLoginScreenViewModel
      * authentication.
      */
     fun login() {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
         _viewState.update { viewState -> viewState.copy(loading = true) }
         digidRepository
           .login()

@@ -21,7 +21,7 @@ inline fun <T : Any> executeNetworkRequest(block: () -> T): Result<T> =
   } catch (networkError: IOException) {
     // Handle network connectivity issues.
     Result.failure(networkError)
-  } catch (httpError: HttpException) {
+  } catch (httpError: retrofit2.HttpException) {
     // Handle HTTP errors (e.g., 4xx and 5xx responses).
     Result.failure(httpError)
   }

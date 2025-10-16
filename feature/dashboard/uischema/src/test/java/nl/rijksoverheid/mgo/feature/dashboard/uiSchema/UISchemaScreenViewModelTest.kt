@@ -16,6 +16,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
+import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert
 import org.junit.Assert.assertEquals
@@ -176,13 +177,13 @@ class UISchemaScreenViewModelTest {
     }
 
   private suspend fun setAlcoholUseMgoResource(): MgoResourceReferenceId {
-    val mgoResource = mgoResourceParser.invoke(fhirResponse = getFhirResourceJson("alcoholUse.json"), fhirVersion = FhirVersion.R3).first()
+    val mgoResource = mgoResourceParser.invoke(fhirResponse = readResourceFile("alcoholUse.json"), fhirVersion = FhirVersion.R3).first()
     mgoResourceStore.store(mgoResource)
     return mgoResource.referenceId
   }
 
   private suspend fun setDocumentReferenceMgoResource(): MgoResourceReferenceId {
-    val mgoResource = mgoResourceParser.invoke(fhirResponse = getFhirResourceJson("documentReference.json"), fhirVersion = FhirVersion.R3).first()
+    val mgoResource = mgoResourceParser.invoke(fhirResponse = readResourceFile("documentReference.json"), fhirVersion = FhirVersion.R3).first()
     mgoResourceStore.store(mgoResource)
     return mgoResource.referenceId
   }
@@ -203,9 +204,4 @@ class UISchemaScreenViewModelTest {
       dvaApiBaseUrl = "",
       ioDispatcher = mainDispatcherRule.testDispatcher,
     )
-
-  private fun getFhirResourceJson(fileName: String) =
-    this::class.java.classLoader
-      ?.getResource(fileName)!!
-      .readText(Charsets.UTF_8)
 }

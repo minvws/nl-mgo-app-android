@@ -9,4 +9,5 @@ android {
 dependencies {
   implementation(projects.data.localisation)
   testImplementation(testFixtures((projects.data.localisation)))
+  testImplementation(projects.framework.storage)
 }

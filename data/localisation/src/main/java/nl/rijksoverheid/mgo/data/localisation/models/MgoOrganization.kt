@@ -18,7 +18,7 @@ data class MgoOrganization(
   val dataServices: List<MgoOrganizationDataService>,
 ) : Parcelable
 
-fun MgoOrganization.getDocumentsResourceEndpoint(): String? = dataServices.firstOrNull { service -> service.id == "61" }?.resourceEndpoint
+fun MgoOrganization.getDocumentsResourceEndpoint(): String? = dataServices.firstOrNull { service -> service.id == "51" }?.resourceEndpoint
 
 val TEST_MGO_ORGANIZATION =
   MgoOrganization(

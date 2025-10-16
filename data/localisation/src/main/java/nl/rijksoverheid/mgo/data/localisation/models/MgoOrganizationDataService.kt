@@ -15,9 +15,5 @@ data class MgoOrganizationDataService(
 ) : Parcelable
 
 val TEST_BGZ_DATA_SERVICE = MgoOrganizationDataService(id = "48", resourceEndpoint = "", isSupported = true)
-val TEST_NOT_IMPLEMENTED_DATA_SERVICE =
-  MgoOrganizationDataService(
-    id = "999",
-    resourceEndpoint = "",
-    isSupported = false,
-  )
+val TEST_GP_DATA_SERVICE = MgoOrganizationDataService(id = "49", resourceEndpoint = "", isSupported = true)
+val TEST_DOCUMENTS_DATA_SERVICE = MgoOrganizationDataService(id = "51", resourceEndpoint = "", isSupported = true)

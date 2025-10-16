@@ -8,8 +8,11 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import okhttp3.OkHttpClient
 import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +21,7 @@ class HealthCategoriesFavoriteCardViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val organizationRepository = TestOrganizationRepository()
+  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val fhirRepository = TestFhirRepository()
@@ -27,7 +30,7 @@ class HealthCategoriesFavoriteCardViewModelTest {
   fun testLoaded() =
     runTest {
       // Given: stored organization
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: Fhir repository returns success that is non empty
       fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = false))

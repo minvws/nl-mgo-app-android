@@ -7,6 +7,7 @@ import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
 import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -43,7 +44,7 @@ internal class DefaultDigidRepositoryTest {
       val result = repository.login()
 
       // Then: failure is returned
-      Assert.assertTrue(result.isFailure)
+      assertTrue(result.isFailure)
     }
 
   private fun getRepository(): DefaultDigidRepository {

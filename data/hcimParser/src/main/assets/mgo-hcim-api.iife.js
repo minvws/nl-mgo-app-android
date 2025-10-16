@@ -1,8 +1,8 @@
-var HcimApi = function(exports) {
-  "use strict";var __defProp = Object.defineProperty;
+var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-
+var HcimApi = (function(exports) {
+  "use strict";
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getAugmentedNamespace(n) {
     if (Object.prototype.hasOwnProperty.call(n, "__esModule")) return n;
@@ -43,7 +43,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     } : function(obj) {
       return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
     };
-    var jsx = function() {
+    var jsx = (function() {
       var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 60103;
       return function createRawReactElement(type, props, key, children) {
         var defaultProps = type && type.defaultProps;
@@ -78,7 +78,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           _owner: null
         };
       };
-    }();
+    })();
     var asyncToGenerator = function(fn) {
       return function() {
         var gen = fn.apply(this, arguments);
@@ -110,7 +110,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         throw new TypeError("Cannot call a class as a function");
       }
     };
-    var createClass = /* @__PURE__ */ function() {
+    var createClass = /* @__PURE__ */ (function() {
       function defineProperties(target, props) {
         for (var i = 0; i < props.length; i++) {
           var descriptor = props[i];
@@ -125,7 +125,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         if (staticProps) defineProperties(Constructor, staticProps);
         return Constructor;
       };
-    }();
+    })();
     var defineEnumerableProperties = function(obj, descs) {
       for (var key in descs) {
         var desc = descs[key];
@@ -271,7 +271,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
       return value2;
     };
-    var slicedToArray = /* @__PURE__ */ function() {
+    var slicedToArray = /* @__PURE__ */ (function() {
       function sliceIterator(arr, i) {
         var _arr = [];
         var _n = true;
@@ -303,7 +303,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           throw new TypeError("Invalid attempt to destructure non-iterable instance");
         }
       };
-    }();
+    })();
     var slicedToArrayLoose = function(arr, i) {
       if (Array.isArray(arr)) {
         return arr;
@@ -378,7 +378,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       extends: _extends,
       instanceof: _instanceof
     });
-    var realDefineProp = function() {
+    var realDefineProp = (function() {
       var sentinel = function sentinel2() {
       };
       try {
@@ -392,7 +392,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       } catch (e) {
         return false;
       }
-    }();
+    })();
     var es3 = !realDefineProp && !Object.prototype.__defineGetter__;
     var hop = Object.prototype.hasOwnProperty;
     var defineProperty2 = realDefineProp ? Object.defineProperty : function(obj, name, desc) {
@@ -2536,7 +2536,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   }
-  var __createBinding = Object.create ? function(o, m, k, k2) {
+  var __createBinding = Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -2545,10 +2545,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       } };
     }
     Object.defineProperty(o, k2, desc);
-  } : function(o, m, k, k2) {
+  }) : (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
-  };
+  });
   function __exportStar(m, o) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) __createBinding(o, m, p);
   }
@@ -2685,9 +2685,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return cooked;
   }
-  var __setModuleDefault = Object.create ? function(o, v) {
+  var __setModuleDefault = Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
-  } : function(o, v) {
+  }) : function(o, v) {
     o["default"] = v;
   };
   var ownKeys = function(o) {
@@ -2935,7 +2935,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     // 0 to EXP_LIMIT
     // The minimum exponent value, beneath which underflow to zero occurs.
     // JavaScript numbers: -324  (5e-324)
-    minE: -9e15,
+    minE: -EXP_LIMIT,
     // -1 to -EXP_LIMIT
     // The maximum exponent value, above which overflow to Infinity occurs.
     // JavaScript numbers: 308  (1.7976931348623157e+308)
@@ -3915,7 +3915,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     Ctor.precision -= k;
     return x;
   }
-  var divide = /* @__PURE__ */ function() {
+  var divide = /* @__PURE__ */ (function() {
     function multiplyInteger(x, k, base) {
       var temp, carry = 0, i = x.length;
       for (x = x.slice(); i--; ) {
@@ -4073,7 +4073,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
       return q;
     };
-  }();
+  })();
   function finalise(x, sd, rm, isTruncated) {
     var digits, i, j, k, rd, roundUp, w, xd, xdi, Ctor = x.constructor;
     out: if (sd != null) {
@@ -4690,7 +4690,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       0,
       8,
       "toExpNeg",
-      -9e15,
+      -EXP_LIMIT,
       0,
       "toExpPos",
       0,
@@ -4699,7 +4699,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       0,
       EXP_LIMIT,
       "minE",
-      -9e15,
+      -EXP_LIMIT,
       0,
       "modulo",
       0,
@@ -5083,7 +5083,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   };
   var ObjectWithoutPrototypeCache = (
     /** @class */
-    function() {
+    (function() {
       function ObjectWithoutPrototypeCache2() {
         this.cache = /* @__PURE__ */ Object.create(null);
       }
@@ -5094,7 +5094,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         this.cache[key] = value2;
       };
       return ObjectWithoutPrototypeCache2;
-    }()
+    })()
   );
   var cacheDefault = {
     create: function create() {
@@ -29619,7 +29619,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     var Locale2 = (
       /** @class */
-      function() {
+      (function() {
         function Locale3(tag2, opts) {
           var newTarget = this && this instanceof Locale3 ? this.constructor : void 0;
           if (!newTarget) {
@@ -29873,7 +29873,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         Locale3.relevantExtensionKeys = RELEVANT_EXTENSION_KEYS;
         Locale3.polyfilled = true;
         return Locale3;
-      }()
+      })()
     );
     intlLocale.Locale = Locale2;
     try {
@@ -30000,7 +30000,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           // 0 to EXP_LIMIT
           // The minimum exponent value, beneath which underflow to zero occurs.
           // JavaScript numbers: -324  (5e-324)
-          minE: -9e15,
+          minE: -EXP_LIMIT2,
           // -1 to -EXP_LIMIT
           // The maximum exponent value, above which overflow to Infinity occurs.
           // JavaScript numbers: 308  (1.7976931348623157e+308)
@@ -30980,7 +30980,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           Ctor.precision -= k;
           return x;
         }
-        var divide2 = /* @__PURE__ */ function() {
+        var divide2 = /* @__PURE__ */ (function() {
           function multiplyInteger(x, k, base) {
             var temp, carry = 0, i = x.length;
             for (x = x.slice(); i--; ) {
@@ -31138,7 +31138,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
             return q;
           };
-        }();
+        })();
         function finalise2(x, sd, rm, isTruncated) {
           var digits, i, j, k, rd, roundUp, w, xd, xdi, Ctor = x.constructor;
           out: if (sd != null) {
@@ -31755,7 +31755,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             0,
             8,
             "toExpNeg",
-            -9e15,
+            -EXP_LIMIT2,
             0,
             "toExpPos",
             0,
@@ -31764,7 +31764,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             0,
             EXP_LIMIT2,
             "minE",
-            -9e15,
+            -EXP_LIMIT2,
             0,
             "modulo",
             0,
@@ -34726,7 +34726,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     var PluralRules = (
       /** @class */
-      function() {
+      (function() {
         function PluralRules2(locales, options) {
           var newTarget = this && this instanceof PluralRules2 ? this.constructor : void 0;
           if (!newTarget) {
@@ -34796,7 +34796,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         PluralRules2.relevantExtensionKeys = [];
         PluralRules2.polyfilled = true;
         return PluralRules2;
-      }()
+      })()
     );
     intlPluralrules.PluralRules = PluralRules;
     try {
@@ -35101,7 +35101,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var get_internal_slots_1 = tslib_1.__importDefault(requireGet_internal_slots());
     var RelativeTimeFormat = (
       /** @class */
-      function() {
+      (function() {
         function RelativeTimeFormat2(locales, options) {
           var newTarget = this && this instanceof RelativeTimeFormat2 ? this.constructor : void 0;
           if (!newTarget) {
@@ -35182,7 +35182,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         RelativeTimeFormat2.relevantExtensionKeys = ["nu"];
         RelativeTimeFormat2.polyfilled = true;
         return RelativeTimeFormat2;
-      }()
+      })()
     );
     intlRelativetimeformat.default = RelativeTimeFormat;
     try {
@@ -41961,25 +41961,28 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const NUMBER_REGEX = /^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/;
   function isSafeNumber(value2, config2) {
+    if (isInteger(value2)) {
+      return Number.isSafeInteger(Number.parseInt(value2, 10));
+    }
     const num = Number.parseFloat(value2);
-    const str = String(num);
-    if (value2 === str) {
+    const parsed = String(num);
+    if (value2 === parsed) {
       return true;
     }
-    const valueDigits = countSignificantDigits(value2);
-    const strDigits = countSignificantDigits(str);
-    if (valueDigits === strDigits) {
+    const valueDigits = extractSignificantDigits(value2);
+    const parsedDigits = extractSignificantDigits(parsed);
+    if (valueDigits === parsedDigits) {
       return true;
     }
     return false;
   }
-  let UnsafeNumberReason = /* @__PURE__ */ function(UnsafeNumberReason2) {
+  let UnsafeNumberReason = /* @__PURE__ */ (function(UnsafeNumberReason2) {
     UnsafeNumberReason2["underflow"] = "underflow";
     UnsafeNumberReason2["overflow"] = "overflow";
     UnsafeNumberReason2["truncate_integer"] = "truncate_integer";
     UnsafeNumberReason2["truncate_float"] = "truncate_float";
     return UnsafeNumberReason2;
-  }({});
+  })({});
   function getUnsafeNumberReason(value2) {
     if (isSafeNumber(value2)) {
       return void 0;
@@ -41996,7 +41999,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return UnsafeNumberReason.truncate_float;
   }
-  function countSignificantDigits(value2) {
+  function extractSignificantDigits(value2) {
+    const {
+      start,
+      end
+    } = getSignificantDigitRange(value2);
+    const digits = value2.substring(start, end);
+    const dot = digits.indexOf(".");
+    if (dot === -1) {
+      return digits;
+    }
+    return digits.substring(0, dot) + digits.substring(dot + 1);
+  }
+  function getSignificantDigitRange(value2) {
     let start = 0;
     if (value2[0] === "-") {
       start++;
@@ -42011,15 +42026,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     if (end === -1) {
       end = value2.length;
     }
-    while (value2[end - 1] === "0" || value2[end - 1] === ".") {
+    while ((value2[end - 1] === "0" || value2[end - 1] === ".") && end > start) {
       end--;
     }
-    let digits = end >= start ? end - start : 0;
-    const dot = value2.indexOf(".", start);
-    if (dot !== -1 && dot < end) {
-      digits--;
-    }
-    return digits;
+    return {
+      start,
+      end
+    };
   }
   class LosslessNumber {
     constructor(value2) {
@@ -42586,10 +42599,10 @@ ${indent}}` : "}";
     return tag2 == funcTag$1 || tag2 == genTag || tag2 == asyncTag || tag2 == proxyTag;
   }
   var coreJsData = root["__core-js_shared__"];
-  var maskSrcKey = function() {
+  var maskSrcKey = (function() {
     var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
     return uid ? "Symbol(src)_1." + uid : "";
-  }();
+  })();
   function isMasked(func) {
     return !!maskSrcKey && maskSrcKey in func;
   }
@@ -42650,9 +42663,9 @@ ${indent}}` : "}";
   var objectProto$2 = Object.prototype;
   var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
   var propertyIsEnumerable = objectProto$2.propertyIsEnumerable;
-  var isArguments = baseIsArguments(/* @__PURE__ */ function() {
+  var isArguments = baseIsArguments(/* @__PURE__ */ (function() {
     return arguments;
-  }()) ? baseIsArguments : function(value2) {
+  })()) ? baseIsArguments : function(value2) {
     return isObjectLike(value2) && hasOwnProperty$2.call(value2, "callee") && !propertyIsEnumerable.call(value2, "callee");
   };
   function stubFalse() {
@@ -42681,7 +42694,7 @@ ${indent}}` : "}";
   var freeModule = freeExports && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports = freeModule && freeModule.exports === freeExports;
   var freeProcess = moduleExports && freeGlobal.process;
-  var nodeUtil = function() {
+  var nodeUtil = (function() {
     try {
       var types2 = freeModule && freeModule.require && freeModule.require("util").types;
       if (types2) {
@@ -42690,7 +42703,7 @@ ${indent}}` : "}";
       return freeProcess && freeProcess.binding && freeProcess.binding("util");
     } catch (e) {
     }
-  }();
+  })();
   var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
   var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
   function overArg(func, transform) {
@@ -42737,7 +42750,7 @@ ${indent}}` : "}";
   function castSlice(array, start, end) {
     var length = array.length;
     end = end === void 0 ? length : end;
-    return false ? array : baseSlice(array, start, end);
+    return !start && end >= length ? array : baseSlice(array, start, end);
   }
   var rsAstralRange$2 = "\\ud800-\\udfff", rsComboMarksRange$3 = "\\u0300-\\u036f", reComboHalfMarksRange$3 = "\\ufe20-\\ufe2f", rsComboSymbolsRange$3 = "\\u20d0-\\u20ff", rsComboRange$3 = rsComboMarksRange$3 + reComboHalfMarksRange$3 + rsComboSymbolsRange$3, rsVarRange$2 = "\\ufe0e\\ufe0f";
   var rsZWJ$2 = "\\u200d";
@@ -47472,7 +47485,7 @@ ${indent}}` : "}";
   }
   var Parser = (
     /** @class */
-    function() {
+    (function() {
       function Parser2(message, options) {
         if (options === void 0) {
           options = {};
@@ -48124,7 +48137,7 @@ ${indent}}` : "}";
         return nextCode !== null && nextCode !== void 0 ? nextCode : null;
       };
       return Parser2;
-    }()
+    })()
   );
   function _isAlpha(codepoint) {
     return codepoint >= 97 && codepoint <= 122 || codepoint >= 65 && codepoint <= 90;
@@ -48183,7 +48196,7 @@ ${indent}}` : "}";
   })(ErrorCode || (ErrorCode = {}));
   var FormatError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(FormatError2, _super);
       function FormatError2(msg, code2, originalMessage) {
         var _this = _super.call(this, msg) || this;
@@ -48195,37 +48208,37 @@ ${indent}}` : "}";
         return "[formatjs Error: ".concat(this.code, "] ").concat(this.message);
       };
       return FormatError2;
-    }(Error)
+    })(Error)
   );
   var InvalidValueError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(InvalidValueError2, _super);
       function InvalidValueError2(variableId, value2, options, originalMessage) {
         return _super.call(this, 'Invalid values for "'.concat(variableId, '": "').concat(value2, '". Options are "').concat(Object.keys(options).join('", "'), '"'), ErrorCode.INVALID_VALUE, originalMessage) || this;
       }
       return InvalidValueError2;
-    }(FormatError)
+    })(FormatError)
   );
   var InvalidValueTypeError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(InvalidValueTypeError2, _super);
       function InvalidValueTypeError2(value2, type, originalMessage) {
         return _super.call(this, 'Value for "'.concat(value2, '" must be of type ').concat(type), ErrorCode.INVALID_VALUE, originalMessage) || this;
       }
       return InvalidValueTypeError2;
-    }(FormatError)
+    })(FormatError)
   );
   var MissingValueError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(MissingValueError2, _super);
       function MissingValueError2(variableId, originalMessage) {
         return _super.call(this, 'The intl string context variable "'.concat(variableId, '" was not provided to the string "').concat(originalMessage, '"'), ErrorCode.MISSING_VALUE, originalMessage) || this;
       }
       return MissingValueError2;
-    }(FormatError)
+    })(FormatError)
   );
   var PART_TYPE;
   (function(PART_TYPE2) {
@@ -48443,7 +48456,7 @@ ${indent}}` : "}";
   }
   var IntlMessageFormat = (
     /** @class */
-    function() {
+    (function() {
       function IntlMessageFormat2(message, locales, overrideFormats, opts) {
         if (locales === void 0) {
           locales = IntlMessageFormat2.defaultLocale;
@@ -48586,7 +48599,7 @@ ${indent}}` : "}";
         }
       };
       return IntlMessageFormat2;
-    }()
+    })()
   );
   var IntlErrorCode;
   (function(IntlErrorCode2) {
@@ -48598,7 +48611,7 @@ ${indent}}` : "}";
   })(IntlErrorCode || (IntlErrorCode = {}));
   var IntlError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(IntlError2, _super);
       function IntlError2(code2, message, exception) {
         var _this = this;
@@ -48611,41 +48624,41 @@ ${indent}}` : "}";
         return _this;
       }
       return IntlError2;
-    }(Error)
+    })(Error)
   );
   var UnsupportedFormatterError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(UnsupportedFormatterError2, _super);
       function UnsupportedFormatterError2(message, exception) {
         return _super.call(this, IntlErrorCode.UNSUPPORTED_FORMATTER, message, exception) || this;
       }
       return UnsupportedFormatterError2;
-    }(IntlError)
+    })(IntlError)
   );
   var InvalidConfigError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(InvalidConfigError2, _super);
       function InvalidConfigError2(message, exception) {
         return _super.call(this, IntlErrorCode.INVALID_CONFIG, message, exception) || this;
       }
       return InvalidConfigError2;
-    }(IntlError)
+    })(IntlError)
   );
   var MissingDataError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(MissingDataError2, _super);
       function MissingDataError2(message, exception) {
         return _super.call(this, IntlErrorCode.MISSING_DATA, message, exception) || this;
       }
       return MissingDataError2;
-    }(IntlError)
+    })(IntlError)
   );
   var IntlFormatError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(IntlFormatError2, _super);
       function IntlFormatError2(message, locale, exception) {
         var _this = _super.call(this, IntlErrorCode.FORMAT_ERROR, "".concat(message, "\nLocale: ").concat(locale, "\n"), exception) || this;
@@ -48653,11 +48666,11 @@ ${indent}}` : "}";
         return _this;
       }
       return IntlFormatError2;
-    }(IntlError)
+    })(IntlError)
   );
   var MessageFormatError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(MessageFormatError2, _super);
       function MessageFormatError2(message, locale, descriptor, exception) {
         var _this = _super.call(this, "".concat(message, "\nMessageID: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.id, "\nDefault Message: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.defaultMessage, "\nDescription: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.description, "\n"), locale, exception) || this;
@@ -48666,11 +48679,11 @@ ${indent}}` : "}";
         return _this;
       }
       return MessageFormatError2;
-    }(IntlFormatError)
+    })(IntlFormatError)
   );
   var MissingTranslationError = (
     /** @class */
-    function(_super) {
+    (function(_super) {
       __extends(MissingTranslationError2, _super);
       function MissingTranslationError2(descriptor, locale) {
         var _this = _super.call(this, IntlErrorCode.MISSING_TRANSLATION, 'Missing message: "'.concat(descriptor.id, '" for locale "').concat(locale, '", using ').concat(descriptor.defaultMessage ? "default message (".concat(typeof descriptor.defaultMessage === "string" ? descriptor.defaultMessage : descriptor.defaultMessage.map(function(e) {
@@ -48681,7 +48694,7 @@ ${indent}}` : "}";
         return _this;
       }
       return MissingTranslationError2;
-    }(IntlError)
+    })(IntlError)
   );
   function invariant(condition, message, Err) {
     if (Err === void 0) {
@@ -53979,4 +53992,4 @@ ${indent}}` : "}";
   exports.getSummaryJson = getSummaryJson;
   Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
   return exports;
-}({});
+})({});

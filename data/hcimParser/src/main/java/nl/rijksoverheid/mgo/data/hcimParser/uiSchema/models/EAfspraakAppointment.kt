@@ -29,7 +29,7 @@ data class EAfspraakAppointment(
     val serviceCategory: MgoCodeableConcept? = null,
     val participant: List<Participant>? = null,
     val referenceId: String,
-    val onlineEditable: ExtensionValue_Of_structure_0_5475400636084291? = null,
+    val onlineEditable: ExtensionValue_Of_structure_0_08131689769193406? = null,
     val fhirVersion: String = "R3",
     val end: MgoDateTime? = null,
     val indication: List<MgoReference>? = null,

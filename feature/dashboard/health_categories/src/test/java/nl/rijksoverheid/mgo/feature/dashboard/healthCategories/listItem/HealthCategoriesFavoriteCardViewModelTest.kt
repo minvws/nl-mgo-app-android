@@ -44,6 +44,24 @@ class HealthCategoriesFavoriteCardViewModelTest {
       }
     }
 
+  @Test
+  fun testNoData() =
+    runTest {
+      // Given: stored organization
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
+
+      // Given: Fhir repository returns success that is non empty
+      fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = true))
+
+      // When: Creating viewmodel
+      val viewModel = createViewModel(category = TEST_HEALTH_CATEGORY_PROBLEMS)
+
+      // Then: List item state is loaded
+      viewModel.isLoading.test {
+        assertFalse(awaitItem())
+      }
+    }
+
   private fun createViewModel(category: HealthCategoryGroup.HealthCategory) =
     HealthCategoriesFavoriteCardViewModel(
       category = category,

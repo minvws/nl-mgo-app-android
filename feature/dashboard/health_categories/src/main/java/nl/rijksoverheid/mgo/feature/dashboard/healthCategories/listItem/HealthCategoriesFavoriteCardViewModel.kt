@@ -62,9 +62,13 @@ internal class HealthCategoriesFavoriteCardViewModel
               }.flatten()
               .flatten()
 
-          // Observe the fhir responses
-          combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest {
+          if (fhirResponseFlows.isEmpty()) {
             _isLoading.update { false }
+          } else {
+            // Observe the fhir responses
+            combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest {
+              _isLoading.update { false }
+            }
           }
         }
       }

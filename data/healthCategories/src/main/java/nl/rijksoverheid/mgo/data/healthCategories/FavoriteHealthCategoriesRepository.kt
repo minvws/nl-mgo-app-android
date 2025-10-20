@@ -20,7 +20,7 @@ class FavoriteHealthCategoriesRepository
       keyValueStorage
         .observe<String>(KEY_FAVORITE_HEALTH_CARE_CATEGORIES)
         .map {
-          if (it.isBlank()) {
+          if (it.isNullOrBlank()) {
             emptyList()
           } else {
             it.split(",")

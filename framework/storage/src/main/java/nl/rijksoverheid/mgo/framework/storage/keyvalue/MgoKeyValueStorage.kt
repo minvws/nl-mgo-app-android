@@ -12,7 +12,7 @@ interface MgoKeyValueStorage {
 
   fun <T : Any> get(key: KeyValueStorageKey): T?
 
-  fun <T : Any> observe(key: KeyValueStorageKey): Flow<T>
+  fun <T : Any> observe(key: KeyValueStorageKey): Flow<T?>
 
   fun delete(key: KeyValueStorageKey)
 

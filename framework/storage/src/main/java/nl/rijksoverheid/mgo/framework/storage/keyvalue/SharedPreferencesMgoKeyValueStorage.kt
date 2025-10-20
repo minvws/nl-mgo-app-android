@@ -36,19 +36,21 @@ class SharedPreferencesMgoKeyValueStorage
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> observe(key: KeyValueStorageKey): Flow<T> =
+    override fun <T : Any> observe(key: KeyValueStorageKey): Flow<T?> =
       callbackFlow {
-        get<T>(key)?.let { trySend(it) }
+        val initialValue: T? = get(key)
+        trySend(initialValue)
+
         val listener =
           SharedPreferences.OnSharedPreferenceChangeListener { prefs, changedKey ->
             if (changedKey == key) {
-              val newValue = prefs.all[changedKey]
-              if (newValue != null) {
-                trySend(newValue as T)
-              }
+              val newValue = prefs.all[changedKey] as? T
+              trySend(newValue)
             }
           }
+
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+
         awaitClose {
           sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
         }

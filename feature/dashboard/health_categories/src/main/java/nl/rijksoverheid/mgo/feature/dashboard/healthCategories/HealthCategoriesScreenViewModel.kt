@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
@@ -31,7 +31,7 @@ internal class HealthCategoriesScreenViewModel
     @Named("ioDispatcher") ioDispatcher: CoroutineDispatcher,
   ) : ViewModel() {
     private val groups = getHealthCategoriesFromDisk()
-    private val initialFavorites = runBlocking(ioDispatcher) { favoriteRepository.observe().first() }
+    private val initialFavorites = runBlocking(ioDispatcher) { favoriteRepository.observe().firstOrNull() ?: listOf() }
     private val initialViewState =
       HealthCategoriesScreenViewState.initialState(
         providers = runBlocking { organizationRepository.get() },

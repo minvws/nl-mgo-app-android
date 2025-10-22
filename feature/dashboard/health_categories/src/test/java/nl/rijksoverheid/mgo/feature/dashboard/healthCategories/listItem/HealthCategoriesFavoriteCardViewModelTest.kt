@@ -9,6 +9,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -36,6 +37,39 @@ class HealthCategoriesFavoriteCardViewModelTest {
       fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = false))
 
       // When: Creating viewmodel and not filtering on organization
+      val viewModel = createViewModel(category = TEST_HEALTH_CATEGORY_PROBLEMS)
+
+      // Then: List item state is loaded
+      viewModel.isLoading.test {
+        assertFalse(awaitItem())
+      }
+    }
+
+  @Test
+  fun testMissingDataService() =
+    runTest {
+      // Given: stored organization
+      organizationRepository.save(TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_DOCUMENTS_DATA_SERVICE)))
+
+      // When: Creating viewmodel
+      val viewModel = createViewModel(category = TEST_HEALTH_CATEGORY_PROBLEMS)
+
+      // Then: List item state is loaded
+      viewModel.isLoading.test {
+        assertFalse(awaitItem())
+      }
+    }
+
+  @Test
+  fun testNoData() =
+    runTest {
+      // Given: stored organization
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
+
+      // Given: Fhir repository returns success that is non empty
+      fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = true))
+
+      // When: Creating viewmodel
       val viewModel = createViewModel(category = TEST_HEALTH_CATEGORY_PROBLEMS)
 
       // Then: List item state is loaded

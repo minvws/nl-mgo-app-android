@@ -10,6 +10,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -74,6 +75,22 @@ class HealthCategoriesListItemViewModelTest {
 
       // When: Creating viewmodel and filtering on organization
       val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_PROBLEMS)
+
+      // Then: List item state is loaded
+      viewModel.listItemState.test {
+        assertTrue(awaitItem() == HealthCategoriesListItemState.NO_DATA)
+      }
+    }
+
+  @Test
+  fun testMissingDataService() =
+    runTest {
+      // Given: stored organization
+      val organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_DOCUMENTS_DATA_SERVICE))
+      organizationRepository.save(organization)
+
+      // When: Creating viewmodel
+      val viewModel = createViewModel(filterOrganization = organization, category = TEST_HEALTH_CATEGORY_PROBLEMS)
 
       // Then: List item state is loaded
       viewModel.listItemState.test {

@@ -1,7 +1,5 @@
 package nl.rijksoverheid.mgo.component.theme.samples
 
-import app.cash.paparazzi.DeviceConfig
-import com.android.ide.common.rendering.api.SessionParams
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotDevices
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
@@ -9,59 +7,152 @@ import org.junit.Test
 
 internal class ColorSampleScreenSnapshotTest {
   @get:Rule
-  val snapshotTestRule =
-    SnapshotTestRule(
-      deviceConfig = DeviceConfig.PIXEL_5.copy(screenHeight = 6000),
-      renderingMode = SessionParams.RenderingMode.V_SCROLL,
-      useDeviceResolution = true,
-    )
+  val snapshotTestRule = SnapshotTestRule()
 
   @Test
-  fun backgroundColors() {
+  fun basicColors() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-      BackgroundColorsPreview()
+      BasicColorsPreview()
     }
   }
 
   @Test
-  fun contentColors() {
+  fun grayColors() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-      ContentColorsPreview()
+      GrayColorsPreview()
     }
   }
 
   @Test
-  fun borderColors() {
+  fun coolGrayColors() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-      BorderColorsPreview()
+      CoolGrayColorsPreview()
     }
   }
 
   @Test
-  fun symbolColors() {
+  fun logoBlueColors() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-      SymbolColorsPreview()
+      LogoBlueColorsPreview()
     }
   }
 
   @Test
-  fun sentimentColors() {
+  fun skyBlueColors() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-      SentimentColorsPreview()
+      SkyBlueColorsPreview()
     }
   }
 
   @Test
-  fun interactiveColors() {
+  fun darkBlueColors() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-      InteractiveColorsPreview()
+      DarkBlueColorsPreview()
     }
   }
 
   @Test
-  fun supportColorsPreview() {
+  fun lightBlueColors() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
-      InteractiveColorsPreview()
+      LightBlueColorsPreview()
+    }
+  }
+
+  @Test
+  fun greenColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      GreenColorsPreview()
+    }
+  }
+
+  @Test
+  fun darkGreenColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      DarkGreenColorsPreview()
+    }
+  }
+
+  @Test
+  fun mintColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      MintColorsPreview()
+    }
+  }
+
+  @Test
+  fun mossColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      MossColorsPreview()
+    }
+  }
+
+  @Test
+  fun yellowColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      YellowColorsPreview()
+    }
+  }
+
+  @Test
+  fun darkYellowColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      DarkYellowColorsPreview()
+    }
+  }
+
+  @Test
+  fun orangeColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      OrangeColorsPreview()
+    }
+  }
+
+  @Test
+  fun redColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      RedColorsPreview()
+    }
+  }
+
+  @Test
+  fun rubyColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      RubyColorsPreview()
+    }
+  }
+
+  @Test
+  fun violetColors() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      VioletColorsPreview()
+    }
+  }
+
+  @Test
+  fun pinkColorsPreview() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      PinkColorsPreview()
+    }
+  }
+
+  @Test
+  fun purpleColorsPreview() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      PurpleColorsPreview()
+    }
+  }
+
+  @Test
+  fun brownColorsPreview() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      BrownColorsPreview()
+    }
+  }
+
+  @Test
+  fun darkBrownColorsPreview() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      DarkBrownColorsPreview()
     }
   }
 }

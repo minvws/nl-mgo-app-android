@@ -15,7 +15,6 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import okhttp3.OkHttpClient
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test

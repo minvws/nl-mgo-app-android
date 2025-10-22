@@ -55,7 +55,9 @@ class SharedPreferencesMgoKeyValueStorageTest {
     runTest {
       keyValueStorage.save(key = "key", value = true)
       keyValueStorage.observe<Boolean>("key").test {
+        keyValueStorage.save(key = "key", value = false)
         assertEquals(awaitItem(), true)
+        assertEquals(awaitItem(), false)
       }
     }
 

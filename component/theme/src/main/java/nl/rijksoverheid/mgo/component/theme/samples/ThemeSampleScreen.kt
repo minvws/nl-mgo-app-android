@@ -29,7 +29,6 @@ import nl.rijksoverheid.mgo.component.theme.Allergies
 import nl.rijksoverheid.mgo.component.theme.BackgroundsPrimary
 import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
-import nl.rijksoverheid.mgo.component.theme.Black
 import nl.rijksoverheid.mgo.component.theme.Contacts
 import nl.rijksoverheid.mgo.component.theme.Device
 import nl.rijksoverheid.mgo.component.theme.Documents

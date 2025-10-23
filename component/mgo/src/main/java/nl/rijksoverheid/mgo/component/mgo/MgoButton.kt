@@ -28,6 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.ActionsSolidBackground
+import nl.rijksoverheid.mgo.component.theme.ActionsSolidText
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalBackground
 import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalText
@@ -176,6 +178,7 @@ enum class MgoButtonTheme {
   TERTIARY_NEGATIVE,
   LINK,
   DIGID,
+  SOLID,
 }
 
 @Composable
@@ -189,6 +192,7 @@ private fun MgoButtonTheme.getBackgroundColor(): Color =
     MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
     MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
     MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
+    MgoButtonTheme.SOLID -> MaterialTheme.colorScheme.ActionsSolidBackground()
   }
 
 private fun MgoButtonTheme.getMaterialIcon(): ImageVector? =
@@ -215,6 +219,7 @@ private fun MgoButtonTheme.getContentColor(): Color =
     MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveTertiaryCriticalText()
     MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultText(true)
     MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
+    MgoButtonTheme.SOLID -> MaterialTheme.colorScheme.ActionsSolidText()
   }
 
 @PreviewLightDark

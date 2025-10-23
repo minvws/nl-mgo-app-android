@@ -73,7 +73,7 @@ fun MgoBottomButtons(
             .testTag(MgoBottomButtonsTestTag.PRIMARY_BUTTON),
         buttonText = primaryButton.text,
         onClick = primaryButton.onClick,
-        buttonTheme = primaryButton.overrideTheme ?: MgoButtonTheme.PRIMARY_DEFAULT,
+        buttonTheme = primaryButton.overrideTheme ?: MgoButtonTheme.SOLID,
         isLoading = primaryButton.isLoading,
       )
     }

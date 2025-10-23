@@ -122,62 +122,72 @@ fun ColorScheme.SymbolsTertiary(isSystemDarkTheme: Boolean = LocalAppThemeProvid
 // Categories
 
 @Composable
-fun ColorScheme.Rijkslint(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesRijkslint(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) LogoBlue300 else LogoBlue500
 
 @Composable
-fun ColorScheme.Medication(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesMedication(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkGreen300 else DarkGreen500
 
 @Composable
-fun ColorScheme.Contacts(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesContacts(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkBlue300 else DarkBlue500
 
 @Composable
-fun ColorScheme.Laboratory(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesLaboratory(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) SkyBlue300 else SkyBlue500
 
 @Composable
-fun ColorScheme.Mental(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Purple300 else Purple500
+fun ColorScheme.CategoriesMental(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Purple300 else Purple500
 
 @Composable
-fun ColorScheme.Device(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Moss300 else Moss500
+fun ColorScheme.CategoriesDevice(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Moss300 else Moss500
 
 @Composable
-fun ColorScheme.Vitals(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Ruby300 else Ruby500
+fun ColorScheme.CategoriesVitals(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Ruby300 else Ruby500
 
 @Composable
-fun ColorScheme.Documents(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesDocuments(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkBrown300 else DarkBrown500
 
 @Composable
-fun ColorScheme.Vaccinations(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Mint300 else Mint800
+fun ColorScheme.CategoriesVaccinations(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Mint300 else Mint800
 
 @Composable
-fun ColorScheme.Allergies(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Orange300 else Orange500
+fun ColorScheme.CategoriesAllergies(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Orange300 else Orange500
 
 @Composable
-fun ColorScheme.Problems(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Red300 else Red500
+fun ColorScheme.CategoriesProblems(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Red300 else Red500
 
 @Composable
-fun ColorScheme.Administration(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Pink300 else Pink700
+fun ColorScheme.CategoriesAdministration(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Pink300 else Pink700
 
 @Composable
-fun ColorScheme.Warning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesWarning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkYellow300 else DarkYellow800
 
 @Composable
-fun ColorScheme.Providers(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesProviders(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) LightBlue300 else LightBlue800
 
 @Composable
-fun ColorScheme.Procedures(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Violet300 else Violet500
+fun ColorScheme.CategoriesProcedures(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Violet300 else Violet500
 
 @Composable
-fun ColorScheme.Lifestyle(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Green300 else Green500
+fun ColorScheme.CategoriesLifestyle(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Green300 else Green500
 
 @Composable
-fun ColorScheme.Plan(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Brown300 else Brown500
+fun ColorScheme.CategoriesPlan(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Brown300 else Brown500
 
 // Actions
 
@@ -204,7 +214,7 @@ fun ColorScheme.ActionsGhostText(isSystemDarkTheme: Boolean = LocalAppThemeProvi
 
 @Composable
 fun ColorScheme.StatesInformative(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) DarkBlue500 else DarkBlue300
+  if (isSystemDarkTheme) DarkBlue300 else DarkBlue500
 
 @Composable
 fun ColorScheme.StatesPositive(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =

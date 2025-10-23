@@ -5,22 +5,22 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import nl.rijksoverheid.mgo.component.theme.categoriesAllergies
-import nl.rijksoverheid.mgo.component.theme.categoriesContacts
-import nl.rijksoverheid.mgo.component.theme.categoriesDevice
-import nl.rijksoverheid.mgo.component.theme.categoriesDocuments
-import nl.rijksoverheid.mgo.component.theme.categoriesLaboratory
-import nl.rijksoverheid.mgo.component.theme.categoriesLifestyle
-import nl.rijksoverheid.mgo.component.theme.categoriesMedication
-import nl.rijksoverheid.mgo.component.theme.categoriesMental
-import nl.rijksoverheid.mgo.component.theme.categoriesPayer
-import nl.rijksoverheid.mgo.component.theme.categoriesPersonal
-import nl.rijksoverheid.mgo.component.theme.categoriesPlan
-import nl.rijksoverheid.mgo.component.theme.categoriesProblems
-import nl.rijksoverheid.mgo.component.theme.categoriesProcedures
-import nl.rijksoverheid.mgo.component.theme.categoriesVaccinations
-import nl.rijksoverheid.mgo.component.theme.categoriesVital
-import nl.rijksoverheid.mgo.component.theme.categoriesWarnings
+import nl.rijksoverheid.mgo.component.theme.CategoriesAdministration
+import nl.rijksoverheid.mgo.component.theme.CategoriesAllergies
+import nl.rijksoverheid.mgo.component.theme.CategoriesContacts
+import nl.rijksoverheid.mgo.component.theme.CategoriesDevice
+import nl.rijksoverheid.mgo.component.theme.CategoriesDocuments
+import nl.rijksoverheid.mgo.component.theme.CategoriesLaboratory
+import nl.rijksoverheid.mgo.component.theme.CategoriesLifestyle
+import nl.rijksoverheid.mgo.component.theme.CategoriesMedication
+import nl.rijksoverheid.mgo.component.theme.CategoriesMental
+import nl.rijksoverheid.mgo.component.theme.CategoriesPlan
+import nl.rijksoverheid.mgo.component.theme.CategoriesProblems
+import nl.rijksoverheid.mgo.component.theme.CategoriesProcedures
+import nl.rijksoverheid.mgo.component.theme.CategoriesProviders
+import nl.rijksoverheid.mgo.component.theme.CategoriesVaccinations
+import nl.rijksoverheid.mgo.component.theme.CategoriesVitals
+import nl.rijksoverheid.mgo.component.theme.CategoriesWarning
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryIcon
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryStringResource
 
@@ -69,21 +69,21 @@ fun HealthCategoryIcon.getDrawable() =
 @Composable
 fun HealthCategoryIcon.getColor() =
   when (this) {
-    "health_cross" -> MaterialTheme.colorScheme.categoriesProblems()
-    "allergy" -> MaterialTheme.colorScheme.categoriesAllergies()
-    "emergency_home" -> MaterialTheme.colorScheme.categoriesWarnings()
-    "syringe" -> MaterialTheme.colorScheme.categoriesVaccinations()
-    "nutrition" -> MaterialTheme.colorScheme.categoriesLifestyle()
-    "psychology" -> MaterialTheme.colorScheme.categoriesMental()
-    "vital_signs" -> MaterialTheme.colorScheme.categoriesVital()
-    "labs" -> MaterialTheme.colorScheme.categoriesLaboratory()
-    "medical_services" -> MaterialTheme.colorScheme.categoriesProcedures()
-    "pill" -> MaterialTheme.colorScheme.categoriesMedication()
-    "calendar_today" -> MaterialTheme.colorScheme.categoriesContacts()
-    "folder" -> MaterialTheme.colorScheme.categoriesDocuments()
-    "patient_list" -> MaterialTheme.colorScheme.categoriesPlan()
-    "health_and_safety" -> MaterialTheme.colorScheme.categoriesDevice()
-    "person" -> MaterialTheme.colorScheme.categoriesPersonal()
-    "account_balance" -> MaterialTheme.colorScheme.categoriesPayer()
-    else -> MaterialTheme.colorScheme.categoriesProblems()
+    "health_cross" -> MaterialTheme.colorScheme.CategoriesProblems()
+    "allergy" -> MaterialTheme.colorScheme.CategoriesAllergies()
+    "emergency_home" -> MaterialTheme.colorScheme.CategoriesWarning()
+    "syringe" -> MaterialTheme.colorScheme.CategoriesVaccinations()
+    "nutrition" -> MaterialTheme.colorScheme.CategoriesLifestyle()
+    "psychology" -> MaterialTheme.colorScheme.CategoriesMental()
+    "vital_signs" -> MaterialTheme.colorScheme.CategoriesVitals()
+    "labs" -> MaterialTheme.colorScheme.CategoriesLaboratory()
+    "medical_services" -> MaterialTheme.colorScheme.CategoriesProcedures()
+    "pill" -> MaterialTheme.colorScheme.CategoriesMedication()
+    "calendar_today" -> MaterialTheme.colorScheme.CategoriesContacts()
+    "folder" -> MaterialTheme.colorScheme.CategoriesDocuments()
+    "patient_list" -> MaterialTheme.colorScheme.CategoriesPlan()
+    "health_and_safety" -> MaterialTheme.colorScheme.CategoriesDevice()
+    "person" -> MaterialTheme.colorScheme.CategoriesAdministration()
+    "account_balance" -> MaterialTheme.colorScheme.CategoriesProviders()
+    else -> MaterialTheme.colorScheme.CategoriesProblems()
   }

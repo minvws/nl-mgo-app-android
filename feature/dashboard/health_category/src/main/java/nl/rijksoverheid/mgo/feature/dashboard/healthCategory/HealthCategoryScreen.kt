@@ -49,10 +49,10 @@ import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_MEDICATION
@@ -101,9 +101,9 @@ fun HealthCategoryScreen(
       heading = stringResource(CopyR.string.export_pdf_dialog_heading, LocalContext.current.getString(category.heading).lowercase()),
       subHeading = stringResource(CopyR.string.export_pdf_dialog_subheading),
       positiveButtonText = stringResource(CopyR.string.export_pdf_dialog_create_document),
-      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
       negativeButtonText = stringResource(CopyR.string.common_cancel),
-      negativeButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      negativeButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
       onClickPositiveButton = {
         showExportPdfDialog = false
         viewModel.generatePdf()
@@ -325,7 +325,7 @@ private fun LazyItemScope.NoDataContent(
             .padding(top = 8.dp),
         text = stringResource(id = CopyR.string.health_category_empty_subheading),
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.contentSecondary(),
+        color = MaterialTheme.colorScheme.LabelsSecondary(),
         textAlign = TextAlign.Center,
       )
     }
@@ -350,7 +350,7 @@ private fun HealthCategoryCard(
         modifier = Modifier.padding(top = 8.dp),
         text = subtitle,
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.contentSecondary(),
+        color = MaterialTheme.colorScheme.LabelsSecondary(),
       )
     }
   }

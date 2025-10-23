@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentPrimary
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -91,7 +91,7 @@ fun SettingsAboutSafetyScreen(onNavigateBack: () -> Unit) {
                 .padding(top = 8.dp, bottom = 16.dp),
             text = stringResource(id = CopyR.string.settings_about_this_app_safety_subheading),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.contentPrimary(),
+            color = MaterialTheme.colorScheme.LabelsPrimary(),
           )
         }
 
@@ -114,7 +114,7 @@ private fun SettingsAboutSafetyListItemCard(
 ) {
   MgoCard(modifier = modifier) {
     Row(modifier = Modifier.padding(16.dp)) {
-      Icon(imageVector = item.icon, contentDescription = null, tint = MaterialTheme.colorScheme.symbolsPrimary())
+      Icon(imageVector = item.icon, contentDescription = null, tint = MaterialTheme.colorScheme.SymbolsPrimary())
       Column(modifier = Modifier.padding(start = 8.dp)) {
         Text(
           text = stringResource(item.heading),
@@ -124,7 +124,7 @@ private fun SettingsAboutSafetyListItemCard(
           modifier = Modifier.padding(top = 4.dp),
           text = stringResource(item.subHeading),
           style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
       }
     }

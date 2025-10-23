@@ -27,19 +27,11 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
+import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.sentimentCritical
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a screen where you can remove a health care provider.
- *
- * @param providerId The id of the health care provider.
- * @param providerName The name of the health care provider.
- * @param onNavigateBack Called when requested to navigate back.
- * @param onNavigateToDashboard Called when requested to navigate to the dashboard (root screen with bottombar).
- */
 @Composable
 fun RemoveOrganizationScreen(
   providerId: String,
@@ -85,7 +77,7 @@ private fun RemoveOrganizationScreenContent(
               Modifier
                 .padding(top = TopAppBarDefaults.LargeAppBarCollapsedHeight)
                 .size(102.dp)
-                .background(MaterialTheme.colorScheme.sentimentCritical(), CircleShape)
+                .background(MaterialTheme.colorScheme.StatesCritical(), CircleShape)
                 .align(Alignment.CenterHorizontally),
             contentAlignment = Alignment.Center,
           ) {
@@ -94,7 +86,7 @@ private fun RemoveOrganizationScreenContent(
                 Modifier
                   .size(61.dp),
               painter = painterResource(id = R.drawable.ic_delete),
-              tint = MaterialTheme.colorScheme.backgroundSecondary(),
+              tint = MaterialTheme.colorScheme.BackgroundsSecondary(),
               contentDescription = null,
             )
           }

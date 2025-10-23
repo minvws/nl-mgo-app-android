@@ -37,17 +37,12 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a screen where you can start the authentication process with DigiD.
- *
- * @param onNavigateToDigidMock Called when requested to navigate to a DigiD mock screen (temporary).
- */
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
   val activity = LocalContext.current as FragmentActivity
@@ -60,7 +55,7 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
       heading = stringResource(CopyR.string.login_failed_dialog_heading),
       subHeading = stringResource(CopyR.string.login_failed_dialog_subheading),
       positiveButtonText = stringResource(CopyR.string.common_ok),
-      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
       onClickPositiveButton = {
         showLoginFailedDialog = false
       },

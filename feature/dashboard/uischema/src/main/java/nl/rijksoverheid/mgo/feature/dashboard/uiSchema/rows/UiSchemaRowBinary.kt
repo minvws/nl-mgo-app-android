@@ -32,11 +32,11 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
+import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.sentimentCritical
-import nl.rijksoverheid.mgo.component.theme.sentimentInformative
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
+import nl.rijksoverheid.mgo.component.theme.StatesInformative
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
@@ -91,7 +91,7 @@ internal fun UiSchemaRowBinary(
     is UISchemaRow.Binary.NotDownloaded.Error -> {
       UISchemaRowError(
         icon = R.drawable.ic_error,
-        iconTint = MaterialTheme.colorScheme.sentimentCritical(),
+        iconTint = MaterialTheme.colorScheme.StatesCritical(),
         heading = CopyR.string.hc_documents_error,
         onTryAgain = {
           onClick(row)
@@ -102,7 +102,7 @@ internal fun UiSchemaRowBinary(
     is UISchemaRow.Binary.Empty -> {
       UISchemaRowError(
         icon = R.drawable.ic_info,
-        iconTint = MaterialTheme.colorScheme.sentimentInformative(),
+        iconTint = MaterialTheme.colorScheme.StatesInformative(),
         heading = CopyR.string.hc_documents_no_document,
         onTryAgain = null,
       )
@@ -128,7 +128,7 @@ private fun UiSchemaRowBinary(
         Modifier
           .weight(1f)
           .padding(end = 8.dp),
-      color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      color = MaterialTheme.colorScheme.ActionsGhostText(),
       text = row.value,
       style = MaterialTheme.typography.bodyMedium,
     )
@@ -137,13 +137,13 @@ private fun UiSchemaRowBinary(
       CircularProgressIndicator(
         modifier = Modifier.size(24.dp),
         strokeWidth = 3.dp,
-        trackColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-        color = MaterialTheme.colorScheme.backgroundTertiary(),
+        trackColor = MaterialTheme.colorScheme.ActionsGhostText(),
+        color = MaterialTheme.colorScheme.BackgroundsTertiary(),
       )
     } else {
       Icon(
         painter = painterResource(R.drawable.ic_attachment),
-        tint = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+        tint = MaterialTheme.colorScheme.ActionsGhostText(),
         contentDescription = null,
       )
     }
@@ -180,7 +180,7 @@ private fun UISchemaRowError(
           textAlign = TextAlign.Center,
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+          color = MaterialTheme.colorScheme.ActionsGhostText(),
         )
       }
     }

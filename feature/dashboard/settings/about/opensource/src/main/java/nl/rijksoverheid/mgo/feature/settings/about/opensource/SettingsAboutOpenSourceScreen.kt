@@ -20,18 +20,12 @@ import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import java.io.InputStream
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a screen that displays all open source libraries used in the app.
- * https://github.com/mikepenz/AboutLibraries is used automatically generate the libraries used.
- *
- * @param onNavigateBack Called when requested to navigate back.
- */
 @Composable
 fun SettingsAboutOpenSourceScreen(onNavigateBack: () -> Unit) {
   val context = LocalContext.current
@@ -107,7 +101,7 @@ private fun SettingsAboutOpenSourceListItem(
           modifier = Modifier.padding(top = 4.dp),
           text = description,
           style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
       }
     }

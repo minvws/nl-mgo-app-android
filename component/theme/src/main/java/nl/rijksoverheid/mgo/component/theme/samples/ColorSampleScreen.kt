@@ -85,6 +85,7 @@ import nl.rijksoverheid.mgo.component.theme.Green300
 import nl.rijksoverheid.mgo.component.theme.Green400
 import nl.rijksoverheid.mgo.component.theme.Green50
 import nl.rijksoverheid.mgo.component.theme.Green500
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LightBlue100
 import nl.rijksoverheid.mgo.component.theme.LightBlue200
 import nl.rijksoverheid.mgo.component.theme.LightBlue300
@@ -172,7 +173,6 @@ import nl.rijksoverheid.mgo.component.theme.Yellow500
 import nl.rijksoverheid.mgo.component.theme.Yellow600
 import nl.rijksoverheid.mgo.component.theme.Yellow700
 import nl.rijksoverheid.mgo.component.theme.Yellow800
-import nl.rijksoverheid.mgo.component.theme.contentPrimary
 
 @Composable
 private fun BasicColors() {
@@ -540,17 +540,17 @@ private fun ColorSample(
 private fun Color.getTextColor(): Color =
   if (isSystemInDarkTheme()) {
     if (luminance() <= 0.5f) {
-      MaterialTheme.colorScheme.contentPrimary()
+      MaterialTheme.colorScheme.LabelsPrimary()
     } else {
       MaterialTheme.colorScheme
-        .contentPrimary(!isSystemInDarkTheme())
+        .LabelsPrimary(!isSystemInDarkTheme())
     }
   } else {
     if (luminance() >= 0.5f) {
-      MaterialTheme.colorScheme.contentPrimary()
+      MaterialTheme.colorScheme.LabelsPrimary()
     } else {
       MaterialTheme.colorScheme
-        .contentPrimary(!isSystemInDarkTheme())
+        .LabelsPrimary(!isSystemInDarkTheme())
     }
   }
 

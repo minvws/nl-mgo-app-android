@@ -50,8 +50,8 @@ import net.engawapg.lib.zoomable.zoomableWithScroll
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import sendFileToOtherApp
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -141,7 +141,7 @@ private fun PdfLoadingContent() {
     Text(
       modifier = Modifier.padding(top = 16.dp),
       text = stringResource(CopyR.string.pdf_viewer_loading),
-      color = MaterialTheme.colorScheme.contentSecondary(),
+      color = MaterialTheme.colorScheme.LabelsSecondary(),
       style = MaterialTheme.typography.bodyMedium,
     )
   }

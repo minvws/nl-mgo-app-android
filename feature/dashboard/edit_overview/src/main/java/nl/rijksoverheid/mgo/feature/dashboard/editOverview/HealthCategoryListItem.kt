@@ -28,9 +28,9 @@ import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.sentimentCritical
-import nl.rijksoverheid.mgo.component.theme.sentimentPositive
-import nl.rijksoverheid.mgo.component.theme.symbolsTertiary
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
+import nl.rijksoverheid.mgo.component.theme.StatesPositive
+import nl.rijksoverheid.mgo.component.theme.SymbolsTertiary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_ALLERGIES
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
@@ -54,8 +54,8 @@ internal fun HealthCategoryListItem(
           }
         val iconColor =
           when (state) {
-            HealthCategoryListItemState.ADD -> MaterialTheme.colorScheme.sentimentPositive()
-            HealthCategoryListItemState.REMOVE -> MaterialTheme.colorScheme.sentimentCritical()
+            HealthCategoryListItemState.ADD -> MaterialTheme.colorScheme.StatesPositive()
+            HealthCategoryListItemState.REMOVE -> MaterialTheme.colorScheme.StatesCritical()
           }
         Icon(imageVector = icon, contentDescription = null, tint = iconColor)
       }
@@ -82,7 +82,7 @@ internal fun HealthCategoryListItem(
           modifier = dragHandleModifier,
           onClick = {},
         ) {
-          Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.symbolsTertiary(), contentDescription = null)
+          Icon(imageVector = Icons.Default.DragHandle, tint = MaterialTheme.colorScheme.SymbolsTertiary(), contentDescription = null)
         }
       }
     }

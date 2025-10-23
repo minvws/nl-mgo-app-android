@@ -30,11 +30,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.healthCategories.getString
+import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
-import nl.rijksoverheid.mgo.component.theme.contentPrimary
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -96,7 +96,7 @@ internal fun HealthCategoriesListItemContent(
             MaterialTheme.typography
               .bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.contentPrimary(),
+          color = MaterialTheme.colorScheme.LabelsPrimary(),
         )
         val subheadingText =
           if (listItemState == HealthCategoriesListItemState.NO_DATA) {
@@ -110,7 +110,7 @@ internal fun HealthCategoriesListItemContent(
           style =
             MaterialTheme.typography
               .bodyMedium,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
       }
       if (listItemState == HealthCategoriesListItemState.LOADING) {
@@ -120,8 +120,8 @@ internal fun HealthCategoriesListItemContent(
               .padding(start = 8.dp)
               .size(24.dp),
           strokeWidth = 2.dp,
-          trackColor = MaterialTheme.colorScheme.backgroundTertiary().copy(alpha = 0.5f),
-          color = MaterialTheme.colorScheme.symbolsSecondary(),
+          trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
+          color = MaterialTheme.colorScheme.SymbolsSecondary(),
         )
       } else {
         Box(modifier = Modifier.size(24.dp))

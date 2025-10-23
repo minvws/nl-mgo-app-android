@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 
 @Composable
@@ -26,7 +26,7 @@ internal fun UiSchemaRowStatic(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
         text = heading,
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.contentSecondary(),
+        color = MaterialTheme.colorScheme.LabelsSecondary(),
       )
     }
     SelectionContainer {

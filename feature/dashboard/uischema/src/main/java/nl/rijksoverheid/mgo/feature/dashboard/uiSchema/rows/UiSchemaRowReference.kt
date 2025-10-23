@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -38,7 +38,7 @@ internal fun UiSchemaRowReference(
         Text(
           text = heading,
           style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
       }
       Text(
@@ -51,7 +51,7 @@ internal fun UiSchemaRowReference(
     Icon(
       imageVector = Icons.Rounded.ChevronRight,
       contentDescription = stringResource(CopyR.string.common_next),
-      tint = MaterialTheme.colorScheme.symbolsSecondary(),
+      tint = MaterialTheme.colorScheme.SymbolsSecondary(),
     )
   }
 }

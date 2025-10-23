@@ -28,19 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.ActionsSolidBackground
 import nl.rijksoverheid.mgo.component.theme.ActionsSolidText
+import nl.rijksoverheid.mgo.component.theme.ActionsTonalBackground
+import nl.rijksoverheid.mgo.component.theme.ActionsTonalText
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalBackground
-import nl.rijksoverheid.mgo.component.theme.interactivePrimaryCriticalText
-import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryCriticalBackground
-import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryCriticalText
-import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -184,14 +178,14 @@ enum class MgoButtonTheme {
 @Composable
 private fun MgoButtonTheme.getBackgroundColor(): Color =
   when (this) {
-    MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
-    MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalBackground()
-    MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
-    MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalBackground()
-    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultBackground()
+    MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.ActionsSolidBackground()
+    MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.StatesCritical()
+    MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.ActionsTonalBackground()
+    MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.StatesCritical()
+    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.ActionsSolidBackground()
     MgoButtonTheme.TERTIARY_DEFAULT -> Color.Transparent
     MgoButtonTheme.TERTIARY_NEGATIVE -> Color.Transparent
-    MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground()
+    MgoButtonTheme.LINK -> MaterialTheme.colorScheme.ActionsTonalBackground()
     MgoButtonTheme.SOLID -> MaterialTheme.colorScheme.ActionsSolidBackground()
   }
 
@@ -211,14 +205,14 @@ private fun MgoButtonTheme.getIcon(): Int? =
 @Composable
 private fun MgoButtonTheme.getContentColor(): Color =
   when (this) {
-    MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.interactivePrimaryDefaultText()
-    MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.interactivePrimaryCriticalText()
-    MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
-    MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveSecondaryCriticalText()
-    MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.interactiveTertiaryDefaultText()
-    MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.interactiveTertiaryCriticalText()
-    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.interactivePrimaryDefaultText(true)
-    MgoButtonTheme.LINK -> MaterialTheme.colorScheme.interactiveSecondaryDefaultText()
+    MgoButtonTheme.PRIMARY_DEFAULT -> MaterialTheme.colorScheme.ActionsSolidText()
+    MgoButtonTheme.PRIMARY_NEGATIVE -> MaterialTheme.colorScheme.ActionsGhostText(false)
+    MgoButtonTheme.SECONDARY_DEFAULT -> MaterialTheme.colorScheme.ActionsTonalText()
+    MgoButtonTheme.SECONDARY_NEGATIVE -> MaterialTheme.colorScheme.ActionsGhostText(false)
+    MgoButtonTheme.TERTIARY_DEFAULT -> MaterialTheme.colorScheme.ActionsGhostText()
+    MgoButtonTheme.TERTIARY_NEGATIVE -> MaterialTheme.colorScheme.StatesCritical()
+    MgoButtonTheme.DIGID -> MaterialTheme.colorScheme.ActionsSolidText()
+    MgoButtonTheme.LINK -> MaterialTheme.colorScheme.ActionsTonalText()
     MgoButtonTheme.SOLID -> MaterialTheme.colorScheme.ActionsSolidText()
   }
 

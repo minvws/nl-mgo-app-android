@@ -46,8 +46,8 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -207,7 +207,7 @@ private fun LazyListScope.NoProviders(canScroll: Boolean) {
               .padding(top = 8.dp),
           text = stringResource(id = CopyR.string.common_no_organizations_subheading),
           style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
           textAlign = TextAlign.Center,
         )
       }

@@ -22,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -32,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,14 +42,13 @@ import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
-import nl.rijksoverheid.mgo.component.mgo.MgoButton
-import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -291,16 +292,19 @@ private fun LazyListScope.WithProviders(
             .fillMaxWidth()
             .testTag(DELETE_ORGANIZATION_BUTTON),
       ) {
-        MgoButton(
+        TextButton(
           modifier =
             Modifier
               .align(Alignment.CenterHorizontally),
-          buttonText = stringResource(id = CopyR.string.organizations_remove_organization),
-          onClick = {
-            onClickRemoveOrganization(organization)
-          },
-          buttonTheme = MgoButtonTheme.TERTIARY_NEGATIVE,
-        )
+          onClick = { onClickRemoveOrganization(organization) },
+        ) {
+          Text(
+            text = stringResource(id = CopyR.string.organizations_remove_organization),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.StatesCritical(),
+          )
+        }
       }
     }
   }

@@ -10,72 +10,37 @@ internal class MgoButtonSnapshotTest {
   val snapshotTestRule = SnapshotTestRule()
 
   @Test
-  fun primaryDefault() {
+  fun solid() {
     snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonPrimaryDefaultPreview()
+      MgoButtonPrimarySolidPreview()
     }
   }
 
   @Test
-  fun primaryDefaultLoading() {
+  fun solidLoading() {
     snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonPrimaryDefaultLoadingPreview()
+      MgoButtonPrimarySolidLoadingPreview()
     }
   }
 
   @Test
-  fun primaryNegative() {
+  fun solidIcon() {
     snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonPrimaryNegativePreview()
+      MgoButtonPrimarySolidWithIconPreview()
     }
   }
 
   @Test
-  fun secondaryDefault() {
+  fun tonal() {
     snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonSecondaryDefaultPreview()
+      MgoButtonPrimaryTonalPreview()
     }
   }
 
   @Test
-  fun secondaryNegative() {
+  fun ghost() {
     snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonSecondaryNegativePreview()
-    }
-  }
-
-  @Test
-  fun tertiaryDefault() {
-    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonTertiaryDefaultPreview()
-    }
-  }
-
-  @Test
-  fun tertiaryDefaultLoading() {
-    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonTertiaryDefaultLoadingPreview()
-    }
-  }
-
-  @Test
-  fun tertiaryNegative() {
-    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonTertiaryNegativePreview()
-    }
-  }
-
-  @Test
-  fun digid() {
-    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonDigidPreview()
-    }
-  }
-
-  @Test
-  fun link() {
-    snapshotTestRule.snapshots(SnapshotDevices.PhoneLightDarkPortrait) {
-      MgoButtonLinkPreview()
+      MgoButtonPrimaryGhostPreview()
     }
   }
 }

@@ -34,37 +34,37 @@ fun MgoTheme(
 @Composable
 private fun getDarkColorScheme() =
   darkColorScheme(
-    primary = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(true),
-    secondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(true),
-    background = MaterialTheme.colorScheme.backgroundPrimary(true),
-    surface = MaterialTheme.colorScheme.backgroundSecondary(true),
-    surfaceVariant = MaterialTheme.colorScheme.backgroundSecondary(true),
-    onPrimary = MaterialTheme.colorScheme.backgroundSecondary(false),
-    onSecondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultText(true),
-    onBackground = MaterialTheme.colorScheme.contentPrimary(true),
-    onSurface = MaterialTheme.colorScheme.contentPrimary(true),
-    error = MaterialTheme.colorScheme.sentimentCritical(true),
-    surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(true),
-    surfaceContainerLow = MaterialTheme.colorScheme.backgroundPrimary(true), // Container color of bottom sheet,
-    outlineVariant = MaterialTheme.colorScheme.borderSecondary(true), // Divider color
+    primary = MaterialTheme.colorScheme.ActionsSolidBackground(true),
+    secondary = MaterialTheme.colorScheme.ActionsTonalBackground(true),
+    background = MaterialTheme.colorScheme.BackgroundsPrimary(true),
+    surface = MaterialTheme.colorScheme.BackgroundsSecondary(true),
+    surfaceVariant = MaterialTheme.colorScheme.BackgroundsSecondary(true),
+    onPrimary = MaterialTheme.colorScheme.LabelsPrimary(true),
+    onSecondary = MaterialTheme.colorScheme.ActionsTonalText(true),
+    onBackground = MaterialTheme.colorScheme.LabelsPrimary(true),
+    onSurface = MaterialTheme.colorScheme.LabelsPrimary(true),
+    error = MaterialTheme.colorScheme.StatesCritical(true),
+    surfaceContainerHigh = MaterialTheme.colorScheme.BackgroundsTertiary(true),
+    surfaceContainerLow = MaterialTheme.colorScheme.BackgroundsPrimary(true), // Container color of bottom sheet,
+    outlineVariant = MaterialTheme.colorScheme.SeparatorsSecondary(true), // Divider color
   )
 
 @Composable
 private fun getLightColorScheme() =
   lightColorScheme(
-    primary = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(false),
-    secondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(false),
-    background = MaterialTheme.colorScheme.backgroundPrimary(false),
-    surface = MaterialTheme.colorScheme.backgroundSecondary(false),
-    surfaceVariant = MaterialTheme.colorScheme.backgroundSecondary(false),
-    onPrimary = MaterialTheme.colorScheme.backgroundSecondary(false),
-    onSecondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultText(false),
-    onBackground = MaterialTheme.colorScheme.contentPrimary(false),
-    onSurface = MaterialTheme.colorScheme.contentPrimary(false),
-    error = MaterialTheme.colorScheme.sentimentCritical(false),
-    surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(false),
-    surfaceContainerLow = MaterialTheme.colorScheme.backgroundPrimary(false), // Container color of bottom sheet
-    outlineVariant = MaterialTheme.colorScheme.borderSecondary(false), // Divider color
+    primary = MaterialTheme.colorScheme.ActionsSolidBackground(false),
+    secondary = MaterialTheme.colorScheme.ActionsTonalBackground(false),
+    background = MaterialTheme.colorScheme.BackgroundsPrimary(false),
+    surface = MaterialTheme.colorScheme.BackgroundsSecondary(false),
+    surfaceVariant = MaterialTheme.colorScheme.BackgroundsSecondary(false),
+    onPrimary = MaterialTheme.colorScheme.BackgroundsSecondary(false),
+    onSecondary = MaterialTheme.colorScheme.ActionsTonalText(false),
+    onBackground = MaterialTheme.colorScheme.LabelsPrimary(false),
+    onSurface = MaterialTheme.colorScheme.LabelsPrimary(false),
+    error = MaterialTheme.colorScheme.StatesCritical(false),
+    surfaceContainerHigh = MaterialTheme.colorScheme.BackgroundsTertiary(false),
+    surfaceContainerLow = MaterialTheme.colorScheme.BackgroundsPrimary(false), // Container color of bottom sheet
+    outlineVariant = MaterialTheme.colorScheme.SeparatorsSecondary(false), // Divider color
   )
 
 // Backgrounds
@@ -199,3 +199,20 @@ fun ColorScheme.ActionsTonalText(isSystemDarkTheme: Boolean = LocalAppThemeProvi
 @Composable
 fun ColorScheme.ActionsGhostText(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) LogoBlue300 else LogoBlue500
+
+// States
+
+@Composable
+fun ColorScheme.StatesInformative(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) DarkBlue500 else DarkBlue300
+
+@Composable
+fun ColorScheme.StatesPositive(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) DarkGreen300 else DarkGreen500
+
+@Composable
+fun ColorScheme.StatesWarning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Yellow300 else Yellow500
+
+@Composable
+fun ColorScheme.StatesCritical(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Red300 else Red500

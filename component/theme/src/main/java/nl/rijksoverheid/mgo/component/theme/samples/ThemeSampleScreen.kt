@@ -49,6 +49,10 @@ import nl.rijksoverheid.mgo.component.theme.Rijkslint
 import nl.rijksoverheid.mgo.component.theme.SeparatorsInvert
 import nl.rijksoverheid.mgo.component.theme.SeparatorsSecondary
 import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
+import nl.rijksoverheid.mgo.component.theme.StatesInformative
+import nl.rijksoverheid.mgo.component.theme.StatesPositive
+import nl.rijksoverheid.mgo.component.theme.StatesWarning
 import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.component.theme.SymbolsTertiary
@@ -147,6 +151,19 @@ private fun Actions() {
 }
 
 @Composable
+private fun States() {
+  Column {
+    Text(text = "States", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(vertical = 16.dp)) {
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesInformative(), text = "States Informative")
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesPositive(), text = "States Positive")
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesWarning(), text = "States Warning")
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesCritical(), text = "States Critical")
+    }
+  }
+}
+
+@Composable
 private fun ThemeSample(
   theme: Color,
   text: String,
@@ -234,6 +251,16 @@ internal fun ActionsPreview() {
   MgoTheme {
     Box(modifier = Modifier.padding(16.dp)) {
       Actions()
+    }
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun StatesPreview() {
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      States()
     }
   }
 }

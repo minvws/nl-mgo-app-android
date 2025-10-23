@@ -43,4 +43,11 @@ internal class ThemeSampleScreenSnapshotTest {
       ActionsPreview()
     }
   }
+
+  @Test
+  fun states() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      StatesPreview()
+    }
+  }
 }

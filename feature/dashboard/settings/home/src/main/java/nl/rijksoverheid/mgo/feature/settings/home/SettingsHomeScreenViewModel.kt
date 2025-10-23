@@ -14,6 +14,7 @@ import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -23,6 +24,7 @@ internal class SettingsHomeScreenViewModel
   constructor(
     @Named("keyValueStore") private val keyValueStore: KeyValueStore,
     @Named("secureKeyValueStore") private val secureKeyValueStore: KeyValueStore,
+    @Named("sharedPreferencesMgoKeyValueStorage") private val keyValueStorage: MgoKeyValueStorage,
     @Named("isDebug") isDebug: Boolean,
     private val organizationRepository: OrganizationRepository,
     deviceHasBiometric: DeviceHasBiometric,
@@ -51,6 +53,7 @@ internal class SettingsHomeScreenViewModel
         keyValueStore.clear()
         secureKeyValueStore.clear()
         organizationRepository.deleteAll()
+        keyValueStorage.deleteAll()
         _navigateToOnboarding.tryEmit(Unit)
       }
     }

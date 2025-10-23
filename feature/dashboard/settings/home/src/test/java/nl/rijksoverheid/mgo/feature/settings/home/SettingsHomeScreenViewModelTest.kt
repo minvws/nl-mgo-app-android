@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import okhttp3.OkHttpClient
@@ -23,6 +24,7 @@ internal class SettingsHomeScreenViewModelTest {
 
   private val keyValueStore = TestKeyValueStore()
   private val secureKeyValueStore = TestKeyValueStore()
+  private val keyValueStorage = MemoryMgoKeyValueStorage()
   private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
 
   @Before
@@ -42,6 +44,7 @@ internal class SettingsHomeScreenViewModelTest {
           deviceHasBiometric = TestDeviceHasBiometric(true),
           isDebug = true,
           organizationRepository = organizationRepository,
+          keyValueStorage = keyValueStorage,
         )
 
       // Then: App theme is system and device has biometric is true
@@ -67,6 +70,7 @@ internal class SettingsHomeScreenViewModelTest {
           deviceHasBiometric = TestDeviceHasBiometric(true),
           isDebug = true,
           organizationRepository = organizationRepository,
+          keyValueStorage = keyValueStorage,
         )
 
       // When: Calling resetApp

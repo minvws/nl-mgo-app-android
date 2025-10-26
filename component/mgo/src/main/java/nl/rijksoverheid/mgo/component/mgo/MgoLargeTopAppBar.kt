@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
 import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
@@ -76,7 +77,7 @@ fun MgoLargeTopAppBar(
                 stringResource(
                   R.string.common_previous,
                 ),
-              tint = MaterialTheme.colorScheme.SymbolsPrimary(),
+              tint = MaterialTheme.colorScheme.LabelsPrimary(),
             )
           }
         }

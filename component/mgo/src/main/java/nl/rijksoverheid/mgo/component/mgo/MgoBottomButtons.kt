@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.component.mgo
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -23,8 +24,8 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 data class MgoBottomButton(
   val text: String,
   val onClick: () -> Unit,
-  val overrideTheme: MgoButtonTheme? = null,
   val isLoading: Boolean = false,
+  @DrawableRes val icon: Int? = null,
 )
 
 object MgoBottomButtonsTestTag {
@@ -63,7 +64,8 @@ fun MgoBottomButtons(
               .testTag(MgoBottomButtonsTestTag.SECONDARY_BUTTON),
           buttonText = secondaryButton.text,
           onClick = secondaryButton.onClick,
-          buttonTheme = MgoButtonTheme.SECONDARY_DEFAULT,
+          buttonTheme = MgoButtonTheme.TONAL,
+          icon = secondaryButton.icon,
         )
       }
       MgoButton(
@@ -73,8 +75,9 @@ fun MgoBottomButtons(
             .testTag(MgoBottomButtonsTestTag.PRIMARY_BUTTON),
         buttonText = primaryButton.text,
         onClick = primaryButton.onClick,
-        buttonTheme = primaryButton.overrideTheme ?: MgoButtonTheme.PRIMARY_DEFAULT,
+        buttonTheme = MgoButtonTheme.SOLID,
         isLoading = primaryButton.isLoading,
+        icon = primaryButton.icon,
       )
     }
   }

@@ -15,24 +15,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 
-/**
- * Composable that shows HTML Text.
- * Currently supports: <b> and <a href>.
- * @param html The text to display. Make sure that the text provided has the HTML tags inside it. This means wrapping the string in CDATA
- * if coming from strings.xml.
- * @param modifier the [Modifier] to be applied.
- * @param style The text style. Defaults to [MaterialTheme.typography.bodyMedium].
- * @param linkColor The color of the (https) links in the text. Defaults to [MaterialTheme.colorScheme.actionTertiaryDefaultText].
- */
 @Composable
 fun MgoHtmlText(
   html: String,
   modifier: Modifier = Modifier,
   style: TextStyle = MaterialTheme.typography.bodyMedium,
-  linkColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+  linkColor: Color = MaterialTheme.colorScheme.ActionsGhostText(),
 ) {
   val annotatedString =
     buildAnnotatedString {

@@ -31,17 +31,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.framework.copy.R
 
-/**
- * Composable that shows a screen where you can select the app theme.
- *
- * @param onNavigateBack Called when requested to navigate back.
- */
 @Composable
 fun SettingsDisplayScreen(onNavigateBack: () -> Unit) {
   val viewModel = hiltViewModel<SettingsDisplayScreenViewModel>()
@@ -134,7 +129,7 @@ private fun ThemeListItem(
       Icon(
         imageVector = theme.getIcon(),
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.symbolsPrimary(),
+        tint = MaterialTheme.colorScheme.SymbolsPrimary(),
       )
 
       Column(
@@ -152,7 +147,7 @@ private fun ThemeListItem(
           Text(
             text = stringResource(subHeading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentSecondary(),
+            color = MaterialTheme.colorScheme.LabelsSecondary(),
           )
         }
       }

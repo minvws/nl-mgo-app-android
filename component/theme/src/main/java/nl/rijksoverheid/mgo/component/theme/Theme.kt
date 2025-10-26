@@ -34,37 +34,37 @@ fun MgoTheme(
 @Composable
 private fun getDarkColorScheme() =
   darkColorScheme(
-    primary = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(true),
-    secondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(true),
-    background = MaterialTheme.colorScheme.backgroundPrimary(true),
-    surface = MaterialTheme.colorScheme.backgroundSecondary(true),
-    surfaceVariant = MaterialTheme.colorScheme.backgroundSecondary(true),
-    onPrimary = MaterialTheme.colorScheme.backgroundSecondary(false),
-    onSecondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultText(true),
-    onBackground = MaterialTheme.colorScheme.contentPrimary(true),
-    onSurface = MaterialTheme.colorScheme.contentPrimary(true),
-    error = MaterialTheme.colorScheme.sentimentCritical(true),
-    surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(true),
-    surfaceContainerLow = MaterialTheme.colorScheme.backgroundPrimary(true), // Container color of bottom sheet,
-    outlineVariant = MaterialTheme.colorScheme.borderSecondary(true), // Divider color
+    primary = MaterialTheme.colorScheme.ActionsSolidBackground(true),
+    secondary = MaterialTheme.colorScheme.ActionsTonalBackground(true),
+    background = MaterialTheme.colorScheme.BackgroundsPrimary(true),
+    surface = MaterialTheme.colorScheme.BackgroundsSecondary(true),
+    surfaceVariant = MaterialTheme.colorScheme.BackgroundsSecondary(true),
+    onPrimary = MaterialTheme.colorScheme.LabelsPrimary(true),
+    onSecondary = MaterialTheme.colorScheme.ActionsTonalText(true),
+    onBackground = MaterialTheme.colorScheme.LabelsPrimary(true),
+    onSurface = MaterialTheme.colorScheme.LabelsPrimary(true),
+    error = MaterialTheme.colorScheme.StatesCritical(true),
+    surfaceContainerHigh = MaterialTheme.colorScheme.BackgroundsTertiary(true),
+    surfaceContainerLow = MaterialTheme.colorScheme.BackgroundsPrimary(true), // Container color of bottom sheet,
+    outlineVariant = MaterialTheme.colorScheme.SeparatorsSecondary(true), // Divider color
   )
 
 @Composable
 private fun getLightColorScheme() =
   lightColorScheme(
-    primary = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(false),
-    secondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(false),
-    background = MaterialTheme.colorScheme.backgroundPrimary(false),
-    surface = MaterialTheme.colorScheme.backgroundSecondary(false),
-    surfaceVariant = MaterialTheme.colorScheme.backgroundSecondary(false),
-    onPrimary = MaterialTheme.colorScheme.backgroundSecondary(false),
-    onSecondary = MaterialTheme.colorScheme.interactiveSecondaryDefaultText(false),
-    onBackground = MaterialTheme.colorScheme.contentPrimary(false),
-    onSurface = MaterialTheme.colorScheme.contentPrimary(false),
-    error = MaterialTheme.colorScheme.sentimentCritical(false),
-    surfaceContainerHigh = MaterialTheme.colorScheme.backgroundTertiary(false),
-    surfaceContainerLow = MaterialTheme.colorScheme.backgroundPrimary(false), // Container color of bottom sheet
-    outlineVariant = MaterialTheme.colorScheme.borderSecondary(false), // Divider color
+    primary = MaterialTheme.colorScheme.ActionsSolidBackground(false),
+    secondary = MaterialTheme.colorScheme.ActionsTonalBackground(false),
+    background = MaterialTheme.colorScheme.BackgroundsPrimary(false),
+    surface = MaterialTheme.colorScheme.BackgroundsSecondary(false),
+    surfaceVariant = MaterialTheme.colorScheme.BackgroundsSecondary(false),
+    onPrimary = MaterialTheme.colorScheme.BackgroundsSecondary(false),
+    onSecondary = MaterialTheme.colorScheme.ActionsTonalText(false),
+    onBackground = MaterialTheme.colorScheme.LabelsPrimary(false),
+    onSurface = MaterialTheme.colorScheme.LabelsPrimary(false),
+    error = MaterialTheme.colorScheme.StatesCritical(false),
+    surfaceContainerHigh = MaterialTheme.colorScheme.BackgroundsTertiary(false),
+    surfaceContainerLow = MaterialTheme.colorScheme.BackgroundsPrimary(false), // Container color of bottom sheet
+    outlineVariant = MaterialTheme.colorScheme.SeparatorsSecondary(false), // Divider color
   )
 
 // Backgrounds
@@ -122,62 +122,72 @@ fun ColorScheme.SymbolsTertiary(isSystemDarkTheme: Boolean = LocalAppThemeProvid
 // Categories
 
 @Composable
-fun ColorScheme.Rijkslint(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesRijkslint(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) LogoBlue300 else LogoBlue500
 
 @Composable
-fun ColorScheme.Medication(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesMedication(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkGreen300 else DarkGreen500
 
 @Composable
-fun ColorScheme.Contacts(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesContacts(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkBlue300 else DarkBlue500
 
 @Composable
-fun ColorScheme.Laboratory(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesLaboratory(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) SkyBlue300 else SkyBlue500
 
 @Composable
-fun ColorScheme.Mental(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Purple300 else Purple500
+fun ColorScheme.CategoriesMental(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Purple300 else Purple500
 
 @Composable
-fun ColorScheme.Device(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Moss300 else Moss500
+fun ColorScheme.CategoriesDevice(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Moss300 else Moss500
 
 @Composable
-fun ColorScheme.Vitals(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Ruby300 else Ruby500
+fun ColorScheme.CategoriesVitals(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Ruby300 else Ruby500
 
 @Composable
-fun ColorScheme.Documents(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesDocuments(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkBrown300 else DarkBrown500
 
 @Composable
-fun ColorScheme.Vaccinations(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Mint300 else Mint800
+fun ColorScheme.CategoriesVaccinations(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Mint300 else Mint800
 
 @Composable
-fun ColorScheme.Allergies(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Orange300 else Orange500
+fun ColorScheme.CategoriesAllergies(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Orange300 else Orange500
 
 @Composable
-fun ColorScheme.Problems(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Red300 else Red500
+fun ColorScheme.CategoriesProblems(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Red300 else Red500
 
 @Composable
-fun ColorScheme.Administration(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Pink300 else Pink700
+fun ColorScheme.CategoriesAdministration(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Pink300 else Pink700
 
 @Composable
-fun ColorScheme.Warning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesWarning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) DarkYellow300 else DarkYellow800
 
 @Composable
-fun ColorScheme.Providers(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+fun ColorScheme.CategoriesProviders(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) LightBlue300 else LightBlue800
 
 @Composable
-fun ColorScheme.Procedures(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Violet300 else Violet500
+fun ColorScheme.CategoriesProcedures(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Violet300 else Violet500
 
 @Composable
-fun ColorScheme.Lifestyle(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Green300 else Green500
+fun ColorScheme.CategoriesLifestyle(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Green300 else Green500
 
 @Composable
-fun ColorScheme.Plan(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Brown300 else Brown500
+fun ColorScheme.CategoriesPlan(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Brown300 else Brown500
 
 // Actions
 
@@ -199,3 +209,20 @@ fun ColorScheme.ActionsTonalText(isSystemDarkTheme: Boolean = LocalAppThemeProvi
 @Composable
 fun ColorScheme.ActionsGhostText(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
   if (isSystemDarkTheme) LogoBlue300 else LogoBlue500
+
+// States
+
+@Composable
+fun ColorScheme.StatesInformative(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) DarkBlue300 else DarkBlue500
+
+@Composable
+fun ColorScheme.StatesPositive(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) DarkGreen300 else DarkGreen500
+
+@Composable
+fun ColorScheme.StatesWarning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) Yellow300 else Yellow500
+
+@Composable
+fun ColorScheme.StatesCritical(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Red300 else Red500

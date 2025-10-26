@@ -45,10 +45,10 @@ import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.supportRijkslint
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_ALLERGIES
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
@@ -110,7 +110,7 @@ private fun EditOverviewBottomSheetContent(
         actions = {
           TextButton(
             { onClickSave(favorites, nonFavorites) },
-            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.supportRijkslint()),
+            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.CategoriesRijkslint()),
           ) {
             Text(text = stringResource(CopyR.string.edit_overview_save), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
           }
@@ -191,7 +191,7 @@ private fun FavoriteEmptyCard(modifier: Modifier = Modifier) {
     Text(
       modifier = Modifier.fillMaxWidth().padding(16.dp),
       text = stringResource(CopyR.string.edit_overview_favorites_empty),
-      color = MaterialTheme.colorScheme.contentSecondary(),
+      color = MaterialTheme.colorScheme.LabelsSecondary(),
       style = MaterialTheme.typography.bodyMedium,
     )
   }

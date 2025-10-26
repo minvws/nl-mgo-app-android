@@ -33,24 +33,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.feature.settings.about.R
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import java.util.Locale
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a screen where you can see various information about the app.
- *
- * @param onNavigateToSecureUse Called when requested to navigate to the secure use screen.
- * @param onNavigateToOpenSource Called when requested to navigate to the open source screen.
- * @param onNavigateToAccessibility Called when requested to navigate to the accessibility info screen.
- * @param onNavigateBack Called when requested to navigate back.
- */
 @Composable
 fun SettingsAboutHomeScreen(
   onNavigateToSecureUse: () -> Unit,
@@ -86,7 +80,7 @@ private fun SettingsAboutHomeScreenContent(
       positiveButtonText =
         stringResource(CopyR.string.common_ok)
           .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
       onClickPositiveButton = { showFhirParserVersionDialog = false },
       heading = stringResource(CopyR.string.settings_about_this_app_version),
       subHeading = viewState.hcimParserVersion,
@@ -107,9 +101,15 @@ private fun SettingsAboutHomeScreenContent(
             Modifier
               .padding(top = 8.dp),
         ) {
+          val image =
+            when (LocalAppThemeProvider.current.appTheme) {
+              AppTheme.SYSTEM -> R.drawable.illustration_vws
+              AppTheme.LIGHT -> R.drawable.illustration_vws
+              AppTheme.DARK -> R.drawable.illustration_vws_night
+            }
           Image(
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(start = 100.dp),
-            painter = painterResource(R.drawable.illustration_vws),
+            painter = painterResource(image),
             contentDescription = null,
           )
           SettingsAboutHomeListItem(
@@ -185,7 +185,7 @@ private fun SettingsAboutHomeListItem(
           Text(
             text = subHeading,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentSecondary(),
+            color = MaterialTheme.colorScheme.LabelsSecondary(),
           )
         }
       }
@@ -194,7 +194,7 @@ private fun SettingsAboutHomeListItem(
         Icon(
           imageVector = icon,
           contentDescription = null,
-          tint = MaterialTheme.colorScheme.symbolsPrimary(),
+          tint = MaterialTheme.colorScheme.SymbolsPrimary(),
         )
       }
     }

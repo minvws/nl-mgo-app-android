@@ -37,10 +37,10 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
+import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.organizations.R
@@ -52,12 +52,6 @@ object OrganizationsScreenTestTag {
   const val EMPTY_STATE = "OrganizationsScreenEmptyState"
 }
 
-/**
- * Composable that shows a screen with a list of added health care providers.
- *
- * @param onNavigateToHealthCategories Called when requested to navigate to the screen that shows health categories.
- * @param onNavigateToLocalisation Called when requested to navigate to the start of navigation where to search for health care providers.
- */
 @Composable
 fun OrganizationsScreen(
   onNavigateToHealthCategories: (organization: MgoOrganization) -> Unit,
@@ -181,7 +175,7 @@ private fun LazyListScope.NoOrganizations(canScroll: Boolean) {
             .padding(top = 8.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_subheading),
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.contentSecondary(),
+        color = MaterialTheme.colorScheme.LabelsSecondary(),
         textAlign = TextAlign.Center,
       )
     }
@@ -236,7 +230,7 @@ private fun LazyListScope.WithOrganizations(
         Icon(
           modifier = Modifier.padding(start = 8.dp),
           painter = painterResource(id = R.drawable.ic_add_organization),
-          tint = MaterialTheme.colorScheme.symbolsSecondary(),
+          tint = MaterialTheme.colorScheme.SymbolsSecondary(),
           contentDescription = null,
         )
       }
@@ -302,7 +296,7 @@ private fun OrganizationCard(
               .fillMaxWidth()
               .height(0.33.dp)
               .padding(start = 16.dp),
-          color = MaterialTheme.colorScheme.borderPrimary(),
+          color = MaterialTheme.colorScheme.SeperatorsPrimary(),
         )
       }
     }

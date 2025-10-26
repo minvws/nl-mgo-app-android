@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
-import nl.rijksoverheid.mgo.component.theme.supportRijkslint
+import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -28,7 +28,7 @@ fun HealthCategoriesNoFavoriteCard(
   onClickAddFavorite: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val borderColor = MaterialTheme.colorScheme.borderPrimary()
+  val borderColor = MaterialTheme.colorScheme.SeperatorsPrimary()
   Column(
     modifier =
       modifier
@@ -49,7 +49,7 @@ fun HealthCategoriesNoFavoriteCard(
         text = stringResource(CopyR.string.overview_favorites_empty_action),
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.supportRijkslint(),
+        color = MaterialTheme.colorScheme.CategoriesRijkslint(),
       )
     }
   }

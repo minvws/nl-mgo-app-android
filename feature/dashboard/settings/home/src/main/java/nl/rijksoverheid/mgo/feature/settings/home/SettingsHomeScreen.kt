@@ -42,9 +42,9 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreenTestTag.RESET_APP_BUTTON
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -140,7 +140,7 @@ private fun SettingsScreenContent(
           text = stringResource(CopyR.string.settings_preferences_heading),
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
 
         MgoCard(
@@ -192,7 +192,7 @@ private fun SettingsScreenContent(
           text = stringResource(CopyR.string.settings_information_heading),
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
 
         MgoCard(
@@ -216,7 +216,7 @@ private fun SettingsScreenContent(
           text = stringResource(CopyR.string.settings_other_heading),
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
 
         MgoCard(
@@ -254,7 +254,7 @@ private fun SettingsListItem(
       Icon(
         imageVector = icon,
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.symbolsPrimary(),
+        tint = MaterialTheme.colorScheme.SymbolsPrimary(),
       )
 
       Column(modifier = Modifier.padding(start = 16.dp)) {
@@ -266,7 +266,7 @@ private fun SettingsListItem(
           Text(
             text = stringResource(subHeading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentSecondary(),
+            color = MaterialTheme.colorScheme.LabelsSecondary(),
           )
         }
       }

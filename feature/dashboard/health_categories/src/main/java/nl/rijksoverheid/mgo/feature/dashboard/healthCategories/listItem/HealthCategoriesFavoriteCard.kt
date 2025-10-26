@@ -33,10 +33,10 @@ import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 
@@ -86,8 +86,8 @@ private fun HealthCategoriesFavoriteCardContent(
           CircularProgressIndicator(
             modifier = Modifier.size(24.dp),
             strokeWidth = 2.dp,
-            trackColor = MaterialTheme.colorScheme.backgroundTertiary().copy(alpha = 0.5f),
-            color = MaterialTheme.colorScheme.symbolsSecondary(),
+            trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.SymbolsSecondary(),
           )
         }
       }

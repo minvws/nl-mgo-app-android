@@ -11,36 +11,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
+import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryCriticalText
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
 
 object MgoAlertDialogTestTag {
   const val CONFIRM_BUTTON = "MgoAlertDialogConfirmButton"
   const val DISMISS_BUTTON = "MgoAlertDialogDismissButton"
 }
 
-/**
- * Composable that shows a alert dialog.
- * @param onDismissRequest Called when the dialog has been dismissed.
- * @param positiveButtonText The text of the positive button.
- * @param positiveButtonTextColor The color of the positive button. Defaults to [MaterialTheme.colorScheme.actionTertiaryNegativeText].
- * @param onClickPositiveButton Called when clicking on the positive button.
- * @param negativeButtonText text of the negative button.
- * @param negativeButtonTextColor The color of the positive button. Defaults to [MaterialTheme.colorScheme.actionTertiaryDefaultText].
- * @param onClickPositiveButton Called when clicking on the negative button.
- * @param heading The title of the dialog.
- * @param subHeading The subheading of the dialog.
- */
 @Composable
 fun MgoAlertDialog(
   onDismissRequest: () -> Unit,
   positiveButtonText: String,
-  positiveButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryCriticalText(),
+  positiveButtonTextColor: Color = MaterialTheme.colorScheme.StatesCritical(),
   onClickPositiveButton: () -> Unit,
   negativeButtonText: String? = null,
-  negativeButtonTextColor: Color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+  negativeButtonTextColor: Color = MaterialTheme.colorScheme.ActionsGhostText(),
   onClickNegativeButton: (() -> Unit)? = null,
   heading: String,
   subHeading: String,
@@ -82,7 +70,7 @@ fun MgoAlertDialog(
     text = {
       Text(subHeading, style = MaterialTheme.typography.bodyMedium)
     },
-    containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
+    containerColor = MaterialTheme.colorScheme.BackgroundsSecondary(),
   )
 }
 

@@ -31,9 +31,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.pincode.keyboard.Keyboard
 import nl.rijksoverheid.mgo.component.pincode.pincode.PinCode
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.sentimentCritical
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.framework.util.accessibilityAnnounce
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -41,20 +41,6 @@ object PinCodeWithKeyboardTestTag {
   const val HINT = "PinCodeWithKeyboardHint"
 }
 
-/**
- * A composable that shows both [Keyboard] and [PinCode] in a [Column].
- * @param onPinCodeEntered Called when all five numbers for the pin code have been entered.
- * @param onResetError Called when the error state should be reset. To do so, this composable should be updated
- * with [error] set to null.
- * @param modifier the [Modifier] to be applied.
- * @param hint If set, shows a text right above the keyboard.
- * @param onClickHint Called when clicking on the hint.
- * @param hasBiometric If the biometric button should be visible.
- * @param onPressBiometric Called when the biometric button is clicked.
- * @param error If true, will represent a error happening. This means:
- * - Circles will be red
- * - Error text will be shown under pin code.
- */
 @Composable
 fun PinCodeWithKeyboard(
   onPinCodeEntered: (pinCode: List<Int>) -> Unit,
@@ -128,7 +114,7 @@ private fun PinCodeWithKeyboardContent(
           text = hint,
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+          color = MaterialTheme.colorScheme.ActionsGhostText(),
         )
       }
     } else {
@@ -189,7 +175,7 @@ private fun PinCodeError(
   modifier: Modifier = Modifier,
 ) {
   CompositionLocalProvider(
-    LocalContentColor provides MaterialTheme.colorScheme.sentimentCritical(),
+    LocalContentColor provides MaterialTheme.colorScheme.StatesCritical(),
   ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
       Icon(painterResource(id = R.drawable.ic_error), contentDescription = null)
@@ -202,7 +188,7 @@ private fun PinCodeError(
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.sentimentCritical(),
+        color = MaterialTheme.colorScheme.StatesCritical(),
       )
     }
   }

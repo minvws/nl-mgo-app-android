@@ -24,38 +24,41 @@ import nl.rijksoverheid.mgo.component.theme.ActionsSolidBackground
 import nl.rijksoverheid.mgo.component.theme.ActionsSolidText
 import nl.rijksoverheid.mgo.component.theme.ActionsTonalBackground
 import nl.rijksoverheid.mgo.component.theme.ActionsTonalText
-import nl.rijksoverheid.mgo.component.theme.Administration
-import nl.rijksoverheid.mgo.component.theme.Allergies
 import nl.rijksoverheid.mgo.component.theme.BackgroundsPrimary
 import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
-import nl.rijksoverheid.mgo.component.theme.Contacts
-import nl.rijksoverheid.mgo.component.theme.Device
-import nl.rijksoverheid.mgo.component.theme.Documents
+import nl.rijksoverheid.mgo.component.theme.CategoriesAdministration
+import nl.rijksoverheid.mgo.component.theme.CategoriesAllergies
+import nl.rijksoverheid.mgo.component.theme.CategoriesContacts
+import nl.rijksoverheid.mgo.component.theme.CategoriesDevice
+import nl.rijksoverheid.mgo.component.theme.CategoriesDocuments
+import nl.rijksoverheid.mgo.component.theme.CategoriesLaboratory
+import nl.rijksoverheid.mgo.component.theme.CategoriesLifestyle
+import nl.rijksoverheid.mgo.component.theme.CategoriesMedication
+import nl.rijksoverheid.mgo.component.theme.CategoriesMental
+import nl.rijksoverheid.mgo.component.theme.CategoriesPlan
+import nl.rijksoverheid.mgo.component.theme.CategoriesProblems
+import nl.rijksoverheid.mgo.component.theme.CategoriesProcedures
+import nl.rijksoverheid.mgo.component.theme.CategoriesProviders
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
+import nl.rijksoverheid.mgo.component.theme.CategoriesVaccinations
+import nl.rijksoverheid.mgo.component.theme.CategoriesVitals
+import nl.rijksoverheid.mgo.component.theme.CategoriesWarning
 import nl.rijksoverheid.mgo.component.theme.LabelsInvert
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.LabelsVibrant
-import nl.rijksoverheid.mgo.component.theme.Laboratory
-import nl.rijksoverheid.mgo.component.theme.Lifestyle
-import nl.rijksoverheid.mgo.component.theme.Medication
-import nl.rijksoverheid.mgo.component.theme.Mental
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.Plan
-import nl.rijksoverheid.mgo.component.theme.Problems
-import nl.rijksoverheid.mgo.component.theme.Procedures
-import nl.rijksoverheid.mgo.component.theme.Providers
-import nl.rijksoverheid.mgo.component.theme.Rijkslint
 import nl.rijksoverheid.mgo.component.theme.SeparatorsInvert
 import nl.rijksoverheid.mgo.component.theme.SeparatorsSecondary
 import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
+import nl.rijksoverheid.mgo.component.theme.StatesCritical
+import nl.rijksoverheid.mgo.component.theme.StatesInformative
+import nl.rijksoverheid.mgo.component.theme.StatesPositive
+import nl.rijksoverheid.mgo.component.theme.StatesWarning
 import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.component.theme.SymbolsTertiary
-import nl.rijksoverheid.mgo.component.theme.Vaccinations
-import nl.rijksoverheid.mgo.component.theme.Vitals
-import nl.rijksoverheid.mgo.component.theme.Warning
-import nl.rijksoverheid.mgo.component.theme.contentPrimary
 
 @Composable
 private fun Backgrounds() {
@@ -111,23 +114,23 @@ private fun Categories() {
   Column {
     Text(text = "Categories", style = MaterialTheme.typography.headlineLarge)
     FlowRow(modifier = Modifier.padding(vertical = 16.dp)) {
-      ThemeSample(theme = MaterialTheme.colorScheme.Rijkslint(), text = "Rijkslint")
-      ThemeSample(theme = MaterialTheme.colorScheme.Medication(), text = "Medication")
-      ThemeSample(theme = MaterialTheme.colorScheme.Contacts(), text = "Contacts")
-      ThemeSample(theme = MaterialTheme.colorScheme.Laboratory(), text = "Laboratory")
-      ThemeSample(theme = MaterialTheme.colorScheme.Mental(), text = "Mental")
-      ThemeSample(theme = MaterialTheme.colorScheme.Device(), text = "Device")
-      ThemeSample(theme = MaterialTheme.colorScheme.Vitals(), text = "Vitals")
-      ThemeSample(theme = MaterialTheme.colorScheme.Documents(), text = "Documents")
-      ThemeSample(theme = MaterialTheme.colorScheme.Vaccinations(), text = "Vaccinations")
-      ThemeSample(theme = MaterialTheme.colorScheme.Allergies(), text = "Allergies")
-      ThemeSample(theme = MaterialTheme.colorScheme.Problems(), text = "Problems")
-      ThemeSample(theme = MaterialTheme.colorScheme.Administration(), text = "Administration")
-      ThemeSample(theme = MaterialTheme.colorScheme.Warning(), text = "Warning")
-      ThemeSample(theme = MaterialTheme.colorScheme.Providers(), text = "Providers")
-      ThemeSample(theme = MaterialTheme.colorScheme.Procedures(), text = "Procedures")
-      ThemeSample(theme = MaterialTheme.colorScheme.Lifestyle(), text = "Lifestyle")
-      ThemeSample(theme = MaterialTheme.colorScheme.Plan(), text = "Plan")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesRijkslint(), text = "Categories Rijkslint")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesMedication(), text = "Categories Medication")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesContacts(), text = "Categories Contacts")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesLaboratory(), text = "Categories Laboratory")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesMental(), text = "Categories Mental")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesDevice(), text = "Categories Device")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesVitals(), text = "Categories Vitals")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesDocuments(), text = "Categories Documents")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesVaccinations(), text = "Categories Vaccinations")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesAllergies(), text = "Categories Allergies")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesProblems(), text = "Categories Problems")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesAdministration(), text = "Categories Administration")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesWarning(), text = "Categories Warning")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesProviders(), text = "Categories Providers")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesProcedures(), text = "Categories Procedures")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesLifestyle(), text = "Categories Lifestyle")
+      ThemeSample(theme = MaterialTheme.colorScheme.CategoriesPlan(), text = "Categories Plan")
     }
   }
 }
@@ -142,6 +145,19 @@ private fun Actions() {
       ThemeSample(theme = MaterialTheme.colorScheme.ActionsTonalBackground(), text = "Actions Tonal Background")
       ThemeSample(theme = MaterialTheme.colorScheme.ActionsTonalText(), text = "Actions Tonal Text")
       ThemeSample(theme = MaterialTheme.colorScheme.ActionsGhostText(), text = "Actions Ghost Text")
+    }
+  }
+}
+
+@Composable
+private fun States() {
+  Column {
+    Text(text = "States", style = MaterialTheme.typography.headlineLarge)
+    FlowRow(modifier = Modifier.padding(vertical = 16.dp)) {
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesInformative(), text = "States Informative")
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesPositive(), text = "States Positive")
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesWarning(), text = "States Warning")
+      ThemeSample(theme = MaterialTheme.colorScheme.StatesCritical(), text = "States Critical")
     }
   }
 }
@@ -174,17 +190,17 @@ private fun ThemeSample(
 private fun Color.getTextColor(): Color =
   if (isSystemInDarkTheme()) {
     if (luminance() <= 0.5f) {
-      MaterialTheme.colorScheme.contentPrimary()
+      MaterialTheme.colorScheme.LabelsPrimary()
     } else {
       MaterialTheme.colorScheme
-        .contentPrimary(!isSystemInDarkTheme())
+        .LabelsPrimary(!isSystemInDarkTheme())
     }
   } else {
     if (luminance() >= 0.5f) {
-      MaterialTheme.colorScheme.contentPrimary()
+      MaterialTheme.colorScheme.LabelsPrimary()
     } else {
       MaterialTheme.colorScheme
-        .contentPrimary(!isSystemInDarkTheme())
+        .LabelsPrimary(!isSystemInDarkTheme())
     }
   }
 
@@ -234,6 +250,16 @@ internal fun ActionsPreview() {
   MgoTheme {
     Box(modifier = Modifier.padding(16.dp)) {
       Actions()
+    }
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun StatesPreview() {
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      States()
     }
   }
 }

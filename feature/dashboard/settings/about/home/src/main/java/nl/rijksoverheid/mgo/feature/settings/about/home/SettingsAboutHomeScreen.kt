@@ -38,6 +38,8 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.feature.settings.about.R
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import java.util.Locale
@@ -99,9 +101,15 @@ private fun SettingsAboutHomeScreenContent(
             Modifier
               .padding(top = 8.dp),
         ) {
+          val image =
+            when (LocalAppThemeProvider.current.appTheme) {
+              AppTheme.SYSTEM -> R.drawable.illustration_vws
+              AppTheme.LIGHT -> R.drawable.illustration_vws
+              AppTheme.DARK -> R.drawable.illustration_vws_night
+            }
           Image(
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(start = 100.dp),
-            painter = painterResource(R.drawable.illustration_vws),
+            painter = painterResource(image),
             contentDescription = null,
           )
           SettingsAboutHomeListItem(

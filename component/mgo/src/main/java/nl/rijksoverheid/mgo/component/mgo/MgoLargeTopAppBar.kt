@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
-import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.framework.copy.R

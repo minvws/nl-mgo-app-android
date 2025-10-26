@@ -178,12 +178,12 @@ val Purple400 = Color(0xFF714f87)
 val Purple500 = Color(0xFF42145f)
 
 // Brown
-val Brown50 = Color(0xFFefeada)
-val Brown100 = Color(0xFFc6b9ce)
-val Brown200 = Color(0xFFa995b7)
-val Brown300 = Color(0xFF8d729f)
-val Brown400 = Color(0xFF714f87)
-val Brown500 = Color(0xFF42145f)
+val Brown50 = Color(0xFFEFEADA)
+val Brown100 = Color(0xFFDFD4B5)
+val Brown200 = Color(0xFFCFBE90)
+val Brown300 = Color(0xFFBFA96C)
+val Brown400 = Color(0xFFAF9447)
+val Brown500 = Color(0xFF94710A)
 
 // Dark Brown
 val DarkBrown50 = Color(0xFFe8e0df)

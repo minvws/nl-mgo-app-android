@@ -17,4 +17,5 @@ dependencies {
   testImplementation(testFixtures(projects.framework.util))
   testImplementation(testFixtures(projects.data.fhir))
   testImplementation(testFixtures(projects.data.hcimParser))
+  testImplementation(testFixtures(projects.data.pft))
 }

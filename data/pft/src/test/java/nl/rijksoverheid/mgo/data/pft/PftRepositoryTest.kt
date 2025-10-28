@@ -28,8 +28,8 @@ class PftRepositoryTest {
       val repository = getRepository()
 
       // Given: Request success
-      val alcoholUseJson = readResourceFile("pft.json")
-      testServer.enqueueJson(alcoholUseJson)
+      val pftJson = readResourceFile("pft.json")
+      testServer.enqueueJson(pftJson)
 
       // When: Calling sync
       repository.sync()

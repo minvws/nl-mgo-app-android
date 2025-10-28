@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRowStaticValue
 
 @Composable
 internal fun UiSchemaRowStatic(
@@ -29,22 +30,34 @@ internal fun UiSchemaRowStatic(
         color = MaterialTheme.colorScheme.LabelsSecondary(),
       )
     }
-    SelectionContainer {
-      Text(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
-        text = row.value,
-        style = MaterialTheme.typography.bodyMedium,
-      )
+    row.value.forEach { value ->
+      SelectionContainer {
+        Text(
+          modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
+          text = value.value,
+          style = MaterialTheme.typography.bodyMedium,
+        )
+      }
     }
   }
 }
 
 @PreviewLightDark
 @Composable
-internal fun UiSchemaRowStaticPreview() {
+internal fun UiSchemaRowStaticSingleValuePreview() {
   MgoTheme {
     UiSchemaRowStatic(
-      row = UISchemaRow.Static(heading = "Heading", value = "Value"),
+      row = UISchemaRow.Static(heading = "Heading", value = listOf(UISchemaRowStaticValue("Value"))),
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun UiSchemaRowStaticMultipleValuePreview() {
+  MgoTheme {
+    UiSchemaRowStatic(
+      row = UISchemaRow.Static(heading = "Heading", value = listOf(UISchemaRowStaticValue("Value 1"), UISchemaRowStaticValue("Value 2", snomedCode = "123"))),
     )
   }
 }

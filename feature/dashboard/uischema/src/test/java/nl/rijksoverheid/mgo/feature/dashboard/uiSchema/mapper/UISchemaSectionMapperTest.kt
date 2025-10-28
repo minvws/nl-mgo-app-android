@@ -16,7 +16,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class UISchemaSectionMapperTest {
@@ -48,9 +47,9 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Static
+    assertEquals("Label", firstRow.heading)
+    assertEquals("Display", firstRow.value.first().value)
   }
 
   @Test
@@ -78,9 +77,10 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display 1, Display 2", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Static
+    assertEquals("Label", firstRow.heading)
+    assertEquals("Display 1", firstRow.value[0].value)
+    assertEquals("Display 2", firstRow.value[1].value)
   }
 
   @Test
@@ -112,9 +112,12 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display 1, Display 2, Display 3, Display 4", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Static
+    assertEquals("Label", firstRow.heading)
+    assertEquals("Display 1", firstRow.value[0].value)
+    assertEquals("Display 2", firstRow.value[1].value)
+    assertEquals("Display 3", firstRow.value[2].value)
+    assertEquals("Display 4", firstRow.value[3].value)
   }
 
   @Test
@@ -147,9 +150,9 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Reference)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Reference
+    assertEquals("Label", firstRow.heading)
+    assertEquals("Display", firstRow.value)
   }
 
   @Test
@@ -180,9 +183,9 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Static
+    assertEquals("Label", firstRow.heading)
+    assertEquals("Display", firstRow.value.first().value)
   }
 
   @Test
@@ -236,9 +239,9 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Binary.Empty)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Binary.Empty
+    assertNull(firstRow.heading)
+    assertEquals("Label", firstRow.value)
   }
 
   @Test
@@ -266,10 +269,10 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Binary.NotDownloaded.Idle)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
-    assertEquals("1", (sections[0].rows[0] as UISchemaRow.Binary.NotDownloaded.Idle).binary)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Binary.NotDownloaded.Idle
+    assertNull(firstRow.heading)
+    assertEquals("Label", firstRow.value)
+    assertEquals("1", firstRow.binary)
   }
 
   @Test
@@ -301,9 +304,9 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Reference)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Reference
+    assertNull(firstRow.heading)
+    assertEquals("Label", firstRow.value)
   }
 
   @Test
@@ -333,9 +336,9 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("1", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Static
+    assertEquals("Label", firstRow.heading)
+    assertEquals("1", firstRow.value.first().value)
   }
 
   @Test
@@ -365,8 +368,8 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Link)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Link
+    assertNull(firstRow.heading)
+    assertEquals("Label", firstRow.value)
   }
 }

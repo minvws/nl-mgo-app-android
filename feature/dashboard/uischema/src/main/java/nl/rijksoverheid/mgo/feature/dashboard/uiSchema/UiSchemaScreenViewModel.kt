@@ -116,7 +116,7 @@ internal class UiSchemaScreenViewModel
             viewState.sections.map { section ->
               val rows =
                 section.rows.map { oldRow ->
-                  if (oldRow.value == newRow.value) {
+                  if (oldRow.heading == newRow.heading) {
                     newRow
                   } else {
                     oldRow

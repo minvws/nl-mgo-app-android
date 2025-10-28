@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.component.pdfViewer.PdfGenerator
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGroupedTables
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfSubTable
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfTable
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
@@ -97,7 +98,14 @@ internal class DefaultCreatePdfForHealthCategories
                   heading = section.heading,
                   data =
                     section.rows.mapNotNull { row ->
-                      (row.heading ?: return@mapNotNull null) to row.value
+                      val value =
+                        when (row) {
+                          is UISchemaRow.Binary -> row.value
+                          is UISchemaRow.Link -> row.value
+                          is UISchemaRow.Reference -> row.value
+                          is UISchemaRow.Static -> row.value.joinToString(", ")
+                        }
+                      (row.heading ?: return@mapNotNull null) to value
                     },
                 )
               }.filter { it.data.isNotEmpty() }

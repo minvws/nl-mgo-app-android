@@ -36,6 +36,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.headlineExtraSmall
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRowStaticValue
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSection
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
@@ -228,11 +229,11 @@ internal fun UiSchemaScreenContentPreview() {
                   listOf(
                     UISchemaRow.Static(
                       heading = "Row Heading 1",
-                      value = "Row Value 1",
+                      value = listOf(UISchemaRowStaticValue("Row Value 1")),
                     ),
                     UISchemaRow.Static(
                       heading = "Row Heading 2",
-                      value = "Row Value 2",
+                      value = listOf(UISchemaRowStaticValue("Row Value 2")),
                     ),
                   ),
               ),
@@ -242,7 +243,7 @@ internal fun UiSchemaScreenContentPreview() {
                   listOf(
                     UISchemaRow.Static(
                       heading = "Row Heading 3",
-                      value = "Row Value 3",
+                      listOf(UISchemaRowStaticValue("Row Value 3")),
                     ),
                   ),
               ),

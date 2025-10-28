@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.component.uiSchema
 
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DisplayValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
@@ -38,7 +39,7 @@ class UISchemaSectionMapper
           } else {
             UISchemaRow.Static(
               heading = this.label,
-              value = this.reference,
+              value = listOf(UISchemaRowStaticValue(value = this.reference)),
             )
           }
         }
@@ -56,25 +57,33 @@ class UISchemaSectionMapper
           this.value?.display?.let { display ->
             UISchemaRow.Static(
               heading = this.label,
-              value = display,
+              value = listOf(UISchemaRowStaticValue(value = display, snomedCode = this.value?.getSnomedCode())),
             )
           }
         }
 
         is MultipleValues -> {
-          this.value?.map { it.display }?.let { display ->
+          this.value?.let { displayValues ->
             UISchemaRow.Static(
               heading = this.label,
-              value = display.joinToString(", "),
+              value =
+                displayValues.mapNotNull { displayValue ->
+                  val display = displayValue.display ?: return@mapNotNull null
+                  UISchemaRowStaticValue(value = display, snomedCode = displayValue.getSnomedCode())
+                },
             )
           }
         }
 
         is MultipleGroupedValues -> {
-          this.value?.map { values -> values.map { value -> value.display } }?.flatten()?.let { display ->
+          this.value?.flatten()?.let { displayValues ->
             UISchemaRow.Static(
               heading = this.label,
-              value = display.joinToString(", "),
+              value =
+                displayValues.mapNotNull { displayValue ->
+                  val display = displayValue.display ?: return@mapNotNull null
+                  UISchemaRowStaticValue(value = display, snomedCode = displayValue.getSnomedCode())
+                },
             )
           }
         }
@@ -92,7 +101,7 @@ class UISchemaSectionMapper
             } else {
               UISchemaRow.Static(
                 heading = this.label,
-                value = display,
+                value = listOf(UISchemaRowStaticValue(value = display)),
               )
             }
           } else {
@@ -115,6 +124,13 @@ class UISchemaSectionMapper
             )
           }
         }
+      }
+
+    private fun DisplayValue.getSnomedCode(): String? =
+      if (system == "http://snomed.info/sct") {
+        code
+      } else {
+        null
       }
 
     /**

@@ -130,4 +130,17 @@ internal object MainModule {
       is Environment.Demo -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
       is Environment.Custom -> environment.url
     }
+
+  // TODO Set urls for other environments when available.
+  @Provides
+  @Singleton
+  @Named("pftUrl")
+  fun providePftUrl(environmentRepository: EnvironmentRepository): String =
+    when (val environment = environmentRepository.getEnvironment()) {
+      is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Demo -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Custom -> environment.url
+    }
 }

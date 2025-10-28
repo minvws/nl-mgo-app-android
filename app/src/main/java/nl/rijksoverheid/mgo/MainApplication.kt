@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
+import nl.rijksoverheid.mgo.data.pft.PftRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.init.AppInitializer
 import nl.rijksoverheid.mgo.init.FhirResponseSyncer
@@ -30,6 +31,9 @@ class MainApplication : Application() {
   lateinit var fhirResponseSyncer: FhirResponseSyncer
 
   @Inject
+  lateinit var pftRepository: PftRepository
+
+  @Inject
   lateinit var quickJsRepository: QuickJsRepository
 
   override fun onCreate() {
@@ -41,6 +45,7 @@ class MainApplication : Application() {
     applicationScope.launch(Dispatchers.IO) {
       launch { quickJsRepository.create() }
       launch { fhirResponseSyncer.invoke().collect() }
+      launch { pftRepository.sync() }
     }
   }
 }

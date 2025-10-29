@@ -4,22 +4,23 @@ import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 
 sealed class UISchemaRow(
   open val heading: String?,
+  open val displayValue: String,
 ) {
   data class Static(
     override val heading: String?,
     val value: List<UISchemaRowStaticValue>,
-  ) : UISchemaRow(heading)
+  ) : UISchemaRow(heading, value.joinToString(", "))
 
   data class Reference(
     override val heading: String?,
     val value: String,
     val referenceId: String,
-  ) : UISchemaRow(heading)
+  ) : UISchemaRow(heading, value)
 
   sealed class Binary(
     override val heading: String?,
     open val value: String,
-  ) : UISchemaRow(heading) {
+  ) : UISchemaRow(heading, value) {
     sealed class NotDownloaded(
       override val heading: String?,
       override val value: String,
@@ -62,7 +63,7 @@ sealed class UISchemaRow(
     override val heading: String?,
     val value: String,
     val url: String,
-  ) : UISchemaRow(heading)
+  ) : UISchemaRow(heading, value)
 }
 
 data class UISchemaRowStaticValue(

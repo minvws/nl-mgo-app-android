@@ -16,6 +16,13 @@ internal class UiSchemaRowStaticSnapshotTest {
   }
 
   @Test
+  fun singleMultiLine() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowStaticSingleValueMultiLinePreview()
+    }
+  }
+
+  @Test
   fun multiple() {
     snapshotTestRule.snapshots {
       UiSchemaRowStaticMultipleValuePreview()

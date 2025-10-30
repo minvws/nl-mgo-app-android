@@ -108,7 +108,6 @@ internal fun UiSchemaRowStatic(
 /**
  * Get a modifier that draws a dotted line under text.
  */
-
 private fun Modifier.dottedLine(
   text: String,
   color: Color,
@@ -119,25 +118,21 @@ private fun Modifier.dottedLine(
     val pathEffect = PathEffect.dashPathEffect(floatArrayOf(1f, 1f), 0f)
     val verticalOffset = 5.dp.toPx()
 
-    for (lineIndex in 0 until layout.lineCount) {
-      val lineStart = layout.getLineStart(lineIndex)
-      val lineEnd = layout.getLineEnd(lineIndex)
+    // De hele tekst gebruiken
+    val start = 0
+    val end = text.length.coerceAtMost(layout.layoutInput.text.length)
 
-      val baseline = layout.getLineBaseline(lineIndex) + verticalOffset
+    for (i in start until end) {
+      val box = layout.getBoundingBox(i)
+      val baseline = layout.getLineBaseline(layout.getLineForOffset(i)) + verticalOffset
 
-      for (i in lineStart until lineEnd) {
-        val box = layout.getBoundingBox(i)
-        val lineLeft = box.left
-        val lineRight = box.left + box.width
-
-        drawLine(
-          color = color,
-          start = Offset(lineLeft, baseline),
-          end = Offset(lineRight, baseline),
-          strokeWidth = strokeWidth,
-          pathEffect = pathEffect,
-        )
-      }
+      drawLine(
+        color = color,
+        start = Offset(box.left, baseline),
+        end = Offset(box.right, baseline),
+        strokeWidth = strokeWidth,
+        pathEffect = pathEffect,
+      )
     }
   }
 }

@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.MaterialTheme
@@ -45,7 +46,7 @@ fun PftBottomSheet(
 @Composable
 private fun PftBottomSheetContent(pft: Pft) {
   Scaffold { contentPadding ->
-    Column(modifier = Modifier.padding(horizontal = 16.dp).padding(contentPadding)) {
+    Column(modifier = Modifier.consumeWindowInsets(contentPadding).padding(horizontal = 16.dp)) {
       Text(
         text = pft.name ?: "",
         style = MaterialTheme.typography.headlineMedium,

@@ -40,6 +40,7 @@ import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRowStaticValue
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSection
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.data.pft.Pft
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
@@ -59,12 +60,20 @@ fun UiSchemaScreen(
   onNavigateBack: (() -> Unit)? = null,
   onNavigateToDetail: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
 ) {
-  var showBottomSheet: Pair<MgoOrganization, MgoResourceReferenceId>? by remember { mutableStateOf(null) }
-  showBottomSheet?.let { uiSchemaData ->
+  var uiSchemaBottomSheet: Pair<MgoOrganization, MgoResourceReferenceId>? by remember { mutableStateOf(null) }
+  uiSchemaBottomSheet?.let { uiSchemaData ->
     UiSchemaBottomSheet(
       organization = uiSchemaData.first,
       referenceId = uiSchemaData.second,
-      onDismissRequest = { showBottomSheet = null },
+      onDismissRequest = { uiSchemaBottomSheet = null },
+    )
+  }
+
+  var pftBottomSheet: Pft? by remember { mutableStateOf(null) }
+  pftBottomSheet?.let { pft ->
+    PftBottomSheet(
+      pft = pft,
+      onDismissRequest = { pftBottomSheet = null },
     )
   }
 
@@ -81,7 +90,7 @@ fun UiSchemaScreen(
         onNavigateToDetail(organization, navigateToReferenceId)
       } else {
         // When navigating to a new ui schema, show it inside a bottom sheet.
-        showBottomSheet = Pair(organization, navigateToReferenceId)
+        uiSchemaBottomSheet = Pair(organization, navigateToReferenceId)
       }
     }
   }
@@ -94,6 +103,9 @@ fun UiSchemaScreen(
     onClickFile = { row ->
       viewModel.onClickFileRow(row)
     },
+    onShowPft = { pft ->
+      pftBottomSheet = pft
+    },
     isBottomSheet = isBottomSheet,
     onNavigateBack = onNavigateBack,
   )
@@ -105,6 +117,7 @@ private fun UiSchemaScreenContent(
   isBottomSheet: Boolean,
   onClickReference: (row: UISchemaRow.Reference) -> Unit,
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  onShowPft: (pft: Pft) -> Unit,
   onNavigateBack: (() -> Unit)?,
 ) {
   val lazyListState = rememberLazyListState()
@@ -135,6 +148,7 @@ private fun UiSchemaScreenContent(
               section = section,
               onClickReference = onClickReference,
               onClickFile = onClickFile,
+              onClickPft = onShowPft,
               modifier = Modifier.padding(bottom = 32.dp),
             )
           }
@@ -149,6 +163,7 @@ private fun UiSchemaSection(
   section: UISchemaSection,
   onClickReference: (row: UISchemaRow.Reference) -> Unit,
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  onClickPft: (pft: Pft) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
@@ -173,7 +188,7 @@ private fun UiSchemaSection(
         section.rows.forEachIndexed { index, row ->
           when (row) {
             is UISchemaRow.Static -> {
-              UiSchemaRowStatic(modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM), row = row)
+              UiSchemaRowStatic(modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM), row = row, onClickPft = onClickPft)
             }
 
             is UISchemaRow.Reference -> {
@@ -286,6 +301,7 @@ internal fun UiSchemaScreenContentPreview() {
       onClickFile = {},
       onNavigateBack = {},
       isBottomSheet = false,
+      onShowPft = {},
     )
   }
 }

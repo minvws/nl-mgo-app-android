@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -50,6 +51,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 @Composable
 internal fun UiSchemaRowStatic(
   row: UISchemaRow.Static,
+  onClickPft: (pft: Pft) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
@@ -88,7 +90,14 @@ internal fun UiSchemaRowStatic(
             inlineContent = inlineContent,
             style = textStyle,
             onTextLayout = { textLayoutResult = it },
-            modifier = if (pft == null) Modifier else Modifier.dottedLine(text = value.value, color = textColor, layoutResult = textLayoutResult),
+            modifier =
+              if (pft ==
+                null
+              ) {
+                Modifier
+              } else {
+                Modifier.dottedLine(text = value.value, color = textColor, layoutResult = textLayoutResult).clickable { onClickPft(pft) }
+              },
           )
         }
       }
@@ -215,6 +224,7 @@ internal fun UiSchemaRowStaticSingleValuePreview() {
   MgoTheme {
     UiSchemaRowStatic(
       row = UISchemaRow.Static(heading = "Heading", value = listOf(UISchemaRowStaticValue("Value"))),
+      onClickPft = {},
     )
   }
 }
@@ -229,6 +239,7 @@ internal fun UiSchemaRowStaticSingleValueMultiLinePreview() {
           heading = "Heading",
           value = listOf(UISchemaRowStaticValue("Lorem Ipsum is simply dummy text of the printing and typesetting industry", snomedCode = "123")),
         ),
+      onClickPft = {},
     )
   }
 }
@@ -244,6 +255,7 @@ internal fun UiSchemaRowStaticMultipleValuePreview() {
           value =
             listOf(UISchemaRowStaticValue("Value 1"), UISchemaRowStaticValue("Value 2", snomedCode = "123")),
         ),
+      onClickPft = {},
     )
   }
 }

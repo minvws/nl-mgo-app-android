@@ -32,6 +32,33 @@ class DefaultFhirRepositoryTest {
   private val repository = DefaultFhirRepository(okHttpClient = okHttpClient, mgoByteArrayStorage = fileStorage, context = context)
 
   @Test
+  fun testHeaders() =
+    runTest {
+      // Given: Request success
+      val alcoholUseJson = readResourceFile("alcoholUse.json")
+      testServer.enqueueJson(alcoholUseJson)
+
+      // When: Calling fetch
+      repository.fetch(
+        organizationId = "1",
+        medmijId = "medmij_1",
+        dataServiceId = "1",
+        endpointId = "alcoholUse",
+        resourceEndpoint = "https://www.google.com",
+        fhirVersion = FhirVersion.R3,
+        url = testServer.url(),
+        forceRefresh = true,
+      )
+
+      // Then: Request has expected headers set
+      val request = testServer.getRequest()
+      assertEquals("1", request?.headers?.get("X-MGO-DATASERVICE-ID"))
+      assertEquals("medmij_1", request?.headers?.get("X-MGO-HEALTHCARE-PROVIDER-ID"))
+      assertEquals("https://www.google.com", request?.headers?.get("x-mgo-dva-target"))
+      assertEquals("application/fhir+json; fhirVersion=3.0", request?.headers?.get("Accept"))
+    }
+
+  @Test
   fun testFetchSuccess() =
     runTest {
       // Given: Request success

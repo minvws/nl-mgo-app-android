@@ -134,6 +134,7 @@ class HealthCategoryScreenViewModelTest {
     testServerRule.testServer.enqueueJson(responseJson)
     fhirRepository.fetch(
       organizationId = TEST_MGO_ORGANIZATION.id,
+      medmijId = "1",
       dataServiceId = "48",
       endpointId = endpointId,
       resourceEndpoint = "",
@@ -147,6 +148,7 @@ class HealthCategoryScreenViewModelTest {
     testServerRule.testServer.enqueue500()
     fhirRepository.fetch(
       organizationId = TEST_MGO_ORGANIZATION.id,
+      medmijId = "1",
       dataServiceId = "48",
       endpointId = endpointId,
       resourceEndpoint = "",

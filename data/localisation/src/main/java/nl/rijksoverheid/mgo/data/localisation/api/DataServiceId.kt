@@ -12,6 +12,7 @@ class SearchResponse(
   @Serializable
   data class Organization(
     @SerialName("identification") val id: String,
+    @SerialName("medmij_id") val medMijId: String?,
     @SerialName("display_name") val displayName: String?,
     val addresses: List<Address>,
     val types: List<Types>,

@@ -65,6 +65,7 @@ class FhirResponseSyncer
             for (dataService in dataServices) {
               fhirRepository.fetch(
                 organizationId = id,
+                medmijId = medMijId,
                 dataServiceId = dataService.id,
                 endpointId = endpoint.id,
                 resourceEndpoint = dataService.resourceEndpoint,

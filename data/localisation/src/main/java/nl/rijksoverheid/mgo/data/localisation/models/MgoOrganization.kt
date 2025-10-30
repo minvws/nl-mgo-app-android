@@ -6,11 +6,13 @@ import kotlinx.serialization.Serializable
 import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
 
 typealias MgoOrganizationId = String
+typealias MgoOrganizationMedMijId = String
 
 @Parcelize
 @Serializable
 data class MgoOrganization(
   val id: MgoOrganizationId,
+  val medMijId: MgoOrganizationMedMijId?,
   val name: String,
   val address: String?,
   val category: String?,
@@ -23,6 +25,7 @@ fun MgoOrganization.getDocumentsResourceEndpoint(): String? = dataServices.first
 val TEST_MGO_ORGANIZATION =
   MgoOrganization(
     id = "1",
+    medMijId = "1",
     name = "Tandarts Tandje Erbij",
     address = "Boorplatform 5\r\n1234AB Roermond",
     category = "Tandarts",
@@ -36,6 +39,7 @@ internal fun SearchResponse.Organization.toMgoOrganization(
 ): MgoOrganization =
   MgoOrganization(
     id = id,
+    medMijId = medMijId,
     name = displayName ?: "",
     address = addresses.firstOrNull()?.address,
     category = types.firstOrNull()?.displayName,

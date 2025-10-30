@@ -80,7 +80,7 @@ class DefaultFhirRepository
           .get()
           .addHeader("X-MGO-HEALTHCARE-PROVIDER-ID", medmijId ?: "none")
           .addHeader("X-MGO-DATASERVICE-ID", dataServiceId)
-          .addHeader("x-mgo-dva-target", resourceEndpoint)
+          .addHeader("X-MGO-DVA-TARGET", resourceEndpoint)
           .addHeader("Accept", "application/fhir+json; fhirVersion=${fhirVersion.stringValue}")
           .build()
 

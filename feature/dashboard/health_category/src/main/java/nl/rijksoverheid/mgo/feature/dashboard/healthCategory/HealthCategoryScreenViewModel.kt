@@ -144,6 +144,7 @@ internal class HealthCategoryScreenViewModel
               for (dataService in organization.dataServices) {
                 fhirRepository.fetch(
                   organizationId = organization.id,
+                  medmijId = organization.medMijId,
                   dataServiceId = dataService.id,
                   endpointId = endpoint.id,
                   resourceEndpoint = dataService.resourceEndpoint,

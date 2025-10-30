@@ -41,6 +41,7 @@ class DefaultFhirRepositoryTest {
       // When: Calling fetch
       repository.fetch(
         organizationId = "1",
+        medmijId = "1",
         dataServiceId = "1",
         endpointId = "alcoholUse",
         resourceEndpoint = "",
@@ -80,6 +81,7 @@ class DefaultFhirRepositoryTest {
       // When: Calling fetch with forceRefresh set to false
       repository.fetch(
         organizationId = "1",
+        medmijId = "1",
         dataServiceId = "1",
         endpointId = "alcoholUse",
         resourceEndpoint = "",
@@ -116,6 +118,7 @@ class DefaultFhirRepositoryTest {
       // When: Calling fetch
       repository.fetch(
         organizationId = "1",
+        medmijId = "1",
         dataServiceId = "1",
         endpointId = "emptyBundle",
         resourceEndpoint = "",
@@ -151,6 +154,7 @@ class DefaultFhirRepositoryTest {
       // When: Calling fetch
       repository.fetch(
         organizationId = "1",
+        medmijId = "1",
         dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",
@@ -176,6 +180,7 @@ class DefaultFhirRepositoryTest {
       testServer.enqueue500()
       repository.fetch(
         organizationId = "1",
+        medmijId = "1",
         dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",
@@ -191,6 +196,7 @@ class DefaultFhirRepositoryTest {
       // When: Calling fetch
       repository.fetch(
         organizationId = "1",
+        medmijId = "1",
         dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",
@@ -213,6 +219,7 @@ class DefaultFhirRepositoryTest {
       testServer.enqueueJson(alcoholUseJson)
       repository.fetch(
         organizationId = "1",
+        medmijId = "1",
         dataServiceId = "1",
         endpointId = "1",
         resourceEndpoint = "",

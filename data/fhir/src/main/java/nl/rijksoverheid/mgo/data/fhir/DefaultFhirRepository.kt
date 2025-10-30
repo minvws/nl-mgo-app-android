@@ -49,6 +49,7 @@ class DefaultFhirRepository
 
     override suspend fun fetch(
       organizationId: String,
+      medmijId: String?,
       dataServiceId: String,
       endpointId: String,
       resourceEndpoint: String,
@@ -77,6 +78,8 @@ class DefaultFhirRepository
           .Builder()
           .url(url)
           .get()
+          .addHeader("X-MGO-HEALTHCARE-PROVIDER-ID", medmijId ?: "none")
+          .addHeader("X-MGO-DATASERVICE-ID", dataServiceId)
           .addHeader("x-mgo-dva-target", resourceEndpoint)
           .addHeader("Accept", "application/fhir+json; fhirVersion=${fhirVersion.stringValue}")
           .build()

@@ -12,6 +12,7 @@ interface FhirRepository {
 
   suspend fun fetch(
     organizationId: String,
+    medmijId: String?,
     dataServiceId: String,
     endpointId: String,
     resourceEndpoint: String,

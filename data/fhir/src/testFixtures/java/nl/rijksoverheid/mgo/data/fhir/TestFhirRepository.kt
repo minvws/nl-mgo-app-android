@@ -23,6 +23,7 @@ class TestFhirRepository : FhirRepository {
 
   override suspend fun fetch(
     organizationId: String,
+    medmijId: String?,
     dataServiceId: String,
     endpointId: String,
     resourceEndpoint: String,

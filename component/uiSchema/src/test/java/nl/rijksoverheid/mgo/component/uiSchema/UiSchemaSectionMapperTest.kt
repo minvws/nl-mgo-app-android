@@ -1,7 +1,5 @@
-package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.mapper
+package nl.rijksoverheid.mgo.component.uiSchema
 
-import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
-import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DisplayValue
@@ -14,17 +12,19 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
+import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class UISchemaSectionMapperTest {
+class UiSchemaSectionMapperTest {
   private val mgoResourceStore = MgoResourceStore()
-  private val mapper = UISchemaSectionMapper(mgoResourceStore = mgoResourceStore)
+  private val mapper = UISchemaSectionMapper(mgoResourceStore)
 
   @Test
-  fun testSingleValue() {
+  fun testDownloadBinary() {
     // Given: Ui schema
     val uiSchema =
       HealthUiSchema(
@@ -34,9 +34,13 @@ class UISchemaSectionMapperTest {
             HealthUiGroup(
               children =
                 listOf(
-                  SingleValue(
+                  DownloadBinary(
                     label = "Label",
-                    value = DisplayValue(display = "Display"),
+                    reference = null,
+                  ),
+                  DownloadBinary(
+                    label = "Label",
+                    reference = "Reference",
                   ),
                 ),
             ),
@@ -47,14 +51,12 @@ class UISchemaSectionMapperTest {
     val sections = mapper.map(uiSchema)
 
     // Then: Sections are returned
-    assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display", sections[0].rows[0].value)
+    assertThat(sections[0].rows[0], instanceOf(UISchemaRow.Binary.Empty::class.java))
+    assertThat(sections[0].rows[1], instanceOf(UISchemaRow.Binary.NotDownloaded.Idle::class.java))
   }
 
   @Test
-  fun testMultipleValues() {
+  fun testDownloadLink() {
     // Given: Ui schema
     val uiSchema =
       HealthUiSchema(
@@ -64,9 +66,12 @@ class UISchemaSectionMapperTest {
             HealthUiGroup(
               children =
                 listOf(
-                  MultipleValues(
+                  DownloadLink(
                     label = "Label",
-                    value = listOf(DisplayValue(display = "Display 1"), DisplayValue(display = "Display 2")),
+                  ),
+                  DownloadLink(
+                    label = "Label",
+                    url = "Url",
                   ),
                 ),
             ),
@@ -77,10 +82,7 @@ class UISchemaSectionMapperTest {
     val sections = mapper.map(uiSchema)
 
     // Then: Sections are returned
-    assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display 1, Display 2", sections[0].rows[0].value)
+    assertThat(sections[0].rows[0], instanceOf(UISchemaRow.Link::class.java))
   }
 
   @Test
@@ -96,11 +98,24 @@ class UISchemaSectionMapperTest {
                 listOf(
                   MultipleGroupedValues(
                     label = "Label",
-                    value =
-                      listOf(
-                        listOf(DisplayValue(display = "Display 1"), DisplayValue(display = "Display 2")),
-                        listOf(DisplayValue(display = "Display 3"), DisplayValue(display = "Display 4")),
-                      ),
+                    value = null,
+                  ),
+                  MultipleGroupedValues(
+                    label = "Label",
+                    value = null,
+                  ),
+                ),
+            ),
+            HealthUiGroup(
+              children =
+                listOf(
+                  MultipleGroupedValues(
+                    label = "Label",
+                    value = listOf(listOf(DisplayValue(system = "http://snomed.info/sct", code = "123", display = "Display"))),
+                  ),
+                  MultipleGroupedValues(
+                    label = "Label",
+                    value = listOf(listOf(DisplayValue(display = null))),
                   ),
                 ),
             ),
@@ -111,10 +126,119 @@ class UISchemaSectionMapperTest {
     val sections = mapper.map(uiSchema)
 
     // Then: Sections are returned
+    assertTrue(sections[0].rows.isEmpty())
+    assertThat(sections[1].rows[0], instanceOf(UISchemaRow.Static::class.java))
+  }
+
+  @Test
+  fun testMultipleValues() {
+    // Given: Ui schema
+    val uiSchema =
+      HealthUiSchema(
+        label = "Label",
+        children =
+          listOf(
+            HealthUiGroup(
+              children =
+                listOf(
+                  MultipleValues(
+                    label = "Label",
+                    value = null,
+                  ),
+                  MultipleValues(
+                    label = "Label",
+                    value = null,
+                  ),
+                ),
+            ),
+            HealthUiGroup(
+              children =
+                listOf(
+                  MultipleValues(
+                    label = "Label",
+                    value = listOf(DisplayValue(system = "http://snomed.info/sct", code = "123", display = "Display")),
+                  ),
+                  MultipleValues(
+                    label = "Label",
+                    value = listOf(DisplayValue(display = null)),
+                  ),
+                ),
+            ),
+          ),
+      )
+
+    // When: Calling map
+    val sections = mapper.map(uiSchema)
+
+    // Then: Sections are returned
+    assertTrue(sections[0].rows.isEmpty())
+    assertThat(sections[1].rows[0], instanceOf(UISchemaRow.Static::class.java))
+  }
+
+  @Test
+  fun testReferenceLinkClickable() {
+    // Given: Ui schema
+    val uiSchema =
+      HealthUiSchema(
+        label = "Label",
+        children =
+          listOf(
+            HealthUiGroup(
+              children =
+                listOf(
+                  ReferenceLink(
+                    label = "Label",
+                    reference = "1",
+                  ),
+                ),
+            ),
+          ),
+      )
+
+    // Given: The mgo resource exists in the store
+    val mgoResource = MgoResource(referenceId = "1", profile = "", json = "")
+    mgoResourceStore.store(mgoResource)
+
+    // When: Calling map
+    val sections = mapper.map(uiSchema)
+
+    // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display 1, Display 2, Display 3, Display 4", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Reference
+    assertNull(firstRow.heading)
+    assertEquals("Label", firstRow.value)
+  }
+
+  @Test
+  fun testReferenceLinkNotClickable() {
+    // Given: Ui schema
+    val uiSchema =
+      HealthUiSchema(
+        label = "Label",
+        children =
+          listOf(
+            HealthUiGroup(
+              children =
+                listOf(
+                  ReferenceLink(
+                    label = "Label",
+                    reference = "1",
+                  ),
+                ),
+            ),
+          ),
+      )
+
+    // Given: The mgo resource does not exist in the store
+
+    // When: Calling map
+    val sections = mapper.map(uiSchema)
+
+    // Then: Sections are returned
+    assertEquals(1, sections.size)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Static
+    assertEquals("Label", firstRow.heading)
+    assertEquals("1", firstRow.value.first().value)
   }
 
   @Test
@@ -147,9 +271,9 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Reference)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Reference
+    assertEquals("Label", firstRow.heading)
+    assertEquals("Display", firstRow.value)
   }
 
   @Test
@@ -180,13 +304,13 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("Display", sections[0].rows[0].value)
+    val firstRow = sections[0].rows[0] as UISchemaRow.Static
+    assertEquals("Label", firstRow.heading)
+    assertEquals("Display", firstRow.value.first().value)
   }
 
   @Test
-  fun testReferenceValueEmpty() {
+  fun testReferenceValueEmptyReference() {
     // Given: Ui schema
     val uiSchema =
       HealthUiSchema(
@@ -213,7 +337,7 @@ class UISchemaSectionMapperTest {
   }
 
   @Test
-  fun testDownloadBinaryEmptyReference() {
+  fun testReferenceValueEmptyDisplay() {
     // Given: Ui schema
     val uiSchema =
       HealthUiSchema(
@@ -223,8 +347,9 @@ class UISchemaSectionMapperTest {
             HealthUiGroup(
               children =
                 listOf(
-                  DownloadBinary(
+                  ReferenceValue(
                     label = "Label",
+                    reference = "Reference",
                   ),
                 ),
             ),
@@ -236,13 +361,11 @@ class UISchemaSectionMapperTest {
 
     // Then: Sections are returned
     assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Binary.Empty)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
+    assertEquals(0, sections[0].rows.size)
   }
 
   @Test
-  fun testDownloadBinaryReference() {
+  fun testSingleValue() {
     // Given: Ui schema
     val uiSchema =
       HealthUiSchema(
@@ -252,9 +375,26 @@ class UISchemaSectionMapperTest {
             HealthUiGroup(
               children =
                 listOf(
-                  DownloadBinary(
+                  SingleValue(
                     label = "Label",
-                    reference = "1",
+                    value = null,
+                  ),
+                  SingleValue(
+                    label = "Label",
+                    value = null,
+                  ),
+                ),
+            ),
+            HealthUiGroup(
+              children =
+                listOf(
+                  SingleValue(
+                    label = "Label",
+                    value = DisplayValue(display = "Display"),
+                  ),
+                  SingleValue(
+                    label = "Label",
+                    value = DisplayValue(display = null),
                   ),
                 ),
             ),
@@ -265,108 +405,7 @@ class UISchemaSectionMapperTest {
     val sections = mapper.map(uiSchema)
 
     // Then: Sections are returned
-    assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Binary.NotDownloaded.Idle)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
-    assertEquals("1", (sections[0].rows[0] as UISchemaRow.Binary.NotDownloaded.Idle).binary)
-  }
-
-  @Test
-  fun testReferenceLinkClickable() {
-    // Given: Ui schema
-    val uiSchema =
-      HealthUiSchema(
-        label = "Label",
-        children =
-          listOf(
-            HealthUiGroup(
-              children =
-                listOf(
-                  ReferenceLink(
-                    label = "Label",
-                    reference = "1",
-                  ),
-                ),
-            ),
-          ),
-      )
-
-    // Given: The mgo resource exists in the store
-    val mgoResource = MgoResource(referenceId = "1", profile = "", json = "")
-    mgoResourceStore.store(mgoResource)
-
-    // When: Calling map
-    val sections = mapper.map(uiSchema)
-
-    // Then: Sections are returned
-    assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Reference)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
-  }
-
-  @Test
-  fun testReferenceLinkNotClickable() {
-    // Given: Ui schema
-    val uiSchema =
-      HealthUiSchema(
-        label = "Label",
-        children =
-          listOf(
-            HealthUiGroup(
-              children =
-                listOf(
-                  ReferenceLink(
-                    label = "Label",
-                    reference = "1",
-                  ),
-                ),
-            ),
-          ),
-      )
-
-    // Given: The mgo resource does not exist in the store
-
-    // When: Calling map
-    val sections = mapper.map(uiSchema)
-
-    // Then: Sections are returned
-    assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Static)
-    assertEquals("Label", sections[0].rows[0].heading)
-    assertEquals("1", sections[0].rows[0].value)
-  }
-
-  @Test
-  fun testDownloadLink() {
-    // Given: Ui schema
-    val uiSchema =
-      HealthUiSchema(
-        label = "Label",
-        children =
-          listOf(
-            HealthUiGroup(
-              children =
-                listOf(
-                  DownloadLink(
-                    label = "Label",
-                    url = "https://www.google.com",
-                  ),
-                ),
-            ),
-          ),
-      )
-
-    // Given: The mgo resource does not exist in the store
-
-    // When: Calling map
-    val sections = mapper.map(uiSchema)
-
-    // Then: Sections are returned
-    assertEquals(1, sections.size)
-    assertTrue(sections[0].rows[0] is UISchemaRow.Link)
-    assertNull(sections[0].rows[0].heading)
-    assertEquals("Label", sections[0].rows[0].value)
+    assertTrue(sections[0].rows.isEmpty())
+    assertThat(sections[1].rows[0], instanceOf(UISchemaRow.Static::class.java))
   }
 }

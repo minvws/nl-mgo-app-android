@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
-import nl.rijksoverheid.mgo.component.pdfViewer.PdfFileRepository
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
@@ -20,10 +19,8 @@ class AppInitializer
     private val storePinCode: StorePinCode,
     private val setDigidAuthenticated: SetDigidAuthenticated,
     private val organizationRepository: OrganizationRepository,
-    private val pdfFileRepository: PdfFileRepository,
   ) {
     suspend fun init() {
-      pdfFileRepository.clearAll()
       featureToggleLocalDataSource.init(featureToggleRepository.getAll())
     }
 

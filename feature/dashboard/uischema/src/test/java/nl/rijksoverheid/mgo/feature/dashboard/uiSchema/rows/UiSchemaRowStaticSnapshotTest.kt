@@ -9,9 +9,23 @@ internal class UiSchemaRowStaticSnapshotTest {
   val snapshotTestRule = SnapshotTestRule()
 
   @Test
-  fun preview() {
+  fun single() {
     snapshotTestRule.snapshots {
-      UiSchemaRowStaticPreview()
+      UiSchemaRowStaticSingleValuePreview()
+    }
+  }
+
+  @Test
+  fun singleMultiLine() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowStaticSingleValueMultiLinePreview()
+    }
+  }
+
+  @Test
+  fun multiple() {
+    snapshotTestRule.snapshots {
+      UiSchemaRowStaticMultipleValuePreview()
     }
   }
 }

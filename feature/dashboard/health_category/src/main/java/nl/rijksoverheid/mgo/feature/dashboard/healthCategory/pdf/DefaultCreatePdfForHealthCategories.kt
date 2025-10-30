@@ -97,7 +97,7 @@ internal class DefaultCreatePdfForHealthCategories
                   heading = section.heading,
                   data =
                     section.rows.mapNotNull { row ->
-                      (row.heading ?: return@mapNotNull null) to row.value
+                      (row.heading ?: return@mapNotNull null) to row.displayValue
                     },
                 )
               }.filter { it.data.isNotEmpty() }

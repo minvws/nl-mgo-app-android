@@ -112,7 +112,7 @@ internal fun UiSchemaRowBinary(
 
 @Composable
 private fun UiSchemaRowBinary(
-  row: UISchemaRow,
+  row: UISchemaRow.Binary,
   loading: Boolean,
   modifier: Modifier = Modifier,
 ) {

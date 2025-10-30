@@ -61,6 +61,6 @@ internal class TestDefaultCreatePdfForHealthCategories {
               ),
             ),
         )
-      assertEquals("mgo_gezondheidsproblemen_1_jan_2000.pdf", file.name)
+      assertEquals("mgo_medische_klachten_1_jan_2000.pdf", file.name)
     }
 }

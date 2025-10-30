@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.component.uiSchema
 
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DisplayValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
@@ -28,93 +29,124 @@ class UISchemaSectionMapper
 
     private fun UiElement.toRow(): UISchemaRow? =
       when (this) {
-        is ReferenceLink -> {
-          if (isReferenceClickable(reference)) {
-            UISchemaRow.Reference(
-              heading = null,
-              value = this.label,
-              referenceId = this.reference,
-            )
-          } else {
-            UISchemaRow.Static(
-              heading = this.label,
-              value = this.reference,
-            )
-          }
-        }
+        is DownloadBinary -> mapDownloadBinary(this)
+        is DownloadLink -> mapDownloadLink(this)
+        is MultipleGroupedValues -> mapMultipleGroupedValues(this)
+        is MultipleValues -> mapMultipleValues(this)
+        is ReferenceLink -> mapReferenceLink(this)
+        is ReferenceValue -> mapReferenceValue(this)
+        is SingleValue -> mapSingleValue(this)
+      }
 
-        is DownloadLink ->
-          this.url?.let { url ->
-            UISchemaRow.Link(
-              heading = null,
-              value = this.label,
-              url = url,
-            )
-          }
+    private fun mapDownloadBinary(uiElement: DownloadBinary): UISchemaRow {
+      val heading = uiElement.label
+      val reference = uiElement.reference
 
-        is SingleValue -> {
-          this.value?.display?.let { display ->
-            UISchemaRow.Static(
-              heading = this.label,
-              value = display,
-            )
-          }
-        }
+      return if (reference != null) {
+        UISchemaRow.Binary.NotDownloaded.Idle(
+          heading = heading,
+          value = heading,
+          binary = reference,
+        )
+      } else {
+        UISchemaRow.Binary.Empty(
+          heading = heading,
+          value = heading,
+        )
+      }
+    }
 
-        is MultipleValues -> {
-          this.value?.map { it.display }?.let { display ->
-            UISchemaRow.Static(
-              heading = this.label,
-              value = display.joinToString(", "),
-            )
-          }
-        }
+    private fun mapDownloadLink(uiElement: DownloadLink): UISchemaRow? {
+      val url = uiElement.url ?: return null
 
-        is MultipleGroupedValues -> {
-          this.value?.map { values -> values.map { value -> value.display } }?.flatten()?.let { display ->
-            UISchemaRow.Static(
-              heading = this.label,
-              value = display.joinToString(", "),
-            )
-          }
-        }
+      return UISchemaRow.Link(
+        heading = uiElement.label,
+        value = uiElement.label,
+        url = url,
+      )
+    }
 
-        is ReferenceValue -> {
-          val reference = this.reference
-          val display = this.display
-          if (reference != null && display != null) {
-            if (isReferenceClickable(reference)) {
-              UISchemaRow.Reference(
-                heading = this.label,
-                value = display,
-                referenceId = reference,
-              )
-            } else {
-              UISchemaRow.Static(
-                heading = this.label,
-                value = display,
-              )
-            }
-          } else {
-            null
-          }
-        }
+    private fun mapMultipleGroupedValues(uiElement: MultipleGroupedValues): UISchemaRow? {
+      val groupedValues = uiElement.value ?: return null
+      val flattenedValues = groupedValues.flatten()
+      val staticValues = flattenedValues.mapNotNull { it.toStaticValue() }
+      if (staticValues.isEmpty()) return null
 
-        is DownloadBinary -> {
-          val reference = this.reference
-          if (reference == null) {
-            UISchemaRow.Binary.Empty(
-              heading = null,
-              value = this.label,
-            )
-          } else {
-            UISchemaRow.Binary.NotDownloaded.Idle(
-              heading = null,
-              value = this.label,
-              binary = reference,
-            )
-          }
+      return UISchemaRow.Static(
+        heading = uiElement.label,
+        value = staticValues,
+      )
+    }
+
+    private fun mapMultipleValues(uiElement: MultipleValues): UISchemaRow? {
+      val values = uiElement.value ?: return null
+      val staticValues = values.mapNotNull { it.toStaticValue() }
+      if (staticValues.isEmpty()) return null
+
+      return UISchemaRow.Static(
+        heading = uiElement.label,
+        value = staticValues,
+      )
+    }
+
+    private fun mapReferenceLink(uiElement: ReferenceLink): UISchemaRow =
+      if (isReferenceClickable(uiElement.reference)) {
+        UISchemaRow.Reference(
+          heading = null,
+          value = uiElement.label,
+          referenceId = uiElement.reference,
+        )
+      } else {
+        UISchemaRow.Static(
+          heading = uiElement.label,
+          value = listOf(UISchemaRowStaticValue(value = uiElement.reference)),
+        )
+      }
+
+    private fun mapReferenceValue(uiElement: ReferenceValue): UISchemaRow? {
+      val reference = uiElement.reference
+      val display = uiElement.display
+      if (reference != null && display != null) {
+        return if (isReferenceClickable(reference)) {
+          UISchemaRow.Reference(
+            heading = uiElement.label,
+            value = display,
+            referenceId = reference,
+          )
+        } else {
+          UISchemaRow.Static(
+            heading = uiElement.label,
+            value = listOf(UISchemaRowStaticValue(value = display)),
+          )
         }
+      } else {
+        return null
+      }
+    }
+
+    private fun mapSingleValue(uiElement: SingleValue): UISchemaRow? {
+      val value = uiElement.value ?: return null
+      val display = value.display ?: return null
+
+      val staticValue =
+        UISchemaRowStaticValue(
+          value = display,
+          snomedCode = value.getSnomedCode(),
+        )
+
+      return UISchemaRow.Static(
+        heading = uiElement.label,
+        value = listOf(staticValue),
+      )
+    }
+
+    private fun DisplayValue?.toStaticValue(): UISchemaRowStaticValue? = this?.display?.let { UISchemaRowStaticValue(it, getSnomedCode()) }
+
+    private fun DisplayValue.getSnomedCode(): String? =
+      if (system == "http://snomed.info/sct") {
+        code
+      } else {
+        null
       }
 
     /**

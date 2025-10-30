@@ -11,4 +11,5 @@ dependencies {
   implementation(projects.data.fhir)
   implementation(projects.component.theme)
   implementation(projects.framework.copy)
+  implementation(projects.data.pft)
 }

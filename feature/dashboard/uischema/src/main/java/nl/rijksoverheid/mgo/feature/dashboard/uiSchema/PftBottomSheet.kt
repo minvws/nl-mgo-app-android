@@ -28,7 +28,7 @@ fun PftBottomSheet(
   pft: Pft,
   onDismissRequest: () -> Unit,
 ) {
-  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 
   ModalBottomSheet(
     modifier = Modifier.testTag(UiSchemaBottomSheetTestTag.SHEET),
@@ -45,7 +45,7 @@ fun PftBottomSheet(
 @Composable
 private fun PftBottomSheetContent(pft: Pft) {
   Scaffold { contentPadding ->
-    Column(modifier = Modifier.padding(contentPadding)) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp).padding(contentPadding)) {
       Text(
         text = pft.name ?: "",
         style = MaterialTheme.typography.headlineMedium,

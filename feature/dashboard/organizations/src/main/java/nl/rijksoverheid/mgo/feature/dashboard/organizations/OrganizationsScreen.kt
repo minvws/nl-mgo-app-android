@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -195,9 +195,10 @@ private fun LazyListScope.WithOrganizations(
     OrganizationCard(
       modifier = Modifier.fillMaxWidth(),
       position =
-        when (position) {
-          0 -> OrganizationCardPosition.TOP
-          organizations.lastIndex -> OrganizationCardPosition.BOTTOM
+        when {
+          organizations.size == 1 -> OrganizationCardPosition.SINGLE
+          position == 0 -> OrganizationCardPosition.TOP
+          position == organizations.lastIndex -> OrganizationCardPosition.BOTTOM
           else -> OrganizationCardPosition.CENTER
         },
       organization = organization,
@@ -242,6 +243,7 @@ private enum class OrganizationCardPosition {
   TOP,
   CENTER,
   BOTTOM,
+  SINGLE,
 }
 
 @Composable
@@ -280,6 +282,14 @@ private fun OrganizationCard(
           bottomEnd = 16.dp,
         )
       }
+      OrganizationCardPosition.SINGLE -> {
+        RoundedCornerShape(
+          topStart = 16.dp,
+          topEnd = 16.dp,
+          bottomStart = 16.dp,
+          bottomEnd = 16.dp,
+        )
+      }
     }
 
   MgoCard(modifier = modifier.testTag(OrganizationsScreenTestTag.ORGANIZATION_CARD), shape = shape) {
@@ -290,7 +300,7 @@ private fun OrganizationCard(
         style = MaterialTheme.typography.bodyMedium,
       )
       if (hasDivider) {
-        Divider(
+        HorizontalDivider(
           modifier =
             Modifier
               .fillMaxWidth()

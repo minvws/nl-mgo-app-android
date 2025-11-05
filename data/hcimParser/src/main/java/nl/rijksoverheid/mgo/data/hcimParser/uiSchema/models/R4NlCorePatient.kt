@@ -23,7 +23,7 @@ data class R4NlCorePatient(
     val birthDate: MgoDate? = null,
     val referenceId: String,
     val deceasedBoolean: MgoBoolean? = null,
-    val nationality: List<ExtensionValue_Of_structure_0_7400704227934598>,
+    val nationality: List<ExtensionValue_Of_structure_0_28086283480618435>,
     val multipleBirthInteger: MgoInteger? = null,
     val contact: List<Contact>? = null,
     val deceasedDateTime: MgoDateTime? = null,

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +44,11 @@ fun HealthCategoriesNoFavoriteCard(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Text(text = stringResource(CopyR.string.overview_favorites_empty_heading), style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp))
+    Text(
+      text = stringResource(CopyR.string.overview_favorites_empty_heading),
+      textAlign = TextAlign.Center,
+      style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
+    )
     TextButton(onClickAddFavorite) {
       Text(
         text = stringResource(CopyR.string.overview_favorites_empty_action),

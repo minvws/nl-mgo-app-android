@@ -26,7 +26,7 @@ data class NlCorePatient(
     val birthDate: MgoDate? = null,
     val referenceId: String,
     val deceasedBoolean: MgoBoolean? = null,
-    val nationality: List<ExtensionValue_Of_structure_0_0013421283921115634>,
+    val nationality: List<ExtensionValue_Of_structure_0_3165680497970691>,
     val multipleBirthInteger: MgoInteger? = null,
     val deceasedDateTime: MgoDateTime? = null,
     val generalPractitioner: MgoReference? = null,

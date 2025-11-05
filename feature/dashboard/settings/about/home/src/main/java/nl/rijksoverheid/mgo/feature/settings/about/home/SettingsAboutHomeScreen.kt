@@ -173,7 +173,7 @@ private fun SettingsAboutHomeListItem(
       Column(
         modifier =
           Modifier
-            .weight(1f)
+            .weight(1f),
       ) {
         Text(
           text = stringResource(heading),

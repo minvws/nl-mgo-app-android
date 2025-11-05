@@ -44,7 +44,11 @@ fun HealthCategoriesNoFavoriteCard(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Text(text = stringResource(CopyR.string.overview_favorites_empty_heading), textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp))
+    Text(
+      text = stringResource(CopyR.string.overview_favorites_empty_heading),
+      textAlign = TextAlign.Center,
+      style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
+    )
     TextButton(onClickAddFavorite) {
       Text(
         text = stringResource(CopyR.string.overview_favorites_empty_action),

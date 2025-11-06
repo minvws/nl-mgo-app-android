@@ -199,7 +199,7 @@ private fun SettingsAboutHomeListItem(
     }
     if (hasDivider) {
       HorizontalDivider(
-        modifier = Modifier.padding(start = 32.dp),
+        modifier = Modifier.padding(start = 16.dp),
       )
     }
   }

@@ -10,9 +10,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.RestartAlt
+import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -45,7 +47,9 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.getIcon
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreenTestTag.RESET_APP_BUTTON
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -153,7 +157,7 @@ private fun SettingsScreenContent(
               Modifier
                 .fillMaxWidth()
                 .clickable { onClickDisplaySettings() },
-            icon = Icons.Outlined.LightMode,
+            icon = LocalAppThemeProvider.current.appTheme.getIcon(),
             heading = CopyR.string.settings_display_heading,
             subHeading =
               when (viewState.appTheme) {

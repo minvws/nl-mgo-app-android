@@ -1,6 +1,10 @@
 package nl.rijksoverheid.mgo.component.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -9,6 +13,8 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 
@@ -66,6 +72,13 @@ private fun getLightColorScheme() =
     surfaceContainerLow = MaterialTheme.colorScheme.BackgroundsPrimary(false), // Container color of bottom sheet
     outlineVariant = MaterialTheme.colorScheme.SeparatorsSecondary(false), // Divider color
   )
+
+fun AppTheme.getIcon(): ImageVector =
+  when (this) {
+    AppTheme.SYSTEM -> Icons.Outlined.SettingsApplications
+    AppTheme.LIGHT -> Icons.Outlined.LightMode
+    AppTheme.DARK -> Icons.Outlined.DarkMode
+  }
 
 // Backgrounds
 

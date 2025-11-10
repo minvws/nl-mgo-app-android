@@ -34,6 +34,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.getIcon
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.framework.copy.R
 
@@ -164,13 +165,6 @@ private fun ThemeListItem(
     }
   }
 }
-
-private fun AppTheme.getIcon(): ImageVector =
-  when (this) {
-    AppTheme.SYSTEM -> Icons.Outlined.SettingsApplications
-    AppTheme.LIGHT -> Icons.Outlined.LightMode
-    AppTheme.DARK -> Icons.Outlined.DarkMode
-  }
 
 @StringRes
 private fun AppTheme.getHeading(): Int =

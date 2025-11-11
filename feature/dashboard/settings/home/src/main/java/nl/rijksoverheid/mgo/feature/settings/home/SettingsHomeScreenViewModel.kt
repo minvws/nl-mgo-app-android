@@ -4,15 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.pincode.biometric.DeviceHasBiometric
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
 import javax.inject.Inject
@@ -34,17 +32,11 @@ internal class SettingsHomeScreenViewModel
 
     private val initialViewState =
       SettingsHomeScreenViewState(
-        appTheme = getAppTheme(keyValueStore.getString(KEY_APP_THEME)),
         deviceHasBiometric = deviceHasBiometric.invoke(),
         isDebug = isDebug,
       )
     private val _viewState =
-      keyValueStore
-        .observeString(KEY_APP_THEME)
-        .map { appThemeString -> getAppTheme(appThemeString) }
-        .map { appTheme ->
-          SettingsHomeScreenViewState(appTheme = appTheme, isDebug = isDebug, deviceHasBiometric = deviceHasBiometric.invoke())
-        }
+      MutableStateFlow(SettingsHomeScreenViewState(isDebug = isDebug, deviceHasBiometric = deviceHasBiometric.invoke()))
 
     val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
 

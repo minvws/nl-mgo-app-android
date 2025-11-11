@@ -50,7 +50,6 @@ internal class SettingsHomeScreenViewModelTest {
       // Then: App theme is system and device has biometric is true
       viewModel.viewState.test {
         val viewState = awaitItem()
-        assertEquals(AppTheme.SYSTEM, viewState.appTheme)
         assertEquals(true, viewState.deviceHasBiometric)
       }
     }

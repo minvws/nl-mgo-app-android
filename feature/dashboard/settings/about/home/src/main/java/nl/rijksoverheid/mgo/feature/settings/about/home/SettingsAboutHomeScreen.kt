@@ -104,7 +104,7 @@ private fun SettingsAboutHomeScreenContent(
           val image =
             when (LocalAppThemeProvider.current.appTheme) {
               AppTheme.SYSTEM -> R.drawable.illustration_vws
-              AppTheme.LIGHT -> R.drawable.illustration_vws
+              AppTheme.LIGHT -> R.drawable.illustration_vws_light
               AppTheme.DARK -> R.drawable.illustration_vws_night
             }
           Image(

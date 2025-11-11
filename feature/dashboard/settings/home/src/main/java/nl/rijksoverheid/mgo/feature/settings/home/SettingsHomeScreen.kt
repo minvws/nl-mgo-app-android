@@ -10,11 +10,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.RestartAlt
-import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -160,7 +157,7 @@ private fun SettingsScreenContent(
             icon = LocalAppThemeProvider.current.appTheme.getIcon(),
             heading = CopyR.string.settings_display_heading,
             subHeading =
-              when (viewState.appTheme) {
+              when (LocalAppThemeProvider.current.appTheme) {
                 AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
                 AppTheme.LIGHT -> CopyR.string.settings_display_light
                 AppTheme.DARK -> CopyR.string.settings_display_dark
@@ -288,7 +285,7 @@ private fun SettingsListItem(
 internal fun SettingsHomeScreenPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = true),
+      viewState = SettingsHomeScreenViewState(isDebug = true, deviceHasBiometric = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -303,7 +300,7 @@ internal fun SettingsHomeScreenPreview() {
 internal fun SettingsHomeScreenWithoutBiometricPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = false),
+      viewState = SettingsHomeScreenViewState(isDebug = true, deviceHasBiometric = false),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -318,7 +315,7 @@ internal fun SettingsHomeScreenWithoutBiometricPreview() {
 internal fun SettingsHomeScreenWithoutDebugPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = false, deviceHasBiometric = true),
+      viewState = SettingsHomeScreenViewState(isDebug = false, deviceHasBiometric = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},

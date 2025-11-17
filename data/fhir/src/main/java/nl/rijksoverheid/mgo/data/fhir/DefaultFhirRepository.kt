@@ -204,7 +204,8 @@ class DefaultFhirRepository
         val existing =
           cachedFhirResponses.firstOrNull { response ->
             response.endpointId == fhirResponse.endpointId &&
-              response.organizationId == fhirResponse.organizationId
+              response.organizationId == fhirResponse.organizationId &&
+              response.dataServiceId == fhirResponse.dataServiceId
           }
         if (existing == null) {
           updatedCachedFhirResponses.add(fhirResponse)

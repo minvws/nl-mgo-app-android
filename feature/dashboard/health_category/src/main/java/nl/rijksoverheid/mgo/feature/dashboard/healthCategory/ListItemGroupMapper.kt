@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import nl.rijksoverheid.mgo.component.healthCategories.getString
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
@@ -10,7 +11,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Inject
 import javax.inject.Named

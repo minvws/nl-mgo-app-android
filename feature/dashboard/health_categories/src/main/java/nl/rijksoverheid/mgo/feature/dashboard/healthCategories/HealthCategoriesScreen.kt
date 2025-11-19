@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -45,14 +44,14 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
@@ -69,7 +68,10 @@ fun HealthCategoriesScreen(
   appBarTitle: String,
   onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
   onNavigateToLocalisation: () -> Unit,
-  onNavigateToHealthCategory: (category: HealthCategoryGroup.HealthCategory, organization: MgoOrganization?) -> Unit,
+  onNavigateToHealthCategory: (
+    category: HealthCategoryGroup.HealthCategory,
+    organization: MgoOrganization?,
+  ) -> Unit,
   organization: MgoOrganization? = null,
   onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,

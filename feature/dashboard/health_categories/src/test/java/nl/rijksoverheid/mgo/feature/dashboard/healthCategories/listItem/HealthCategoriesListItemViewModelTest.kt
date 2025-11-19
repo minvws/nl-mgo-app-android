@@ -2,6 +2,8 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_RESPONSE_SUCCESS
 import nl.rijksoverheid.mgo.data.fhir.TestFhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
@@ -9,9 +11,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import okhttp3.OkHttpClient
@@ -56,7 +55,8 @@ class HealthCategoriesListItemViewModelTest {
       fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = false))
 
       // When: Creating viewmodel and filtering on organization
-      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_PROBLEMS)
+      val viewModel =
+        createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_PROBLEMS)
 
       // Then: List item state is loaded
       viewModel.listItemState.test {
@@ -74,7 +74,8 @@ class HealthCategoriesListItemViewModelTest {
       fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = true))
 
       // When: Creating viewmodel and filtering on organization
-      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_PROBLEMS)
+      val viewModel =
+        createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_PROBLEMS)
 
       // Then: List item state is loaded
       viewModel.listItemState.test {
@@ -86,7 +87,10 @@ class HealthCategoriesListItemViewModelTest {
   fun testMissingDataService() =
     runTest {
       // Given: stored organization
-      val organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_DOCUMENTS_DATA_SERVICE))
+      val organization =
+        TEST_MGO_ORGANIZATION.copy(
+          dataServices = listOf(nl.rijksoverheid.mgo.component.organization.TEST_DOCUMENTS_DATA_SERVICE),
+        )
       organizationRepository.save(organization)
 
       // When: Creating viewmodel

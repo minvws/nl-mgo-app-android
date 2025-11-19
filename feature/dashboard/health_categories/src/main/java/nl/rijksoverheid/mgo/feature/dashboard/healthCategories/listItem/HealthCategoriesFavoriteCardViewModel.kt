@@ -48,19 +48,15 @@ internal class HealthCategoriesFavoriteCardViewModel
           val fhirResponseFlows =
             organizations
               .map { organization ->
-                val dataSetIds = organization.dataServices.map { it.id }
-                val endpointsForCategory = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataSetIds).map { it.endpoints }.flatten()
-                organization.dataServices.map { dataService ->
-                  endpointsForCategory.map { endpoint ->
-                    fhirRepository.observe(
-                      organizationId = organization.id,
-                      dataServiceId = dataService.id,
-                      endpointId = endpoint.id,
-                    )
-                  }
+                val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
+                endpoints.map { endpoint ->
+                  fhirRepository.observe(
+                    organizationId = organization.id,
+                    dataServiceId = endpoint.dataServiceId,
+                    endpointId = endpoint.endpointId,
+                  )
                 }
               }.flatten()
-              .flatten()
 
           if (fhirResponseFlows.isEmpty()) {
             _isLoading.update { false }

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
@@ -25,7 +26,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
 import javax.inject.Named
 
@@ -70,8 +70,7 @@ internal class HealthCategoryScreenViewModel
             // If we want to filter on a specific organization, filter on that one
             organizationRepository.storedOrganizationsFlow.map { organizations ->
               organizations.filter {
-                it.id ==
-                  filterOrganization.id
+                it.id == filterOrganization.id
               }
             }
           }
@@ -81,19 +80,15 @@ internal class HealthCategoryScreenViewModel
           val fhirResponseFlows =
             organizations
               .map { organization ->
-                val dataSetIds = organization.dataServices.map { it.id }
-                val endpointsForCategory = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataSetIds).map { it.endpoints }.flatten()
-                organization.dataServices.map { dataService ->
-                  endpointsForCategory.map { endpoint ->
-                    fhirRepository.observe(
-                      organizationId = organization.id,
-                      dataServiceId = dataService.id,
-                      endpointId = endpoint.id,
-                    )
-                  }
+                val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
+                endpoints.map { endpoint ->
+                  fhirRepository.observe(
+                    organizationId = organization.id,
+                    dataServiceId = endpoint.dataServiceId,
+                    endpointId = endpoint.endpointId,
+                  )
                 }
               }.flatten()
-              .flatten()
 
           if (fhirResponseFlows.isEmpty()) {
             _viewState.update { viewState -> viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData) }
@@ -137,23 +132,18 @@ internal class HealthCategoryScreenViewModel
       viewModelScope.launch(ioDispatcher) {
         val organizations = organizationRepository.get()
         for (organization in organizations) {
-          val dataSetIds = organization.dataServices.map { it.id }
-          val endpointsWithDataSet = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataSetIds)
-          for (endpointWithDataSet in endpointsWithDataSet) {
-            for (endpoint in endpointWithDataSet.endpoints) {
-              for (dataService in organization.dataServices) {
-                fhirRepository.fetch(
-                  organizationId = organization.id,
-                  medmijId = organization.medMijId,
-                  dataServiceId = dataService.id,
-                  endpointId = endpoint.id,
-                  resourceEndpoint = dataService.resourceEndpoint,
-                  fhirVersion = endpointWithDataSet.dataSet.fhirVersion,
-                  url = "$dvaApiBaseUrl/fhir${endpoint.path}",
-                  forceRefresh = true,
-                )
-              }
-            }
+          val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
+          for (endpoint in endpoints) {
+            fhirRepository.fetch(
+              organizationId = organization.id,
+              medmijId = organization.medMijId,
+              dataServiceId = endpoint.dataServiceId,
+              endpointId = endpoint.endpointId,
+              resourceEndpoint = endpoint.resourceEndpoint,
+              fhirVersion = endpoint.fhirVersion,
+              url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
+              forceRefresh = true,
+            )
           }
         }
       }

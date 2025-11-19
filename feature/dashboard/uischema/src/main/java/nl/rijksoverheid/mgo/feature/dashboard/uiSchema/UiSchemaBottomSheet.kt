@@ -15,8 +15,8 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
 import nl.rijksoverheid.mgo.component.mgo.navigation.mgoComposable
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import kotlin.reflect.typeOf
 
 @Serializable
@@ -59,8 +59,18 @@ fun UiSchemaBottomSheet(
         animate = false,
         typeMap =
           mapOf(
-            typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-            typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
+            typeOf<MgoOrganization?>() to
+              JsonNavType(
+                MgoOrganization::class.java,
+                MgoOrganization
+                  .serializer(),
+              ),
+            typeOf<MgoOrganization>() to
+              JsonNavType(
+                MgoOrganization::class.java,
+                MgoOrganization
+                  .serializer(),
+              ),
           ),
       ) {
         UiSchemaScreen(
@@ -78,8 +88,18 @@ fun UiSchemaBottomSheet(
       mgoComposable<UiSchema>(
         typeMap =
           mapOf(
-            typeOf<MgoOrganization?>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
-            typeOf<MgoOrganization>() to JsonNavType(MgoOrganization::class.java, MgoOrganization.serializer()),
+            typeOf<MgoOrganization?>() to
+              JsonNavType(
+                MgoOrganization::class.java,
+                MgoOrganization
+                  .serializer(),
+              ),
+            typeOf<MgoOrganization>() to
+              JsonNavType(
+                MgoOrganization::class.java,
+                MgoOrganization
+                  .serializer(),
+              ),
           ),
       ) { backStackEntry ->
         val route = backStackEntry.toRoute<UiSchema>()

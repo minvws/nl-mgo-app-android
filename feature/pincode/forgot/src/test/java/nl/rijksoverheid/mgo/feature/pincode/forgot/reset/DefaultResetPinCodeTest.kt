@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.feature.pincode.forgot.reset
 
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_LOGIN_WITH_BIOMETRIC_ENABLED
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE

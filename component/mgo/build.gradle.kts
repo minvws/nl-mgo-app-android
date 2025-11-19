@@ -11,6 +11,7 @@ dependencies {
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
   implementation(projects.framework.environment)
+  implementation(projects.component.organization)
   testImplementation(libs.androidx.ui.test.junit4.android)
   testImplementation(testFixtures(projects.framework.environment))
 }

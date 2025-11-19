@@ -47,6 +47,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
 import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
@@ -57,7 +58,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_MEDICATION
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoryScreenTestTag {
@@ -250,7 +250,7 @@ private fun LazyListScope.LoadedContent(
       Text(
         modifier = Modifier.padding(bottom = 8.dp),
         text = listItemGroup.heading,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.headlineMedium,
       )
     }
     for (listItem in listItemGroup.items) {

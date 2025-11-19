@@ -3,8 +3,8 @@ package nl.rijksoverheid.mgo.feature.dashboard.removeOrganization
 import app.cash.turbine.turbineScope
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals

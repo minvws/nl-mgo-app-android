@@ -4,9 +4,9 @@ import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import nl.nl.rijksoverheid.mgo.framework.network.HttpException
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganizations
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -118,9 +118,12 @@ internal class OrganizationRepositoryTest {
         MgoOrganizations(
           providers =
             listOf(
-              TEST_MGO_ORGANIZATION.copy(id = "1"),
-              TEST_MGO_ORGANIZATION.copy(id = "2"),
-              TEST_MGO_ORGANIZATION.copy(id = "3"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "1"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "2"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "3"),
             ),
         )
       val organizationsJson = json.encodeToString<MgoOrganizations>(organizations)
@@ -151,7 +154,13 @@ internal class OrganizationRepositoryTest {
     runTest {
       // Given: Organization is saved
       val organization = TEST_MGO_ORGANIZATION
-      val organizations = MgoOrganizations(providers = listOf(organization))
+      val organizations =
+        MgoOrganizations(
+          providers =
+            listOf(
+              organization,
+            ),
+        )
       val organizationsJson = json.encodeToString<MgoOrganizations>(organizations)
       mgoStorage.save(name = "organizations.json", content = organizationsJson.toByteArray())
 
@@ -188,9 +197,12 @@ internal class OrganizationRepositoryTest {
         MgoOrganizations(
           providers =
             listOf(
-              TEST_MGO_ORGANIZATION.copy(id = "1"),
-              TEST_MGO_ORGANIZATION.copy(id = "2"),
-              TEST_MGO_ORGANIZATION.copy(id = "3"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "1"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "2"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "3"),
             ),
         )
       val organizationsJson = json.encodeToString<MgoOrganizations>(organizations)
@@ -215,9 +227,12 @@ internal class OrganizationRepositoryTest {
         MgoOrganizations(
           providers =
             listOf(
-              TEST_MGO_ORGANIZATION.copy(id = "1"),
-              TEST_MGO_ORGANIZATION.copy(id = "2"),
-              TEST_MGO_ORGANIZATION.copy(id = "3"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "1"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "2"),
+              TEST_MGO_ORGANIZATION
+                .copy(id = "3"),
             ),
         )
       organizations.providers.forEach { provider -> repository.save(provider) }

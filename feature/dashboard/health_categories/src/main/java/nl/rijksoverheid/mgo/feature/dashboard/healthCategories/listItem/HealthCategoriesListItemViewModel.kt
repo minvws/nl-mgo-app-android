@@ -11,17 +11,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Named
 
 @HiltViewModel(assistedFactory = HealthCategoriesListItemViewModel.Factory::class)
@@ -73,19 +72,15 @@ internal class HealthCategoriesListItemViewModel
           val fhirResponseFlows =
             organizations
               .map { organization ->
-                val dataSetIds = organization.dataServices.map { it.id }
-                val endpointsForCategory = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataSetIds).map { it.endpoints }.flatten()
-                organization.dataServices.map { dataService ->
-                  endpointsForCategory.map { endpoint ->
-                    fhirRepository.observe(
-                      organizationId = organization.id,
-                      dataServiceId = dataService.id,
-                      endpointId = endpoint.id,
-                    )
-                  }
+                val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
+                endpoints.map { endpoint ->
+                  fhirRepository.observe(
+                    organizationId = organization.id,
+                    dataServiceId = endpoint.dataServiceId,
+                    endpointId = endpoint.endpointId,
+                  )
                 }
               }.flatten()
-              .flatten()
 
           if (fhirResponseFlows.isEmpty()) {
             _listItemState.update { HealthCategoriesListItemState.NO_DATA }

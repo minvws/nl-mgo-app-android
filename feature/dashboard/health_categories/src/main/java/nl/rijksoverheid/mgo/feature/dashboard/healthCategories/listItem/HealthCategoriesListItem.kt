@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.healthCategories.getString
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
@@ -37,7 +38,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoriesListItemTestTag {

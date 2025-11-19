@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_RESPONSE_SUCCESS
 import nl.rijksoverheid.mgo.data.fhir.TestFhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
@@ -9,8 +10,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import okhttp3.OkHttpClient
@@ -49,7 +48,14 @@ class HealthCategoriesFavoriteCardViewModelTest {
   fun testMissingDataService() =
     runTest {
       // Given: stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_DOCUMENTS_DATA_SERVICE)))
+      organizationRepository.save(
+        TEST_MGO_ORGANIZATION.copy(
+          dataServices =
+            listOf(
+              nl.rijksoverheid.mgo.component.organization.TEST_DOCUMENTS_DATA_SERVICE,
+            ),
+        ),
+      )
 
       // When: Creating viewmodel
       val viewModel = createViewModel(category = TEST_HEALTH_CATEGORY_PROBLEMS)

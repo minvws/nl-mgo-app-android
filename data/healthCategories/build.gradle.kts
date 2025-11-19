@@ -13,5 +13,7 @@ android {
 dependencies {
   implementation(projects.framework.fhir)
   implementation(projects.framework.storage)
+  implementation(projects.component.mgo)
+  implementation(projects.component.organization)
   testFixturesImplementation(libs.kotlinx.serialization.json)
 }

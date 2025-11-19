@@ -14,6 +14,7 @@ dependencies {
   implementation(libs.compose.navigation)
   implementation(projects.component.uiSchema)
   implementation(projects.data.pft)
+  implementation(projects.component.organization)
   testImplementation(testFixtures(projects.framework.util))
   testImplementation(testFixtures(projects.data.fhir))
   testImplementation(testFixtures(projects.data.hcimParser))

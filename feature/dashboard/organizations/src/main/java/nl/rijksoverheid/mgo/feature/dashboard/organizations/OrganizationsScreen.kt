@@ -36,13 +36,13 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
 import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.organizations.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -334,11 +334,16 @@ internal fun OrganizationsScreenWithOrganizationsPreview() {
         OrganizationsViewState(
           organizations =
             listOf(
-              TEST_MGO_ORGANIZATION.copy(name = "Streekziekenhuis Willem Alexander"),
-              TEST_MGO_ORGANIZATION.copy(name = "Huisartsenpraktijk De Haven"),
-              TEST_MGO_ORGANIZATION.copy(name = "Fysiotherapie Centrum"),
-              TEST_MGO_ORGANIZATION.copy(name = "Tandartsenpraktijk Tandje Erbij"),
-              TEST_MGO_ORGANIZATION.copy(name = "Apotheek de Pillendoos"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Streekziekenhuis Willem Alexander"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Huisartsenpraktijk De Haven"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Fysiotherapie Centrum"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Tandartsenpraktijk Tandje Erbij"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Apotheek de Pillendoos"),
             ),
           automaticLocalisationEnabled = false,
         ),

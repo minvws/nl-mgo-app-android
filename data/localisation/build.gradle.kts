@@ -14,4 +14,5 @@ dependencies {
   testFixturesImplementation(libs.kotlin.stdlib)
   testImplementation(testFixtures(projects.framework.storage))
   implementation(projects.framework.storage)
+  implementation(projects.component.organization)
 }

@@ -218,4 +218,5 @@ dependencies {
   implementation(projects.data.healthCategories)
   implementation(projects.framework.fhir)
   implementation(projects.data.pft)
+  implementation(projects.component.organization)
 }

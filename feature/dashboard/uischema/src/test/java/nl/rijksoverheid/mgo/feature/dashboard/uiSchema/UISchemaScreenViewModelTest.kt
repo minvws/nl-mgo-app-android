@@ -2,6 +2,8 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.fhir.FhirBinary
@@ -12,9 +14,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_DOCUMENTS_DATA_SERVICE
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
@@ -118,7 +117,13 @@ class UISchemaScreenViewModelTest {
       // Given: viewmodel
       val viewModel =
         createViewModel(
-          organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_DOCUMENTS_DATA_SERVICE)),
+          organization =
+            TEST_MGO_ORGANIZATION.copy(
+              dataServices =
+                listOf(
+                  nl.rijksoverheid.mgo.component.organization.TEST_DOCUMENTS_DATA_SERVICE,
+                ),
+            ),
           referenceId = referenceId,
           isSummary = true,
         )
@@ -153,7 +158,13 @@ class UISchemaScreenViewModelTest {
       // Given: viewmodel
       val viewModel =
         createViewModel(
-          organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_DOCUMENTS_DATA_SERVICE)),
+          organization =
+            TEST_MGO_ORGANIZATION.copy(
+              dataServices =
+                listOf(
+                  nl.rijksoverheid.mgo.component.organization.TEST_DOCUMENTS_DATA_SERVICE,
+                ),
+            ),
           referenceId = referenceId,
           isSummary = true,
         )

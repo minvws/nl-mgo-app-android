@@ -1,7 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 data class HealthCategoriesScreenViewState(
   val name: String,

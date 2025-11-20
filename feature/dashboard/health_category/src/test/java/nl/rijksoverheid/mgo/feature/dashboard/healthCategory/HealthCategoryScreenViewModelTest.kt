@@ -5,6 +5,9 @@ import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_GP_DATA_SERVICE
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
@@ -18,9 +21,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_LIFESTYLE
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_GP_DATA_SERVICE
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
@@ -162,7 +162,13 @@ class HealthCategoryScreenViewModelTest {
   fun testEmpty() =
     runTest {
       // Given: Stored organization that does not have any data for the lifestyle category
-      val organization = TEST_MGO_ORGANIZATION.copy(dataServices = listOf(TEST_GP_DATA_SERVICE))
+      val organization =
+        TEST_MGO_ORGANIZATION.copy(
+          dataServices =
+            listOf(
+              nl.rijksoverheid.mgo.component.organization.TEST_GP_DATA_SERVICE,
+            ),
+        )
       organizationRepository.save(organization)
 
       // Given: Lifestyle responses
@@ -229,7 +235,8 @@ class HealthCategoryScreenViewModelTest {
       enqueueLifestyleResponses()
 
       // When: Creating viewmodel
-      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
+      val viewModel =
+        createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
 
       // Then: View state is updated
       viewModel.viewState.test {
@@ -251,7 +258,8 @@ class HealthCategoryScreenViewModelTest {
       enqueueLifestyleResponses()
 
       // When: Creating viewmodel
-      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
+      val viewModel =
+        createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
 
       // Given: All responses for upcoming retry are successful
       testServerRule.testServer.enqueueJson(readResourceFile("livingSituation.json"))
@@ -274,7 +282,8 @@ class HealthCategoryScreenViewModelTest {
   fun testGeneratePdf() =
     runTest {
       // Given: viewmodel
-      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
+      val viewModel =
+        createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
 
       viewModel.openPdfViewer.test {
         // When: Calling generatePdf
@@ -293,7 +302,8 @@ class HealthCategoryScreenViewModelTest {
   fun testOnCleared() =
     runTest {
       // Given: viewmodel
-      val viewModel = createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
+      val viewModel =
+        createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
 
       // Given: Mgo resource is stored in store
       mgoResourceStore.store(TEST_MGO_RESOURCE)

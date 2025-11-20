@@ -25,11 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.StatesInformative
 import nl.rijksoverheid.mgo.component.theme.StatesPositive
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreen
@@ -163,7 +163,9 @@ internal fun OrganizationSearchCardAddPreview() {
 internal fun OrganizationSearchCardAddedPreview() {
   MgoTheme {
     OrganizationListManualCard(
-      searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+      searchResult =
+        TEST_MGO_ORGANIZATION
+          .copy(added = true),
       onClick = { },
       modifier = Modifier.padding(all = 16.dp),
       cardState = OrganizationSearchCardState.ADDED,
@@ -176,7 +178,9 @@ internal fun OrganizationSearchCardAddedPreview() {
 internal fun OrganizationSearchCardNotSupportedPreview() {
   MgoTheme {
     OrganizationListManualCard(
-      searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+      searchResult =
+        TEST_MGO_ORGANIZATION
+          .copy(added = true),
       onClick = { },
       modifier = Modifier.padding(all = 16.dp),
       cardState = OrganizationSearchCardState.NOT_SUPPORTED,

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.localisation.models
+package nl.rijksoverheid.mgo.component.organization
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

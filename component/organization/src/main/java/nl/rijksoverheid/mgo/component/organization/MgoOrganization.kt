@@ -1,9 +1,8 @@
-package nl.rijksoverheid.mgo.data.localisation.models
+package nl.rijksoverheid.mgo.component.organization
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
 
 typealias MgoOrganizationId = String
 typealias MgoOrganizationMedMijId = String
@@ -31,25 +30,4 @@ val TEST_MGO_ORGANIZATION =
     category = "Tandarts",
     added = false,
     dataServices = listOf(TEST_BGZ_DATA_SERVICE),
-  )
-
-internal fun SearchResponse.Organization.toMgoOrganization(
-  added: Boolean,
-  supportedDataServiceIds: List<String>,
-): MgoOrganization =
-  MgoOrganization(
-    id = id,
-    medMijId = medMijId,
-    name = displayName ?: "",
-    address = addresses.firstOrNull()?.address,
-    category = types.firstOrNull()?.displayName,
-    added = added,
-    dataServices =
-      dataServices.map { dataService ->
-        MgoOrganizationDataService(
-          id = dataService.id,
-          resourceEndpoint = dataService.roles.first().resourceEndpoint,
-          isSupported = supportedDataServiceIds.contains(dataService.id),
-        )
-      },
   )

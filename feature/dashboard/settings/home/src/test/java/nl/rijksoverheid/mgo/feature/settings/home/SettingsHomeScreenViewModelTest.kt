@@ -2,9 +2,8 @@ package nl.rijksoverheid.mgo.feature.settings.home
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE

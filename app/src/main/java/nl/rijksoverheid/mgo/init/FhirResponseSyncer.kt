@@ -3,11 +3,11 @@ package nl.rijksoverheid.mgo.init
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -43,38 +43,37 @@ class FhirResponseSyncer
       }
 
     private suspend fun MgoOrganization.fetchFhirResponses() {
-      val categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten()
-      val dataServices = dataServices.map { dataService -> dataService }
+      val categories =
+        getHealthCategoriesFromDisk
+          .invoke()
+          .flatMap { it.categories }
 
-      val seenUrls = mutableSetOf<String>()
+      val seenPaths = mutableSetOf<String>()
+
       for (category in categories) {
-        val endpointsWithDataSet = getEndpointsForHealthCategory(category = category, filterDataSetIds = dataServices.map { it.id })
+        val endpoints =
+          getEndpointsForHealthCategory(
+            category = category,
+            organization = this,
+          )
 
-        // Do not do the same request twice
-        val uniqueEndpointsWithDataSet =
-          endpointsWithDataSet.map { item ->
-            val uniqueEndpoints =
-              item.endpoints.filter { endpoint ->
-                seenUrls.add(endpoint.path)
-              }
-            item.copy(endpoints = uniqueEndpoints)
+        // Do not do same request twice
+        val uniqueEndpoints =
+          endpoints.filter { endpoint ->
+            seenPaths.add(endpoint.dataServiceId + endpoint.endpointPath)
           }
 
-        for (endpointWithDataSet in uniqueEndpointsWithDataSet) {
-          for (endpoint in endpointWithDataSet.endpoints) {
-            for (dataService in dataServices) {
-              fhirRepository.fetch(
-                organizationId = id,
-                medmijId = medMijId,
-                dataServiceId = dataService.id,
-                endpointId = endpoint.id,
-                resourceEndpoint = dataService.resourceEndpoint,
-                fhirVersion = endpointWithDataSet.dataSet.fhirVersion,
-                url = "$dvaApiBaseUrl/fhir${endpoint.path}",
-                forceRefresh = firstSync,
-              )
-            }
-          }
+        for (endpoint in uniqueEndpoints) {
+          fhirRepository.fetch(
+            organizationId = id,
+            medmijId = medMijId,
+            dataServiceId = endpoint.dataServiceId,
+            endpointId = endpoint.endpointId,
+            resourceEndpoint = endpoint.resourceEndpoint,
+            fhirVersion = endpoint.fhirVersion,
+            url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
+            forceRefresh = firstSync,
+          )
         }
       }
     }

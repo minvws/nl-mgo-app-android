@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
 import kotlinx.serialization.Serializable
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 
 /**
  * Represents all navigation destinations in the dashboard (the screen that shows the bottom bar).

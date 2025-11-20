@@ -9,11 +9,11 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import nl.nl.rijksoverheid.mgo.framework.network.executeRequest
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganizations
 import nl.rijksoverheid.mgo.data.localisation.api.DataServiceId
 import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganizations
-import nl.rijksoverheid.mgo.data.localisation.models.toMgoOrganization
+import nl.rijksoverheid.mgo.data.localisation.api.toMgoOrganization
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -34,7 +34,8 @@ class OrganizationRepository
     private val json = Json { ignoreUnknownKeys = true }
     private val fileName = "organizations.json"
 
-    val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> = MutableStateFlow(runBlocking { get() })
+    val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> =
+      MutableStateFlow(runBlocking { get() })
 
     fun search(
       name: String,
@@ -123,7 +124,15 @@ class OrganizationRepository
     suspend fun save(provider: MgoOrganization) {
       // Get stored health care providers
       val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
-      val organizations = if (organizationsJson == null) MgoOrganizations(listOf()) else json.decodeFromString<MgoOrganizations>(organizationsJson)
+      val organizations =
+        if (organizationsJson ==
+          null
+        ) {
+          nl.rijksoverheid.mgo.component.organization
+            .MgoOrganizations(listOf())
+        } else {
+          json.decodeFromString<MgoOrganizations>(organizationsJson)
+        }
 
       // Add our provider we want to save
       val newProviders = organizations.providers.toMutableList()
@@ -145,7 +154,15 @@ class OrganizationRepository
     suspend fun delete(providerId: String) {
       // Get stored health care providers
       val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
-      val organizations = if (organizationsJson == null) MgoOrganizations(listOf()) else json.decodeFromString<MgoOrganizations>(organizationsJson)
+      val organizations =
+        if (organizationsJson ==
+          null
+        ) {
+          nl.rijksoverheid.mgo.component.organization
+            .MgoOrganizations(listOf())
+        } else {
+          json.decodeFromString<MgoOrganizations>(organizationsJson)
+        }
 
       // Delete the provider from the file
       val newProviders = organizations.providers.toMutableList()

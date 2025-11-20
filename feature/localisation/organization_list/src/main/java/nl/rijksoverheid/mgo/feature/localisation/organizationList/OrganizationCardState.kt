@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.localisation.organizationList
 
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationListManualCard
 
 /**

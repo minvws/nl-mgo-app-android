@@ -21,6 +21,7 @@ dependencies {
   implementation(projects.component.uiSchema)
   implementation(projects.component.healthCategories)
   implementation(projects.framework.storage)
+  implementation(projects.component.organization)
   testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.data.hcimParser))
   testImplementation(testFixtures(projects.data.healthCategories))

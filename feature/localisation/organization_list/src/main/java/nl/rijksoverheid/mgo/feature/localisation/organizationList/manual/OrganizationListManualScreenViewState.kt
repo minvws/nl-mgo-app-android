@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.localisation.organizationList.manual
 
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 
 /**
  * The view state for [OrganizationListManualScreen].
@@ -22,14 +22,13 @@ data class OrganizationListManualScreenViewState(
     fun initialState(
       name: String,
       city: String,
-    ): OrganizationListManualScreenViewState {
-      return OrganizationListManualScreenViewState(
+    ): OrganizationListManualScreenViewState =
+      OrganizationListManualScreenViewState(
         loading = true,
         name = name,
         city = city,
         results = listOf(),
         error = null,
       )
-    }
   }
 }

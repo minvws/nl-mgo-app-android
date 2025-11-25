@@ -36,5 +36,12 @@ jobs:
       - name: Run instrumented tests in app module
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
-          script: ./gradlew connectedTstDebugAndroidTest
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          emulator-options: -no-window -gpu swiftshader_indirect -no-audio
+          script: ./gradlew connectedCheck
+          heap-size: 1024M
+          memory: 2G
+          cores: 2
+          disable-animations: true

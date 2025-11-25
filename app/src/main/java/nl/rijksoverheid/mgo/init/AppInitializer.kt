@@ -2,12 +2,12 @@ package nl.rijksoverheid.mgo.init
 
 import androidx.annotation.VisibleForTesting
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pincode.StorePinCode
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.reset.ResetApp
 import javax.inject.Inject
 
 class AppInitializer
@@ -18,7 +18,7 @@ class AppInitializer
     private val setHasSeenOnboarding: SetHasSeenOnboarding,
     private val storePinCode: StorePinCode,
     private val setDigidAuthenticated: SetDigidAuthenticated,
-    private val organizationRepository: OrganizationRepository,
+    private val resetApp: ResetApp,
   ) {
     suspend fun init() {
       featureToggleLocalDataSource.init(featureToggleRepository.getAll())
@@ -34,6 +34,7 @@ class AppInitializer
       digidAuthenticated: Boolean = false,
       skipPinCodeLogin: Boolean = false,
     ) {
+      resetApp.invoke()
       if (skipOnboarding) {
         setHasSeenOnboarding(true)
       }
@@ -54,6 +55,6 @@ class AppInitializer
      */
     @VisibleForTesting
     suspend fun clear() {
-      organizationRepository.deleteAll()
+      resetApp.invoke()
     }
   }

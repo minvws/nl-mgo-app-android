@@ -66,7 +66,7 @@ internal class OrganizationListManualScreenViewModel
     }
 
     fun addOrganization(provider: MgoOrganization) {
-      viewModelScope.launch(ioDispatcher) {
+      viewModelScope.launch {
         organizationRepository.save(provider)
         _navigation.tryEmit(Unit)
       }

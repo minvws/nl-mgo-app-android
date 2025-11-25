@@ -27,6 +27,7 @@ import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
+import nl.rijksoverheid.mgo.reset.ResetApp
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -40,6 +41,7 @@ internal class MainViewModel
     private val hasPinCode: HasPinCode,
     private val hasSeenOnboarding: HasSeenOnboarding,
     private val featureToggleRepository: FeatureToggleRepository,
+    private val resetApp: ResetApp,
     @Named("keyValueStore") val keyValueStore: KeyValueStore,
     @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
     val isDigidAuthenticated: IsDigidAuthenticated,
@@ -125,6 +127,12 @@ internal class MainViewModel
     fun saveClosedAppTimestamp() {
       viewModelScope.launch {
         saveClosedAppTimestamp.invoke()
+      }
+    }
+
+    fun resetApp() {
+      viewModelScope.launch {
+        resetApp.invoke()
       }
     }
   }

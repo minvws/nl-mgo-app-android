@@ -42,3 +42,17 @@ jobs:
           memory: 2G
           cores: 2
           disable-animations: true
+
+      - name: Pull screenshots from emulator
+        if: always()
+        run: |
+          adb root
+          adb shell ls /data/data/nl.rijksoverheid.mgo.tst/cache/screenshots || true
+          adb pull /data/data/nl.rijksoverheid.mgo.test/cache/screenshots ./screenshots || true
+
+      - name: Upload screenshots artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-screenshots
+          path: ./screenshots

@@ -1,11 +1,18 @@
 package nl.rijksoverheid.mgo
 
+import android.app.Application
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.screenshot.Screenshot
 import nl.rijksoverheid.mgo.robots.HealthCategoriesScreenRobot
 import nl.rijksoverheid.mgo.rules.SetupAppRule
 import org.junit.Rule
 import org.junit.Test
+import java.io.File
 
 /**
  * This test goes through the flow of adding data from a certain gegevensdienst (BGZ, GP, etc.).
@@ -29,17 +36,29 @@ class AddOrganizationTest {
   fun testBgz() {
     launchActivity<MainActivity>().use {
       HealthCategoriesScreenRobot(composeTestRule)
+        .also { takeScreenshot("1") }
         .clickAddOrganizationButton()
+        .also { takeScreenshot("2") }
         .gotoAddOrganizationScreen()
+        .also { takeScreenshot("3") }
         .setNameTextInput("test")
+        .also { takeScreenshot("4") }
         .setCityTextInput("test")
+        .also { takeScreenshot("5") }
         .clickSearchButton()
+        .also { takeScreenshot("6") }
         .gotoOrganizationListScreen()
+        .also { takeScreenshot("7") }
         .clickOrganization("Kwalificatie Medmij: GPDATA")
+        .also { takeScreenshot("8") }
         .gotoHealthCareCategoriesScreen()
+        .also { takeScreenshot("9") }
         .clickCategory("Uitslagen")
+        .also { takeScreenshot("10") }
         .gotoHealthCategoryScreen()
+        .also { takeScreenshot("11") }
         .assertCardsExists()
+        .also { takeScreenshot("12") }
     }
   }
 
@@ -94,6 +113,23 @@ class AddOrganizationTest {
         .clickCategory("Vaccinaties")
         .gotoHealthCategoryScreen()
         .assertCardsExists()
+    }
+  }
+
+  private fun takeScreenshot(name: String) {
+    val screenshot = Screenshot.capture()
+    val bitmap = screenshot.bitmap
+
+    val context = ApplicationProvider.getApplicationContext<Context>()
+
+    val dir = File(context.cacheDir, "screenshots")
+
+    dir.mkdirs()
+
+    val file = File(dir, "$name.png")
+
+    file.outputStream().use { out ->
+      bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
     }
   }
 }

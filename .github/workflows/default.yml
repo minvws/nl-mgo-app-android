@@ -38,11 +38,11 @@ jobs:
         with:
           api-level: 29
           script: |
-            ./gradlew connectedTstDebugAndroidTest
-            echo "Waiting for emulator..."
-            adb wait-for-device
-            adb shell ls /data/data/nl.rijksoverheid.mgo.tst/cache/screenshots || echo "No screenshots"
-            adb pull /data/data/nl.rijksoverheid.mgo.tst/cache/screenshots ./screenshots
+            EXIT_CODE=0
+            ./gradlew connectedTstDebugAndroidTest || EXIT_CODE=$?
+            echo "Pulling screenshots..."
+            adb pull /data/data/nl.rijksoverheid.mgo.tst/cache/screenshots ./screenshots || true
+            exit $EXIT_CODE
           heap-size: 1024M
           memory: 2G
           cores: 2

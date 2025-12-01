@@ -5,7 +5,6 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
@@ -44,7 +43,6 @@ class MainApplication : Application() {
     runBlocking { appInitializer.init() }
     applicationScope.launch(Dispatchers.IO) {
       launch { quickJsRepository.create() }
-      launch { fhirResponseSyncer.invoke().collect() }
       launch { pftRepository.sync() }
     }
   }

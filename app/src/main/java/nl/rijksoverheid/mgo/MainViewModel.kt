@@ -3,10 +3,12 @@ package nl.rijksoverheid.mgo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.theme.theme.KEY_APP_THEME
@@ -19,6 +21,7 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
+import nl.rijksoverheid.mgo.init.FhirResponseSyncer
 import nl.rijksoverheid.mgo.lifecycle.AppLifecycleRepository
 import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
@@ -46,6 +49,7 @@ internal class MainViewModel
     @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
     val isDigidAuthenticated: IsDigidAuthenticated,
     val appLifecycleRepository: AppLifecycleRepository,
+    val fhirResponseSyncer: FhirResponseSyncer,
   ) : ViewModel() {
     private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
     val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -70,6 +74,10 @@ internal class MainViewModel
           keyValueStorage.observe<String>(KEY_APP_THEME).collectLatest { appThemeString ->
             _appTheme.emit(getAppTheme(appThemeString))
           }
+        }
+
+        launch(Dispatchers.IO) {
+          launch { fhirResponseSyncer.invoke().collect() }
         }
       }
     }

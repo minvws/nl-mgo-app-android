@@ -23,7 +23,6 @@ class HealthCategoriesScreenRobot(
   }
 
   fun clickCategory(name: String): HealthCategoriesScreenRobot {
-    composeTestRule.waitForListItems(HealthCategoriesListItemTestTag.LIST_ITEM)
     composeTestRule.onNodeWithTag(HealthCategoriesScreenTestTag.LIST).performScrollToNode(hasText(name))
     composeTestRule
       .onNodeWithText(name)

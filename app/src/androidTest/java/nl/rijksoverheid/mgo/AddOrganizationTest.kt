@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
+import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.screenshot.Screenshot
 import nl.rijksoverheid.mgo.robots.HealthCategoriesScreenRobot
@@ -117,19 +118,9 @@ class AddOrganizationTest {
   }
 
   private fun takeScreenshot(name: String) {
-    val screenshot = Screenshot.capture()
-    val bitmap = screenshot.bitmap
-
-    val context = ApplicationProvider.getApplicationContext<Context>()
-
-    val dir = File(context.cacheDir, "screenshots")
-
-    dir.mkdirs()
-
-    val file = File(dir, "$name.png")
-
-    file.outputStream().use { out ->
-      bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
-    }
+    val screenshot =
+      androidx.test.core.app
+        .takeScreenshot()
+    screenshot.writeToTestStorage(name)
   }
 }

@@ -41,7 +41,7 @@ jobs:
             EXIT_CODE=0
             ./gradlew connectedTstDebugAndroidTest || EXIT_CODE=$?
             echo "Pulling screenshots..."
-            adb pull /data/data/nl.rijksoverheid.mgo.tst/cache/screenshots ./screenshots || true
+            adb pull /storage/emulated/0/googletest/test_outputfiles ./screenshots || true
             exit $EXIT_CODE
           heap-size: 1024M
           memory: 2G

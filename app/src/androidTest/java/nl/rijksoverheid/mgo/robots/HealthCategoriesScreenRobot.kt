@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.robots
 
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
@@ -22,6 +23,12 @@ class HealthCategoriesScreenRobot(
 
   fun clickCategory(name: String): HealthCategoriesScreenRobot {
     composeTestRule.onNodeWithTag(HealthCategoriesScreenTestTag.LIST).performScrollToNode(hasText(name))
+    composeTestRule.waitUntil(timeoutMillis = 5000) {
+      composeTestRule
+        .onAllNodes(hasText(name) and hasClickAction())
+        .fetchSemanticsNodes()
+        .isNotEmpty()
+    }
     composeTestRule
       .onNodeWithText(name)
       .performClick()

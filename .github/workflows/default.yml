@@ -39,9 +39,15 @@ jobs:
           api-level: 29
           script: |
             EXIT_CODE=0
+
             ./gradlew connectedTstDebugAndroidTest || EXIT_CODE=$?
+
             echo "Pulling screenshots..."
             adb pull /storage/emulated/0/googletest/test_outputfiles ./screenshots || true
+
+            echo "Dumping logcat..."
+            adb logcat -d > logcat.txt || true
+
             exit $EXIT_CODE
           heap-size: 1024M
           memory: 2G
@@ -54,3 +60,9 @@ jobs:
         with:
           name: android-screenshots
           path: ./screenshots
+
+      - name: Upload logcat
+        uses: actions/upload-artifact@v4
+        with:
+          name: logcat
+          path: logcat.txt

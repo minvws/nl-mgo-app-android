@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -65,6 +66,8 @@ internal class HealthCategoriesListItemViewModel
           }
 
         organizationsFlow.collectLatest { organizations ->
+          Log.d("CI DEBUG", "CHECK #1: " + organizations.size)
+
           // Always start with loading state whenever a organization has been added
           _listItemState.update { HealthCategoriesListItemState.LOADING }
 
@@ -83,10 +86,13 @@ internal class HealthCategoriesListItemViewModel
               }.flatten()
 
           if (fhirResponseFlows.isEmpty()) {
+            Log.d("CI DEBUG", "CHECK #2")
             _listItemState.update { HealthCategoriesListItemState.NO_DATA }
           } else {
+            Log.d("CI DEBUG", "CHECK #3: " + fhirResponseFlows.size)
             // Observe the fhir responses
             combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest { responses ->
+              Log.d("CI DEBUG", "CHECK #4")
               val allEmpty = responses.filterIsInstance<FhirResponse.Success>().all { response -> response.isEmpty }
               if (allEmpty) {
                 _listItemState.update { HealthCategoriesListItemState.NO_DATA }

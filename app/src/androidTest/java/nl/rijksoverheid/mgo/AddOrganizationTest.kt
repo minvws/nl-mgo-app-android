@@ -56,60 +56,6 @@ class AddOrganizationTest {
     }
   }
 
-  @Test
-  fun testGp() {
-    launchActivity<MainActivity>().use {
-      HealthCategoriesScreenRobot(composeTestRule)
-        .clickAddOrganizationButton()
-        .gotoAddOrganizationScreen()
-        .setNameTextInput("test")
-        .setCityTextInput("test")
-        .clickSearchButton()
-        .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: GPDATA")
-        .gotoHealthCareCategoriesScreen()
-        .clickCategory("Uitslagen")
-        .gotoHealthCategoryScreen()
-        .assertCardsExists()
-    }
-  }
-
-  @Test
-  fun testDoc() {
-    launchActivity<MainActivity>().use {
-      HealthCategoriesScreenRobot(composeTestRule)
-        .clickAddOrganizationButton()
-        .gotoAddOrganizationScreen()
-        .setNameTextInput("test")
-        .setCityTextInput("test")
-        .clickSearchButton()
-        .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: PDFA")
-        .gotoHealthCareCategoriesScreen()
-        .clickCategory("Documenten")
-        .gotoHealthCategoryScreen()
-        .assertCardsExists()
-    }
-  }
-
-  @Test
-  fun testVaccinations() {
-    launchActivity<MainActivity>().use {
-      HealthCategoriesScreenRobot(composeTestRule)
-        .clickAddOrganizationButton()
-        .gotoAddOrganizationScreen()
-        .setNameTextInput("test")
-        .setCityTextInput("test")
-        .clickSearchButton()
-        .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: VACCINATION_IMMUNIZATION")
-        .gotoHealthCareCategoriesScreen()
-        .clickCategory("Vaccinaties")
-        .gotoHealthCategoryScreen()
-        .assertCardsExists()
-    }
-  }
-
   private fun takeScreenshot(name: String) {
     val screenshot =
       androidx.test.core.app

@@ -55,7 +55,7 @@ internal class HealthCategoryScreenViewModel
     private val initialState =
       HealthCategoryScreenViewState(category = category, showErrorBanner = false, listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading)
     private val _viewState: MutableStateFlow<HealthCategoryScreenViewState> = MutableStateFlow(initialState)
-    val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
+    val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Eagerly, initialState)
 
     private val _openPdfViewer = MutableSharedFlow<PdfViewerState>(extraBufferCapacity = 2)
     val openPdfViewer = _openPdfViewer.asSharedFlow()

@@ -14,6 +14,7 @@ class OrganizationListScreenRobot(
   private val composeTestRule: ComposeTestRule,
 ) {
   fun clickOrganization(name: String): OrganizationListScreenRobot {
+    composeTestRule.waitForListItems(OrganizationListManualCardTestTag.CARD)
     composeTestRule.onNodeWithTag(OrganizationListManualScreenTestTag.LIST).performScrollToNode(hasText(name))
     composeTestRule.onNodeWithText(name).performClick()
     return this

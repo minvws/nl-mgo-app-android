@@ -46,7 +46,7 @@ internal class HealthCategoriesListItemViewModel
       MutableStateFlow(
         HealthCategoriesListItemState.LOADING,
       )
-    val listItemState = _listItemState.stateIn(viewModelScope, SharingStarted.Lazily, HealthCategoriesListItemState.LOADING)
+    val listItemState = _listItemState.stateIn(viewModelScope, SharingStarted.Eagerly, HealthCategoriesListItemState.LOADING)
 
     init {
       viewModelScope.launch(ioDispatcher) {

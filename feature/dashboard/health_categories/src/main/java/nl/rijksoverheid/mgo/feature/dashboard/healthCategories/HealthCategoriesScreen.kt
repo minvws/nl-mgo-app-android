@@ -257,7 +257,7 @@ private fun LazyListScope.WithProviders(
     }
   }
 
-  for (group in groups) {
+  for (group in groups.filter { it.id == "examinations_results" }) {
     if (group.categories.isNotEmpty()) {
       item {
         Text(

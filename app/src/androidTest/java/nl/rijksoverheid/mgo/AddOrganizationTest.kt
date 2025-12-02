@@ -1,19 +1,12 @@
 package nl.rijksoverheid.mgo
 
-import android.app.Application
-import android.content.Context
-import android.graphics.Bitmap
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.core.graphics.writeToTestStorage
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.runner.screenshot.Screenshot
 import nl.rijksoverheid.mgo.robots.HealthCategoriesScreenRobot
 import nl.rijksoverheid.mgo.rules.SetupAppRule
 import org.junit.Rule
 import org.junit.Test
-import java.io.File
 
 /**
  * This test goes through the flow of adding data from a certain gegevensdienst (BGZ, GP, etc.).

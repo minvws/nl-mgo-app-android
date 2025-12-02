@@ -12,7 +12,6 @@ class HealthCategoryScreenRobot(
   private val composeTestRule: ComposeTestRule,
 ) {
   fun assertCardsExists(): HealthCategoryScreenRobot {
-    composeTestRule.waitForListItems(HealthCategoryScreenTestTag.CARD)
     composeTestRule.assertListItems(HealthCategoryScreenTestTag.CARD)
     return this
   }

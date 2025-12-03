@@ -5,6 +5,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performClick
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenTestTag
+import nl.rijksoverheid.mgo.utils.assertListItems
 import nl.rijksoverheid.mgo.utils.waitForListItems
 
 class HealthCategoryScreenRobot(
@@ -12,6 +13,7 @@ class HealthCategoryScreenRobot(
 ) {
   fun assertCardsExists(): HealthCategoryScreenRobot {
     composeTestRule.waitForListItems(HealthCategoryScreenTestTag.CARD)
+    composeTestRule.assertListItems(HealthCategoryScreenTestTag.CARD)
     return this
   }
 

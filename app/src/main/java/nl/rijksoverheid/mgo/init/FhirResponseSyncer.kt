@@ -47,7 +47,6 @@ class FhirResponseSyncer
         getHealthCategoriesFromDisk
           .invoke()
           .flatMap { it.categories }
-          .filter { it.id == "lab_results" }
 
       val seenPaths = mutableSetOf<String>()
 

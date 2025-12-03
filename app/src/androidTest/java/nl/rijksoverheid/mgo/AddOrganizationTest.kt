@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.launchActivity
-import androidx.test.core.graphics.writeToTestStorage
 import nl.rijksoverheid.mgo.robots.HealthCategoriesScreenRobot
 import nl.rijksoverheid.mgo.rules.SetupAppRule
 import org.junit.Rule
@@ -30,36 +29,71 @@ class AddOrganizationTest {
   fun testBgz() {
     launchActivity<MainActivity>().use {
       HealthCategoriesScreenRobot(composeTestRule)
-        .also { takeScreenshot("1") }
         .clickAddOrganizationButton()
-        .also { takeScreenshot("2") }
         .gotoAddOrganizationScreen()
-        .also { takeScreenshot("3") }
         .setNameTextInput("test")
-        .also { takeScreenshot("4") }
         .setCityTextInput("test")
-        .also { takeScreenshot("5") }
         .clickSearchButton()
-        .also { takeScreenshot("6") }
         .gotoOrganizationListScreen()
-        .also { takeScreenshot("7") }
-        .clickOrganization("Kwalificatie Medmij: GPDATA")
-        .also { takeScreenshot("8") }
+        .clickOrganization("Kwalificatie Medmij: BGZ")
         .gotoHealthCareCategoriesScreen()
-        .also { takeScreenshot("9") }
         .clickCategory("Uitslagen")
-        .also { takeScreenshot("10") }
         .gotoHealthCategoryScreen()
-        .also { takeScreenshot("11") }
         .assertCardsExists()
-        .also { takeScreenshot("12") }
     }
   }
 
-  private fun takeScreenshot(name: String) {
-    val screenshot =
-      androidx.test.core.app
-        .takeScreenshot()
-    screenshot.writeToTestStorage(name)
+  @Test
+  fun testGp() {
+    launchActivity<MainActivity>().use {
+      HealthCategoriesScreenRobot(composeTestRule)
+        .clickAddOrganizationButton()
+        .gotoAddOrganizationScreen()
+        .setNameTextInput("test")
+        .setCityTextInput("test")
+        .clickSearchButton()
+        .gotoOrganizationListScreen()
+        .clickOrganization("Kwalificatie Medmij: GPDATA")
+        .gotoHealthCareCategoriesScreen()
+        .clickCategory("Uitslagen")
+        .gotoHealthCategoryScreen()
+        .assertCardsExists()
+    }
+  }
+
+  @Test
+  fun testDoc() {
+    launchActivity<MainActivity>().use {
+      HealthCategoriesScreenRobot(composeTestRule)
+        .clickAddOrganizationButton()
+        .gotoAddOrganizationScreen()
+        .setNameTextInput("test")
+        .setCityTextInput("test")
+        .clickSearchButton()
+        .gotoOrganizationListScreen()
+        .clickOrganization("Kwalificatie Medmij: PDFA")
+        .gotoHealthCareCategoriesScreen()
+        .clickCategory("Documenten")
+        .gotoHealthCategoryScreen()
+        .assertCardsExists()
+    }
+  }
+
+  @Test
+  fun testVaccinations() {
+    launchActivity<MainActivity>().use {
+      HealthCategoriesScreenRobot(composeTestRule)
+        .clickAddOrganizationButton()
+        .gotoAddOrganizationScreen()
+        .setNameTextInput("test")
+        .setCityTextInput("test")
+        .clickSearchButton()
+        .gotoOrganizationListScreen()
+        .clickOrganization("Kwalificatie Medmij: VACCINATION_IMMUNIZATION")
+        .gotoHealthCareCategoriesScreen()
+        .clickCategory("Vaccinaties")
+        .gotoHealthCategoryScreen()
+        .assertCardsExists()
+    }
   }
 }

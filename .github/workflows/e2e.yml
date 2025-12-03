@@ -1,11 +1,9 @@
-name: 'CI/CD'
+name: 'E2E'
 
 on:
+  schedule:
+    - cron: "10 4 * * 4"
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
 
 jobs:
   tests:

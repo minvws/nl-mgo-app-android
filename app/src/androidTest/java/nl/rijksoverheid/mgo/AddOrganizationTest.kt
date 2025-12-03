@@ -50,6 +50,7 @@ class AddOrganizationTest {
         .clickCategory("Uitslagen")
         .also { takeScreenshot("10") }
         .gotoHealthCategoryScreen()
+        .also { composeTestRule.waitForIdle() }
         .also { takeScreenshot("11") }
         .assertCardsExists()
         .also { takeScreenshot("12") }

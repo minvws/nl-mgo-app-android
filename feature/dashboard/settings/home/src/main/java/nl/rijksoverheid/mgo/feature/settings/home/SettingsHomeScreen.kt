@@ -19,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,7 +34,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
@@ -55,30 +53,15 @@ object SettingsHomeScreenTestTag {
   const val RESET_APP_BUTTON = "SettingsHomeScreenResetAppButton"
 }
 
-/**
- * Composable that shows a screen where you can change different settings of the app.
- *
- * @param onNavigateToDisplaySettings Called when requested to navigate to the screen that shows display settings.
- * @param onNavigateToSecuritySettings Called when requested to navigate to the screen that shows security settings.
- * @param onNavigateToAdvancedSettings Called when requested to navigate to the screen that shows advanced settings.
- * @param onNavigateToAboutThisAppSettings Called when requested to navigate to the screen that shows about this app settings.
- * @param onNavigateToOnboarding Called when requested to navigate to the onboarding.
- */
 @Composable
 fun SettingsHomeScreen(
   onNavigateToDisplaySettings: () -> Unit,
   onNavigateToSecuritySettings: () -> Unit,
   onNavigateToAdvancedSettings: () -> Unit,
   onNavigateToAboutThisAppSettings: () -> Unit,
-  onNavigateToOnboarding: () -> Unit,
+  onResetApp: () -> Unit,
 ) {
   val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
-  LaunchedEffect(Unit) {
-    viewModel.navigateToOnboarding.collectLatest {
-      onNavigateToOnboarding()
-    }
-  }
-
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   SettingsScreenContent(
@@ -87,7 +70,7 @@ fun SettingsHomeScreen(
     onClickSecuritySettings = onNavigateToSecuritySettings,
     onClickAdvancedSettings = onNavigateToAdvancedSettings,
     onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
-    onClickResetApp = { viewModel.resetApp() },
+    onClickResetApp = onResetApp,
   )
 }
 

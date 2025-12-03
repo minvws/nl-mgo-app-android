@@ -35,7 +35,7 @@ class AddOrganizationTest {
         .setCityTextInput("test")
         .clickSearchButton()
         .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: GPDATA")
+        .clickOrganization("Kwalificatie Medmij: BGZ")
         .gotoHealthCareCategoriesScreen()
         .clickCategory("Uitslagen")
         .gotoHealthCategoryScreen()

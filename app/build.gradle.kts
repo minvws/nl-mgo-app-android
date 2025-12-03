@@ -12,6 +12,7 @@ android {
     versionName = "1.0"
     buildConfigField("String", "BASIC_AUTH_USER", "\"\"")
     buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"\"")
+    testInstrumentationRunnerArguments["useTestStorageService"] = "true"
   }
 
   flavorDimensions += listOf("environment")
@@ -219,4 +220,6 @@ dependencies {
   implementation(projects.framework.fhir)
   implementation(projects.data.pft)
   implementation(projects.component.organization)
+
+  androidTestUtil("androidx.test.services:test-services:1.4.2")
 }

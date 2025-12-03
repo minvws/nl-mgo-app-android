@@ -105,7 +105,7 @@ class MainActivity : FragmentActivity() {
             HandleNavigateDialog(viewModel = viewModel, navController = navController)
 
             // Device rooted dialog
-            DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
+            DeviceRootedDialog(show = false)
 
             // Show a dialog if user takes a screenshot
             HandleScreenshotDetection()

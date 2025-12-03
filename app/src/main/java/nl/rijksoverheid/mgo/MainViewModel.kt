@@ -3,22 +3,27 @@ package nl.rijksoverheid.mgo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.theme.theme.KEY_APP_THEME
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
+import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
+import nl.rijksoverheid.mgo.data.pft.PftRepository
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
+import nl.rijksoverheid.mgo.init.FhirResponseSyncer
 import nl.rijksoverheid.mgo.lifecycle.AppLifecycleRepository
 import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
@@ -27,6 +32,7 @@ import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
+import nl.rijksoverheid.mgo.reset.ResetApp
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -40,6 +46,11 @@ internal class MainViewModel
     private val hasPinCode: HasPinCode,
     private val hasSeenOnboarding: HasSeenOnboarding,
     private val featureToggleRepository: FeatureToggleRepository,
+    private val resetApp: ResetApp,
+    private val fhirResponseSyncer: FhirResponseSyncer,
+    private val quickJsRepository: QuickJsRepository,
+    private val pftRepository: PftRepository,
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     @Named("keyValueStore") val keyValueStore: KeyValueStore,
     @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
     val isDigidAuthenticated: IsDigidAuthenticated,
@@ -56,15 +67,30 @@ internal class MainViewModel
 
     init {
       viewModelScope.launch {
+        // Initialize javascript runtime
+        launch(ioDispatcher) {
+          quickJsRepository.create()
+        }
+
+        // Start fetching FHIR data
+        launch(ioDispatcher) {
+          fhirResponseSyncer.invoke().collect()
+        }
+
+        // Start syncing patient friendly terms
+        launch(ioDispatcher) {
+          pftRepository.sync()
+        }
+
         // Handle if the flag secure (allow screenshots) feature toggle is enabled
-        launch {
+        launch(ioDispatcher) {
           featureToggleRepository.observe(FeatureToggleId.FlagSecure).collectLatest { enabled ->
             _flagSecureFeatureToggle.tryEmit(enabled)
           }
         }
 
         // Handle app theming
-        launch {
+        launch(ioDispatcher) {
           keyValueStorage.observe<String>(KEY_APP_THEME).collectLatest { appThemeString ->
             _appTheme.emit(getAppTheme(appThemeString))
           }
@@ -125,6 +151,12 @@ internal class MainViewModel
     fun saveClosedAppTimestamp() {
       viewModelScope.launch {
         saveClosedAppTimestamp.invoke()
+      }
+    }
+
+    fun resetApp() {
+      viewModelScope.launch {
+        resetApp.invoke()
       }
     }
   }

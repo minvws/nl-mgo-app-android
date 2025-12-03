@@ -47,11 +47,9 @@ class AddOrganizationTest {
         .also { takeScreenshot("8") }
         .gotoHealthCareCategoriesScreen()
         .also { takeScreenshot("9") }
-        .also { composeTestRule.waitForIdle() }
         .clickCategory("Uitslagen")
         .also { takeScreenshot("10") }
         .gotoHealthCategoryScreen()
-        .also { composeTestRule.waitForIdle() }
         .also { takeScreenshot("11") }
         .assertCardsExists()
         .also { takeScreenshot("12") }

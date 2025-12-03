@@ -8,10 +8,16 @@ on:
   pull_request:
 
 jobs:
-  tests:
-    name: Run E2E Tests
-    runs-on: macos-13
+  check-license:
+    name: Check licenses
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v5
 
+  validate:
+    name: Build & validate
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
@@ -20,45 +26,46 @@ jobs:
       KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
       BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
       BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
-
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: 'true'
           fetch-depth: 0
-
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'temurin'
-
-      - name: Run instrumented tests in app module
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: |
-            ./gradlew connectedTstDebugAndroidTest || true
-
-            echo "Pulling screenshots..."
-            adb pull /storage/emulated/0/googletest/test_outputfiles ./screenshots || true
-
-            echo "Dumping logcat..."
-            adb logcat -d > logcat.txt || true
-          heap-size: 1024M
-          memory: 2G
-          cores: 2
-          disable-animations: true
-
-      - name: Upload screenshots artifact
-        if: always()
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Run CI
+        run: ./gradlew runCI
+      - name: Run Sonar Scanner
+        run: ./gradlew sonar --info
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Download Keystore
+        run: echo $KEYSTORE_FILE | base64 --decode > mgo.keystore
+      - name: Build Apps
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+        run: ./gradlew assembleTstRelease assembleAccRelease assembleProdRelease assembleDemoRelease
+      - name: Archive Apps
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots
-          path: ./screenshots
-
-      - name: Upload logcat
-        uses: actions/upload-artifact@v4
-        with:
-          name: logcat
-          path: logcat.txt
+          name: apks
+          path: |
+            app/build/outputs/apk
+          retention-days: 5
+      - name: Set Release Notes
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+        run: |
+          if [ ${{ github.event_name }} = 'pull_request' ]; then
+            echo "RELEASE_NOTES=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+          else
+            echo "RELEASE_NOTES=main" >> $GITHUB_ENV
+          fi
+      - name: Distribute Apps
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'Generate Builds') || github.ref == 'refs/heads/main' }}
+        run: ./gradlew appDistributionUploadTstRelease --groups=android-intern,valsplat --releaseNotes="${RELEASE_NOTES}" appDistributionUploadAccRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadProdRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}" appDistributionUploadDemoRelease --groups=android-intern --releaseNotes="${RELEASE_NOTES}"

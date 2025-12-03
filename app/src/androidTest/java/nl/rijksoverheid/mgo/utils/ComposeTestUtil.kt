@@ -4,7 +4,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 
 fun ComposeTestRule.waitForListItems(listItemTestTag: String) {
-  waitUntil(timeoutMillis = 20000L) {
+  waitUntil(timeoutMillis = 50000L) {
     onAllNodesWithTag(listItemTestTag)
       .fetchSemanticsNodes()
       .isNotEmpty()

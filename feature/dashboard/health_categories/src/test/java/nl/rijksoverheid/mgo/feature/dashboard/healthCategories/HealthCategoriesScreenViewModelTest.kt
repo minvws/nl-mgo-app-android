@@ -6,7 +6,7 @@ import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.TestGetHealthCategoriesBanner
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.TestDefaultGetHealthCategoriesBanner
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
@@ -60,6 +60,6 @@ internal class HealthCategoriesScreenViewModelTest {
       getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
       keyValueStore = keyValueStore,
       ioDispatcher = mainDispatcherRule.testDispatcher,
-      getHealthCategoriesBanner = TestGetHealthCategoriesBanner(),
+      getHealthCategoriesBanner = TestDefaultGetHealthCategoriesBanner(),
     )
 }

@@ -53,6 +53,7 @@ import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerLoading
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesNoFavoriteCard
@@ -228,6 +229,10 @@ private fun LazyListScope.WithProviders(
   favorites: List<HealthCategoryGroup.HealthCategory>,
 ) {
   if (organization == null) {
+    item {
+      HealthCategoriesBannerLoading(modifier = Modifier.padding(bottom = 32.dp))
+    }
+
     item {
       Text(
         modifier = Modifier.padding(bottom = 12.dp),

@@ -19,8 +19,14 @@ sealed class FhirResponse(
     override val organizationId: String,
     override val dataServiceId: String,
     override val endpointId: String,
+    val type: FhirResponseErrorType,
     val error: Throwable,
   ) : FhirResponse(organizationId, dataServiceId, endpointId)
+}
+
+enum class FhirResponseErrorType {
+  USER,
+  SERVER,
 }
 
 @Suppress("ktlint:standard:function-naming")
@@ -31,4 +37,22 @@ fun TEST_FHIR_RESPONSE_SUCCESS(isEmpty: Boolean = false) =
     endpointId = "1",
     cacheKey = "",
     isEmpty = isEmpty,
+  )
+
+val TEST_FHIR_RESPONSE_ERROR_USER =
+  FhirResponse.Error(
+    organizationId = "1",
+    dataServiceId = "1",
+    endpointId = "1",
+    type = FhirResponseErrorType.USER,
+    error = IllegalStateException(""),
+  )
+
+val TEST_FHIR_RESPONSE_ERROR_SERVER =
+  FhirResponse.Error(
+    organizationId = "1",
+    dataServiceId = "1",
+    endpointId = "1",
+    type = FhirResponseErrorType.SERVER,
+    error = IllegalStateException(""),
   )

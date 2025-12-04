@@ -10,6 +10,8 @@ interface FhirRepository {
     endpointId: String,
   ): Flow<FhirResponse>
 
+  fun observe(): Flow<List<FhirResponse>>
+
   suspend fun fetch(
     organizationId: String,
     medmijId: String?,

@@ -47,6 +47,8 @@ class DefaultFhirRepository
           }
         }.distinctUntilChanged()
 
+    override fun observe(): Flow<List<FhirResponse>> = cachedFhirResponses
+
     override suspend fun fetch(
       organizationId: String,
       medmijId: String?,
@@ -112,6 +114,7 @@ class DefaultFhirRepository
               organizationId = organizationId,
               dataServiceId = dataServiceId,
               endpointId = endpointId,
+              type = FhirResponseErrorType.SERVER,
               error = IllegalStateException("Something went wrong with fetching the fhir resource"),
             )
           updateCachedFhirResponse(fhirResponse = fhirResponse)
@@ -124,6 +127,7 @@ class DefaultFhirRepository
             organizationId = organizationId,
             dataServiceId = dataServiceId,
             endpointId = endpointId,
+            type = FhirResponseErrorType.USER,
             error = e,
           )
         updateCachedFhirResponse(fhirResponse = fhirResponse)

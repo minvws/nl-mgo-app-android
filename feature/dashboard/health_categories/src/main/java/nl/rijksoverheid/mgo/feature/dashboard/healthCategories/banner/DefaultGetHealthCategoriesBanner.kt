@@ -9,7 +9,6 @@ import nl.rijksoverheid.mgo.data.fhir.FhirResponseErrorType
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesBanner
 import javax.inject.Inject
 
 class DefaultGetHealthCategoriesBanner
@@ -20,7 +19,7 @@ class DefaultGetHealthCategoriesBanner
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     private val fhirRepository: FhirRepository,
   ) : GetHealthCategoriesBanner {
-    override operator fun invoke(): Flow<HealthCategoriesBanner> {
+    override operator fun invoke(): Flow<HealthCategoriesBannerState> {
       val categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten()
 
       // Get the total amount of fhir responses that are requested
@@ -38,11 +37,11 @@ class DefaultGetHealthCategoriesBanner
       return combine(totalAmountOfFhirResponses, fhirRepository.observe()) { totalAmount, fhirResponses ->
         when {
           fhirResponses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.USER } ->
-            HealthCategoriesBanner.USER_ERROR
+            HealthCategoriesBannerState.Error.UserError(fhirResponses.size != totalAmount)
           fhirResponses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.SERVER } ->
-            HealthCategoriesBanner.SERVER_ERROR
-          fhirResponses.size == totalAmount -> HealthCategoriesBanner.NONE
-          else -> HealthCategoriesBanner.LOADING
+            HealthCategoriesBannerState.Error.ServerError(fhirResponses.size != totalAmount)
+          fhirResponses.size == totalAmount -> HealthCategoriesBannerState.None
+          else -> HealthCategoriesBannerState.Loading
         }
       }
     }

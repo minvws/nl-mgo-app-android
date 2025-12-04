@@ -2,13 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-
-enum class HealthCategoriesBanner {
-  NONE,
-  LOADING,
-  USER_ERROR,
-  SERVER_ERROR,
-}
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 
 data class HealthCategoriesScreenViewState(
   val name: String,
@@ -16,7 +10,7 @@ data class HealthCategoriesScreenViewState(
   val favorites: List<HealthCategoryGroup.HealthCategory>,
   val groups: List<HealthCategoryGroup>,
   val automaticLocalisationEnabled: Boolean,
-  val banner: HealthCategoriesBanner,
+  val banner: HealthCategoriesBannerState,
 ) {
   companion object {
     fun initialState(
@@ -30,7 +24,7 @@ data class HealthCategoriesScreenViewState(
       automaticLocalisationEnabled = automaticLocalisationEnabled,
       favorites = favorites,
       groups = groups,
-      banner = HealthCategoriesBanner.LOADING,
+      banner = HealthCategoriesBannerState.Loading,
     )
   }
 }

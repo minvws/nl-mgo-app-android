@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.ActionsSolidBackground
@@ -37,6 +38,7 @@ fun MgoButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   buttonTheme: MgoButtonTheme = MgoButtonTheme.SOLID,
+  buttonHeight: Dp = 48.dp,
   isLoading: Boolean = false,
   @DrawableRes icon: Int? = null,
 ) {
@@ -71,8 +73,8 @@ fun MgoButton(
     )
   } else {
     Button(
-      modifier = modifier.heightIn(min = 48.dp),
-      contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
+      modifier = modifier.heightIn(min = buttonHeight),
+      contentPadding = PaddingValues(vertical = buttonHeight / 4, horizontal = 24.dp),
       content = {
         if (isLoading) {
           LoadingButtonContent(buttonTheme.getContentColor())

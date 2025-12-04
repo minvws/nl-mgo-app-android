@@ -18,6 +18,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryId
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.GetHealthCategoriesBanner
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import timber.log.Timber
@@ -53,7 +54,7 @@ internal class HealthCategoriesScreenViewModel
           automaticLocalisationEnabled = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION),
           groups = groups.filterFavorites(favorites),
           favorites = groups.getFavorites(favorites),
-          banner = HealthCategoriesBanner.LOADING,
+          banner = HealthCategoriesBannerState.Loading,
         )
       }.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
 

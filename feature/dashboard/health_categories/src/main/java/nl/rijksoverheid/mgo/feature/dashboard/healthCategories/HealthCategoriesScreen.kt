@@ -53,7 +53,8 @@ import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerLoading
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerError
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesNoFavoriteCard
@@ -230,7 +231,7 @@ private fun LazyListScope.WithProviders(
 ) {
   if (organization == null) {
     item {
-      HealthCategoriesBannerLoading(modifier = Modifier.padding(bottom = 32.dp))
+      HealthCategoriesBannerError(modifier = Modifier.padding(bottom = 32.dp), state = HealthCategoriesBannerState.Error.UserError(true))
     }
 
     item {
@@ -330,7 +331,7 @@ internal fun OverviewScreenNoProvidersPreview() {
           automaticLocalisationEnabled = false,
           groups = listOf(),
           favorites = listOf(),
-          banner = HealthCategoriesBanner.NONE,
+          banner = HealthCategoriesBannerState.None,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},
@@ -354,7 +355,7 @@ internal fun OverviewScreenWithProvidersPreview() {
           automaticLocalisationEnabled = false,
           groups = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH),
           favorites = listOf(),
-          banner = HealthCategoriesBanner.NONE,
+          banner = HealthCategoriesBannerState.None,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},
@@ -378,7 +379,7 @@ internal fun OverviewScreenWithProvidersAndFavoritesPreview() {
           automaticLocalisationEnabled = false,
           groups = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.copy(categories = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.categories[0]))),
           favorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.categories[1]),
-          banner = HealthCategoriesBanner.NONE,
+          banner = HealthCategoriesBannerState.None,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},

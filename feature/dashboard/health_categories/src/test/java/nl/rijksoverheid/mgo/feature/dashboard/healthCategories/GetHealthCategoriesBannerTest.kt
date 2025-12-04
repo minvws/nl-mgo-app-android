@@ -12,6 +12,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.DefaultGetHealthCategoriesBanner
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
@@ -37,13 +38,30 @@ class GetHealthCategoriesBannerTest {
       // Given: Organization is stored
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
-      // Given: One FHIR response is expected, and it's of type user error
+      // Given: All fhir responses that are requested fail
+      val responses = List(28) { TEST_FHIR_RESPONSE_ERROR_USER }
+      fhirRepository.setObserveResults(responses)
+
+      // When: Observing the banner
+      getHealthCategoriesBanner.invoke().test {
+        // Then: Banner is emitted
+        assertEquals(HealthCategoriesBannerState.Error.UserError(false), awaitItem())
+      }
+    }
+
+  @Test
+  fun testUserErrorPartialBanner() =
+    runTest {
+      // Given: Organization is stored
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
+
+      // Given: One fhir response that is requested fail
       fhirRepository.setObserveResults(listOf(TEST_FHIR_RESPONSE_ERROR_USER))
 
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBanner.USER_ERROR, awaitItem())
+        assertEquals(HealthCategoriesBannerState.Error.UserError(true), awaitItem())
       }
     }
 
@@ -53,13 +71,30 @@ class GetHealthCategoriesBannerTest {
       // Given: Organization is stored
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
-      // Given: One FHIR response is expected, and it's of type user error
+      // Given: All fhir responses that are requested fail
+      val responses = List(28) { TEST_FHIR_RESPONSE_ERROR_SERVER }
+      fhirRepository.setObserveResults(responses)
+
+      // When: Observing the banner
+      getHealthCategoriesBanner.invoke().test {
+        // Then: Banner is emitted
+        assertEquals(HealthCategoriesBannerState.Error.ServerError(false), awaitItem())
+      }
+    }
+
+  @Test
+  fun testServerErrorPartialBanner() =
+    runTest {
+      // Given: Organization is stored
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
+
+      // Given: One fhir response that is requested fail
       fhirRepository.setObserveResults(listOf(TEST_FHIR_RESPONSE_ERROR_SERVER))
 
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBanner.SERVER_ERROR, awaitItem())
+        assertEquals(HealthCategoriesBannerState.Error.ServerError(true), awaitItem())
       }
     }
 
@@ -76,7 +111,7 @@ class GetHealthCategoriesBannerTest {
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBanner.NONE, awaitItem())
+        assertEquals(HealthCategoriesBannerState.None, awaitItem())
       }
     }
 
@@ -92,7 +127,7 @@ class GetHealthCategoriesBannerTest {
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBanner.LOADING, awaitItem())
+        assertEquals(HealthCategoriesBannerState.Loading, awaitItem())
       }
     }
 }

@@ -16,6 +16,7 @@ import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCate
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class GetHealthCategoriesBannerTest {
@@ -111,7 +112,7 @@ class GetHealthCategoriesBannerTest {
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBannerState.None, awaitItem())
+        assertNull(awaitItem())
       }
     }
 

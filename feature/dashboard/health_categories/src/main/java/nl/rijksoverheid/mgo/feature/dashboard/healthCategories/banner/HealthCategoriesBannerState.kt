@@ -1,8 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
 
 sealed class HealthCategoriesBannerState {
-  data object None : HealthCategoriesBannerState()
-
   data object Loading : HealthCategoriesBannerState()
 
   sealed class Error(

@@ -10,7 +10,7 @@ data class HealthCategoriesScreenViewState(
   val favorites: List<HealthCategoryGroup.HealthCategory>,
   val groups: List<HealthCategoryGroup>,
   val automaticLocalisationEnabled: Boolean,
-  val banner: HealthCategoriesBannerState,
+  val banner: HealthCategoriesBannerState?,
 ) {
   companion object {
     fun initialState(

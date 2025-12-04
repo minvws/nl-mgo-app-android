@@ -54,6 +54,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerError
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerLoading
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
@@ -168,6 +169,7 @@ private fun HealthCategoriesScreenContent(
               organization = organization,
               groups = viewState.groups,
               favorites = viewState.favorites,
+              banner = viewState.banner,
             )
           }
         }
@@ -228,35 +230,57 @@ private fun LazyListScope.WithProviders(
   organization: MgoOrganization? = null,
   groups: List<HealthCategoryGroup>,
   favorites: List<HealthCategoryGroup.HealthCategory>,
+  banner: HealthCategoriesBannerState?,
 ) {
   if (organization == null) {
-    item {
-      HealthCategoriesBannerError(modifier = Modifier.padding(bottom = 32.dp), state = HealthCategoriesBannerState.Error.UserError(true))
-    }
-
-    item {
-      Text(
-        modifier = Modifier.padding(bottom = 12.dp),
-        text = stringResource(CopyR.string.overview_favorites_heading),
-        style = MaterialTheme.typography.headlineSmall,
-      )
+    item(key = banner.hashCode()) {
+      when (banner) {
+        null -> {}
+        HealthCategoriesBannerState.Loading -> HealthCategoriesBannerLoading(modifier = Modifier.padding(bottom = 32.dp).animateItem())
+        is HealthCategoriesBannerState.Error.ServerError ->
+          HealthCategoriesBannerError(
+            modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+            state = HealthCategoriesBannerState.Error.ServerError(banner.partial),
+          )
+        is HealthCategoriesBannerState.Error.UserError ->
+          HealthCategoriesBannerError(
+            modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+            state = HealthCategoriesBannerState.Error.UserError(banner.partial),
+          )
+      }
     }
 
     if (favorites.isEmpty()) {
-      item {
-        HealthCategoriesNoFavoriteCard(
-          modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp),
-          onClickAddFavorite = onClickAddFavorite,
-        )
+      item(key = "favorites_empty") {
+        Column(modifier = Modifier.animateItem()) {
+          Text(
+            modifier = Modifier.padding(bottom = 12.dp),
+            text = stringResource(CopyR.string.overview_favorites_heading),
+            style = MaterialTheme.typography.headlineSmall,
+          )
+
+          HealthCategoriesNoFavoriteCard(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp),
+            onClickAddFavorite = onClickAddFavorite,
+          )
+        }
       }
     } else {
-      item {
-        FlowRow(modifier = Modifier.padding(bottom = 32.dp), horizontalArrangement = spacedBy(8.dp), verticalArrangement = spacedBy(8.dp)) {
-          favorites.forEach { favorite ->
-            HealthCategoriesFavoriteCard(
-              category = favorite,
-              onClick = { onClickListItem(favorite) },
-            )
+      item(key = "favorites") {
+        Column(modifier = Modifier.animateItem()) {
+          Text(
+            modifier = Modifier.padding(bottom = 12.dp),
+            text = stringResource(CopyR.string.overview_favorites_heading),
+            style = MaterialTheme.typography.headlineSmall,
+          )
+
+          FlowRow(modifier = Modifier.padding(bottom = 32.dp), horizontalArrangement = spacedBy(8.dp), verticalArrangement = spacedBy(8.dp)) {
+            favorites.forEach { favorite ->
+              HealthCategoriesFavoriteCard(
+                category = favorite,
+                onClick = { onClickListItem(favorite) },
+              )
+            }
           }
         }
       }
@@ -264,16 +288,16 @@ private fun LazyListScope.WithProviders(
   }
 
   for (group in groups) {
-    if (group.categories.isNotEmpty()) {
-      item {
-        Text(
-          modifier = Modifier.padding(bottom = 12.dp),
-          text = LocalContext.current.getString(group.heading),
-          style = MaterialTheme.typography.headlineSmall,
-        )
-      }
+    item(key = group.id) {
+      Column(modifier = Modifier.animateItem()) {
+        if (group.categories.isNotEmpty()) {
+          Text(
+            modifier = Modifier.padding(bottom = 12.dp),
+            text = LocalContext.current.getString(group.heading),
+            style = MaterialTheme.typography.headlineSmall,
+          )
+        }
 
-      item {
         MgoCard {
           group.categories.forEachIndexed { index, category ->
             HealthCategoriesListItem(
@@ -285,10 +309,10 @@ private fun LazyListScope.WithProviders(
           }
         }
       }
+    }
 
-      item {
-        Spacer(modifier = Modifier.height(32.dp))
-      }
+    item {
+      Spacer(modifier = Modifier.height(32.dp))
     }
   }
 
@@ -331,7 +355,7 @@ internal fun OverviewScreenNoProvidersPreview() {
           automaticLocalisationEnabled = false,
           groups = listOf(),
           favorites = listOf(),
-          banner = HealthCategoriesBannerState.None,
+          banner = null,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},
@@ -355,7 +379,7 @@ internal fun OverviewScreenWithProvidersPreview() {
           automaticLocalisationEnabled = false,
           groups = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH),
           favorites = listOf(),
-          banner = HealthCategoriesBannerState.None,
+          banner = null,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},
@@ -379,7 +403,7 @@ internal fun OverviewScreenWithProvidersAndFavoritesPreview() {
           automaticLocalisationEnabled = false,
           groups = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.copy(categories = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.categories[0]))),
           favorites = listOf(TEST_HEALTH_CATEGORY_GROUP_HEALTH.categories[1]),
-          banner = HealthCategoriesBannerState.None,
+          banner = null,
         ),
       onNavigateBack = {},
       onClickAddProvider = {},

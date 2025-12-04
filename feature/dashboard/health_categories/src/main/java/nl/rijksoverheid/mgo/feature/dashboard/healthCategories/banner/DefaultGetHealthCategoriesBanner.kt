@@ -19,7 +19,7 @@ class DefaultGetHealthCategoriesBanner
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     private val fhirRepository: FhirRepository,
   ) : GetHealthCategoriesBanner {
-    override operator fun invoke(): Flow<HealthCategoriesBannerState> {
+    override operator fun invoke(): Flow<HealthCategoriesBannerState?> {
       val categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten()
 
       // Get the total amount of fhir responses that are requested
@@ -40,7 +40,7 @@ class DefaultGetHealthCategoriesBanner
             HealthCategoriesBannerState.Error.UserError(fhirResponses.size != totalAmount)
           fhirResponses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.SERVER } ->
             HealthCategoriesBannerState.Error.ServerError(fhirResponses.size != totalAmount)
-          fhirResponses.size == totalAmount -> HealthCategoriesBannerState.None
+          fhirResponses.size == totalAmount -> null
           else -> HealthCategoriesBannerState.Loading
         }
       }

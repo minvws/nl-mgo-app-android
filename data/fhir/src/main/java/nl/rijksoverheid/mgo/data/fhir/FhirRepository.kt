@@ -13,17 +13,13 @@ interface FhirRepository {
   fun observe(): Flow<List<FhirResponse>>
 
   suspend fun fetch(
-    organizationId: String,
-    medmijId: String?,
-    dataServiceId: String,
-    endpointId: String,
-    resourceEndpoint: String,
-    fhirVersion: FhirVersion,
-    url: String,
+    request: FhirRequest,
     forceRefresh: Boolean,
   )
 
   suspend fun delete(organizationId: String)
+
+  suspend fun deleteFailed()
 
   suspend fun fetchBinary(
     resourceEndpoint: String,

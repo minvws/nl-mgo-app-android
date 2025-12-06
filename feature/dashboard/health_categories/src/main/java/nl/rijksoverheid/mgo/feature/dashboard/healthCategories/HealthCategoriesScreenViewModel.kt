@@ -7,9 +7,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.fhir.FhirRequest
+import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
@@ -25,12 +30,14 @@ import javax.inject.Named
 internal class HealthCategoriesScreenViewModel
   @Inject
   constructor(
+    private val fhirRepository: FhirRepository,
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
+    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     favoriteRepository: FavoriteHealthCategoriesRepository,
     organizationRepository: OrganizationRepository,
     getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     getHealthCategoriesBanner: GetHealthCategoriesBanner,
     @Named("keyValueStore") keyValueStore: KeyValueStore,
-    @Named("ioDispatcher") ioDispatcher: CoroutineDispatcher,
   ) : ViewModel() {
     private val groups = getHealthCategoriesFromDisk()
     private val initialFavorites = runBlocking(ioDispatcher) { favoriteRepository.observe().firstOrNull() ?: listOf() }
@@ -64,4 +71,44 @@ internal class HealthCategoriesScreenViewModel
 
     private fun List<HealthCategoryGroup>.getFavorites(favorites: List<HealthCategoryId>): List<HealthCategoryGroup.HealthCategory> =
       favorites.mapNotNull { categoryId -> this.map { group -> group.categories }.flatten().firstOrNull { it.id == categoryId } }
+
+    /**
+     * Retry FHIR requests.
+     *
+     * @param failedOnly If true, only retries the failed fhir requests.
+     */
+    fun retry(failedOnly: Boolean) {
+      viewModelScope.launch(ioDispatcher) {
+        val fhirResponses =
+          if (failedOnly) {
+            fhirRepository.observe().first().filterIsInstance<FhirResponse.Error>()
+          } else {
+            fhirRepository.observe().first()
+          }
+
+        fhirRepository.deleteFailed()
+        retry(fhirResponses)
+      }
+    }
+
+    private suspend fun retry(fhirResponses: List<FhirResponse>) {
+      for (fhirResponse in fhirResponses) {
+        val request =
+          FhirRequest(
+            organizationId = fhirResponse.request.organizationId,
+            medmijId = fhirResponse.request.medmijId,
+            dataServiceId = fhirResponse.request.dataServiceId,
+            endpointId = fhirResponse.request.endpointId,
+            endpointPath = fhirResponse.request.endpointPath,
+            resourceEndpoint = fhirResponse.request.resourceEndpoint,
+            fhirVersion = fhirResponse.request.fhirVersion,
+            url = "$dvaApiBaseUrl/fhir${fhirResponse.request.endpointPath}",
+          )
+
+        fhirRepository.fetch(
+          request = request,
+          forceRefresh = true,
+        )
+      }
+    }
   }

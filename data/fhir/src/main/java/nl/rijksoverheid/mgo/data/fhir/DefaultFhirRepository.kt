@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -42,32 +42,24 @@ class DefaultFhirRepository
       cachedFhirResponses
         .mapNotNull { responses ->
           responses.firstOrNull { response ->
-            response.organizationId == organizationId && response.dataServiceId == dataServiceId &&
-              response.endpointId == endpointId
+            response.request.organizationId == organizationId && response.request.dataServiceId == dataServiceId &&
+              response.request.endpointId == endpointId
           }
         }.distinctUntilChanged()
 
     override fun observe(): Flow<List<FhirResponse>> = cachedFhirResponses
 
     override suspend fun fetch(
-      organizationId: String,
-      medmijId: String?,
-      dataServiceId: String,
-      endpointId: String,
-      resourceEndpoint: String,
-      fhirVersion: FhirVersion,
-      url: String,
+      request: FhirRequest,
       forceRefresh: Boolean,
     ) {
-      val cacheKey = "$organizationId/$dataServiceId/$endpointId.json"
+      val cacheKey = "$request.organizationId/$request.dataServiceId/$request.endpointId.json"
       val cachedResponseBytes = mgoByteArrayStorage.get(name = cacheKey)
       if (cachedResponseBytes != null && !forceRefresh) {
         // Update the cached response with success state
         val fhirResponse =
           FhirResponse.Success(
-            organizationId = organizationId,
-            dataServiceId = dataServiceId,
-            endpointId = endpointId,
+            request = request,
             cacheKey = cacheKey,
             isEmpty = isBundleEmpty(cachedResponseBytes.toString(Charsets.UTF_8)),
           )
@@ -75,19 +67,19 @@ class DefaultFhirRepository
         return
       }
 
-      val request =
+      val httpRequest =
         Request
           .Builder()
-          .url(url)
+          .url(request.url)
           .get()
-          .addHeader("X-MGO-HEALTHCARE-PROVIDER-ID", medmijId ?: "none")
-          .addHeader("X-MGO-DATASERVICE-ID", dataServiceId)
-          .addHeader("X-MGO-DVA-TARGET", resourceEndpoint)
-          .addHeader("Accept", "application/fhir+json; fhirVersion=${fhirVersion.stringValue}")
+          .addHeader("X-MGO-HEALTHCARE-PROVIDER-ID", request.medmijId ?: "none")
+          .addHeader("X-MGO-DATASERVICE-ID", request.dataServiceId)
+          .addHeader("X-MGO-DVA-TARGET", request.resourceEndpoint)
+          .addHeader("Accept", "application/fhir+json; fhirVersion=${request.fhirVersion.stringValue}")
           .build()
 
       try {
-        val response = okHttpClient.newCall(request).execute()
+        val response = okHttpClient.newCall(httpRequest).execute()
 
         if (response.isSuccessful) {
           // Get the response
@@ -100,9 +92,7 @@ class DefaultFhirRepository
           // Update the cached response with success state
           val fhirResponse =
             FhirResponse.Success(
-              organizationId = organizationId,
-              dataServiceId = dataServiceId,
-              endpointId = endpointId,
+              request = request,
               cacheKey = cacheKey,
               isEmpty = isBundleEmpty(responseBytes.toString(Charsets.UTF_8)),
             )
@@ -111,9 +101,7 @@ class DefaultFhirRepository
           // Update the cached response with error state
           val fhirResponse =
             FhirResponse.Error(
-              organizationId = organizationId,
-              dataServiceId = dataServiceId,
-              endpointId = endpointId,
+              request = request,
               type = FhirResponseErrorType.SERVER,
               error = IllegalStateException("Something went wrong with fetching the fhir resource"),
             )
@@ -124,9 +112,7 @@ class DefaultFhirRepository
         // Update the cached response with error state
         val fhirResponse =
           FhirResponse.Error(
-            organizationId = organizationId,
-            dataServiceId = dataServiceId,
-            endpointId = endpointId,
+            request = request,
             type = FhirResponseErrorType.USER,
             error = e,
           )
@@ -136,6 +122,11 @@ class DefaultFhirRepository
 
     override suspend fun delete(organizationId: String) {
       mgoByteArrayStorage.delete(organizationId)
+    }
+
+    override suspend fun deleteFailed() {
+      val newFhirResponses = cachedFhirResponses.value.toMutableList().also { list -> list.removeAll { it is FhirResponse.Error } }
+      cachedFhirResponses.value = newFhirResponses
     }
 
     private fun isBundleEmpty(bundleJson: String): Boolean {
@@ -207,9 +198,9 @@ class DefaultFhirRepository
         val updatedCachedFhirResponses = cachedFhirResponses.toMutableList()
         val existing =
           cachedFhirResponses.firstOrNull { response ->
-            response.endpointId == fhirResponse.endpointId &&
-              response.organizationId == fhirResponse.organizationId &&
-              response.dataServiceId == fhirResponse.dataServiceId
+            response.request.endpointId == fhirResponse.request.endpointId &&
+              response.request.organizationId == fhirResponse.request.organizationId &&
+              response.request.dataServiceId == fhirResponse.request.dataServiceId
           }
         if (existing == null) {
           updatedCachedFhirResponses.add(fhirResponse)

@@ -34,7 +34,11 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 internal fun HealthCategoriesBannerLoading(modifier: Modifier = Modifier) {
   MgoCard(modifier = modifier) {
     Column(
-      modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 156.dp).padding(16.dp),
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .defaultMinSize(minHeight = 156.dp)
+          .padding(16.dp),
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -58,6 +62,7 @@ internal fun HealthCategoriesBannerLoading(modifier: Modifier = Modifier) {
 @Composable
 internal fun HealthCategoriesBannerError(
   state: HealthCategoriesBannerState.Error,
+  onClickRetry: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   MgoCard(modifier = modifier) {
@@ -95,10 +100,14 @@ internal fun HealthCategoriesBannerError(
         }
       }
       MgoButton(
-        modifier = Modifier.fillMaxWidth().heightIn(min = 38.dp).padding(top = 16.dp),
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .heightIn(min = 38.dp)
+            .padding(top = 16.dp),
         buttonHeight = 36.dp,
         buttonText = stringResource(CopyR.string.common_try_again),
-        onClick = {},
+        onClick = onClickRetry,
       )
     }
   }
@@ -116,7 +125,7 @@ internal fun HealthCategoriesBannerLoadingPreview() {
 @DefaultPreviews
 internal fun HealthCategoriesBannerUserErrorPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.UserError(false))
+    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.UserError(false), onClickRetry = { })
   }
 }
 
@@ -124,7 +133,7 @@ internal fun HealthCategoriesBannerUserErrorPreview() {
 @DefaultPreviews
 internal fun HealthCategoriesBannerUserErrorPartialPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.UserError(true))
+    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.UserError(true), onClickRetry = {})
   }
 }
 
@@ -132,7 +141,7 @@ internal fun HealthCategoriesBannerUserErrorPartialPreview() {
 @DefaultPreviews
 internal fun HealthCategoriesBannerServerErrorPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.ServerError(false))
+    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.ServerError(false), onClickRetry = {})
   }
 }
 
@@ -140,6 +149,6 @@ internal fun HealthCategoriesBannerServerErrorPreview() {
 @DefaultPreviews
 internal fun HealthCategoriesBannerServerErrorPartialPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.ServerError(true))
+    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.ServerError(true), onClickRetry = {})
   }
 }

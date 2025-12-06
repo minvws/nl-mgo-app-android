@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
@@ -134,14 +135,20 @@ internal class HealthCategoryScreenViewModel
         for (organization in organizations) {
           val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
           for (endpoint in endpoints) {
+            val request =
+              FhirRequest(
+                organizationId = organization.id,
+                medmijId = organization.medMijId,
+                dataServiceId = endpoint.dataServiceId,
+                endpointId = endpoint.endpointId,
+                endpointPath = endpoint.endpointPath,
+                resourceEndpoint = endpoint.resourceEndpoint,
+                fhirVersion = endpoint.fhirVersion,
+                url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
+              )
+
             fhirRepository.fetch(
-              organizationId = organization.id,
-              medmijId = organization.medMijId,
-              dataServiceId = endpoint.dataServiceId,
-              endpointId = endpoint.endpointId,
-              resourceEndpoint = endpoint.resourceEndpoint,
-              fhirVersion = endpoint.fhirVersion,
-              url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
+              request = request,
               forceRefresh = true,
             )
           }

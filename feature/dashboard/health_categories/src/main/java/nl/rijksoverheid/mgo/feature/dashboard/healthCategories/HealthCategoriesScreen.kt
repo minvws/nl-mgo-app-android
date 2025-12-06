@@ -91,6 +91,9 @@ fun HealthCategoriesScreen(
     onClickRemoveOrganization = onNavigateRemoveOrganization,
     onShowBottomSheet = onShowBottomSheet,
     organization = organization,
+    onRetry = {
+      viewModel.retry(failedOnly = true)
+    },
   )
 }
 
@@ -101,6 +104,7 @@ private fun HealthCategoriesScreenContent(
   onClickListItem: (category: HealthCategoryGroup.HealthCategory) -> Unit,
   onClickAddProvider: () -> Unit,
   onClickRemoveOrganization: (organization: MgoOrganization) -> Unit,
+  onRetry: () -> Unit,
   organization: MgoOrganization? = null,
   onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
@@ -170,6 +174,7 @@ private fun HealthCategoriesScreenContent(
               groups = viewState.groups,
               favorites = viewState.favorites,
               banner = viewState.banner,
+              onRetry = onRetry,
             )
           }
         }
@@ -231,6 +236,7 @@ private fun LazyListScope.WithProviders(
   groups: List<HealthCategoryGroup>,
   favorites: List<HealthCategoryGroup.HealthCategory>,
   banner: HealthCategoriesBannerState?,
+  onRetry: () -> Unit,
 ) {
   if (organization == null) {
     item(key = banner.hashCode()) {
@@ -241,11 +247,13 @@ private fun LazyListScope.WithProviders(
           HealthCategoriesBannerError(
             modifier = Modifier.padding(bottom = 32.dp).animateItem(),
             state = HealthCategoriesBannerState.Error.ServerError(banner.partial),
+            onClickRetry = onRetry,
           )
         is HealthCategoriesBannerState.Error.UserError ->
           HealthCategoriesBannerError(
             modifier = Modifier.padding(bottom = 32.dp).animateItem(),
             state = HealthCategoriesBannerState.Error.UserError(banner.partial),
+            onClickRetry = onRetry,
           )
       }
     }
@@ -362,6 +370,7 @@ internal fun OverviewScreenNoProvidersPreview() {
       onClickListItem = {},
       onClickRemoveOrganization = {},
       onShowBottomSheet = {},
+      onRetry = {},
     )
   }
 }
@@ -386,6 +395,7 @@ internal fun OverviewScreenWithProvidersPreview() {
       onClickListItem = {},
       onClickRemoveOrganization = {},
       onShowBottomSheet = {},
+      onRetry = {},
     )
   }
 }
@@ -410,6 +420,7 @@ internal fun OverviewScreenWithProvidersAndFavoritesPreview() {
       onClickListItem = {},
       onClickRemoveOrganization = {},
       onShowBottomSheet = {},
+      onRetry = {},
     )
   }
 }

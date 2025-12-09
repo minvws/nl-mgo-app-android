@@ -39,14 +39,19 @@ class DefaultFhirRepositoryTest {
       testServer.enqueueJson(alcoholUseJson)
 
       // When: Calling fetch
+      val fhirRequest =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "medmij_1",
+          dataServiceId = "1",
+          endpointId = "alcoholUse",
+          resourceEndpoint = "https://www.google.com",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "medmij_1",
-        dataServiceId = "1",
-        endpointId = "alcoholUse",
-        resourceEndpoint = "https://www.google.com",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = fhirRequest,
         forceRefresh = true,
       )
 
@@ -66,14 +71,19 @@ class DefaultFhirRepositoryTest {
       testServer.enqueueJson(alcoholUseJson)
 
       // When: Calling fetch
+      val fhirRequest =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "medmij_1",
+          dataServiceId = "1",
+          endpointId = "alcoholUse",
+          resourceEndpoint = "https://www.google.com",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "1",
-        dataServiceId = "1",
-        endpointId = "alcoholUse",
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = fhirRequest,
         forceRefresh = true,
       )
 
@@ -85,9 +95,7 @@ class DefaultFhirRepositoryTest {
       repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "alcoholUse").test {
         val expectedEmit =
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "1",
-            endpointId = "alcoholUse",
+            request = fhirRequest,
             cacheKey = "1/1/alcoholUse.json",
             isEmpty = false,
           )
@@ -106,14 +114,19 @@ class DefaultFhirRepositoryTest {
       fileStorage.save(name = "1/1/alcoholUse.json", content = alcoholUseJson.toByteArray())
 
       // When: Calling fetch with forceRefresh set to false
+      val fhirRequest =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "medmij_1",
+          dataServiceId = "1",
+          endpointId = "alcoholUse",
+          resourceEndpoint = "https://www.google.com",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "1",
-        dataServiceId = "1",
-        endpointId = "alcoholUse",
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = fhirRequest,
         forceRefresh = false,
       )
 
@@ -125,9 +138,7 @@ class DefaultFhirRepositoryTest {
       repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "alcoholUse").test {
         val expectedEmit =
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "1",
-            endpointId = "alcoholUse",
+            request = fhirRequest,
             cacheKey = "1/1/alcoholUse.json",
             isEmpty = false,
           )
@@ -143,14 +154,19 @@ class DefaultFhirRepositoryTest {
       testServer.enqueueJson(emptyBundleJson)
 
       // When: Calling fetch
+      val fhirRequest =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "1",
+          dataServiceId = "1",
+          endpointId = "emptyBundle",
+          resourceEndpoint = "",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "1",
-        dataServiceId = "1",
-        endpointId = "emptyBundle",
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = fhirRequest,
         forceRefresh = true,
       )
 
@@ -162,9 +178,7 @@ class DefaultFhirRepositoryTest {
       repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "emptyBundle").test {
         val expectedEmit =
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "1",
-            endpointId = "emptyBundle",
+            request = fhirRequest,
             cacheKey = "1/1/emptyBundle.json",
             isEmpty = true,
           )
@@ -179,14 +193,19 @@ class DefaultFhirRepositoryTest {
       testServer.enqueue500()
 
       // When: Calling fetch
+      val fhirRequest =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "1",
+          dataServiceId = "1",
+          endpointId = "1",
+          resourceEndpoint = "",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "1",
-        dataServiceId = "1",
-        endpointId = "1",
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = fhirRequest,
         forceRefresh = true,
       )
 
@@ -205,14 +224,19 @@ class DefaultFhirRepositoryTest {
     runTest {
       // Given: Fhir response error exists
       testServer.enqueue500()
+      val fhirRequest =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "1",
+          dataServiceId = "1",
+          endpointId = "1",
+          resourceEndpoint = "",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "1",
-        dataServiceId = "1",
-        endpointId = "1",
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = fhirRequest,
         forceRefresh = true,
       )
 
@@ -221,14 +245,19 @@ class DefaultFhirRepositoryTest {
       testServer.enqueueJson(alcoholUseJson)
 
       // When: Calling fetch
+      val request =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "1",
+          dataServiceId = "1",
+          endpointId = "1",
+          resourceEndpoint = "",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "1",
-        dataServiceId = "1",
-        endpointId = "1",
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = request,
         forceRefresh = true,
       )
 
@@ -244,14 +273,19 @@ class DefaultFhirRepositoryTest {
       // Given: Fhir response is fetched
       val alcoholUseJson = readResourceFile("alcoholUse.json")
       testServer.enqueueJson(alcoholUseJson)
+      val request =
+        FhirRequest(
+          organizationId = "1",
+          medmijId = "1",
+          dataServiceId = "1",
+          endpointId = "1",
+          resourceEndpoint = "",
+          fhirVersion = FhirVersion.R3,
+          url = testServer.url(),
+          endpointPath = "",
+        )
       repository.fetch(
-        organizationId = "1",
-        medmijId = "1",
-        dataServiceId = "1",
-        endpointId = "1",
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        url = testServer.url(),
+        request = request,
         forceRefresh = true,
       )
 

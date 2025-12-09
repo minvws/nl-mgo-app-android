@@ -49,10 +49,10 @@ internal class ListItemGroupMapper
 
     private suspend fun FhirResponse.Success.toMgoResourcesWithOrganization(): List<MgoResourceWithOrganization> {
       // Get the data set that belongs to this response
-      val dataSet = dataSets.firstOrNull { dataSet -> dataSet.id == dataServiceId } ?: return emptyList()
+      val dataSet = dataSets.firstOrNull { dataSet -> dataSet.id == request.dataServiceId } ?: return emptyList()
 
       // Get the organisation that belongs to this response
-      val organization = organizationRepository.get().firstOrNull { organization -> organization.id == organizationId } ?: return emptyList()
+      val organization = organizationRepository.get().firstOrNull { organization -> organization.id == request.organizationId } ?: return emptyList()
 
       // Create the mgo resources
       val mgoResources =

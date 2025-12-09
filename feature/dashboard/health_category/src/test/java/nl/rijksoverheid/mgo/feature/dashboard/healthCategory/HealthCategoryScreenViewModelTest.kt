@@ -10,6 +10,7 @@ import nl.rijksoverheid.mgo.component.organization.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
+import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
@@ -132,28 +133,38 @@ class HealthCategoryScreenViewModelTest {
     endpointId: String,
   ) {
     testServerRule.testServer.enqueueJson(responseJson)
+    val request =
+      FhirRequest(
+        organizationId = TEST_MGO_ORGANIZATION.id,
+        medmijId = "1",
+        dataServiceId = "48",
+        endpointId = endpointId,
+        resourceEndpoint = "",
+        fhirVersion = FhirVersion.R3,
+        url = testServerRule.testServer.url().toStr(),
+        endpointPath = "",
+      )
     fhirRepository.fetch(
-      organizationId = TEST_MGO_ORGANIZATION.id,
-      medmijId = "1",
-      dataServiceId = "48",
-      endpointId = endpointId,
-      resourceEndpoint = "",
-      fhirVersion = FhirVersion.R3,
-      url = testServerRule.testServer.url().toStr(),
+      request = request,
       forceRefresh = true,
     )
   }
 
   private suspend fun fetchFhirResponseFailed(endpointId: String) {
     testServerRule.testServer.enqueue500()
+    val request =
+      FhirRequest(
+        organizationId = TEST_MGO_ORGANIZATION.id,
+        medmijId = "1",
+        dataServiceId = "48",
+        endpointId = endpointId,
+        resourceEndpoint = "",
+        fhirVersion = FhirVersion.R3,
+        url = testServerRule.testServer.url().toStr(),
+        endpointPath = "",
+      )
     fhirRepository.fetch(
-      organizationId = TEST_MGO_ORGANIZATION.id,
-      medmijId = "1",
-      dataServiceId = "48",
-      endpointId = endpointId,
-      resourceEndpoint = "",
-      fhirVersion = FhirVersion.R3,
-      url = testServerRule.testServer.url().toStr(),
+      request = request,
       forceRefresh = true,
     )
   }
@@ -166,7 +177,7 @@ class HealthCategoryScreenViewModelTest {
         TEST_MGO_ORGANIZATION.copy(
           dataServices =
             listOf(
-              nl.rijksoverheid.mgo.component.organization.TEST_GP_DATA_SERVICE,
+              TEST_GP_DATA_SERVICE,
             ),
         )
       organizationRepository.save(organization)

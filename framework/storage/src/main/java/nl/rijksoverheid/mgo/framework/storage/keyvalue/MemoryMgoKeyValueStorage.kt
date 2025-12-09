@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.framework.storage.keyvalue
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 class MemoryMgoKeyValueStorage : MgoKeyValueStorage {
@@ -21,10 +20,10 @@ class MemoryMgoKeyValueStorage : MgoKeyValueStorage {
   override fun <T : Any> get(key: KeyValueStorageKey): T? = storage[key] as? T
 
   @Suppress("UNCHECKED_CAST")
-  override fun <T : Any> observe(key: KeyValueStorageKey): Flow<T> {
-    val flow = getOrCreateFlow(key)
-    return flow.filterNotNull().map { it as T }
-  }
+  override fun <T : Any> observe(key: KeyValueStorageKey): Flow<T?> =
+    getOrCreateFlow(key).map { value ->
+      value as? T
+    }
 
   override fun delete(key: KeyValueStorageKey) {
     storage.remove(key)

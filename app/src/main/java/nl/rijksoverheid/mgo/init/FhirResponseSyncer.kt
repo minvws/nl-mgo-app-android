@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
@@ -64,16 +65,19 @@ class FhirResponseSyncer
           }
 
         for (endpoint in uniqueEndpoints) {
-          fhirRepository.fetch(
-            organizationId = id,
-            medmijId = medMijId,
-            dataServiceId = endpoint.dataServiceId,
-            endpointId = endpoint.endpointId,
-            resourceEndpoint = endpoint.resourceEndpoint,
-            fhirVersion = endpoint.fhirVersion,
-            url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
-            forceRefresh = firstSync,
-          )
+          val request =
+            FhirRequest(
+              organizationId = id,
+              medmijId = medMijId,
+              dataServiceId = endpoint.dataServiceId,
+              endpointId = endpoint.endpointId,
+              endpointPath = endpoint.endpointPath,
+              resourceEndpoint = endpoint.resourceEndpoint,
+              fhirVersion = endpoint.fhirVersion,
+              url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
+            )
+
+          fhirRepository.fetch(request = request, forceRefresh = firstSync)
         }
       }
     }

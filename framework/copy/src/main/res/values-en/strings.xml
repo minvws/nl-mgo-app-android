@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="add_organization.already_added">Zorgaanbieder al toevoegd</string>
+  <string name="add_organization.already_added">Al toevoegd</string>
   <string name="add_organization.city">Plaats</string>
   <string name="add_organization.error_missing_city">Vul een plaats in</string>
   <string name="add_organization.error_missing_name">Vul een naam in</string>
@@ -14,12 +14,12 @@
   <string name="dialog.remove_organization_no">Nee, toch tonen</string>
   <string name="dialog.remove_organization_subheading">We halen je dossier van deze zorgaanbieder niet op. Je kunt deze later alsnog toevoegen via je profiel.</string>
   <string name="dialog.remove_organization_yes">Ja, weglaten</string>
-  <string name="introduction.subheading">Met deze app heb je je gezondheidsgegevens van de overheid en je zorgaanbieders altijd bij de hand. Veilig en overzichtelijk, op één plek.</string>
+  <string name="introduction.subheading">Met deze app heeft u al uw gegevens over gezondheid en zorg veilig op één plek.</string>
   <string name="lab_results.heading">Uitslagen</string>
   <string name="lab_results.subheading">Resultaten van onderzoeken en testen die u hebt gehad.</string>
   <string name="login.digid">Log in met DigiD</string>
-  <string name="login.heading">Log in met DigiD</string>
-  <string name="login.subheading">Met DigiD laat je weten wie je bent. Zo kunnen we je gegevens veilig ophalen. Bij je huisarts, het ziekenhuis en andere zorgaanbieders.</string>
+  <string name="login.heading">Bewijs wie je bent</string>
+  <string name="login.subheading">Kies de manier waarop je wilt inloggen. Zo kunnen we jouw gegevens veilig ophalen bij je huisarts, ziekenhuis en andere zorgaanbieders.</string>
   <string name="medication_use.heading">Medicijnen</string>
   <string name="medication_use.subheading">Een overzicht van de medicijnen die zijn voorgeschreven door je zorgaanbieder.</string>
   <string name="organization.diagnosis_heading">Klachten en diagnoses</string>
@@ -35,11 +35,11 @@
   <string name="overview.heading">Overzicht</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Je diagnoses en gezondheidsklachten, vastgesteld door je zorgaanbieder.</string>
-  <string name="proposition.statement_1"><![CDATA[Je gegevens worden <b>beveiligd</b> en via een <b>veilige verbinding</b> opgehaald.]]></string>
-  <string name="proposition.statement_3"><![CDATA[<b>Je kiest zelf</b> hoe je je gegevens wilt gebruiken en of je ze deelt met anderen.]]></string>
-  <string name="proposition.statement_4"><![CDATA[Je kunt de gegevens in je overzicht altijd <b>verwijderen of opnieuw ophalen</b>.]]></string>
-  <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht je gegevens gebruikt en beschermt. Dit zijn de belangrijkste punten:]]></string>
-  <string name="proposition.heading">Hoe de app omgaat met je gegevens</string>
+  <string name="proposition.statement_1"><![CDATA[Uw gegevens worden <b>beveiligd</b> en via een <b>veilige verbinding</b> opgehaald.]]></string>
+  <string name="proposition.statement_3"><![CDATA[<b>U kiest zelf</b> hoe u uw gegevens wilt gebruiken en of u ze deelt met anderen.]]></string>
+  <string name="proposition.statement_4"><![CDATA[U kunt de gegevens in uw overzicht altijd <b>verwijderen of opnieuw ophalen</b>.]]></string>
+  <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht uw gegevens gebruikt en beschermt. Dit zijn de belangrijkste punten:]]></string>
+  <string name="proposition.heading">Hoe de app omgaat met uw gegevens</string>
   <string name="update_required.heading">Tijd voor een update</string>
   <string name="update_required.subheading">Je hebt de nieuwste versie van de app nodig om verder te gaan.</string>
   <string name="update_required.download">Installeer update</string>
@@ -88,7 +88,7 @@
   <string name="add_organization.not_participating">Zorgaanbieder niet aangesloten</string>
   <string name="launch.jailbreak_heading">Er zijn beveiligingsrisico’s gevonden</string>
   <string name="launch.jailbreak_subheading">Let op: je apparaat is geroot. Je gegevens zijn mogelijk niet veilig.</string>
-  <string name="proposition.statement_2"><![CDATA[Je gegevens komen direct van de zorgaanbieder die je kiest. <b>Alleen jij hebt toegang.</b>]]></string>
+  <string name="proposition.statement_2"><![CDATA[Uw gegevens komen direct van de zorgaanbieder die u kiest. <b>Alleen u heeft toegang.</b>]]></string>
   <string name="bottombar.healthcareproviders">Zorgaanbieders</string>
   <string name="organizations.heading">Zorgaanbieders</string>
   <string name="organizations.remove_organization">Verwijder zorgaanbieder</string>
@@ -109,7 +109,7 @@
   <string name="common.loading">Aan het laden...</string>
   <string name="common.loading_data">Laden</string>
   <string name="common.next">Volgende</string>
-  <string name="common.no_data">Geen gegevens</string>
+  <string name="common.no_data">Leeg</string>
   <string name="common.previous">Vorige</string>
   <string name="common.required">(verplicht)</string>
   <string name="common.search">Zoeken</string>
@@ -301,4 +301,24 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="hc_care_plan.subheading">Je wensen, wensen en afspraken over je behandeling.</string>
   <string name="zib_care_plan.heading">Behandelplan</string>
   <string name="zib_care_team.heading">Behandelaren</string>
+  <string name="zib_help_from_others.heading">Hulp van anderen</string>
+  <string name="zib_participation_in_society.heading">Participatie in de maatschappij</string>
+  <string name="zib_familiy_situation.heading">Gezinssituatie</string>
+  <string name="zib_general_measurement.heading">Algemene meting</string>
+  <string name="zib_text_result.heading">Tekst uitslag</string>
+  <string name="add_organization.search_placeholder">Bijv. Amsterdam UMC</string>
+  <string name="add_organization.search_clear">Wis selectie</string>
+  <string name="add_organization.default_content_heading">Waar wilt u uw zorggegevens ophalen?</string>
+  <string name="add_organization.default_content_subheading">Bijvoorbeeld uw huisarts, ziekenhuis of apotheek.</string>
+  <string name="settings.version.heading">Versie</string>
+  <string name="zib_contact_person.heading">Persoonlijke gegevens</string>
+  <string name="dialog.add_organization_yes">Ja, toevoegen</string>
+  <string name="dialog.add_organization_heading">%1$s toevoegen?</string>
+  <string name="dialog.add_organization_subheading">Als deze zorgaanbieder gegevens over u heeft, staan die straks in uw overzicht.</string>
+  <string name="dialog.add_organization_no">Nee</string>
+  <string name="errorstate.loading">Gegevens ophalen…</string>
+  <string name="errorstate.serverside.heading">Dit komt door een storing bij ons. Probeer het later opnieuw.</string>
+  <string name="errorstate.clientside.heading">Er ging iets mis bij het ophalen. Controleer uw verbinding en probeer het opnieuw.</string>
+  <string name="errorstate.partial_error">Niet alle gegevens zijn opgehaald</string>
+  <string name="errorstate.error">Geen gegevens opgehaald</string>
 </resources>

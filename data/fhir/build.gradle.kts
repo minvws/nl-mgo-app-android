@@ -11,8 +11,8 @@ android {
 }
 
 dependencies {
+  api(projects.framework.fhir)
   implementation(projects.framework.storage)
-  implementation(projects.framework.fhir)
   testImplementation(projects.framework.test)
   testFixturesImplementation(projects.framework.fhir)
 }

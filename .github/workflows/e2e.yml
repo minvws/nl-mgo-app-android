@@ -8,7 +8,7 @@ on:
 jobs:
   tests:
     name: Run E2E Tests
-    runs-on: macos-13
+    runs-on: macos-latest
 
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

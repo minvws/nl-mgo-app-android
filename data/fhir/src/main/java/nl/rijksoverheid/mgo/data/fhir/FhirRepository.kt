@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.data.fhir
 
 import kotlinx.coroutines.flow.Flow
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 
 interface FhirRepository {
   fun observe(
@@ -10,18 +9,16 @@ interface FhirRepository {
     endpointId: String,
   ): Flow<FhirResponse>
 
+  fun observe(): Flow<List<FhirResponse>>
+
   suspend fun fetch(
-    organizationId: String,
-    medmijId: String?,
-    dataServiceId: String,
-    endpointId: String,
-    resourceEndpoint: String,
-    fhirVersion: FhirVersion,
-    url: String,
+    request: FhirRequest,
     forceRefresh: Boolean,
   )
 
   suspend fun delete(organizationId: String)
+
+  suspend fun deleteFailed()
 
   suspend fun fetchBinary(
     resourceEndpoint: String,

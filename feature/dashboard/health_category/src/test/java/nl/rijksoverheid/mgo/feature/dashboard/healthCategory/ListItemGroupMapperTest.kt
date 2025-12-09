@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
@@ -12,6 +13,7 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import okhttp3.OkHttpClient
@@ -70,40 +72,41 @@ class ListItemGroupMapperTest {
       val nutritionAdvice = readResourceFile("nutritionAdvice.json").toByteArray()
       mgoByteArrayStorage.save("nutritionAdvice.json", nutritionAdvice)
 
+      val fhirRequest =
+        FhirRequest(
+          organizationId = "1",
+          dataServiceId = "48",
+          endpointId = "1",
+          medmijId = "",
+          endpointPath = "",
+          resourceEndpoint = "",
+          fhirVersion = FhirVersion.R3,
+          url = "",
+        )
       val fhirResponses =
         listOf(
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "48",
-            endpointId = "1",
+            request = fhirRequest,
             cacheKey = "livingSituation.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "48",
-            endpointId = "1",
+            request = fhirRequest,
             cacheKey = "alcoholUse.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "48",
-            endpointId = "1",
+            request = fhirRequest,
             cacheKey = "drugUse.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "48",
-            endpointId = "1",
+            request = fhirRequest,
             cacheKey = "tobaccoUse.json",
             isEmpty = false,
           ),
           FhirResponse.Success(
-            organizationId = "1",
-            dataServiceId = "48",
-            endpointId = "1",
+            request = fhirRequest,
             cacheKey = "nutritionAdvice.json",
             isEmpty = false,
           ),

@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.data.fhir
 
 import kotlinx.coroutines.flow.Flow
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 
 interface FhirRepository {
   fun observe(

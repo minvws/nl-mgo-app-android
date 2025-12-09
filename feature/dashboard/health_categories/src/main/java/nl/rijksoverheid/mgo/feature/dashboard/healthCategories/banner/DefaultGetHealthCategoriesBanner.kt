@@ -35,13 +35,17 @@ class DefaultGetHealthCategoriesBanner
 
       // Return correct banner based on the fhir responses
       return combine(totalAmountOfFhirResponses, fhirRepository.observe()) { totalAmount, fhirResponses ->
-        when {
-          fhirResponses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.USER } ->
-            HealthCategoriesBannerState.Error.UserError(fhirResponses.size != totalAmount)
-          fhirResponses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.SERVER } ->
-            HealthCategoriesBannerState.Error.ServerError(fhirResponses.size != totalAmount)
-          fhirResponses.size == totalAmount -> null
-          else -> HealthCategoriesBannerState.Loading
+        if (fhirResponses.size == totalAmount) {
+          val hasSuccessResponse = fhirResponses.any { it is FhirResponse.Success }
+          when {
+            fhirResponses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.USER } ->
+              HealthCategoriesBannerState.Error.UserError(hasSuccessResponse)
+            fhirResponses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.SERVER } ->
+              HealthCategoriesBannerState.Error.ServerError(hasSuccessResponse)
+            else -> null
+          }
+        } else {
+          HealthCategoriesBannerState.Loading
         }
       }
     }

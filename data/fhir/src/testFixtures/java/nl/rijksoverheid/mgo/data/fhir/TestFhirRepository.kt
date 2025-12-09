@@ -2,12 +2,12 @@ package nl.rijksoverheid.mgo.data.fhir
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 
 class TestFhirRepository : FhirRepository {
   private var observeResults: List<FhirResponse> = listOf(TEST_FHIR_RESPONSE_SUCCESS(false))
   private var observeResult: FhirResponse = TEST_FHIR_RESPONSE_SUCCESS(false)
   private var fetchBinaryResult: Result<FhirBinary> = Result.failure(IllegalStateException("Not set"))
+  private var fetchAmount: Int = 0
 
   fun setObserveResult(response: FhirResponse) {
     this.observeResult = response
@@ -29,18 +29,20 @@ class TestFhirRepository : FhirRepository {
   override fun observe(): Flow<List<FhirResponse>> = flow { emit(observeResults) }
 
   override suspend fun fetch(
-    organizationId: String,
-    medmijId: String?,
-    dataServiceId: String,
-    endpointId: String,
-    resourceEndpoint: String,
-    fhirVersion: FhirVersion,
-    url: String,
+    request: FhirRequest,
     forceRefresh: Boolean,
   ) {
+    fetchAmount++
+  }
+
+  fun resetFetchAmount() {
+    fetchAmount = 0
   }
 
   override suspend fun delete(organizationId: String) {
+  }
+
+  override suspend fun deleteFailed() {
   }
 
   override suspend fun fetchBinary(

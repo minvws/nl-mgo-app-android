@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -53,7 +52,7 @@ class DefaultFhirRepository
       request: FhirRequest,
       forceRefresh: Boolean,
     ) {
-      val cacheKey = "$request.organizationId/$request.dataServiceId/$request.endpointId.json"
+      val cacheKey = "${request.organizationId}/${request.dataServiceId}/${request.endpointId}.json"
       val cachedResponseBytes = mgoByteArrayStorage.get(name = cacheKey)
       if (cachedResponseBytes != null && !forceRefresh) {
         // Update the cached response with success state

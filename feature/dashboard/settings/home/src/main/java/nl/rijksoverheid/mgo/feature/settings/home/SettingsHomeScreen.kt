@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.RestartAlt
 import androidx.compose.material.icons.outlined.Smartphone
@@ -20,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,16 +34,17 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.getIcon
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
+import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreenTestTag.RESET_APP_BUTTON
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -54,30 +53,15 @@ object SettingsHomeScreenTestTag {
   const val RESET_APP_BUTTON = "SettingsHomeScreenResetAppButton"
 }
 
-/**
- * Composable that shows a screen where you can change different settings of the app.
- *
- * @param onNavigateToDisplaySettings Called when requested to navigate to the screen that shows display settings.
- * @param onNavigateToSecuritySettings Called when requested to navigate to the screen that shows security settings.
- * @param onNavigateToAdvancedSettings Called when requested to navigate to the screen that shows advanced settings.
- * @param onNavigateToAboutThisAppSettings Called when requested to navigate to the screen that shows about this app settings.
- * @param onNavigateToOnboarding Called when requested to navigate to the onboarding.
- */
 @Composable
 fun SettingsHomeScreen(
   onNavigateToDisplaySettings: () -> Unit,
   onNavigateToSecuritySettings: () -> Unit,
   onNavigateToAdvancedSettings: () -> Unit,
   onNavigateToAboutThisAppSettings: () -> Unit,
-  onNavigateToOnboarding: () -> Unit,
+  onResetApp: () -> Unit,
 ) {
   val viewModel = hiltViewModel<SettingsHomeScreenViewModel>()
-  LaunchedEffect(Unit) {
-    viewModel.navigateToOnboarding.collectLatest {
-      onNavigateToOnboarding()
-    }
-  }
-
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   SettingsScreenContent(
@@ -86,7 +70,7 @@ fun SettingsHomeScreen(
     onClickSecuritySettings = onNavigateToSecuritySettings,
     onClickAdvancedSettings = onNavigateToAdvancedSettings,
     onClickAboutThisAppSettings = onNavigateToAboutThisAppSettings,
-    onClickResetApp = { viewModel.resetApp() },
+    onClickResetApp = onResetApp,
   )
 }
 
@@ -140,7 +124,7 @@ private fun SettingsScreenContent(
           text = stringResource(CopyR.string.settings_preferences_heading),
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
 
         MgoCard(
@@ -153,10 +137,10 @@ private fun SettingsScreenContent(
               Modifier
                 .fillMaxWidth()
                 .clickable { onClickDisplaySettings() },
-            icon = Icons.Outlined.LightMode,
+            icon = LocalAppThemeProvider.current.appTheme.getIcon(),
             heading = CopyR.string.settings_display_heading,
             subHeading =
-              when (viewState.appTheme) {
+              when (LocalAppThemeProvider.current.appTheme) {
                 AppTheme.SYSTEM -> CopyR.string.settings_display_system_heading
                 AppTheme.LIGHT -> CopyR.string.settings_display_light
                 AppTheme.DARK -> CopyR.string.settings_display_dark
@@ -192,7 +176,7 @@ private fun SettingsScreenContent(
           text = stringResource(CopyR.string.settings_information_heading),
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
 
         MgoCard(
@@ -216,7 +200,7 @@ private fun SettingsScreenContent(
           text = stringResource(CopyR.string.settings_other_heading),
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
-          color = MaterialTheme.colorScheme.contentSecondary(),
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
 
         MgoCard(
@@ -254,7 +238,7 @@ private fun SettingsListItem(
       Icon(
         imageVector = icon,
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.symbolsPrimary(),
+        tint = MaterialTheme.colorScheme.SymbolsPrimary(),
       )
 
       Column(modifier = Modifier.padding(start = 16.dp)) {
@@ -266,7 +250,7 @@ private fun SettingsListItem(
           Text(
             text = stringResource(subHeading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentSecondary(),
+            color = MaterialTheme.colorScheme.LabelsSecondary(),
           )
         }
       }
@@ -284,7 +268,7 @@ private fun SettingsListItem(
 internal fun SettingsHomeScreenPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = true),
+      viewState = SettingsHomeScreenViewState(isDebug = true, deviceHasBiometric = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -299,7 +283,7 @@ internal fun SettingsHomeScreenPreview() {
 internal fun SettingsHomeScreenWithoutBiometricPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = true, deviceHasBiometric = false),
+      viewState = SettingsHomeScreenViewState(isDebug = true, deviceHasBiometric = false),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -314,7 +298,7 @@ internal fun SettingsHomeScreenWithoutBiometricPreview() {
 internal fun SettingsHomeScreenWithoutDebugPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(appTheme = AppTheme.SYSTEM, isDebug = false, deviceHasBiometric = true),
+      viewState = SettingsHomeScreenViewState(isDebug = false, deviceHasBiometric = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},

@@ -38,11 +38,11 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.theme.CategoriesContacts
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.supportContacts
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.getCardState
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -294,7 +294,7 @@ private fun EmptyListItem(
     Icon(
       painter = painterResource(id = R.drawable.ic_arrow_right),
       contentDescription = null,
-      tint = MaterialTheme.colorScheme.supportContacts(),
+      tint = MaterialTheme.colorScheme.CategoriesContacts(),
     )
     Text(modifier = Modifier.padding(start = 8.dp), text = text, style = MaterialTheme.typography.bodyMedium)
   }
@@ -361,7 +361,12 @@ internal fun OrganizationListManualScreenResultsPreview() {
           .initialState(name = "Tandarts Tandje Erbij", city = "Roermond")
           .copy(
             loading = false,
-            results = listOf(TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION, TEST_MGO_ORGANIZATION),
+            results =
+              listOf(
+                TEST_MGO_ORGANIZATION,
+                TEST_MGO_ORGANIZATION,
+                TEST_MGO_ORGANIZATION,
+              ),
           ),
       onNavigateBack = {},
       onNavigateToSearch = {},

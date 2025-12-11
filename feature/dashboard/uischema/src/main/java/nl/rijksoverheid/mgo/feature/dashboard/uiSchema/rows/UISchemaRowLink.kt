@@ -14,18 +14,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.R
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
 
-/**
- * Composable that shows a list item that represents a file that can be downloaded via a url.
- *
- * @param row The [UISchemaRow.Link].
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun UiSchemaRowLink(
   row: UISchemaRow.Link,
@@ -46,14 +40,14 @@ internal fun UiSchemaRowLink(
         Modifier
           .weight(1f)
           .padding(end = 8.dp),
-      color = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      color = MaterialTheme.colorScheme.ActionsGhostText(),
       text = row.value,
       style = MaterialTheme.typography.bodyMedium,
     )
 
     Icon(
       painter = painterResource(R.drawable.ic_attachment),
-      tint = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      tint = MaterialTheme.colorScheme.ActionsGhostText(),
       contentDescription = null,
     )
   }

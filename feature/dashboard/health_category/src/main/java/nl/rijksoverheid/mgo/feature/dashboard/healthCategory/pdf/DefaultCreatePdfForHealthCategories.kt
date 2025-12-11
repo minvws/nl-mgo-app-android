@@ -2,16 +2,16 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.pdfViewer.Pdf
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGenerator
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGroupedTables
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfSubTable
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfTable
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import nl.rijksoverheid.mgo.data.healthcare.models.toSections
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreenListItemsGroup
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.getTitle
 import nl.rijksoverheid.mgo.framework.copy.R
 import java.io.File
 import java.time.Clock
@@ -28,14 +28,15 @@ internal class DefaultCreatePdfForHealthCategories
   constructor(
     @ApplicationContext private val context: Context,
     @Named("systemDefaultZone") private val clock: Clock,
-    private val uiSchemaMapper: UiSchemaMapper,
+    private val uiSchemaParser: UiSchemaParser,
+    private val uiSchemaSectionMapper: UISchemaSectionMapper,
     private val pdfGenerator: PdfGenerator,
   ) : CreatePdfForHealthCategories {
     override suspend fun invoke(
-      category: HealthCareCategoryId,
+      category: HealthCategoryGroup.HealthCategory,
       listItemGroups: List<HealthCategoryScreenListItemsGroup>,
     ): File {
-      val categoryTitle = context.getString(category.getTitle(context))
+      val categoryTitle = context.getString(category.heading)
       val deviceLocale = Locale.getDefault()
       val now = LocalDateTime.now(clock)
       val mediumDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(deviceLocale)
@@ -88,15 +89,15 @@ internal class DefaultCreatePdfForHealthCategories
       map { itemsGroup ->
         val pdfTables =
           itemsGroup.items.map { listItem ->
-            uiSchemaMapper
-              .getSummary(healthCareOrganizationName = listItem.organization.name, mgoResource = listItem.mgoResource)
-              .toSections()
+            uiSchemaParser
+              .getSummary(organizationName = listItem.organization.name, mgoResourceJson = listItem.mgoResource.json)
+              .let { uiSchemaSectionMapper.map(it) }
               .map { section ->
                 PdfSubTable(
                   heading = section.heading,
                   data =
                     section.rows.mapNotNull { row ->
-                      (row.heading ?: return@mapNotNull null) to row.value
+                      (row.heading ?: return@mapNotNull null) to row.displayValue
                     },
                 )
               }.filter { it.data.isNotEmpty() }

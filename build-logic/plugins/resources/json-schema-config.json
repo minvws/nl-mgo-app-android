@@ -1,5 +1,5 @@
 {
-    "packageName": "nl.rijksoverheid.mgo.data.fhirParser.models",
+    "packageName": "nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models",
     "annotations": {
         "classes": {
             "kotlinx.serialization.Serializable": null

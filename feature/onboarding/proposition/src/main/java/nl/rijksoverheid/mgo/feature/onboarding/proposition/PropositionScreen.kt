@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.onboarding.proposition
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -23,6 +23,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
@@ -123,7 +124,7 @@ private fun ListItem(
   modifier: Modifier = Modifier,
 ) {
   Row(modifier = modifier) {
-    Image(painter = painterResource(id = icon), contentDescription = null)
+    Icon(painter = painterResource(id = icon), contentDescription = null, tint = MaterialTheme.colorScheme.CategoriesRijkslint())
     MgoHtmlText(
       modifier = Modifier.padding(horizontal = 16.dp),
       html = text,

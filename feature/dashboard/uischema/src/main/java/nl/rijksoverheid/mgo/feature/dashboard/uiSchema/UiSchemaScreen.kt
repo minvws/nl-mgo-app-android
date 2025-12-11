@@ -32,13 +32,14 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.headlineExtraSmall
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaSection
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRowStaticValue
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSection
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
+import nl.rijksoverheid.mgo.data.pft.Pft
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
@@ -49,49 +50,46 @@ object UiSchemaScreenTestTag {
   const val LIST_ITEM = "UiSchemaScreenListItem"
 }
 
-/**
- * Composable that shows a screen that displays health care data.
- * Health care data is showed via a list of [UISchemaRow].
- *
- * @param organization The [MgoOrganization] for the health care data.
- * @param mgoResource The [MgoResource] to get the health care data from.
- * @param isSummary If this screen shows a summary of the health care data, or the complete set.
- * @param isBottomSheet Indicate whether or not this composable is nested inside a bottom sheet.
- * @param onNavigateToDetail Called when navigating to the same UI Schema but the detail page.
- * @param onNavigateBack Called when requested to navigate back. If null, does not show a back button.
- */
 @Composable
 fun UiSchemaScreen(
   organization: MgoOrganization,
-  mgoResource: MgoResource,
+  referenceId: MgoResourceReferenceId,
   isSummary: Boolean,
   isBottomSheet: Boolean = false,
   onNavigateBack: (() -> Unit)? = null,
-  onNavigateToDetail: (organization: MgoOrganization, mgoResource: MgoResource) -> Unit,
+  onNavigateToDetail: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
 ) {
-  var showBottomSheet: Pair<MgoOrganization, MgoResource>? by remember { mutableStateOf(null) }
-  showBottomSheet?.let { uiSchemaData ->
+  var uiSchemaBottomSheet: Pair<MgoOrganization, MgoResourceReferenceId>? by remember { mutableStateOf(null) }
+  uiSchemaBottomSheet?.let { uiSchemaData ->
     UiSchemaBottomSheet(
       organization = uiSchemaData.first,
-      mgoResource = uiSchemaData.second,
-      onDismissRequest = { showBottomSheet = null },
+      referenceId = uiSchemaData.second,
+      onDismissRequest = { uiSchemaBottomSheet = null },
+    )
+  }
+
+  var pftBottomSheet: Pft? by remember { mutableStateOf(null) }
+  pftBottomSheet?.let { pft ->
+    PftBottomSheet(
+      pft = pft,
+      onDismissRequest = { pftBottomSheet = null },
     )
   }
 
   val viewModel =
     hiltViewModel<UiSchemaScreenViewModel, UiSchemaScreenViewModel.Factory>(
-      creationCallback = { factory -> factory.create(organization = organization, mgoResource = mgoResource, isSummary = isSummary) },
+      creationCallback = { factory -> factory.create(organization = organization, referenceId = referenceId, isSummary = isSummary) },
     )
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) {
-    viewModel.navigate.collectLatest { navigateToMgoResource ->
-      if (navigateToMgoResource == mgoResource || isBottomSheet) {
+    viewModel.navigate.collectLatest { navigateToReferenceId ->
+      if (navigateToReferenceId == referenceId || isBottomSheet) {
         // Called when clicked on "Bekijk alle X". Navigate to the detail page of this ui schema.
-        onNavigateToDetail(organization, navigateToMgoResource)
+        onNavigateToDetail(organization, navigateToReferenceId)
       } else {
         // When navigating to a new ui schema, show it inside a bottom sheet.
-        showBottomSheet = Pair(organization, navigateToMgoResource)
+        uiSchemaBottomSheet = Pair(organization, navigateToReferenceId)
       }
     }
   }
@@ -104,6 +102,9 @@ fun UiSchemaScreen(
     onClickFile = { row ->
       viewModel.onClickFileRow(row)
     },
+    onShowPft = { pft ->
+      pftBottomSheet = pft
+    },
     isBottomSheet = isBottomSheet,
     onNavigateBack = onNavigateBack,
   )
@@ -115,6 +116,7 @@ private fun UiSchemaScreenContent(
   isBottomSheet: Boolean,
   onClickReference: (row: UISchemaRow.Reference) -> Unit,
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  onShowPft: (pft: Pft) -> Unit,
   onNavigateBack: (() -> Unit)?,
 ) {
   val lazyListState = rememberLazyListState()
@@ -145,6 +147,7 @@ private fun UiSchemaScreenContent(
               section = section,
               onClickReference = onClickReference,
               onClickFile = onClickFile,
+              onClickPft = onShowPft,
               modifier = Modifier.padding(bottom = 32.dp),
             )
           }
@@ -159,6 +162,7 @@ private fun UiSchemaSection(
   section: UISchemaSection,
   onClickReference: (row: UISchemaRow.Reference) -> Unit,
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  onClickPft: (pft: Pft) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(modifier = modifier) {
@@ -167,7 +171,7 @@ private fun UiSchemaSection(
       Text(
         modifier = Modifier.padding(bottom = 12.dp),
         text = heading,
-        style = MaterialTheme.typography.headlineExtraSmall,
+        style = MaterialTheme.typography.headlineMedium,
         fontWeight = FontWeight.Bold,
       )
     } else {
@@ -183,7 +187,7 @@ private fun UiSchemaSection(
         section.rows.forEachIndexed { index, row ->
           when (row) {
             is UISchemaRow.Static -> {
-              UiSchemaRowStatic(modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM), row = row)
+              UiSchemaRowStatic(modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM), row = row, onClickPft = onClickPft)
             }
 
             is UISchemaRow.Reference -> {
@@ -239,11 +243,11 @@ internal fun UiSchemaScreenContentPreview() {
                   listOf(
                     UISchemaRow.Static(
                       heading = "Row Heading 1",
-                      value = "Row Value 1",
+                      value = listOf(UISchemaRowStaticValue("Row Value 1")),
                     ),
                     UISchemaRow.Static(
                       heading = "Row Heading 2",
-                      value = "Row Value 2",
+                      value = listOf(UISchemaRowStaticValue("Row Value 2")),
                     ),
                   ),
               ),
@@ -253,7 +257,7 @@ internal fun UiSchemaScreenContentPreview() {
                   listOf(
                     UISchemaRow.Static(
                       heading = "Row Heading 3",
-                      value = "Row Value 3",
+                      listOf(UISchemaRowStaticValue("Row Value 3")),
                     ),
                   ),
               ),
@@ -296,6 +300,7 @@ internal fun UiSchemaScreenContentPreview() {
       onClickFile = {},
       onNavigateBack = {},
       isBottomSheet = false,
+      onShowPft = {},
     )
   }
 }

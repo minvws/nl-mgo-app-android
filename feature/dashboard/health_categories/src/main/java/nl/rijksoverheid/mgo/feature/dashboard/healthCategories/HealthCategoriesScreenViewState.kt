@@ -1,33 +1,30 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 
-/**
- * The view state for [HealthCategoriesScreen].
- *
- * @param name The name of user.
- * @param providers List of added [MgoOrganization].
- * @param automaticLocalisationEnabled If the automatic localisation feature is enabled.
- */
 data class HealthCategoriesScreenViewState(
   val name: String,
   val providers: List<MgoOrganization>,
-  val categories: List<HealthCareCategory>,
-  val favorites: List<HealthCareCategory>,
+  val favorites: List<HealthCategoryGroup.HealthCategory>,
+  val groups: List<HealthCategoryGroup>,
   val automaticLocalisationEnabled: Boolean,
+  val banner: HealthCategoriesBannerState?,
 ) {
   companion object {
     fun initialState(
-      categories: List<HealthCareCategory>,
+      favorites: List<HealthCategoryGroup.HealthCategory>,
+      groups: List<HealthCategoryGroup>,
       providers: List<MgoOrganization>,
       automaticLocalisationEnabled: Boolean,
     ) = HealthCategoriesScreenViewState(
       name = "Wendy de Bruijn",
       providers = providers,
       automaticLocalisationEnabled = automaticLocalisationEnabled,
-      categories = categories,
-      favorites = categories.filter { category -> category.favoritePosition != -1 },
+      favorites = favorites,
+      groups = groups,
+      banner = HealthCategoriesBannerState.Loading,
     )
   }
 }

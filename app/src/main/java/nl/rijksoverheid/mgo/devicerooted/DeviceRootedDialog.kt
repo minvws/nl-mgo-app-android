@@ -9,8 +9,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.framework.copy.R
 import java.util.Locale
 
@@ -30,7 +30,7 @@ fun DeviceRootedDialog(show: Boolean) {
         stringResource(id = R.string.common_ok)
           .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
       onClickPositiveButton = { showDialog = false },
-      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
     )
   }
 }

@@ -1,13 +1,13 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -18,57 +18,43 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import nl.rijksoverheid.mgo.component.healthCategories.getColor
+import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
+import nl.rijksoverheid.mgo.component.healthCategories.getString
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.supportContacts
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.component.healthCareCategory.R as HealthCategoryR
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoriesListItemTestTag {
   const val LIST_ITEM = "HealthCategoriesListItem"
 }
 
-/**
- * Composable that shows a list item representing a health care category.
- * The list item has it's own viewmodel that listens to the health care data
- * for that category.
- *
- * @param icon The icon to show in the list item.
- * @param iconColor The color of the icon to show in the list item.
- * @param title The title to show in the list item.
- * @Param filterOrganization If not null, will only show only health care data for this organization. If null will show for all added
- * organizations.
- * @param category The [HealthCareCategoryId] for this list item.
- * @param modifier The modifier to be applied.
- * @param hasDivider If the list item has a divider.
- */
 @Composable
 internal fun HealthCategoriesListItem(
-  @DrawableRes icon: Int,
-  @ColorRes iconColor: Color,
-  @StringRes title: Int,
   filterOrganization: MgoOrganization?,
-  category: HealthCareCategoryId,
+  category: HealthCategoryGroup.HealthCategory,
   modifier: Modifier = Modifier,
   hasDivider: Boolean = true,
 ) {
   if (LocalInspectionMode.current) {
     HealthCategoriesListItemContent(
       modifier = modifier,
-      icon = icon,
-      title = title,
-      iconColor = iconColor,
+      category = category,
       listItemState = HealthCategoriesListItemState.LOADED,
       hasDivider = hasDivider,
     )
@@ -81,9 +67,7 @@ internal fun HealthCategoriesListItem(
     val listItemState by viewModel.listItemState.collectAsState()
     HealthCategoriesListItemContent(
       modifier = modifier,
-      icon = icon,
-      title = title,
-      iconColor = iconColor,
+      category = category,
       listItemState = listItemState,
       hasDivider = hasDivider,
     )
@@ -92,49 +76,55 @@ internal fun HealthCategoriesListItem(
 
 @Composable
 internal fun HealthCategoriesListItemContent(
-  @DrawableRes icon: Int,
-  @ColorRes iconColor: Color,
-  @StringRes title: Int,
+  category: HealthCategoryGroup.HealthCategory,
   listItemState: HealthCategoriesListItemState,
   modifier: Modifier = Modifier,
   hasDivider: Boolean = true,
 ) {
   Column(modifier = modifier.fillMaxWidth().testTag(HealthCategoriesListItemTestTag.LIST_ITEM)) {
-    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-      Icon(painter = painterResource(id = icon), contentDescription = null, tint = iconColor)
-      Text(
-        modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
-        text = stringResource(id = title),
-        style =
-          MaterialTheme.typography
-            .bodyMedium,
-      )
-      when (listItemState) {
-        HealthCategoriesListItemState.LOADING -> {
-          Text(
-            text = stringResource(id = CopyR.string.common_loading_data),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.contentSecondary(),
-          )
-          CircularProgressIndicator(
-            modifier =
-              Modifier
-                .size(24.dp)
-                .padding(start = 8.dp),
-            color = MaterialTheme.colorScheme.symbolsSecondary(),
-            strokeWidth = 2.dp,
-          )
-        }
-
-        HealthCategoriesListItemState.NO_DATA -> {
-          Text(
-            text = stringResource(id = CopyR.string.common_no_data),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.contentSecondary(),
-          )
-        }
-
-        HealthCategoriesListItemState.LOADED -> {}
+    Row(modifier = Modifier.padding(16.dp)) {
+      Box(
+        modifier = Modifier.size(32.dp).background(color = category.icon.getColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
+        contentAlignment = Alignment.Center,
+      ) {
+        Icon(painter = painterResource(id = category.icon.getDrawable()), contentDescription = null, tint = category.icon.getColor())
+      }
+      Column(modifier = Modifier.weight(1f).padding(horizontal = 16.dp)) {
+        Text(
+          text = LocalContext.current.getString(category.heading),
+          style =
+            MaterialTheme.typography
+              .bodyMedium,
+          fontWeight = FontWeight.Bold,
+          color = MaterialTheme.colorScheme.LabelsPrimary(),
+        )
+        val subheadingText =
+          if (listItemState == HealthCategoriesListItemState.NO_DATA) {
+            stringResource(CopyR.string.common_no_data)
+          } else {
+            LocalContext.current.getString(category.subheading)
+          }
+        Text(
+          modifier = Modifier.padding(top = 4.dp),
+          text = subheadingText,
+          style =
+            MaterialTheme.typography
+              .bodyMedium,
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
+        )
+      }
+      if (listItemState == HealthCategoriesListItemState.LOADING) {
+        CircularProgressIndicator(
+          modifier =
+            Modifier
+              .padding(start = 8.dp)
+              .size(24.dp),
+          strokeWidth = 2.dp,
+          trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
+          color = MaterialTheme.colorScheme.SymbolsSecondary(),
+        )
+      } else {
+        Box(modifier = Modifier.size(24.dp))
       }
     }
     if (hasDivider) {
@@ -153,10 +143,9 @@ internal fun HealthCategoriesListItemContent(
 internal fun HealthCategoriesListItemLoadingPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = HealthCategoryR.drawable.ic_medication,
-      title = CopyR.string.hc_medication_heading,
-      iconColor = MaterialTheme.colorScheme.supportContacts(),
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
       listItemState = HealthCategoriesListItemState.LOADING,
+      hasDivider = false,
     )
   }
 }
@@ -166,10 +155,9 @@ internal fun HealthCategoriesListItemLoadingPreview() {
 internal fun HealthCategoriesListItemNoDataPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = HealthCategoryR.drawable.ic_medication,
-      title = CopyR.string.hc_medication_heading,
-      iconColor = MaterialTheme.colorScheme.supportContacts(),
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
       listItemState = HealthCategoriesListItemState.NO_DATA,
+      hasDivider = false,
     )
   }
 }
@@ -179,10 +167,9 @@ internal fun HealthCategoriesListItemNoDataPreview() {
 internal fun HealthCategoriesListItemLoadedPreview() {
   MgoTheme {
     HealthCategoriesListItemContent(
-      icon = HealthCategoryR.drawable.ic_medication,
-      title = CopyR.string.hc_medication_heading,
-      iconColor = MaterialTheme.colorScheme.supportContacts(),
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
       listItemState = HealthCategoriesListItemState.LOADED,
+      hasDivider = false,
     )
   }
 }

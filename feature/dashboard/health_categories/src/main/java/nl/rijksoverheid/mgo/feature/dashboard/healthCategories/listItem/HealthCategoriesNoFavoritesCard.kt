@@ -15,12 +15,13 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
-import nl.rijksoverheid.mgo.component.theme.supportRijkslint
+import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -28,7 +29,7 @@ fun HealthCategoriesNoFavoriteCard(
   onClickAddFavorite: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val borderColor = MaterialTheme.colorScheme.borderPrimary()
+  val borderColor = MaterialTheme.colorScheme.SeperatorsPrimary()
   Column(
     modifier =
       modifier
@@ -43,13 +44,17 @@ fun HealthCategoriesNoFavoriteCard(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Text(text = stringResource(CopyR.string.overview_favorites_empty_heading), style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp))
+    Text(
+      text = stringResource(CopyR.string.overview_favorites_empty_heading),
+      textAlign = TextAlign.Center,
+      style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
+    )
     TextButton(onClickAddFavorite) {
       Text(
         text = stringResource(CopyR.string.overview_favorites_empty_action),
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.supportRijkslint(),
+        color = MaterialTheme.colorScheme.CategoriesRijkslint(),
       )
     }
   }

@@ -13,11 +13,6 @@ import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import javax.inject.Inject
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * The [ViewModel] for the [RemoveOrganizationScreen].
- *
- * @param organizationRepository The [OrganizationRepository] to get the health care provider from an id.
- */
 @HiltViewModel
 class RemoveOrganizationScreenViewModel
   @Inject
@@ -27,12 +22,6 @@ class RemoveOrganizationScreenViewModel
     private val _providerDeleted = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val providerDeleted = _providerDeleted.asSharedFlow()
 
-    /**
-     * Delete the health care provider. Also alerts the UI to show a snackbar explaining that the provider has been deleted.
-     *
-     * @param snackbarPresenter The [DefaultLocalDashboardSnackbarPresenter] to communicate to the UI that a snackbar should be shown.
-     * @param organizationId The health care provider id.
-     */
     fun delete(
       snackbarPresenter: DefaultLocalDashboardSnackbarPresenter,
       organizationId: String,

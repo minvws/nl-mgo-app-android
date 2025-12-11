@@ -23,10 +23,7 @@ dagger-hilt-compose-navigation = "1.2.0"
 ksp = "2.1.21-2.0.2"
 dagger = "5.0.1"
 okhttp = "4.12.0"
-chucker = "4.0.0"
-retrofit = "2.11.0"
-moshi = "1.15.1"
-moshi-sealed = "0.28.0"
+chucker = "4.2.0"
 kotlinx-coroutines = "1.10.2"
 turbine = "1.1.0"
 androidx-browser = "1.8.0"
@@ -58,6 +55,7 @@ itext7 = "9.2.0"
 zoomable = "2.8.0"
 androidx-startup-runtime = "1.2.0"
 reorderable = "3.0.0"
+quickjs-wrapper = "3.2.3"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -85,8 +83,6 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "dag
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 chucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-no-op = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref ="retrofit" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }
 coroutines-bom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinx-coroutines" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
@@ -104,6 +100,8 @@ lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "
 json = { group = "org.json", name = "json", version.ref = "json" }
 rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+quickjs-wrapper-java = { group = "wang.harlon.quickjs", name = "wrapper-java", version.ref = "quickjs-wrapper" }
+quickjs-wrapper-android = { group = "wang.harlon.quickjs", name = "wrapper-android", version.ref = "quickjs-wrapper" }
 
 # Google will start forcing 16 KB page sizes (https://developer.android.com/guide/practices/page-sizes#kotlin).
 # The eclipse j2v8 library is not 16 KB page aligned, but somebody made a fork that is.

@@ -8,10 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,17 +26,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.getIcon
 import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.framework.copy.R
 
-/**
- * Composable that shows a screen where you can select the app theme.
- *
- * @param onNavigateBack Called when requested to navigate back.
- */
 @Composable
 fun SettingsDisplayScreen(onNavigateBack: () -> Unit) {
   val viewModel = hiltViewModel<SettingsDisplayScreenViewModel>()
@@ -134,7 +125,7 @@ private fun ThemeListItem(
       Icon(
         imageVector = theme.getIcon(),
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.symbolsPrimary(),
+        tint = MaterialTheme.colorScheme.SymbolsPrimary(),
       )
 
       Column(
@@ -152,7 +143,7 @@ private fun ThemeListItem(
           Text(
             text = stringResource(subHeading),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.contentSecondary(),
+            color = MaterialTheme.colorScheme.LabelsSecondary(),
           )
         }
       }
@@ -169,13 +160,6 @@ private fun ThemeListItem(
     }
   }
 }
-
-private fun AppTheme.getIcon(): ImageVector =
-  when (this) {
-    AppTheme.SYSTEM -> Icons.Outlined.SettingsApplications
-    AppTheme.LIGHT -> Icons.Outlined.LightMode
-    AppTheme.DARK -> Icons.Outlined.DarkMode
-  }
 
 @StringRes
 private fun AppTheme.getHeading(): Int =

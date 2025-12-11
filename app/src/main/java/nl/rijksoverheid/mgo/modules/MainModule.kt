@@ -13,6 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.BuildConfig
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.DefaultAppLocked
@@ -103,4 +105,42 @@ internal object MainModule {
   @Provides
   @Named("sdkVersion")
   fun provideSdkVersion() = Build.VERSION.SDK_INT
+
+  @Provides
+  @Singleton
+  @Named("loadApiBaseUrl")
+  fun provideLoadApiBaseUrl(environmentRepository: EnvironmentRepository): String =
+    when (val environment = environmentRepository.getEnvironment()) {
+      is Environment.Acc -> "https://lo-ad.acc.mgo.irealisatie.nl"
+      is Environment.Prod -> "https://lo-ad.acc.mgo.irealisatie.nl"
+      is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl"
+      is Environment.Demo -> "https://lo-ad.acc.mgo.irealisatie.nl"
+      is Environment.Custom -> environment.url
+    }
+
+  // TODO Set urls for other environments when available.
+  @Provides
+  @Singleton
+  @Named("dvaApiBaseUrl")
+  fun provideDvaApiBaseUrl(environmentRepository: EnvironmentRepository): String =
+    when (val environment = environmentRepository.getEnvironment()) {
+      is Environment.Acc -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
+      is Environment.Prod -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
+      is Environment.Tst -> "https://dvp-proxy.test.mgo.irealisatie.nl"
+      is Environment.Demo -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
+      is Environment.Custom -> environment.url
+    }
+
+  // TODO Set urls for other environments when available.
+  @Provides
+  @Singleton
+  @Named("pftUrl")
+  fun providePftUrl(environmentRepository: EnvironmentRepository): String =
+    when (val environment = environmentRepository.getEnvironment()) {
+      is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Demo -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Custom -> environment.url
+    }
 }

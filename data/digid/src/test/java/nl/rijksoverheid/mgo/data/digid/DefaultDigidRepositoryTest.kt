@@ -1,12 +1,12 @@
 package nl.rijksoverheid.mgo.data.digid
 
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.api.vad.createVadApi
 import nl.rijksoverheid.mgo.framework.environment.TestEnvironmentRepository
-import nl.rijksoverheid.mgo.framework.test.TEST_OKHTTP_CLIENT
-import nl.rijksoverheid.mgo.framework.test.getTestServerBodyForUnitTest
+import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
+import okhttp3.OkHttpClient
 import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,7 +20,7 @@ internal class DefaultDigidRepositoryTest {
     runTest {
       // Given: successful request
       testServer.enqueueJson(
-        json = getTestServerBodyForUnitTest(filePath = "response/start_response.json"),
+        json = readResourceFile("start_response.json"),
       )
 
       // When: calling login
@@ -43,15 +43,13 @@ internal class DefaultDigidRepositoryTest {
       val result = repository.login()
 
       // Then: failure is returned
-      Assert.assertTrue(result.isFailure)
+      assertTrue(result.isFailure)
     }
 
-  private fun getRepository(): DefaultDigidRepository {
-    val okHttpClient = TEST_OKHTTP_CLIENT
-    val vadApi = createVadApi(okHttpClient = okHttpClient, baseUrl = testServer.url())
-    return DefaultDigidRepository(
-      vadApi = vadApi,
+  private fun getRepository(): DefaultDigidRepository =
+    DefaultDigidRepository(
+      okHttpClient = OkHttpClient(),
+      baseUrl = testServer.url(),
       environmentRepository = TestEnvironmentRepository(),
     )
-  }
 }

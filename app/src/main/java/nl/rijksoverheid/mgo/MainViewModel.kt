@@ -3,22 +3,27 @@ package nl.rijksoverheid.mgo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.theme.theme.KEY_APP_THEME
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
+import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
+import nl.rijksoverheid.mgo.data.pft.PftRepository
 import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_APP_THEME
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
+import nl.rijksoverheid.mgo.init.FhirResponseSyncer
 import nl.rijksoverheid.mgo.lifecycle.AppLifecycleRepository
 import nl.rijksoverheid.mgo.lock.AppLocked
 import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
@@ -27,22 +32,10 @@ import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
+import nl.rijksoverheid.mgo.reset.ResetApp
 import javax.inject.Inject
 import javax.inject.Named
 
-/**
- * Viewmodel that is attached to the only activity in the app. Handles functionality that is related to navigation when
- * launching the app.
- * @param showDeviceRootedDialog Use case that checks if the device has been rooted.
- * @param appLocked Use case that checks if the app should be locked.
- * @param saveClosedAppTimestamp Use case that saves locally saves a timestamp. The timestamp represents the last time the app was closed.
- * @param hasPinCode Use case that checks if the user has a pin code set.
- * @param hasSeenOnboarding Use case that checks if the user has finished the onboarding.
- * @param featureToggleRepository Repository that handles feature toggle actions.
- * @param keyValueStore Store to save a key value pair into.
- * @param isDigidAuthenticated Use case to check if the user has authenticated with DigiD.
- * @param appLifecycleRepository Repository that can observe the app life cycle state.
- */
 @HiltViewModel
 internal class MainViewModel
   @Inject
@@ -53,7 +46,13 @@ internal class MainViewModel
     private val hasPinCode: HasPinCode,
     private val hasSeenOnboarding: HasSeenOnboarding,
     private val featureToggleRepository: FeatureToggleRepository,
+    private val resetApp: ResetApp,
+    private val fhirResponseSyncer: FhirResponseSyncer,
+    private val quickJsRepository: QuickJsRepository,
+    private val pftRepository: PftRepository,
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     @Named("keyValueStore") val keyValueStore: KeyValueStore,
+    @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
     val isDigidAuthenticated: IsDigidAuthenticated,
     val appLifecycleRepository: AppLifecycleRepository,
   ) : ViewModel() {
@@ -63,21 +62,36 @@ internal class MainViewModel
     private val _navigateDialog = MutableSharedFlow<Any>(extraBufferCapacity = 1)
     val navigateDialog = _navigateDialog.asSharedFlow()
 
-    private val _appTheme = MutableStateFlow(getAppTheme(keyValueStore.getString(KEY_APP_THEME)))
+    private val _appTheme = MutableStateFlow(getAppTheme(keyValueStorage.get(KEY_APP_THEME)))
     val appTheme = _appTheme.asStateFlow()
 
     init {
       viewModelScope.launch {
+        // Initialize javascript runtime
+        launch(ioDispatcher) {
+          quickJsRepository.create()
+        }
+
+        // Start fetching FHIR data
+        launch(ioDispatcher) {
+          fhirResponseSyncer.invoke().collect()
+        }
+
+        // Start syncing patient friendly terms
+        launch(ioDispatcher) {
+          pftRepository.sync()
+        }
+
         // Handle if the flag secure (allow screenshots) feature toggle is enabled
-        launch {
+        launch(ioDispatcher) {
           featureToggleRepository.observe(FeatureToggleId.FlagSecure).collectLatest { enabled ->
             _flagSecureFeatureToggle.tryEmit(enabled)
           }
         }
 
         // Handle app theming
-        launch {
-          keyValueStore.observeString(KEY_APP_THEME).collectLatest { appThemeString ->
+        launch(ioDispatcher) {
+          keyValueStorage.observe<String>(KEY_APP_THEME).collectLatest { appThemeString ->
             _appTheme.emit(getAppTheme(appThemeString))
           }
         }
@@ -140,8 +154,9 @@ internal class MainViewModel
       }
     }
 
-    /**
-     * @return True if the automatic localisation needs to be shown instead of the manual one.
-     */
-    fun getAutomaticLocalisationEnabled(): Boolean = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION)
+    fun resetApp() {
+      viewModelScope.launch {
+        resetApp.invoke()
+      }
+    }
   }

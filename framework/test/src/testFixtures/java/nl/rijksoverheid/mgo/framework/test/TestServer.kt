@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.framework.test
 
+import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
@@ -26,8 +27,19 @@ class TestServer {
   /**
    * Get the url of the mock web server. Be sure to fire requests to this base url.
    */
-  fun url(): String {
-    return requireNotNull(server?.url("/").toString())
+  fun url(): String = requireNotNull(server?.url("/").toString())
+
+  fun setJson(
+    json: TestServerBody,
+    responseCode: Int,
+  ) {
+    server?.dispatcher =
+      object : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse =
+          MockResponse()
+            .setBody(json)
+            .setResponseCode(responseCode)
+      }
   }
 
   /**
@@ -66,9 +78,7 @@ class TestServer {
    *
    * @return The [RecordedRequest].
    */
-  fun getRequest(): RecordedRequest? {
-    return server?.takeRequest()
-  }
+  fun getRequest(): RecordedRequest? = server?.takeRequest()
 
   /**
    * Stops the mock web server.
@@ -76,12 +86,4 @@ class TestServer {
   fun stop() {
     server?.shutdown()
   }
-}
-
-/**
- * Helper method to load json from the resources folder for a unit test.
- * Useful for example unit tests where you want to load local json files into a mock web server.
- */
-fun getTestServerBodyForUnitTest(filePath: String): TestServerBody {
-  return getJsonFromResources(filePath)
 }

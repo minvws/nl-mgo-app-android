@@ -1,12 +1,14 @@
 package nl.rijksoverheid.mgo.feature.pincode.forgot.reset
 
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_LOGIN_WITH_BIOMETRIC_ENABLED
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_PIN_CODE
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
-import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
+import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -21,8 +23,8 @@ internal class DefaultResetPinCodeTest {
       keyValueStore.setString(KEY_PIN_CODE, "123")
 
       // Given: organization is stored
-      val organizationRepository = TestOrganizationRepository()
-      organizationRepository.setStoredProviders(listOf(TEST_MGO_ORGANIZATION))
+      val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
+      organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: use case
       val resetPinCode =

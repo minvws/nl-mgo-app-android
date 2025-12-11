@@ -24,22 +24,14 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoCheckbox
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.sentimentInformative
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.theme.StatesInformative
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a card to show in [OrganizationListAutomaticSearchScreen].
- *
- * @param organization The [MgoOrganization] to display in this card.
- * @param cardState The [OrganizationSearchCardState] reflecting the state of this card.
- * @param onCheckedChange Called when the checkbox has changed state.
- * @param modifier The [Modifier] to be applied.
- */
 @Composable
 internal fun OrganizationListAutomaticCard(
   organization: MgoOrganization,
@@ -86,7 +78,7 @@ internal fun OrganizationListAutomaticCard(
             AdditionalText(
               text = CopyR.string.add_organization_not_participating,
               icon = R.drawable.ic_search_result_card_not_supported,
-              contentColor = MaterialTheme.colorScheme.sentimentInformative(),
+              contentColor = MaterialTheme.colorScheme.StatesInformative(),
               modifier = Modifier.padding(top = 8.dp),
             )
           }
@@ -144,7 +136,9 @@ internal fun OrganizationListAutomaticCardAddPreview() {
 internal fun OrganizationListAutomaticCardAddedPreview() {
   MgoTheme {
     OrganizationListAutomaticCard(
-      organization = TEST_MGO_ORGANIZATION.copy(added = true),
+      organization =
+        TEST_MGO_ORGANIZATION
+          .copy(added = true),
       onCheckedChange = {},
       modifier = Modifier.padding(all = 16.dp),
       cardState = OrganizationSearchCardState.ADDED,
@@ -157,7 +151,9 @@ internal fun OrganizationListAutomaticCardAddedPreview() {
 internal fun OrganizationAutomaticSearchCardNotSupportedPreview() {
   MgoTheme {
     OrganizationListAutomaticCard(
-      organization = TEST_MGO_ORGANIZATION.copy(added = true),
+      organization =
+        TEST_MGO_ORGANIZATION
+          .copy(added = true),
       onCheckedChange = {},
       modifier = Modifier.padding(all = 16.dp),
       cardState = OrganizationSearchCardState.NOT_SUPPORTED,

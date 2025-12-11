@@ -25,11 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.sentimentInformative
-import nl.rijksoverheid.mgo.component.theme.sentimentPositive
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.theme.StatesInformative
+import nl.rijksoverheid.mgo.component.theme.StatesPositive
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.OrganizationSearchCardState
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.R
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreen
@@ -57,7 +57,10 @@ internal fun OrganizationListManualCard(
   val cardBackgroundColor =
     when (cardState) {
       OrganizationSearchCardState.ADD -> MaterialTheme.colorScheme.surface
-      else -> MaterialTheme.colorScheme.background.copy(alpha = 0.5f).compositeOver(MaterialTheme.colorScheme.surface)
+      else ->
+        MaterialTheme.colorScheme.background
+          .copy(alpha = 0.5f)
+          .compositeOver(MaterialTheme.colorScheme.surface)
     }
   MgoCard(modifier = modifier.testTag(OrganizationListManualCardTestTag.CARD)) {
     Row(
@@ -66,8 +69,7 @@ internal fun OrganizationListManualCard(
           .background(cardBackgroundColor)
           .clickable(enabled = cardState == OrganizationSearchCardState.ADD) {
             onClick(searchResult)
-          }
-          .padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
+          }.padding(top = 12.dp, start = 12.dp, bottom = 12.dp),
     ) {
       Column(modifier = Modifier.weight(1f)) {
         Text(
@@ -89,7 +91,7 @@ internal fun OrganizationListManualCard(
             AdditionalText(
               text = CopyR.string.add_organization_already_added,
               icon = R.drawable.ic_search_result_card_added,
-              contentColor = MaterialTheme.colorScheme.sentimentPositive(),
+              contentColor = MaterialTheme.colorScheme.StatesPositive(),
               modifier = Modifier.padding(top = 8.dp),
             )
           }
@@ -98,7 +100,7 @@ internal fun OrganizationListManualCard(
             AdditionalText(
               text = CopyR.string.add_organization_not_participating,
               icon = R.drawable.ic_search_result_card_not_supported,
-              contentColor = MaterialTheme.colorScheme.sentimentInformative(),
+              contentColor = MaterialTheme.colorScheme.StatesInformative(),
               modifier = Modifier.padding(top = 8.dp),
             )
           }
@@ -161,7 +163,9 @@ internal fun OrganizationSearchCardAddPreview() {
 internal fun OrganizationSearchCardAddedPreview() {
   MgoTheme {
     OrganizationListManualCard(
-      searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+      searchResult =
+        TEST_MGO_ORGANIZATION
+          .copy(added = true),
       onClick = { },
       modifier = Modifier.padding(all = 16.dp),
       cardState = OrganizationSearchCardState.ADDED,
@@ -174,7 +178,9 @@ internal fun OrganizationSearchCardAddedPreview() {
 internal fun OrganizationSearchCardNotSupportedPreview() {
   MgoTheme {
     OrganizationListManualCard(
-      searchResult = TEST_MGO_ORGANIZATION.copy(added = true),
+      searchResult =
+        TEST_MGO_ORGANIZATION
+          .copy(added = true),
       onClick = { },
       modifier = Modifier.padding(all = 16.dp),
       cardState = OrganizationSearchCardState.NOT_SUPPORTED,

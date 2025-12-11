@@ -1,132 +1,133 @@
 package nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic
 
 import app.cash.turbine.test
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
+import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
+import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import nl.rijksoverheid.mgo.localisation.TestOrganizationRepository
-import org.junit.After
-import org.junit.Assert.assertEquals
+import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
+import okhttp3.OkHttpClient
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 internal class OrganizationListAutomaticScreenViewModelTest {
   @get:Rule
-  val mainDispatcherRule = nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule()
+  val mainDispatcherRule =
+    MainDispatcherRule()
 
-  private val organizationRepository = TestOrganizationRepository()
-  private val viewModel by lazy {
-    OrganizationListAutomaticScreenViewModel(organizationRepository)
+  @get:Rule
+  val testServerRule = TestServerRule()
+
+  private val okHttpClient = OkHttpClient()
+  private val mgoByteArrayStorage = MemoryMgoByteArrayStorage()
+  private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
+  private lateinit var organizationRepository: OrganizationRepository
+
+  @Before
+  fun setup() {
+    organizationRepository =
+      OrganizationRepository(okHttpClient = okHttpClient, baseUrl = testServerRule.testServer.url(), mgoByteArrayStorage = mgoByteArrayStorage)
   }
 
-  @After
-  fun cleanUp() {
-    organizationRepository.resetSearchResults()
-  }
+  private fun createViewModel() =
+    OrganizationListAutomaticScreenViewModel(
+      ioDispatcher = mainDispatcherRule.testDispatcher,
+      organizationRepository = organizationRepository,
+      getDataSetsFromDisk = getDataSetsFromDisk,
+    )
 
   @Test
-  fun testGetSearchResultsSuccess() =
+  fun testSuccess() =
     runTest {
-      // Given: search results return organizations
-      setSearchResultsSuccess(listOf(TEST_MGO_ORGANIZATION))
+      // Given
+      testServerRule.testServer.enqueueJson(json = readResourceFile("load_search_response.json"))
+      val viewModel = createViewModel()
 
-      // When: calling getSearchResults
-      viewModel.getSearchResults()
+      // When
+      viewModel.viewState.test {
+        val viewState = awaitItem()
 
-      // Then: view state is updated with results
-      val expectedViewState =
-        OrganizationListAutomaticScreenViewState(
-          loading = false,
-          results = listOf(TEST_MGO_ORGANIZATION),
-          error = null,
-        )
-      assertViewState(expectedViewState)
+        // Then
+        assertFalse(viewState.loading)
+        assertTrue(viewState.error == null)
+        assertTrue(viewState.results.isNotEmpty())
+      }
     }
 
   @Test
-  fun testGetSearchResultsFailed() =
+  fun testError() =
     runTest {
-      // Given: search results return error
-      val error = IllegalStateException("Something went wrong")
-      setSearchResultsFailed(error)
+      // Given
+      testServerRule.testServer.enqueue500()
+      val viewModel = createViewModel()
 
-      // When: calling getSearchResults
-      viewModel.getSearchResults()
+      // When
+      viewModel.viewState.test {
+        val viewState = awaitItem()
 
-      // Then: view state is updated without results and with error
-      val expectedViewState =
-        OrganizationListAutomaticScreenViewState(
-          loading = false,
-          results = listOf(),
-          error = error,
-        )
-      assertViewState(expectedViewState)
+        // Then
+        assertFalse(viewState.loading)
+        assertTrue(viewState.error != null)
+        assertTrue(viewState.results.isEmpty())
+      }
     }
 
   @Test
   fun testUpdateOrganization() =
     runTest {
-      // Given: view state has organization that is not added
-      setSearchResultsSuccess(listOf(TEST_MGO_ORGANIZATION.copy(added = false)))
-      viewModel.getSearchResults()
+      // Given
+      testServerRule.testServer.enqueueJson(json = readResourceFile("load_search_response.json"))
+      val viewModel = createViewModel()
 
-      // When: calling updateOrganization for that organization with added set to true
-      viewModel.updateOrganization(organization = TEST_MGO_ORGANIZATION, added = true)
+      viewModel.viewState.test {
+        assertFalse(awaitItem().results.first().added)
 
-      // Then: view state is updated and has added organization
-      val expectedViewState =
-        OrganizationListAutomaticScreenViewState(
-          loading = false,
-          results = listOf(TEST_MGO_ORGANIZATION.copy(added = true)),
-          error = null,
-        )
-      assertViewState(expectedViewState)
+        // When
+        val firstOrganization =
+          viewModel.viewState.value.results
+            .first()
+        viewModel.updateOrganization(organization = firstOrganization, added = true)
+
+        // Then
+        assertTrue(awaitItem().results.first().added)
+      }
     }
 
   @Test
   fun testUpdateOrganizations() =
     runTest {
-      // Given: Some organizations
-      val organization1 = TEST_MGO_ORGANIZATION.copy(id = "1")
-      val organization2 = TEST_MGO_ORGANIZATION.copy(id = "2")
-      val organization3 = TEST_MGO_ORGANIZATION.copy(id = "3")
+      // Given: Organizations
+      testServerRule.testServer.enqueueJson(json = readResourceFile("load_search_response.json"))
+      val viewModel = createViewModel()
+      val viewState = runBlocking { viewModel.viewState.first() }
 
-      // Given: Stored organizations
-      organizationRepository.setStoredProviders(listOf(organization1, organization2))
+      val firstOrganization = viewState.results[0]
+      val secondOrganization = viewState.results[1]
 
-      // Given: fetched organizations
-      setSearchResultsSuccess(listOf(organization1, organization2, organization3))
+      // Given: First organization stored
+      organizationRepository.save(firstOrganization)
 
-      // Given: user unchecks organization1
-      viewModel.updateOrganization(organization = organization1, added = false)
+      // Given: First organization removed (in the UI)
+      viewModel.updateOrganization(organization = firstOrganization, added = false)
 
-      // Given: user checks organization3
-      viewModel.updateOrganization(organization = organization3, added = true)
+      // Given: Second organization added (in the UI)
+      viewModel.updateOrganization(organization = secondOrganization, added = true)
 
-      // When calling addCheckedOrganizations
+      // When: Calling updateOrganizations
       viewModel.updateOrganizations()
 
-      // Then: organization1 is removed
+      // Then: First organization is not added
       val storedOrganizations = organizationRepository.get()
-      assertTrue(!storedOrganizations.contains(organization1))
+      assertFalse(storedOrganizations[0].added)
 
-      // Then: organization3 is added
-      assertEquals(organization3.copy(added = true), storedOrganizations.last())
+      // Then: Second organization is added
+      assertTrue(storedOrganizations[1].added)
     }
-
-  private suspend fun setSearchResultsSuccess(organizations: List<MgoOrganization>) {
-    organizationRepository.setSearchResults(organizations)
-  }
-
-  private fun setSearchResultsFailed(error: Throwable) {
-    organizationRepository.setSearchResultsError(error)
-  }
-
-  private suspend fun assertViewState(viewState: OrganizationListAutomaticScreenViewState) {
-    viewModel.viewState.test {
-      assertEquals(viewState, awaitItem())
-    }
-  }
 }

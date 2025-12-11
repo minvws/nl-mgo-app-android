@@ -13,11 +13,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
 /**
- * Key indicating that the onboarding has been seen.
- */
-val KEY_HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
-
-/**
  * Key indicating that biometric login is enabled.
  */
 val KEY_LOGIN_WITH_BIOMETRIC_ENABLED = booleanPreferencesKey("login_with_biometric_enabled")

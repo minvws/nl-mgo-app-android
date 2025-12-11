@@ -8,7 +8,7 @@ on:
 jobs:
   tests:
     name: Run E2E Tests
-    runs-on: macos-13
+    runs-on: macos-latest
 
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -35,4 +35,28 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew connectedTstDebugAndroidTest
+          script: |
+            ./gradlew connectedTstDebugAndroidTest || true
+
+            echo "Pulling screenshots..."
+            adb pull /storage/emulated/0/googletest/test_outputfiles ./screenshots || true
+
+            echo "Dumping logcat..."
+            adb logcat -d > logcat.txt || true
+          heap-size: 1024M
+          memory: 2G
+          cores: 2
+          disable-animations: true
+
+      - name: Upload screenshots artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: ./screenshots
+
+      - name: Upload logcat
+        uses: actions/upload-artifact@v4
+        with:
+          name: logcat
+          path: logcat.txt

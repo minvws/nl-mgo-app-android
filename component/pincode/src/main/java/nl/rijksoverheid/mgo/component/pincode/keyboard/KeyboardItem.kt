@@ -18,13 +18,11 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.rijksoverheid.mgo.component.pincode.R
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentPrimary
 
 object KeyboardItemNumberTestTag {
-  fun button(number: Int): String {
-    return "keyboardItemButton+$number"
-  }
+  fun button(number: Int): String = "keyboardItemButton+$number"
 }
 
 /**
@@ -68,7 +66,7 @@ internal fun KeyboardItemIcon(
     colors =
       ButtonDefaults.buttonColors(
         containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.contentPrimary(),
+        contentColor = MaterialTheme.colorScheme.LabelsPrimary(),
       ),
     elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp),
     shape = RoundedCornerShape(25.dp),

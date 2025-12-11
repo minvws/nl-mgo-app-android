@@ -1,9 +1,9 @@
 package nl.rijksoverheid.mgo.navigation.dashboard
 
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId as HealthCareCategoryModel
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
 /**
  * Represents all navigation destinations in the dashboard (the screen that shows the bottom bar).
@@ -25,13 +25,13 @@ sealed class DashboardNavigation {
 
     @Serializable
     data class HealthCareCategory(
-      val category: HealthCareCategoryModel,
+      val category: HealthCategoryGroup.HealthCategory,
     ) : Overview()
 
     @Serializable
     data class UiSchema(
       val organization: MgoOrganization,
-      val mgoResource: MgoResource,
+      val referenceId: MgoResourceReferenceId,
       val isSummary: Boolean,
     ) : Overview()
   }
@@ -51,14 +51,14 @@ sealed class DashboardNavigation {
 
     @Serializable
     data class HealthCareCategory(
-      val category: HealthCareCategoryModel,
+      val category: HealthCategoryGroup.HealthCategory,
       val filterOrganization: MgoOrganization,
     ) : Organizations()
 
     @Serializable
     data class UiSchema(
       val organization: MgoOrganization,
-      val mgoResource: MgoResource,
+      val referenceId: MgoResourceReferenceId,
       val isSummary: Boolean,
     ) : Organizations()
 

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.digid
 
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -22,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,22 +35,17 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
-import nl.rijksoverheid.mgo.component.mgo.MgoButtonTheme
 import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
+import nl.rijksoverheid.mgo.component.mgo.R as ComponentR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a screen where you can start the authentication process with DigiD.
- *
- * @param onNavigateToDigidMock Called when requested to navigate to a DigiD mock screen (temporary).
- */
 @Composable
 fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
-  val activity = LocalContext.current as FragmentActivity
+  val activity = LocalActivity.current as FragmentActivity
   val viewModel: DigidLoginScreenViewModel = hiltViewModel()
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -60,7 +55,7 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
       heading = stringResource(CopyR.string.login_failed_dialog_heading),
       subHeading = stringResource(CopyR.string.login_failed_dialog_subheading),
       positiveButtonText = stringResource(CopyR.string.common_ok),
-      positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
       onClickPositiveButton = {
         showLoginFailedDialog = false
       },
@@ -152,7 +147,7 @@ private fun DigidLoginScreenContent(
               text = stringResource(id = CopyR.string.login_digid),
               onClick = onLoginClicked,
               isLoading = viewState.loading,
-              overrideTheme = MgoButtonTheme.DIGID,
+              icon = ComponentR.drawable.ic_digid,
             ),
           isElevated = scrollState.canScrollForward,
         )

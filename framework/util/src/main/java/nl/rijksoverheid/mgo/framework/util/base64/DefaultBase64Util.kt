@@ -15,18 +15,14 @@ internal class DefaultBase64Util
      * @param str The input string to be encoded.
      * @return The Base64-encoded version of the input string.
      */
-    override fun encode(str: String): String {
-      return Base64.encodeToString(str.toByteArray(), Base64.DEFAULT)
-    }
+    override fun encode(str: String): String = Base64.encodeToString(str.toByteArray(), Base64.DEFAULT)
 
     /**
-     * Decodes a given Base64-encoded string back to its original form using UTF-8 encoding.
+     * Decodes a Base64-encoded string into its original byte array.
      *
-     * @param base64Str The Base64-encoded string to be decoded.
-     * @return The decoded string.
+     * @param base64Str The Base64-encoded string to decode.
+     * @return A [ByteArray] containing the decoded data.
      * @throws IllegalArgumentException If the input is not a valid Base64-encoded string.
      */
-    override fun decode(base64Str: String): String {
-      return String(Base64.decode(base64Str, Base64.DEFAULT), charset("UTF-8"))
-    }
+    override fun decode(base64Str: String): ByteArray = Base64.decode(base64Str, Base64.DEFAULT)
   }

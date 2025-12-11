@@ -1,11 +1,15 @@
 package nl.rijksoverheid.mgo.data.onboarding
 
-/**
- * Check if the onboarding has been seen.
- */
-interface HasSeenOnboarding {
-  /**
-   * @return True if the onboarding has been seen.
-   */
-  operator fun invoke(): Boolean
-}
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
+import javax.inject.Inject
+import javax.inject.Named
+
+internal const val KEY_HAS_SEEN_ONBOARDING = "KEY_HAS_SEEN_ONBOARDING"
+
+class HasSeenOnboarding
+  @Inject
+  constructor(
+    @Named("sharedPreferencesMgoKeyValueStorage") private val keyValueStorage: MgoKeyValueStorage,
+  ) {
+    operator fun invoke(): Boolean = keyValueStorage.get(KEY_HAS_SEEN_ONBOARDING) ?: false
+  }

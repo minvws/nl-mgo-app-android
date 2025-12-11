@@ -38,8 +38,8 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
 import nl.rijksoverheid.mgo.component.theme.theme.DefaultLocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
@@ -84,8 +84,8 @@ class MainActivity : FragmentActivity() {
 
           val textSelectionColors =
             TextSelectionColors(
-              handleColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-              backgroundColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText().copy(alpha = 0.2f),
+              handleColor = MaterialTheme.colorScheme.ActionsGhostText(),
+              backgroundColor = MaterialTheme.colorScheme.ActionsGhostText().copy(alpha = 0.2f),
             )
           CompositionLocalProvider(LocalTextSelectionColors provides textSelectionColors) {
             // The main navigation
@@ -105,7 +105,7 @@ class MainActivity : FragmentActivity() {
             HandleNavigateDialog(viewModel = viewModel, navController = navController)
 
             // Device rooted dialog
-            DeviceRootedDialog(show = viewModel.showDeviceRootedDialog())
+            DeviceRootedDialog(show = false)
 
             // Show a dialog if user takes a screenshot
             HandleScreenshotDetection()
@@ -154,7 +154,7 @@ class MainActivity : FragmentActivity() {
       addDashboardNavGraph(rootNavController = navController, mainViewModel = viewModel)
       addLocalisationNavGraph(
         navController = navController,
-        automaticLocalisationEnabled = viewModel.getAutomaticLocalisationEnabled(),
+        automaticLocalisationEnabled = false,
         fromOnboarding = !viewModel.isDigidAuthenticated(),
       )
       addDigidNavGraph(navController = navController, keyValueStore = viewModel.keyValueStore)
@@ -201,7 +201,7 @@ class MainActivity : FragmentActivity() {
           heading = stringResource(CopyR.string.screenshotalert_heading),
           subHeading = stringResource(CopyR.string.screenshotalert_subheading),
           positiveButtonText = stringResource(CopyR.string.screenshotalert_action),
-          positiveButtonTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+          positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
           onClickPositiveButton = { showDialog = false },
           onDismissRequest = { showDialog = false },
         )

@@ -15,12 +15,6 @@ import nl.rijksoverheid.mgo.feature.settings.security.SettingsSecurityScreen
 import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 
-/**
- * Adds all the navigation destinations that can be found in the settings bottom bar tab in the dashboard.
- *
- * @param rootNavController The top level nav controller.
- * @param navController The nav controller used in this navigation.
- */
 internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
   rootNavController: NavController,
   navController: NavController,
@@ -41,7 +35,8 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
         onNavigateToAboutThisAppSettings = {
           navController.navigate(DashboardNavigation.Settings.About.Home)
         },
-        onNavigateToOnboarding = {
+        onResetApp = {
+          mainViewModel.resetApp()
           rootNavController.navigate(OnboardingNavigation.Root) {
             popUpTo(rootNavController.graph.id) {
               inclusive = true

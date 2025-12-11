@@ -14,12 +14,6 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import javax.inject.Named
 
-/**
- * The [ViewModel] for [OrganizationsScreen].
- *
- * @param organizationRepository The [OrganizationRepository] to get the stored health care providers from.
- * @param keyValueStore The [KeyValueStore] in where is stored if automatic localisation has been enabled.
- */
 @HiltViewModel
 internal class OrganizationsViewModel
   @Inject

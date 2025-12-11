@@ -9,8 +9,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtonsTestTag
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItemTestTag
-import nl.rijksoverheid.mgo.utils.waitForListItems
 
 class HealthCategoriesScreenRobot(
   private val composeTestRule: ComposeTestRule,
@@ -23,7 +21,6 @@ class HealthCategoriesScreenRobot(
   }
 
   fun clickCategory(name: String): HealthCategoriesScreenRobot {
-    composeTestRule.waitForListItems(HealthCategoriesListItemTestTag.LIST_ITEM)
     composeTestRule.onNodeWithTag(HealthCategoriesScreenTestTag.LIST).performScrollToNode(hasText(name))
     composeTestRule
       .onNodeWithText(name)

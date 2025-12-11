@@ -6,6 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,23 +16,20 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import javax.inject.Named
 
-/**
- * The [ViewModel] for [OrganizationListManualScreen].
- *
- * @param name The name of the health care provider to search for.
- * @param city The city of the health care provider to search for.
- * @param organizationRepository The [OrganizationRepository] to get and update health care providers.
- */
 @HiltViewModel(assistedFactory = OrganizationListManualScreenViewModel.Factory::class)
 internal class OrganizationListManualScreenViewModel
   @AssistedInject
   constructor(
     @Assisted("name") private val name: String,
     @Assisted("city") private val city: String,
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
+    private val getDataSetsFromDisk: GetDataSetsFromDisk,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -53,14 +51,12 @@ internal class OrganizationListManualScreenViewModel
       getSearchResults()
     }
 
-    /**
-     * Search for health care providers based on provided [name] and [city]. Reflects the result in the UI.
-     */
     fun getSearchResults() {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
         _viewState.update { viewState -> viewState.copy(loading = true, results = listOf(), error = null) }
+        val supportedDataServiceIds = getDataSetsFromDisk().map { it.id }
         organizationRepository
-          .search(name = name, city = city)
+          .search(name = name, city = city, supportedDataServiceIds = supportedDataServiceIds)
           .catch { error ->
             _viewState.update { viewState -> viewState.copy(loading = false, error = error) }
           }.collectLatest { results ->
@@ -69,11 +65,6 @@ internal class OrganizationListManualScreenViewModel
       }
     }
 
-    /**
-     * Save this organization in the app. Updates [navigation] when completed.
-     *
-     * @param provider The [MgoOrganization] to save.
-     */
     fun addOrganization(provider: MgoOrganization) {
       viewModelScope.launch {
         organizationRepository.save(provider)

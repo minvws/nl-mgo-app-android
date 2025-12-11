@@ -7,16 +7,6 @@ import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Inject
 import javax.inject.Named
 
-/**
- * Reset a pin code. In the context of this feature this means resetting the app, which results in:
- * - Removing all organizations
- * - Removing the pin code
- * - Removing the boolean stored if biometric login is enabled.
- *
- * @param organizationRepository The [OrganizationRepository] to remove all the organizations from.
- * @param keyValueStore The [KeyValueStore] to remove the biometric login flag from.
- * @param secureKeyValueStore The [KeyValueStore] to remove the pin code from.
- */
 internal class DefaultResetPinCode
   @Inject
   constructor(

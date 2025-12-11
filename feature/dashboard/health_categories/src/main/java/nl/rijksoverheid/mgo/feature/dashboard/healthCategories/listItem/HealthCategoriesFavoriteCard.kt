@@ -1,26 +1,27 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,20 +29,20 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.healthCareCategory.getIcon
-import nl.rijksoverheid.mgo.component.healthCareCategory.getIconColor
-import nl.rijksoverheid.mgo.component.healthCareCategory.getTitle
+import nl.rijksoverheid.mgo.component.healthCategories.getColor
+import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
+import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundTertiary
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import java.time.format.TextStyle
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 
 @Composable
 fun HealthCategoriesFavoriteCard(
-  category: HealthCareCategoryId,
+  category: HealthCategoryGroup.HealthCategory,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -68,20 +69,25 @@ fun HealthCategoriesFavoriteCard(
 @Composable
 private fun HealthCategoriesFavoriteCardContent(
   loading: Boolean,
-  category: HealthCareCategoryId,
+  category: HealthCategoryGroup.HealthCategory,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   MgoCard(modifier = modifier.width(182.dp), onClick = onClick) {
     Column(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Icon(painterResource(category.getIcon()), tint = category.getIconColor(), contentDescription = null)
+        Box(
+          modifier = Modifier.size(32.dp).background(color = category.icon.getColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
+          contentAlignment = Alignment.Center,
+        ) {
+          Icon(painterResource(category.icon.getDrawable()), tint = category.icon.getColor(), contentDescription = null)
+        }
         if (loading) {
           CircularProgressIndicator(
             modifier = Modifier.size(24.dp),
             strokeWidth = 2.dp,
-            trackColor = MaterialTheme.colorScheme.backgroundTertiary().copy(alpha = 0.5f),
-            color = MaterialTheme.colorScheme.symbolsSecondary(),
+            trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.SymbolsSecondary(),
           )
         }
       }
@@ -93,7 +99,7 @@ private fun HealthCategoriesFavoriteCardContent(
       // To work around this, we use a layout modifier to check if the text occupies only one line,
       // and if so, we adjust its position so it is vertically centered.
       val textMeasurer = rememberTextMeasurer()
-      val text = stringResource(category.getTitle())
+      val text = LocalContext.current.getString(category.heading)
       val textStyle = MaterialTheme.typography.bodyMedium
       Text(
         modifier =
@@ -130,7 +136,7 @@ private fun HealthCategoriesFavoriteCardContent(
 internal fun HealthCategoriesFavoriteCardPreview() {
   MgoTheme {
     HealthCategoriesFavoriteCardContent(
-      category = HealthCareCategoryId.MEDICATIONS,
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
       onClick = {},
       loading = false,
     )
@@ -142,7 +148,7 @@ internal fun HealthCategoriesFavoriteCardPreview() {
 internal fun HealthCategoriesFavoriteMultilineCardPreview() {
   MgoTheme {
     HealthCategoriesFavoriteCardContent(
-      category = HealthCareCategoryId.PATIENT,
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
       onClick = {},
       loading = false,
     )
@@ -154,7 +160,7 @@ internal fun HealthCategoriesFavoriteMultilineCardPreview() {
 internal fun HealthCategoriesFavoriteCardLoadingPreview() {
   MgoTheme {
     HealthCategoriesFavoriteCardContent(
-      category = HealthCareCategoryId.MEDICATIONS,
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
       onClick = {},
       loading = true,
     )

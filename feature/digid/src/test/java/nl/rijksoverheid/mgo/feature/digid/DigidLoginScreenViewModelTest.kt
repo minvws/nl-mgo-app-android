@@ -20,6 +20,7 @@ internal class DigidLoginScreenViewModelTest {
     DigidLoginScreenViewModel(
       digidRepository = digidRepository,
       base64Util = base64Util,
+      ioDispatcher = mainDispatcherRule.testDispatcher,
     )
 
   @Test

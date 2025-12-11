@@ -13,13 +13,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 
-/**
- * Composable that shows a card. Same as a [Card] but with some specific values set.
- *
- * @param modifier the [Modifier] to be applied.
- * @param shape The [Shape] of the [Card].
- * @param onClick If not null, called when clicked on the card.
- */
 @Composable
 fun MgoCard(
   modifier: Modifier = Modifier,

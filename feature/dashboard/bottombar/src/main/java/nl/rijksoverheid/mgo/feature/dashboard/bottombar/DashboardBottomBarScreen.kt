@@ -38,13 +38,13 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.mgo.snackbar.LocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBar
 import nl.rijksoverheid.mgo.component.mgo.snackbar.MgoSnackBarVisuals
+import nl.rijksoverheid.mgo.component.theme.ActionsSolidBackground
+import nl.rijksoverheid.mgo.component.theme.ActionsTonalBackground
+import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.backgroundSecondary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.fonts
-import nl.rijksoverheid.mgo.component.theme.interactiveSecondaryDefaultBackground
-import nl.rijksoverheid.mgo.component.theme.interactiveTertiaryDefaultText
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
 
 object DashboardBottomBarScreenTestTag {
   const val SCREEN = "DashboardBottomBarScreen"
@@ -184,8 +184,8 @@ private fun BottomNavigationBar(
       lineHeight = 16.sp,
     )
   BottomAppBar(
-    containerColor = MaterialTheme.colorScheme.backgroundSecondary(),
-    contentColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
+    containerColor = MaterialTheme.colorScheme.BackgroundsSecondary(),
+    contentColor = MaterialTheme.colorScheme.ActionsSolidBackground(),
   ) {
     BottomBarItem.entries.forEachIndexed { index, item ->
       val isSelected = item.route == currentRoute
@@ -207,11 +207,11 @@ private fun BottomNavigationBar(
         },
         colors =
           NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-            selectedTextColor = MaterialTheme.colorScheme.interactiveTertiaryDefaultText(),
-            unselectedIconColor = MaterialTheme.colorScheme.symbolsPrimary(),
-            unselectedTextColor = MaterialTheme.colorScheme.symbolsPrimary(),
-            indicatorColor = MaterialTheme.colorScheme.interactiveSecondaryDefaultBackground(),
+            selectedIconColor = MaterialTheme.colorScheme.ActionsSolidBackground(),
+            selectedTextColor = MaterialTheme.colorScheme.ActionsSolidBackground(),
+            unselectedIconColor = MaterialTheme.colorScheme.SymbolsPrimary(),
+            unselectedTextColor = MaterialTheme.colorScheme.SymbolsPrimary(),
+            indicatorColor = MaterialTheme.colorScheme.ActionsTonalBackground(),
           ),
       )
     }

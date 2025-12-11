@@ -16,11 +16,6 @@ import javax.inject.Inject
 val KEY_PIN_CODE = stringPreferencesKey("pin_code")
 
 /**
- * Holds a json of all ids of health care categories that are marked as favorite.
- */
-val KEY_FAVORITE_HEALTH_CARE_CATEGORIES = stringPreferencesKey("favorite_health_care_categories")
-
-/**
  * Key-value storage system that saves encrypted data using [SharedPreferences].
  *
  * @param encryptedSharedPreferences The encrypted [SharedPreferences].

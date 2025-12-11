@@ -1,55 +1,188 @@
 package nl.rijksoverheid.mgo.data.localisation
 
 import kotlinx.coroutines.flow.Flow
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import nl.nl.rijksoverheid.mgo.framework.network.executeRequest
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganizations
+import nl.rijksoverheid.mgo.data.localisation.api.DataServiceId
+import nl.rijksoverheid.mgo.data.localisation.api.SearchResponse
+import nl.rijksoverheid.mgo.data.localisation.api.toMgoOrganization
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
-/**
- * Handles various operations on [MgoOrganization].
- */
-interface OrganizationRepository {
-  val storedOrganizationsFlow: Flow<List<MgoOrganization>>
+@Singleton
+class OrganizationRepository
+  @Inject
+  constructor(
+    private val okHttpClient: OkHttpClient,
+    @Named("loadApiBaseUrl") private val baseUrl: String,
+    @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
+  ) {
+    private val json = Json { ignoreUnknownKeys = true }
+    private val fileName = "organizations.json"
 
-  /**
-   * Search for health care providers.
-   *
-   * @param name The name of the health care provider to search for.
-   * @param city The city of the health care provider to search for.
-   * @return [Flow] containing a list of [MgoOrganization] representing a health care provider.
-   */
-  fun search(
-    name: String,
-    city: String,
-  ): Flow<List<MgoOrganization>>
+    val storedOrganizationsFlow: MutableStateFlow<List<MgoOrganization>> =
+      MutableStateFlow(runBlocking { get() })
 
-  /**
-   * Temporary: search for health care providers based on if they have data for you.
-   * This talks to a api which returns hard coded data. It is for demo purposes only.
-   *
-   * @return [Flow] containing a list of [MgoOrganization] representing a health care provider.
-   */
-  suspend fun searchDemo(): Flow<List<MgoOrganization>>
+    fun search(
+      name: String,
+      city: String,
+      supportedDataServiceIds: List<DataServiceId>,
+    ): Flow<List<MgoOrganization>> {
+      val searchResponseFlow =
+        flow {
+          val requestBodyJson =
+            buildJsonObject {
+              put("name", name.trim())
+              put("city", city.trim())
+            }
+          val requestBodyString = json.encodeToString(requestBodyJson)
+          val request =
+            Request
+              .Builder()
+              .url("$baseUrl/localization/organization/search")
+              .post(requestBodyString.toRequestBody("application/json".toMediaType()))
+              .build()
+          okHttpClient
+            .executeRequest(request)
+            .onSuccess { response ->
+              val responseJson = response.body?.string() ?: throw RuntimeException("Empty response body")
+              val searchResponse = json.decodeFromString<SearchResponse>(responseJson)
+              emit(searchResponse)
+            }.onFailure { error ->
+              throw error
+            }
+        }
+      return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
+        searchResponse.organizations.map { organization ->
+          organization.toMgoOrganization(
+            added =
+              storedOrganizations.any { provider ->
+                provider.id == organization.id
+              },
+            supportedDataServiceIds = supportedDataServiceIds,
+          )
+        }
+      }
+    }
 
-  /**
-   * @return All the [MgoOrganization] that are stored.
-   */
-  suspend fun get(): List<MgoOrganization>
+    fun searchDemo(supportedDataServiceIds: List<DataServiceId>): Flow<List<MgoOrganization>> {
+      val searchResponseFlow =
+        flow {
+          val request =
+            Request
+              .Builder()
+              .url("$baseUrl/localization/organization/search-demo")
+              .post("".toRequestBody("application/json".toMediaType()))
+              .build()
+          okHttpClient
+            .executeRequest(request)
+            .onSuccess { response ->
+              val responseJson = response.body?.string() ?: throw RuntimeException("Empty response body")
+              val searchResponse = json.decodeFromString<SearchResponse>(responseJson)
+              emit(searchResponse)
+            }.onFailure { error ->
+              throw error
+            }
+        }
+      return combine(searchResponseFlow, storedOrganizationsFlow) { searchResponse, storedOrganizations ->
+        searchResponse.organizations.map { organization ->
+          organization.toMgoOrganization(
+            added =
+              storedOrganizations.any { provider ->
+                provider.id == organization.id
+              },
+            supportedDataServiceIds = supportedDataServiceIds,
+          )
+        }
+      }
+    }
 
-  /**
-   * Save a [MgoOrganization].
-   *
-   * @param provider The [MgoOrganization] to save.
-   */
-  suspend fun save(provider: MgoOrganization)
+    suspend fun get(): List<MgoOrganization> {
+      val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
+      if (organizationsJson == null) {
+        return listOf()
+      } else {
+        val organizations = json.decodeFromString<MgoOrganizations>(organizationsJson)
+        return organizations.providers
+      }
+    }
 
-  /**
-   * Delete a [MgoOrganization].
-   *
-   * @param providerId The id of the [MgoOrganization] to delete.
-   */
-  suspend fun delete(providerId: String)
+    suspend fun save(provider: MgoOrganization) {
+      // Get stored health care providers
+      val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
+      val organizations =
+        if (organizationsJson ==
+          null
+        ) {
+          nl.rijksoverheid.mgo.component.organization
+            .MgoOrganizations(listOf())
+        } else {
+          json.decodeFromString<MgoOrganizations>(organizationsJson)
+        }
 
-  /**
-   * Deletes all [MgoOrganization] that are stored.
-   */
-  suspend fun deleteAll()
-}
+      // Add our provider we want to save
+      val newProviders = organizations.providers.toMutableList()
+      val alreadyAdded = newProviders.map { organization -> organization.id }.contains(provider.id)
+      if (!alreadyAdded) {
+        newProviders.add(provider)
+      }
+      val newStoredOrganizations = organizations.copy(providers = newProviders)
+
+      // Save new file
+      val newOrganizationsJson = json.encodeToString(newStoredOrganizations).toByteArray()
+      mgoByteArrayStorage.delete(fileName)
+      mgoByteArrayStorage.save(name = fileName, content = newOrganizationsJson)
+
+      // Update flow
+      storedOrganizationsFlow.value = newStoredOrganizations.providers
+    }
+
+    suspend fun delete(providerId: String) {
+      // Get stored health care providers
+      val organizationsJson = mgoByteArrayStorage.get(fileName)?.toString(Charsets.UTF_8)
+      val organizations =
+        if (organizationsJson ==
+          null
+        ) {
+          nl.rijksoverheid.mgo.component.organization
+            .MgoOrganizations(listOf())
+        } else {
+          json.decodeFromString<MgoOrganizations>(organizationsJson)
+        }
+
+      // Delete the provider from the file
+      val newProviders = organizations.providers.toMutableList()
+      newProviders.removeIf { provider -> provider.id == providerId }
+      val newStoredOrganizations = organizations.copy(providers = newProviders)
+
+      // Save new file
+      val newOrganizationsJson = json.encodeToString(newStoredOrganizations).toByteArray()
+      mgoByteArrayStorage.delete(fileName)
+      mgoByteArrayStorage.save(name = fileName, content = newOrganizationsJson)
+
+      // Update flow
+      storedOrganizationsFlow.value = newStoredOrganizations.providers
+    }
+
+    suspend fun deleteAll() {
+      // Update flow
+      storedOrganizationsFlow.value = listOf()
+
+      // Delete file
+      mgoByteArrayStorage.delete(fileName)
+    }
+  }

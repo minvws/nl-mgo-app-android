@@ -1,19 +1,10 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.TEST_MGO_RESOURCE
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.framework.copy.R as CopyR
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.TEST_MGO_RESOURCE
 
-/**
- * Represents a list item to show in [HealthCategoryScreen].
- *
- * @param title The title of the list item.
- * @param subtitle The sub title of the list item.
- * @param mgoResource The [MgoResource] that is used to display health care data in the list item.
- * @param organization The [MgoOrganization] that is used to display the organization in the list item.
- */
 data class HealthCategoryScreenListItem(
   val title: String,
   val subtitle: String,
@@ -45,8 +36,8 @@ val TEST_LIST_ITEM_3 =
     organization = TEST_MGO_ORGANIZATION,
   )
 
-val TEST_LIST_ITEM_GROUP_1 =
+val TEST_LIST_ITEM_GROUP =
   HealthCategoryScreenListItemsGroup(
-    heading = CopyR.string.zib_medication_use_heading,
+    heading = "Wat je nu gebruikt",
     items = listOf(TEST_LIST_ITEM_1, TEST_LIST_ITEM_2, TEST_LIST_ITEM_3),
   )

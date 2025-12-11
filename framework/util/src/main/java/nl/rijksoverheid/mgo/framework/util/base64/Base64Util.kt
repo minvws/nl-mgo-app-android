@@ -13,11 +13,11 @@ interface Base64Util {
   fun encode(str: String): String
 
   /**
-   * Decodes a given Base64-encoded string back to its original form.
+   * Decodes a Base64-encoded string into its original byte array.
    *
-   * @param base64Str The Base64-encoded string to be decoded.
-   * @return The decoded string.
+   * @param base64Str The Base64-encoded string to decode.
+   * @return A [ByteArray] containing the decoded data.
    * @throws IllegalArgumentException If the input is not a valid Base64-encoded string.
    */
-  fun decode(base64Str: String): String
+  fun decode(base64Str: String): ByteArray
 }

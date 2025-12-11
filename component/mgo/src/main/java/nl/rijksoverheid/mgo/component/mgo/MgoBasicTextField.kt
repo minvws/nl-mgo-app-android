@@ -29,22 +29,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.component.theme.fonts
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows text field for text input.
- * @param value The current text inside the text field.
- * @param onValueChange Called when the text is changed inside the text field.
- * @param modifier the [Modifier] to be applied.
- * @param keyboardOptions See [keyboardOptions] in [BasicTextField].
- * @param keyboardActions See [keyboardActions] in [BasicTextField].
- * @param heading Heading that shows above the text field.
- * @param error Error that shows below the text field.
- * @param textFieldTestTag A tag attached to the [BasicTextField] for testing purposes. Since the [BasicTextField]
- * is nested inside this composable, you can set it here.
- **/
 @Composable
 fun MgoBasicTextField(
   value: String,
@@ -134,7 +122,7 @@ fun MgoBasicTextFieldContent(
                 Icon(
                   painter = painterResource(R.drawable.ic_clear),
                   contentDescription = stringResource(CopyR.string.common_clear),
-                  tint = MaterialTheme.colorScheme.symbolsSecondary(),
+                  tint = MaterialTheme.colorScheme.SymbolsSecondary(),
                 )
               }
             }

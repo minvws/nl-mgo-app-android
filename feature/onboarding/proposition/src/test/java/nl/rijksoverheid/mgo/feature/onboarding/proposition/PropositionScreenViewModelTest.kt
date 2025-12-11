@@ -1,14 +1,18 @@
 package nl.rijksoverheid.mgo.feature.onboarding.proposition
 
-import nl.rijksoverheid.mgo.data.onboarding.TestSetHasSeenOnboarding
+import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
+import nl.rijksoverheid.mgo.data.onboarding.SetHasSeenOnboarding
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.TestEnvironmentRepository
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class PropositionScreenViewModelTest {
-  private val setHasSeenOnboarding = TestSetHasSeenOnboarding()
+  private val keyValueStorage = MemoryMgoKeyValueStorage()
+  private val setHasSeenOnboarding = SetHasSeenOnboarding(keyValueStorage)
+  private val hasSeenOnboarding = HasSeenOnboarding(keyValueStorage)
 
   @Test
   fun `Given ViewModel, When setHasSeenOnboarding is called, Then use case is called`() {
@@ -25,7 +29,7 @@ class PropositionScreenViewModelTest {
     viewModel.setHasSeenOnboarding()
 
     // Then
-    assertTrue(setHasSeenOnboarding.get())
+    assertTrue(hasSeenOnboarding.invoke())
   }
 
   @Test
@@ -38,7 +42,7 @@ class PropositionScreenViewModelTest {
     val viewModel =
       PropositionScreenViewModel(
         environmentRepository = environmentRepository,
-        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+        setHasSeenOnboarding = setHasSeenOnboarding,
       )
 
     // When: Calling get privacy url
@@ -58,7 +62,7 @@ class PropositionScreenViewModelTest {
     val viewModel =
       PropositionScreenViewModel(
         environmentRepository = environmentRepository,
-        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+        setHasSeenOnboarding = setHasSeenOnboarding,
       )
 
     // When: Calling get privacy url
@@ -78,7 +82,7 @@ class PropositionScreenViewModelTest {
     val viewModel =
       PropositionScreenViewModel(
         environmentRepository = environmentRepository,
-        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+        setHasSeenOnboarding = setHasSeenOnboarding,
       )
 
     // When: Calling get privacy url
@@ -98,7 +102,7 @@ class PropositionScreenViewModelTest {
     val viewModel =
       PropositionScreenViewModel(
         environmentRepository = environmentRepository,
-        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+        setHasSeenOnboarding = setHasSeenOnboarding,
       )
 
     // When: Calling get privacy url
@@ -118,7 +122,7 @@ class PropositionScreenViewModelTest {
     val viewModel =
       PropositionScreenViewModel(
         environmentRepository = environmentRepository,
-        setHasSeenOnboarding = TestSetHasSeenOnboarding(),
+        setHasSeenOnboarding = setHasSeenOnboarding,
       )
 
     // When: Calling get privacy url

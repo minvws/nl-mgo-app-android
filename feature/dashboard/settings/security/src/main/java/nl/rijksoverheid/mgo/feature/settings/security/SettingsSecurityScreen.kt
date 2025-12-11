@@ -27,9 +27,9 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.pincode.showBiometricPrompt
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -81,7 +81,7 @@ private fun SettingsSecurityScreenContent(
             Icon(
               imageVector = Icons.Outlined.Fingerprint,
               contentDescription = null,
-              tint = MaterialTheme.colorScheme.symbolsPrimary(),
+              tint = MaterialTheme.colorScheme.SymbolsPrimary(),
             )
 
             Column(
@@ -99,7 +99,7 @@ private fun SettingsSecurityScreenContent(
                 modifier = Modifier.padding(top = 4.dp),
                 text = stringResource(CopyR.string.settings_security_biometric_subheading),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.contentSecondary(),
+                color = MaterialTheme.colorScheme.LabelsSecondary(),
               )
             }
 

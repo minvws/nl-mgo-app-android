@@ -12,6 +12,7 @@ android {
     versionName = "1.0"
     buildConfigField("String", "BASIC_AUTH_USER", "\"\"")
     buildConfigField("String", "BASIC_AUTH_PASSWORD", "\"\"")
+    testInstrumentationRunnerArguments["useTestStorageService"] = "true"
   }
 
   flavorDimensions += listOf("environment")
@@ -189,11 +190,10 @@ dependencies {
 
   implementation(projects.data.onboarding)
   implementation(projects.data.localisation)
-  implementation(projects.data.fhirParser)
-  implementation(projects.data.healthcare)
   implementation(projects.data.pincode)
   implementation(projects.data.digid)
   implementation(libs.androidx.lifecycle.process)
+  implementation(projects.component.pdfViewer)
 
   // ================================
   // TESTING
@@ -204,8 +204,6 @@ dependencies {
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.digid))
   testImplementation(testFixtures(projects.framework.featuretoggle))
-  testImplementation(testFixtures(projects.data.healthcare))
-  testImplementation(testFixtures(projects.data.fhirParser))
   testImplementation(libs.mockk.android)
 
   androidTestImplementation(libs.dagger.hilt.testing)
@@ -215,4 +213,13 @@ dependencies {
   androidTestImplementation(libs.androidx.test.core)
   androidTestImplementation(libs.compose.ui.test.junit4)
   androidTestImplementation(projects.component.pincode)
+
+  implementation(projects.data.hcimParser)
+  implementation(projects.data.fhir)
+  implementation(projects.data.healthCategories)
+  implementation(projects.framework.fhir)
+  implementation(projects.data.pft)
+  implementation(projects.component.organization)
+
+  androidTestUtil("androidx.test.services:test-services:1.4.2")
 }

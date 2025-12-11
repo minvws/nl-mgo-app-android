@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
 
 /**
@@ -33,7 +34,9 @@ fun MgoAutoScrollLazyColumn(
   contentPadding: PaddingValues = PaddingValues(0.dp),
   content: LazyListScope.(canScroll: Boolean) -> Unit,
 ) {
-  var canScroll by remember { mutableStateOf(true) }
+  // False if we are looking at previews so that they render correctly
+  val canScrollDefault = !LocalInspectionMode.current
+  var canScroll by remember { mutableStateOf(canScrollDefault) }
 
   LaunchedEffect(Unit) {
     canScroll = state.canScrollForward

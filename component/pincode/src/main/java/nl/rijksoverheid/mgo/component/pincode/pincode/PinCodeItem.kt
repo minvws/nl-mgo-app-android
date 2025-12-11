@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.core.view.ViewCompat
+import nl.rijksoverheid.mgo.component.theme.ActionsSolidBackground
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.interactivePrimaryDefaultBackground
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -113,7 +113,7 @@ internal fun PinCodeItemNotFilledPreview() {
   MgoTheme {
     PinCodeItem(
       modifier = Modifier.size(32.dp),
-      color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
+      color = MaterialTheme.colorScheme.ActionsSolidBackground(),
       position = 1,
     )
   }
@@ -125,7 +125,7 @@ internal fun PinCodeItemFilledPreview() {
   MgoTheme {
     PinCodeItem(
       modifier = Modifier.size(32.dp),
-      color = MaterialTheme.colorScheme.interactivePrimaryDefaultBackground(),
+      color = MaterialTheme.colorScheme.ActionsSolidBackground(),
       position = 1,
       fill = true,
     )

@@ -7,10 +7,16 @@ android {
 }
 
 dependencies {
-  implementation(projects.data.healthcare)
   implementation(projects.data.localisation)
   implementation(projects.component.pdfViewer)
+  implementation(projects.data.hcimParser)
+  implementation(projects.data.fhir)
   implementation(libs.compose.navigation)
-  testImplementation(testFixtures(projects.data.healthcare))
-  testImplementation(testFixtures(projects.data.fhirParser))
+  implementation(projects.component.uiSchema)
+  implementation(projects.data.pft)
+  implementation(projects.component.organization)
+  testImplementation(testFixtures(projects.framework.util))
+  testImplementation(testFixtures(projects.data.fhir))
+  testImplementation(testFixtures(projects.data.hcimParser))
+  testImplementation(testFixtures(projects.data.pft))
 }

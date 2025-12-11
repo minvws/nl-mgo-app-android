@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -12,112 +13,145 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataState.HealthCareDataState
-import nl.rijksoverheid.mgo.data.healthcare.healthCareDataStates.HealthCareDataStatesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.getProfiles
+import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.fhir.FhirRequest
+import nl.rijksoverheid.mgo.data.fhir.FhirResponse
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
+import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
 import javax.inject.Named
 
-/**
- * The [ViewModel] for [HealthCategoryScreen].
- *
- * @param category The [HealthCareCategoryId] to determine which health care data falls into this category.
- * @param filterOrganization If not null, will observe health care data for this organization. If null will observe for all added
- * organizations.
- * @param context Application context.
- * @param organizationRepository The [OrganizationRepository] to fetch the added organizations.
- * @param healthCareDataStatesRepository The [HealthCareDataStatesRepository] that is responsible for fetching the health care data.
- * @param mgoResourceRepository The [MgoResourceRepository] that is used to filter out resources so that only the resources are shown
- * that we want to show.
- * @param uiSchemaMapper The [UiSchemaMapper] to get models for displaying the health care data.
- * @param createPdf The [CreatePdfForHealthCategories] to generate a presentable pdf.
- */
 @HiltViewModel(assistedFactory = HealthCategoryScreenViewModel.Factory::class)
 internal class HealthCategoryScreenViewModel
   @AssistedInject
   constructor(
-    @Assisted("category") private val category: HealthCareCategoryId,
+    @Assisted("category") private val category: HealthCategoryGroup.HealthCategory,
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
+    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     private val organizationRepository: OrganizationRepository,
-    private val healthCareDataStatesRepository: HealthCareDataStatesRepository,
-    private val mgoResourceRepository: MgoResourceRepository,
-    private val uiSchemaMapper: UiSchemaMapper,
     private val createPdf: CreatePdfForHealthCategories,
+    private val fhirRepository: FhirRepository,
+    private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
+    private val listItemGroupMapper: ListItemGroupMapper,
+    private val mgoResourceStore: MgoResourceStore,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
       fun create(
-        @Assisted("category") category: HealthCareCategoryId,
+        @Assisted("category") category: HealthCategoryGroup.HealthCategory,
         @Assisted("filterOrganization") filterOrganization: MgoOrganization? = null,
       ): HealthCategoryScreenViewModel
     }
 
-    private val initialState = HealthCategoryScreenViewState.initialState(category)
+    private val initialState =
+      HealthCategoryScreenViewState(category = category, showErrorBanner = false, listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading)
     private val _viewState: MutableStateFlow<HealthCategoryScreenViewState> = MutableStateFlow(initialState)
     val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
 
-    private val _openPdfViewer = MutableSharedFlow<PdfViewerState>(extraBufferCapacity = 1)
+    private val _openPdfViewer = MutableSharedFlow<PdfViewerState>(extraBufferCapacity = 2)
     val openPdfViewer = _openPdfViewer.asSharedFlow()
 
     init {
-      viewModelScope.launch {
-        healthCareDataStatesRepository
-          .observe(
-            category = category,
-            filterOrganization = filterOrganization,
-          ).distinctUntilChanged()
-          .collectLatest { states ->
-            val loading = states.any { state -> state is HealthCareDataState.Loading }
-            val empty = states.all { state -> state is HealthCareDataState.Empty }
-            val listItems =
-              states
-                .map { state ->
-                  state.toListItems(
-                    organization = state.organization,
-                    category = state.category,
-                  )
-                }.flatten()
-            val error =
-              states
-                .filterIsInstance<HealthCareDataState.Loaded>()
-                .any { state -> state.results.any { result -> result.isFailure } }
-            _viewState.update {
-              val listItemState =
-                when {
-                  loading -> HealthCategoryScreenViewState.ListItemsState.Loading
-                  empty -> HealthCategoryScreenViewState.ListItemsState.NoData
-                  else -> HealthCategoryScreenViewState.ListItemsState.Loaded(listItems)
-                }
-              HealthCategoryScreenViewState(
-                category = category,
-                showErrorBanner = error,
-                listItemsState = listItemState,
-              )
+      viewModelScope.launch(ioDispatcher) {
+        val organizationsFlow =
+          if (filterOrganization == null) {
+            // If we do not want to filter on a specific organization, observe all stored organizations
+            organizationRepository.storedOrganizationsFlow
+          } else {
+            // If we want to filter on a specific organization, filter on that one
+            organizationRepository.storedOrganizationsFlow.map { organizations ->
+              organizations.filter {
+                it.id == filterOrganization.id
+              }
             }
           }
+
+        organizationsFlow.collectLatest { organizations ->
+          // Get all the fhir responses for this category that we can observe
+          val fhirResponseFlows =
+            organizations
+              .map { organization ->
+                val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
+                endpoints.map { endpoint ->
+                  fhirRepository.observe(
+                    organizationId = organization.id,
+                    dataServiceId = endpoint.dataServiceId,
+                    endpointId = endpoint.endpointId,
+                  )
+                }
+              }.flatten()
+
+          if (fhirResponseFlows.isEmpty()) {
+            _viewState.update { viewState -> viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData) }
+          } else {
+            // Observe the fhir responses
+            combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest { responses ->
+              // True if not all data was fetched
+              val hasError = responses.filterIsInstance<FhirResponse.Error>().isNotEmpty()
+
+              // Get all the responses that are successful
+              val successResponses = responses.filterIsInstance<FhirResponse.Success>()
+
+              // If there is not data show empty state
+              val allEmpty = responses.filterIsInstance<FhirResponse.Success>().all { response -> response.isEmpty }
+              if (allEmpty) {
+                _viewState.update { viewState ->
+                  viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData)
+                }
+              } else {
+                // Create list items from them to show in the UI
+                val listItemGroups = listItemGroupMapper.invoke(category = category, fhirResponses = successResponses)
+
+                // Store all mgo resources in a store, because we need them in the ui schema screen
+                val mgoResources = listItemGroups.map { group -> group.items.map { item -> item.mgoResource } }.flatten()
+                for (mgoResource in mgoResources) {
+                  mgoResourceStore.store(mgoResource)
+                }
+
+                // Update view state
+                _viewState.update { viewState ->
+                  viewState.copy(listItemsState = HealthCategoryScreenViewState.ListItemsState.Loaded(listItemGroups), showErrorBanner = hasError)
+                }
+              }
+            }
+          }
+        }
       }
     }
 
     fun retry() {
-      viewModelScope.launch {
-        if (filterOrganization == null) {
-          val organizations = organizationRepository.get()
-          for (organization in organizations) {
-            healthCareDataStatesRepository.refresh(category = category, organization = organization)
+      viewModelScope.launch(ioDispatcher) {
+        val organizations = organizationRepository.get()
+        for (organization in organizations) {
+          val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
+          for (endpoint in endpoints) {
+            val request =
+              FhirRequest(
+                organizationId = organization.id,
+                medmijId = organization.medMijId,
+                dataServiceId = endpoint.dataServiceId,
+                endpointId = endpoint.endpointId,
+                endpointPath = endpoint.endpointPath,
+                resourceEndpoint = endpoint.resourceEndpoint,
+                fhirVersion = endpoint.fhirVersion,
+                url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
+              )
+
+            fhirRepository.fetch(
+              request = request,
+              forceRefresh = true,
+            )
           }
-        } else {
-          healthCareDataStatesRepository.refresh(category = category, organization = filterOrganization)
         }
       }
     }
@@ -135,29 +169,13 @@ internal class HealthCategoryScreenViewModel
       }
     }
 
-    private suspend fun HealthCareDataState.toListItems(
-      organization: MgoOrganization,
-      category: HealthCareCategoryId,
-    ): List<HealthCategoryScreenListItemsGroup> {
-      return if (this is HealthCareDataState.Loaded) {
-        // Get all the mgo resources as one big list
-        val mgoResources =
-          this.results
-            .mapNotNull { result -> result.getOrNull() }
-            .flatten()
+    override fun onCleared() {
+      super.onCleared()
+      clear()
+    }
 
-        // Filter them to only display the onces we want to show
-        val filteredMgoResources = mgoResourceRepository.filter(resources = mgoResources, profiles = category.getProfiles())
-
-        // Group them by category
-        val groupedMgoResources =
-          filteredMgoResources
-            .groupBy { mgoResource -> mgoResource.getGroupHeading() }
-
-        // Map it to own list items group class
-        return groupedMgoResources.toListItemsGroup(uiSchemaMapper = uiSchemaMapper, organization = organization)
-      } else {
-        listOf()
-      }
+    @VisibleForTesting
+    fun clear() {
+      mgoResourceStore.clear()
     }
   }

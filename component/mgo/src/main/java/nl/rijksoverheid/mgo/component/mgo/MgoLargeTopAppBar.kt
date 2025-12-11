@@ -24,25 +24,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.MgoTypography
-import nl.rijksoverheid.mgo.component.theme.contentPrimary
+import nl.rijksoverheid.mgo.component.theme.headlineExtraLarge
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.framework.copy.R
 
-/**
- * Composable that shows a [LargeTopAppBar] with default customizations applied for this project.
- *
- * @param title The title of the app bar.
- * @param textAlign The alignment of the text inside the app bar.
- * @param windowInsets a window insets that app bar will respect.
- * @param containerColor The color of the container of the app bar.
- * @param scrollBehavior The [TopAppBarScrollBehavior] applied to the app bar.
- * @param actions the actions displayed at the end of the top app bar. This should typically be IconButtons.
- * The default layout here is a Row, so icons inside will be placed horizontally.
- * @param onNavigateBack If not null, will show a back button that will call this function when pressed.
- */
 @Composable
 fun MgoLargeTopAppBar(
   title: String,
@@ -60,7 +49,7 @@ fun MgoLargeTopAppBar(
           fontWeight = FontWeight.Bold,
           fontSize = 22.sp,
         ),
-      headlineMedium = MaterialTheme.typography.headlineLarge.copy(fontSize = 34.sp),
+      headlineMedium = MaterialTheme.typography.headlineExtraLarge.copy(fontSize = 34.sp),
     )
   MgoTheme(
     typography = adjustedTypography,
@@ -88,7 +77,7 @@ fun MgoLargeTopAppBar(
                 stringResource(
                   R.string.common_previous,
                 ),
-              tint = MaterialTheme.colorScheme.contentPrimary(),
+              tint = MaterialTheme.colorScheme.LabelsPrimary(),
             )
           }
         }

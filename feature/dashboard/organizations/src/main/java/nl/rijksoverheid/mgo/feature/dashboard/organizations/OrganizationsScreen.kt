@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,13 +36,13 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.borderPrimary
-import nl.rijksoverheid.mgo.component.theme.contentSecondary
-import nl.rijksoverheid.mgo.component.theme.symbolsSecondary
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
+import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.feature.organizations.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
@@ -52,12 +52,6 @@ object OrganizationsScreenTestTag {
   const val EMPTY_STATE = "OrganizationsScreenEmptyState"
 }
 
-/**
- * Composable that shows a screen with a list of added health care providers.
- *
- * @param onNavigateToHealthCategories Called when requested to navigate to the screen that shows health categories.
- * @param onNavigateToLocalisation Called when requested to navigate to the start of navigation where to search for health care providers.
- */
 @Composable
 fun OrganizationsScreen(
   onNavigateToHealthCategories: (organization: MgoOrganization) -> Unit,
@@ -181,7 +175,7 @@ private fun LazyListScope.NoOrganizations(canScroll: Boolean) {
             .padding(top = 8.dp),
         text = stringResource(id = CopyR.string.common_no_organizations_subheading),
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.contentSecondary(),
+        color = MaterialTheme.colorScheme.LabelsSecondary(),
         textAlign = TextAlign.Center,
       )
     }
@@ -201,9 +195,10 @@ private fun LazyListScope.WithOrganizations(
     OrganizationCard(
       modifier = Modifier.fillMaxWidth(),
       position =
-        when (position) {
-          0 -> OrganizationCardPosition.TOP
-          organizations.lastIndex -> OrganizationCardPosition.BOTTOM
+        when {
+          organizations.size == 1 -> OrganizationCardPosition.SINGLE
+          position == 0 -> OrganizationCardPosition.TOP
+          position == organizations.lastIndex -> OrganizationCardPosition.BOTTOM
           else -> OrganizationCardPosition.CENTER
         },
       organization = organization,
@@ -236,7 +231,7 @@ private fun LazyListScope.WithOrganizations(
         Icon(
           modifier = Modifier.padding(start = 8.dp),
           painter = painterResource(id = R.drawable.ic_add_organization),
-          tint = MaterialTheme.colorScheme.symbolsSecondary(),
+          tint = MaterialTheme.colorScheme.SymbolsSecondary(),
           contentDescription = null,
         )
       }
@@ -248,6 +243,7 @@ private enum class OrganizationCardPosition {
   TOP,
   CENTER,
   BOTTOM,
+  SINGLE,
 }
 
 @Composable
@@ -286,6 +282,14 @@ private fun OrganizationCard(
           bottomEnd = 16.dp,
         )
       }
+      OrganizationCardPosition.SINGLE -> {
+        RoundedCornerShape(
+          topStart = 16.dp,
+          topEnd = 16.dp,
+          bottomStart = 16.dp,
+          bottomEnd = 16.dp,
+        )
+      }
     }
 
   MgoCard(modifier = modifier.testTag(OrganizationsScreenTestTag.ORGANIZATION_CARD), shape = shape) {
@@ -296,13 +300,13 @@ private fun OrganizationCard(
         style = MaterialTheme.typography.bodyMedium,
       )
       if (hasDivider) {
-        Divider(
+        HorizontalDivider(
           modifier =
             Modifier
               .fillMaxWidth()
               .height(0.33.dp)
               .padding(start = 16.dp),
-          color = MaterialTheme.colorScheme.borderPrimary(),
+          color = MaterialTheme.colorScheme.SeperatorsPrimary(),
         )
       }
     }
@@ -330,11 +334,16 @@ internal fun OrganizationsScreenWithOrganizationsPreview() {
         OrganizationsViewState(
           organizations =
             listOf(
-              TEST_MGO_ORGANIZATION.copy(name = "Streekziekenhuis Willem Alexander"),
-              TEST_MGO_ORGANIZATION.copy(name = "Huisartsenpraktijk De Haven"),
-              TEST_MGO_ORGANIZATION.copy(name = "Fysiotherapie Centrum"),
-              TEST_MGO_ORGANIZATION.copy(name = "Tandartsenpraktijk Tandje Erbij"),
-              TEST_MGO_ORGANIZATION.copy(name = "Apotheek de Pillendoos"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Streekziekenhuis Willem Alexander"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Huisartsenpraktijk De Haven"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Fysiotherapie Centrum"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Tandartsenpraktijk Tandje Erbij"),
+              TEST_MGO_ORGANIZATION
+                .copy(name = "Apotheek de Pillendoos"),
             ),
           automaticLocalisationEnabled = false,
         ),

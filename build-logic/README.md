@@ -13,7 +13,8 @@ This module contains plugins for Gradle, providing structured automation and enh
 - **AndroidUiPlugin**
 - **CiPlugin**
 - **CreateSnapshotsDirTask**
-- **[FhirParserPlugin](#FHIR-PARSER.md)**
+- **[HcimParserPlugin](#HCIM-PARSER.md)**
 - **LintPlugin**
 - **LokalisePlugin**
 - **SnapshotsPlugin**
+- **[HealthDataConfigPlugin](#HEALTH_DATA_CONFIG.md)**

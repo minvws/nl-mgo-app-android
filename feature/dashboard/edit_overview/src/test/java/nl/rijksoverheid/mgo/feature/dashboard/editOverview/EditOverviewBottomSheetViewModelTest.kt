@@ -1,13 +1,11 @@
 package nl.rijksoverheid.mgo.feature.dashboard.editOverview
 
 import app.cash.turbine.test
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.healthcare.category.TestHealthCareCategoriesRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategory
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.category.HealthCareCategoryId
+import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
+import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
+import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -16,97 +14,54 @@ class EditOverviewBottomSheetViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val healthCareCategoryRepository = TestHealthCareCategoriesRepository()
-
-  private val viewModel =
-    EditOverviewBottomSheetViewModel(
-      ioDispatcher = mainDispatcherRule.testDispatcher,
-      healthCareCategoryRepository = healthCareCategoryRepository,
-    )
+  private val keyValueStorage = MemoryMgoKeyValueStorage()
+  private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
+  private val favoriteRepository = FavoriteHealthCategoriesRepository(keyValueStorage)
+  private val groups = getHealthCategoriesFromDisk()
 
   @Test
-  fun testFavorite() =
+  fun testInitialViewState() =
     runTest {
-      // Given: No favorites
+      // Given: First category is marked as favorite
+      val firstCategory = groups.first().categories.first()
+      favoriteRepository.store(listOf(firstCategory.id))
 
-      // When: Marking the medications category as favorite
-      viewModel.clickFavorite(HealthCareCategoryId.MEDICATIONS, true)
+      // When: Creating viewmodel
+      val viewModel = createViewModel()
 
-      viewModel.viewState.map { viewState -> viewState.favorites }.test {
-        // Then: Medication category is favorite
-        assertEquals(listOf(HealthCareCategoryId.MEDICATIONS), awaitItem())
-      }
-    }
-
-  @Test
-  fun testUnFavorite() =
-    runTest {
-      // Given: Medication is marked as favorite
-      viewModel.clickFavorite(HealthCareCategoryId.MEDICATIONS, true)
-
-      // When: Marking the medications category no longer as favorite
-      viewModel.clickFavorite(HealthCareCategoryId.MEDICATIONS, false)
-
-      viewModel.viewState.map { viewState -> viewState.favorites }.test {
-        // Then: No favorites
-        assertEquals(listOf<HealthCareCategoryId>(), awaitItem())
-      }
-    }
-
-  @Test
-  fun testReorderFavorites() =
-    runTest {
-      // Given: Medication and appointments are marked as favorite
-      viewModel.clickFavorite(HealthCareCategoryId.MEDICATIONS, true)
-      viewModel.clickFavorite(HealthCareCategoryId.APPOINTMENTS, true)
-
-      // When: Switching medication with appointments
-      viewModel.reorderFavorites(0, 1)
-
-      viewModel.viewState.map { viewState -> viewState.favorites }.test {
-        // Then: Appointments in now the first favorite, and medication the second
-        assertEquals(listOf(HealthCareCategoryId.APPOINTMENTS, HealthCareCategoryId.MEDICATIONS), awaitItem())
+      // Then: View state is updated
+      viewModel.viewState.test {
+        val viewState = awaitItem()
+        assertEquals(1, viewState.favorites.size)
+        assertEquals(4, viewState.nonFavorites.size)
       }
     }
 
   @Test
   fun testSave() =
     runTest {
-      // Given: Medication and appointments are marked as favorite
-      viewModel.clickFavorite(HealthCareCategoryId.MEDICATIONS, true)
-      viewModel.clickFavorite(HealthCareCategoryId.APPOINTMENTS, true)
+      // Given: Nothing marked as favorite
+      favoriteRepository.store(listOf())
 
-      // When: Clicking save
-      viewModel.save()
+      // Given: viewmodel
+      val viewModel = createViewModel()
 
-      healthCareCategoryRepository.observe().test {
-        // Then: Favorites are saved
-        val expected =
-          HealthCareCategoryId.entries.map { id ->
-            HealthCareCategory(
-              id = id,
-              favoritePosition =
-                when (id) {
-                  HealthCareCategoryId.MEDICATIONS -> 0
-                  HealthCareCategoryId.APPOINTMENTS -> 1
-                  else -> -1
-                },
-            )
-          }
-        assertEquals(expected, awaitItem())
-      }
-    }
+      // When: Calling save
+      val firstCategory = groups.first().categories.first()
+      viewModel.save(favorites = listOf(firstCategory), nonFavorites = groups)
 
-  @Test
-  fun testOnClear() =
-    runTest {
-      // When: Calling onClear
-      viewModel.onClear()
-
-      // Then: state is reset
+      // Then: View state is updated
       viewModel.viewState.test {
         val viewState = awaitItem()
-        assertEquals(0, viewState.favorites.size)
+        assertEquals(1, viewState.favorites.size)
+        assertEquals(4, viewState.nonFavorites.size)
       }
     }
+
+  private fun createViewModel(): EditOverviewBottomSheetViewModel =
+    EditOverviewBottomSheetViewModel(
+      ioDispatcher = mainDispatcherRule.testDispatcher,
+      getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
+      favoriteRepository = favoriteRepository,
+    )
 }

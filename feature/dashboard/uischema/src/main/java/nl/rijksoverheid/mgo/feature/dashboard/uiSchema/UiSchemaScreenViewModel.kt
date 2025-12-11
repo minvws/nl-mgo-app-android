@@ -6,76 +6,66 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.data.fhirParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.fhirParser.models.HealthUiSchema
-import nl.rijksoverheid.mgo.data.fhirParser.uiSchema.UiSchemaMapper
-import nl.rijksoverheid.mgo.data.healthcare.binary.FhirBinaryRepository
-import nl.rijksoverheid.mgo.data.healthcare.mgoResource.MgoResourceRepository
-import nl.rijksoverheid.mgo.data.healthcare.models.UISchemaRow
-import nl.rijksoverheid.mgo.data.healthcare.models.mapper.UISchemaSectionMapper
-import nl.rijksoverheid.mgo.data.localisation.models.MgoOrganization
-import nl.rijksoverheid.mgo.data.localisation.models.getDocumentsResourceEndpoint
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.getDocumentsResourceEndpoint
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
+import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
+import nl.rijksoverheid.mgo.data.fhir.FhirRepository
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import timber.log.Timber
+import javax.inject.Named
 
-/**
- * The [ViewModel] for [UiSchemaScreen].
- *
- * @param organization The [MgoOrganization] for the health care data.
- * @param mgoResource The [MgoResource] to get the health care data from.
- * @param isSummary If this screen shows a summary of the health care data, or the complete set.
- * @param fhirBinaryRepository The [FhirBinaryRepository] to download files.
- * @param uiSchemaMapper The [UiSchemaMapper] to map [MgoResource] to [HealthUiSchema].
- * @param mgoResourceRepository The [MgoResourceRepository] to get new [MgoResource] from.
- * @param uiSchemaSectionMapper The [UISchemaSectionMapper] to map [HealthUiSchema] to [UiSchemaSection].
- */
 @HiltViewModel(assistedFactory = UiSchemaScreenViewModel.Factory::class)
 internal class UiSchemaScreenViewModel
   @AssistedInject
   constructor(
     @Assisted val organization: MgoOrganization,
-    @Assisted private val mgoResource: MgoResource,
+    @Assisted private val referenceId: MgoResourceReferenceId,
     @Assisted private val isSummary: Boolean,
-    private val fhirBinaryRepository: FhirBinaryRepository,
-    private val uiSchemaMapper: UiSchemaMapper,
-    private val mgoResourceRepository: MgoResourceRepository,
+    private val fhirRepository: FhirRepository,
     private val uiSchemaSectionMapper: UISchemaSectionMapper,
+    private val uiSchemaParser: UiSchemaParser,
+    private val mgoResourceStore: MgoResourceStore,
+    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
+    @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
       fun create(
         organization: MgoOrganization,
-        mgoResource: MgoResource,
+        referenceId: MgoResourceReferenceId,
         isSummary: Boolean,
       ): UiSchemaScreenViewModel
     }
 
-    private val _navigate = MutableSharedFlow<MgoResource>(extraBufferCapacity = 1)
+    private val _navigate = MutableSharedFlow<MgoResourceReferenceId>(extraBufferCapacity = 1)
     val navigate = _navigate.asSharedFlow()
 
     private val _viewState = MutableStateFlow(UiSchemaScreenViewState(toolbarTitle = "", sections = listOf()))
     val viewState = _viewState.asStateFlow()
 
-    /**
-     * Get the [HealthUiSchema] from a [MgoResource] to be able to display health care data.
-     */
     init {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
+        val mgoResource = mgoResourceStore.get(referenceId)
         val uiSchema =
           if (isSummary) {
-            uiSchemaMapper.getSummary(
-              healthCareOrganizationName = organization.name,
-              mgoResource = mgoResource,
+            uiSchemaParser.getSummary(
+              mgoResourceJson = mgoResource.json,
+              organizationName = organization.name,
             )
           } else {
-            uiSchemaMapper.getDetail(
-              healthCareOrganizationName = organization.name,
-              mgoResource = mgoResource,
+            uiSchemaParser.getDetails(
+              mgoResourceJson = mgoResource.json,
+              organizationName = organization.name,
             )
           }
         val uiSchemaSections = uiSchemaSectionMapper.map(uiSchema)
@@ -85,28 +75,15 @@ internal class UiSchemaScreenViewModel
       }
     }
 
-    /**
-     * When clicking on a reference, get the [MgoResource] and navigate to the [UiSchemaScreen] to show the new health care data.
-     * @param row The clicked reference row.
-     */
     fun onClickReferenceRow(row: UISchemaRow.Reference) {
       viewModelScope.launch {
-        mgoResourceRepository
-          .get(row.referenceId)
-          .onSuccess { mgoResource ->
-            _navigate.tryEmit(mgoResource)
-          }.onFailure { error ->
-            Timber.e(error, "Failed to get mgo resource")
-          }
+        val mgoResource = mgoResourceStore.get(row.referenceId)
+        _navigate.tryEmit(mgoResource.referenceId)
       }
     }
 
-    /**
-     * When clicking on a file, download the binary and update the view state to reflect the state of downloading.
-     * @param row The clicked file row.
-     */
     fun onClickFileRow(row: UISchemaRow.Binary.NotDownloaded) {
-      viewModelScope.launch {
+      viewModelScope.launch(ioDispatcher) {
         // This organization should have a document resource endpoint to get the binary from
         val endpoint = organization.getDocumentsResourceEndpoint() ?: return@launch
 
@@ -115,8 +92,8 @@ internal class UiSchemaScreenViewModel
         updateRow(loadingRow)
 
         // Download file
-        fhirBinaryRepository
-          .download(resourceEndpoint = endpoint, fhirBinary = row.binary)
+        fhirRepository
+          .fetchBinary(resourceEndpoint = endpoint, url = "$dvaApiBaseUrl/fhir/${row.binary}")
           .onSuccess { binary ->
             val downloadedRow = UISchemaRow.Binary.Downloaded(heading = row.heading, value = row.value, binary = binary)
             updateRow(downloadedRow)
@@ -139,7 +116,7 @@ internal class UiSchemaScreenViewModel
             viewState.sections.map { section ->
               val rows =
                 section.rows.map { oldRow ->
-                  if (oldRow.value == newRow.value) {
+                  if (oldRow.heading == newRow.heading) {
                     newRow
                   } else {
                     oldRow

@@ -9,6 +9,9 @@ import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import java.time.Clock
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -19,6 +22,7 @@ class FhirResponseSyncer
     private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     private val fhirRepository: FhirRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
+    @Named("systemUTC") private val clock: Clock,
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
   ) {
     @VisibleForTesting
@@ -65,16 +69,19 @@ class FhirResponseSyncer
           }
 
         for (endpoint in uniqueEndpoints) {
+          val today = LocalDate.now(clock)
+          val endpointPath = endpoint.endpointPath.replace("{{today}}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
+
           val request =
             FhirRequest(
               organizationId = id,
               medmijId = medMijId,
               dataServiceId = endpoint.dataServiceId,
               endpointId = endpoint.endpointId,
-              endpointPath = endpoint.endpointPath,
+              endpointPath = endpointPath,
               resourceEndpoint = endpoint.resourceEndpoint,
               fhirVersion = endpoint.fhirVersion,
-              url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
+              url = "$dvaApiBaseUrl/fhir$endpointPath",
             )
 
           fhirRepository.fetch(request = request, forceRefresh = firstSync)

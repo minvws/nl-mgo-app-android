@@ -28,9 +28,10 @@ class DefaultGetHealthCategoriesBanner
           organizations
             .flatMap { organization ->
               categories.flatMap { category ->
-                getEndpointsForHealthCategory(category = category, organization = organization)
+                getEndpointsForHealthCategory(category, organization)
               }
-            }.size
+            }.distinctBy { endpoint -> endpoint.endpointPath to endpoint.dataServiceId }
+            .size
         }
 
       // Return correct banner based on the fhir responses

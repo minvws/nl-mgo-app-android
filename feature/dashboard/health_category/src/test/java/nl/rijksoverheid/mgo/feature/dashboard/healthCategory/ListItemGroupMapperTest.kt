@@ -120,7 +120,7 @@ class ListItemGroupMapperTest {
         )
 
       // Then: Groups are returned with mgo resources
-      assertEquals(5, groups.size)
+      assertEquals(7, groups.size)
       assertEquals(1, groups[0].items.size)
       assertEquals(1, groups[1].items.size)
       assertEquals(1, groups[2].items.size)

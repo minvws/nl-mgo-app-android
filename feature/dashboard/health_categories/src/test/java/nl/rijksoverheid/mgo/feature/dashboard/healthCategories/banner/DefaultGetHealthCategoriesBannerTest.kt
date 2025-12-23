@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_RESPONSE_ERROR_SERVER
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_RESPONSE_ERROR_USER
@@ -23,11 +24,13 @@ class DefaultGetHealthCategoriesBannerTest {
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
   private val fhirRepository = TestFhirRepository()
+  private val getEndpoints: GetEndpoints = GetEndpoints(getEndpointsForHealthCategory = getEndpointsForHealthCategory)
+
   private val getHealthCategoriesBanner =
     DefaultGetHealthCategoriesBanner(
       organizationRepository = organizationRepository,
       getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
-      getEndpointsForHealthCategory = getEndpointsForHealthCategory,
+      getEndpoints = getEndpoints,
       fhirRepository = fhirRepository,
     )
 

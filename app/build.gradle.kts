@@ -173,6 +173,7 @@ dependencies {
 
   implementation(projects.component.mgo)
   implementation(projects.component.theme)
+  implementation(projects.component.fhir)
 
   // ================================
   // FRAMEWORKS

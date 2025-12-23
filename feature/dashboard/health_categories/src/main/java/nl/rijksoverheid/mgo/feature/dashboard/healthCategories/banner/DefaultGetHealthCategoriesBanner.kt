@@ -3,10 +3,10 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseErrorType
-import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import javax.inject.Inject
@@ -16,8 +16,8 @@ class DefaultGetHealthCategoriesBanner
   constructor(
     private val organizationRepository: OrganizationRepository,
     private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
-    private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     private val fhirRepository: FhirRepository,
+    private val getEndpoints: GetEndpoints,
   ) : GetHealthCategoriesBanner {
     override operator fun invoke(): Flow<HealthCategoriesBannerState?> {
       val categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten()
@@ -25,13 +25,7 @@ class DefaultGetHealthCategoriesBanner
       // Get the total amount of fhir responses that are requested
       val totalAmountOfFhirResponses: Flow<Int> =
         organizationRepository.storedOrganizationsFlow.map { organizations ->
-          organizations
-            .flatMap { organization ->
-              categories.flatMap { category ->
-                getEndpointsForHealthCategory(category, organization)
-              }
-            }.distinctBy { endpoint -> endpoint.endpointPath to endpoint.resourceEndpoint }
-            .size
+          getEndpoints(organizations = organizations, categories = categories).size
         }
 
       // Return correct banner based on the fhir responses

@@ -35,6 +35,8 @@ class TestFhirRepository : FhirRepository {
     fetchAmount++
   }
 
+  fun getFetchAmount(): Int = fetchAmount
+
   fun resetFetchAmount() {
     fetchAmount = 0
   }

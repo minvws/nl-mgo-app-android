@@ -30,7 +30,7 @@ class DefaultGetHealthCategoriesBanner
               categories.flatMap { category ->
                 getEndpointsForHealthCategory(category, organization)
               }
-            }.distinctBy { endpoint -> endpoint.endpointPath to endpoint.dataServiceId }
+            }.distinctBy { endpoint -> endpoint.endpointPath to endpoint.resourceEndpoint }
             .size
         }
 

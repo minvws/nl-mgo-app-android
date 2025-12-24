@@ -14,7 +14,6 @@ class FetchEndpointTest {
   private val fetchEndpoint =
     FetchEndpoint(
       clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneOffset.UTC),
-      dvaApiBaseUrl = "",
       fhirRepository = fhirRepository,
     )
 

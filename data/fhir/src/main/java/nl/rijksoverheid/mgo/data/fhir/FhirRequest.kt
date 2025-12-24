@@ -10,7 +10,6 @@ data class FhirRequest(
   val endpointPath: String,
   val resourceEndpoint: String,
   val fhirVersion: FhirVersion,
-  val url: String,
 )
 
 val TEST_FHIR_REQUEST =
@@ -22,5 +21,4 @@ val TEST_FHIR_REQUEST =
     endpointPath = "",
     resourceEndpoint = "",
     fhirVersion = FhirVersion.R3,
-    url = "",
   )

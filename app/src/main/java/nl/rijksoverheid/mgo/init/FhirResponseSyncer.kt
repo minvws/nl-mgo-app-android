@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import nl.rijksoverheid.mgo.component.fhir.FetchEndpoint
-import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
@@ -12,9 +11,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.Endpoint
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import java.time.Clock
 import javax.inject.Inject
-import javax.inject.Named
 
 class FhirResponseSyncer
   @Inject
@@ -23,9 +20,6 @@ class FhirResponseSyncer
     private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     private val fhirRepository: FhirRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
-    @Named("systemUTC") private val clock: Clock,
-    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
-    private val getEndpoints: GetEndpoints,
     private val fetchEndpoint: FetchEndpoint,
   ) {
     @VisibleForTesting

@@ -81,7 +81,6 @@ class ListItemGroupMapperTest {
           endpointPath = "",
           resourceEndpoint = "",
           fhirVersion = FhirVersion.R3,
-          url = "",
         )
       val fhirResponses =
         listOf(

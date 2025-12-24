@@ -13,7 +13,6 @@ class FetchEndpoint
   @Inject
   constructor(
     @Named("systemUTC") private val clock: Clock,
-    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     private val fhirRepository: FhirRepository,
   ) {
     suspend operator fun invoke(
@@ -32,7 +31,6 @@ class FetchEndpoint
           endpointPath = endpointPath,
           resourceEndpoint = endpoint.resourceEndpoint,
           fhirVersion = endpoint.fhirVersion,
-          url = "$dvaApiBaseUrl/fhir$endpointPath",
         )
 
       fhirRepository.fetch(request = request, forceRefresh = forceRefresh)

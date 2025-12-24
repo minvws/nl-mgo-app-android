@@ -32,7 +32,6 @@ internal class HealthCategoriesScreenViewModel
   constructor(
     private val fhirRepository: FhirRepository,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
-    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     favoriteRepository: FavoriteHealthCategoriesRepository,
     organizationRepository: OrganizationRepository,
     getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
@@ -102,7 +101,6 @@ internal class HealthCategoriesScreenViewModel
             endpointPath = fhirResponse.request.endpointPath,
             resourceEndpoint = fhirResponse.request.resourceEndpoint,
             fhirVersion = fhirResponse.request.fhirVersion,
-            url = "$dvaApiBaseUrl/fhir${fhirResponse.request.endpointPath}",
           )
 
         fhirRepository.fetch(

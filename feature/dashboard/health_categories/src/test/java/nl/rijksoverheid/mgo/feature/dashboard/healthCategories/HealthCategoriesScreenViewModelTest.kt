@@ -42,13 +42,19 @@ internal class HealthCategoriesScreenViewModelTest {
   private val organizationRepository = OrganizationRepository(okHttpClient = okHttpClient, baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val keyValueStore = TestKeyValueStore()
-  private val mgoByteArrayStorage = MemoryMgoByteArrayStorage()
-  private val fhirRepository = DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoByteArrayStorage = mgoByteArrayStorage)
+  private lateinit var fhirRepository: DefaultFhirRepository
 
   @Before
   fun setup() =
     runTest {
       organizationRepository.save(TEST_MGO_ORGANIZATION)
+      fhirRepository =
+        DefaultFhirRepository(
+          context = context,
+          okHttpClient = OkHttpClient(),
+          mgoByteArrayStorage = MemoryMgoByteArrayStorage(),
+          dvaApiBaseUrl = testServerRule.testServer.url(),
+        )
     }
 
   @Test
@@ -74,7 +80,7 @@ internal class HealthCategoriesScreenViewModelTest {
     runTest {
       // Given: Fhir response failed
       testServerRule.testServer.enqueue500()
-      fhirRepository.fetch(TEST_FHIR_REQUEST.copy(url = testServerRule.testServer.url()), true)
+      fhirRepository.fetch(TEST_FHIR_REQUEST, true)
 
       // Given Next fhir response is success
       val alcoholUseJson = readResourceFile("alcoholUse.json")
@@ -97,7 +103,7 @@ internal class HealthCategoriesScreenViewModelTest {
       // Given: Fhir response success
       val alcoholUseJson = readResourceFile("alcoholUse.json")
       testServerRule.testServer.enqueueJson(alcoholUseJson)
-      fhirRepository.fetch(TEST_FHIR_REQUEST.copy(url = testServerRule.testServer.url()), true)
+      fhirRepository.fetch(TEST_FHIR_REQUEST, true)
 
       // Given Next fhir response is success
       testServerRule.testServer.enqueueJson(alcoholUseJson)
@@ -122,6 +128,5 @@ internal class HealthCategoriesScreenViewModelTest {
       ioDispatcher = mainDispatcherRule.testDispatcher,
       getHealthCategoriesBanner = TestDefaultGetHealthCategoriesBanner(),
       fhirRepository = fhirRepository,
-      dvaApiBaseUrl = testServerRule.testServer.url(),
     )
 }

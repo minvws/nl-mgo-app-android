@@ -50,7 +50,6 @@ class HealthCategoryScreenViewModelTest {
   private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = mgoStorage)
   private val createPdfForHealthCategories = TestCreatePdfForHealthCategories()
   private val okHttpClient = OkHttpClient.Builder().build()
-  private val fhirRepository = DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoByteArrayStorage = mgoStorage)
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val quickJsRepository = JvmQuickJsRepository(dispatcher = mainDispatcherRule.testDispatcher)
@@ -67,12 +66,15 @@ class HealthCategoryScreenViewModelTest {
       mgoByteArrayStorage = mgoStorage,
     )
   private val mgoResourceStore = MgoResourceStore()
+  private lateinit var fhirRepository: DefaultFhirRepository
 
   @Before
   fun setup() =
     runTest {
       quickJsRepository.create()
       organizationRepository.deleteAll()
+      fhirRepository =
+        DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoByteArrayStorage = mgoStorage, dvaApiBaseUrl = testServerRule.testServer.url())
     }
 
   private suspend fun enqueueEmptyBundles() {
@@ -141,7 +143,6 @@ class HealthCategoryScreenViewModelTest {
         endpointId = endpointId,
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
-        url = testServerRule.testServer.url().toStr(),
         endpointPath = "",
       )
     fhirRepository.fetch(
@@ -160,7 +161,6 @@ class HealthCategoryScreenViewModelTest {
         endpointId = endpointId,
         resourceEndpoint = "",
         fhirVersion = FhirVersion.R3,
-        url = testServerRule.testServer.url().toStr(),
         endpointPath = "",
       )
     fhirRepository.fetch(

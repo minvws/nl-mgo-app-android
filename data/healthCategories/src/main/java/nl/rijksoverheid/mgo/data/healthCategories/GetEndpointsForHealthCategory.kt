@@ -28,6 +28,7 @@ class GetEndpointsForHealthCategory
               endpointPath = dataSetEndpoint.path,
               resourceEndpoint = dataService.resourceEndpoint,
               fhirVersion = dataSet.fhirVersion,
+              organization = organization,
             )
           }
         }.flatten()

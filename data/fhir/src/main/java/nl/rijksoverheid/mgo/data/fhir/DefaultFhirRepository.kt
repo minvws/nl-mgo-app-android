@@ -29,6 +29,7 @@ class DefaultFhirRepository
     @ApplicationContext private val context: Context,
     private val okHttpClient: OkHttpClient,
     @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
+    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
   ) : FhirRepository {
     private val json = Json.Default
     private val cachedFhirResponses = MutableStateFlow<List<FhirResponse>>(listOf())
@@ -69,7 +70,7 @@ class DefaultFhirRepository
       val httpRequest =
         Request
           .Builder()
-          .url(request.url)
+          .url("$dvaApiBaseUrl/fhir${request.endpointPath}")
           .get()
           .addHeader("X-MGO-HEALTHCARE-PROVIDER-ID", request.medmijId ?: "none")
           .addHeader("X-MGO-DATASERVICE-ID", request.dataServiceId)

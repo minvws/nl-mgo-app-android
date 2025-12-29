@@ -3,17 +3,15 @@ package nl.rijksoverheid.mgo.init
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
+import nl.rijksoverheid.mgo.component.fhir.FetchEndpoint
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
-import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
+import nl.rijksoverheid.mgo.data.healthCategories.models.Endpoint
+import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import java.time.Clock
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
-import javax.inject.Named
 
 class FhirResponseSyncer
   @Inject
@@ -22,8 +20,7 @@ class FhirResponseSyncer
     private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     private val fhirRepository: FhirRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
-    @Named("systemUTC") private val clock: Clock,
-    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
+    private val fetchEndpoint: FetchEndpoint,
   ) {
     @VisibleForTesting
     var firstSync: Boolean = true
@@ -39,53 +36,25 @@ class FhirResponseSyncer
           fhirRepository.delete(organization.id)
         }
 
-        // Fetch fhir data for added organizations
-        for (organization in organizations) {
-          organization.fetchFhirResponses()
+        val categories = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten()
+        val endpoints = getEndpoints(organizations = organizations, categories = categories)
+        for (endpoint in endpoints) {
+          fetchEndpoint(endpoint = endpoint, forceRefresh = firstSync)
         }
+
         previousStoredOrganizations = organizations
         firstSync = false
       }
 
-    private suspend fun MgoOrganization.fetchFhirResponses() {
-      val categories =
-        getHealthCategoriesFromDisk
-          .invoke()
-          .flatMap { it.categories }
-
-      val seenPaths = mutableSetOf<String>()
-
-      for (category in categories) {
-        val endpoints =
-          getEndpointsForHealthCategory(
-            category = category,
-            organization = this,
-          )
-
-        // Do not do same request twice
-        val uniqueEndpoints =
-          endpoints.filter { endpoint ->
-            seenPaths.add(endpoint.dataServiceId + endpoint.endpointPath)
+    private fun getEndpoints(
+      organizations: List<MgoOrganization>,
+      categories: List<HealthCategoryGroup.HealthCategory>,
+    ): List<Endpoint> =
+      organizations
+        .flatMap { organization ->
+          categories.map { category ->
+            getEndpointsForHealthCategory(category, organization)
           }
-
-        for (endpoint in uniqueEndpoints) {
-          val today = LocalDate.now(clock)
-          val endpointPath = endpoint.endpointPath.replace("{{today}}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
-
-          val request =
-            FhirRequest(
-              organizationId = id,
-              medmijId = medMijId,
-              dataServiceId = endpoint.dataServiceId,
-              endpointId = endpoint.endpointId,
-              endpointPath = endpointPath,
-              resourceEndpoint = endpoint.resourceEndpoint,
-              fhirVersion = endpoint.fhirVersion,
-              url = "$dvaApiBaseUrl/fhir$endpointPath",
-            )
-
-          fhirRepository.fetch(request = request, forceRefresh = firstSync)
-        }
-      }
-    }
+        }.flatten()
+        .distinctBy { endpoint -> endpoint.endpointPath to endpoint.resourceEndpoint }
   }

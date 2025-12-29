@@ -15,6 +15,7 @@ import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +30,13 @@ class DefaultFhirRepositoryTest {
   private val okHttpClient = OkHttpClient.Builder().build()
   private val testServer = testServerRule.testServer
   private val fileStorage = MemoryMgoByteArrayStorage()
-  private val repository = DefaultFhirRepository(okHttpClient = okHttpClient, mgoByteArrayStorage = fileStorage, context = context)
+  private lateinit var repository: DefaultFhirRepository
+
+  @Before
+  fun setup() {
+    repository =
+      DefaultFhirRepository(okHttpClient = okHttpClient, mgoByteArrayStorage = fileStorage, context = context, dvaApiBaseUrl = testServerRule.testServer.url())
+  }
 
   @Test
   fun testHeaders() =
@@ -47,7 +54,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "alcoholUse",
           resourceEndpoint = "https://www.google.com",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(
@@ -79,7 +85,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "alcoholUse",
           resourceEndpoint = "https://www.google.com",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(
@@ -122,7 +127,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "alcoholUse",
           resourceEndpoint = "https://www.google.com",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(
@@ -162,7 +166,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "emptyBundle",
           resourceEndpoint = "",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(
@@ -201,7 +204,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "1",
           resourceEndpoint = "",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(
@@ -232,7 +234,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "1",
           resourceEndpoint = "",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(
@@ -253,7 +254,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "1",
           resourceEndpoint = "",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(
@@ -281,7 +281,6 @@ class DefaultFhirRepositoryTest {
           endpointId = "1",
           resourceEndpoint = "",
           fhirVersion = FhirVersion.R3,
-          url = testServer.url(),
           endpointPath = "",
         )
       repository.fetch(

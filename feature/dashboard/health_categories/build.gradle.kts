@@ -13,6 +13,7 @@ dependencies {
   implementation(projects.data.fhir)
   implementation(projects.component.healthCategories)
   implementation(projects.component.organization)
+  implementation(projects.component.fhir)
   testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.healthCategories))

@@ -144,7 +144,6 @@ internal class HealthCategoryScreenViewModel
                 endpointPath = endpoint.endpointPath,
                 resourceEndpoint = endpoint.resourceEndpoint,
                 fhirVersion = endpoint.fhirVersion,
-                url = "$dvaApiBaseUrl/fhir${endpoint.endpointPath}",
               )
 
             fhirRepository.fetch(

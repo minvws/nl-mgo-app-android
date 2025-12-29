@@ -4,6 +4,7 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import okhttp3.mockwebserver.SocketPolicy
 
 typealias TestServerBody = String
 
@@ -71,6 +72,13 @@ class TestServer {
    */
   fun enqueueJson(json: TestServerBody) {
     server?.enqueue(MockResponse().setBody(json))
+  }
+
+  /**
+   * Enqueues an error that results in a IOException being thrown when doing the request with OkHttp
+   */
+  fun enqueueIoException() {
+    server?.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
   }
 
   /**

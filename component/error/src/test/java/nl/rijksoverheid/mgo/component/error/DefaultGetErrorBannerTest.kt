@@ -11,7 +11,6 @@ import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
@@ -32,7 +31,6 @@ class DefaultGetErrorBannerTest {
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
-  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
   private val getEndpoints: GetEndpoints = GetEndpoints(getEndpointsForHealthCategory = getEndpointsForHealthCategory)
   private val request = TEST_FHIR_REQUEST.copy(organizationId = TEST_MGO_ORGANIZATION.id, dataServiceId = TEST_MGO_ORGANIZATION.dataServices.first().id)
 
@@ -51,7 +49,6 @@ class DefaultGetErrorBannerTest {
 
     getHealthCategoriesBanner =
       DefaultGetErrorBanner(
-        organizationRepository = organizationRepository,
         getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
         getEndpoints = getEndpoints,
         fhirRepository = fhirRepository,
@@ -61,8 +58,11 @@ class DefaultGetErrorBannerTest {
   @Test
   fun testUserErrorBanner() =
     runTest {
-      // Given: Organization is stored
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      // Given: Organization
+      val organizations = listOf(TEST_MGO_ORGANIZATION)
+
+      // Given: Categories
+      val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests fail because of user error
       val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
@@ -73,7 +73,7 @@ class DefaultGetErrorBannerTest {
       }
 
       // When: Observing the banner
-      getHealthCategoriesBanner.invoke().test {
+      getHealthCategoriesBanner.invoke(categories = categories, organizations = organizations).test {
         // Then: Banner is emitted
         assertEquals(
           ErrorBannerState.Error.UserError(false),
@@ -85,8 +85,11 @@ class DefaultGetErrorBannerTest {
   @Test
   fun testUserErrorPartialBanner() =
     runTest {
-      // Given: Organization is stored
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      // Given: Organization
+      val organizations = listOf(TEST_MGO_ORGANIZATION)
+
+      // Given: Categories
+      val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests except the first one fail because of user error
       val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
@@ -100,7 +103,7 @@ class DefaultGetErrorBannerTest {
       fhirRepository.fetch(request = request, forceRefresh = true)
 
       // When: Observing the banner
-      getHealthCategoriesBanner.invoke().test {
+      getHealthCategoriesBanner.invoke(categories = categories, organizations = organizations).test {
         // Then: Banner is emitted
         assertEquals(
           ErrorBannerState.Error.UserError(true),
@@ -112,8 +115,11 @@ class DefaultGetErrorBannerTest {
   @Test
   fun testServerErrorBanner() =
     runTest {
-      // Given: Organization is stored
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      // Given: Organization
+      val organizations = listOf(TEST_MGO_ORGANIZATION)
+
+      // Given: Categories
+      val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests fail because of server error
       val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
@@ -124,7 +130,7 @@ class DefaultGetErrorBannerTest {
       }
 
       // When: Observing the banner
-      getHealthCategoriesBanner.invoke().test {
+      getHealthCategoriesBanner.invoke(organizations = organizations, categories = categories).test {
         // Then: Banner is emitted
         assertEquals(
           ErrorBannerState.Error.ServerError(false),
@@ -136,8 +142,11 @@ class DefaultGetErrorBannerTest {
   @Test
   fun testServerErrorPartialBanner() =
     runTest {
-      // Given: Organization is stored
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      // Given: Organization
+      val organizations = listOf(TEST_MGO_ORGANIZATION)
+
+      // Given: Categories
+      val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests except the first one fail because of server error
       val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
@@ -151,7 +160,7 @@ class DefaultGetErrorBannerTest {
       fhirRepository.fetch(request = request, forceRefresh = true)
 
       // When: Observing the banner
-      getHealthCategoriesBanner.invoke().test {
+      getHealthCategoriesBanner.invoke(organizations = organizations, categories = categories).test {
         // Then: Banner is emitted
         assertEquals(
           ErrorBannerState.Error.ServerError(true),
@@ -163,8 +172,11 @@ class DefaultGetErrorBannerTest {
   @Test
   fun testLoadedBanner() =
     runTest {
-      // Given: Organization is stored
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      // Given: Organization
+      val organizations = listOf(TEST_MGO_ORGANIZATION)
+
+      // Given: Categories
+      val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests success
       val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
@@ -175,7 +187,7 @@ class DefaultGetErrorBannerTest {
       }
 
       // When: Observing the banner
-      getHealthCategoriesBanner.invoke().test {
+      getHealthCategoriesBanner.invoke(organizations = organizations, categories = categories).test {
         // Then: Banner is emitted
         assertNull(awaitItem())
       }

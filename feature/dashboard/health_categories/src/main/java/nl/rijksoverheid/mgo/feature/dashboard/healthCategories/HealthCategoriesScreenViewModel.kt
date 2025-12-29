@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -48,12 +50,19 @@ internal class HealthCategoriesScreenViewModel
         groups = groups.filterFavorites(initialFavorites),
       )
     private val _viewState = MutableStateFlow(initialViewState)
+    private val errorBannerFlow =
+      organizationRepository.storedOrganizationsFlow.flatMapLatest { organizations ->
+        getErrorBanner(
+          organizations = organizations,
+          categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten(),
+        )
+      }
     val viewState =
       combine(
         _viewState,
         organizationRepository.storedOrganizationsFlow,
         favoriteRepository.observe(),
-        getErrorBanner.invoke(),
+        errorBannerFlow,
       ) { viewState, providers, favorites, banner ->
         HealthCategoriesScreenViewState(
           name = viewState.name,

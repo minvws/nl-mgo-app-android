@@ -21,4 +21,6 @@ dependencies {
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.framework.storage))
   testFixturesImplementation(libs.compose.runtime)
+  testFixturesImplementation(projects.data.healthCategories)
+  testFixturesImplementation(projects.component.organization)
 }

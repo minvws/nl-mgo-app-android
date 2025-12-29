@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.error.TestGetErrorBanner
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
@@ -340,5 +341,6 @@ class HealthCategoryScreenViewModelTest {
     getEndpointsForHealthCategory = getEndpointsForHealthCategory,
     listItemGroupMapper = listItemGroupMapper,
     mgoResourceStore = mgoResourceStore,
+    getErrorBanner = TestGetErrorBanner(),
   )
 }

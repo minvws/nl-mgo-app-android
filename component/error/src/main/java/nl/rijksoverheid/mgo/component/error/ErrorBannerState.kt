@@ -1,11 +1,11 @@
 package nl.rijksoverheid.mgo.component.error
 
-sealed class HealthCategoriesBannerState {
-  data object Loading : HealthCategoriesBannerState()
+sealed class ErrorBannerState {
+  data object Loading : ErrorBannerState()
 
   sealed class Error(
     open val partial: Boolean,
-  ) : HealthCategoriesBannerState() {
+  ) : ErrorBannerState() {
     data class UserError(
       override val partial: Boolean,
     ) : Error(partial)

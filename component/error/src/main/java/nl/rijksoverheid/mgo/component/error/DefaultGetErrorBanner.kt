@@ -12,15 +12,15 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import javax.inject.Inject
 
-class DefaultGetHealthCategoriesBanner
+class DefaultGetErrorBanner
   @Inject
   constructor(
     private val organizationRepository: OrganizationRepository,
     private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     private val fhirRepository: FhirRepository,
     private val getEndpoints: GetEndpoints,
-  ) : GetHealthCategoriesBanner {
-    override operator fun invoke(): Flow<HealthCategoriesBannerState?> {
+  ) : GetErrorBanner {
+    override operator fun invoke(): Flow<ErrorBannerState?> {
       val categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten()
 
       // All the endpoints that are requested
@@ -50,10 +50,10 @@ class DefaultGetHealthCategoriesBanner
         val hasSuccessResponse = responses.any { it is FhirResponse.Success }
         when {
           responses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.USER } ->
-            HealthCategoriesBannerState.Error.UserError(hasSuccessResponse)
+            ErrorBannerState.Error.UserError(hasSuccessResponse)
 
           responses.any { it is FhirResponse.Error && it.type == FhirResponseErrorType.SERVER } ->
-            HealthCategoriesBannerState.Error.ServerError(hasSuccessResponse)
+            ErrorBannerState.Error.ServerError(hasSuccessResponse)
 
           else -> null
         }

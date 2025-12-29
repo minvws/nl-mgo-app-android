@@ -4,42 +4,42 @@ import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule
 import org.junit.Test
 
-internal class HealthCategoriesBannerSnapshotTest {
+internal class ErrorBannerSnapshotTest {
   @get:Rule
   val snapshotTestRule = SnapshotTestRule()
 
   @Test
   fun loading() {
     snapshotTestRule.snapshots {
-      HealthCategoriesBannerLoadingPreview()
+      ErrorBannerLoadingPreview()
     }
   }
 
   @Test
   fun userError() {
     snapshotTestRule.snapshots {
-      HealthCategoriesBannerUserErrorPreview()
+      ErrorBannerUserErrorPreview()
     }
   }
 
   @Test
   fun userErrorPartial() {
     snapshotTestRule.snapshots {
-      HealthCategoriesBannerUserErrorPartialPreview()
+      ErrorBannerUserErrorPartialPreview()
     }
   }
 
   @Test
   fun serverError() {
     snapshotTestRule.snapshots {
-      HealthCategoriesBannerServerErrorPreview()
+      ErrorBannerServerErrorPreview()
     }
   }
 
   @Test
   fun serverErrorPartial() {
     snapshotTestRule.snapshots {
-      HealthCategoriesBannerServerErrorPartialPreview()
+      ErrorBannerServerErrorPartialPreview()
     }
   }
 }

@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
-import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerState
+import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
@@ -10,7 +10,7 @@ data class HealthCategoriesScreenViewState(
   val favorites: List<HealthCategoryGroup.HealthCategory>,
   val groups: List<HealthCategoryGroup>,
   val automaticLocalisationEnabled: Boolean,
-  val banner: HealthCategoriesBannerState?,
+  val banner: ErrorBannerState?,
 ) {
   companion object {
     fun initialState(
@@ -24,7 +24,7 @@ data class HealthCategoriesScreenViewState(
       automaticLocalisationEnabled = automaticLocalisationEnabled,
       favorites = favorites,
       groups = groups,
-      banner = HealthCategoriesBannerState.Loading,
+      banner = ErrorBannerState.Loading,
     )
   }
 }

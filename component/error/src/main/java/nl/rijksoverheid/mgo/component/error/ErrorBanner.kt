@@ -30,7 +30,7 @@ import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun HealthCategoriesBannerLoading(modifier: Modifier = Modifier) {
+fun ErrorBannerLoading(modifier: Modifier = Modifier) {
   MgoCard(modifier = modifier) {
     Column(
       modifier =
@@ -59,8 +59,8 @@ fun HealthCategoriesBannerLoading(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun HealthCategoriesBannerError(
-  state: HealthCategoriesBannerState.Error,
+fun ErrorBanner(
+  state: ErrorBannerState.Error,
   onClickRetry: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -86,8 +86,8 @@ fun HealthCategoriesBannerError(
 
           val subheadingText =
             when (state) {
-              is HealthCategoriesBannerState.Error.ServerError -> CopyR.string.errorstate_serverside_heading
-              is HealthCategoriesBannerState.Error.UserError -> CopyR.string.errorstate_clientside_heading
+              is ErrorBannerState.Error.ServerError -> CopyR.string.errorstate_serverside_heading
+              is ErrorBannerState.Error.UserError -> CopyR.string.errorstate_clientside_heading
             }
 
           Text(
@@ -114,40 +114,40 @@ fun HealthCategoriesBannerError(
 
 @Composable
 @DefaultPreviews
-internal fun HealthCategoriesBannerLoadingPreview() {
+internal fun ErrorBannerLoadingPreview() {
   MgoTheme {
-    HealthCategoriesBannerLoading()
+    ErrorBannerLoading()
   }
 }
 
 @Composable
 @DefaultPreviews
-internal fun HealthCategoriesBannerUserErrorPreview() {
+internal fun ErrorBannerUserErrorPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.UserError(false), onClickRetry = { })
+    ErrorBanner(ErrorBannerState.Error.UserError(false), onClickRetry = { })
   }
 }
 
 @Composable
 @DefaultPreviews
-internal fun HealthCategoriesBannerUserErrorPartialPreview() {
+internal fun ErrorBannerUserErrorPartialPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.UserError(true), onClickRetry = {})
+    ErrorBanner(ErrorBannerState.Error.UserError(true), onClickRetry = {})
   }
 }
 
 @Composable
 @DefaultPreviews
-internal fun HealthCategoriesBannerServerErrorPreview() {
+internal fun ErrorBannerServerErrorPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.ServerError(false), onClickRetry = {})
+    ErrorBanner(ErrorBannerState.Error.ServerError(false), onClickRetry = {})
   }
 }
 
 @Composable
 @DefaultPreviews
-internal fun HealthCategoriesBannerServerErrorPartialPreview() {
+internal fun ErrorBannerServerErrorPartialPreview() {
   MgoTheme {
-    HealthCategoriesBannerError(HealthCategoriesBannerState.Error.ServerError(true), onClickRetry = {})
+    ErrorBanner(ErrorBannerState.Error.ServerError(true), onClickRetry = {})
   }
 }

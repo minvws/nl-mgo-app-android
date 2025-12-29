@@ -37,9 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerError
-import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerLoading
-import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerState
+import nl.rijksoverheid.mgo.component.error.ErrorBanner
+import nl.rijksoverheid.mgo.component.error.ErrorBannerLoading
+import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
@@ -235,34 +235,34 @@ private fun LazyListScope.WithProviders(
   organization: MgoOrganization? = null,
   groups: List<HealthCategoryGroup>,
   favorites: List<HealthCategoryGroup.HealthCategory>,
-  banner: HealthCategoriesBannerState?,
+  banner: ErrorBannerState?,
   onRetry: () -> Unit,
 ) {
   if (organization == null) {
     item(key = banner.hashCode()) {
       when (banner) {
         null -> {}
-        HealthCategoriesBannerState.Loading ->
-          HealthCategoriesBannerLoading(
+        ErrorBannerState.Loading ->
+          ErrorBannerLoading(
             modifier =
               Modifier
                 .padding(
                   bottom = 32.dp,
                 ).animateItem(),
           )
-        is HealthCategoriesBannerState.Error.ServerError ->
-          HealthCategoriesBannerError(
+        is ErrorBannerState.Error.ServerError ->
+          ErrorBanner(
             modifier = Modifier.padding(bottom = 32.dp).animateItem(),
             state =
-              HealthCategoriesBannerState.Error
+              ErrorBannerState.Error
                 .ServerError(banner.partial),
             onClickRetry = onRetry,
           )
-        is HealthCategoriesBannerState.Error.UserError ->
-          HealthCategoriesBannerError(
+        is ErrorBannerState.Error.UserError ->
+          ErrorBanner(
             modifier = Modifier.padding(bottom = 32.dp).animateItem(),
             state =
-              HealthCategoriesBannerState.Error
+              ErrorBannerState.Error
                 .UserError(banner.partial),
             onClickRetry = onRetry,
           )

@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class DefaultGetHealthCategoriesBannerTest {
+class DefaultGetErrorBannerTest {
   @get:Rule
   val testServerRule = TestServerRule()
 
@@ -37,7 +37,7 @@ class DefaultGetHealthCategoriesBannerTest {
   private val request = TEST_FHIR_REQUEST.copy(organizationId = TEST_MGO_ORGANIZATION.id, dataServiceId = TEST_MGO_ORGANIZATION.dataServices.first().id)
 
   private lateinit var fhirRepository: DefaultFhirRepository
-  private lateinit var getHealthCategoriesBanner: DefaultGetHealthCategoriesBanner
+  private lateinit var getHealthCategoriesBanner: DefaultGetErrorBanner
 
   @Before
   fun setup() {
@@ -50,7 +50,7 @@ class DefaultGetHealthCategoriesBannerTest {
       )
 
     getHealthCategoriesBanner =
-      DefaultGetHealthCategoriesBanner(
+      DefaultGetErrorBanner(
         organizationRepository = organizationRepository,
         getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
         getEndpoints = getEndpoints,
@@ -76,7 +76,7 @@ class DefaultGetHealthCategoriesBannerTest {
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
         assertEquals(
-          HealthCategoriesBannerState.Error.UserError(false),
+          ErrorBannerState.Error.UserError(false),
           awaitItem(),
         )
       }
@@ -103,7 +103,7 @@ class DefaultGetHealthCategoriesBannerTest {
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
         assertEquals(
-          HealthCategoriesBannerState.Error.UserError(true),
+          ErrorBannerState.Error.UserError(true),
           awaitItem(),
         )
       }
@@ -127,7 +127,7 @@ class DefaultGetHealthCategoriesBannerTest {
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
         assertEquals(
-          HealthCategoriesBannerState.Error.ServerError(false),
+          ErrorBannerState.Error.ServerError(false),
           awaitItem(),
         )
       }
@@ -154,7 +154,7 @@ class DefaultGetHealthCategoriesBannerTest {
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
         assertEquals(
-          HealthCategoriesBannerState.Error.ServerError(true),
+          ErrorBannerState.Error.ServerError(true),
           awaitItem(),
         )
       }

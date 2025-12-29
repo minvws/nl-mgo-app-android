@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.mgo.component.error.GetHealthCategoriesBanner
+import nl.rijksoverheid.mgo.component.error.GetErrorBanner
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
@@ -35,7 +35,7 @@ internal class HealthCategoriesScreenViewModel
     favoriteRepository: FavoriteHealthCategoriesRepository,
     organizationRepository: OrganizationRepository,
     getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
-    getHealthCategoriesBanner: GetHealthCategoriesBanner,
+    getErrorBanner: GetErrorBanner,
     @Named("keyValueStore") keyValueStore: KeyValueStore,
   ) : ViewModel() {
     private val groups = getHealthCategoriesFromDisk()
@@ -53,7 +53,7 @@ internal class HealthCategoriesScreenViewModel
         _viewState,
         organizationRepository.storedOrganizationsFlow,
         favoriteRepository.observe(),
-        getHealthCategoriesBanner.invoke(),
+        getErrorBanner.invoke(),
       ) { viewState, providers, favorites, banner ->
         HealthCategoriesScreenViewState(
           name = viewState.name,

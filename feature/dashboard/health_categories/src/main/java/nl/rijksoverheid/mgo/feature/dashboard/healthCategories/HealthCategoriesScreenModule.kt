@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nl.rijksoverheid.mgo.component.error.DefaultGetHealthCategoriesBanner
-import nl.rijksoverheid.mgo.component.error.GetHealthCategoriesBanner
+import nl.rijksoverheid.mgo.component.error.DefaultGetErrorBanner
+import nl.rijksoverheid.mgo.component.error.GetErrorBanner
 import javax.inject.Singleton
 
 @Module
@@ -13,7 +13,5 @@ import javax.inject.Singleton
 internal abstract class HealthCategoriesScreenModule {
   @Binds
   @Singleton
-  abstract fun bindGetHealthCategoriesBanner(
-    default: nl.rijksoverheid.mgo.component.error.DefaultGetHealthCategoriesBanner,
-  ): nl.rijksoverheid.mgo.component.error.GetHealthCategoriesBanner
+  abstract fun bindGetErrorBanner(default: DefaultGetErrorBanner): GetErrorBanner
 }

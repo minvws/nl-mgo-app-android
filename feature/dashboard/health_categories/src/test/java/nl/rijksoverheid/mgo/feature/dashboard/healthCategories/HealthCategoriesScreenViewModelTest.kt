@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.component.error.TestDefaultGetHealthCategoriesBanner
+import nl.rijksoverheid.mgo.component.error.TestDefaultGetErrorBanner
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST
@@ -126,7 +126,7 @@ internal class HealthCategoriesScreenViewModelTest {
       getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
       keyValueStore = keyValueStore,
       ioDispatcher = mainDispatcherRule.testDispatcher,
-      getHealthCategoriesBanner = TestDefaultGetHealthCategoriesBanner(),
+      getErrorBanner = TestDefaultGetErrorBanner(),
       fhirRepository = fhirRepository,
     )
 }

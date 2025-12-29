@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
+package nl.rijksoverheid.mgo.component.error
 
 import nl.rijksoverheid.mgo.framework.snapshots.SnapshotTestRule
 import org.junit.Rule

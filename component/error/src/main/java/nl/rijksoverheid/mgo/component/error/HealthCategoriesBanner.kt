@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
+package nl.rijksoverheid.mgo.component.error
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,11 +27,10 @@ import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-internal fun HealthCategoriesBannerLoading(modifier: Modifier = Modifier) {
+fun HealthCategoriesBannerLoading(modifier: Modifier = Modifier) {
   MgoCard(modifier = modifier) {
     Column(
       modifier =
@@ -60,7 +59,7 @@ internal fun HealthCategoriesBannerLoading(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun HealthCategoriesBannerError(
+fun HealthCategoriesBannerError(
   state: HealthCategoriesBannerState.Error,
   onClickRetry: () -> Unit,
   modifier: Modifier = Modifier,

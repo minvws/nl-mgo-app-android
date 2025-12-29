@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
+package nl.rijksoverheid.mgo.component.error
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -75,7 +75,10 @@ class DefaultGetHealthCategoriesBannerTest {
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBannerState.Error.UserError(false), awaitItem())
+        assertEquals(
+          HealthCategoriesBannerState.Error.UserError(false),
+          awaitItem(),
+        )
       }
     }
 
@@ -99,7 +102,10 @@ class DefaultGetHealthCategoriesBannerTest {
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBannerState.Error.UserError(true), awaitItem())
+        assertEquals(
+          HealthCategoriesBannerState.Error.UserError(true),
+          awaitItem(),
+        )
       }
     }
 
@@ -120,7 +126,10 @@ class DefaultGetHealthCategoriesBannerTest {
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBannerState.Error.ServerError(false), awaitItem())
+        assertEquals(
+          HealthCategoriesBannerState.Error.ServerError(false),
+          awaitItem(),
+        )
       }
     }
 
@@ -144,7 +153,10 @@ class DefaultGetHealthCategoriesBannerTest {
       // When: Observing the banner
       getHealthCategoriesBanner.invoke().test {
         // Then: Banner is emitted
-        assertEquals(HealthCategoriesBannerState.Error.ServerError(true), awaitItem())
+        assertEquals(
+          HealthCategoriesBannerState.Error.ServerError(true),
+          awaitItem(),
+        )
       }
     }
 

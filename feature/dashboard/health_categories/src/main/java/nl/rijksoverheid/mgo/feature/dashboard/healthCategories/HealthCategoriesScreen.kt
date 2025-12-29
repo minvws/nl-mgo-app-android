@@ -37,6 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerError
+import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerLoading
+import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
@@ -53,9 +56,6 @@ import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerError
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerLoading
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesNoFavoriteCard
@@ -242,17 +242,28 @@ private fun LazyListScope.WithProviders(
     item(key = banner.hashCode()) {
       when (banner) {
         null -> {}
-        HealthCategoriesBannerState.Loading -> HealthCategoriesBannerLoading(modifier = Modifier.padding(bottom = 32.dp).animateItem())
+        HealthCategoriesBannerState.Loading ->
+          HealthCategoriesBannerLoading(
+            modifier =
+              Modifier
+                .padding(
+                  bottom = 32.dp,
+                ).animateItem(),
+          )
         is HealthCategoriesBannerState.Error.ServerError ->
           HealthCategoriesBannerError(
             modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-            state = HealthCategoriesBannerState.Error.ServerError(banner.partial),
+            state =
+              HealthCategoriesBannerState.Error
+                .ServerError(banner.partial),
             onClickRetry = onRetry,
           )
         is HealthCategoriesBannerState.Error.UserError ->
           HealthCategoriesBannerError(
             modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-            state = HealthCategoriesBannerState.Error.UserError(banner.partial),
+            state =
+              HealthCategoriesBannerState.Error
+                .UserError(banner.partial),
             onClickRetry = onRetry,
           )
       }

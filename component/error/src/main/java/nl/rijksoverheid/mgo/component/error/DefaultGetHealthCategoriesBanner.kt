@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
+package nl.rijksoverheid.mgo.component.error
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

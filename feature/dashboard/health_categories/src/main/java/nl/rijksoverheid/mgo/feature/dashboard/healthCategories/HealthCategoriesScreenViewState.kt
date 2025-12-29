@@ -1,8 +1,8 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
+import nl.rijksoverheid.mgo.component.error.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 
 data class HealthCategoriesScreenViewState(
   val name: String,

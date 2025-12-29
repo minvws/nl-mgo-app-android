@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner
+package nl.rijksoverheid.mgo.component.error
 
 sealed class HealthCategoriesBannerState {
   data object Loading : HealthCategoriesBannerState()

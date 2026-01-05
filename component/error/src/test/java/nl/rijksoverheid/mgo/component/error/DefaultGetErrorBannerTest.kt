@@ -49,7 +49,6 @@ class DefaultGetErrorBannerTest {
 
     getHealthCategoriesBanner =
       DefaultGetErrorBanner(
-        getHealthCategoriesFromDisk = getHealthCategoriesFromDisk,
         getEndpoints = getEndpoints,
         fhirRepository = fhirRepository,
       )

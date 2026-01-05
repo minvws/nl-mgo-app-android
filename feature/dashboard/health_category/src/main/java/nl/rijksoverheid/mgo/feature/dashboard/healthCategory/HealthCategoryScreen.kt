@@ -39,13 +39,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import nl.rijksoverheid.mgo.component.error.ErrorBanner
+import nl.rijksoverheid.mgo.component.error.ErrorBannerLoading
+import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
-import nl.rijksoverheid.mgo.component.mgo.banner.MgoBanner
-import nl.rijksoverheid.mgo.component.mgo.banner.MgoBannerType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
@@ -177,7 +178,7 @@ private fun HealthCategoryScreenContent(
               item {
                 NoDataContent(
                   canScroll = canScroll,
-                  showErrorBanner = showErrorBanner,
+                  banner = viewState.banner,
                   onRetryClick = onRetry,
                   onDismissErrorBanner = { showErrorBanner = false },
                 )
@@ -188,7 +189,7 @@ private fun HealthCategoryScreenContent(
               LoadedContent(
                 listItemsGroup = viewState.listItemsState.listItemsGroup,
                 onClickListItem = onClickListItem,
-                showErrorBanner = showErrorBanner,
+                banner = viewState.banner,
                 onRetryClick = onRetry,
                 onDismissErrorBanner = { showErrorBanner = false },
               )
@@ -224,24 +225,37 @@ private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
 private fun LazyListScope.LoadedContent(
   listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
   onClickListItem: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
-  showErrorBanner: Boolean,
+  banner: ErrorBannerState?,
   onRetryClick: () -> Unit,
   onDismissErrorBanner: () -> Unit,
 ) {
-  if (showErrorBanner) {
-    item {
-      MgoBanner(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        type = MgoBannerType.WARNING,
-        heading = stringResource(id = CopyR.string.common_error_heading),
-        subHeading = stringResource(id = CopyR.string.common_error_subheading),
-        buttonText = stringResource(id = CopyR.string.common_try_again),
-        onButtonClick = onRetryClick,
-        onDismiss = onDismissErrorBanner,
-      )
+  item(key = banner.hashCode()) {
+    when (banner) {
+      ErrorBannerState.Loading -> {
+        ErrorBannerLoading(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+        )
+      }
+      is ErrorBannerState.Error.ServerError -> {
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state =
+            ErrorBannerState.Error
+              .ServerError(banner.partial),
+          onClickRetry = onRetryClick,
+        )
+      }
+      is ErrorBannerState.Error.UserError -> {
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state =
+            ErrorBannerState.Error
+              .ServerError(banner.partial),
+          onClickRetry = onRetryClick,
+        )
+      }
+      null -> {
+      }
     }
   }
 
@@ -272,25 +286,36 @@ private fun LazyListScope.LoadedContent(
 @Composable
 private fun LazyItemScope.NoDataContent(
   canScroll: Boolean,
-  showErrorBanner: Boolean,
+  banner: ErrorBannerState?,
   onRetryClick: () -> Unit,
   onDismissErrorBanner: () -> Unit,
 ) {
   Column(
     modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
   ) {
-    if (showErrorBanner) {
-      MgoBanner(
-        modifier =
-          Modifier
-            .fillMaxWidth(),
-        type = MgoBannerType.WARNING,
-        heading = stringResource(id = CopyR.string.common_error_heading),
-        subHeading = stringResource(id = CopyR.string.common_error_subheading),
-        buttonText = stringResource(id = CopyR.string.common_try_again),
-        onButtonClick = onRetryClick,
-        onDismiss = onDismissErrorBanner,
-      )
+    when (banner) {
+      ErrorBannerState.Loading -> {
+        ErrorBannerLoading(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+        )
+      }
+      is ErrorBannerState.Error.ServerError -> {
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state = ErrorBannerState.Error.ServerError(banner.partial),
+          onClickRetry = onRetryClick,
+        )
+      }
+      is ErrorBannerState.Error.UserError -> {
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state =
+            ErrorBannerState.Error
+              .UserError(banner.partial),
+          onClickRetry = onRetryClick,
+        )
+      }
+      null -> {}
     }
 
     Column(

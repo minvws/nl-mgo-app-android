@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -52,6 +51,7 @@ import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -177,8 +177,6 @@ private fun HealthCategoryScreenContent(
               item {
                 NoDataContent(
                   canScroll = canScroll,
-                  banner = viewState.banner,
-                  onRetryClick = onRetry,
                 )
               }
             }
@@ -206,12 +204,16 @@ private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
   ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
       CircularProgressIndicator(
-        modifier = Modifier.size(48.dp),
-        strokeWidth = 6.dp,
+        modifier =
+          Modifier
+            .size(40.dp),
+        strokeWidth = 4.dp,
+        trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
+        color = MaterialTheme.colorScheme.CategoriesRijkslint(),
       )
       Text(
-        modifier = Modifier.padding(top = 20.dp),
-        text = stringResource(id = CopyR.string.common_loading),
+        modifier = Modifier.padding(top = 16.dp),
+        text = stringResource(id = CopyR.string.errorstate_loading),
         style = MaterialTheme.typography.bodyMedium,
       )
     }
@@ -280,75 +282,38 @@ private fun LazyListScope.LoadedContent(
 }
 
 @Composable
-private fun LazyItemScope.NoDataContent(
-  canScroll: Boolean,
-  banner: ErrorBannerState?,
-  onRetryClick: () -> Unit,
-) {
+private fun LazyItemScope.NoDataContent(canScroll: Boolean) {
   Column(
-    modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
+    modifier = if (canScroll) Modifier.padding(top = 16.dp) else Modifier.fillParentMaxSize().padding(top = 16.dp),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    when (banner) {
-      ErrorBannerState.Loading -> {
-        ErrorBannerLoading(
-          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-        )
-      }
-      is ErrorBannerState.Error.ServerError -> {
-        ErrorBanner(
-          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-          state = ErrorBannerState.Error.ServerError(banner.partial),
-          onClickRetry = onRetryClick,
-        )
-      }
-      is ErrorBannerState.Error.UserError -> {
-        ErrorBanner(
-          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-          state =
-            ErrorBannerState.Error
-              .UserError(banner.partial),
-          onClickRetry = onRetryClick,
-        )
-      }
-      null -> {}
-    }
-
-    Column(
+    Image(
       modifier =
         Modifier
-          .weight(1f)
-          .padding(top = 16.dp),
-      verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-      Image(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .height(156.dp),
-        painter = painterResource(id = R.drawable.illustration_health_category_empty),
-        contentDescription = null,
-      )
-      Text(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp),
-        text = stringResource(id = CopyR.string.health_category_empty_heading),
-        style = MaterialTheme.typography.headlineSmall,
-        textAlign = TextAlign.Center,
-      )
-      Text(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-        text = stringResource(id = CopyR.string.health_category_empty_subheading),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.LabelsSecondary(),
-        textAlign = TextAlign.Center,
-      )
-    }
+          .fillMaxWidth(),
+      painter = painterResource(id = R.drawable.ic_category_empty),
+      contentDescription = null,
+    )
+    Text(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = 24.dp),
+      text = stringResource(id = CopyR.string.health_category_empty_heading),
+      style = MaterialTheme.typography.headlineSmall,
+      textAlign = TextAlign.Center,
+    )
+    Text(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = 8.dp),
+      text = stringResource(id = CopyR.string.health_category_empty_subheading),
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.LabelsSecondary(),
+      textAlign = TextAlign.Center,
+    )
   }
 }
 

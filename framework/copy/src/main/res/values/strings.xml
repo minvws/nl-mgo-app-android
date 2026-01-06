@@ -321,7 +321,7 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="errorstate.clientside.heading">Er ging iets mis bij het ophalen. Controleer uw verbinding en probeer het opnieuw.</string>
   <string name="errorstate.partial_error">Niet alle gegevens zijn opgehaald</string>
   <string name="errorstate.error">Geen gegevens opgehaald</string>
-  <string name="health_category.empty.action">Ga naar overzicht</string>
+  <string name="health_category.empty.action">Terug naar overzicht</string>
   <string name="common.data_not_retrieved_heading">Gegevens niet opgehaald</string>
   <string name="common.data_not_retrieved_subheading">We kunnen door een probleem uw gegevens nu niet ophalen.</string>
   <string name="health_category.errornodata.heading">Geen gegevens opgehaald</string>

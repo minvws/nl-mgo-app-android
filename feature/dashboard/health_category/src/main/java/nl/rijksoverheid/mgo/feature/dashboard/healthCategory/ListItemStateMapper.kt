@@ -15,20 +15,22 @@ internal class ListItemStateMapper
       responses: List<FhirResponse>,
       category: HealthCategoryGroup.HealthCategory,
     ): HealthCategoryScreenViewState.ListItemsState {
-      // All the responses that are successful
-      val successResponses = responses.filterIsInstance<FhirResponse.Success>()
+      // True if all the responses failed
+      val allError = responses.all { it is FhirResponse.Error }
 
       // True if all the responses that are successful have no fhir data in the response
       val allEmpty = responses.filterIsInstance<FhirResponse.Success>().all { response -> response.isEmpty }
 
-      return if (responses.isEmpty() || allEmpty) {
-        mapNoData()
-      } else {
-        mapLoaded(responses = successResponses, category = category)
+      // All the responses that are successful
+      val successResponses = responses.filterIsInstance<FhirResponse.Success>()
+
+      // Map responses to state
+      return when {
+        responses.isEmpty() || allEmpty -> HealthCategoryScreenViewState.ListItemsState.NoData
+        allError -> HealthCategoryScreenViewState.ListItemsState.Error
+        else -> mapLoaded(responses = successResponses, category = category)
       }
     }
-
-    private fun mapNoData(): HealthCategoryScreenViewState.ListItemsState = HealthCategoryScreenViewState.ListItemsState.NoData
 
     private suspend fun mapLoaded(
       responses: List<FhirResponse.Success>,

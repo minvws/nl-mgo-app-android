@@ -16,5 +16,7 @@ internal data class HealthCategoryScreenViewState(
     ) : ListItemsState()
 
     data object NoData : ListItemsState()
+
+    data object Error : ListItemsState()
   }
 }

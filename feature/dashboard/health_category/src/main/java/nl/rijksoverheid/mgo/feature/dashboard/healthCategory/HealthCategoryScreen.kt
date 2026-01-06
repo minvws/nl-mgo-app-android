@@ -1,10 +1,11 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,6 +45,8 @@ import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
@@ -72,7 +75,6 @@ fun HealthCategoryScreen(
   onNavigateBack: () -> Unit,
   filterOrganization: MgoOrganization? = null,
 ) {
-  val context = LocalContext.current
   val viewModel =
     hiltViewModel<HealthCategoryScreenViewModel, HealthCategoryScreenViewModel.Factory>(
       creationCallback = { factory -> factory.create(category = category, filterOrganization = filterOrganization) },
@@ -162,7 +164,6 @@ private fun HealthCategoryScreenContent(
       Column(modifier = Modifier.padding(contentPadding)) {
         MgoAutoScrollLazyColumn(
           modifier = Modifier.weight(1f),
-          contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) { canScroll ->
 
@@ -175,10 +176,18 @@ private fun HealthCategoryScreenContent(
 
             HealthCategoryScreenViewState.ListItemsState.NoData -> {
               item {
-                NoDataContent(
+                EmptyContent(
+                  icon = R.drawable.ic_category_empty,
+                  heading = CopyR.string.health_category_empty_heading,
+                  subheading = CopyR.string.health_category_empty_subheading,
+                  buttonText = CopyR.string.health_category_empty_action,
+                  onClickButton = onNavigateBack,
                   canScroll = canScroll,
                 )
               }
+            }
+
+            HealthCategoryScreenViewState.ListItemsState.Error -> {
             }
 
             is HealthCategoryScreenViewState.ListItemsState.Loaded -> {
@@ -282,37 +291,59 @@ private fun LazyListScope.LoadedContent(
 }
 
 @Composable
-private fun LazyItemScope.NoDataContent(canScroll: Boolean) {
+private fun LazyItemScope.EmptyContent(
+  @DrawableRes icon: Int,
+  @StringRes heading: Int,
+  @StringRes subheading: Int,
+  @StringRes buttonText: Int,
+  onClickButton: () -> Unit,
+  canScroll: Boolean,
+) {
   Column(
     modifier = if (canScroll) Modifier.padding(top = 16.dp) else Modifier.fillParentMaxSize().padding(top = 16.dp),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Image(
-      modifier =
-        Modifier
-          .fillMaxWidth(),
-      painter = painterResource(id = R.drawable.ic_category_empty),
-      contentDescription = null,
-    )
-    Text(
-      modifier =
-        Modifier
-          .fillMaxWidth()
-          .padding(top = 24.dp),
-      text = stringResource(id = CopyR.string.health_category_empty_heading),
-      style = MaterialTheme.typography.headlineSmall,
-      textAlign = TextAlign.Center,
-    )
-    Text(
-      modifier =
-        Modifier
-          .fillMaxWidth()
-          .padding(top = 8.dp),
-      text = stringResource(id = CopyR.string.health_category_empty_subheading),
-      style = MaterialTheme.typography.bodyMedium,
-      color = MaterialTheme.colorScheme.LabelsSecondary(),
-      textAlign = TextAlign.Center,
+    Column(
+      modifier = if (canScroll) Modifier else Modifier.weight(1f),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+      Image(
+        modifier =
+          Modifier
+            .fillMaxWidth(),
+        painter = painterResource(id = icon),
+        contentDescription = null,
+      )
+
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp),
+        text = stringResource(id = heading),
+        style = MaterialTheme.typography.headlineSmall,
+        textAlign = TextAlign.Center,
+      )
+
+      Text(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp, bottom = 16.dp),
+        text = stringResource(id = subheading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.LabelsSecondary(),
+        textAlign = TextAlign.Center,
+      )
+    }
+
+    MgoBottomButtons(
+      primaryButton =
+        MgoBottomButton(
+          text = stringResource(id = buttonText),
+          onClick = onClickButton,
+        ),
+      isElevated = false,
     )
   }
 }

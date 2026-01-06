@@ -15,4 +15,9 @@ dependencies {
   implementation(projects.framework.storage)
   testImplementation(projects.framework.test)
   testFixturesImplementation(projects.framework.fhir)
+  testFixturesImplementation(libs.junit)
+  testFixturesImplementation(libs.androidx.test.core)
+  testFixturesImplementation(libs.okhttp)
+  testFixturesImplementation(projects.framework.storage)
+  testFixturesImplementation(testFixtures(projects.framework.test))
 }

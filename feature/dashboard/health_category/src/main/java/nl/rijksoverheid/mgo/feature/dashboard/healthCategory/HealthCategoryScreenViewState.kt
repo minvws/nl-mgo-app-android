@@ -17,6 +17,10 @@ internal data class HealthCategoryScreenViewState(
 
     data object NoData : ListItemsState()
 
-    data object Error : ListItemsState()
+    sealed class Error : ListItemsState() {
+      data object UserError : Error()
+
+      data object ServerError : Error()
+    }
   }
 }

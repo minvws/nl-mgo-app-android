@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 
@@ -39,6 +40,7 @@ fun MgoBottomButtons(
   isElevated: Boolean,
   modifier: Modifier = Modifier,
   hasNavigationBarsPadding: Boolean = true,
+  horizontalPadding: Dp = 16.dp,
   secondaryButton: MgoBottomButton? = null,
 ) {
   val background = if (isElevated) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background
@@ -54,7 +56,7 @@ fun MgoBottomButtons(
     if (isElevated) {
       HorizontalDivider(color = DividerDefaults.color.copy(alpha = 0.25f))
     }
-    Column(modifier = Modifier.then(if (hasNavigationBarsPadding) Modifier.navigationBarsPadding() else Modifier).padding(16.dp)) {
+    Column(modifier = Modifier.then(if (hasNavigationBarsPadding) Modifier.navigationBarsPadding() else Modifier).padding(horizontalPadding)) {
       if (secondaryButton != null) {
         MgoButton(
           modifier =

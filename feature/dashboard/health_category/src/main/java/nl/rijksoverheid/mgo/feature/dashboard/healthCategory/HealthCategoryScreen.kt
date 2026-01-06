@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -164,10 +165,11 @@ private fun HealthCategoryScreenContent(
       Column(modifier = Modifier.padding(contentPadding)) {
         MgoAutoScrollLazyColumn(
           modifier = Modifier.weight(1f),
+          contentPadding = PaddingValues(16.dp),
           state = lazyListState,
         ) { canScroll ->
 
-          when (viewState.listItemsState) {
+          when (val listItemState = viewState.listItemsState) {
             HealthCategoryScreenViewState.ListItemsState.Loading -> {
               item {
                 LoadingContent(canScroll)
@@ -187,12 +189,26 @@ private fun HealthCategoryScreenContent(
               }
             }
 
-            HealthCategoryScreenViewState.ListItemsState.Error -> {
+            is HealthCategoryScreenViewState.ListItemsState.Error -> {
+              item {
+                EmptyContent(
+                  icon = R.drawable.ic_category_error,
+                  heading = CopyR.string.health_category_errornodata_heading,
+                  subheading =
+                    when (listItemState) {
+                      HealthCategoryScreenViewState.ListItemsState.Error.ServerError -> CopyR.string.errorstate_serverside_heading
+                      HealthCategoryScreenViewState.ListItemsState.Error.UserError -> CopyR.string.errorstate_clientside_heading
+                    },
+                  buttonText = CopyR.string.common_try_again,
+                  onClickButton = onRetry,
+                  canScroll = canScroll,
+                )
+              }
             }
 
             is HealthCategoryScreenViewState.ListItemsState.Loaded -> {
               LoadedContent(
-                listItemsGroup = viewState.listItemsState.listItemsGroup,
+                listItemsGroup = listItemState.listItemsGroup,
                 onClickListItem = onClickListItem,
                 banner = viewState.banner,
                 onRetryClick = onRetry,
@@ -344,6 +360,7 @@ private fun LazyItemScope.EmptyContent(
           onClick = onClickButton,
         ),
       isElevated = false,
+      horizontalPadding = 0.dp,
     )
   }
 }

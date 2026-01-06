@@ -5,7 +5,11 @@ import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.error.DefaultGetErrorBanner
+import nl.rijksoverheid.mgo.component.error.GetErrorBanner
 import nl.rijksoverheid.mgo.component.error.TestGetErrorBanner
+import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
+import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_GP_DATA_SERVICE
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
@@ -31,6 +35,7 @@ import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -67,7 +72,11 @@ class HealthCategoryScreenViewModelTest {
       mgoByteArrayStorage = mgoStorage,
     )
   private val mgoResourceStore = MgoResourceStore()
+  private val getEndpoints = GetEndpoints(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
+  private val listItemStateMapper = ListItemStateMapper(listItemGroupMapper = listItemGroupMapper, mgoResourceStore = mgoResourceStore)
   private lateinit var fhirRepository: DefaultFhirRepository
+  private lateinit var observeFhirResponses: ObserveFhirResponses
+  private lateinit var getErrorBanner: GetErrorBanner
 
   @Before
   fun setup() =
@@ -76,134 +85,41 @@ class HealthCategoryScreenViewModelTest {
       organizationRepository.deleteAll()
       fhirRepository =
         DefaultFhirRepository(context = context, okHttpClient = okHttpClient, mgoByteArrayStorage = mgoStorage, dvaApiBaseUrl = testServerRule.testServer.url())
-    }
-
-  private suspend fun enqueueEmptyBundles() {
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("emptyBundle.json"),
-      endpointId = "alcoholUse",
-    )
-
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("emptyBundle.json"),
-      endpointId = "drugUse",
-    )
-
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("emptyBundle.json"),
-      endpointId = "livingSituation",
-    )
-
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("emptyBundle.json"),
-      endpointId = "nutritionAdvice",
-    )
-
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("emptyBundle.json"),
-      endpointId = "tobaccoUse",
-    )
-  }
-
-  private suspend fun enqueueLifestyleResponses() {
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("alcoholUse.json"),
-      endpointId = "alcoholUse",
-    )
-
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("drugUse.json"),
-      endpointId = "drugUse",
-    )
-
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("livingSituation.json"),
-      endpointId = "livingSituation",
-    )
-
-    fetchFhirResponseSuccess(
-      responseJson = readResourceFile("nutritionAdvice.json"),
-      endpointId = "nutritionAdvice",
-    )
-
-    fetchFhirResponseFailed(
-      endpointId = "tobaccoUse",
-    )
-  }
-
-  private suspend fun fetchFhirResponseSuccess(
-    responseJson: String,
-    endpointId: String,
-  ) {
-    testServerRule.testServer.enqueueJson(responseJson)
-    val request =
-      FhirRequest(
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        medmijId = "1",
-        dataServiceId = "48",
-        endpointId = endpointId,
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        endpointPath = "",
-      )
-    fhirRepository.fetch(
-      request = request,
-      forceRefresh = true,
-    )
-  }
-
-  private suspend fun fetchFhirResponseFailed(endpointId: String) {
-    testServerRule.testServer.enqueue500()
-    val request =
-      FhirRequest(
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        medmijId = "1",
-        dataServiceId = "48",
-        endpointId = endpointId,
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        endpointPath = "",
-      )
-    fhirRepository.fetch(
-      request = request,
-      forceRefresh = true,
-    )
-  }
-
-  @Test
-  fun testEmpty() =
-    runTest {
-      // Given: Stored organization that does not have any data for the lifestyle category
-      val organization =
-        TEST_MGO_ORGANIZATION.copy(
-          dataServices =
-            listOf(
-              TEST_GP_DATA_SERVICE,
-            ),
-        )
-      organizationRepository.save(organization)
-
-      // Given: Lifestyle responses
-      enqueueLifestyleResponses()
-
-      // When: Creating viewmodel
-      val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
-
-      // Then: View state is updated
-      viewModel.viewState.test {
-        val viewState = awaitItem()
-        assertTrue(viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.NoData)
-      }
+      observeFhirResponses = ObserveFhirResponses(getEndpoints = getEndpoints, fhirRepository = fhirRepository)
+      getErrorBanner = DefaultGetErrorBanner(getEndpoints = getEndpoints, observeFhirResponses = observeFhirResponses)
     }
 
   @Test
-  fun testLoaded() =
+  fun testInit() =
     runTest {
       // Given: Stored organization
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
-      // Given: Lifestyle responses
-      enqueueLifestyleResponses()
+      // Given: All lifestyle responses are success
+      fetchFhirResponseSuccess(
+        responseJson = readResourceFile("alcoholUse.json"),
+        endpointId = "alcoholUse",
+      )
+
+      fetchFhirResponseSuccess(
+        responseJson = readResourceFile("drugUse.json"),
+        endpointId = "drugUse",
+      )
+
+      fetchFhirResponseSuccess(
+        responseJson = readResourceFile("livingSituation.json"),
+        endpointId = "livingSituation",
+      )
+
+      fetchFhirResponseSuccess(
+        responseJson = readResourceFile("nutritionAdvice.json"),
+        endpointId = "nutritionAdvice",
+      )
+
+      fetchFhirResponseSuccess(
+        responseJson = readResourceFile("tobaccoUse.json"),
+        endpointId = "tobaccoUse",
+      )
 
       // When: Creating viewmodel
       val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
@@ -211,52 +127,14 @@ class HealthCategoryScreenViewModelTest {
       // Then: View state is updated
       viewModel.viewState.test {
         val viewState = awaitItem()
+
+        // Then: List item state is updated
         assertTrue(viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.Loaded)
-        assertTrue(viewState.showErrorBanner)
         val loaded = viewState.listItemsState as HealthCategoryScreenViewState.ListItemsState.Loaded
         assertEquals(5, loaded.listItemsGroup.size)
-      }
-    }
 
-  @Test
-  fun testLoadedAllEmpty() =
-    runTest {
-      // Given: Stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
-
-      // Given: Lifestyle responses
-      enqueueEmptyBundles()
-
-      // When: Creating viewmodel
-      val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
-
-      // Then: View state is updated
-      viewModel.viewState.test {
-        val viewState = awaitItem()
-        assertTrue(viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.NoData)
-      }
-    }
-
-  @Test
-  fun testLoadedFilterOrganization() =
-    runTest {
-      // Given: Stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
-
-      // Given: Lifestyle responses
-      enqueueLifestyleResponses()
-
-      // When: Creating viewmodel
-      val viewModel =
-        createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
-
-      // Then: View state is updated
-      viewModel.viewState.test {
-        val viewState = awaitItem()
-        assertTrue(viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.Loaded)
-        assertTrue(viewState.showErrorBanner)
-        val loaded = viewState.listItemsState as HealthCategoryScreenViewState.ListItemsState.Loaded
-        assertEquals(5, loaded.listItemsGroup.size)
+        // Then: Error banner state is updated
+        assertNull(viewState.banner)
       }
     }
 
@@ -266,14 +144,32 @@ class HealthCategoryScreenViewModelTest {
       // Given: Stored organization
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
-      // Given: Lifestyle responses
-      enqueueLifestyleResponses()
+      // Given: All lifestyle responses fail
+      fetchFhirResponseFailed(
+        endpointId = "alcoholUse",
+      )
+
+      fetchFhirResponseFailed(
+        endpointId = "drugUse",
+      )
+
+      fetchFhirResponseFailed(
+        endpointId = "livingSituation",
+      )
+
+      fetchFhirResponseFailed(
+        endpointId = "nutritionAdvice",
+      )
+
+      fetchFhirResponseFailed(
+        endpointId = "tobaccoUse",
+      )
 
       // When: Creating viewmodel
       val viewModel =
         createViewModel(filterOrganization = TEST_MGO_ORGANIZATION, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
 
-      // Given: All responses for upcoming retry are successful
+      // Given: All lifestyle responses are success
       testServerRule.testServer.enqueueJson(readResourceFile("livingSituation.json"))
       testServerRule.testServer.enqueueJson(readResourceFile("drugUse.json"))
       testServerRule.testServer.enqueueJson(readResourceFile("alcoholUse.json"))
@@ -283,10 +179,10 @@ class HealthCategoryScreenViewModelTest {
       // When: Calling retry
       viewModel.retry()
 
-      // Then: Error banner is no longer showing
+      // Then: Error banner is not showing
       viewModel.viewState.test {
         val viewState = awaitItem()
-        assertFalse(viewState.showErrorBanner)
+        assertNull(viewState.banner)
       }
     }
 
@@ -339,8 +235,48 @@ class HealthCategoryScreenViewModelTest {
     createPdf = createPdfForHealthCategories,
     fhirRepository = fhirRepository,
     getEndpointsForHealthCategory = getEndpointsForHealthCategory,
-    listItemGroupMapper = listItemGroupMapper,
     mgoResourceStore = mgoResourceStore,
-    getErrorBanner = TestGetErrorBanner(),
+    getErrorBanner = getErrorBanner,
+    observeFhirResponses = observeFhirResponses,
+    listItemStateMapper = listItemStateMapper,
   )
+
+  private suspend fun fetchFhirResponseSuccess(
+    responseJson: String,
+    endpointId: String,
+  ) {
+    testServerRule.testServer.enqueueJson(responseJson)
+    val request =
+      FhirRequest(
+        organizationId = TEST_MGO_ORGANIZATION.id,
+        medmijId = "1",
+        dataServiceId = "48",
+        endpointId = endpointId,
+        resourceEndpoint = "",
+        fhirVersion = FhirVersion.R3,
+        endpointPath = "",
+      )
+    fhirRepository.fetch(
+      request = request,
+      forceRefresh = true,
+    )
+  }
+
+  private suspend fun fetchFhirResponseFailed(endpointId: String) {
+    testServerRule.testServer.enqueue500()
+    val request =
+      FhirRequest(
+        organizationId = TEST_MGO_ORGANIZATION.id,
+        medmijId = "1",
+        dataServiceId = "48",
+        endpointId = endpointId,
+        resourceEndpoint = "",
+        fhirVersion = FhirVersion.R3,
+        endpointPath = "",
+      )
+    fhirRepository.fetch(
+      request = request,
+      forceRefresh = true,
+    )
+  }
 }

@@ -432,28 +432,6 @@ internal fun HealthCategoryScreenLoadedPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun HealthCategoryScreenListItemsWithErrorPreview() {
-  MgoTheme {
-    HealthCategoryScreenContent(
-      viewState =
-        HealthCategoryScreenViewState(
-          category = TEST_HEALTH_CATEGORY_MEDICATION,
-          listItemsState =
-            HealthCategoryScreenViewState.ListItemsState.Loaded(
-              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP),
-            ),
-          banner = null,
-        ),
-      onClickListItem = { _, _ -> },
-      onRetry = {},
-      onGeneratePdf = {},
-      onNavigateBack = {},
-    )
-  }
-}
-
-@DefaultPreviews
-@Composable
 internal fun HealthCategoryScreenNoDataPreview() {
   MgoTheme {
     MgoTheme {
@@ -462,6 +440,48 @@ internal fun HealthCategoryScreenNoDataPreview() {
           HealthCategoryScreenViewState(
             category = TEST_HEALTH_CATEGORY_MEDICATION,
             listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
+            banner = null,
+          ),
+        onClickListItem = { _, _ -> },
+        onRetry = {},
+        onGeneratePdf = {},
+        onNavigateBack = {},
+      )
+    }
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoryScreenUserErrorPreview() {
+  MgoTheme {
+    MgoTheme {
+      HealthCategoryScreenContent(
+        viewState =
+          HealthCategoryScreenViewState(
+            category = TEST_HEALTH_CATEGORY_MEDICATION,
+            listItemsState = HealthCategoryScreenViewState.ListItemsState.Error.UserError,
+            banner = null,
+          ),
+        onClickListItem = { _, _ -> },
+        onRetry = {},
+        onGeneratePdf = {},
+        onNavigateBack = {},
+      )
+    }
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoryScreenServerErrorPreview() {
+  MgoTheme {
+    MgoTheme {
+      HealthCategoryScreenContent(
+        viewState =
+          HealthCategoryScreenViewState(
+            category = TEST_HEALTH_CATEGORY_MEDICATION,
+            listItemsState = HealthCategoryScreenViewState.ListItemsState.Error.ServerError,
             banner = null,
           ),
         onClickListItem = { _, _ -> },

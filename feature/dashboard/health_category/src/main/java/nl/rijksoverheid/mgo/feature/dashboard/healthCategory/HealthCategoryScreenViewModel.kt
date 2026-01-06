@@ -42,7 +42,6 @@ internal class HealthCategoryScreenViewModel
     private val createPdf: CreatePdfForHealthCategories,
     private val fhirRepository: FhirRepository,
     private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
-    private val listItemGroupMapper: ListItemGroupMapper,
     private val mgoResourceStore: MgoResourceStore,
     private val getErrorBanner: GetErrorBanner,
     private val observeFhirResponses: ObserveFhirResponses,

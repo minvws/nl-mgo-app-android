@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
+import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST
@@ -36,6 +37,7 @@ class DefaultGetErrorBannerTest {
 
   private lateinit var fhirRepository: DefaultFhirRepository
   private lateinit var getHealthCategoriesBanner: DefaultGetErrorBanner
+  private lateinit var observeFhirResponses: ObserveFhirResponses
 
   @Before
   fun setup() {
@@ -47,10 +49,16 @@ class DefaultGetErrorBannerTest {
         dvaApiBaseUrl = testServerRule.testServer.url(),
       )
 
+    observeFhirResponses =
+      ObserveFhirResponses(
+        getEndpoints = getEndpoints,
+        fhirRepository = fhirRepository,
+      )
+
     getHealthCategoriesBanner =
       DefaultGetErrorBanner(
         getEndpoints = getEndpoints,
-        fhirRepository = fhirRepository,
+        observeFhirResponses = observeFhirResponses,
       )
   }
 

@@ -141,7 +141,6 @@ private fun HealthCategoryScreenContent(
 ) {
   val lazyListState = rememberLazyListState()
   val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
-  var showErrorBanner by remember(viewState.showErrorBanner) { mutableStateOf(viewState.showErrorBanner) }
 
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -180,7 +179,6 @@ private fun HealthCategoryScreenContent(
                   canScroll = canScroll,
                   banner = viewState.banner,
                   onRetryClick = onRetry,
-                  onDismissErrorBanner = { showErrorBanner = false },
                 )
               }
             }
@@ -191,7 +189,6 @@ private fun HealthCategoryScreenContent(
                 onClickListItem = onClickListItem,
                 banner = viewState.banner,
                 onRetryClick = onRetry,
-                onDismissErrorBanner = { showErrorBanner = false },
               )
             }
           }
@@ -227,7 +224,6 @@ private fun LazyListScope.LoadedContent(
   onClickListItem: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
   banner: ErrorBannerState?,
   onRetryClick: () -> Unit,
-  onDismissErrorBanner: () -> Unit,
 ) {
   item(key = banner.hashCode()) {
     when (banner) {
@@ -288,7 +284,6 @@ private fun LazyItemScope.NoDataContent(
   canScroll: Boolean,
   banner: ErrorBannerState?,
   onRetryClick: () -> Unit,
-  onDismissErrorBanner: () -> Unit,
 ) {
   Column(
     modifier = if (canScroll) Modifier else Modifier.fillParentMaxSize(),
@@ -390,7 +385,6 @@ internal fun HealthCategoryScreenLoadingPreview() {
         HealthCategoryScreenViewState(
           category = TEST_HEALTH_CATEGORY_PROBLEMS,
           listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
-          showErrorBanner = false,
           banner = null,
         ),
       onClickListItem = { _, _ -> },
@@ -413,7 +407,6 @@ internal fun HealthCategoryScreenLoadedPreview() {
             HealthCategoryScreenViewState.ListItemsState.Loaded(
               listItemsGroup = listOf(TEST_LIST_ITEM_GROUP),
             ),
-          showErrorBanner = false,
           banner = null,
         ),
       onClickListItem = { _, _ -> },
@@ -436,7 +429,6 @@ internal fun HealthCategoryScreenListItemsWithErrorPreview() {
             HealthCategoryScreenViewState.ListItemsState.Loaded(
               listItemsGroup = listOf(TEST_LIST_ITEM_GROUP),
             ),
-          showErrorBanner = true,
           banner = null,
         ),
       onClickListItem = { _, _ -> },
@@ -457,7 +449,6 @@ internal fun HealthCategoryScreenNoDataPreview() {
           HealthCategoryScreenViewState(
             category = TEST_HEALTH_CATEGORY_MEDICATION,
             listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
-            showErrorBanner = false,
             banner = null,
           ),
         onClickListItem = { _, _ -> },

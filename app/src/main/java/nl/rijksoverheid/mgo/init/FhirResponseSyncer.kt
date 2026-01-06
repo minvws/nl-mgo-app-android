@@ -4,12 +4,10 @@ import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import nl.rijksoverheid.mgo.component.fhir.FetchEndpoint
+import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
-import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
-import nl.rijksoverheid.mgo.data.healthCategories.models.Endpoint
-import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import javax.inject.Inject
 
@@ -19,8 +17,8 @@ class FhirResponseSyncer
     private val organizationRepository: OrganizationRepository,
     private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     private val fhirRepository: FhirRepository,
-    private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     private val fetchEndpoint: FetchEndpoint,
+    private val getEndpoints: GetEndpoints,
   ) {
     @VisibleForTesting
     var firstSync: Boolean = true
@@ -45,16 +43,4 @@ class FhirResponseSyncer
         previousStoredOrganizations = organizations
         firstSync = false
       }
-
-    private fun getEndpoints(
-      organizations: List<MgoOrganization>,
-      categories: List<HealthCategoryGroup.HealthCategory>,
-    ): List<Endpoint> =
-      organizations
-        .flatMap { organization ->
-          categories.map { category ->
-            getEndpointsForHealthCategory(category, organization)
-          }
-        }.flatten()
-        .distinctBy { endpoint -> endpoint.endpointPath to endpoint.resourceEndpoint }
   }

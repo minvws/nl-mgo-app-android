@@ -5,7 +5,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
 internal data class HealthCategoryScreenViewState(
   val category: HealthCategoryGroup.HealthCategory,
-  val showErrorBanner: Boolean,
   val listItemsState: ListItemsState,
   val banner: ErrorBannerState?,
 ) {

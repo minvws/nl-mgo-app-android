@@ -24,7 +24,7 @@ data class HealthCategoriesScreenViewState(
       automaticLocalisationEnabled = automaticLocalisationEnabled,
       favorites = favorites,
       groups = groups,
-      banner = ErrorBannerState.Loading,
+      banner = null,
     )
   }
 }

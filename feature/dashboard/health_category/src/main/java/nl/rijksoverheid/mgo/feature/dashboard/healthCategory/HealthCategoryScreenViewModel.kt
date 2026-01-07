@@ -13,18 +13,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.component.error.GetErrorBanner
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
-import nl.rijksoverheid.mgo.data.fhir.FhirRequest
+import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
-import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
@@ -37,15 +39,14 @@ internal class HealthCategoryScreenViewModel
     @Assisted("category") private val category: HealthCategoryGroup.HealthCategory,
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
-    @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     private val organizationRepository: OrganizationRepository,
     private val createPdf: CreatePdfForHealthCategories,
     private val fhirRepository: FhirRepository,
-    private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
     private val mgoResourceStore: MgoResourceStore,
     private val getErrorBanner: GetErrorBanner,
     private val observeFhirResponses: ObserveFhirResponses,
     private val listItemStateMapper: ListItemStateMapper,
+    private val getRequests: GetRequests,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -109,27 +110,23 @@ internal class HealthCategoryScreenViewModel
 
     fun retry() {
       viewModelScope.launch(ioDispatcher) {
-        val organizations = organizationRepository.get()
-        for (organization in organizations) {
-          val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
-          for (endpoint in endpoints) {
-            val request =
-              FhirRequest(
-                organizationId = organization.id,
-                medmijId = organization.medMijId,
-                dataServiceId = endpoint.dataServiceId,
-                endpointId = endpoint.endpointId,
-                endpointPath = endpoint.endpointPath,
-                resourceEndpoint = endpoint.resourceEndpoint,
-                fhirVersion = endpoint.fhirVersion,
-              )
+        // Get requests
+        val organizations = if (filterOrganization == null) organizationRepository.get() else listOf(filterOrganization)
+        val requests = getRequests(organizations = organizations, categories = listOf(category))
 
-            fhirRepository.fetch(
-              request = request,
-              forceRefresh = true,
-            )
-          }
-        }
+        // Get responses that failed
+        val failedResponses =
+          fhirRepository
+            .observe()
+            .first()
+            .filterIsInstance<FhirResponse.Error>()
+            .filter { response -> requests.contains(response.request) }
+
+        // Map to requests
+        val failedRequests = failedResponses.map { response -> response.request }
+
+        // Retry
+        fhirRepository.retry(failedRequests)
       }
     }
 

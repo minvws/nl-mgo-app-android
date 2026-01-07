@@ -3,8 +3,7 @@ package nl.rijksoverheid.mgo.init
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
-import nl.rijksoverheid.mgo.component.fhir.FetchEndpoint
-import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
@@ -17,8 +16,7 @@ class FhirResponseSyncer
     private val organizationRepository: OrganizationRepository,
     private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
     private val fhirRepository: FhirRepository,
-    private val fetchEndpoint: FetchEndpoint,
-    private val getEndpoints: GetEndpoints,
+    private val getRequests: GetRequests,
   ) {
     @VisibleForTesting
     var firstSync: Boolean = true
@@ -35,9 +33,9 @@ class FhirResponseSyncer
         }
 
         val categories = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten()
-        val endpoints = getEndpoints(organizations = organizations, categories = categories)
-        for (endpoint in endpoints) {
-          fetchEndpoint(endpoint = endpoint, forceRefresh = firstSync)
+        val requests = getRequests(organizations = organizations, categories = categories)
+        for (request in requests) {
+          fhirRepository.fetch(request = request, forceRefresh = firstSync)
         }
 
         previousStoredOrganizations = organizations

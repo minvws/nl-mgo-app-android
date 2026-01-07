@@ -20,7 +20,7 @@ import org.robolectric.RobolectricTestRunner
 class ObserveFhirResponsesTest {
   private val byteArrayStorage = MemoryMgoByteArrayStorage()
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
-  private val getEndpoints = GetEndpoints(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
+  private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
 
   @get:Rule
   val fhirRepositoryRule = FhirRepositoryRule(byteArrayStorage)
@@ -31,7 +31,7 @@ class ObserveFhirResponsesTest {
   fun setup() {
     observeFhirResponses =
       ObserveFhirResponses(
-        getEndpoints = getEndpoints,
+        getRequests = getRequests,
         fhirRepository = fhirRepositoryRule.getRepository(),
       )
   }

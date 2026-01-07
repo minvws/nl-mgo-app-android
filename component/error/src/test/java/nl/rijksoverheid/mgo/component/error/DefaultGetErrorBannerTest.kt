@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
@@ -32,7 +32,7 @@ class DefaultGetErrorBannerTest {
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
-  private val getEndpoints: GetEndpoints = GetEndpoints(getEndpointsForHealthCategory = getEndpointsForHealthCategory)
+  private val getRequests: GetRequests = GetRequests(getEndpointsForHealthCategory = getEndpointsForHealthCategory)
   private val request = TEST_FHIR_REQUEST.copy(organizationId = TEST_MGO_ORGANIZATION.id, dataServiceId = TEST_MGO_ORGANIZATION.dataServices.first().id)
 
   private lateinit var fhirRepository: DefaultFhirRepository
@@ -51,13 +51,13 @@ class DefaultGetErrorBannerTest {
 
     observeFhirResponses =
       ObserveFhirResponses(
-        getEndpoints = getEndpoints,
+        getRequests = getRequests,
         fhirRepository = fhirRepository,
       )
 
     getHealthCategoriesBanner =
       DefaultGetErrorBanner(
-        getEndpoints = getEndpoints,
+        getRequests = getRequests,
         observeFhirResponses = observeFhirResponses,
       )
   }

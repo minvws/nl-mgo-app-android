@@ -11,7 +11,7 @@ import javax.inject.Inject
 class ObserveFhirResponses
   @Inject
   constructor(
-    private val getEndpoints: GetEndpoints,
+    private val getRequests: GetRequests,
     private val fhirRepository: FhirRepository,
   ) {
     operator fun invoke(
@@ -19,17 +19,13 @@ class ObserveFhirResponses
       organizations: List<MgoOrganization>,
     ): Flow<List<FhirResponse>> {
       // All the endpoints that are requested
-      val endpoints = getEndpoints(organizations = organizations, categories = categories)
+      val requests = getRequests(organizations = organizations, categories = categories)
 
       // Get the fhir responses
       val fhirResponses =
         fhirRepository.observe().map { responses ->
           responses.filter { response ->
-            endpoints.any { endpoint ->
-              endpoint.organization.id == response.request.organizationId &&
-                endpoint.dataServiceId == response.request.dataServiceId &&
-                endpoint.endpointId == response.request.endpointId
-            }
+            requests.contains(response.request)
           }
         }
 

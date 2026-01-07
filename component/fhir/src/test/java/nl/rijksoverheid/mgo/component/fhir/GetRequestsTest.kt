@@ -9,10 +9,10 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PR
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class GetEndpointsTest {
+class GetRequestsTest {
   private val getDataSetFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetFromDisk)
-  private val getEndpoints = GetEndpoints(getEndpointsForHealthCategory)
+  private val getRequests = GetRequests(getEndpointsForHealthCategory)
 
   @Test
   fun testInvoke() =
@@ -32,7 +32,7 @@ class GetEndpointsTest {
         )
 
       // When: Calling invoke
-      val endpoints = getEndpoints(organizations = organizations, categories = categories)
+      val endpoints = getRequests(organizations = organizations, categories = categories)
 
       // Then: Endpoints are returned
       assertEquals(2, endpoints.size)

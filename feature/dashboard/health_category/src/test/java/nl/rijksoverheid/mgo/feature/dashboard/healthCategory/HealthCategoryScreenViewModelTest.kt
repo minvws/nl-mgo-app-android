@@ -7,7 +7,7 @@ import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.error.DefaultGetErrorBanner
 import nl.rijksoverheid.mgo.component.error.GetErrorBanner
-import nl.rijksoverheid.mgo.component.fhir.GetEndpoints
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
@@ -70,7 +70,7 @@ class HealthCategoryScreenViewModelTest {
       mgoByteArrayStorage = byteArrayStorage,
     )
   private val mgoResourceStore = MgoResourceStore()
-  private val getEndpoints = GetEndpoints(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
+  private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
   private val listItemStateMapper = ListItemStateMapper(listItemGroupMapper = listItemGroupMapper, mgoResourceStore = mgoResourceStore)
   private lateinit var observeFhirResponses: ObserveFhirResponses
   private lateinit var getErrorBanner: GetErrorBanner
@@ -80,8 +80,8 @@ class HealthCategoryScreenViewModelTest {
     runTest {
       quickJsRepository.create()
       organizationRepository.deleteAll()
-      observeFhirResponses = ObserveFhirResponses(getEndpoints = getEndpoints, fhirRepository = fhirRepositoryRule.getRepository())
-      getErrorBanner = DefaultGetErrorBanner(getEndpoints = getEndpoints, observeFhirResponses = observeFhirResponses)
+      observeFhirResponses = ObserveFhirResponses(getRequests = getRequests, fhirRepository = fhirRepositoryRule.getRepository())
+      getErrorBanner = DefaultGetErrorBanner(getRequests = getRequests, observeFhirResponses = observeFhirResponses)
     }
 
   @Test

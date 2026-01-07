@@ -79,7 +79,10 @@ fun HealthCategoriesScreen(
   onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
-  val viewModel = hiltViewModel<HealthCategoriesScreenViewModel>()
+  val viewModel =
+    hiltViewModel<HealthCategoriesScreenViewModel, HealthCategoriesScreenViewModel.Factory>(
+      creationCallback = { factory -> factory.create(filterOrganization = organization) },
+    )
   val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   HealthCategoriesScreenContent(
@@ -92,7 +95,7 @@ fun HealthCategoriesScreen(
     onShowBottomSheet = onShowBottomSheet,
     organization = organization,
     onRetry = {
-      viewModel.retry(failedOnly = true)
+      viewModel.retry()
     },
   )
 }
@@ -238,37 +241,37 @@ private fun LazyListScope.WithProviders(
   banner: ErrorBannerState?,
   onRetry: () -> Unit,
 ) {
-  if (organization == null) {
-    item(key = banner.hashCode()) {
-      when (banner) {
-        null -> {}
-        ErrorBannerState.Loading ->
-          ErrorBannerLoading(
-            modifier =
-              Modifier
-                .padding(
-                  bottom = 32.dp,
-                ).animateItem(),
-          )
-        is ErrorBannerState.Error.ServerError ->
-          ErrorBanner(
-            modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-            state =
-              ErrorBannerState.Error
-                .ServerError(banner.partial),
-            onClickRetry = onRetry,
-          )
-        is ErrorBannerState.Error.UserError ->
-          ErrorBanner(
-            modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-            state =
-              ErrorBannerState.Error
-                .UserError(banner.partial),
-            onClickRetry = onRetry,
-          )
-      }
+  item(key = banner.hashCode()) {
+    when (banner) {
+      null -> {}
+      ErrorBannerState.Loading ->
+        ErrorBannerLoading(
+          modifier =
+            Modifier
+              .padding(
+                bottom = 32.dp,
+              ).animateItem(),
+        )
+      is ErrorBannerState.Error.ServerError ->
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state =
+            ErrorBannerState.Error
+              .ServerError(banner.partial),
+          onClickRetry = onRetry,
+        )
+      is ErrorBannerState.Error.UserError ->
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state =
+            ErrorBannerState.Error
+              .UserError(banner.partial),
+          onClickRetry = onRetry,
+        )
     }
+  }
 
+  if (organization != null) {
     if (favorites.isEmpty()) {
       item(key = "favorites_empty") {
         Column(modifier = Modifier.animateItem()) {

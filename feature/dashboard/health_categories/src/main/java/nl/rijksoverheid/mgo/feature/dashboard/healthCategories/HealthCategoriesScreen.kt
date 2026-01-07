@@ -271,7 +271,7 @@ private fun LazyListScope.WithProviders(
     }
   }
 
-  if (organization != null) {
+  if (organization == null) {
     if (favorites.isEmpty()) {
       item(key = "favorites_empty") {
         Column(modifier = Modifier.animateItem()) {

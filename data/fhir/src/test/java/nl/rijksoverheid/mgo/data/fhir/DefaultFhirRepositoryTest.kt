@@ -20,12 +20,16 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneOffset
 
 @RunWith(RobolectricTestRunner::class)
 class DefaultFhirRepositoryTest {
   @get:Rule
   val testServerRule = TestServerRule()
 
+  private val clock = Clock.fixed(Instant.parse("2000-01-01T10:01:00.00Z"), ZoneOffset.UTC)
   private val context = ApplicationProvider.getApplicationContext<Context>()
   private val okHttpClient = OkHttpClient.Builder().build()
   private val testServer = testServerRule.testServer
@@ -35,7 +39,13 @@ class DefaultFhirRepositoryTest {
   @Before
   fun setup() {
     repository =
-      DefaultFhirRepository(okHttpClient = okHttpClient, mgoByteArrayStorage = fileStorage, context = context, dvaApiBaseUrl = testServerRule.testServer.url())
+      DefaultFhirRepository(
+        okHttpClient = okHttpClient,
+        mgoByteArrayStorage = fileStorage,
+        context = context,
+        dvaApiBaseUrl = testServerRule.testServer.url(),
+        clock = clock,
+      )
   }
 
   @Test
@@ -97,7 +107,7 @@ class DefaultFhirRepositoryTest {
       assertEquals(expectedStored, fileStorage.get("1/1/alcoholUse.json"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "alcoholUse").test {
+      repository.observe(fhirRequest).test {
         val expectedEmit =
           FhirResponse.Success(
             request = fhirRequest,
@@ -139,7 +149,7 @@ class DefaultFhirRepositoryTest {
       assertEquals(expectedStored, fileStorage.get("1/1/alcoholUse.json"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "alcoholUse").test {
+      repository.observe(fhirRequest).test {
         val expectedEmit =
           FhirResponse.Success(
             request = fhirRequest,
@@ -178,7 +188,8 @@ class DefaultFhirRepositoryTest {
       assertEquals(expectedStored, fileStorage.get("1/1/emptyBundle.json"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "emptyBundle").test {
+      val request = TEST_FHIR_REQUEST.copy(organizationId = "1", dataServiceId = "1", endpointId = "emptyBundle")
+      repository.observe(request).test {
         val expectedEmit =
           FhirResponse.Success(
             request = fhirRequest,
@@ -215,7 +226,7 @@ class DefaultFhirRepositoryTest {
       assertNull(fileStorage.get("1/1/1.json"))
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
+      repository.observe(fhirRequest).test {
         val emit = awaitItem()
         assertTrue(emit is FhirResponse.Error)
       }
@@ -262,7 +273,7 @@ class DefaultFhirRepositoryTest {
       )
 
       // Fhir response is emitted in flow and can be observed
-      repository.observe(organizationId = "1", dataServiceId = "1", endpointId = "1").test {
+      repository.observe(request).test {
         assertTrue(awaitItem() is FhirResponse.Success)
       }
     }

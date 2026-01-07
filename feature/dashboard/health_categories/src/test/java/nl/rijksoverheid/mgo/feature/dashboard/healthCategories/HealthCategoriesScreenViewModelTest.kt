@@ -1,20 +1,21 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.error.TestGetErrorBanner
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
-import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST
+import nl.rijksoverheid.mgo.data.fhir.FhirRepositoryRule
+import nl.rijksoverheid.mgo.data.fhir.FhirResponseJson
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_ALCOHOL_USE
 import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
+import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
+import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
-import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
@@ -27,34 +28,30 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 internal class HealthCategoriesScreenViewModelTest {
+  private val mgoByteArrayStorage = MemoryMgoByteArrayStorage()
+
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
   @get:Rule
   val testServerRule = TestServerRule()
 
-  private val context = ApplicationProvider.getApplicationContext<Context>()
+  @get:Rule
+  val fhirRepositoryRule = FhirRepositoryRule(mgoByteArrayStorage)
 
   private val keyValueStorage = MemoryMgoKeyValueStorage()
   private val favoriteRepository = FavoriteHealthCategoriesRepository(keyValueStorage)
 
   private val okHttpClient = OkHttpClient()
-  private val organizationRepository = OrganizationRepository(okHttpClient = okHttpClient, baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
+  private val organizationRepository = OrganizationRepository(okHttpClient = okHttpClient, baseUrl = "", mgoByteArrayStorage = mgoByteArrayStorage)
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val keyValueStore = TestKeyValueStore()
-  private lateinit var fhirRepository: DefaultFhirRepository
+  private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk = JvmGetDataSetsFromDisk()))
 
   @Before
   fun setup() =
     runTest {
       organizationRepository.save(TEST_MGO_ORGANIZATION)
-      fhirRepository =
-        DefaultFhirRepository(
-          context = context,
-          okHttpClient = OkHttpClient(),
-          mgoByteArrayStorage = MemoryMgoByteArrayStorage(),
-          dvaApiBaseUrl = testServerRule.testServer.url(),
-        )
     }
 
   @Test
@@ -76,44 +73,24 @@ internal class HealthCategoriesScreenViewModelTest {
     }
 
   @Test
-  fun testRetryFailedOnly() =
+  fun testRetry() =
     runTest {
       // Given: Fhir response failed
-      testServerRule.testServer.enqueue500()
-      fhirRepository.fetch(TEST_FHIR_REQUEST, true)
+      fhirRepositoryRule.enqueueErrorResponse(request = TEST_FHIR_REQUEST_ALCOHOL_USE)
 
       // Given Next fhir response is success
-      val alcoholUseJson = readResourceFile("alcoholUse.json")
-      testServerRule.testServer.enqueueJson(alcoholUseJson)
+      fhirRepositoryRule.enqueueSuccessResponse(
+        json = FhirResponseJson.ALCOHOL_USE,
+        request = TEST_FHIR_REQUEST_ALCOHOL_USE,
+        fetch = false,
+      )
 
       // When: Calling retry
       val viewModel = createViewModel()
-      viewModel.retry(failedOnly = true)
+      viewModel.retry()
 
       // Then: Observing fhir response returns success
-      fhirRepository.observe().test {
-        val fhirResponses = awaitItem()
-        assertEquals(1, fhirResponses.size)
-      }
-    }
-
-  @Test
-  fun testRetryAll() =
-    runTest {
-      // Given: Fhir response success
-      val alcoholUseJson = readResourceFile("alcoholUse.json")
-      testServerRule.testServer.enqueueJson(alcoholUseJson)
-      fhirRepository.fetch(TEST_FHIR_REQUEST, true)
-
-      // Given Next fhir response is success
-      testServerRule.testServer.enqueueJson(alcoholUseJson)
-
-      // When: Calling retry
-      val viewModel = createViewModel()
-      viewModel.retry(failedOnly = false)
-
-      // Then: Observing fhir response returns success
-      fhirRepository.observe().test {
+      fhirRepositoryRule.getRepository().observe().test {
         val fhirResponses = awaitItem()
         assertEquals(1, fhirResponses.size)
       }
@@ -127,6 +104,8 @@ internal class HealthCategoriesScreenViewModelTest {
       keyValueStore = keyValueStore,
       ioDispatcher = mainDispatcherRule.testDispatcher,
       getErrorBanner = TestGetErrorBanner(),
-      fhirRepository = fhirRepository,
+      fhirRepository = fhirRepositoryRule.getRepository(),
+      filterOrganization = null,
+      getRequests = getRequests,
     )
 }

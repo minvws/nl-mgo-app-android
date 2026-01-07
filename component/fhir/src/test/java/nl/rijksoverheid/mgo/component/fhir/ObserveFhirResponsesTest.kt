@@ -5,6 +5,11 @@ import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.FhirRepositoryRule
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseJson
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_ALCOHOL_USE
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_DRUG_USE
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_LIVING_SITUATION
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_NUTRITION_ADVICE
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_TOBACCO_USE
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_LIFESTYLE
@@ -40,19 +45,17 @@ class ObserveFhirResponsesTest {
   fun testInvoke() =
     runTest {
       // Given: All lifestyle responses are success
-      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.DRUG_USE, organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "drugUse")
-      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.ALCOHOL_USE, organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "alcoholUse")
+      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.DRUG_USE, request = TEST_FHIR_REQUEST_DRUG_USE)
+      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.ALCOHOL_USE, request = TEST_FHIR_REQUEST_ALCOHOL_USE)
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.LIVING_SITUATION,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "livingSituation",
+        request = TEST_FHIR_REQUEST_LIVING_SITUATION,
       )
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.NUTRITION_ADVICE,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "nutritionAdvice",
+        request = TEST_FHIR_REQUEST_NUTRITION_ADVICE,
       )
-      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.TOBACCO_USE, organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "tobaccoUse")
+      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.TOBACCO_USE, request = TEST_FHIR_REQUEST_TOBACCO_USE)
 
       // When: Calling use case for lifestyle category
       val fhirResponsesFlow = observeFhirResponses.invoke(categories = listOf(TEST_HEALTH_CATEGORY_LIFESTYLE), organizations = listOf(TEST_MGO_ORGANIZATION))

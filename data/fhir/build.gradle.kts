@@ -20,4 +20,5 @@ dependencies {
   testFixturesImplementation(libs.okhttp)
   testFixturesImplementation(projects.framework.storage)
   testFixturesImplementation(testFixtures(projects.framework.test))
+  testFixturesImplementation(testFixtures(projects.data.healthCategories))
 }

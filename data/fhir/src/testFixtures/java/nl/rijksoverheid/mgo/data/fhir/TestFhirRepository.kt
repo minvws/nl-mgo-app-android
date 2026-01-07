@@ -17,11 +17,7 @@ class TestFhirRepository : FhirRepository {
     this.observeResults = responses
   }
 
-  override fun observe(
-    organizationId: String,
-    dataServiceId: String,
-    endpointId: String,
-  ): Flow<FhirResponse> =
+  override fun observe(request: FhirRequest): Flow<FhirResponse> =
     flow {
       emit(observeResult)
     }
@@ -35,16 +31,10 @@ class TestFhirRepository : FhirRepository {
     fetchAmount++
   }
 
-  fun getFetchAmount(): Int = fetchAmount
-
-  fun resetFetchAmount() {
-    fetchAmount = 0
+  override suspend fun retry(requests: List<FhirRequest>) {
   }
 
   override suspend fun delete(organizationId: String) {
-  }
-
-  override suspend fun deleteFailed() {
   }
 
   override suspend fun fetchBinary(

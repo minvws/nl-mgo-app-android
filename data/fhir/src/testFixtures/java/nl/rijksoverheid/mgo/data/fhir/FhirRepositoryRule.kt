@@ -1,12 +1,14 @@
 package nl.rijksoverheid.mgo.data.fhir
 
 import androidx.test.core.app.ApplicationProvider
-import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
 import org.junit.rules.ExternalResource
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneOffset
 
 class FhirRepositoryRule(
   private val byteArrayStorage: MemoryMgoByteArrayStorage,
@@ -25,6 +27,7 @@ class FhirRepositoryRule(
         okHttpClient = OkHttpClient(),
         mgoByteArrayStorage = byteArrayStorage,
         dvaApiBaseUrl = testServerRule.testServer.url(),
+        clock = Clock.fixed(Instant.parse("2000-01-01T10:01:00.00Z"), ZoneOffset.UTC),
       )
   }
 
@@ -36,23 +39,12 @@ class FhirRepositoryRule(
   fun getRepository() = repository
 
   suspend fun enqueueSuccessResponse(
+    request: FhirRequest,
     json: FhirResponseJson,
-    organizationId: String,
-    endpointId: String,
     fetch: Boolean = true,
   ) {
     val json = readResourceFile(json.file)
     testServerRule.testServer.enqueueJson(json)
-    val request =
-      FhirRequest(
-        organizationId = organizationId,
-        medmijId = "1",
-        dataServiceId = "48",
-        endpointId = endpointId,
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        endpointPath = "",
-      )
     if (fetch) {
       repository.fetch(
         request = request,
@@ -62,27 +54,24 @@ class FhirRepositoryRule(
   }
 
   suspend fun enqueueErrorResponse(
-    organizationId: String,
-    endpointId: String,
+    request: FhirRequest,
     fetch: Boolean = true,
   ) {
     testServerRule.testServer.enqueue500()
-    val request =
-      FhirRequest(
-        organizationId = organizationId,
-        medmijId = "1",
-        dataServiceId = "48",
-        endpointId = endpointId,
-        resourceEndpoint = "",
-        fhirVersion = FhirVersion.R3,
-        endpointPath = "",
-      )
     if (fetch) {
       repository.fetch(
         request = request,
         forceRefresh = true,
       )
     }
+  }
+
+  fun enqueueEmptyJson() {
+    testServerRule.testServer.enqueueJson("{}")
+  }
+
+  fun enqueueIoException() {
+    testServerRule.testServer.enqueueIoException()
   }
 }
 

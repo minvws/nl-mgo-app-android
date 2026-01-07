@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
-import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.error.DefaultGetErrorBanner
 import nl.rijksoverheid.mgo.component.error.GetErrorBanner
@@ -14,6 +13,11 @@ import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepositoryRule
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseJson
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_ALCOHOL_USE
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_DRUG_USE
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_LIVING_SITUATION
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_NUTRITION_ADVICE
+import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_TOBACCO_USE
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
@@ -27,7 +31,6 @@ import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_LI
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -43,9 +46,6 @@ class HealthCategoryScreenViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  @get:Rule
-  val testServerRule = TestServerRule()
-
   private val byteArrayStorage = MemoryMgoByteArrayStorage()
 
   @get:Rule
@@ -55,7 +55,6 @@ class HealthCategoryScreenViewModelTest {
   private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = byteArrayStorage)
   private val createPdfForHealthCategories = TestCreatePdfForHealthCategories()
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
-  private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val quickJsRepository = JvmQuickJsRepository(dispatcher = mainDispatcherRule.testDispatcher)
   private val jsEngineRepository = JsEngineRepository(quickJsRepository)
   private val mgoResourceParser = MgoResourceParser(jsEngineRepository)
@@ -91,19 +90,17 @@ class HealthCategoryScreenViewModelTest {
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: All lifestyle responses are success
-      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.DRUG_USE, organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "drugUse")
-      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.ALCOHOL_USE, organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "alcoholUse")
+      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.DRUG_USE, request = TEST_FHIR_REQUEST_DRUG_USE)
+      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.ALCOHOL_USE, request = TEST_FHIR_REQUEST_ALCOHOL_USE)
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.LIVING_SITUATION,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "livingSituation",
+        request = TEST_FHIR_REQUEST_LIVING_SITUATION,
       )
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.NUTRITION_ADVICE,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "nutritionAdvice",
+        request = TEST_FHIR_REQUEST_NUTRITION_ADVICE,
       )
-      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.TOBACCO_USE, organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "tobaccoUse")
+      fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.TOBACCO_USE, request = TEST_FHIR_REQUEST_TOBACCO_USE)
 
       // When: Creating viewmodel
       val viewModel = createViewModel(filterOrganization = null, category = TEST_HEALTH_CATEGORY_LIFESTYLE)
@@ -129,17 +126,11 @@ class HealthCategoryScreenViewModelTest {
       organizationRepository.save(TEST_MGO_ORGANIZATION)
 
       // Given: All lifestyle responses fail
-      fhirRepositoryRule.enqueueErrorResponse(organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "drugUse")
-      fhirRepositoryRule.enqueueErrorResponse(organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "alcoholUse")
-      fhirRepositoryRule.enqueueErrorResponse(
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "livingSituation",
-      )
-      fhirRepositoryRule.enqueueErrorResponse(
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "nutritionAdvice",
-      )
-      fhirRepositoryRule.enqueueErrorResponse(organizationId = TEST_MGO_ORGANIZATION.id, endpointId = "tobaccoUse")
+      fhirRepositoryRule.enqueueErrorResponse(request = TEST_FHIR_REQUEST_DRUG_USE)
+      fhirRepositoryRule.enqueueErrorResponse(request = TEST_FHIR_REQUEST_ALCOHOL_USE)
+      fhirRepositoryRule.enqueueErrorResponse(request = TEST_FHIR_REQUEST_LIVING_SITUATION)
+      fhirRepositoryRule.enqueueErrorResponse(request = TEST_FHIR_REQUEST_NUTRITION_ADVICE)
+      fhirRepositoryRule.enqueueErrorResponse(request = TEST_FHIR_REQUEST_TOBACCO_USE)
 
       // When: Creating viewmodel
       val viewModel =
@@ -148,32 +139,27 @@ class HealthCategoryScreenViewModelTest {
       // Given: All lifestyle responses are success
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.DRUG_USE,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "drugUse",
+        request = TEST_FHIR_REQUEST_DRUG_USE,
         fetch = false,
       )
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.ALCOHOL_USE,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "alcoholUse",
+        request = TEST_FHIR_REQUEST_ALCOHOL_USE,
         fetch = false,
       )
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.LIVING_SITUATION,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "livingSituation",
+        request = TEST_FHIR_REQUEST_LIVING_SITUATION,
         fetch = false,
       )
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.NUTRITION_ADVICE,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "nutritionAdvice",
+        request = TEST_FHIR_REQUEST_NUTRITION_ADVICE,
         fetch = false,
       )
       fhirRepositoryRule.enqueueSuccessResponse(
         json = FhirResponseJson.TOBACCO_USE,
-        organizationId = TEST_MGO_ORGANIZATION.id,
-        endpointId = "tobaccoUse",
+        request = TEST_FHIR_REQUEST_TOBACCO_USE,
         fetch = false,
       )
 
@@ -231,14 +217,13 @@ class HealthCategoryScreenViewModelTest {
     category = category,
     filterOrganization = filterOrganization,
     ioDispatcher = mainDispatcherRule.testDispatcher,
-    dvaApiBaseUrl = testServerRule.testServer.url().toStr(),
     organizationRepository = organizationRepository,
     createPdf = createPdfForHealthCategories,
     fhirRepository = fhirRepositoryRule.getRepository(),
-    getEndpointsForHealthCategory = getEndpointsForHealthCategory,
     mgoResourceStore = mgoResourceStore,
     getErrorBanner = getErrorBanner,
     observeFhirResponses = observeFhirResponses,
     listItemStateMapper = listItemStateMapper,
+    getRequests = getRequests,
   )
 }

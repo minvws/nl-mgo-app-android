@@ -20,6 +20,7 @@ dependencies {
   implementation(projects.framework.copy)
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.framework.storage))
+  testImplementation(testFixtures(projects.data.fhir))
   testFixturesImplementation(libs.compose.runtime)
   testFixturesImplementation(projects.data.healthCategories)
   testFixturesImplementation(projects.component.organization)

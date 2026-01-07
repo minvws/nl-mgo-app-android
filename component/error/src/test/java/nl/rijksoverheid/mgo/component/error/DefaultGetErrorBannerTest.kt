@@ -1,20 +1,15 @@
 package nl.rijksoverheid.mgo.component.error
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.fhir.DefaultFhirRepository
-import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST
+import nl.rijksoverheid.mgo.data.fhir.FhirRepositoryRule
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
-import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
-import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -26,33 +21,22 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class DefaultGetErrorBannerTest {
   @get:Rule
-  val testServerRule = TestServerRule()
+  val fhirRepositoryRule = FhirRepositoryRule(MemoryMgoByteArrayStorage())
 
-  private val context = ApplicationProvider.getApplicationContext<Context>()
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val getRequests: GetRequests = GetRequests(getEndpointsForHealthCategory = getEndpointsForHealthCategory)
-  private val request = TEST_FHIR_REQUEST.copy(organizationId = TEST_MGO_ORGANIZATION.id, dataServiceId = TEST_MGO_ORGANIZATION.dataServices.first().id)
 
-  private lateinit var fhirRepository: DefaultFhirRepository
   private lateinit var getHealthCategoriesBanner: DefaultGetErrorBanner
   private lateinit var observeFhirResponses: ObserveFhirResponses
 
   @Before
   fun setup() {
-    fhirRepository =
-      DefaultFhirRepository(
-        context = context,
-        okHttpClient = OkHttpClient(),
-        mgoByteArrayStorage = MemoryMgoByteArrayStorage(),
-        dvaApiBaseUrl = testServerRule.testServer.url(),
-      )
-
     observeFhirResponses =
       ObserveFhirResponses(
         getRequests = getRequests,
-        fhirRepository = fhirRepository,
+        fhirRepository = fhirRepositoryRule.getRepository(),
       )
 
     getHealthCategoriesBanner =
@@ -72,11 +56,10 @@ class DefaultGetErrorBannerTest {
       val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests fail because of user error
-      val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
-      for (endpoint in dataSet.endpoints) {
-        testServerRule.testServer.enqueueIoException()
-        val request = request.copy(endpointId = endpoint.id)
-        fhirRepository.fetch(request = request, forceRefresh = true)
+      val requests = getRequests(organizations = organizations, categories = categories)
+      for (request in requests) {
+        fhirRepositoryRule.enqueueIoException()
+        fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
       }
 
       // When: Observing the banner
@@ -99,15 +82,13 @@ class DefaultGetErrorBannerTest {
       val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests except the first one fail because of user error
-      val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
-      for (endpoint in dataSet.endpoints) {
-        testServerRule.testServer.enqueueIoException()
-        val request = request.copy(endpointId = endpoint.id)
-        fhirRepository.fetch(request = request, forceRefresh = true)
+      val requests = getRequests(organizations = organizations, categories = categories)
+      for (request in requests) {
+        fhirRepositoryRule.enqueueIoException()
+        fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
       }
-      testServerRule.testServer.enqueueJson("{}")
-      val request = request.copy(endpointId = dataSet.endpoints.first().id)
-      fhirRepository.fetch(request = request, forceRefresh = true)
+      fhirRepositoryRule.enqueueEmptyJson()
+      fhirRepositoryRule.getRepository().fetch(request = requests.first(), forceRefresh = true)
 
       // When: Observing the banner
       getHealthCategoriesBanner.invoke(categories = categories, organizations = organizations).test {
@@ -129,11 +110,10 @@ class DefaultGetErrorBannerTest {
       val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests fail because of server error
-      val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
-      for (endpoint in dataSet.endpoints) {
-        testServerRule.testServer.enqueue500()
-        val request = request.copy(endpointId = endpoint.id)
-        fhirRepository.fetch(request = request, forceRefresh = true)
+      val requests = getRequests(organizations = organizations, categories = categories)
+      for (request in requests) {
+        fhirRepositoryRule.enqueueErrorResponse(request = request, fetch = false)
+        fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
       }
 
       // When: Observing the banner
@@ -156,15 +136,13 @@ class DefaultGetErrorBannerTest {
       val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests except the first one fail because of server error
-      val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
-      for (endpoint in dataSet.endpoints) {
-        testServerRule.testServer.enqueue500()
-        val request = request.copy(endpointId = endpoint.id)
-        fhirRepository.fetch(request = request, forceRefresh = true)
+      val requests = getRequests(organizations = organizations, categories = categories)
+      for (request in requests) {
+        fhirRepositoryRule.enqueueErrorResponse(request = request, fetch = false)
+        fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
       }
-      testServerRule.testServer.enqueueJson("{}")
-      val request = request.copy(endpointId = dataSet.endpoints.first().id)
-      fhirRepository.fetch(request = request, forceRefresh = true)
+      fhirRepositoryRule.enqueueEmptyJson()
+      fhirRepositoryRule.getRepository().fetch(request = requests.first(), forceRefresh = true)
 
       // When: Observing the banner
       getHealthCategoriesBanner.invoke(organizations = organizations, categories = categories).test {
@@ -186,11 +164,10 @@ class DefaultGetErrorBannerTest {
       val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
 
       // Given: All requests success
-      val dataSet = getDataSetsFromDisk().first { dataSet -> dataSet.id == "48" }
-      for (endpoint in dataSet.endpoints) {
-        testServerRule.testServer.enqueueJson("{}")
-        val request = request.copy(endpointId = endpoint.id)
-        fhirRepository.fetch(request = request, forceRefresh = true)
+      val requests = getRequests(organizations = organizations, categories = categories)
+      for (request in requests) {
+        fhirRepositoryRule.enqueueEmptyJson()
+        fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
       }
 
       // When: Observing the banner

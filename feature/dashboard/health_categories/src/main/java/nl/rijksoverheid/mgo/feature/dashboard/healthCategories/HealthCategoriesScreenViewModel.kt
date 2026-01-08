@@ -2,6 +2,9 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,35 +12,47 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.mgo.component.error.GetErrorBanner
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
-import nl.rijksoverheid.mgo.data.fhir.FhirRequest
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryId
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.GetHealthCategoriesBanner
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
-import javax.inject.Inject
 import javax.inject.Named
 
-@HiltViewModel
+@HiltViewModel(assistedFactory = HealthCategoriesScreenViewModel.Factory::class)
 internal class HealthCategoriesScreenViewModel
-  @Inject
+  @AssistedInject
   constructor(
+    @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     private val fhirRepository: FhirRepository,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     favoriteRepository: FavoriteHealthCategoriesRepository,
-    organizationRepository: OrganizationRepository,
-    getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
-    getHealthCategoriesBanner: GetHealthCategoriesBanner,
+    private val organizationRepository: OrganizationRepository,
+    private val getRequests: GetRequests,
+    private val getHealthCategoriesFromDisk: GetHealthCategoriesFromDisk,
+    getErrorBanner: GetErrorBanner,
     @Named("keyValueStore") keyValueStore: KeyValueStore,
   ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+      fun create(
+        @Assisted("filterOrganization") filterOrganization: MgoOrganization?,
+      ): HealthCategoriesScreenViewModel
+    }
+
     private val groups = getHealthCategoriesFromDisk()
     private val initialFavorites = runBlocking(ioDispatcher) { favoriteRepository.observe().firstOrNull() ?: listOf() }
     private val initialViewState =
@@ -48,12 +63,27 @@ internal class HealthCategoriesScreenViewModel
         groups = groups.filterFavorites(initialFavorites),
       )
     private val _viewState = MutableStateFlow(initialViewState)
+    private val organizationsFlow =
+      if (filterOrganization ==
+        null
+      ) {
+        organizationRepository.storedOrganizationsFlow
+      } else {
+        flow { emit(listOf(filterOrganization)) }
+      }
+    private val errorBannerFlow =
+      organizationsFlow.flatMapLatest { organizations ->
+        getErrorBanner(
+          organizations = organizations,
+          categories = getHealthCategoriesFromDisk.invoke().map { group -> group.categories }.flatten(),
+        )
+      }
     val viewState =
       combine(
         _viewState,
         organizationRepository.storedOrganizationsFlow,
         favoriteRepository.observe(),
-        getHealthCategoriesBanner.invoke(),
+        errorBannerFlow,
       ) { viewState, providers, favorites, banner ->
         HealthCategoriesScreenViewState(
           name = viewState.name,
@@ -71,42 +101,28 @@ internal class HealthCategoriesScreenViewModel
     private fun List<HealthCategoryGroup>.getFavorites(favorites: List<HealthCategoryId>): List<HealthCategoryGroup.HealthCategory> =
       favorites.mapNotNull { categoryId -> this.map { group -> group.categories }.flatten().firstOrNull { it.id == categoryId } }
 
-    /**
-     * Retry FHIR requests.
-     *
-     * @param failedOnly If true, only retries the failed fhir requests.
-     */
-    fun retry(failedOnly: Boolean) {
+    fun retry() {
       viewModelScope.launch(ioDispatcher) {
-        val fhirResponses =
-          if (failedOnly) {
-            fhirRepository.observe().first().filterIsInstance<FhirResponse.Error>()
-          } else {
-            fhirRepository.observe().first()
-          }
+        // Get categories
+        val categories = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten()
 
-        fhirRepository.deleteFailed()
-        retry(fhirResponses)
-      }
-    }
+        // Get requests
+        val organizations = if (filterOrganization == null) organizationRepository.get() else listOf(filterOrganization)
+        val requests = getRequests(organizations = organizations, categories = categories)
 
-    private suspend fun retry(fhirResponses: List<FhirResponse>) {
-      for (fhirResponse in fhirResponses) {
-        val request =
-          FhirRequest(
-            organizationId = fhirResponse.request.organizationId,
-            medmijId = fhirResponse.request.medmijId,
-            dataServiceId = fhirResponse.request.dataServiceId,
-            endpointId = fhirResponse.request.endpointId,
-            endpointPath = fhirResponse.request.endpointPath,
-            resourceEndpoint = fhirResponse.request.resourceEndpoint,
-            fhirVersion = fhirResponse.request.fhirVersion,
-          )
+        // Get responses that failed
+        val failedResponses =
+          fhirRepository
+            .observe()
+            .first()
+            .filterIsInstance<FhirResponse.Error>()
+            .filter { response -> requests.contains(response.request) }
 
-        fhirRepository.fetch(
-          request = request,
-          forceRefresh = true,
-        )
+        // Map to requests
+        val failedRequests = failedResponses.map { response -> response.request }
+
+        // Retry
+        fhirRepository.retry(failedRequests)
       }
     }
   }

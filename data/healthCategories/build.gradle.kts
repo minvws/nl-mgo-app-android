@@ -16,4 +16,5 @@ dependencies {
   implementation(projects.component.mgo)
   implementation(projects.component.organization)
   testFixturesImplementation(libs.kotlinx.serialization.json)
+  testFixturesImplementation(libs.compose.runtime)
 }

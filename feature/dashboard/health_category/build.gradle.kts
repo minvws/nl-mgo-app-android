@@ -22,8 +22,11 @@ dependencies {
   implementation(projects.component.healthCategories)
   implementation(projects.framework.storage)
   implementation(projects.component.organization)
+  implementation(projects.component.error)
+  implementation(projects.component.fhir)
   testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.data.hcimParser))
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.data.fhir))
+  testImplementation(testFixtures(projects.component.error))
 }

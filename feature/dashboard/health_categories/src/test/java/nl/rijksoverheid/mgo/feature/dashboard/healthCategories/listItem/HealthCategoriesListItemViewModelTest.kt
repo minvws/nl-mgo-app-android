@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_RESPONSE_SUCCESS
@@ -23,9 +24,8 @@ class HealthCategoriesListItemViewModelTest {
   val mainDispatcherRule = MainDispatcherRule()
 
   private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
-  private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
-  private val getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk)
   private val fhirRepository = TestFhirRepository()
+  private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk = JvmGetDataSetsFromDisk()))
 
   @Test
   fun testLoaded() =
@@ -108,9 +108,9 @@ class HealthCategoriesListItemViewModelTest {
   ) = HealthCategoriesListItemViewModel(
     filterOrganization = filterOrganization,
     category = category,
-    getEndpointsForHealthCategory = getEndpointsForHealthCategory,
     organizationRepository = organizationRepository,
     fhirRepository = fhirRepository,
     ioDispatcher = mainDispatcherRule.testDispatcher,
+    getRequests = getRequests,
   )
 }

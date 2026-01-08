@@ -12,4 +12,5 @@ dependencies {
   implementation(projects.component.organization)
   testImplementation(testFixtures(projects.data.fhir))
   testImplementation(testFixtures(projects.data.healthCategories))
+  testImplementation(testFixtures(projects.framework.storage))
 }

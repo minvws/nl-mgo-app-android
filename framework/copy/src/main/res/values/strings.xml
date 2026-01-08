@@ -18,8 +18,8 @@
   <string name="lab_results.heading">Uitslagen</string>
   <string name="lab_results.subheading">Resultaten van onderzoeken en testen die u hebt gehad.</string>
   <string name="login.digid">Log in met DigiD</string>
-  <string name="login.heading">Bewijs wie je bent</string>
-  <string name="login.subheading">Kies de manier waarop je wilt inloggen. Zo kunnen we jouw gegevens veilig ophalen bij je huisarts, ziekenhuis en andere zorgaanbieders.</string>
+  <string name="login.heading">Inloggen</string>
+  <string name="login.subheading">Met DigiD laat u weten wie u bent. Zo kunnen we uw gegevens veilig ophalen. Bij uw huisarts, het ziekenhuis en andere zorgaanbieders.</string>
   <string name="medication_use.heading">Medicijnen</string>
   <string name="medication_use.subheading">Een overzicht van de medicijnen die zijn voorgeschreven door je zorgaanbieder.</string>
   <string name="organization.diagnosis_heading">Klachten en diagnoses</string>
@@ -89,12 +89,12 @@
   <string name="launch.jailbreak_heading">Er zijn beveiligingsrisico’s gevonden</string>
   <string name="launch.jailbreak_subheading">Let op: je apparaat is geroot. Je gegevens zijn mogelijk niet veilig.</string>
   <string name="proposition.statement_2"><![CDATA[Uw gegevens komen direct van de zorgaanbieder die u kiest. <b>Alleen u heeft toegang.</b>]]></string>
-  <string name="bottombar.healthcareproviders">Zorgaanbieders</string>
-  <string name="organizations.heading">Zorgaanbieders</string>
+  <string name="bottombar.healthcareproviders">Uw zorgaanbieders</string>
+  <string name="organizations.heading">Uw zorgaanbieders</string>
   <string name="organizations.remove_organization">Verwijder zorgaanbieder</string>
-  <string name="overview.no_results_action">Voeg zorgaanbieders toe</string>
-  <string name="health_category.empty.heading">Geen gegevens gevonden </string>
-  <string name="health_category.empty.subheading">Er is hier niets opgeslagen.</string>
+  <string name="overview.no_results_action">Voeg een zorgaanbieder toe</string>
+  <string name="health_category.empty.heading">Deze categorie is nog leeg</string>
+  <string name="health_category.empty.subheading">Hier is niets opgeslagen. Zodra uw zorgaanbieders informatie toevoegen, staat die hier.</string>
   <string name="account_removed.heading">Je account is verwijderd</string>
   <string name="account_removed.subheading">Je gegevens zijn verwijderd van je telefoon. Ze blijven wel veilig bewaard bij je zorgaanbieders. Als je een nieuw account maakt, kun je je gegevens opnieuw ophalen.</string>
   <string name="account_removed.action">Begrepen</string>
@@ -160,9 +160,9 @@
   <string name="common.search_again">Opnieuw zoeken</string>
   <string name="common.no_organizations_heading">Je hebt nog geen zorgaanbieders toegevoegd</string>
   <string name="common.no_organizations_subheading">Voeg zorgaanbieders toe om gegevens over je gezondheid te zien.</string>
-  <string name="common.add_organizations">Voeg zorgaanbieders toe</string>
-  <string name="hc_documents.error">Sorry, we kunnen de bijlage nu niet ophalen.</string>
-  <string name="hc_documents.no_document">Geen bijlage gevonden. Klopt dit niet? Vraag je zorgaanbieder om hulp.</string>
+  <string name="common.add_organizations">Voeg een zorgaanbieder toe</string>
+  <string name="hc_documents.error">Sorry, we kunnen de bijlage(n) nu niet ophalen.</string>
+  <string name="hc_documents.no_document">Geen bijlage(n) gevonden. Klopt dit niet? Vraag je zorgaanbieder om hulp.</string>
   <string name="settings.featureflag.localization">Automatische lokalisatie</string>
   <string name="settings.heading">Instellingen</string>
   <string name="organization_search.subheading">Welke wil je toevoegen aan de app? Je kunt dit later altijd veranderen.</string>
@@ -173,7 +173,7 @@
   <string name="login_info.heading">Je bent nu ingelogd met DigiD</string>
   <string name="login_info.subheading"><![CDATA[Normaal zou je nu naar de website of app van DigiD gaan om je te identificeren. Voor deze demo hoeft dat niet en ben je ingelogd met een fictief account, als <b>Johan Helleman</b>. De gegevens die je ziet, zijn niet echt.]]></string>
   <string name="app_name_demo">MGO (Demo)</string>
-  <string name="zib_administration_agreement.heading">Hoe je je medicijnen krijgt</string>
+  <string name="zib_administration_agreement.heading">Hoe u uw medicijnen krijgt</string>
   <string name="zib_alcohol_use.heading">Alcoholgebruik</string>
   <string name="zib_alert.heading">Waarschuwingen</string>
   <string name="zib_allergy_intolerance.heading">Allergiën en intoleranties</string>
@@ -187,8 +187,8 @@
   <string name="zib_laboratory_test_result_specimen.heading">Onderzoeksmateriaal</string>
   <string name="zib_living_situation.heading">Leefomstandigheden</string>
   <string name="zib_medical_device.heading">Hulpmiddelen</string>
-  <string name="zib_medication_agreement.heading">Afspraken over je medicijnen</string>
-  <string name="zib_medication_use.heading">Wat je nu gebruikt</string>
+  <string name="zib_medication_agreement.heading">Afspraken over uw medicijnen</string>
+  <string name="zib_medication_use.heading">Wat u nu gebruikt</string>
   <string name="zib_nutrition_advice.heading">Voedingsadvies</string>
   <string name="zib_patient.heading">Persoonsgegevens, Burgerlijke staat &amp; contactpersonen</string>
   <string name="zib_payer.heading">Betaalgegevens</string>
@@ -277,7 +277,7 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="hc_problems.heading">Medische klachten</string>
   <string name="hc_problems.subheading">Klachten waar u last van hebt. Zoals pijn of ziekte.</string>
   <string name="hc_allergies.subheading">Dingen waar u niet tegen kunt. Zoals bepaald eten of medicijnen.</string>
-  <string name="hc_alerts.subheading">Belangrijke dingen waar zorgverleners op moeten letten.</string>
+  <string name="hc_alerts.subheading">Belangrijke dingen waar uw zorgverleners op moeten letten.</string>
   <string name="hc_vaccinations.subheading">Prikken die u hebt gehad. Zoals tegen griep of corona.</string>
   <string name="hc_lifestyle.subheading">Informatie over hoe u leeft en woont. En wat u elke dag doet.</string>
   <string name="hc_mental.subheading">Hoe het geestelijk met u gaat. Zoals angst, stress of somberheid.</string>
@@ -311,7 +311,7 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="add_organization.default_content_heading">Waar wilt u uw zorggegevens ophalen?</string>
   <string name="add_organization.default_content_subheading">Bijvoorbeeld uw huisarts, ziekenhuis of apotheek.</string>
   <string name="settings.version.heading">Versie</string>
-  <string name="zib_contact_person.heading">Persoonlijke gegevens</string>
+  <string name="zib_contact_person.heading">Administratie</string>
   <string name="dialog.add_organization_yes">Ja, toevoegen</string>
   <string name="dialog.add_organization_heading">%1$s toevoegen?</string>
   <string name="dialog.add_organization_subheading">Als deze zorgaanbieder gegevens over u heeft, staan die straks in uw overzicht.</string>
@@ -321,4 +321,9 @@ Kom je toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="errorstate.clientside.heading">Er ging iets mis bij het ophalen. Controleer uw verbinding en probeer het opnieuw.</string>
   <string name="errorstate.partial_error">Niet alle gegevens zijn opgehaald</string>
   <string name="errorstate.error">Geen gegevens opgehaald</string>
+  <string name="health_category.empty.action">Terug naar overzicht</string>
+  <string name="common.data_not_retrieved_heading">Gegevens niet opgehaald</string>
+  <string name="common.data_not_retrieved_subheading">We kunnen door een probleem uw gegevens nu niet ophalen.</string>
+  <string name="health_category.errornodata.heading">Geen gegevens opgehaald</string>
+  <string name="health_category.errornodata.subheading">Dit komt door een storing bij ons. Probeer het later opnieuw.</string>
 </resources>

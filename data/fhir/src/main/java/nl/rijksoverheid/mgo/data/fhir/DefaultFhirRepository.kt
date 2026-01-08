@@ -17,6 +17,9 @@ import okhttp3.Request
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import java.time.Clock
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Base64
 import javax.inject.Inject
 import javax.inject.Named
@@ -30,20 +33,16 @@ class DefaultFhirRepository
     private val okHttpClient: OkHttpClient,
     @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
+    @Named("systemUTC") private val clock: Clock,
   ) : FhirRepository {
     private val json = Json.Default
     private val cachedFhirResponses = MutableStateFlow<List<FhirResponse>>(listOf())
 
-    override fun observe(
-      organizationId: String,
-      dataServiceId: String,
-      endpointId: String,
-    ): Flow<FhirResponse> =
+    override fun observe(request: FhirRequest): Flow<FhirResponse> =
       cachedFhirResponses
         .mapNotNull { responses ->
           responses.firstOrNull { response ->
-            response.request.organizationId == organizationId && response.request.dataServiceId == dataServiceId &&
-              response.request.endpointId == endpointId
+            response.request == request
           }
         }.distinctUntilChanged()
 
@@ -67,10 +66,12 @@ class DefaultFhirRepository
         return
       }
 
+      val today = LocalDate.now(clock)
+      val modifiedEndpointPath = request.endpointPath.replace("{{today}}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
       val httpRequest =
         Request
           .Builder()
-          .url("$dvaApiBaseUrl/fhir${request.endpointPath}")
+          .url("$dvaApiBaseUrl/fhir$modifiedEndpointPath")
           .get()
           .addHeader("X-MGO-HEALTHCARE-PROVIDER-ID", request.medmijId ?: "none")
           .addHeader("X-MGO-DATASERVICE-ID", request.dataServiceId)
@@ -120,13 +121,19 @@ class DefaultFhirRepository
       }
     }
 
-    override suspend fun delete(organizationId: String) {
-      mgoByteArrayStorage.delete(organizationId)
+    override suspend fun retry(requests: List<FhirRequest>) {
+      // Delete requests from flow
+      val newFhirResponses = cachedFhirResponses.value.toMutableList().also { list -> list.removeAll { requests.contains(it.request) } }
+      cachedFhirResponses.value = newFhirResponses
+
+      // Retry requests
+      for (request in requests) {
+        fetch(request = request, forceRefresh = true)
+      }
     }
 
-    override suspend fun deleteFailed() {
-      val newFhirResponses = cachedFhirResponses.value.toMutableList().also { list -> list.removeAll { it is FhirResponse.Error } }
-      cachedFhirResponses.value = newFhirResponses
+    override suspend fun delete(organizationId: String) {
+      mgoByteArrayStorage.delete(organizationId)
     }
 
     private fun isBundleEmpty(bundleJson: String): Boolean {

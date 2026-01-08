@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
-import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import javax.inject.Named
@@ -28,7 +28,7 @@ internal class HealthCategoriesFavoriteCardViewModel
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
     private val fhirRepository: FhirRepository,
-    private val getEndpointsForHealthCategory: GetEndpointsForHealthCategory,
+    private val getRequests: GetRequests,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -44,25 +44,17 @@ internal class HealthCategoriesFavoriteCardViewModel
           // Always start with loading state whenever a organization has been added
           _isLoading.update { true }
 
-          // Get all the fhir responses for this category that we can observe
-          val fhirResponseFlows =
-            organizations
-              .map { organization ->
-                val endpoints = getEndpointsForHealthCategory(category = category, organization = organization)
-                endpoints.map { endpoint ->
-                  fhirRepository.observe(
-                    organizationId = organization.id,
-                    dataServiceId = endpoint.dataServiceId,
-                    endpointId = endpoint.endpointId,
-                  )
-                }
-              }.flatten()
+          // Get requests
+          val requests = getRequests(categories = listOf(category), organizations = organizations)
 
-          if (fhirResponseFlows.isEmpty()) {
+          // Get response flows to observe
+          val responseFlows = requests.map { request -> fhirRepository.observe(request) }
+
+          if (responseFlows.isEmpty()) {
             _isLoading.update { false }
           } else {
-            // Observe the fhir responses
-            combine(fhirResponseFlows) { responses -> responses.toList() }.collectLatest {
+            // Observe the responses
+            combine(responseFlows) { responses -> responses.toList() }.collectLatest {
               _isLoading.update { false }
             }
           }

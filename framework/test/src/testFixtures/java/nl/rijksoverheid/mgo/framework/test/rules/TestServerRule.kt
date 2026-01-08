@@ -9,11 +9,11 @@ import org.junit.rules.ExternalResource
 class TestServerRule : ExternalResource() {
   val testServer: TestServer = TestServer()
 
-  override fun before() {
+  public override fun before() {
     testServer.start()
   }
 
-  override fun after() {
+  public override fun after() {
     testServer.stop()
   }
 }

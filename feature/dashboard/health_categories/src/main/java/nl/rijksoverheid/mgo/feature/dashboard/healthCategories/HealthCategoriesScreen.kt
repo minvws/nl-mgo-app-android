@@ -37,6 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nl.rijksoverheid.mgo.component.error.ErrorBanner
+import nl.rijksoverheid.mgo.component.error.ErrorBannerLoading
+import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
@@ -53,9 +56,6 @@ import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerError
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerLoading
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.banner.HealthCategoriesBannerState
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesNoFavoriteCard
@@ -79,7 +79,10 @@ fun HealthCategoriesScreen(
   onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
-  val viewModel = hiltViewModel<HealthCategoriesScreenViewModel>()
+  val viewModel =
+    hiltViewModel<HealthCategoriesScreenViewModel, HealthCategoriesScreenViewModel.Factory>(
+      creationCallback = { factory -> factory.create(filterOrganization = organization) },
+    )
   val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   HealthCategoriesScreenContent(
@@ -92,7 +95,7 @@ fun HealthCategoriesScreen(
     onShowBottomSheet = onShowBottomSheet,
     organization = organization,
     onRetry = {
-      viewModel.retry(failedOnly = true)
+      viewModel.retry()
     },
   )
 }
@@ -235,29 +238,40 @@ private fun LazyListScope.WithProviders(
   organization: MgoOrganization? = null,
   groups: List<HealthCategoryGroup>,
   favorites: List<HealthCategoryGroup.HealthCategory>,
-  banner: HealthCategoriesBannerState?,
+  banner: ErrorBannerState?,
   onRetry: () -> Unit,
 ) {
-  if (organization == null) {
-    item(key = banner.hashCode()) {
-      when (banner) {
-        null -> {}
-        HealthCategoriesBannerState.Loading -> HealthCategoriesBannerLoading(modifier = Modifier.padding(bottom = 32.dp).animateItem())
-        is HealthCategoriesBannerState.Error.ServerError ->
-          HealthCategoriesBannerError(
-            modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-            state = HealthCategoriesBannerState.Error.ServerError(banner.partial),
-            onClickRetry = onRetry,
-          )
-        is HealthCategoriesBannerState.Error.UserError ->
-          HealthCategoriesBannerError(
-            modifier = Modifier.padding(bottom = 32.dp).animateItem(),
-            state = HealthCategoriesBannerState.Error.UserError(banner.partial),
-            onClickRetry = onRetry,
-          )
-      }
+  item(key = banner.hashCode()) {
+    when (banner) {
+      null -> {}
+      ErrorBannerState.Loading ->
+        ErrorBannerLoading(
+          modifier =
+            Modifier
+              .padding(
+                bottom = 32.dp,
+              ).animateItem(),
+        )
+      is ErrorBannerState.Error.ServerError ->
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state =
+            ErrorBannerState.Error
+              .ServerError(banner.partial),
+          onClickRetry = onRetry,
+        )
+      is ErrorBannerState.Error.UserError ->
+        ErrorBanner(
+          modifier = Modifier.padding(bottom = 32.dp).animateItem(),
+          state =
+            ErrorBannerState.Error
+              .UserError(banner.partial),
+          onClickRetry = onRetry,
+        )
     }
+  }
 
+  if (organization == null) {
     if (favorites.isEmpty()) {
       item(key = "favorites_empty") {
         Column(modifier = Modifier.animateItem()) {

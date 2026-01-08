@@ -57,15 +57,15 @@ private fun SettingsHomeVersionsScreenContent(
       MgoCard(modifier = Modifier.padding(top = 12.dp)) {
         ListItem(
           heading = "Versie",
-          subHeading = viewState.hcimPackageVersion,
+          subHeading = viewState.hcimPackageVersion ?: "-",
         )
         ListItem(
           heading = "Datum",
-          subHeading = viewState.hcimPackageDate,
+          subHeading = viewState.hcimPackageDate ?: "-",
         )
         ListItem(
           heading = "Git-ref",
-          subHeading = viewState.hcimPackageGitRef,
+          subHeading = viewState.hcimPackageGitRef ?: "-",
           hasDivider = false,
         )
       }
@@ -80,15 +80,15 @@ private fun SettingsHomeVersionsScreenContent(
       MgoCard(modifier = Modifier.padding(top = 12.dp)) {
         ListItem(
           heading = "Versie",
-          subHeading = viewState.healthCategoriesConfigVersion,
+          subHeading = viewState.healthCategoriesConfigVersion ?: "-",
         )
         ListItem(
           heading = "Datum",
-          subHeading = viewState.healthCategoriesConfigDate,
+          subHeading = viewState.healthCategoriesConfigDate ?: "-",
         )
         ListItem(
           heading = "Git-ref",
-          subHeading = viewState.healthCategoriesConfigGitRef,
+          subHeading = viewState.healthCategoriesConfigGitRef ?: "-",
           hasDivider = false,
         )
       }
@@ -103,7 +103,7 @@ private fun SettingsHomeVersionsScreenContent(
       MgoCard(modifier = Modifier.padding(top = 12.dp)) {
         ListItem(
           heading = "ETag",
-          subHeading = viewState.patientFriendlyTermsETag,
+          subHeading = viewState.patientFriendlyTermsETag ?: "-",
           hasDivider = false,
         )
       }

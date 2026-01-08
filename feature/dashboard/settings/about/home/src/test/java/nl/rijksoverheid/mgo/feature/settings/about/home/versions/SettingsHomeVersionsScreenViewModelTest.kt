@@ -1,7 +1,5 @@
 package nl.rijksoverheid.mgo.feature.settings.about.home.versions
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.pft.PftRepository
@@ -13,10 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class SettingsHomeVersionsScreenViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -24,7 +19,6 @@ class SettingsHomeVersionsScreenViewModelTest {
   @get:Rule
   val testServerRule = TestServerRule()
 
-  private val context = ApplicationProvider.getApplicationContext<Context>()
   private lateinit var pftRepository: PftRepository
   private lateinit var viewModel: SettingsHomeVersionsScreenViewModel
 
@@ -34,7 +28,6 @@ class SettingsHomeVersionsScreenViewModelTest {
       pftRepository = PftRepository(okHttpClient = OkHttpClient(), url = testServerRule.testServer.url())
       viewModel =
         SettingsHomeVersionsScreenViewModel(
-          context = context,
           ioDispatcher = mainDispatcherRule.testDispatcher,
           pftRepository = pftRepository,
           readLocalFile = ReadLocalFileFromResources(),

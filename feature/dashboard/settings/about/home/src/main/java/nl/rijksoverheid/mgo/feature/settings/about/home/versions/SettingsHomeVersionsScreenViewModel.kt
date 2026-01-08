@@ -1,10 +1,8 @@
 package nl.rijksoverheid.mgo.feature.settings.about.home.versions
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,20 +22,19 @@ import javax.inject.Named
 internal class SettingsHomeVersionsScreenViewModel
   @Inject
   constructor(
-    @ApplicationContext private val context: Context,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val pftRepository: PftRepository,
     private val readLocalFile: ReadLocalFile,
   ) : ViewModel() {
     private val initialViewState =
       SettingsHomeVersionsScreenViewState(
-        hcimPackageVersion = "",
-        hcimPackageDate = "",
-        hcimPackageGitRef = "",
-        healthCategoriesConfigVersion = "",
-        healthCategoriesConfigDate = "",
-        healthCategoriesConfigGitRef = "",
-        patientFriendlyTermsETag = "",
+        hcimPackageVersion = null,
+        hcimPackageDate = null,
+        hcimPackageGitRef = null,
+        healthCategoriesConfigVersion = null,
+        healthCategoriesConfigDate = null,
+        healthCategoriesConfigGitRef = null,
+        patientFriendlyTermsETag = null,
       )
     private val _viewState =
       MutableStateFlow(initialViewState)
@@ -62,9 +59,9 @@ internal class SettingsHomeVersionsScreenViewModel
       // Update view state with contents of json
       _viewState.update { viewState ->
         viewState.copy(
-          hcimPackageVersion = hcimPackageJson["version"]?.jsonPrimitive?.content ?: "-",
-          hcimPackageDate = hcimPackageJson["created"]?.jsonPrimitive?.content ?: "-",
-          hcimPackageGitRef = hcimPackageJson["git_ref"]?.jsonPrimitive?.content?.take(7) ?: "-",
+          hcimPackageVersion = hcimPackageJson["version"]?.jsonPrimitive?.content,
+          hcimPackageDate = hcimPackageJson["created"]?.jsonPrimitive?.content,
+          hcimPackageGitRef = hcimPackageJson["git_ref"]?.jsonPrimitive?.content?.take(7),
         )
       }
     }
@@ -79,9 +76,9 @@ internal class SettingsHomeVersionsScreenViewModel
       // Update view state with contents of json
       _viewState.update { viewState ->
         viewState.copy(
-          healthCategoriesConfigVersion = healthCategoriesConfigJson["version"]?.jsonPrimitive?.content ?: "-",
-          healthCategoriesConfigDate = healthCategoriesConfigJson["created"]?.jsonPrimitive?.content ?: "-",
-          healthCategoriesConfigGitRef = healthCategoriesConfigJson["git_ref"]?.jsonPrimitive?.content?.take(7) ?: "-",
+          healthCategoriesConfigVersion = healthCategoriesConfigJson["version"]?.jsonPrimitive?.content,
+          healthCategoriesConfigDate = healthCategoriesConfigJson["created"]?.jsonPrimitive?.content,
+          healthCategoriesConfigGitRef = healthCategoriesConfigJson["git_ref"]?.jsonPrimitive?.content?.take(7),
         )
       }
     }

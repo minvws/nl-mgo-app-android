@@ -17,9 +17,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -30,10 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
-import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -42,7 +37,6 @@ import nl.rijksoverheid.mgo.component.theme.theme.AppTheme
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.feature.settings.about.R
 import nl.rijksoverheid.mgo.framework.util.launchBrowser
-import java.util.Locale
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
@@ -50,6 +44,7 @@ fun SettingsAboutHomeScreen(
   onNavigateToSecureUse: () -> Unit,
   onNavigateToOpenSource: () -> Unit,
   onNavigateToAccessibility: () -> Unit,
+  onNavigateToVersions: () -> Unit,
   onNavigateBack: () -> Unit,
 ) {
   val viewModel = hiltViewModel<SettingsAboutHomeViewModel>()
@@ -61,6 +56,7 @@ fun SettingsAboutHomeScreen(
     onClickOpenSource = onNavigateToOpenSource,
     onClickAccessibility = onNavigateToAccessibility,
     onClickBack = onNavigateBack,
+    onClickVersion = onNavigateToVersions,
   )
 }
 
@@ -71,21 +67,9 @@ private fun SettingsAboutHomeScreenContent(
   onClickOpenSource: () -> Unit,
   onClickAccessibility: () -> Unit,
   onClickBack: () -> Unit,
+  onClickVersion: () -> Unit,
 ) {
   val context = LocalContext.current
-  var showFhirParserVersionDialog by remember { mutableStateOf(false) }
-  if (showFhirParserVersionDialog) {
-    MgoAlertDialog(
-      onDismissRequest = { showFhirParserVersionDialog = false },
-      positiveButtonText =
-        stringResource(CopyR.string.common_ok)
-          .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
-      onClickPositiveButton = { showFhirParserVersionDialog = false },
-      heading = stringResource(CopyR.string.settings_about_this_app_version),
-      subHeading = viewState.hcimParserVersion,
-    )
-  }
 
   Scaffold(
     topBar = {
@@ -116,7 +100,7 @@ private fun SettingsAboutHomeScreenContent(
             modifier =
               Modifier
                 .padding(top = 16.dp)
-                .clickable { showFhirParserVersionDialog = true },
+                .clickable { onClickVersion() },
             heading = CopyR.string.common_app_name,
             headingBold = true,
             subHeading =
@@ -214,14 +198,12 @@ internal fun SettingsAboutHomeScreenPreview() {
         SettingsAboutHomeScreenViewState(
           appVersionCode = 1,
           appVersionName = "1.0.0",
-          hcimParserVersion =
-            "{ \"version\": \"main\", \"git_ref\": \"d2c2081aefcaa7c0e8c413a1b8c654bcdcbe7705\"," +
-              " \"created\": \"2025-03-21T16:01:38\"}",
           privacyUrl = 0,
         ),
       onClickSecureUse = {},
       onClickOpenSource = {},
       onClickAccessibility = {},
+      onClickVersion = {},
       onClickBack = {},
     )
   }

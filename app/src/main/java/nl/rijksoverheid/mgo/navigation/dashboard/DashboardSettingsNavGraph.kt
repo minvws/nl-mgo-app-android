@@ -6,6 +6,7 @@ import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.MainViewModel
 import nl.rijksoverheid.mgo.feature.settings.about.accessibility.SettingsAboutAccessibilityScreen
 import nl.rijksoverheid.mgo.feature.settings.about.home.SettingsAboutHomeScreen
+import nl.rijksoverheid.mgo.feature.settings.about.home.versions.SettingsHomeVersionsScreen
 import nl.rijksoverheid.mgo.feature.settings.about.opensource.SettingsAboutOpenSourceScreen
 import nl.rijksoverheid.mgo.feature.settings.about.safety.SettingsAboutSafetyScreen
 import nl.rijksoverheid.mgo.feature.settings.advanced.SettingsAdvancedScreen
@@ -81,7 +82,18 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
         onNavigateToAccessibility = {
           navController.navigate(DashboardNavigation.Settings.About.Accessibility)
         },
+        onNavigateToVersions = {
+          navController.navigate(DashboardNavigation.Settings.About.Versions)
+        },
         onNavigateBack = { navController.popBackStack() },
+      )
+    }
+
+    mgoComposableExt<DashboardNavigation.Settings.About.Versions> {
+      SettingsHomeVersionsScreen(
+        onNavigateBack = {
+          navController.popBackStack()
+        },
       )
     }
 

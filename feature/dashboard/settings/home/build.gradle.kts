@@ -12,6 +12,7 @@ dependencies {
   implementation(projects.data.pincode)
   implementation(projects.data.localisation)
   implementation(projects.component.organization)
+  implementation(projects.data.healthCategories)
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.pincode))
   testImplementation(testFixtures(projects.data.localisation))

@@ -92,6 +92,9 @@ sealed class DashboardNavigation {
       data object Home : About()
 
       @Serializable
+      data object Versions : About()
+
+      @Serializable
       data object Safety : About()
 
       @Serializable

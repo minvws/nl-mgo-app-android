@@ -59,9 +59,9 @@ internal class SettingsHomeVersionsScreenViewModel
       // Update view state with contents of json
       _viewState.update { viewState ->
         viewState.copy(
-          hcimPackageVersion = hcimPackageJson["version"]?.jsonPrimitive?.content,
-          hcimPackageDate = hcimPackageJson["created"]?.jsonPrimitive?.content,
-          hcimPackageGitRef = hcimPackageJson["git_ref"]?.jsonPrimitive?.content?.take(7),
+          hcimPackageVersion = hcimPackageJson["version"]!!.jsonPrimitive.content,
+          hcimPackageDate = hcimPackageJson["created"]!!.jsonPrimitive.content,
+          hcimPackageGitRef = hcimPackageJson["git_ref"]!!.jsonPrimitive.content.take(7),
         )
       }
     }
@@ -76,9 +76,9 @@ internal class SettingsHomeVersionsScreenViewModel
       // Update view state with contents of json
       _viewState.update { viewState ->
         viewState.copy(
-          healthCategoriesConfigVersion = healthCategoriesConfigJson["version"]?.jsonPrimitive?.content,
-          healthCategoriesConfigDate = healthCategoriesConfigJson["created"]?.jsonPrimitive?.content,
-          healthCategoriesConfigGitRef = healthCategoriesConfigJson["git_ref"]?.jsonPrimitive?.content?.take(7),
+          healthCategoriesConfigVersion = healthCategoriesConfigJson["version"]!!.jsonPrimitive.content,
+          healthCategoriesConfigDate = healthCategoriesConfigJson["created"]!!.jsonPrimitive.content,
+          healthCategoriesConfigGitRef = healthCategoriesConfigJson["git_ref"]!!.jsonPrimitive.content.take(7),
         )
       }
     }

@@ -155,6 +155,32 @@ class DefaultGetErrorBannerTest {
     }
 
   @Test
+  fun testLoadingBanner() =
+    runTest {
+      // Given: Organization
+      val organizations = listOf(TEST_MGO_ORGANIZATION)
+
+      // Given: Categories
+      val categories = getHealthCategoriesFromDisk().map { groups -> groups.categories }.flatten()
+
+      // Given: Error banner is present
+      getHealthCategoriesBanner.previousBannerState = ErrorBannerState.Error.ServerError(false)
+
+      // Given: Only first request has loaded
+      val requests = getRequests(organizations = organizations, categories = categories)
+      fhirRepositoryRule.getRepository().fetch(request = requests.first(), forceRefresh = true)
+
+      // When: Observing the banner
+      getHealthCategoriesBanner.invoke(organizations = organizations, categories = categories).test {
+        // Then: Banner is emitted
+        assertEquals(
+          ErrorBannerState.Loading,
+          awaitItem(),
+        )
+      }
+    }
+
+  @Test
   fun testLoadedBanner() =
     runTest {
       // Given: Organization

@@ -20,6 +20,7 @@ class PftRepository
     @Named("pftUrl") private val url: String,
   ) {
     private val json = Json.Default
+    private val etag = MutableStateFlow("")
     private val pfts = MutableStateFlow<Map<PftSnomedCode, Pft>>(emptyMap())
 
     fun sync() {
@@ -38,6 +39,7 @@ class PftRepository
             val responseMap: Map<String, Pft> = json.decodeFromString(responseJson)
             val pfts: Map<PftSnomedCode, Pft> = responseMap.mapKeys { (key, _) -> PftSnomedCode(key) }
             this.pfts.tryEmit(pfts)
+            this.etag.tryEmit(response.headers["ETag"] ?: "")
           }
           Timber.d("Successfully fetched Patient Friendly Terms")
         }.onFailure { error ->
@@ -46,4 +48,6 @@ class PftRepository
     }
 
     fun observe(snomedCode: PftSnomedCode): Flow<Pft> = pfts.mapNotNull { pvts -> pvts[snomedCode] }
+
+    fun observeETag() = etag
   }

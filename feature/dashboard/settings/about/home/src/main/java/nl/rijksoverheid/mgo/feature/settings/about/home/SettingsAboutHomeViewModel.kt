@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nl.rijksoverheid.mgo.data.hcimParser.version.GetHcimParserVersion
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import javax.inject.Inject
@@ -17,7 +16,6 @@ internal class SettingsAboutHomeViewModel
   constructor(
     @Named("versionCode") versionCode: Int,
     @Named("versionName") versionName: String,
-    getHcimParserVersion: GetHcimParserVersion,
     environmentRepository: EnvironmentRepository,
   ) : ViewModel() {
     private val _viewState =
@@ -25,7 +23,6 @@ internal class SettingsAboutHomeViewModel
         SettingsAboutHomeScreenViewState(
           appVersionCode = versionCode,
           appVersionName = versionName,
-          hcimParserVersion = getHcimParserVersion(),
           privacyUrl =
             when (environmentRepository.getEnvironment()) {
               is Environment.Acc -> CopyR.string.privacy_link_acc

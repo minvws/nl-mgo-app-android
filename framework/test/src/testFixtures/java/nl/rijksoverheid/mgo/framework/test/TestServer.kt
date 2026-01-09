@@ -70,8 +70,15 @@ class TestServer {
    *
    * @param json The json body to return.
    */
-  fun enqueueJson(json: TestServerBody) {
-    server?.enqueue(MockResponse().setBody(json))
+  fun enqueueJson(
+    json: TestServerBody,
+    headers: List<Pair<String, String>> = listOf(),
+  ) {
+    val mockResponse = MockResponse().setBody(json)
+    for (header in headers) {
+      mockResponse.setHeader(header.first, header.second)
+    }
+    server?.enqueue(mockResponse)
   }
 
   /**

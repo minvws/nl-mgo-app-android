@@ -119,9 +119,6 @@ private fun EditOverviewBottomSheetContent(
     },
   ) { innerPadding ->
     LazyColumn(modifier = Modifier.padding(innerPadding), contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
-      item {
-        Text(text = stringResource(CopyR.string.edit_overview_favorites_heading), style = MaterialTheme.typography.headlineSmall)
-      }
       if (favorites.isEmpty()) {
         item {
           FavoriteEmptyCard(modifier = Modifier.padding(top = 8.dp))

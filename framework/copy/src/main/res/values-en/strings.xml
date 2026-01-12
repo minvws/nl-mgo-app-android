@@ -272,7 +272,6 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="overview.menu">menu</string>
   <string name="edit_overview.heading">Vaak gebruikt</string>
   <string name="edit_overview.save">Opslaan</string>
-  <string name="edit_overview.favorites.heading">Vaak gebruikt</string>
   <string name="edit_overview.favorites.empty">U heeft nog geen onderdelen toegevoegd. Klik op het plusje (+) om iets toe te voegen.</string>
   <string name="hc_problems.heading">Medische klachten</string>
   <string name="hc_problems.subheading">Klachten waar u last van heeft. Zoals pijn of ziekte.</string>

@@ -98,33 +98,37 @@ internal fun HealthCategoriesListItemContent(
           fontWeight = FontWeight.Bold,
           color = MaterialTheme.colorScheme.LabelsPrimary(),
         )
-        val subheadingText =
-          if (listItemState == HealthCategoriesListItemState.NO_DATA) {
-            stringResource(CopyR.string.common_no_data)
-          } else {
-            LocalContext.current.getString(category.subheading)
-          }
         Text(
           modifier = Modifier.padding(top = 4.dp),
-          text = subheadingText,
+          text = LocalContext.current.getString(category.subheading),
           style =
             MaterialTheme.typography
               .bodyMedium,
           color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
       }
-      if (listItemState == HealthCategoriesListItemState.LOADING) {
-        CircularProgressIndicator(
-          modifier =
-            Modifier
-              .padding(start = 8.dp)
-              .size(24.dp),
-          strokeWidth = 2.dp,
-          trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
-          color = MaterialTheme.colorScheme.SymbolsSecondary(),
-        )
-      } else {
-        Box(modifier = Modifier.size(24.dp))
+      when (listItemState) {
+        HealthCategoriesListItemState.LOADING -> {
+          CircularProgressIndicator(
+            modifier =
+              Modifier
+                .padding(start = 8.dp)
+                .size(24.dp),
+            strokeWidth = 2.dp,
+            trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.SymbolsSecondary(),
+          )
+        }
+        HealthCategoriesListItemState.LOADED -> {
+          Box(modifier = Modifier.size(24.dp))
+        }
+        HealthCategoriesListItemState.NO_DATA -> {
+          Text(
+            text = stringResource(CopyR.string.common_no_data),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.LabelsSecondary(),
+          )
+        }
       }
     }
     if (hasDivider) {

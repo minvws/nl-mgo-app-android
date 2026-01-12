@@ -28,4 +28,11 @@ internal class HealthCategoriesListItemSnapshotTest {
       HealthCategoriesListItemLoadedPreview()
     }
   }
+
+  @Test
+  fun hasError() {
+    snapshotTestRule.snapshots {
+      HealthCategoriesListItemHasErrorPreview()
+    }
+  }
 }

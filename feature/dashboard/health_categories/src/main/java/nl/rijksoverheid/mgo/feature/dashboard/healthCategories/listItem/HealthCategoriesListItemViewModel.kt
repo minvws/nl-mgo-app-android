@@ -10,12 +10,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
+import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
@@ -32,6 +33,7 @@ internal class HealthCategoriesListItemViewModel
     private val getRequests: GetRequests,
     private val organizationRepository: OrganizationRepository,
     private val fhirRepository: FhirRepository,
+    private val observeFhirResponses: ObserveFhirResponses,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
   ) : ViewModel() {
     @AssistedFactory
@@ -64,30 +66,40 @@ internal class HealthCategoriesListItemViewModel
             }
           }
 
-        organizationsFlow.collectLatest { organizations ->
-          // Always start with loading state whenever a organization has been added
-          _listItemState.update { HealthCategoriesListItemState.LOADING }
+        organizationsFlow
+          .flatMapLatest { organizations ->
 
-          // Get requests
-          val requests = getRequests(categories = listOf(category), organizations = organizations)
+            _listItemState.update { HealthCategoriesListItemState.LOADING }
 
-          // Get response flows to observe
-          val responseFlows = requests.map { request -> fhirRepository.observe(request) }
+            val endpoints =
+              getRequests(
+                organizations = organizations,
+                categories = listOf(category),
+              )
 
-          if (responseFlows.isEmpty()) {
-            _listItemState.update { HealthCategoriesListItemState.NO_DATA }
-          } else {
-            // Observe the fhir responses
-            combine(responseFlows) { responses -> responses.toList() }.collectLatest { responses ->
-              val allEmpty = responses.filterIsInstance<FhirResponse.Success>().all { response -> response.isEmpty }
-              if (allEmpty) {
-                _listItemState.update { HealthCategoriesListItemState.NO_DATA }
-              } else {
-                _listItemState.update { HealthCategoriesListItemState.LOADED }
+            val fhirResponses =
+              observeFhirResponses(
+                categories = listOf(category),
+                organizations = organizations,
+              )
+
+            fhirResponses.map { responses ->
+              val isLoading = responses.size != endpoints.size
+              val hasError = responses.any { it is FhirResponse.Error }
+              val allEmpty =
+                responses
+                  .filterIsInstance<FhirResponse.Success>()
+                  .all { it.isEmpty }
+              when {
+                isLoading -> HealthCategoriesListItemState.LOADING
+                hasError -> HealthCategoriesListItemState.HAS_ERROR
+                allEmpty -> HealthCategoriesListItemState.NO_DATA
+                else -> HealthCategoriesListItemState.LOADED
               }
             }
+          }.collectLatest { state ->
+            _listItemState.update { state }
           }
-        }
       }
     }
   }

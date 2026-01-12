@@ -87,8 +87,7 @@ class DefaultGetErrorBannerTest {
         fhirRepositoryRule.enqueueIoException()
         fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
       }
-      fhirRepositoryRule.enqueueEmptyJson()
-      fhirRepositoryRule.getRepository().fetch(request = requests.first(), forceRefresh = true)
+      fhirRepositoryRule.enqueueEmptyJson(requests.first())
 
       // When: Observing the banner
       getHealthCategoriesBanner.invoke(categories = categories, organizations = organizations).test {
@@ -141,8 +140,7 @@ class DefaultGetErrorBannerTest {
         fhirRepositoryRule.enqueueErrorResponse(request = request, fetch = false)
         fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
       }
-      fhirRepositoryRule.enqueueEmptyJson()
-      fhirRepositoryRule.getRepository().fetch(request = requests.first(), forceRefresh = true)
+      fhirRepositoryRule.enqueueEmptyJson(requests.first())
 
       // When: Observing the banner
       getHealthCategoriesBanner.invoke(organizations = organizations, categories = categories).test {
@@ -192,8 +190,7 @@ class DefaultGetErrorBannerTest {
       // Given: All requests success
       val requests = getRequests(organizations = organizations, categories = categories)
       for (request in requests) {
-        fhirRepositoryRule.enqueueEmptyJson()
-        fhirRepositoryRule.getRepository().fetch(request = request, forceRefresh = true)
+        fhirRepositoryRule.enqueueEmptyJson(request)
       }
 
       // When: Observing the banner

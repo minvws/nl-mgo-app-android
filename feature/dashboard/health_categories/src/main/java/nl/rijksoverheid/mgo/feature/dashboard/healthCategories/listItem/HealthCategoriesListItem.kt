@@ -35,9 +35,11 @@ import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoriesListItemTestTag {
@@ -98,33 +100,43 @@ internal fun HealthCategoriesListItemContent(
           fontWeight = FontWeight.Bold,
           color = MaterialTheme.colorScheme.LabelsPrimary(),
         )
-        val subheadingText =
-          if (listItemState == HealthCategoriesListItemState.NO_DATA) {
-            stringResource(CopyR.string.common_no_data)
-          } else {
-            LocalContext.current.getString(category.subheading)
-          }
         Text(
           modifier = Modifier.padding(top = 4.dp),
-          text = subheadingText,
+          text = LocalContext.current.getString(category.subheading),
           style =
             MaterialTheme.typography
               .bodyMedium,
           color = MaterialTheme.colorScheme.LabelsSecondary(),
         )
       }
-      if (listItemState == HealthCategoriesListItemState.LOADING) {
-        CircularProgressIndicator(
-          modifier =
-            Modifier
-              .padding(start = 8.dp)
-              .size(24.dp),
-          strokeWidth = 2.dp,
-          trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
-          color = MaterialTheme.colorScheme.SymbolsSecondary(),
-        )
-      } else {
-        Box(modifier = Modifier.size(24.dp))
+      when (listItemState) {
+        HealthCategoriesListItemState.LOADING -> {
+          CircularProgressIndicator(
+            modifier =
+              Modifier
+                .padding(start = 8.dp)
+                .size(24.dp),
+            strokeWidth = 2.dp,
+            trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.SymbolsSecondary(),
+          )
+        }
+        HealthCategoriesListItemState.LOADED -> {
+          Box(modifier = Modifier.size(24.dp))
+        }
+        HealthCategoriesListItemState.NO_DATA -> {
+          Text(
+            text = stringResource(CopyR.string.common_no_data),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.LabelsSecondary(),
+          )
+        }
+
+        HealthCategoriesListItemState.HAS_ERROR -> {
+          Box(modifier = Modifier.padding(start = 8.dp).size(24.dp)) {
+            Icon(painter = painterResource(R.drawable.ic_retry), contentDescription = null, tint = MaterialTheme.colorScheme.SymbolsPrimary())
+          }
+        }
       }
     }
     if (hasDivider) {
@@ -169,6 +181,18 @@ internal fun HealthCategoriesListItemLoadedPreview() {
     HealthCategoriesListItemContent(
       category = TEST_HEALTH_CATEGORY_PROBLEMS,
       listItemState = HealthCategoriesListItemState.LOADED,
+      hasDivider = false,
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesListItemHasErrorPreview() {
+  MgoTheme {
+    HealthCategoriesListItemContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      listItemState = HealthCategoriesListItemState.HAS_ERROR,
       hasDivider = false,
     )
   }

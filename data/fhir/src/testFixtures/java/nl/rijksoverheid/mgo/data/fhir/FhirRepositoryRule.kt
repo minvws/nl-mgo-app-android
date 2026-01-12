@@ -66,8 +66,17 @@ class FhirRepositoryRule(
     }
   }
 
-  fun enqueueEmptyJson() {
+  suspend fun enqueueEmptyJson(
+    request: FhirRequest,
+    fetch: Boolean = true,
+  ) {
     testServerRule.testServer.enqueueJson("{}")
+    if (fetch) {
+      repository.fetch(
+        request = request,
+        forceRefresh = true,
+      )
+    }
   }
 
   fun enqueueIoException() {

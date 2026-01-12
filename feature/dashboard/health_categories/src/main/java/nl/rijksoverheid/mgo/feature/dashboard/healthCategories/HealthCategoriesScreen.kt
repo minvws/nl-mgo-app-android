@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,10 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -49,7 +47,9 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.StatesCritical
@@ -143,13 +143,6 @@ private fun HealthCategoriesScreenContent(
         title = appBarTitle,
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
-        actions = {
-          if (viewState.providers.isNotEmpty() && onShowBottomSheet != null) {
-            IconButton(onShowBottomSheet) {
-              Icon(Icons.Default.MoreHoriz, null)
-            }
-          }
-        },
       )
     },
     content = { contentPadding ->
@@ -241,6 +234,17 @@ private fun LazyListScope.WithProviders(
   banner: ErrorBannerState?,
   onRetry: () -> Unit,
 ) {
+  if (organization == null) {
+    item(key = "subheading") {
+      Text(
+        modifier = Modifier.padding(bottom = 32.dp),
+        text = stringResource(CopyR.string.overview_subheading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.LabelsPrimary(),
+      )
+    }
+  }
+
   item(key = banner.hashCode()) {
     when (banner) {
       null -> {}
@@ -272,37 +276,46 @@ private fun LazyListScope.WithProviders(
   }
 
   if (organization == null) {
-    if (favorites.isEmpty()) {
-      item(key = "favorites_empty") {
-        Column(modifier = Modifier.animateItem()) {
-          Text(
-            modifier = Modifier.padding(bottom = 12.dp),
-            text = stringResource(CopyR.string.overview_favorites_heading),
-            style = MaterialTheme.typography.headlineSmall,
-          )
+    item(key = "favorites_heading") {
+      Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+          modifier = Modifier.weight(1f),
+          text = stringResource(CopyR.string.overview_favorites_heading),
+          style = MaterialTheme.typography.headlineSmall,
+        )
 
-          HealthCategoriesNoFavoriteCard(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp),
-            onClickAddFavorite = onClickAddFavorite,
+        TextButton(
+          onClick = onClickAddFavorite,
+          colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.CategoriesRijkslint()),
+        ) {
+          val buttonText = if (favorites.isEmpty()) CopyR.string.overview_favorites_action_add else CopyR.string.overview_favorites_action_edit
+          Text(
+            text = stringResource(buttonText),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
           )
         }
       }
+    }
+
+    if (favorites.isEmpty()) {
+      item(key = "favorites_empty") {
+        HealthCategoriesNoFavoriteCard(
+          modifier = Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 32.dp).animateItem(),
+        )
+      }
     } else {
       item(key = "favorites") {
-        Column(modifier = Modifier.animateItem()) {
-          Text(
-            modifier = Modifier.padding(bottom = 12.dp),
-            text = stringResource(CopyR.string.overview_favorites_heading),
-            style = MaterialTheme.typography.headlineSmall,
-          )
-
-          FlowRow(modifier = Modifier.padding(bottom = 32.dp), horizontalArrangement = spacedBy(8.dp), verticalArrangement = spacedBy(8.dp)) {
-            favorites.forEach { favorite ->
-              HealthCategoriesFavoriteCard(
-                category = favorite,
-                onClick = { onClickListItem(favorite) },
-              )
-            }
+        FlowRow(
+          modifier = Modifier.padding(top = 2.dp, bottom = 32.dp).animateItem(),
+          horizontalArrangement = spacedBy(8.dp),
+          verticalArrangement = spacedBy(8.dp),
+        ) {
+          favorites.forEach { favorite ->
+            HealthCategoriesFavoriteCard(
+              category = favorite,
+              onClick = { onClickListItem(favorite) },
+            )
           }
         }
       }

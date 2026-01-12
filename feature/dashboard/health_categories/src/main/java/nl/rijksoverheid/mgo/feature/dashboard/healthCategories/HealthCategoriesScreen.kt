@@ -49,6 +49,7 @@ import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.StatesCritical
@@ -233,6 +234,17 @@ private fun LazyListScope.WithProviders(
   banner: ErrorBannerState?,
   onRetry: () -> Unit,
 ) {
+  if (organization == null) {
+    item(key = "subheading") {
+      Text(
+        modifier = Modifier.padding(bottom = 32.dp),
+        text = stringResource(CopyR.string.overview_subheading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.LabelsPrimary(),
+      )
+    }
+  }
+
   item(key = banner.hashCode()) {
     when (banner) {
       null -> {}

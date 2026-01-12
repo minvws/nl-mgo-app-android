@@ -32,7 +32,7 @@
   <string name="add_organization_list.heading">Welke zorgaanbieders wilt u in uw overzicht tonen?</string>
   <string name="add_organization_list.no_results_subheading">U heeft nog geen zorgaanbieders toegevoegd aan deze lijst. U kunt dit nu doen, of later via uw profiel.</string>
   <string name="add_organization_list.subheading">U kunt zelf zorgaanbieders toevoegen of verwijderen. Dit kunt u ook later in uw profiel doen.</string>
-  <string name="overview.heading">Overzicht</string>
+  <string name="overview.heading">Welkom</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Uw diagnoses en gezondheidsklachten, vastgesteld door uw zorgaanbieder.</string>
   <string name="proposition.statement_1"><![CDATA[Uw gegevens worden <b>beveiligd</b> en via een <b>veilige verbinding</b> opgehaald.]]></string>
@@ -326,7 +326,6 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="common.data_not_retrieved_subheading">We kunnen door een probleem uw gegevens nu niet ophalen.</string>
   <string name="health_category.errornodata.heading">Geen gegevens opgehaald</string>
   <string name="health_category.errornodata.subheading">Dit komt door een storing bij ons. Probeer het later opnieuw.</string>
-  <string name="overview.heading.welcome">Welkom</string>
   <string name="overview.favorites.add">Aanpassen</string>
   <string name="overview_favorites_action_edit">Aanpassen</string>
 </resources>

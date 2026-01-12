@@ -35,9 +35,11 @@ import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.component.theme.SymbolsPrimary
 import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.R
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoriesListItemTestTag {
@@ -129,6 +131,12 @@ internal fun HealthCategoriesListItemContent(
             color = MaterialTheme.colorScheme.LabelsSecondary(),
           )
         }
+
+        HealthCategoriesListItemState.HAS_ERROR -> {
+          Box(modifier = Modifier.padding(start = 8.dp).size(24.dp)) {
+            Icon(painter = painterResource(R.drawable.ic_retry), contentDescription = null, tint = MaterialTheme.colorScheme.SymbolsPrimary())
+          }
+        }
       }
     }
     if (hasDivider) {
@@ -173,6 +181,18 @@ internal fun HealthCategoriesListItemLoadedPreview() {
     HealthCategoriesListItemContent(
       category = TEST_HEALTH_CATEGORY_PROBLEMS,
       listItemState = HealthCategoriesListItemState.LOADED,
+      hasDivider = false,
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun HealthCategoriesListItemHasErrorPreview() {
+  MgoTheme {
+    HealthCategoriesListItemContent(
+      category = TEST_HEALTH_CATEGORY_PROBLEMS,
+      listItemState = HealthCategoriesListItemState.HAS_ERROR,
       hasDivider = false,
     )
   }

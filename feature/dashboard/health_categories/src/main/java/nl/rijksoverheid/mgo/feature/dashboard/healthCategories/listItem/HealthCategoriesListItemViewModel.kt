@@ -85,17 +85,14 @@ internal class HealthCategoriesListItemViewModel
 
             fhirResponses.map { responses ->
               val isLoading = responses.size != endpoints.size
+              val hasError = responses.any { it is FhirResponse.Error }
               val allEmpty =
                 responses
                   .filterIsInstance<FhirResponse.Success>()
                   .all { it.isEmpty }
-              val test1 = responses
-              val test2 = endpoints
-              test1
-              test2
-
               when {
                 isLoading -> HealthCategoriesListItemState.LOADING
+                hasError -> HealthCategoriesListItemState.HAS_ERROR
                 allEmpty -> HealthCategoriesListItemState.NO_DATA
                 else -> HealthCategoriesListItemState.LOADED
               }

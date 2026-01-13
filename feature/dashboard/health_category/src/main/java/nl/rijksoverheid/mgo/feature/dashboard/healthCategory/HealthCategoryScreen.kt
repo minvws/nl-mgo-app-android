@@ -283,24 +283,26 @@ private fun LazyListScope.LoadedContent(
   }
 
   for (listItemGroup in listItemsGroup) {
-    item {
-      Text(
-        modifier = Modifier.padding(bottom = 8.dp),
-        text = listItemGroup.heading,
-        style = MaterialTheme.typography.headlineMedium,
-      )
-    }
-    for (listItem in listItemGroup.items) {
+    if (listItemGroup.items.isNotEmpty()) {
       item {
-        HealthCategoryCard(
-          modifier =
-            Modifier
-              .fillMaxWidth()
-              .padding(bottom = 16.dp),
-          title = listItem.title,
-          subtitle = listItem.subtitle,
-          onClick = { onClickListItem(listItem.organization, listItem.mgoResource.referenceId) },
+        Text(
+          modifier = Modifier.padding(bottom = 8.dp),
+          text = listItemGroup.heading,
+          style = MaterialTheme.typography.headlineMedium,
         )
+      }
+      for (listItem in listItemGroup.items) {
+        item {
+          HealthCategoryCard(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            title = listItem.title,
+            subtitle = listItem.subtitle,
+            onClick = { onClickListItem(listItem.organization, listItem.mgoResource.referenceId) },
+          )
+        }
       }
     }
   }

@@ -99,7 +99,7 @@ fun ColorScheme.BackgroundsTertiary(isSystemDarkTheme: Boolean = LocalAppThemePr
 fun ColorScheme.LabelsPrimary(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) White else Black
 
 @Composable
-fun ColorScheme.LabelsSecondary(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Gray300 else Gray500
+fun ColorScheme.LabelsSecondary(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Gray300 else Gray600
 
 @Composable
 fun ColorScheme.LabelsInvert(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Gray900 else White

@@ -323,9 +323,9 @@ private fun LazyListScope.WithProviders(
   }
 
   for (group in groups) {
-    item(key = group.id) {
-      Column(modifier = Modifier.animateItem()) {
-        if (group.categories.isNotEmpty()) {
+    if (group.categories.isNotEmpty()) {
+      item(key = group.id) {
+        Column(modifier = Modifier.animateItem()) {
           Text(
             modifier = Modifier.padding(bottom = 12.dp),
             text = LocalContext.current.getString(group.heading),
@@ -344,10 +344,10 @@ private fun LazyListScope.WithProviders(
           }
         }
       }
-    }
 
-    item {
-      Spacer(modifier = Modifier.height(32.dp))
+      item {
+        Spacer(modifier = Modifier.height(32.dp))
+      }
     }
   }
 

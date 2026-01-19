@@ -222,5 +222,7 @@ dependencies {
   implementation(projects.data.pft)
   implementation(projects.component.organization)
 
+  ksp(libs.kotlin.metadata.jvm)
+
   androidTestUtil("androidx.test.services:test-services:1.4.2")
 }

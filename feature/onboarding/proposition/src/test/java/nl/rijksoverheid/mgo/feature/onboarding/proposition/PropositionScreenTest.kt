@@ -14,7 +14,9 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
+import org.robolectric.annotation.Config
 
+@Config(sdk = [34])
 @RunWith(RobolectricTestRunner::class)
 internal class PropositionScreenTest {
   @get:Rule

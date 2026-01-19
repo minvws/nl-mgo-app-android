@@ -13,7 +13,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.io.File
 
-@Config(qualifiers = "nl-rNL")
+@Config(qualifiers = "nl-rNL", sdk = [34])
 @RunWith(RobolectricTestRunner::class)
 class DefaultPdfGeneratorTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()

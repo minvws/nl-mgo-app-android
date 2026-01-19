@@ -1,52 +1,56 @@
 [versions]
 android-sdk-min = "26"
-android-sdk-target = "35"
-android-sdk-compile = "35"
-agp = "8.10.1"
-kotlin = "2.1.21"
-core-ktx = "1.16.0"
+android-sdk-target = "36"
+android-sdk-compile = "36"
+agp = "8.13.2"
+kotlin = "2.3.0"
+core-ktx = "1.17.0"
 junit = "4.13.2"
 appcompat = "1.7.1"
-material = "1.12.0"
+material = "1.13.0"
 material3 = "1.3.0"
-compose-bom = "2025.06.00"
-compose-activity = "1.10.1"
+compose-bom = "2026.01.00"
+compose-activity = "1.12.2"
 compose-compiler = "1.5.15"
-compose-navigation = "2.8.9"
-compose-lifecycle = "2.9.1"
+compose-navigation = "2.9.6"
+compose-lifecycle = "2.10.0"
 compose-runtime = "1.10.0"
-google-services = "4.4.2"
-firebase-appdistribution = "5.1.1"
-ktlint = "12.1.0"
-paparazzi = "1.3.5"
-dagger-hilt = "2.56.2"
-dagger-hilt-compose-navigation = "1.2.0"
-ksp = "2.1.21-2.0.2"
+google-services = "4.4.4"
+firebase-appdistribution = "5.2.0"
+ktlint = "14.0.1"
+paparazzi = "2.0.0-alpha02"
+dagger-hilt = "2.57.2"
+dagger-hilt-compose-navigation = "1.3.0"
+ksp = "2.3.4"
 dagger = "5.0.1"
-okhttp = "4.12.0"
+okhttp = "5.3.2"
 chucker = "4.2.0"
 kotlinx-coroutines = "1.10.2"
-turbine = "1.1.0"
-androidx-browser = "1.8.0"
-datastore = "1.1.7"
-androidx-test-core = "1.6.1"
-androidx-junit = "1.2.1"
-androidx-test-runner = "1.6.2"
-okhttp-mockwebserver = "4.12.0"
-okio = "3.11.0"
-espresso-intents = "3.6.1"
+turbine = "1.2.1"
+androidx-browser = "1.9.0"
+datastore = "1.2.0"
+androidx-test-core = "1.7.0"
+androidx-junit = "1.3.0"
+androidx-test-runner = "1.7.0"
+okio = "3.16.4"
+espresso-intents = "3.7.0"
 sonarqube = "6.0.1.5171"
 lokalise = "5.2.0"
-json = "20210307"
-rootbeer = "0.1.0"
-mockk = "1.13.11"
+json = "20251224"
+rootbeer = "0.1.1"
+mockk = "1.14.7"
 j2v8 = "6.2.1-16kb.2"
 bcrypt = "0.4"
 biometric = "1.4.0-alpha02"
-security-crypto = "1.0.0"
-kotlinx-serialization-json = "1.8.0"
-kover = "0.9.1"
-robolectric = "4.14.1"
+security-crypto = "1.1.0"
+kotlinx-serialization-json = "1.9.0"
+kover = "0.9.4"
+
+# See: https://github.com/cashapp/paparazzi/issues/1979
+# Paparazzi and robolectric conflict. To fix all robolectric test are run under sdk 34.
+# When there is a new version of robolectric available, see if we can remove this.
+robolectric = "4.16"
+
 lifecycle-process = "2.9.1"
 json-kotlin-schema-codegen = "0.115"
 ui-test-junit4-android = "1.8.2"
@@ -57,6 +61,7 @@ zoomable = "2.8.0"
 androidx-startup-runtime = "1.2.0"
 reorderable = "3.0.0"
 quickjs-wrapper = "3.2.3"
+kotlin-metadata-jvm = "2.3.0-Beta1"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -95,7 +100,7 @@ datastore-preference = { group = "androidx.datastore", name = "datastore-prefere
 androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test-core" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
-okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp-mockwebserver" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso-intents" }
 lokalise = { group = "com.lokalise", name = "lokalise-api-java", version.ref = "lokalise" }
@@ -104,6 +109,7 @@ rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootb
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 quickjs-wrapper-java = { group = "wang.harlon.quickjs", name = "wrapper-java", version.ref = "quickjs-wrapper" }
 quickjs-wrapper-android = { group = "wang.harlon.quickjs", name = "wrapper-android", version.ref = "quickjs-wrapper" }
+kotlin-metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "kotlin-metadata-jvm" }
 
 # Google will start forcing 16 KB page sizes (https://developer.android.com/guide/practices/page-sizes#kotlin).
 # The eclipse j2v8 library is not 16 KB page aligned, but somebody made a fork that is.

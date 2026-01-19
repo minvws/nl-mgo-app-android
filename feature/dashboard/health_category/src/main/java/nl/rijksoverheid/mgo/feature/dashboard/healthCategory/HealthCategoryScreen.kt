@@ -155,7 +155,7 @@ private fun HealthCategoryScreenContent(
         actions = {
           if (viewState.listItemsState is HealthCategoryScreenViewState.ListItemsState.Loaded) {
             IconButton(onGeneratePdf) {
-              Icon(Icons.Outlined.PictureAsPdf, null)
+              Icon(painter = painterResource(R.drawable.ic_download), null)
             }
           }
         },

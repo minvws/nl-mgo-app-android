@@ -2,8 +2,8 @@
 android-sdk-min = "26"
 android-sdk-target = "35"
 android-sdk-compile = "35"
-agp = "8.10.1"
-kotlin = "2.1.21"
+agp = "8.13.2"
+kotlin = "2.3.0"
 core-ktx = "1.16.0"
 junit = "4.13.2"
 appcompat = "1.7.1"
@@ -19,9 +19,9 @@ google-services = "4.4.2"
 firebase-appdistribution = "5.1.1"
 ktlint = "12.1.0"
 paparazzi = "1.3.5"
-dagger-hilt = "2.56.2"
-dagger-hilt-compose-navigation = "1.2.0"
-ksp = "2.1.21-2.0.2"
+dagger-hilt = "2.57.2"
+dagger-hilt-compose-navigation = "1.3.0"
+ksp = "2.3.4"
 dagger = "5.0.1"
 okhttp = "4.12.0"
 chucker = "4.2.0"
@@ -57,6 +57,7 @@ zoomable = "2.8.0"
 androidx-startup-runtime = "1.2.0"
 reorderable = "3.0.0"
 quickjs-wrapper = "3.2.3"
+kotlin-metadata-jvm = "2.3.0-Beta1"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -104,6 +105,7 @@ rootbeer = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootb
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 quickjs-wrapper-java = { group = "wang.harlon.quickjs", name = "wrapper-java", version.ref = "quickjs-wrapper" }
 quickjs-wrapper-android = { group = "wang.harlon.quickjs", name = "wrapper-android", version.ref = "quickjs-wrapper" }
+kotlin-metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "kotlin-metadata-jvm" }
 
 # Google will start forcing 16 KB page sizes (https://developer.android.com/guide/practices/page-sizes#kotlin).
 # The eclipse j2v8 library is not 16 KB page aligned, but somebody made a fork that is.

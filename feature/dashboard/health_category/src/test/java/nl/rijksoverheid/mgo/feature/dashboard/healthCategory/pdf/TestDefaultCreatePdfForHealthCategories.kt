@@ -18,10 +18,12 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
 
+@Config(sdk = [34])
 @RunWith(RobolectricTestRunner::class)
 internal class TestDefaultCreatePdfForHealthCategories {
   private val uiSchemaParser = mockk<UiSchemaParser>()

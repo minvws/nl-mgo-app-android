@@ -4,13 +4,10 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.fhir.FhirRequest
-import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
-import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
@@ -30,18 +27,13 @@ class ListItemGroupMapperTest {
   private val jsEngineRepository = JsEngineRepository(jvmQuickJsRepository)
   private val mgoResourceParser = MgoResourceParser(jsEngineRepository)
   private val uiSchemaParser = UiSchemaParser(jsEngineRepository)
-  private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val mgoByteArrayStorage = MemoryMgoByteArrayStorage()
   private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = mgoByteArrayStorage)
   private val mapper =
     ListItemGroupMapper(
       context = context,
-      mgoResourceParser = mgoResourceParser,
       uiSchemaParser = uiSchemaParser,
-      getDataSetsFromDisk = getDataSetsFromDisk,
-      organizationRepository = organizationRepository,
-      mgoByteArrayStorage = mgoByteArrayStorage,
     )
 
   @Before
@@ -61,61 +53,41 @@ class ListItemGroupMapperTest {
       val category = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten().first { category -> category.id == "lifestyle" }
 
       // Given: Five fhir responses that are part of the lifestyle category are cached
-      val livingSitutationJson = readResourceFile("livingSituation.json").toByteArray()
-      mgoByteArrayStorage.save("livingSituation.json", livingSitutationJson)
-      val alcoholUseJson = readResourceFile("alcoholUse.json").toByteArray()
-      mgoByteArrayStorage.save("alcoholUse.json", alcoholUseJson)
-      val drugUseJson = readResourceFile("drugUse.json").toByteArray()
-      mgoByteArrayStorage.save("drugUse.json", drugUseJson)
-      val tobaccoUseJson = readResourceFile("tobaccoUse.json").toByteArray()
-      mgoByteArrayStorage.save("tobaccoUse.json", tobaccoUseJson)
-      val nutritionAdvice = readResourceFile("nutritionAdvice.json").toByteArray()
-      mgoByteArrayStorage.save("nutritionAdvice.json", nutritionAdvice)
+      val livingSitutationJson = readResourceFile("livingSituation.json")
+      mgoByteArrayStorage.save("livingSituation.json", livingSitutationJson.toByteArray())
+      val alcoholUseJson = readResourceFile("alcoholUse.json")
+      mgoByteArrayStorage.save("alcoholUse.json", alcoholUseJson.toByteArray())
+      val drugUseJson = readResourceFile("drugUse.json")
+      mgoByteArrayStorage.save("drugUse.json", drugUseJson.toByteArray())
+      val tobaccoUseJson = readResourceFile("tobaccoUse.json")
+      mgoByteArrayStorage.save("tobaccoUse.json", tobaccoUseJson.toByteArray())
+      val nutritionAdviceJson = readResourceFile("nutritionAdvice.json")
+      mgoByteArrayStorage.save("nutritionAdvice.json", nutritionAdviceJson.toByteArray())
 
-      val fhirRequest =
-        FhirRequest(
-          organizationId = "1",
-          dataServiceId = "48",
-          endpointId = "1",
-          medmijId = "",
-          endpointPath = "",
-          resourceEndpoint = "",
-          fhirVersion = FhirVersion.R3,
-        )
-      val fhirResponses =
+      val livingSitutationMgoResources = mgoResourceParser(fhirResponse = livingSitutationJson, fhirVersion = FhirVersion.R3)
+      val alcoholUseMgoResources = mgoResourceParser(fhirResponse = alcoholUseJson, fhirVersion = FhirVersion.R3)
+      val drugUseMgoResources = mgoResourceParser(fhirResponse = drugUseJson, fhirVersion = FhirVersion.R3)
+      val tobaccoUseMgoResources = mgoResourceParser(fhirResponse = tobaccoUseJson, fhirVersion = FhirVersion.R3)
+      val nutritionAdviceResources = mgoResourceParser(fhirResponse = nutritionAdviceJson, fhirVersion = FhirVersion.R3)
+      val mgoResources =
         listOf(
-          FhirResponse.Success(
-            request = fhirRequest,
-            cacheKey = "livingSituation.json",
-            isEmpty = false,
-          ),
-          FhirResponse.Success(
-            request = fhirRequest,
-            cacheKey = "alcoholUse.json",
-            isEmpty = false,
-          ),
-          FhirResponse.Success(
-            request = fhirRequest,
-            cacheKey = "drugUse.json",
-            isEmpty = false,
-          ),
-          FhirResponse.Success(
-            request = fhirRequest,
-            cacheKey = "tobaccoUse.json",
-            isEmpty = false,
-          ),
-          FhirResponse.Success(
-            request = fhirRequest,
-            cacheKey = "nutritionAdvice.json",
-            isEmpty = false,
-          ),
-        )
+          livingSitutationMgoResources,
+          alcoholUseMgoResources,
+          drugUseMgoResources,
+          tobaccoUseMgoResources,
+          nutritionAdviceResources,
+        ).flatten()
+
+      val mgoResourcesWithOrganization =
+        mgoResources.map { mgoResource ->
+          MgoResourceWithOrganization(mgoResource = mgoResource, organization = TEST_MGO_ORGANIZATION)
+        }
 
       // When: Mapping to groups
       val groups =
         mapper.invoke(
           category = category,
-          fhirResponses = fhirResponses,
+          mgoResourcesWithOrganization = mgoResourcesWithOrganization,
         )
 
       // Then: Groups are returned with mgo resources

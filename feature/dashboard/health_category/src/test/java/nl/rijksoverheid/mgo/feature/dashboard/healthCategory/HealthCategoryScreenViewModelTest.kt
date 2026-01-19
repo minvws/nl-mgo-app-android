@@ -62,15 +62,19 @@ class HealthCategoryScreenViewModelTest {
   private val listItemGroupMapper =
     ListItemGroupMapper(
       context = context,
-      mgoResourceParser = mgoResourceParser,
       uiSchemaParser = uiSchemaParser,
-      organizationRepository = organizationRepository,
-      getDataSetsFromDisk = getDataSetsFromDisk,
-      mgoByteArrayStorage = byteArrayStorage,
     )
   private val mgoResourceStore = MgoResourceStore()
   private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
-  private val listItemStateMapper = ListItemStateMapper(listItemGroupMapper = listItemGroupMapper, mgoResourceStore = mgoResourceStore)
+  private val listItemStateMapper =
+    ListItemStateMapper(
+      listItemGroupMapper = listItemGroupMapper,
+      mgoResourceStore = mgoResourceStore,
+      mgoResourceParser = mgoResourceParser,
+      organizationRepository = organizationRepository,
+      mgoByteArrayStorage = byteArrayStorage,
+      getDataSetsFromDisk = getDataSetsFromDisk,
+    )
   private lateinit var observeFhirResponses: ObserveFhirResponses
   private lateinit var getErrorBanner: GetErrorBanner
 

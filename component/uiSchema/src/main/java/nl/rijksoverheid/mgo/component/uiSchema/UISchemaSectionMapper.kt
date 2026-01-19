@@ -27,16 +27,19 @@ class UISchemaSectionMapper
         )
       }
 
-    private fun UiElement.toRow(): UISchemaRow? =
-      when (this) {
-        is DownloadBinary -> mapDownloadBinary(this)
-        is DownloadLink -> mapDownloadLink(this)
-        is MultipleGroupedValues -> mapMultipleGroupedValues(this)
-        is MultipleValues -> mapMultipleValues(this)
-        is ReferenceLink -> mapReferenceLink(this)
-        is ReferenceValue -> mapReferenceValue(this)
-        is SingleValue -> mapSingleValue(this)
-      }
+    private fun UiElement.toRow(): UISchemaRow? {
+      val test =
+        when (this) {
+          is DownloadBinary -> mapDownloadBinary(this)
+          is DownloadLink -> mapDownloadLink(this)
+          is MultipleGroupedValues -> mapMultipleGroupedValues(this)
+          is MultipleValues -> mapMultipleValues(this)
+          is ReferenceLink -> mapReferenceLink(this)
+          is ReferenceValue -> mapReferenceValue(this)
+          is SingleValue -> mapSingleValue(this)
+        }
+      return test
+    }
 
     private fun mapDownloadBinary(uiElement: DownloadBinary): UISchemaRow {
       val heading = uiElement.label

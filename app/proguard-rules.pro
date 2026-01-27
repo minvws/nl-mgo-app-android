@@ -46,7 +46,3 @@
 # Required for layout (tables, paragraphs, document model)
 -keep class com.itextpdf.layout.** { *; }
 
-# Keep R classes for dynamic resource lookup
--keep class **.R$string { *; }
--keep class **.R { *; }
-

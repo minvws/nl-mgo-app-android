@@ -15,21 +15,14 @@ class HealthCategoriesPlugin : Plugin<Project> {
       downloadGithubArtifact(workflowId = "187469215", workingDir = workingDir)
 
       // Step 2: Move files
-      val destinationHealthCategoriesFileMain = File(project.rootDir, "data/healthCategories/src/main/assets/health-categories.json")
-      target.moveFiles(workingDir, destinationHealthCategoriesFileMain)
+      target.moveFiles(workingDir)
 
       // Step 3: Clean up
       workingDir.deleteRecursively()
-
-      // Step 4: Generate keep.xml
-      target.generateKeepXml(healthCategoriesJsonFile = destinationHealthCategoriesFileMain)
     }
   }
 
-  private fun Project.moveFiles(
-    workingDir: File,
-    destinationHealthCategoriesFileMain: File,
-  ) {
+  private fun Project.moveFiles(workingDir: File) {
     // Move version.json to correct location
     val targetVersionFile = File(workingDir, "version.json")
     println("Downloaded health categories configuration files. Version: ${targetVersionFile.readText()}")
@@ -40,6 +33,7 @@ class HealthCategoriesPlugin : Plugin<Project> {
 
     // Move health-categories.json to correct location
     val targetHealthCategoriesFile = File(workingDir, "health-categories.json")
+    val destinationHealthCategoriesFileMain = File(project.rootDir, "data/healthCategories/src/main/assets/health-categories.json")
     val destinationHealthCategoriesFileTestFixtures = File(project.rootDir, "data/healthCategories/src/testFixtures/resources/health-categories.json")
     targetHealthCategoriesFile.copyTo(destinationHealthCategoriesFileMain, overwrite = true)
     targetHealthCategoriesFile.copyTo(destinationHealthCategoriesFileTestFixtures, overwrite = true)
@@ -52,31 +46,6 @@ class HealthCategoriesPlugin : Plugin<Project> {
     copyDirectoryRecursively(targetDataServicesFile, destinationDataServicesFileMain)
     copyDirectoryRecursively(targetDataServicesFile, destinationDataServicesFileTest)
     copyDirectoryRecursively(targetDataServicesFile, destinationDataServicesFileTestFixtures)
-  }
-
-  /**
-   * Dynamically referenced string resources in `health-categories.json` are not directly
-   * used in code, so R8/ProGuard considers them unused and may remove them during minification.
-   *
-   * This function generates a `keep.xml` file containing all string references from
-   * `health-categories.json` to ensure these resources are preserved in release builds.
-   */
-  private fun Project.generateKeepXml(healthCategoriesJsonFile: File) {
-    val jsonString = healthCategoriesJsonFile.readText()
-    val json = JSONArray(jsonString)
-    val stringResources = collectStringResources(json)
-    val keepXmlFile = File(project.rootDir, "app/src/main/res/raw/keep.xml")
-    val xmlContent =
-      buildString {
-        append("""<?xml version="1.0" encoding="utf-8"?>""")
-        append("\n<resources xmlns:tools=\"http://schemas.android.com/tools\" tools:keep=\"")
-        stringResources.forEachIndexed { index, stringResource ->
-          append("@string/$stringResource")
-          if (index < stringResources.size - 1) append(",")
-        }
-        append("\" />\n")
-      }
-    keepXmlFile.writeText(xmlContent)
   }
 }
 
@@ -96,33 +65,4 @@ private fun copyDirectoryRecursively(
   } else {
     source.copyTo(destination, overwrite = true)
   }
-}
-
-private fun collectStringResources(json: Any): List<String> {
-  val results = mutableListOf<String>()
-
-  fun recurse(node: Any) {
-    when (node) {
-      is JSONObject -> {
-        node.keys().forEach { key ->
-          val value = node.get(key)
-          if (key == "heading" || key == "subheading") {
-            if (value is String) {
-              results.add(value)
-            }
-          }
-          // Recurse deeper
-          recurse(value)
-        }
-      }
-      is JSONArray -> {
-        for (i in 0 until node.length()) {
-          recurse(node.get(i))
-        }
-      }
-    }
-  }
-
-  recurse(json)
-  return results
 }

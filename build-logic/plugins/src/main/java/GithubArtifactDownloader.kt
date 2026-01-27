@@ -30,7 +30,7 @@ fun downloadGithubArtifact(
 
   val workFlowsResponse = client.newCall(workflowsRequest).execute()
   if (!workFlowsResponse.isSuccessful) {
-    throw IllegalStateException("Failed to download Fhir Parser: ${workFlowsResponse.body?.string()}")
+    throw IllegalStateException("Failed to download github artifact: ${workFlowsResponse.body?.string()}")
   }
 
   val workflowResponseJson = JSONObject(workFlowsResponse.body!!.string())
@@ -47,7 +47,7 @@ fun downloadGithubArtifact(
 
   val artifactsResponse = client.newCall(artifactsRequest).execute()
   if (!artifactsResponse.isSuccessful) {
-    throw IllegalStateException("Failed to download Fhir Parser: ${artifactsResponse.body?.string()}")
+    throw IllegalStateException("Failed to download github artifact: ${artifactsResponse.body?.string()}")
   }
 
   val artifactsResponseJson = JSONObject(artifactsResponse.body!!.string())
@@ -64,7 +64,7 @@ fun downloadGithubArtifact(
 
   val artifactResponse = client.newCall(artifactRequest).execute()
   if (!artifactResponse.isSuccessful) {
-    throw IllegalStateException("Failed to download Fhir Parser: ${artifactResponse.body?.string()}")
+    throw IllegalStateException("Failed to download github artifact: ${artifactResponse.body?.string()}")
   }
 
   // Unzip artifact

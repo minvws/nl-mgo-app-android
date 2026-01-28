@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/*">
   <string name="add_organization.already_added">Al toevoegd</string>
   <string name="add_organization.city">Plaats</string>
   <string name="add_organization.error_missing_city">Vul een plaats in</string>

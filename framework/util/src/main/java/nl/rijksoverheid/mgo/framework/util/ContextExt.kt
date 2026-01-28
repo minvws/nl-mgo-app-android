@@ -5,6 +5,20 @@ import androidx.core.content.FileProvider
 import java.io.File
 
 /**
+ * Dynamically get a string by it's string resource name.
+ *
+ * @param stringResourceName The name of the string resource in strings.xml.
+ */
+fun Context.getString(stringResourceName: String): String {
+  val stringResourceWithPrefix = resources.getIdentifier(stringResourceName, "string", packageName)
+  return try {
+    getString(stringResourceWithPrefix)
+  } catch (e: Exception) {
+    ""
+  }
+}
+
+/**
  * Shares a file with another application.
  *
  * This method creates a content URI using FileProvider and shares the file

@@ -24,9 +24,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import getString
 import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
-import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.component.theme.StatesPositive

@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import nl.rijksoverheid.mgo.component.healthCategories.getString
+import getString
 import nl.rijksoverheid.mgo.component.pdfViewer.Pdf
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGenerator
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfGroupedTables

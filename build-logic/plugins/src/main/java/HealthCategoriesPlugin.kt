@@ -1,5 +1,7 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 
 class HealthCategoriesPlugin : Plugin<Project> {
@@ -15,7 +17,7 @@ class HealthCategoriesPlugin : Plugin<Project> {
       // Step 2: Move files
       target.moveFiles(workingDir)
 
-      // Cleanup
+      // Step 3: Clean up
       workingDir.deleteRecursively()
     }
   }

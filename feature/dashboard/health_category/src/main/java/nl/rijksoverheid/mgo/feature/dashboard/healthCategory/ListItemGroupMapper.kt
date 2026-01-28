@@ -2,7 +2,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import nl.rijksoverheid.mgo.component.healthCategories.getString
+import getString
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser

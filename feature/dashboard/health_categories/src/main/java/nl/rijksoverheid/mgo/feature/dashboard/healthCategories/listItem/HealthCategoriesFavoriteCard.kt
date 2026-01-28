@@ -29,9 +29,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import getString
 import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
-import nl.rijksoverheid.mgo.component.healthCategories.getString
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Keep all heading and subheading string resources.
+
+  These strings are referenced dynamically via health-categories.json and are
+  therefore not detected as used by the Android resource shrinker.
+  Without this keep rule, R8/resource shrinking would remove them.
+-->
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@string/*heading,@string/*subheading" />

@@ -9,7 +9,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var f = n.default;
     if (typeof f == "function") {
       var a = function a2() {
-        if (this instanceof a2) {
+        var isInstance = false;
+        try {
+          isInstance = this instanceof a2;
+        } catch {
+        }
+        if (isInstance) {
           return Reflect.construct(f, arguments, this.constructor);
         }
         return f.apply(this, arguments);
@@ -39,7 +44,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
     };
     var jsx = (function() {
-      var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 60103;
+      var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && /* @__PURE__ */ Symbol.for("react.element") || 60103;
       return function createRawReactElement(type, props, key, children) {
         var defaultProps = type && type.defaultProps;
         var childrenLength = arguments.length - 3;
@@ -2874,13 +2879,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return ianaTimeZone;
   }
-  /*!
-   *  decimal.js v10.5.0
-   *  An arbitrary-precision Decimal type for JavaScript.
-   *  https://github.com/MikeMcl/decimal.js
-   *  Copyright (c) 2025 Michael Mclaughlin <M8ch88l@gmail.com>
-   *  MIT Licence
-   */
   var EXP_LIMIT = 9e15, MAX_DIGITS = 1e9, NUMERALS = "0123456789abcdef", LN10 = "2.3025850929940456840179914546843642076011014886287729760333279009675726096773524802359972050895982983419677840422862486334095254650828067566662873690987816894829072083255546808437998948262331985283935053089653777326288461633662222876982198867465436674744042432743651550489343149393914796194044002221051017141748003688084012647080685567743216228355220114804663715659121373450747856947683463616792101806445070648000277502684916746550586856935673420670581136429224554405758925724208241314695689016758940256776311356919292033376587141660230105703089634572075440370847469940168269282808481184289314848524948644871927809676271275775397027668605952496716674183485704422507197965004714951050492214776567636938662976979522110718264549734772662425709429322582798502585509785265383207606726317164309505995087807523710333101197857547331541421808427543863591778117054309827482385045648019095610299291824318237525357709750539565187697510374970888692180205189339507238539205144634197265287286965110862571492198849978748873771345686209167058", PI = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632789", DEFAULTS = {
     // These values must be integers within the stated ranges (inclusive).
     // Most of these values can be changed at run-time using the `Decimal.config` method.
@@ -5024,7 +5022,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function trunc(x) {
     return finalise(x = new this(x), x.e + 1, 1);
   }
-  P[Symbol.for("nodejs.util.inspect.custom")] = P.toString;
+  P[/* @__PURE__ */ Symbol.for("nodejs.util.inspect.custom")] = P.toString;
   P[Symbol.toStringTag] = "Decimal";
   var Decimal = P.constructor = clone(DEFAULTS);
   LN10 = new Decimal(LN10);
@@ -5330,6 +5328,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     return mod(Day(t) + 4, 7);
   }
   function DayFromYear(y) {
+    if (y < 100) {
+      var date2 = /* @__PURE__ */ new Date(0);
+      date2.setUTCFullYear(y, 0, 1);
+      date2.setUTCHours(0, 0, 0, 0);
+      return date2.getTime() / MS_PER_DAY;
+    }
     return Date.UTC(y, 0) / MS_PER_DAY;
   }
   function TimeFromYear(y) {
@@ -12364,15 +12368,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function requireIntlEnumerator() {
     if (hasRequiredIntlEnumerator) return intlEnumerator;
     hasRequiredIntlEnumerator = 1;
-    (function(exports2) {
-      Object.defineProperty(exports2, "__esModule", { value: true });
-      exports2.supportedValuesOf = exports2.shouldPolyfill = void 0;
+    (function(exports$1) {
+      Object.defineProperty(exports$1, "__esModule", { value: true });
+      exports$1.supportedValuesOf = exports$1.shouldPolyfill = void 0;
       var should_polyfill_1 = requireShouldPolyfill$5();
-      Object.defineProperty(exports2, "shouldPolyfill", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "shouldPolyfill", { enumerable: true, get: function() {
         return should_polyfill_1.shouldPolyfill;
       } });
       var src_1 = requireSrc();
-      Object.defineProperty(exports2, "supportedValuesOf", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "supportedValuesOf", { enumerable: true, get: function() {
         return src_1.supportedValuesOf;
       } });
     })(intlEnumerator);
@@ -21333,16 +21337,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function requireParser() {
     if (hasRequiredParser) return parser;
     hasRequiredParser = 1;
-    (function(exports2) {
-      Object.defineProperty(exports2, "__esModule", { value: true });
-      exports2.SEPARATOR = void 0;
-      exports2.isUnicodeLanguageSubtag = isUnicodeLanguageSubtag;
-      exports2.isStructurallyValidLanguageTag = isStructurallyValidLanguageTag;
-      exports2.isUnicodeRegionSubtag = isUnicodeRegionSubtag;
-      exports2.isUnicodeScriptSubtag = isUnicodeScriptSubtag;
-      exports2.isUnicodeVariantSubtag = isUnicodeVariantSubtag;
-      exports2.parseUnicodeLanguageId = parseUnicodeLanguageId;
-      exports2.parseUnicodeLocaleId = parseUnicodeLocaleId;
+    (function(exports$1) {
+      Object.defineProperty(exports$1, "__esModule", { value: true });
+      exports$1.SEPARATOR = void 0;
+      exports$1.isUnicodeLanguageSubtag = isUnicodeLanguageSubtag;
+      exports$1.isStructurallyValidLanguageTag = isStructurallyValidLanguageTag;
+      exports$1.isUnicodeRegionSubtag = isUnicodeRegionSubtag;
+      exports$1.isUnicodeScriptSubtag = isUnicodeScriptSubtag;
+      exports$1.isUnicodeVariantSubtag = isUnicodeVariantSubtag;
+      exports$1.parseUnicodeLanguageId = parseUnicodeLanguageId;
+      exports$1.parseUnicodeLocaleId = parseUnicodeLocaleId;
       var tslib_1 = require$$0$1;
       var ALPHANUM_1_8 = /^[a-z0-9]{1,8}$/i;
       var ALPHANUM_2_8 = /^[a-z0-9]{2,8}$/i;
@@ -21355,13 +21359,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       var UNICODE_VARIANT_SUBTAG_REGEX = /^([a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/i;
       var UNICODE_LANGUAGE_SUBTAG_REGEX = /^([a-z]{2,3}|[a-z]{5,8})$/i;
       var TKEY_REGEX = /^[a-z][0-9]$/i;
-      exports2.SEPARATOR = "-";
+      exports$1.SEPARATOR = "-";
       function isUnicodeLanguageSubtag(lang) {
         return UNICODE_LANGUAGE_SUBTAG_REGEX.test(lang);
       }
       function isStructurallyValidLanguageTag(tag2) {
         try {
-          parseUnicodeLanguageId(tag2.split(exports2.SEPARATOR));
+          parseUnicodeLanguageId(tag2.split(exports$1.SEPARATOR));
         } catch (e) {
           return false;
         }
@@ -21378,7 +21382,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
       function parseUnicodeLanguageId(chunks) {
         if (typeof chunks === "string") {
-          chunks = chunks.split(exports2.SEPARATOR);
+          chunks = chunks.split(exports$1.SEPARATOR);
         }
         var lang = chunks.shift();
         if (!lang) {
@@ -21454,7 +21458,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         }
         var value2 = "";
         if (type.length) {
-          value2 = type.join(exports2.SEPARATOR);
+          value2 = type.join(exports$1.SEPARATOR);
         }
         return [key, value2];
       }
@@ -21474,7 +21478,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (!value2.length) {
             throw new RangeError('Missing tvalue for tkey "'.concat(key, '"'));
           }
-          fields.push([key, value2.join(exports2.SEPARATOR)]);
+          fields.push([key, value2.join(exports$1.SEPARATOR)]);
         }
         if (fields.length) {
           return {
@@ -21493,7 +21497,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         if (exts.length) {
           return {
             type: "x",
-            value: exts.join(exports2.SEPARATOR)
+            value: exts.join(exports$1.SEPARATOR)
           };
         }
         throw new RangeError("Malformed private_use_extension");
@@ -21504,7 +21508,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           exts.push(chunks.shift());
         }
         if (exts.length) {
-          return exts.join(exports2.SEPARATOR);
+          return exts.join(exports$1.SEPARATOR);
         }
         return "";
       }
@@ -21563,7 +21567,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         return { extensions };
       }
       function parseUnicodeLocaleId(locale) {
-        var chunks = locale.split(exports2.SEPARATOR);
+        var chunks = locale.split(exports$1.SEPARATOR);
         var lang = parseUnicodeLanguageId(chunks);
         return tslib_1.__assign({ lang }, parseExtensions(chunks));
       }
@@ -21775,10 +21779,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function requireIntlGetcanonicallocales() {
     if (hasRequiredIntlGetcanonicallocales) return intlGetcanonicallocales;
     hasRequiredIntlGetcanonicallocales = 1;
-    (function(exports2) {
-      Object.defineProperty(exports2, "__esModule", { value: true });
-      exports2.parseUnicodeLocaleId = exports2.parseUnicodeLanguageId = exports2.isUnicodeScriptSubtag = exports2.isUnicodeRegionSubtag = exports2.isUnicodeLanguageSubtag = exports2.isStructurallyValidLanguageTag = void 0;
-      exports2.getCanonicalLocales = getCanonicalLocales;
+    (function(exports$1) {
+      Object.defineProperty(exports$1, "__esModule", { value: true });
+      exports$1.parseUnicodeLocaleId = exports$1.parseUnicodeLanguageId = exports$1.isUnicodeScriptSubtag = exports$1.isUnicodeRegionSubtag = exports$1.isUnicodeLanguageSubtag = exports$1.isStructurallyValidLanguageTag = void 0;
+      exports$1.getCanonicalLocales = getCanonicalLocales;
       var tslib_1 = require$$0$1;
       var canonicalizer_1 = requireCanonicalizer();
       var emitter_1 = requireEmitter();
@@ -21803,28 +21807,28 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       function getCanonicalLocales(locales) {
         return CanonicalizeLocaleList2(locales);
       }
-      tslib_1.__exportStar(requireEmitter(), exports2);
+      tslib_1.__exportStar(requireEmitter(), exports$1);
       var parser_2 = requireParser();
-      Object.defineProperty(exports2, "isStructurallyValidLanguageTag", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "isStructurallyValidLanguageTag", { enumerable: true, get: function() {
         return parser_2.isStructurallyValidLanguageTag;
       } });
-      Object.defineProperty(exports2, "isUnicodeLanguageSubtag", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "isUnicodeLanguageSubtag", { enumerable: true, get: function() {
         return parser_2.isUnicodeLanguageSubtag;
       } });
-      Object.defineProperty(exports2, "isUnicodeRegionSubtag", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "isUnicodeRegionSubtag", { enumerable: true, get: function() {
         return parser_2.isUnicodeRegionSubtag;
       } });
-      Object.defineProperty(exports2, "isUnicodeScriptSubtag", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "isUnicodeScriptSubtag", { enumerable: true, get: function() {
         return parser_2.isUnicodeScriptSubtag;
       } });
-      Object.defineProperty(exports2, "parseUnicodeLanguageId", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "parseUnicodeLanguageId", { enumerable: true, get: function() {
         return parser_2.parseUnicodeLanguageId;
       } });
-      Object.defineProperty(exports2, "parseUnicodeLocaleId", { enumerable: true, get: function() {
+      Object.defineProperty(exports$1, "parseUnicodeLocaleId", { enumerable: true, get: function() {
         return parser_2.parseUnicodeLocaleId;
       } });
-      tslib_1.__exportStar(requireTypes(), exports2);
-      tslib_1.__exportStar(requireLikelySubtags_generated(), exports2);
+      tslib_1.__exportStar(requireTypes(), exports$1);
+      tslib_1.__exportStar(requireLikelySubtags_generated(), exports$1);
     })(intlGetcanonicallocales);
     return intlGetcanonicallocales;
   }
@@ -29612,15 +29616,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     function weekdayToString(fw) {
       return TABLE_1[+fw];
     }
-    var Locale2 = (
+    var Locale = (
       /** @class */
       (function() {
-        function Locale3(tag2, opts) {
-          var newTarget = this && this instanceof Locale3 ? this.constructor : void 0;
+        function Locale2(tag2, opts) {
+          var newTarget = this && this instanceof Locale2 ? this.constructor : void 0;
           if (!newTarget) {
             throw new TypeError("Intl.Locale must be called with 'new'");
           }
-          var relevantExtensionKeys = Locale3.relevantExtensionKeys;
+          var relevantExtensionKeys = Locale2.relevantExtensionKeys;
           var internalSlotsList = [
             "initializedLocale",
             "locale",
@@ -29704,28 +29708,28 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
           internalSlots.numberingSystem = r.nu;
         }
-        Locale3.prototype.maximize = function() {
+        Locale2.prototype.maximize = function() {
           var locale = (0, get_internal_slots_1.default)(this).locale;
           try {
             var maximizedLocale = addLikelySubtags(locale);
-            return new Locale3(maximizedLocale);
+            return new Locale2(maximizedLocale);
           } catch (e) {
-            return new Locale3(locale);
+            return new Locale2(locale);
           }
         };
-        Locale3.prototype.minimize = function() {
+        Locale2.prototype.minimize = function() {
           var locale = (0, get_internal_slots_1.default)(this).locale;
           try {
             var minimizedLocale = removeLikelySubtags(locale);
-            return new Locale3(minimizedLocale);
+            return new Locale2(minimizedLocale);
           } catch (e) {
-            return new Locale3(locale);
+            return new Locale2(locale);
           }
         };
-        Locale3.prototype.toString = function() {
+        Locale2.prototype.toString = function() {
           return (0, get_internal_slots_1.default)(this).locale;
         };
-        Object.defineProperty(Locale3.prototype, "baseName", {
+        Object.defineProperty(Locale2.prototype, "baseName", {
           get: function() {
             var locale = (0, get_internal_slots_1.default)(this).locale;
             return (0, intl_getcanonicallocales_1.emitUnicodeLanguageId)((0, intl_getcanonicallocales_1.parseUnicodeLanguageId)(locale));
@@ -29733,42 +29737,42 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "calendar", {
+        Object.defineProperty(Locale2.prototype, "calendar", {
           get: function() {
             return (0, get_internal_slots_1.default)(this).calendar;
           },
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "collation", {
+        Object.defineProperty(Locale2.prototype, "collation", {
           get: function() {
             return (0, get_internal_slots_1.default)(this).collation;
           },
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "caseFirst", {
+        Object.defineProperty(Locale2.prototype, "caseFirst", {
           get: function() {
             return (0, get_internal_slots_1.default)(this).caseFirst;
           },
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "numeric", {
+        Object.defineProperty(Locale2.prototype, "numeric", {
           get: function() {
             return (0, get_internal_slots_1.default)(this).numeric;
           },
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "numberingSystem", {
+        Object.defineProperty(Locale2.prototype, "numberingSystem", {
           get: function() {
             return (0, get_internal_slots_1.default)(this).numberingSystem;
           },
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "language", {
+        Object.defineProperty(Locale2.prototype, "language", {
           /**
            * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.language
            */
@@ -29779,7 +29783,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "script", {
+        Object.defineProperty(Locale2.prototype, "script", {
           /**
            * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.script
            */
@@ -29790,7 +29794,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "region", {
+        Object.defineProperty(Locale2.prototype, "region", {
           /**
            * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.region
            */
@@ -29801,7 +29805,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "firstDayOfWeek", {
+        Object.defineProperty(Locale2.prototype, "firstDayOfWeek", {
           get: function() {
             var internalSlots = (0, get_internal_slots_1.default)(this);
             if (!(0, ecma402_abstract_1.HasOwnProperty)(internalSlots, "initializedLocale")) {
@@ -29812,7 +29816,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           enumerable: false,
           configurable: true
         });
-        Object.defineProperty(Locale3.prototype, "hourCycle", {
+        Object.defineProperty(Locale2.prototype, "hourCycle", {
           get: function() {
             var internalSlots = (0, get_internal_slots_1.default)(this);
             if (!(0, ecma402_abstract_1.HasOwnProperty)(internalSlots, "initializedLocale")) {
@@ -29823,32 +29827,32 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           enumerable: false,
           configurable: true
         });
-        Locale3.prototype.getCalendars = function() {
+        Locale2.prototype.getCalendars = function() {
           return calendarsOfLocale(this);
         };
-        Locale3.prototype.getCollations = function() {
+        Locale2.prototype.getCollations = function() {
           return collationsOfLocale(this);
         };
-        Locale3.prototype.getHourCycles = function() {
+        Locale2.prototype.getHourCycles = function() {
           var internalSlots = (0, get_internal_slots_1.default)(this);
           if (!(0, ecma402_abstract_1.HasOwnProperty)(internalSlots, "initializedLocale")) {
             throw new TypeError("Error uninitialized locale");
           }
           return hourCyclesOfLocale(this);
         };
-        Locale3.prototype.getNumberingSystems = function() {
+        Locale2.prototype.getNumberingSystems = function() {
           return numberingSystemsOfLocale(this);
         };
-        Locale3.prototype.getTimeZones = function() {
+        Locale2.prototype.getTimeZones = function() {
           return timeZonesOfLocale(this);
         };
-        Locale3.prototype.getTextInfo = function() {
+        Locale2.prototype.getTextInfo = function() {
           var info = Object.create(Object.prototype);
           var dir = characterDirectionOfLocale(this);
           (0, ecma402_abstract_1.createDataProperty)(info, "direction", dir);
           return info;
         };
-        Locale3.prototype.getWeekInfo = function() {
+        Locale2.prototype.getWeekInfo = function() {
           var info = Object.create(Object.prototype);
           var internalSlots = (0, get_internal_slots_1.default)(this);
           if (!(0, ecma402_abstract_1.HasOwnProperty)(internalSlots, "initializedLocale")) {
@@ -29865,22 +29869,22 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
           return info;
         };
-        Locale3.relevantExtensionKeys = RELEVANT_EXTENSION_KEYS;
-        Locale3.polyfilled = true;
-        return Locale3;
+        Locale2.relevantExtensionKeys = RELEVANT_EXTENSION_KEYS;
+        Locale2.polyfilled = true;
+        return Locale2;
       })()
     );
-    intlLocale.Locale = Locale2;
+    intlLocale.Locale = Locale;
     try {
       if (typeof Symbol !== "undefined") {
-        Object.defineProperty(Locale2.prototype, Symbol.toStringTag, {
+        Object.defineProperty(Locale.prototype, Symbol.toStringTag, {
           value: "Intl.Locale",
           writable: false,
           enumerable: false,
           configurable: true
         });
       }
-      Object.defineProperty(Locale2.prototype.constructor, "length", {
+      Object.defineProperty(Locale.prototype.constructor, "length", {
         value: 1,
         writable: false,
         enumerable: false,
@@ -29888,7 +29892,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       });
     } catch (e) {
     }
-    intlLocale.default = Locale2;
+    intlLocale.default = Locale;
     return intlLocale;
   }
   var shouldPolyfill$4 = {};
@@ -29939,13 +29943,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     hasRequiredDecimal = 1;
     (function(module2) {
       (function(globalScope) {
-        /*!
-         *  decimal.js v10.5.0
-         *  An arbitrary-precision Decimal type for JavaScript.
-         *  https://github.com/MikeMcl/decimal.js
-         *  Copyright (c) 2025 Michael Mclaughlin <M8ch88l@gmail.com>
-         *  MIT Licence
-         */
         var EXP_LIMIT2 = 9e15, MAX_DIGITS2 = 1e9, NUMERALS2 = "0123456789abcdef", LN102 = "2.3025850929940456840179914546843642076011014886287729760333279009675726096773524802359972050895982983419677840422862486334095254650828067566662873690987816894829072083255546808437998948262331985283935053089653777326288461633662222876982198867465436674744042432743651550489343149393914796194044002221051017141748003688084012647080685567743216228355220114804663715659121373450747856947683463616792101806445070648000277502684916746550586856935673420670581136429224554405758925724208241314695689016758940256776311356919292033376587141660230105703089634572075440370847469940168269282808481184289314848524948644871927809676271275775397027668605952496716674183485704422507197965004714951050492214776567636938662976979522110718264549734772662425709429322582798502585509785265383207606726317164309505995087807523710333101197857547331541421808427543863591778117054309827482385045648019095610299291824318237525357709750539565187697510374970888692180205189339507238539205144634197265287286965110862571492198849978748873771345686209167058", PI2 = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632789", DEFAULTS2 = {
           // These values must be integers within the stated ranges (inclusive).
           // Most of these values can be changed at run-time using the `Decimal.config` method.
@@ -33699,9 +33696,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function requireCore$1() {
     if (hasRequiredCore$1) return core$1;
     hasRequiredCore$1 = 1;
-    (function(exports2) {
-      Object.defineProperty(exports2, "__esModule", { value: true });
-      exports2.DateTimeFormat = void 0;
+    (function(exports$1) {
+      Object.defineProperty(exports$1, "__esModule", { value: true });
+      exports$1.DateTimeFormat = void 0;
       var tslib_1 = require$$0$1;
       var ecma402_abstract_1 = require$$1;
       var decimal_js_1 = tslib_1.__importDefault(requireDecimal());
@@ -33741,7 +33738,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         enumerable: false,
         configurable: true,
         get: function() {
-          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports2.DateTimeFormat, this)) {
+          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports$1.DateTimeFormat, this)) {
             throw TypeError("Intl.DateTimeFormat format property accessor called on incompatible receiver");
           }
           var internalSlots = (0, get_internal_slots_1.default)(this);
@@ -33757,9 +33754,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               }
               return (0, FormatDateTime_1.FormatDateTime)(dtf, x, {
                 getInternalSlots: get_internal_slots_1.default,
-                localeData: exports2.DateTimeFormat.localeData,
-                tzData: exports2.DateTimeFormat.tzData,
-                getDefaultTimeZone: exports2.DateTimeFormat.getDefaultTimeZone
+                localeData: exports$1.DateTimeFormat.localeData,
+                tzData: exports$1.DateTimeFormat.tzData,
+                getDefaultTimeZone: exports$1.DateTimeFormat.getDefaultTimeZone
               });
             };
             try {
@@ -33785,33 +33782,33 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         });
       } catch (e) {
       }
-      exports2.DateTimeFormat = function(locales, options) {
-        if (!this || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports2.DateTimeFormat, this)) {
-          return new exports2.DateTimeFormat(locales, options);
+      exports$1.DateTimeFormat = function(locales, options) {
+        if (!this || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports$1.DateTimeFormat, this)) {
+          return new exports$1.DateTimeFormat(locales, options);
         }
         (0, InitializeDateTimeFormat_1.InitializeDateTimeFormat)(this, locales, options, {
-          tzData: exports2.DateTimeFormat.tzData,
+          tzData: exports$1.DateTimeFormat.tzData,
           uppercaseLinks: UPPERCASED_LINKS,
-          availableLocales: exports2.DateTimeFormat.availableLocales,
-          relevantExtensionKeys: exports2.DateTimeFormat.relevantExtensionKeys,
-          getDefaultLocale: exports2.DateTimeFormat.getDefaultLocale,
-          getDefaultTimeZone: exports2.DateTimeFormat.getDefaultTimeZone,
+          availableLocales: exports$1.DateTimeFormat.availableLocales,
+          relevantExtensionKeys: exports$1.DateTimeFormat.relevantExtensionKeys,
+          getDefaultLocale: exports$1.DateTimeFormat.getDefaultLocale,
+          getDefaultTimeZone: exports$1.DateTimeFormat.getDefaultTimeZone,
           getInternalSlots: get_internal_slots_1.default,
-          localeData: exports2.DateTimeFormat.localeData
+          localeData: exports$1.DateTimeFormat.localeData
         });
         var internalSlots = (0, get_internal_slots_1.default)(this);
         var dataLocale = internalSlots.dataLocale;
-        var dataLocaleData = exports2.DateTimeFormat.localeData[dataLocale];
+        var dataLocaleData = exports$1.DateTimeFormat.localeData[dataLocale];
         (0, ecma402_abstract_1.invariant)(dataLocaleData !== void 0, "Cannot load locale-dependent data for ".concat(dataLocale, "."));
       };
-      (0, ecma402_abstract_1.defineProperty)(exports2.DateTimeFormat, "supportedLocalesOf", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.DateTimeFormat, "supportedLocalesOf", {
         value: function supportedLocalesOf(locales, options) {
-          return (0, ecma402_abstract_1.SupportedLocales)(exports2.DateTimeFormat.availableLocales, (0, ecma402_abstract_1.CanonicalizeLocaleList)(locales), options);
+          return (0, ecma402_abstract_1.SupportedLocales)(exports$1.DateTimeFormat.availableLocales, (0, ecma402_abstract_1.CanonicalizeLocaleList)(locales), options);
         }
       });
-      (0, ecma402_abstract_1.defineProperty)(exports2.DateTimeFormat.prototype, "resolvedOptions", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.DateTimeFormat.prototype, "resolvedOptions", {
         value: function resolvedOptions() {
-          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports2.DateTimeFormat, this)) {
+          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports$1.DateTimeFormat, this)) {
             throw TypeError("Method Intl.DateTimeFormat.prototype.resolvedOptions called on incompatible receiver");
           }
           var internalSlots = (0, get_internal_slots_1.default)(this);
@@ -33837,7 +33834,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return ro;
         }
       });
-      (0, ecma402_abstract_1.defineProperty)(exports2.DateTimeFormat.prototype, "formatToParts", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.DateTimeFormat.prototype, "formatToParts", {
         value: function formatToParts2(date2) {
           var x;
           if (date2 === void 0) {
@@ -33847,63 +33844,63 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
           return (0, FormatDateTimeToParts_1.FormatDateTimeToParts)(this, x, {
             getInternalSlots: get_internal_slots_1.default,
-            localeData: exports2.DateTimeFormat.localeData,
-            tzData: exports2.DateTimeFormat.tzData,
-            getDefaultTimeZone: exports2.DateTimeFormat.getDefaultTimeZone
+            localeData: exports$1.DateTimeFormat.localeData,
+            tzData: exports$1.DateTimeFormat.tzData,
+            getDefaultTimeZone: exports$1.DateTimeFormat.getDefaultTimeZone
           });
         }
       });
-      (0, ecma402_abstract_1.defineProperty)(exports2.DateTimeFormat.prototype, "formatRangeToParts", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.DateTimeFormat.prototype, "formatRangeToParts", {
         value: function formatRangeToParts(startDate, endDate) {
           var dtf = this;
           (0, ecma402_abstract_1.invariant)(typeof dtf === "object", "receiver is not an object", TypeError);
           (0, ecma402_abstract_1.invariant)(startDate !== void 0 && endDate !== void 0, "startDate/endDate cannot be undefined", TypeError);
           return (0, FormatDateTimeRangeToParts_1.FormatDateTimeRangeToParts)(dtf, (0, ecma402_abstract_1.ToNumber)(startDate), (0, ecma402_abstract_1.ToNumber)(endDate), {
             getInternalSlots: get_internal_slots_1.default,
-            localeData: exports2.DateTimeFormat.localeData,
-            tzData: exports2.DateTimeFormat.tzData,
-            getDefaultTimeZone: exports2.DateTimeFormat.getDefaultTimeZone
+            localeData: exports$1.DateTimeFormat.localeData,
+            tzData: exports$1.DateTimeFormat.tzData,
+            getDefaultTimeZone: exports$1.DateTimeFormat.getDefaultTimeZone
           });
         }
       });
-      (0, ecma402_abstract_1.defineProperty)(exports2.DateTimeFormat.prototype, "formatRange", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.DateTimeFormat.prototype, "formatRange", {
         value: function formatRange(startDate, endDate) {
           var dtf = this;
           (0, ecma402_abstract_1.invariant)(typeof dtf === "object", "receiver is not an object", TypeError);
           (0, ecma402_abstract_1.invariant)(startDate !== void 0 && endDate !== void 0, "startDate/endDate cannot be undefined", TypeError);
           return (0, FormatDateTimeRange_1.FormatDateTimeRange)(dtf, (0, ecma402_abstract_1.ToNumber)(startDate), (0, ecma402_abstract_1.ToNumber)(endDate), {
             getInternalSlots: get_internal_slots_1.default,
-            localeData: exports2.DateTimeFormat.localeData,
-            tzData: exports2.DateTimeFormat.tzData,
-            getDefaultTimeZone: exports2.DateTimeFormat.getDefaultTimeZone
+            localeData: exports$1.DateTimeFormat.localeData,
+            tzData: exports$1.DateTimeFormat.tzData,
+            getDefaultTimeZone: exports$1.DateTimeFormat.getDefaultTimeZone
           });
         }
       });
       var DEFAULT_TIMEZONE = "UTC";
-      exports2.DateTimeFormat.__setDefaultTimeZone = function(timeZone) {
+      exports$1.DateTimeFormat.__setDefaultTimeZone = function(timeZone) {
         if (timeZone !== void 0) {
           timeZone = String(timeZone);
           if (!(0, ecma402_abstract_1.IsValidTimeZoneName)(timeZone, {
-            zoneNamesFromData: Object.keys(exports2.DateTimeFormat.tzData),
+            zoneNamesFromData: Object.keys(exports$1.DateTimeFormat.tzData),
             uppercaseLinks: UPPERCASED_LINKS
           })) {
             throw new RangeError("Invalid timeZoneName");
           }
           timeZone = (0, ecma402_abstract_1.CanonicalizeTimeZoneName)(timeZone, {
-            zoneNames: Object.keys(exports2.DateTimeFormat.tzData),
+            zoneNames: Object.keys(exports$1.DateTimeFormat.tzData),
             uppercaseLinks: UPPERCASED_LINKS
           });
         } else {
           timeZone = DEFAULT_TIMEZONE;
         }
-        exports2.DateTimeFormat.__defaultTimeZone = timeZone;
+        exports$1.DateTimeFormat.__defaultTimeZone = timeZone;
       };
-      exports2.DateTimeFormat.relevantExtensionKeys = ["nu", "ca", "hc"];
-      exports2.DateTimeFormat.__defaultTimeZone = DEFAULT_TIMEZONE;
-      exports2.DateTimeFormat.getDefaultTimeZone = function() {
-        return exports2.DateTimeFormat.__defaultTimeZone;
+      exports$1.DateTimeFormat.relevantExtensionKeys = ["nu", "ca", "hc"];
+      exports$1.DateTimeFormat.__defaultTimeZone = DEFAULT_TIMEZONE;
+      exports$1.DateTimeFormat.getDefaultTimeZone = function() {
+        return exports$1.DateTimeFormat.__defaultTimeZone;
       };
-      exports2.DateTimeFormat.__addLocaleData = function __addLocaleData() {
+      exports$1.DateTimeFormat.__addLocaleData = function __addLocaleData() {
         var data2 = [];
         for (var _i = 0; _i < arguments.length; _i++) {
           data2[_i] = arguments[_i];
@@ -33935,11 +33932,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             _loop_2(calendar);
           }
           var minimizedLocale = new Intl.Locale(locale2).minimize().toString();
-          exports2.DateTimeFormat.localeData[locale2] = exports2.DateTimeFormat.localeData[minimizedLocale] = processedData;
-          exports2.DateTimeFormat.availableLocales.add(locale2);
-          exports2.DateTimeFormat.availableLocales.add(minimizedLocale);
-          if (!exports2.DateTimeFormat.__defaultLocale) {
-            exports2.DateTimeFormat.__defaultLocale = minimizedLocale;
+          exports$1.DateTimeFormat.localeData[locale2] = exports$1.DateTimeFormat.localeData[minimizedLocale] = processedData;
+          exports$1.DateTimeFormat.availableLocales.add(locale2);
+          exports$1.DateTimeFormat.availableLocales.add(minimizedLocale);
+          if (!exports$1.DateTimeFormat.__defaultLocale) {
+            exports$1.DateTimeFormat.__defaultLocale = minimizedLocale;
           }
         };
         for (var _a2 = 0, data_1 = data2; _a2 < data_1.length; _a2++) {
@@ -33947,28 +33944,28 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           _loop_1(d, locale);
         }
       };
-      Object.defineProperty(exports2.DateTimeFormat.prototype, "format", formatDescriptor);
-      exports2.DateTimeFormat.__defaultLocale = "";
-      exports2.DateTimeFormat.localeData = {};
-      exports2.DateTimeFormat.availableLocales = /* @__PURE__ */ new Set();
-      exports2.DateTimeFormat.getDefaultLocale = function() {
-        return exports2.DateTimeFormat.__defaultLocale;
+      Object.defineProperty(exports$1.DateTimeFormat.prototype, "format", formatDescriptor);
+      exports$1.DateTimeFormat.__defaultLocale = "";
+      exports$1.DateTimeFormat.localeData = {};
+      exports$1.DateTimeFormat.availableLocales = /* @__PURE__ */ new Set();
+      exports$1.DateTimeFormat.getDefaultLocale = function() {
+        return exports$1.DateTimeFormat.__defaultLocale;
       };
-      exports2.DateTimeFormat.polyfilled = true;
-      exports2.DateTimeFormat.tzData = {};
-      exports2.DateTimeFormat.__addTZData = function(d) {
-        exports2.DateTimeFormat.tzData = (0, packer_1.unpack)(d);
+      exports$1.DateTimeFormat.polyfilled = true;
+      exports$1.DateTimeFormat.tzData = {};
+      exports$1.DateTimeFormat.__addTZData = function(d) {
+        exports$1.DateTimeFormat.tzData = (0, packer_1.unpack)(d);
       };
       try {
         if (typeof Symbol !== "undefined") {
-          Object.defineProperty(exports2.DateTimeFormat.prototype, Symbol.toStringTag, {
+          Object.defineProperty(exports$1.DateTimeFormat.prototype, Symbol.toStringTag, {
             value: "Intl.DateTimeFormat",
             writable: false,
             enumerable: false,
             configurable: true
           });
         }
-        Object.defineProperty(exports2.DateTimeFormat.prototype.constructor, "length", {
+        Object.defineProperty(exports$1.DateTimeFormat.prototype.constructor, "length", {
           value: 1,
           writable: false,
           enumerable: false,
@@ -33983,10 +33980,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function requireIntlDatetimeformat() {
     if (hasRequiredIntlDatetimeformat) return intlDatetimeformat;
     hasRequiredIntlDatetimeformat = 1;
-    (function(exports2) {
-      Object.defineProperty(exports2, "__esModule", { value: true });
+    (function(exports$1) {
+      Object.defineProperty(exports$1, "__esModule", { value: true });
       var tslib_1 = require$$0$1;
-      tslib_1.__exportStar(requireCore$1(), exports2);
+      tslib_1.__exportStar(requireCore$1(), exports$1);
     })(intlDatetimeformat);
     return intlDatetimeformat;
   }
@@ -34256,9 +34253,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function requireCore() {
     if (hasRequiredCore) return core;
     hasRequiredCore = 1;
-    (function(exports2) {
-      Object.defineProperty(exports2, "__esModule", { value: true });
-      exports2.NumberFormat = void 0;
+    (function(exports$1) {
+      Object.defineProperty(exports$1, "__esModule", { value: true });
+      exports$1.NumberFormat = void 0;
       var tslib_1 = require$$0$1;
       var ecma402_abstract_1 = require$$1;
       var currency_digits_generated_1 = requireCurrencyDigits_generated();
@@ -34283,21 +34280,21 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         "compactDisplay",
         "signDisplay"
       ];
-      exports2.NumberFormat = function(locales, options) {
-        if (!this || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports2.NumberFormat, this)) {
-          return new exports2.NumberFormat(locales, options);
+      exports$1.NumberFormat = function(locales, options) {
+        if (!this || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports$1.NumberFormat, this)) {
+          return new exports$1.NumberFormat(locales, options);
         }
         (0, ecma402_abstract_1.InitializeNumberFormat)(this, locales, options, {
           getInternalSlots: get_internal_slots_1.default,
-          localeData: exports2.NumberFormat.localeData,
-          availableLocales: exports2.NumberFormat.availableLocales,
-          getDefaultLocale: exports2.NumberFormat.getDefaultLocale,
+          localeData: exports$1.NumberFormat.localeData,
+          availableLocales: exports$1.NumberFormat.availableLocales,
+          getDefaultLocale: exports$1.NumberFormat.getDefaultLocale,
           currencyDigitsData: currency_digits_generated_1.currencyDigitsData,
           numberingSystemNames: numbering_systems_generated_1.numberingSystemNames
         });
         var internalSlots = (0, get_internal_slots_1.default)(this);
         var dataLocale = internalSlots.dataLocale;
-        var dataLocaleData = exports2.NumberFormat.localeData[dataLocale];
+        var dataLocaleData = exports$1.NumberFormat.localeData[dataLocale];
         (0, ecma402_abstract_1.invariant)(dataLocaleData !== void 0, "Cannot load locale-dependent data for ".concat(dataLocale, "."));
         internalSlots.pl = (0, ecma402_abstract_1.createMemoizedPluralRules)(dataLocale, {
           minimumFractionDigits: internalSlots.minimumFractionDigits,
@@ -34332,18 +34329,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         });
       } catch (e) {
       }
-      (0, ecma402_abstract_1.defineProperty)(exports2.NumberFormat.prototype, "formatToParts", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.NumberFormat.prototype, "formatToParts", {
         value: formatToParts2
       });
-      (0, ecma402_abstract_1.defineProperty)(exports2.NumberFormat.prototype, "formatRange", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.NumberFormat.prototype, "formatRange", {
         value: formatRange
       });
-      (0, ecma402_abstract_1.defineProperty)(exports2.NumberFormat.prototype, "formatRangeToParts", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.NumberFormat.prototype, "formatRangeToParts", {
         value: formatRangeToParts
       });
-      (0, ecma402_abstract_1.defineProperty)(exports2.NumberFormat.prototype, "resolvedOptions", {
+      (0, ecma402_abstract_1.defineProperty)(exports$1.NumberFormat.prototype, "resolvedOptions", {
         value: function resolvedOptions() {
-          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports2.NumberFormat, this)) {
+          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports$1.NumberFormat, this)) {
             throw TypeError("Method Intl.NumberFormat.prototype.resolvedOptions called on incompatible receiver");
           }
           var internalSlots = (0, get_internal_slots_1.default)(this);
@@ -34369,7 +34366,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         enumerable: false,
         configurable: true,
         get: function() {
-          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports2.NumberFormat, this)) {
+          if (typeof this !== "object" || !(0, ecma402_abstract_1.OrdinaryHasInstance)(exports$1.NumberFormat, this)) {
             throw TypeError("Intl.NumberFormat format property accessor called on incompatible receiver");
           }
           var internalSlots = (0, get_internal_slots_1.default)(this);
@@ -34401,13 +34398,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         });
       } catch (e) {
       }
-      Object.defineProperty(exports2.NumberFormat.prototype, "format", formatDescriptor);
-      (0, ecma402_abstract_1.defineProperty)(exports2.NumberFormat, "supportedLocalesOf", {
+      Object.defineProperty(exports$1.NumberFormat.prototype, "format", formatDescriptor);
+      (0, ecma402_abstract_1.defineProperty)(exports$1.NumberFormat, "supportedLocalesOf", {
         value: function supportedLocalesOf(locales, options) {
-          return (0, ecma402_abstract_1.SupportedLocales)(exports2.NumberFormat.availableLocales, (0, ecma402_abstract_1.CanonicalizeLocaleList)(locales), options);
+          return (0, ecma402_abstract_1.SupportedLocales)(exports$1.NumberFormat.availableLocales, (0, ecma402_abstract_1.CanonicalizeLocaleList)(locales), options);
         }
       });
-      exports2.NumberFormat.__addLocaleData = function __addLocaleData() {
+      exports$1.NumberFormat.__addLocaleData = function __addLocaleData() {
         var data2 = [];
         for (var _i = 0; _i < arguments.length; _i++) {
           data2[_i] = arguments[_i];
@@ -34415,16 +34412,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         for (var _a2 = 0, data_1 = data2; _a2 < data_1.length; _a2++) {
           var _b = data_1[_a2], d = _b.data, locale = _b.locale;
           var minimizedLocale = new Intl.Locale(locale).minimize().toString();
-          exports2.NumberFormat.localeData[locale] = exports2.NumberFormat.localeData[minimizedLocale] = d;
-          exports2.NumberFormat.availableLocales.add(minimizedLocale);
-          exports2.NumberFormat.availableLocales.add(locale);
-          if (!exports2.NumberFormat.__defaultLocale) {
-            exports2.NumberFormat.__defaultLocale = minimizedLocale;
+          exports$1.NumberFormat.localeData[locale] = exports$1.NumberFormat.localeData[minimizedLocale] = d;
+          exports$1.NumberFormat.availableLocales.add(minimizedLocale);
+          exports$1.NumberFormat.availableLocales.add(locale);
+          if (!exports$1.NumberFormat.__defaultLocale) {
+            exports$1.NumberFormat.__defaultLocale = minimizedLocale;
           }
         }
       };
-      exports2.NumberFormat.__addUnitData = function __addUnitData(locale, unitsData) {
-        var _a2 = exports2.NumberFormat.localeData, _b = locale, existingData = _a2[_b];
+      exports$1.NumberFormat.__addUnitData = function __addUnitData(locale, unitsData) {
+        var _a2 = exports$1.NumberFormat.localeData, _b = locale, existingData = _a2[_b];
         if (!existingData) {
           throw new Error('Locale data for "'.concat(locale, '" has not been loaded in NumberFormat. \nPlease __addLocaleData before adding additional unit data'));
         }
@@ -34435,39 +34432,39 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           existingData.units.compound[unit] = unitsData.compound[unit];
         }
       };
-      exports2.NumberFormat.__defaultLocale = "";
-      exports2.NumberFormat.localeData = {};
-      exports2.NumberFormat.availableLocales = /* @__PURE__ */ new Set();
-      exports2.NumberFormat.getDefaultLocale = function() {
-        return exports2.NumberFormat.__defaultLocale;
+      exports$1.NumberFormat.__defaultLocale = "";
+      exports$1.NumberFormat.localeData = {};
+      exports$1.NumberFormat.availableLocales = /* @__PURE__ */ new Set();
+      exports$1.NumberFormat.getDefaultLocale = function() {
+        return exports$1.NumberFormat.__defaultLocale;
       };
-      exports2.NumberFormat.polyfilled = true;
+      exports$1.NumberFormat.polyfilled = true;
       try {
         if (typeof Symbol !== "undefined") {
-          Object.defineProperty(exports2.NumberFormat.prototype, Symbol.toStringTag, {
+          Object.defineProperty(exports$1.NumberFormat.prototype, Symbol.toStringTag, {
             configurable: true,
             enumerable: false,
             writable: false,
             value: "Intl.NumberFormat"
           });
         }
-        Object.defineProperty(exports2.NumberFormat.prototype.constructor, "length", {
+        Object.defineProperty(exports$1.NumberFormat.prototype.constructor, "length", {
           configurable: true,
           enumerable: false,
           writable: false,
           value: 0
         });
-        Object.defineProperty(exports2.NumberFormat.supportedLocalesOf, "length", {
+        Object.defineProperty(exports$1.NumberFormat.supportedLocalesOf, "length", {
           configurable: true,
           enumerable: false,
           writable: false,
           value: 1
         });
-        Object.defineProperty(exports2.NumberFormat, "prototype", {
+        Object.defineProperty(exports$1.NumberFormat, "prototype", {
           configurable: false,
           enumerable: false,
           writable: false,
-          value: exports2.NumberFormat.prototype
+          value: exports$1.NumberFormat.prototype
         });
       } catch (e) {
       }
@@ -41929,17 +41926,27 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   if ("__setDefaultTimeZone" in Intl.DateTimeFormat) {
     Intl.DateTimeFormat.__setDefaultTimeZone("Europe/Amsterdam");
   }
-  var FhirVersion;
-  (function(FhirVersion2) {
-    FhirVersion2["R3"] = "R3";
-    FhirVersion2["R4"] = "R4";
-  })(FhirVersion || (FhirVersion = {}));
   function isFhirResource(value2, type) {
     const resource = value2;
     if (!type) {
       return typeof resource?.resourceType === "string" && !!resource?.resourceType.length;
     }
     return resource?.resourceType === type;
+  }
+  function isPromise(value2) {
+    return typeof value2 === "object" && typeof value2?.then === "function";
+  }
+  function createJsonApi(func, options = {}) {
+    const parse2 = options.lossless ? losslessParse : (value2) => JSON.parse(value2);
+    const stringify2 = options.lossless ? losslessStringify : JSON.stringify;
+    const replaceUndefinedWithNull = (_key, value2) => value2 === void 0 ? null : value2;
+    return function(...args) {
+      const result = func(...args.map(parse2));
+      if (isPromise(result)) {
+        return result.then((value2) => stringify2(value2, replaceUndefinedWithNull));
+      }
+      return stringify2(result, replaceUndefinedWithNull);
+    };
   }
   function isNullish(value2) {
     return value2 === void 0 || value2 === null;
@@ -42107,8 +42114,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return array;
   }
-  function parse$1(text, reviver) {
-    let parseNumber = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : parseLosslessNumber;
+  function parse$1(text, reviver, options) {
+    const optionsObj = typeof options === "function" ? {
+      parseNumber: options
+    } : options;
+    const parseNumber = optionsObj?.parseNumber ?? parseLosslessNumber;
+    const onDuplicateKey = optionsObj?.onDuplicateKey ?? throwDuplicateKey;
     let i = 0;
     const value2 = parseValue();
     expectValue(value2);
@@ -42141,9 +42152,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             return;
           }
           if (Object.prototype.hasOwnProperty.call(object, key) && !isDeepEqual(value3, object[key])) {
-            throwDuplicateKey(key, start + 1);
+            const returnedValue = onDuplicateKey({
+              key,
+              position: start + 1,
+              oldValue: object[key],
+              newValue: value3
+            });
+            if (returnedValue !== void 0) {
+              object[key] = returnedValue;
+            }
+          } else {
+            object[key] = value3;
           }
-          object[key] = value3;
         }
         if (text.charCodeAt(i) !== codeClosingBrace) {
           throwObjectKeyOrEndExpected();
@@ -42303,8 +42323,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     function throwObjectKeyExpected() {
       throw new SyntaxError(`Quoted object key expected ${gotAt()}`);
     }
-    function throwDuplicateKey(key, pos2) {
-      throw new SyntaxError(`Duplicate key '${key}' encountered at position ${pos2}`);
+    function throwDuplicateKey(_ref) {
+      let {
+        key,
+        position
+      } = _ref;
+      throw new SyntaxError(`Duplicate key '${key}' encountered at position ${position}`);
     }
     function throwObjectKeyOrEndExpected() {
       throw new SyntaxError(`Quoted object key or end of object '}' expected ${gotAt()}`);
@@ -43307,10 +43331,10 @@ ${indent}}` : "}";
     "r3.ihe_mhd_document_manifest.created": [{ "type": 0, "value": "Aangemaakt op" }],
     "r3.ihe_mhd_document_manifest.master_identifier": [{ "type": 0, "value": "Identifier" }],
     "r3.ihe_mhd_minimal_document_reference": [{ "type": 0, "value": "Document" }],
-    "r3.ihe_mhd_minimal_document_reference.author": [{ "type": 0, "value": "Specialist" }],
+    "r3.ihe_mhd_minimal_document_reference.author": [{ "type": 0, "value": "Zorgverlener" }],
     "r3.ihe_mhd_minimal_document_reference.class": [{ "type": 0, "value": "Categorie" }],
     "r3.ihe_mhd_minimal_document_reference.content": [{ "type": 0, "value": "Inhoud" }],
-    "r3.ihe_mhd_minimal_document_reference.content.attachment": [{ "type": 0, "value": "Bijlage" }],
+    "r3.ihe_mhd_minimal_document_reference.content.attachment": [{ "type": 0, "value": "Bijlage(n)" }],
     "r3.ihe_mhd_minimal_document_reference.content.attachment.content_type": [{ "type": 0, "value": "Inhoudstype" }],
     "r3.ihe_mhd_minimal_document_reference.content.attachment.creation": [{ "type": 0, "value": "Gecreëerd" }],
     "r3.ihe_mhd_minimal_document_reference.content.attachment.language": [{ "type": 0, "value": "Taal" }],
@@ -43329,6 +43353,7 @@ ${indent}}` : "}";
     "r3.ihe_mhd_minimal_document_reference.status": [{ "type": 0, "value": "Status" }],
     "r3.ihe_mhd_minimal_document_reference.subject": [{ "type": 0, "value": "Onderwerp" }],
     "r3.ihe_mhd_minimal_document_reference.type": [{ "type": 0, "value": "Type" }],
+    "r3.nl_core_address": [{ "type": 0, "value": "Adres" }],
     "r3.nl_core_address.address_type": [{ "type": 0, "value": "Adres soort" }],
     "r3.nl_core_address.line": [{ "type": 0, "value": "Adres informatie" }],
     "r3.nl_core_address.line.additional_locator": [{ "type": 0, "value": "Aanduiding bij huisnummer" }],
@@ -43372,7 +43397,7 @@ ${indent}}` : "}";
     "r3.nl_core_practitionerrole": [{ "type": 0, "value": "Zorgverlener rol" }],
     "r3.nl_core_relatedperson": [{ "type": 0, "value": "Gerelateerd persoon" }],
     "r3.zib_administration_agreement.performer": [{ "type": 0, "value": "Uitvoerder" }],
-    "r3.zib_administration_agreement.performer.actor": [{ "type": 0, "value": "Specialist" }],
+    "r3.zib_administration_agreement.performer.actor": [{ "type": 0, "value": "Zorgverlener" }],
     "r3.zib_administration_agreement.performer.on_behalf_of": [{ "type": 0, "value": "Op verzoek van" }],
     "r3.zib_administration_agreement.period_of_use": [{ "type": 0, "value": "Gebruiksperiode" }],
     "r3.zib_advance_directive.comment": [{ "type": 0, "value": "Toelichting" }],
@@ -43433,15 +43458,15 @@ ${indent}}` : "}";
     "r3.zib_participation_in_society.component": [{ "type": 0, "value": "Participatie in maatschappij" }],
     "r3.zib_payer.beneficiary": [{ "type": 0, "value": "Onderwerp (Patiënt)" }],
     "r3.zib_problem": [{ "type": 0, "value": "Medische klacht" }],
-    "r3.zib_problem.abatement_date_time": [{ "type": 0, "value": "Wanneer gestopt" }],
+    "r3.zib_problem.abatement_date_time": [{ "type": 0, "value": "Einddatum" }],
     "r3.zib_problem.asserter": [{ "type": 0, "value": "Vastgelegd door (zorgverlener)" }],
-    "r3.zib_problem.body_site": [{ "type": 0, "value": "Plaats in het lichaam" }],
+    "r3.zib_problem.body_site": [{ "type": 0, "value": "Locatie in het lichaam" }],
     "r3.zib_problem.body_site.laterality": [{ "type": 0, "value": "Aangedane kant" }],
     "r3.zib_problem.category": [{ "type": 0, "value": "Soort klacht" }],
-    "r3.zib_problem.clinical_status": [{ "type": 0, "value": "Huidige status" }],
-    "r3.zib_problem.code": [{ "type": 0, "value": "Medische klacht of aandoening" }],
-    "r3.zib_problem.note": [{ "type": 0, "value": "Opmerkingen" }],
-    "r3.zib_problem.onset_date_time": [{ "type": 0, "value": "Wanneer begonnen" }],
+    "r3.zib_problem.clinical_status": [{ "type": 0, "value": "Status" }],
+    "r3.zib_problem.code": [{ "type": 0, "value": "Aandoening" }],
+    "r3.zib_problem.note": [{ "type": 0, "value": "Extra uitleg" }],
+    "r3.zib_problem.onset_date_time": [{ "type": 0, "value": "Startdatum" }],
     "r3.zib_problem.verification_status": [{ "type": 0, "value": "Bevestigd of vermoed" }],
     "r3.zib_procedure.based_on": [{ "type": 0, "value": "Verrichting" }],
     "r3.zib_procedure.body_site.procedure_laterality": [{ "type": 0, "value": "Zijde" }],
@@ -43533,9 +43558,15 @@ ${indent}}` : "}";
   const summaryLabels = {
     "summary.options": [{ "type": 0, "value": "Opties" }],
     "summary.organization": [{ "type": 0, "value": "Zorgaanbieder" }],
-    "summary.r3.ihe_mhd_minimal_document_reference.group_attachment": [{ "type": 0, "value": "Bijlage" }],
+    "summary.r3.e_afspraak_appointment.group_actor_title": [{ "type": 0, "value": "Met wie u de afspraak had" }],
+    "summary.r3.e_afspraak_appointment.show_details": [{ "type": 0, "value": "Bekijk alle afspraakgegevens" }],
+    "summary.r3.ihe_mhd_minimal_document_reference.group_attachment": [{ "type": 0, "value": "Bijlage(n)" }],
     "summary.r3.ihe_mhd_minimal_document_reference.group_author": [{ "type": 0, "value": "Opgesteld door" }],
     "summary.r3.ihe_mhd_minimal_document_reference.show_details": [{ "type": 0, "value": "Bekijk alle documentgegevens" }],
+    "summary.r3.nl_core_patient.group_author": [{ "type": 0, "value": "Vastgelegd door" }],
+    "summary.r3.nl_core_patient.group_contact_details": [{ "type": 0, "value": "Contactgegevens" }],
+    "summary.r3.nl_core_patient.group_contacts": [{ "type": 0, "value": "Contactpersoon" }],
+    "summary.r3.nl_core_patient.show_details": [{ "type": 0, "value": "Bekijk alle persoonsgegevens" }],
     "summary.r3.zib_instructions_for_use": [{ "type": 0, "value": "Instructies " }, { "type": 1, "value": "sequence" }],
     "summary.r3.zib_instructions_for_use.dose": [{ "type": 0, "value": "Hoeveelheid per keer" }],
     "summary.r3.zib_instructions_for_use.dose.high": [{ "type": 0, "value": "Maximaal" }],
@@ -43547,7 +43578,7 @@ ${indent}}` : "}";
     "summary.r3.zib_laboratory_test_result_observation.group_performer": [{ "type": 0, "value": "Test afgenomen door" }],
     "summary.r3.zib_laboratory_test_result_observation.group_test_details": [{ "type": 0, "value": "Details van de test" }],
     "summary.r3.zib_laboratory_test_result_observation.interpretation": [{ "type": 0, "value": "Interpretatie" }],
-    "summary.r3.zib_laboratory_test_result_observation.performer": [{ "type": 0, "value": "Specialist" }],
+    "summary.r3.zib_laboratory_test_result_observation.performer": [{ "type": 0, "value": "Zorgverlener" }],
     "summary.r3.zib_laboratory_test_result_observation.reference_range": [{ "type": 0, "value": "Referentiewaarden" }],
     "summary.r3.zib_laboratory_test_result_observation.reference_range.high": [{ "type": 0, "value": "Maximale waarde" }],
     "summary.r3.zib_laboratory_test_result_observation.reference_range.low": [{ "type": 0, "value": "Minimale waarde" }],
@@ -43557,12 +43588,12 @@ ${indent}}` : "}";
     "summary.r3.zib_laboratory_test_result_observation.value": [{ "type": 0, "value": "Resultaat" }],
     "summary.r3.zib_medication_use.group_period": [{ "type": 0, "value": "Periode van gebruik" }],
     "summary.r3.zib_medication_use.group_prescriber": [{ "type": 0, "value": "Voorgeschreven door" }],
-    "summary.r3.zib_medication_use.prescriber": [{ "type": 0, "value": "Specialist" }],
+    "summary.r3.zib_medication_use.prescriber": [{ "type": 0, "value": "Zorgverlener" }],
     "summary.r3.zib_medication_use.show_details": [{ "type": 0, "value": "Bekijk alle medicijngegevens" }],
     "summary.r3.zib_medication_use.status": [{ "type": 0, "value": "Status" }],
     "summary.r3.zib_problem.group_about": [{ "type": 0, "value": "Over de klacht" }],
     "summary.r3.zib_problem.group_body_site": [{ "type": 0, "value": "Anatomische locatie" }],
-    "summary.r3.zib_problem.group_health_professional": [{ "type": 0, "value": "Zorgverlener" }],
+    "summary.r3.zib_problem.group_health_professional": [{ "type": 0, "value": "Vastgelegd door" }],
     "summary.r3.zib_problem.group_period_of_time": [{ "type": 0, "value": "Periode" }],
     "summary.r3.zib_problem.show_details": [{ "type": 0, "value": "Bekijk alle probleem gegevens" }],
     "summary.r4.nl_core_vaccination_event.group_performer": [{ "type": 0, "value": "Gegeven door" }],
@@ -45406,10 +45437,6 @@ ${indent}}` : "}";
       hasMessage
     };
   }
-  var Locale;
-  (function(Locale2) {
-    Locale2["NL_NL"] = "nl-NL";
-  })(Locale || (Locale = {}));
   var ErrorKind;
   (function(ErrorKind2) {
     ErrorKind2[ErrorKind2["EXPECT_ARGUMENT_CLOSING_BRACE"] = 1] = "EXPECT_ARGUMENT_CLOSING_BRACE";
@@ -49122,8 +49149,8 @@ ${indent}}` : "}";
     var filteredOptions = filterProps(options, LIST_FORMAT_OPTIONS);
     try {
       var richValues_1 = {};
-      var serializedValues = values.map(function(v, i) {
-        if (typeof v === "object") {
+      var serializedValues = Array.from(values).map(function(v, i) {
+        if (typeof v === "object" && v !== null) {
           var id = generateToken(i);
           richValues_1[id] = v;
           return id;
@@ -49720,7 +49747,7 @@ ${indent}}` : "}";
       referenceId: `${resourceType}/${id}`,
       resourceType,
       profile: profile2,
-      fhirVersion: `${fhirVersion}`
+      fhirVersion
     };
   }
   function isExtensionValue(value2) {
@@ -49825,6 +49852,12 @@ ${indent}}` : "}";
     if (isNullish(value2))
       return;
     return value2.toString();
+  }
+  function optional(elements) {
+    if (Array.isArray(elements)) {
+      return elements.filter((x) => !isEmptyUiEntry(x));
+    }
+    return isEmptyUiEntry(elements) ? [] : [elements];
   }
   function processGroup(group, { formatMessage: formatMessage2 }) {
     return {
@@ -50760,7 +50793,7 @@ ${indent}}` : "}";
   function parseNlCoreObservation(resource) {
     const { effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$13, FhirVersion.R3),
+      ...resourceMeta(resource, profile$13, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -50796,7 +50829,7 @@ ${indent}}` : "}";
   }
   function parseZibGeneralMeasurement(resource) {
     return {
-      ...resourceMeta(resource, profile$12, FhirVersion.R3),
+      ...resourceMeta(resource, profile$12, "R3"),
       ...parseZibGeneralMeasurementBase(resource)
     };
   }
@@ -50808,7 +50841,7 @@ ${indent}}` : "}";
   const profile$11 = "http://nictiz.nl/fhir/StructureDefinition/gp-DiagnosticResult";
   function parseGpDiagnosticResult(resource) {
     return {
-      ...resourceMeta(resource, profile$11, FhirVersion.R3),
+      ...resourceMeta(resource, profile$11, "R3"),
       ...parseZibGeneralMeasurementBase(resource),
       episodeOfCare: extensionMultiple(
         resource,
@@ -50853,7 +50886,7 @@ ${indent}}` : "}";
   }
   function parseZibEncounter(resource) {
     return {
-      ...resourceMeta(resource, profile$10, FhirVersion.R3),
+      ...resourceMeta(resource, profile$10, "R3"),
       ...parseZibEncounterBase(resource)
     };
   }
@@ -50865,7 +50898,7 @@ ${indent}}` : "}";
   const profile$$ = "http://nictiz.nl/fhir/StructureDefinition/gp-Encounter";
   function parseGpEncounter(resource) {
     return {
-      ...resourceMeta(resource, profile$$, FhirVersion.R3),
+      ...resourceMeta(resource, profile$$, "R3"),
       ...parseZibEncounterBase(resource)
     };
   }
@@ -50877,7 +50910,7 @@ ${indent}}` : "}";
   const profile$_ = "http://nictiz.nl/fhir/StructureDefinition/gp-EncounterReport";
   function parseGpEncounterReport(resource) {
     return {
-      ...resourceMeta(resource, profile$_, FhirVersion.R3),
+      ...resourceMeta(resource, profile$_, "R3"),
       identifier: identifier$1(resource.identifier),
       status: string$1(resource.status),
       type: map(resource.type.coding, coding$1),
@@ -50903,7 +50936,7 @@ ${indent}}` : "}";
   function parseGpJournalEntry(resource) {
     const { identifier: identifier2, subject, effectiveDateTime, effectivePeriod, performer, valueString } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$Z, FhirVersion.R3),
+      ...resourceMeta(resource, profile$Z, "R3"),
       identifier: identifier2,
       subject,
       performer,
@@ -51037,8 +51070,8 @@ ${indent}}` : "}";
     Snomed2["RESISTANT"] = "30714006";
     Snomed2["SUSCEPTIBLE"] = "131196009";
   })(Snomed || (Snomed = {}));
-  const i18n$4 = "r3.zib_laboratory_test_result_observation";
-  const summary$6 = (resource, context) => {
+  const i18n$7 = "r3.zib_laboratory_test_result_observation";
+  const summary$8 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const formatSystemCode = systemCode(context);
     const referenceRangeSummary = map(resource.referenceRange, (referenceRange) => {
@@ -51053,33 +51086,33 @@ ${indent}}` : "}";
       };
     }, true);
     return {
-      label: capitalize(resource.code?.coding.at(0)?.display) || formatMessage2(i18n$4),
+      label: capitalize(resource.code?.coding.at(0)?.display) || formatMessage2(i18n$7),
       children: [
         {
           children: [
-            ...ui.oneOfValueX(`summary.${i18n$4}.effective`, resource, "effective"),
-            ...ui.oneOfValueX(`summary.${i18n$4}.value`, resource),
-            ui.coding(`summary.${i18n$4}.interpretation`, resource.interpretation?.interpretatieVlaggenCodelijst)
+            ...ui.oneOfValueX(`summary.${i18n$7}.effective`, resource, "effective"),
+            ...ui.oneOfValueX(`summary.${i18n$7}.value`, resource),
+            ui.coding(`summary.${i18n$7}.interpretation`, resource.interpretation?.interpretatieVlaggenCodelijst)
           ]
         },
         {
-          label: formatMessage2(`summary.${i18n$4}.group_test_details`),
+          label: formatMessage2(`summary.${i18n$7}.group_test_details`),
           children: [
-            ui.code(`summary.${i18n$4}.status`, resource.status, {
+            ui.code(`summary.${i18n$7}.status`, resource.status, {
               i18nCode: "r3.observation.status"
             }),
-            ui.reference(`summary.${i18n$4}.specimen`, resource.specimen)
+            ui.reference(`summary.${i18n$7}.specimen`, resource.specimen)
           ]
         },
         ...referenceRangeSummary,
         {
-          label: formatMessage2(`summary.${i18n$4}.group_performer`),
+          label: formatMessage2(`summary.${i18n$7}.group_performer`),
           children: [
-            ui.reference(`summary.${i18n$4}.performer`, resource.performer),
+            ui.reference(`summary.${i18n$7}.performer`, resource.performer),
             common.organization(context, context.organization)
           ]
         },
-        common.summaryOptions(context, i18n$4, resource)
+        common.summaryOptions(context, i18n$7, resource)
       ]
     };
   };
@@ -51142,7 +51175,7 @@ ${indent}}` : "}";
   }
   function parseZibLaboratoryTestResultObservation(resource) {
     return {
-      ...resourceMeta(resource, profile$Y, FhirVersion.R3),
+      ...resourceMeta(resource, profile$Y, "R3"),
       ...parseZibLaboratoryTestResultObservationBase(resource)
     };
   }
@@ -51150,20 +51183,20 @@ ${indent}}` : "}";
     profile: profile$Y,
     parse: parseZibLaboratoryTestResultObservation,
     uiSchema: generateUiSchema,
-    summary: summary$6
+    summary: summary$8
   };
-  const i18n$3 = "r3.gp_laboratory_result";
-  const summary$5 = (resource, context) => {
+  const i18n$6 = "r3.gp_laboratory_result";
+  const summary$7 = (resource, context) => {
     const { formatMessage: formatMessage2 } = context;
     return {
       ...zibLaboratoryTestResultObservation.summary(resource, context),
-      label: capitalize(resource.context?.display) || formatMessage2(i18n$3)
+      label: capitalize(resource.context?.display) || formatMessage2(i18n$6)
     };
   };
   const profile$X = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult";
   function parseGpLaboratoryResult(resource) {
     return {
-      ...resourceMeta(resource, profile$X, FhirVersion.R3),
+      ...resourceMeta(resource, profile$X, "R3"),
       ...parseZibLaboratoryTestResultObservationBase(resource)
     };
   }
@@ -51171,12 +51204,12 @@ ${indent}}` : "}";
     profile: profile$X,
     parse: parseGpLaboratoryResult,
     uiSchema: generateUiSchema,
-    summary: summary$5
+    summary: summary$7
   };
   const profile$W = "http://fhir.nl/fhir/StructureDefinition/nl-core-careplan";
   function parseNlCoreCarePlan(resource) {
     return {
-      ...resourceMeta(resource, profile$W, FhirVersion.R3),
+      ...resourceMeta(resource, profile$W, "R3"),
       // HCIM BasicElements-v1.0(2017EN)	nl-core-careplan
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -51222,7 +51255,7 @@ ${indent}}` : "}";
   const profile$V = "http://fhir.nl/fhir/StructureDefinition/nl-core-careteam";
   function parseNlCoreCareTeam(resource) {
     return {
-      ...resourceMeta(resource, profile$V, FhirVersion.R3),
+      ...resourceMeta(resource, profile$V, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -51242,7 +51275,7 @@ ${indent}}` : "}";
   const profile$U = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare";
   function parseNlCoreEpisodeofcare(resource) {
     return {
-      ...resourceMeta(resource, profile$U, FhirVersion.R3),
+      ...resourceMeta(resource, profile$U, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.patient),
@@ -51294,7 +51327,7 @@ ${indent}}` : "}";
           // NOSONAR,
           "string"
         ),
-        buildingNumbersuffix: extensionMultiple(
+        buildingNumbersuffix: extension(
           line,
           "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-buildingNumberSuffix",
           // NOSONAR,
@@ -51319,6 +51352,30 @@ ${indent}}` : "}";
       country: string$1(value2?.country)
     };
   }
+  const i18n$5 = "r3.nl_core_address";
+  function formatAddress(resource) {
+    if (!resource)
+      return;
+    const { line, postalCode, city } = resource;
+    const addressLine = line?.flatMap(({ streetName, houseNumber, buildingNumbersuffix, unitID, additionalLocator }) => [
+      streetName?.value,
+      houseNumber?.value,
+      buildingNumbersuffix?.value,
+      unitID?.value,
+      additionalLocator?.value
+    ]).filter(Boolean).join(" ");
+    return [addressLine, postalCode?.value, city?.value].filter(Boolean).join(" ");
+  }
+  const nlCoreAddressSummary = (resource, context) => {
+    const { formatMessage: formatMessage2 } = context;
+    return [
+      {
+        type: "SINGLE_VALUE",
+        label: formatMessage2(`${i18n$5}`),
+        value: { display: formatAddress(resource) }
+      }
+    ];
+  };
   const profile$S = "http://fhir.nl/fhir/StructureDefinition/nl-core-contactpoint";
   function parseNlCoreContactpoint(value2) {
     return {
@@ -51333,8 +51390,19 @@ ${indent}}` : "}";
       system: code$1(value2?.system),
       value: string$1(value2?.value),
       use: code$1(value2?.use)
+      // should only contain "work" | "home"
     };
   }
+  const nlCoreContactpointSummaryPhone = (resource, context) => {
+    const { ui } = context;
+    const phoneNumbers = resource?.filter(({ system: system2 }) => system2?.value === "phone").map((x) => x.value).filter(isNonNullish);
+    return [ui.string(`fhir.x.telephone_numbers`, phoneNumbers)];
+  };
+  const nlCoreContactpointSummaryEmail = (resource, context) => {
+    const { ui } = context;
+    const emailAddresses = resource?.filter(({ system: system2 }) => system2?.value === "email").map((x) => x.value).filter(isNonNullish);
+    return [ui.string(`fhir.x.email_addresses`, emailAddresses)];
+  };
   const profile$R = "http://fhir.nl/fhir/StructureDefinition/nl-core-humanname";
   function parseNlCoreHumanname(value2) {
     const birthNames = filterPrimitiveByExtension(value2, "given", {
@@ -51395,6 +51463,11 @@ ${indent}}` : "}";
       text: string$1(value2?.text)
     };
   }
+  const i18n$4 = "r3.nl_core_humanname";
+  const nlCoreHumannameSummary = (resource, context) => {
+    const { ui } = context;
+    return [ui.string(`${i18n$4}.text`, resource?.text)];
+  };
   const uiSchemaGroup$1 = (resource, { ui, formatMessage: formatMessage2 }) => {
     const i18n2 = "r3.zib_administration_schedule";
     const { repeat: repeat2 } = resource;
@@ -51446,23 +51519,23 @@ ${indent}}` : "}";
     parse: parseZibAdministrationSchedule,
     uiSchemaGroup: uiSchemaGroup$1
   };
-  const i18n$2 = "r3.zib_instructions_for_use";
+  const i18n$3 = "r3.zib_instructions_for_use";
   const uiSchemaGroup = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const hcimInstructionsForUse = {
-      SequenceNumber: ui.integer(`${i18n$2}.sequence`, resource.sequence),
-      Description: ui.string(`${i18n$2}.text`, resource.text),
-      AdditionalInstructions: ui.codeableConcept(`${i18n$2}.additional_instruction`, resource.additionalInstruction),
+      SequenceNumber: ui.integer(`${i18n$3}.sequence`, resource.sequence),
+      Description: ui.string(`${i18n$3}.text`, resource.text),
+      AdditionalInstructions: ui.codeableConcept(`${i18n$3}.additional_instruction`, resource.additionalInstruction),
       AdministeringSchedule: zibAdministrationSchedule.uiSchemaGroup(resource.timing, context),
-      AsNeeded: ui.codeableConcept(`${i18n$2}.as_needed_codeable_concept`, resource.asNeededCodeableConcept),
-      RouteOfAdministration: ui.codeableConcept(`${i18n$2}.route`, resource.route),
-      Dose: ui.oneOfValueX(`${i18n$2}.dose`, resource, "dose"),
-      MaximumDose: ui.ratio(`${i18n$2}.max_dose_per_period`, resource.maxDosePerPeriod),
-      AdministeringSpeed: ui.oneOfValueX(`${i18n$2}.rate`, resource, "rate")
+      AsNeeded: ui.codeableConcept(`${i18n$3}.as_needed_codeable_concept`, resource.asNeededCodeableConcept),
+      RouteOfAdministration: ui.codeableConcept(`${i18n$3}.route`, resource.route),
+      Dose: ui.oneOfValueX(`${i18n$3}.dose`, resource, "dose"),
+      MaximumDose: ui.ratio(`${i18n$3}.max_dose_per_period`, resource.maxDosePerPeriod),
+      AdministeringSpeed: ui.oneOfValueX(`${i18n$3}.rate`, resource, "rate")
     };
     return [
       {
-        label: formatMessage2(i18n$2),
+        label: formatMessage2(i18n$3),
         children: [
           hcimInstructionsForUse.Description,
           hcimInstructionsForUse.RouteOfAdministration,
@@ -51477,13 +51550,13 @@ ${indent}}` : "}";
       hcimInstructionsForUse.AdministeringSchedule
     ];
   };
-  const summary$4 = (resource, context) => {
+  const summary$6 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: formatMessage2(`summary.${i18n$2}`, { sequence: resource.sequence?.value }),
+      label: formatMessage2(`summary.${i18n$3}`, { sequence: resource.sequence?.value }),
       children: [
-        ui.string(`summary.${i18n$2}.text`, resource.text),
-        ...ui.oneOfValueX(`summary.${i18n$2}.dose`, resource, "dose")
+        ui.string(`summary.${i18n$3}.text`, resource.text),
+        ...ui.oneOfValueX(`summary.${i18n$3}.dose`, resource, "dose")
       ]
     };
   };
@@ -51506,12 +51579,12 @@ ${indent}}` : "}";
   const zibInstructionsForUse = {
     parse: parseZibInstructionsForUse,
     uiSchemaGroup,
-    summary: summary$4
+    summary: summary$6
   };
   const profile$O = "http://fhir.nl/fhir/StructureDefinition/nl-core-organization";
   function parseNlCoreOrganization(resource) {
     return {
-      ...resourceMeta(resource, profile$O, FhirVersion.R3),
+      ...resourceMeta(resource, profile$O, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       // HCIM Payer-v3.1(2017EN)
@@ -51648,6 +51721,45 @@ ${indent}}` : "}";
       display: "Wettelijke vertegenwoordiger"
     }
   ].map((x) => ({ ...x, system: "urn:oid:2.16.840.1.113883.2.4.3.11.22.472" }));
+  const i18n$2 = "r3.nl_core_patient";
+  const summary$5 = (resource, context) => {
+    const { ui, formatMessage: formatMessage2 } = context;
+    const patientName = resource.name?.[0];
+    const officialAddress = resource.address?.find((x) => x.official?.value);
+    return {
+      label: patientName?.text?.value || formatMessage2("fhir.unknown"),
+      children: [
+        {
+          children: [
+            ...nlCoreHumannameSummary(patientName, context),
+            ui.date(`${i18n$2}.birth_date`, resource.birthDate),
+            ui.codeableConcept(`${i18n$2}.gender`, resource.gender.geslachtCodelijst),
+            ui.reference(`${i18n$2}.general_practitioner`, resource.generalPractitioner)
+          ]
+        },
+        {
+          label: formatMessage2(`summary.${i18n$2}.group_contact_details`),
+          children: [
+            ...nlCoreAddressSummary(officialAddress, context),
+            ...nlCoreContactpointSummaryPhone(resource.telecom, context),
+            ...nlCoreContactpointSummaryEmail(resource.telecom, context)
+          ]
+        },
+        ...resource.contact?.map((contact, idx) => ({
+          label: formatMessage2(`summary.${i18n$2}.group_contacts`, { idx: idx + 1 }),
+          children: [
+            ...nlCoreHumannameSummary(contact.name, context),
+            ...nlCoreContactpointSummaryPhone(contact.telecom, context)
+          ]
+        })) ?? [],
+        {
+          label: formatMessage2(`summary.${i18n$2}.group_author`),
+          children: [common.organization(context, context.organization)]
+        },
+        common.summaryOptions(context, i18n$2, resource)
+      ]
+    };
+  };
   const profile$N = "http://fhir.nl/fhir/StructureDefinition/nl-core-patient";
   function parseLanguageProficiency$1(communication) {
     const result = {
@@ -51675,7 +51787,7 @@ ${indent}}` : "}";
   }
   function parseNlCorePatient$1(resource) {
     return {
-      ...resourceMeta(resource, profile$N, FhirVersion.R3),
+      ...resourceMeta(resource, profile$N, "R3"),
       // HCIM LifeStance-v3.1(2017EN)
       lifeStance: extensionMultiple(
         resource,
@@ -51762,12 +51874,13 @@ ${indent}}` : "}";
   const nlCorePatient = {
     profile: profile$N,
     parse: parseNlCorePatient$1,
-    uiSchema: generateUiSchema
+    uiSchema: generateUiSchema,
+    summary: summary$5
   };
   const profile$M = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitioner";
   function parseNlCorePractitioner(resource) {
     return {
-      ...resourceMeta(resource, profile$M, FhirVersion.R3),
+      ...resourceMeta(resource, profile$M, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: {
         uzi: identifier$1(resource.identifier?.find(
@@ -51804,7 +51917,7 @@ ${indent}}` : "}";
   const profile$L = "http://fhir.nl/fhir/StructureDefinition/nl-core-practitionerrole";
   function parseNlCorePractitionerRole(resource) {
     return {
-      ...resourceMeta(resource, profile$L, FhirVersion.R3),
+      ...resourceMeta(resource, profile$L, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       // HCIM ContactInformation-v1.0(2017EN)
@@ -51822,7 +51935,7 @@ ${indent}}` : "}";
   const profile$K = "http://fhir.nl/fhir/StructureDefinition/nl-core-relatedperson";
   function parseNlCoreRelatedPerson(resource) {
     return {
-      ...resourceMeta(resource, profile$K, FhirVersion.R3),
+      ...resourceMeta(resource, profile$K, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.patient),
@@ -51847,10 +51960,37 @@ ${indent}}` : "}";
     parse: parseNlCoreRelatedPerson,
     uiSchema: generateUiSchema
   };
+  const summary$4 = (resource, context) => {
+    const { ui, formatMessage: formatMessage2 } = context;
+    const i18n2 = "r3.e_afspraak_appointment";
+    const label = resource.appointmentType?.text ?? formatMessage2(i18n2);
+    return {
+      label,
+      children: [
+        {
+          children: [
+            ui.codeableConcept(`${i18n2}.appointment_type`, resource.appointmentType),
+            ui.dateTime(`${i18n2}.start`, resource.start),
+            ui.reference(`${i18n2}.indication`, resource.indication),
+            ui.codeableConcept(`${i18n2}.reason`, resource.reason)
+          ]
+        },
+        {
+          label: formatMessage2(`summary.${i18n2}.group_actor_title`),
+          children: [
+            ui.reference(`${i18n2}.participant.actor`, resource.participant?.map((p) => p.actor).filter(isNonNullish)),
+            ui.codeableConcept(`${i18n2}.specialty`, resource.specialty),
+            common.organization(context, context.organization)
+          ]
+        },
+        common.summaryOptions(context, i18n2, resource)
+      ]
+    };
+  };
   const profile$J = "http://nictiz.nl/fhir/StructureDefinition/eAfspraak-Appointment";
   function parseEAfspraakAppointment(resource) {
     return {
-      ...resourceMeta(resource, profile$J, FhirVersion.R3),
+      ...resourceMeta(resource, profile$J, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       start: dateTime$1(resource.start),
@@ -51907,12 +52047,13 @@ ${indent}}` : "}";
   const eAfspraakAppointment = {
     profile: profile$J,
     parse: parseEAfspraakAppointment,
-    uiSchema: generateUiSchema
+    uiSchema: generateUiSchema,
+    summary: summary$4
   };
   const profile$I = "http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement";
   function parseZibAdministrationAgreement(resource) {
     return {
-      ...resourceMeta(resource, profile$I, FhirVersion.R3),
+      ...resourceMeta(resource, profile$I, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.subject),
@@ -52039,7 +52180,7 @@ ${indent}}` : "}";
   const profile$H = "http://nictiz.nl/fhir/StructureDefinition/zib-AdvanceDirective";
   function parseZibAdvanceDirective(resource) {
     return {
-      ...resourceMeta(resource, profile$H, FhirVersion.R3),
+      ...resourceMeta(resource, profile$H, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier$1(resource.identifier),
       dateTime: dateTime$1(resource.dateTime),
@@ -52072,7 +52213,7 @@ ${indent}}` : "}";
   function parseZibAlcoholUse(resource) {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject, valueCodeableConcept } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$G, FhirVersion.R3),
+      ...resourceMeta(resource, profile$G, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52102,7 +52243,7 @@ ${indent}}` : "}";
   const profile$F = "http://nictiz.nl/fhir/StructureDefinition/zib-Alert";
   function parseZibAlert(resource) {
     return {
-      ...resourceMeta(resource, profile$F, FhirVersion.R3),
+      ...resourceMeta(resource, profile$F, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       author: reference$1(resource.author),
@@ -52150,7 +52291,7 @@ ${indent}}` : "}";
       exposureRoute: codeableConcept$1(reaction2.exposureRoute)
     }));
     return {
-      ...resourceMeta(resource, profile$E, FhirVersion.R3),
+      ...resourceMeta(resource, profile$E, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.patient),
@@ -52191,7 +52332,7 @@ ${indent}}` : "}";
   function parseZibBloodPressure(resource) {
     const { bodySite, comment, effectiveDateTime, effectivePeriod, identifier: identifier2, method, performer, subject } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$D, FhirVersion.R3),
+      ...resourceMeta(resource, profile$D, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52260,7 +52401,7 @@ ${indent}}` : "}";
   function parseZibBodyHeight(resource) {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject, valueQuantity } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$C, FhirVersion.R3),
+      ...resourceMeta(resource, profile$C, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52282,7 +52423,7 @@ ${indent}}` : "}";
   function parseZibBodyWeight(resource) {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject, valueQuantity } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$B, FhirVersion.R3),
+      ...resourceMeta(resource, profile$B, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52313,7 +52454,7 @@ ${indent}}` : "}";
   function parseZibDrugUse(resource) {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject, valueCodeableConcept } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$A, FhirVersion.R3),
+      ...resourceMeta(resource, profile$A, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52378,7 +52519,7 @@ ${indent}}` : "}";
       code: "67822003"
     });
     return {
-      ...resourceMeta(resource, profile$z, FhirVersion.R3),
+      ...resourceMeta(resource, profile$z, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52437,7 +52578,7 @@ ${indent}}` : "}";
   function parseZibFunctionalOrMentalStatus(resource) {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject, valueCodeableConcept } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$y, FhirVersion.R3),
+      ...resourceMeta(resource, profile$y, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52464,7 +52605,7 @@ ${indent}}` : "}";
   const profile$x = "http://nictiz.nl/fhir/StructureDefinition/zib-HelpFromOthers";
   function parseZibHelpFromOthers(resource) {
     return {
-      ...resourceMeta(resource, profile$x, FhirVersion.R3),
+      ...resourceMeta(resource, profile$x, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -52490,7 +52631,7 @@ ${indent}}` : "}";
   function parseZibLaboratoryTestResultSpecimen(resource) {
     const collection = resource.collection;
     return {
-      ...resourceMeta(resource, profile$w, FhirVersion.R3),
+      ...resourceMeta(resource, profile$w, "R3"),
       // HCIM LaboratoryTestResult-v4.1(2017EN)
       identifier: map(resource.identifier, identifier$1),
       type: codeableConcept$1(resource.type),
@@ -52533,7 +52674,7 @@ ${indent}}` : "}";
   function parseZibLaboratoryTestResultSpecimenIsolate(resource) {
     const collection = resource.collection;
     return {
-      ...resourceMeta(resource, profile$v, FhirVersion.R3),
+      ...resourceMeta(resource, profile$v, "R3"),
       // HCIM LaboratoryTestResult-v4.1(2017EN)
       identifier: map(resource.identifier, identifier$1),
       type: codeableConcept$1(resource.type),
@@ -52575,7 +52716,7 @@ ${indent}}` : "}";
   const profile$u = "http://nictiz.nl/fhir/StructureDefinition/zib-LaboratoryTestResult-Substance";
   function parseZibLaboratoryTestResultSubstance(resource) {
     return {
-      ...resourceMeta(resource, profile$u, FhirVersion.R3),
+      ...resourceMeta(resource, profile$u, "R3"),
       // HCIM LaboratoryTestResult-v4.1(2017EN)
       code: codeableConcept$1(resource.code)
     };
@@ -52589,7 +52730,7 @@ ${indent}}` : "}";
   const parseZibLivingSituation = (resource) => {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject, valueCodeableConcept } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$t, FhirVersion.R3),
+      ...resourceMeta(resource, profile$t, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52627,7 +52768,7 @@ ${indent}}` : "}";
       text: string$1(resource.bodySite?.text)
     };
     return {
-      ...resourceMeta(resource, profile$s, FhirVersion.R3),
+      ...resourceMeta(resource, profile$s, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -52660,7 +52801,7 @@ ${indent}}` : "}";
   const profile$r = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceProduct";
   function parseZibMedicalDeviceProduct(resource) {
     return {
-      ...resourceMeta(resource, profile$r, FhirVersion.R3),
+      ...resourceMeta(resource, profile$r, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.patient),
@@ -52684,7 +52825,7 @@ ${indent}}` : "}";
   const profile$q = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicalDeviceRequest";
   function parseZibMedicalDeviceRequest(resource) {
     return {
-      ...resourceMeta(resource, profile$q, FhirVersion.R3),
+      ...resourceMeta(resource, profile$q, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -52715,7 +52856,7 @@ ${indent}}` : "}";
   const profile$p = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement";
   function parseZibMedicationAgreement(resource) {
     return {
-      ...resourceMeta(resource, profile$p, FhirVersion.R3),
+      ...resourceMeta(resource, profile$p, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.subject),
@@ -52808,7 +52949,7 @@ ${indent}}` : "}";
   const profile$o = "http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse";
   function parseZibMedicationUse(resource) {
     return {
-      ...resourceMeta(resource, profile$o, FhirVersion.R3),
+      ...resourceMeta(resource, profile$o, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       author: extension(
         resource,
@@ -52883,7 +53024,7 @@ ${indent}}` : "}";
   function parseZibNutritionAdvice(resource) {
     const { oralDiet } = resource;
     return {
-      ...resourceMeta(resource, profile$n, FhirVersion.R3),
+      ...resourceMeta(resource, profile$n, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.patient),
@@ -52915,7 +53056,7 @@ ${indent}}` : "}";
   function parseZibParticipationInSociety(resource) {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$m, FhirVersion.R3),
+      ...resourceMeta(resource, profile$m, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -52981,7 +53122,7 @@ ${indent}}` : "}";
       };
     });
     return {
-      ...resourceMeta(resource, profile$l, FhirVersion.R3),
+      ...resourceMeta(resource, profile$l, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       beneficiary: reference$1(resource.beneficiary),
@@ -53000,38 +53141,18 @@ ${indent}}` : "}";
   const summary$2 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const i18n2 = "r3.zib_problem";
-    const bodySites = resource.bodySite?.map((bodySite) => ({
-      label: formatMessage2(`summary.${i18n2}.group_body_site`),
-      children: [
-        ui.codeableConcept(`${i18n2}.body_site`, bodySite),
-        ui.codeableConcept(`${i18n2}.body_site.laterality`, bodySite.laterality)
-      ]
-    })) ?? [
-      {
-        label: formatMessage2(`summary.${i18n2}.group_body_site`),
-        children: [
-          ui.codeableConcept(`${i18n2}.body_site`, void 0),
-          ui.codeableConcept(`${i18n2}.body_site.laterality`, void 0)
-        ]
-      }
-    ];
-    const hasSingleBodySite = bodySites.length === 1;
     const label = resource.code?.coding.map((x) => x.display).join(", ") ?? formatMessage2(i18n2);
     return {
       label,
       children: [
         {
-          label: formatMessage2(`summary.${i18n2}.group_about`),
           children: [
             ui.codeableConcept(`${i18n2}.code`, resource.code),
-            ui.codeableConcept(`${i18n2}.category`, resource.category),
-            ...hasSingleBodySite ? bodySites[0].children : [],
-            ui.codeableConcept(`${i18n2}.verification_status`, resource.verificationStatus.verificatieStatusCodelijst),
+            ui.codeableConcept(`${i18n2}.body_site`, resource.bodySite),
             ui.codeableConcept(`${i18n2}.clinical_status`, resource.clinicalStatus.problemStatusCodelist),
-            ui.annotation(`${i18n2}.note`, resource.note)
+            ...optional(ui.annotation(`${i18n2}.note`, resource.note))
           ]
         },
-        ...bodySites.length > 1 ? bodySites : [],
         {
           label: formatMessage2(`summary.${i18n2}.group_period_of_time`),
           children: [
@@ -53041,7 +53162,7 @@ ${indent}}` : "}";
         },
         {
           label: formatMessage2(`summary.${i18n2}.group_health_professional`),
-          children: [ui.reference(`${i18n2}.asserter`, resource.asserter)]
+          children: [common.organization(context, context.organization)]
         },
         common.summaryOptions(context, i18n2, resource)
       ]
@@ -53050,7 +53171,7 @@ ${indent}}` : "}";
   const profile$k = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem";
   function parseZibProblem(resource) {
     return {
-      ...resourceMeta(resource, profile$k, FhirVersion.R3),
+      ...resourceMeta(resource, profile$k, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -53108,7 +53229,7 @@ ${indent}}` : "}";
   const profile$j = "http://nictiz.nl/fhir/StructureDefinition/zib-Procedure";
   function parseZibProcedure(resource) {
     return {
-      ...resourceMeta(resource, profile$j, FhirVersion.R3),
+      ...resourceMeta(resource, profile$j, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -53147,7 +53268,7 @@ ${indent}}` : "}";
   const profile$i = "http://nictiz.nl/fhir/StructureDefinition/zib-ProcedureRequest";
   function parseZibProcedureRequest(resource) {
     return {
-      ...resourceMeta(resource, profile$i, FhirVersion.R3),
+      ...resourceMeta(resource, profile$i, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -53192,7 +53313,7 @@ ${indent}}` : "}";
   const profile$h = "http://nictiz.nl/fhir/StructureDefinition/zib-Product";
   function parseZibProduct(resource) {
     return {
-      ...resourceMeta(resource, profile$h, FhirVersion.R3),
+      ...resourceMeta(resource, profile$h, "R3"),
       // HCIM PharmaceuticalProduct-v2.0(2017EN)
       description: extension(
         resource,
@@ -53219,7 +53340,7 @@ ${indent}}` : "}";
   const profile$g = "http://nictiz.nl/fhir/StructureDefinition/zib-TextResult";
   function parseZibTextResult(resource) {
     return {
-      ...resourceMeta(resource, profile$g, FhirVersion.R3),
+      ...resourceMeta(resource, profile$g, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       ...oneOfValueX$1(resource, ["dateTime", "period"], "effective"),
@@ -53253,7 +53374,7 @@ ${indent}}` : "}";
   function parseZibTobaccoUse(resource) {
     const { comment, effectiveDateTime, effectivePeriod, identifier: identifier2, performer, subject, valueCodeableConcept } = parseNlCoreObservationBase(resource);
     return {
-      ...resourceMeta(resource, profile$f, FhirVersion.R3),
+      ...resourceMeta(resource, profile$f, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier2,
       subject,
@@ -53311,7 +53432,7 @@ ${indent}}` : "}";
       }
     );
     return {
-      ...resourceMeta(resource, profile$e, FhirVersion.R3),
+      ...resourceMeta(resource, profile$e, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: identifier$1(resource.identifier),
       patient: reference$1(resource.patient),
@@ -53361,7 +53482,7 @@ ${indent}}` : "}";
   const profile$d = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentObjective";
   function parseZibTreatmentObjective(resource) {
     return {
-      ...resourceMeta(resource, profile$d, FhirVersion.R3),
+      ...resourceMeta(resource, profile$d, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.subject),
@@ -53383,7 +53504,7 @@ ${indent}}` : "}";
   const profile$c = "http://nictiz.nl/fhir/StructureDefinition/zib-Vaccination";
   function parseZibVaccination(resource) {
     return {
-      ...resourceMeta(resource, profile$c, FhirVersion.R3),
+      ...resourceMeta(resource, profile$c, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       patient: reference$1(resource.patient),
@@ -53411,7 +53532,7 @@ ${indent}}` : "}";
   const profile$b = "http://nictiz.nl/fhir/StructureDefinition/zib-VaccinationRecommendation";
   function parseZibVaccinationRecommendation(resource) {
     return {
-      ...resourceMeta(resource, profile$b, FhirVersion.R3),
+      ...resourceMeta(resource, profile$b, "R3"),
       // HCIM BasicElements-v1.0(2017EN)
       identifier: map(resource.identifier, identifier$1),
       subject: reference$1(resource.patient),
@@ -53442,18 +53563,19 @@ ${indent}}` : "}";
   const summary$1 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
-      label: resource.content.attachment?.title ?? formatMessage2("fhir.unknown"),
+      label: resource.content?.[0]?.attachment?.title ?? formatMessage2("fhir.unknown"),
       children: [
         {
           children: [
             ui.instant(`${i18n$1}.indexed`, resource.indexed),
-            ui.reference(`${i18n$1}.subject`, resource.subject),
             ui.codeableConcept(`${i18n$1}.type`, resource.type)
           ]
         },
         {
           label: formatMessage2(`summary.${i18n$1}.group_attachment`),
-          children: [ui.attachment(resource.content.attachment)]
+          children: [
+            ...map(resource.content, (content) => ui.attachment(content.attachment), true)
+          ]
         },
         {
           label: formatMessage2(`summary.${i18n$1}.group_author`),
@@ -53469,7 +53591,7 @@ ${indent}}` : "}";
   const profile$a = "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference";
   function parseIheMhdMinimalDocumentReference(resource) {
     return {
-      ...resourceMeta(resource, profile$a, FhirVersion.R3),
+      ...resourceMeta(resource, profile$a, "R3"),
       masterIdentifier: identifier$1(resource.masterIdentifier),
       identifier: map(resource.identifier, identifier$1),
       status: code$1(resource.status),
@@ -53482,10 +53604,10 @@ ${indent}}` : "}";
         target: reference$1(relatesTo.target)
       })),
       securityLabel: map(resource.securityLabel, codeableConcept$1),
-      content: {
-        attachment: attachment$1(resource.content?.[0].attachment),
-        format: coding$1(resource.content?.[0].format)
-      },
+      content: map(resource.content, (item) => ({
+        attachment: attachment$1(item.attachment),
+        format: coding$1(item.format)
+      })),
       context: {
         period: period$1(resource.context?.period),
         facilityType: codeableConcept$1(resource.context?.facilityType),
@@ -53717,7 +53839,7 @@ ${indent}}` : "}";
   const profile$7 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider";
   function parseNlCoreHealthcareProvider(resource) {
     return {
-      ...resourceMeta(resource, profile$7, FhirVersion.R4),
+      ...resourceMeta(resource, profile$7, "R4"),
       // zib ContactInformation-v1.2(2020EN)
       telecom: parseNlCoreContactInformation(resource.telecom),
       // zib HealthcareProvider-v3.4(2020EN)
@@ -53734,7 +53856,7 @@ ${indent}}` : "}";
   const profile$6 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider-Organization";
   function parseNlCoreHealthcareProviderOrganization(resource) {
     return {
-      ...resourceMeta(resource, profile$6, FhirVersion.R4),
+      ...resourceMeta(resource, profile$6, "R4"),
       // zib HealthcareProvider-v3.4(2020EN)
       identifier: map(resource.identifier, identifier$1),
       type: {
@@ -53760,7 +53882,7 @@ ${indent}}` : "}";
   const profile$5 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner";
   function parseNlCoreHealthProfessionalPractitioner(resource) {
     return {
-      ...resourceMeta(resource, profile$5, FhirVersion.R4),
+      ...resourceMeta(resource, profile$5, "R4"),
       // zib HealthProfessional-v3.5(2020EN)
       identifier: map(resource.identifier, identifier$1),
       name: map(resource.name, parseNlCoreNameInformation),
@@ -53777,7 +53899,7 @@ ${indent}}` : "}";
   const profile$4 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-PractitionerRole";
   function parseNlCoreHealthProfessionalPractitionerRole(resource) {
     return {
-      ...resourceMeta(resource, profile$4, FhirVersion.R4),
+      ...resourceMeta(resource, profile$4, "R4"),
       // zib ContactInformation-v1.2(2020EN)
       telecom: parseNlCoreContactInformation(resource.telecom),
       // zib HealthProfessional-v3.5(2020EN)
@@ -53947,7 +54069,7 @@ ${indent}}` : "}";
   }
   function parseNlCorePatient(resource) {
     return {
-      ...resourceMeta(resource, profile$2, FhirVersion.R4),
+      ...resourceMeta(resource, profile$2, "R4"),
       // zib Patient-v3.2(2020EN)
       identifier: {
         bsn: identifier$1(resource.identifier?.find(
@@ -54004,7 +54126,7 @@ ${indent}}` : "}";
   const profile$1 = "http://nictiz.nl/fhir/StructureDefinition/nl-core-PharmaceuticalProduct";
   function parseNlCorePharmaceuticalProduct(resource) {
     return {
-      ...resourceMeta(resource, profile$1, FhirVersion.R4),
+      ...resourceMeta(resource, profile$1, "R4"),
       // ART-DECOR Dataset Vaccination-Immunization
       identifier: map(resource.identifier, identifier$1),
       batch: {
@@ -54151,7 +54273,7 @@ ${indent}}` : "}";
   const profile = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Vaccination-event";
   function parseNlCoreVaccinationEvent(resource) {
     return {
-      ...resourceMeta(resource, profile, FhirVersion.R4),
+      ...resourceMeta(resource, profile, "R4"),
       // zib PharmaceuticalProduct-v2.1.2(2020EN)
       vaccineCode: codeableConcept$1(resource.vaccineCode),
       // zib Vaccination-v4.0(2020EN)
@@ -54215,7 +54337,7 @@ ${indent}}` : "}";
   const resourcesMapR3 = Object.fromEntries(Object.entries(resourcesR3).map(([_name, config2]) => [config2.profile.toLowerCase(), config2]));
   const resourcesMapR4 = Object.fromEntries(Object.entries(resourcesR4).map(([_name, config2]) => [config2.profile.toLowerCase(), config2]));
   function getResourceConfig(profile2, fhirVersion) {
-    const resourcesMap = FhirVersion[fhirVersion] === FhirVersion.R3 ? resourcesMapR3 : resourcesMapR4;
+    const resourcesMap = fhirVersion === "R3" ? resourcesMapR3 : resourcesMapR4;
     let matchingProfile;
     if (Array.isArray(profile2)) {
       matchingProfile = profile2.map((x) => x.toLowerCase()).find((x) => !!resourcesMap[x]);
@@ -54248,7 +54370,7 @@ ${indent}}` : "}";
       throw new Error(`No config found for MGO Resource with profile: "${resource.profile}" and fhir version: "${resource.fhirVersion}"`);
     }
     const context = createSchemaContext({
-      locale: options?.locale ?? Locale.NL_NL,
+      locale: options?.locale ?? "nl-NL",
       ignoreMissingTranslations: true,
       ...options
     });
@@ -54256,7 +54378,7 @@ ${indent}}` : "}";
     return setEmptyEntries(context)(uiSchema);
   }
   const defaultOptions = {
-    fhirVersion: FhirVersion.R3
+    fhirVersion: "R3"
   };
   function getMgoResource(resource, options = {}) {
     const { fhirVersion } = { ...defaultOptions, ...options };
@@ -54296,7 +54418,7 @@ ${indent}}` : "}";
       };
     }
     const context = createSchemaContext({
-      locale: options?.locale ?? Locale.NL_NL,
+      locale: options?.locale ?? "nl-NL",
       ignoreMissingTranslations: true,
       isSummary: true,
       ...options
@@ -54304,14 +54426,8 @@ ${indent}}` : "}";
     const summaryUiSchema = config2.summary(resource, context);
     return setEmptyEntries(context)(summaryUiSchema);
   }
-  function createJsonApi(func) {
-    return function(...args) {
-      const result = func(...args.map(losslessParse));
-      return losslessStringify(result, (_key, value2) => value2 === void 0 ? null : value2);
-    };
-  }
-  const getBundleResourcesJson = createJsonApi(getBundleResources);
-  const getMgoResourceJson = createJsonApi(getMgoResource);
+  const getBundleResourcesJson = createJsonApi(getBundleResources, { lossless: true });
+  const getMgoResourceJson = createJsonApi(getMgoResource, { lossless: true });
   const getSummaryJson = createJsonApi(getSummary);
   const getDetailsJson = createJsonApi(getDetails);
   exports.getBundleResourcesJson = getBundleResourcesJson;

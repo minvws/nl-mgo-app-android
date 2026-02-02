@@ -26,7 +26,7 @@ data class NlCorePatient(
     val birthDate: MgoDate? = null,
     val referenceId: String,
     val deceasedBoolean: MgoBoolean? = null,
-    val nationality: List<ExtensionValue_Of_structure_0_5710765773941568>,
+    val nationality: List<ExtensionValue_Of_structure_0_5443887821530906>,
     val multipleBirthInteger: MgoInteger? = null,
     val deceasedDateTime: MgoDateTime? = null,
     val generalPractitioner: MgoReference? = null,
@@ -57,7 +57,7 @@ data class NlCorePatient(
         val city: MgoString? = null,
         val addressType: MgoCodeableConcept? = null,
         val use: MgoCode_Of_string? = null,
-        val line: List<Line>? = null,
+        val line: List<NlCoreAddressStreetNameHouseNumber>? = null,
         val district: MgoString? = null,
         val postalCode: MgoString? = null,
         val official: MgoBoolean? = null,
@@ -69,15 +69,6 @@ data class NlCorePatient(
         }
 
     }
-
-    @Serializable
-    data class Line(
-        val streetName: MgoString? = null,
-        val buildingNumberSuffix: MgoString? = null,
-        val additionalLocator: MgoString? = null,
-        val houseNumber: MgoString? = null,
-        val unitId: MgoString? = null
-    )
 
     @Serializable
     data class Gender(

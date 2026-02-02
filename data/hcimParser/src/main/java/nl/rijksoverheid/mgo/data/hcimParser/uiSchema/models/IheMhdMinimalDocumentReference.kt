@@ -23,7 +23,7 @@ data class IheMhdMinimalDocumentReference(
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/IHE.MHD.Minimal.DocumentReference",
     val masterIdentifier: MgoIdentifier? = null,
     val type: MgoCodeableConcept? = null,
-    val content: Content,
+    val content: List<Content>? = null,
     val referenceId: String,
     val fhirVersion: String = "R3",
     val context: Context,

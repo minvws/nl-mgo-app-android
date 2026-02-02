@@ -46,7 +46,7 @@ data class NlCorePractitioner(
         val city: MgoString? = null,
         val addressType: MgoCodeableConcept? = null,
         val use: MgoCode_Of_string? = null,
-        val line: List<Line>? = null,
+        val line: List<NlCoreAddressStreetNameHouseNumber>? = null,
         val district: MgoString? = null,
         val postalCode: MgoString? = null,
         val official: MgoBoolean? = null,
@@ -58,15 +58,6 @@ data class NlCorePractitioner(
         }
 
     }
-
-    @Serializable
-    data class Line(
-        val streetName: MgoString? = null,
-        val buildingNumberSuffix: MgoString? = null,
-        val additionalLocator: MgoString? = null,
-        val houseNumber: MgoString? = null,
-        val unitId: MgoString? = null
-    )
 
     @Serializable
     data class Name(

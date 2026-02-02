@@ -56,7 +56,7 @@ class HcimParserPlugin : Plugin<Project> {
   }
 
   private fun modifyJsonSchema(workingDir: File): JSONObject {
-    val typesFile = File(workingDir, "mgo-hcim-api.types.json")
+    val typesFile = File(workingDir, "mgo-hcim-api.schema.json")
     val originalJson = JSONObject(typesFile.readText())
 
     val modifiedJson = JSONObject(originalJson.toString().replace("anyOf", "oneOf"))

@@ -227,15 +227,15 @@ fun ColorScheme.ActionsGhostText(isSystemDarkTheme: Boolean = LocalAppThemeProvi
 
 @Composable
 fun ColorScheme.StatesInformative(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) DarkBlue300 else DarkBlue500
+  if (isSystemDarkTheme) SkyBlue300 else SkyBlue500
 
 @Composable
 fun ColorScheme.StatesPositive(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) DarkGreen300 else DarkGreen500
+  if (isSystemDarkTheme) Green300 else Green500
 
 @Composable
 fun ColorScheme.StatesWarning(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
-  if (isSystemDarkTheme) Yellow300 else Yellow500
+  if (isSystemDarkTheme) DarkYellow300 else DarkYellow500
 
 @Composable
 fun ColorScheme.StatesCritical(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) Red300 else Red500

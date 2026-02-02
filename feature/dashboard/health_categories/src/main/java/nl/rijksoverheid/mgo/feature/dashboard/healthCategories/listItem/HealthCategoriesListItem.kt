@@ -83,13 +83,19 @@ internal fun HealthCategoriesListItemContent(
   modifier: Modifier = Modifier,
   hasDivider: Boolean = true,
 ) {
+  val iconColor =
+    when (listItemState) {
+      HealthCategoriesListItemState.NO_DATA -> MaterialTheme.colorScheme.SymbolsSecondary().copy(alpha = 0.15f)
+      else -> category.icon.getColor().copy(alpha = 0.15f)
+    }
+
   Column(modifier = modifier.fillMaxWidth().testTag(HealthCategoriesListItemTestTag.LIST_ITEM)) {
     Row(modifier = Modifier.padding(16.dp)) {
       Box(
-        modifier = Modifier.size(32.dp).background(color = category.icon.getColor().copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)),
+        modifier = Modifier.size(32.dp).background(color = iconColor, shape = RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center,
       ) {
-        Icon(painter = painterResource(id = category.icon.getDrawable()), contentDescription = null, tint = category.icon.getColor())
+        Icon(painter = painterResource(id = category.icon.getDrawable()), contentDescription = null, tint = iconColor.copy(alpha = 1f))
       }
       Column(modifier = Modifier.weight(1f).padding(horizontal = 16.dp)) {
         Text(

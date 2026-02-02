@@ -20,7 +20,7 @@ data class NlCoreAddress(
     val city: MgoString? = null,
     val addressType: MgoCodeableConcept? = null,
     val use: MgoCode? = null,
-    val line: List<Line>? = null,
+    val line: List<NlCoreAddressStreetNameHouseNumber>? = null,
     val district: MgoString? = null,
     val postalCode: MgoString? = null,
     val official: MgoBoolean? = null,
@@ -30,15 +30,6 @@ data class NlCoreAddress(
     init {
         require(_profile == cg_str0) { "_profile not constant value $cg_str0 - $_profile" }
     }
-
-    @Serializable
-    data class Line(
-        val streetName: MgoString? = null,
-        val buildingNumberSuffix: MgoString? = null,
-        val additionalLocator: MgoString? = null,
-        val houseNumber: MgoString? = null,
-        val unitId: MgoString? = null
-    )
 
     companion object {
         private const val cg_str0 = "http://fhir.nl/fhir/StructureDefinition/nl-core-address"

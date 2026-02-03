@@ -14,7 +14,7 @@
   <string name="dialog.remove_organization_no">Nee, toch tonen</string>
   <string name="dialog.remove_organization_subheading">We halen uw dossier van deze zorgaanbieder niet op. U kunt deze later alsnog toevoegen via uw profiel.</string>
   <string name="dialog.remove_organization_yes">Ja, weglaten</string>
-  <string name="introduction.subheading">Met deze app heeft u al uw gegevens over gezondheid en zorg veilig op één plek.</string>
+  <string name="introduction.subheading">Alles over uw gezondheid en zorg op één plek. Bijvoorbeeld gegevens van de huisarts, het ziekenhuis en uw vaccinaties.</string>
   <string name="lab_results.heading">Uitslagen</string>
   <string name="lab_results.subheading">Resultaten van onderzoeken en testen die u heeft gehad.</string>
   <string name="login.digid">Log in met DigiD</string>
@@ -35,10 +35,7 @@
   <string name="overview.heading">Welkom</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Uw diagnoses en gezondheidsklachten, vastgesteld door uw zorgaanbieder.</string>
-  <string name="proposition.statement_1"><![CDATA[Uw gegevens worden <b>beveiligd</b> en via een <b>veilige verbinding</b> opgehaald.]]></string>
-  <string name="proposition.statement_3"><![CDATA[<b>U kiest zelf</b> hoe u uw gegevens wilt gebruiken en of u ze deelt met anderen.]]></string>
-  <string name="proposition.statement_4"><![CDATA[U kunt de gegevens in uw overzicht altijd <b>verwijderen of opnieuw ophalen</b>.]]></string>
-  <string name="proposition.subheading"><![CDATA[In de <a href=\"%1$s\">privacyverklaring</a> staat hoe Mijn Gezondheidsoverzicht uw gegevens gebruikt en beschermt. Dit zijn de belangrijkste punten:]]></string>
+  <string name="proposition.subheading">In de privacyverklaring leest u hoe Mijn Gezondheidsoverzicht uw gegevens gebruikt en beschermt. Dit zijn de belangrijkste punten:</string>
   <string name="proposition.heading">Hoe de app omgaat met uw gegevens</string>
   <string name="update_required.heading">Tijd voor een update</string>
   <string name="update_required.subheading">U heeft de nieuwste versie van de app nodig om verder te gaan.</string>
@@ -88,10 +85,9 @@
   <string name="add_organization.not_participating">Zorgaanbieder niet aangesloten</string>
   <string name="launch.jailbreak_heading">Er zijn beveiligingsrisico’s gevonden</string>
   <string name="launch.jailbreak_subheading">Let op: uw apparaat is geroot. Uw gegevens zijn mogelijk niet veilig.</string>
-  <string name="proposition.statement_2"><![CDATA[Uw gegevens komen direct van de zorgaanbieder die u kiest. <b>Alleen u heeft toegang.</b>]]></string>
   <string name="bottombar.healthcareproviders">Uw zorgaanbieders</string>
   <string name="organizations.heading">Uw zorgaanbieders</string>
-  <string name="organizations.remove_organization">Verwijder zorgaanbieder</string>
+  <string name="organizations.remove_organization">Verwijderen</string>
   <string name="overview.no_results_action">Voeg een zorgaanbieder toe</string>
   <string name="health_category.empty.heading">Deze categorie is nog leeg</string>
   <string name="health_category.empty.subheading">Hier is niets opgeslagen. Zodra uw zorgaanbieders informatie toevoegen, staat die hier.</string>
@@ -241,7 +237,7 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="settings.about_this_app_safety.install_updates.heading">Installeer updates</string>
   <string name="settings.about_this_app_safety.install_updates.subheading">Houd u mobiel en apps up-to-date. Zet automatische updates aan of kijk regelmatig in de Google Play Store of er nieuwe updates zijn.</string>
   <string name="settings.about_this_app_safety.public_wifi.heading">Gebruik liever geen openbare wifi</string>
-  <string name="settings.about_this_app_safety.public_wifi.subheading">Openbare wifi-netwerken, zoals in cafés of treinen, zijn minder veilig. Gebruik liever 4G of 5G. Dat beschermt u gegevens beter.</string>
+  <string name="settings.about_this_app_safety.public_wifi.subheading">Openbare wifi-netwerken, zoals in cafés of treinen, zijn minder veilig. Gebruik liever 4G of 5G. Dat beschermt uw gegevens beter.</string>
   <string name="settings.about_this_app_safety.permissions.heading">Let op app-toestemmingen</string>
   <string name="settings.about_this_app_safety.permissions.subheading">Sommige apps vragen om toegang tot uw locatie of andere persoonlijke gegevens. Kijk goed welke toestemming u geeft. En of dat echt nodig is.</string>
   <string name="settings.about_this_app_safety.safe_apps.heading">Download alleen veilige apps</string>
@@ -260,7 +256,7 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="export_pdf.subheading">Gemaakt op %1$s om %2$s uur</string>
   <string name="export_pdf.footer">Dit document is gemaakt met Mijn Gezondheidsoverzicht. Het bevat uw medische gegevens,\nvan zorgaanbieders die u heeft toegevoegd. U bent zelf verantwoordelijk voor wat u\nmet deze informatie doet. Er is niet gecontroleerd of de gegevens juist of compleet zijn.</string>
   <string name="export_pdf.no_data">Geen gegevens beschikbaar</string>
-  <string name="export_pdf.close">Klaar</string>
+  <string name="export_pdf.close">Gereed</string>
   <string name="export_pdf.share">Deel deze pdf</string>
   <string name="export_pdf.menu.save_pdf">Opslaan als pdf</string>
   <string name="mhc_personal_administration.heading">Persoonlijk</string>
@@ -316,10 +312,10 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="dialog.add_organization_subheading">Als deze zorgaanbieder gegevens over u heeft, staan die straks in uw overzicht.</string>
   <string name="dialog.add_organization_no">Nee</string>
   <string name="errorstate.loading">Gegevens ophalen…</string>
-  <string name="errorstate.serverside.heading">Dit komt door een storing bij ons. Probeer het later opnieuw.</string>
+  <string name="errorstate.serverside.heading">Helaas konden we door een probleem aan onze kant uw gegevens niet ophalen.</string>
   <string name="errorstate.clientside.heading">Er ging iets mis bij het ophalen. Controleer uw verbinding en probeer het opnieuw.</string>
   <string name="errorstate.partial_error">Niet alle gegevens zijn opgehaald</string>
-  <string name="errorstate.error">Geen gegevens opgehaald</string>
+  <string name="errorstate.error">Gegevens niet opgehaald</string>
   <string name="health_category.empty.action">Terug naar overzicht</string>
   <string name="common.data_not_retrieved_heading">Gegevens niet opgehaald</string>
   <string name="common.data_not_retrieved_subheading">We kunnen door een probleem uw gegevens nu niet ophalen.</string>
@@ -327,4 +323,13 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="health_category.errornodata.subheading">Dit komt door een storing bij ons. Probeer het later opnieuw.</string>
   <string name="overview.favorites.add">Aanpassen</string>
   <string name="overview_favorites_action_edit">Aanpassen</string>
+  <string name="proposition.statement.heading_1">De app is veilig</string>
+  <string name="proposition.statement.subheading_1">Uw gegevens worden altijd via een veilige verbinding opgehaald.</string>
+  <string name="proposition.statement.heading_2">Alleen voor u</string>
+  <string name="proposition.statement.subheading_2">Niemand anders kan uw gegevens bekijken en delen.</string>
+  <string name="proposition.statement.heading_3">De app slaat niets op</string>
+  <string name="proposition.statement.subheading_3">Uw gegevens staan alleen bij uw zorgaanbieders.</string>
+  <string name="proposition.statement.heading_4">U heeft de controle</string>
+  <string name="proposition.statement.subheading_4">Het overzicht kunt u altijd leegmaken of opnieuw ophalen.</string>
+  <string name="proposition.open_privacy.button">Open de privacyverklaring</string>
 </resources>

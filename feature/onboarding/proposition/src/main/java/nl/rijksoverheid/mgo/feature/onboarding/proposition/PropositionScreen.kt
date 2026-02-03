@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.onboarding.proposition
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,29 +12,29 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
-import nl.rijksoverheid.mgo.component.mgo.MgoHtmlText
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
+import nl.rijksoverheid.mgo.framework.util.launchBrowser
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
-/**
- * Composable that shows a screen displaying the privacy policy.
- *
- * @param onNavigateBack Called when requested to navigate back.
- * @param onOnboardingFinished Called when the onboarding is considered done.
- */
 @Composable
 fun PropositionOverviewScreen(
   onNavigateBack: () -> Unit,
@@ -56,6 +57,7 @@ internal fun PropositionOverviewScreenContent(
   onNavigateBack: () -> Unit,
   onClickNext: () -> Unit,
 ) {
+  val context = LocalContext.current
   val scrollState = rememberScrollState()
   val scrollBehavior = getMgoAppBarScrollBehaviour(scrollState.canScrollForward, scrollState.canScrollBackward)
 
@@ -78,29 +80,33 @@ internal fun PropositionOverviewScreenContent(
               .verticalScroll(scrollState)
               .padding(16.dp),
         ) {
-          MgoHtmlText(
-            html = stringResource(id = CopyR.string.proposition_subheading, url),
+          Text(
+            text = stringResource(CopyR.string.proposition_subheading),
             style = MaterialTheme.typography.bodyMedium,
           )
           ListItem(
             modifier = Modifier.padding(top = 16.dp),
-            icon = R.drawable.ic_privacy_overview_encrypted,
-            text = stringResource(id = CopyR.string.proposition_statement_1),
+            icon = R.drawable.ic_proposition_statement_1,
+            heading = CopyR.string.proposition_statement_heading_1,
+            subHeading = CopyR.string.proposition_statement_subheading_1,
           )
           ListItem(
-            modifier = Modifier.padding(top = 24.dp),
-            icon = R.drawable.ic_privacy_overview_health_and_safety,
-            text = stringResource(id = CopyR.string.proposition_statement_2),
+            modifier = Modifier.padding(top = 16.dp),
+            icon = R.drawable.ic_proposition_statement_2,
+            heading = CopyR.string.proposition_statement_heading_2,
+            subHeading = CopyR.string.proposition_statement_subheading_2,
           )
           ListItem(
-            modifier = Modifier.padding(top = 24.dp),
-            icon = R.drawable.ic_privacy_overview_verified_user,
-            text = stringResource(id = CopyR.string.proposition_statement_3),
+            modifier = Modifier.padding(top = 16.dp),
+            icon = R.drawable.ic_proposition_statement_3,
+            heading = CopyR.string.proposition_statement_heading_3,
+            subHeading = CopyR.string.proposition_statement_subheading_3,
           )
           ListItem(
-            modifier = Modifier.padding(top = 24.dp),
-            icon = R.drawable.ic_privacy_overview_gpp_bad,
-            text = stringResource(id = CopyR.string.proposition_statement_4),
+            modifier = Modifier.padding(top = 16.dp),
+            icon = R.drawable.ic_proposition_statement_4,
+            heading = CopyR.string.proposition_statement_heading_4,
+            subHeading = CopyR.string.proposition_statement_subheading_4,
           )
         }
 
@@ -109,6 +115,11 @@ internal fun PropositionOverviewScreenContent(
             MgoBottomButton(
               text = stringResource(id = CopyR.string.common_next),
               onClick = onClickNext,
+            ),
+          secondaryButton =
+            MgoBottomButton(
+              text = stringResource(id = CopyR.string.proposition_open_privacy_button),
+              onClick = { context.launchBrowser(url) },
             ),
           isElevated = scrollState.canScrollForward,
         )
@@ -120,16 +131,25 @@ internal fun PropositionOverviewScreenContent(
 @Composable
 private fun ListItem(
   @DrawableRes icon: Int,
-  text: String,
+  @StringRes heading: Int,
+  @StringRes subHeading: Int,
   modifier: Modifier = Modifier,
 ) {
-  Row(modifier = modifier) {
+  Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
     Icon(painter = painterResource(id = icon), contentDescription = null, tint = MaterialTheme.colorScheme.CategoriesRijkslint())
-    MgoHtmlText(
-      modifier = Modifier.padding(horizontal = 16.dp),
-      html = text,
-      style = MaterialTheme.typography.bodyMedium,
-    )
+    Column(modifier = modifier.padding(horizontal = 16.dp)) {
+      Text(
+        text = stringResource(heading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.LabelsPrimary(),
+        fontWeight = FontWeight.Bold,
+      )
+      Text(
+        text = stringResource(subHeading),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.LabelsSecondary(),
+      )
+    }
   }
 }
 

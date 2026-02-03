@@ -1,8 +1,11 @@
 package nl.rijksoverheid.mgo.feature.onboarding.introduction
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -19,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -42,22 +46,13 @@ fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
     contentWindowInsets = WindowInsets.statusBars,
     content = { contentPadding ->
       Column(modifier = Modifier.padding(contentPadding)) {
-        Column(
+        MgoAutoScrollColumn(
           modifier =
             Modifier
               .weight(1f)
-              .verticalScroll(scrollState)
               .padding(16.dp),
+          scrollState = scrollState,
         ) {
-          Image(
-            modifier =
-              Modifier
-                .fillMaxWidth()
-                .padding(top = TopAppBarDefaults.LargeAppBarCollapsedHeight),
-            painter = painterResource(id = R.drawable.illustration_introduction),
-            contentDescription = null,
-          )
-
           Text(
             modifier = Modifier.padding(top = 32.dp),
             text = stringResource(id = CopyR.string.introduction_heading),
@@ -70,6 +65,16 @@ fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
             text = stringResource(id = CopyR.string.introduction_subheading),
             style = MaterialTheme.typography.bodyMedium,
           )
+
+          Spacer(modifier = Modifier.weight(1f))
+
+          Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.illustration_introduction_new),
+            contentDescription = null,
+          )
+
+          Spacer(modifier = Modifier.weight(1f))
         }
 
         MgoBottomButtons(

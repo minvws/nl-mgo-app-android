@@ -25,7 +25,6 @@ fun MgoCard(
       modifier = modifier,
       shape = shape,
       colors = CardDefaults.outlinedCardColors(),
-      elevation = CardDefaults.elevatedCardElevation(),
       content = content,
     )
   } else {
@@ -33,7 +32,6 @@ fun MgoCard(
       modifier = modifier,
       shape = shape,
       colors = CardDefaults.outlinedCardColors(),
-      elevation = CardDefaults.elevatedCardElevation(),
       onClick = onClick,
       content = content,
     )

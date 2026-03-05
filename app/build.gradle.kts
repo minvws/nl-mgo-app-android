@@ -225,4 +225,5 @@ dependencies {
   ksp(libs.kotlin.metadata.jvm)
 
   androidTestUtil("androidx.test.services:test-services:1.4.2")
+  implementation(projects.data.organization)
 }

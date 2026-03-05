@@ -62,6 +62,9 @@ androidx-startup-runtime = "1.2.0"
 reorderable = "3.0.0"
 quickjs-wrapper = "3.2.3"
 kotlin-metadata-jvm = "2.3.0-Beta1"
+sqldelight = "2.2.1"
+sqldelight-androidx-driver = "0.0.17"
+androix-sqlite-bundled = "2.6.2"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -132,6 +135,11 @@ itext7-core = { group = "com.itextpdf", name = "itext7-core", version.ref = "ite
 zoomable = { group = "net.engawapg.lib", name = "zoomable", version.ref = "zoomable" }
 androidx-startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidx-startup-runtime" }
 reoderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
+sqldelight-android-driver = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+sqldelight-sql-driver = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-androidx-driver = { group = "com.eygraber", name = "sqldelight-androidx-driver", version.ref = "sqldelight-androidx-driver" }
+androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androix-sqlite-bundled" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -148,3 +156,4 @@ sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 serializable = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries"}
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

@@ -1,0 +1,22 @@
+CREATE VIRTUAL TABLE organizations
+USING fts5(
+  id UNINDEXED,
+  displayName UNINDEXED,
+  searchBlob,
+  tokenize = 'porter'
+);
+
+insertOrganization:
+INSERT INTO organizations(id, displayName, searchBlob)
+VALUES (?, ?, ?);
+
+searchOrganizations:
+SELECT *,
+       bm25(organizations) AS score
+FROM organizations
+WHERE organizations MATCH ?
+ORDER BY score
+LIMIT 100;
+
+deleteAllOrganizations:
+DELETE FROM organizations;

@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.data.organization
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import app.cash.turbine.test
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -73,6 +74,39 @@ class OrganizationRepositoryTest {
 
       // Assert the quality of the benchmark
       assertEquals(0.8705706f, benchmarkResult.meanReciprocalRank)
+    }
+
+  @Test
+  fun testSaved() =
+    runTest {
+      // Load organizations specific for the benchmark
+      organisationRepository.sync("benchmark-organizations.json")
+
+      // Mark Het Huisartsenteam Van Beek-Schrijnemaekers as saved
+      organisationRepository.save("agb:01009380")
+
+      // Verify organization is added
+      organisationRepository.getSaved().test {
+        assertEquals(1, awaitItem().size)
+      }
+    }
+
+  @Test
+  fun testDelete() =
+    runTest {
+      // Load organizations specific for the benchmark
+      organisationRepository.sync("benchmark-organizations.json")
+
+      // Mark Het Huisartsenteam Van Beek-Schrijnemaekers as saved
+      organisationRepository.save("agb:01009380")
+
+      // Mark Het Huisartsenteam Van Beek-Schrijnemaekers as deleted
+      organisationRepository.delete("agb:01009380")
+
+      // Verify organization is deleted
+      organisationRepository.getSaved().test {
+        assertEquals(0, awaitItem().size)
+      }
     }
 }
 

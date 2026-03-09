@@ -20,7 +20,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-class SearchScreenViewModel
+class ManualLocalisationScreenViewModel
   @Inject
   constructor(
     private val getDataSetsFromDisk: GetDataSetsFromDisk,
@@ -65,15 +65,13 @@ class SearchScreenViewModel
     }
 
     fun add(organization: Organization) {
-      viewModelScope.launch {
-        val supportedDataServiceIds = getDataSetsFromDisk().map { it.id }
-//        val mgoOrganization = searchResult.toMgoOrganization(supportedDataServiceIds)
-//        organizationRepository.save(mgoOrganization)
-//        _navigateToDashboard.tryEmit(Unit)
+      viewModelScope.launch(ioDispatcher) {
+        organizationRepository.save(organization.id)
+        _navigateToDashboard.tryEmit(Unit)
       }
     }
 
-    private suspend fun Organization.toUi(supportedDataServiceIds: List<String>): OrganizationUi =
+    private fun Organization.toUi(supportedDataServiceIds: List<String>): OrganizationUi =
       OrganizationUi(
         organization = this,
         supported = false,

@@ -6,15 +6,11 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeToSequence
 import nl.rijksoverheid.mgo.component.organization.Organization
-import nl.rijksoverheid.mgo.component.organization.OrganizationId
-import nl.rijksoverheid.mgo.framework.util.file.ReadLocalFile
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 
@@ -70,7 +66,30 @@ class OrganizationRepository
               searchBlob = searchResult.searchBlob ?: "",
               addressLine = searchResult.addressLine ?: "",
               city = searchResult.city ?: "",
+              added = searchResult.added != 0L,
             )
           }
         }
+
+    suspend fun getSaved(): Flow<List<Organization>> =
+      database.organizationQueries.getSavedOrganizations().asFlow().mapToList(coroutineContext).map { searchResults ->
+        searchResults.map { searchResult ->
+          Organization(
+            id = searchResult.id ?: "",
+            displayName = searchResult.displayName ?: "",
+            searchBlob = searchResult.searchBlob ?: "",
+            addressLine = searchResult.addressLine ?: "",
+            city = searchResult.city ?: "",
+            added = searchResult.added != 0L,
+          )
+        }
+      }
+
+    fun save(organizationId: String) {
+      database.organizationQueries.insertSavedOrganization(organizationId)
+    }
+
+    fun delete(organizationId: String) {
+      database.organizationQueries.deleteSavedOrganization(organizationId)
+    }
   }

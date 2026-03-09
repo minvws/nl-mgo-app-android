@@ -45,9 +45,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.Organization
-import nl.rijksoverheid.mgo.component.organization.TEST_ORGANIZATION_1
-import nl.rijksoverheid.mgo.component.organization.TEST_ORGANIZATION_2
-import nl.rijksoverheid.mgo.component.organization.TEST_ORGANIZATION_3
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
@@ -62,7 +59,7 @@ fun ManualLocalisationScreen(
   onNavigateToDashboard: () -> Unit,
   onNavigateBack: (() -> Unit)?,
 ) {
-  val viewModel: SearchScreenViewModel = hiltViewModel()
+  val viewModel: ManualLocalisationScreenViewModel = hiltViewModel()
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) {

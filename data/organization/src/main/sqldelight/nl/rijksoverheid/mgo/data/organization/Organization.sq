@@ -8,14 +8,43 @@ USING fts5(
   tokenize = 'porter'
 );
 
+CREATE TABLE IF NOT EXISTS saved_organizations (
+    organizationId TEXT PRIMARY KEY
+);
+
+getSavedOrganizations:
+SELECT
+    organizations.*,
+    1 AS added,
+    0 AS score
+FROM organizations
+INNER JOIN saved_organizations
+    ON organizations.id = saved_organizations.organizationId
+ORDER BY displayName;
+
+insertSavedOrganization:
+INSERT OR IGNORE INTO saved_organizations (organizationId)
+VALUES (?);
+
+deleteSavedOrganization:
+DELETE FROM saved_organizations
+WHERE organizationId = ?;
+
 insertOrganization:
 INSERT INTO organizations(id, displayName, addressLine, city, searchBlob)
 VALUES (?, ?, ?, ?, ?);
 
 searchOrganizations:
-SELECT *,
-       bm25(organizations) AS score
+SELECT
+    organizations.*,
+    CASE
+        WHEN saved_organizations.organizationId IS NOT NULL THEN 1
+        ELSE 0
+    END AS added,
+    bm25(organizations) AS score
 FROM organizations
+LEFT JOIN saved_organizations
+    ON organizations.id = saved_organizations.organizationId
 WHERE organizations MATCH ?
 ORDER BY score
 LIMIT 100;

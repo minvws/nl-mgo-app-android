@@ -12,6 +12,7 @@ data class Organization(
   @SerialName("search_blob") val searchBlob: String,
   @SerialName("address_line") val addressLine: String?,
   @SerialName("city") val city: String?,
+  @SerialName("added") val added: Boolean? = false,
 )
 
 val TEST_ORGANIZATION_1 =
@@ -21,6 +22,7 @@ val TEST_ORGANIZATION_1 =
     addressLine = "Hanzeplein 1",
     city = "Groningen",
     searchBlob = "",
+    added = false,
   )
 
 val TEST_ORGANIZATION_2 =
@@ -30,6 +32,7 @@ val TEST_ORGANIZATION_2 =
     addressLine = "Hanzeplein 1",
     city = "Amsterdam",
     searchBlob = "",
+    added = false,
   )
 
 val TEST_ORGANIZATION_3 =
@@ -39,4 +42,5 @@ val TEST_ORGANIZATION_3 =
     addressLine = "P. Debyelaan 25",
     city = "Maastricht",
     searchBlob = "",
+    added = false,
   )

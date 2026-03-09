@@ -2,13 +2,15 @@ CREATE VIRTUAL TABLE organizations
 USING fts5(
   id UNINDEXED,
   displayName UNINDEXED,
+  addressLine UNINDEXED,
+  city UNINDEXED,
   searchBlob,
   tokenize = 'porter'
 );
 
 insertOrganization:
-INSERT INTO organizations(id, displayName, searchBlob)
-VALUES (?, ?, ?);
+INSERT INTO organizations(id, displayName, addressLine, city, searchBlob)
+VALUES (?, ?, ?, ?, ?);
 
 searchOrganizations:
 SELECT *,

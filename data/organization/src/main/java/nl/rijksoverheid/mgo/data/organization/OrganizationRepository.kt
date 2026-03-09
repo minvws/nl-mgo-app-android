@@ -13,6 +13,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeToSequence
 import nl.rijksoverheid.mgo.component.organization.Organization
+import nl.rijksoverheid.mgo.component.organization.OrganizationId
 import nl.rijksoverheid.mgo.framework.util.file.ReadLocalFile
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
@@ -46,6 +47,8 @@ class OrganizationRepository
                 database.organizationQueries.insertOrganization(
                   id = organization.id,
                   displayName = organization.displayName,
+                  addressLine = organization.addressLine,
+                  city = organization.city,
                   searchBlob = organization.searchBlob.normalizeText(),
                 )
               }
@@ -56,7 +59,7 @@ class OrganizationRepository
 
     suspend fun search(query: String): Flow<List<Organization>> =
       database.organizationQueries
-        .searchOrganizations(query.toFts5Query(fuzzy = true))
+        .searchOrganizations(query.toFts5Query())
         .asFlow()
         .mapToList(coroutineContext)
         .map { searchResults ->
@@ -65,6 +68,8 @@ class OrganizationRepository
               id = searchResult.id ?: "",
               displayName = searchResult.displayName ?: "",
               searchBlob = searchResult.searchBlob ?: "",
+              addressLine = searchResult.addressLine ?: "",
+              city = searchResult.city ?: "",
             )
           }
         }

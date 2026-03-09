@@ -22,7 +22,7 @@ class OrganizationRepositoryTest {
 
   @Before
   fun setup() {
-    context = ApplicationProvider.getApplicationContext<Context>()
+    context = ApplicationProvider.getApplicationContext()
     val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
     OrganizationsDatabase.Schema.create(driver)
     organisationRepository = OrganizationRepository(driver = driver, context = context)

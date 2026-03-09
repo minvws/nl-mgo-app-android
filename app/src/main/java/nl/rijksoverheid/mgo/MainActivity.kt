@@ -154,8 +154,6 @@ class MainActivity : FragmentActivity() {
       addDashboardNavGraph(rootNavController = navController, mainViewModel = viewModel)
       addLocalisationNavGraph(
         navController = navController,
-        automaticLocalisationEnabled = false,
-        fromOnboarding = !viewModel.isDigidAuthenticated(),
       )
       addDigidNavGraph(navController = navController, keyValueStore = viewModel.keyValueStore)
     }

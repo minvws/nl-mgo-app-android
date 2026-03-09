@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="add_organization.already_added">Al toevoegd</string>
+  <string name="add_organization.already_added">Al toegevoegd</string>
   <string name="add_organization.city">Plaats</string>
   <string name="add_organization.error_missing_city">Vul een plaats in</string>
   <string name="add_organization.error_missing_name">Vul een naam in</string>
@@ -14,12 +14,12 @@
   <string name="dialog.remove_organization_no">Nee, toch tonen</string>
   <string name="dialog.remove_organization_subheading">We halen uw dossier van deze zorgaanbieder niet op. U kunt deze later alsnog toevoegen via uw profiel.</string>
   <string name="dialog.remove_organization_yes">Ja, weglaten</string>
-  <string name="introduction.subheading">Alles over uw gezondheid en zorg op één plek. Bijvoorbeeld gegevens van de huisarts, het ziekenhuis en uw vaccinaties.</string>
+  <string name="introduction.subheading">Bijvoorbeeld gegevens van de huisarts, het ziekenhuis en uw vaccinaties.</string>
   <string name="lab_results.heading">Uitslagen</string>
   <string name="lab_results.subheading">Resultaten van onderzoeken en testen die u heeft gehad.</string>
   <string name="login.digid">Log in met DigiD</string>
-  <string name="login.heading">Inloggen</string>
-  <string name="login.subheading">Met DigiD laat u weten wie u bent. Zo kunnen we uw gegevens veilig ophalen. Bij uw huisarts, het ziekenhuis en andere zorgaanbieders.</string>
+  <string name="login.heading">Log in met DigiD</string>
+  <string name="login.subheading">Zo bewijst u wie u bent. Daarna kan de app uw gegevens veilig ophalen bij uw zorgaanbieders.</string>
   <string name="medication_use.heading">Medicijnen</string>
   <string name="medication_use.subheading">Een overzicht van de medicijnen die zijn voorgeschreven door uw zorgaanbieder.</string>
   <string name="organization.diagnosis_heading">Klachten en diagnoses</string>
@@ -56,7 +56,7 @@
   <string name="bottombar.overview">Overzicht</string>
   <string name="bottombar.settings">Instellingen</string>
   <string name="overview.no_organizations_found">Uw overzicht is nog leeg, omdat u nog geen zorgaanbieders heeft toegevoegd.</string>
-  <string name="introduction.heading">Welkom bij Mijn Gezondheidsoverzicht</string>
+  <string name="introduction.heading">Alles over uw gezondheid en zorg op één plek</string>
   <string name="overview.subheading">Dit is uw overzicht met gegevens van de zorgaanbieders die u hebt toegevoegd.</string>
   <string name="privacy.link.test">https://web.test.mgo.irealisatie.nl/privacy</string>
   <string name="privacy.link.acc">https://web.acc.mgo.irealisatie.nl/privacy</string>
@@ -156,7 +156,7 @@
   <string name="common.search_again">Opnieuw zoeken</string>
   <string name="common.no_organizations_heading">U heeft nog geen zorgaanbieders toegevoegd</string>
   <string name="common.no_organizations_subheading">Voeg zorgaanbieders toe om gegevens over uw gezondheid te zien.</string>
-  <string name="common.add_organizations">Voeg een zorgaanbieder toe</string>
+  <string name="common.add_organizations">Zorgaanbieder toevoegen</string>
   <string name="hc_documents.error">Sorry, we kunnen de bijlage(n) nu niet ophalen.</string>
   <string name="hc_documents.no_document">Geen bijlage(n) gevonden. Klopt dit niet? Vraag uw zorgaanbieder om hulp.</string>
   <string name="settings.featureflag.localization">Automatische lokalisatie</string>
@@ -264,7 +264,7 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="mhc_examinations_results.heading">Onderzoek</string>
   <string name="mhc_health.heading">Gezondheid</string>
   <string name="overview_favorites_action_add">Toevoegen</string>
-  <string name="overview.favorites.empty.heading">Voeg onderdelen toe die u vaak gebruikt.\nDeze komen bovenaan te staan.</string>
+  <string name="overview.favorites.empty.heading">Voeg onderdelen toe die u vaak gebruikt. Deze komen bovenaan te staan.</string>
   <string name="overview.menu">menu</string>
   <string name="edit_overview.heading">Vaak gebruikt</string>
   <string name="edit_overview.save">Opslaan</string>
@@ -307,7 +307,7 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="add_organization.default_content_subheading">Bijvoorbeeld uw huisarts, ziekenhuis of apotheek.</string>
   <string name="settings.version.heading">Versie</string>
   <string name="zib_contact_person.heading">Administratie</string>
-  <string name="dialog.add_organization_yes">Ja, toevoegen</string>
+  <string name="search_organization.dialog.yes">Ja, toevoegen</string>
   <string name="dialog.add_organization_heading">%1$s toevoegen?</string>
   <string name="dialog.add_organization_subheading">Als deze zorgaanbieder gegevens over u heeft, staan die straks in uw overzicht.</string>
   <string name="dialog.add_organization_no">Nee</string>
@@ -324,7 +324,7 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="overview.favorites.add">Aanpassen</string>
   <string name="overview_favorites_action_edit">Aanpassen</string>
   <string name="proposition.statement.heading_1">De app is veilig</string>
-  <string name="proposition.statement.subheading_1">Uw gegevens worden altijd via een veilige verbinding opgehaald.</string>
+  <string name="proposition.statement.subheading_1">Uw gegevens worden via een beschermde verbinding opgehaald.</string>
   <string name="proposition.statement.heading_2">Alleen voor u</string>
   <string name="proposition.statement.subheading_2">Niemand anders kan uw gegevens bekijken en delen.</string>
   <string name="proposition.statement.heading_3">De app slaat niets op</string>
@@ -332,4 +332,17 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="proposition.statement.heading_4">U heeft de controle</string>
   <string name="proposition.statement.subheading_4">Het overzicht kunt u altijd leegmaken of opnieuw ophalen.</string>
   <string name="proposition.open_privacy.button">Open de privacyverklaring</string>
+  <string name="search_organization.subheading">Zoek op naam, type zorg of plaats</string>
+  <string name="search_organization.search_placeholder">Bijv. Amsterdam UMC</string>
+  <string name="search_organization.heading">Zorgaanbieder toevoegen</string>
+  <string name="search_organization.onboarding.heading">Bijna klaar! Voeg een zorgaanbieder toe</string>
+  <string name="search_organization.result_count">%1$s zorgaanbieders gevonden</string>
+  <string name="search_organization.no_results.heading">Geen zorgaanbieders gevonden</string>
+  <string name="search_organization.no_results.subheading">Controleer uw zoekopdracht en probeer het opnieuw.</string>
+  <string name="search_organization.dialog.heading">%1$s toevoegen?</string>
+  <string name="search_organization.dialog.no">Nee</string>
+  <string name="search_organization.dialog.subheading">Als deze zorgaanbieder gegevens over u heeft, staan die straks in uw overzicht.</string>
+  <string name="dialog.add_organization_yes">Ja, toevoegen</string>
+  <string name="search_organization.not_participating">Deelt geen gegevens</string>
+  <string name="search_organization.already_added">Al toegevoegd</string>
 </resources>

@@ -6,31 +6,43 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreen
 import nl.rijksoverheid.mgo.feature.localisation.addOrganization.AddOrganizationScreenViewModel
+import nl.rijksoverheid.mgo.feature.localisation.manual.ManualLocalisationScreen
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.automatic.OrganizationListAutomaticSearchScreen
 import nl.rijksoverheid.mgo.feature.localisation.organizationList.manual.OrganizationListManualScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.getViewModel
 import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 
-/**
- * Adds all the navigation destinations that can be found when searching for health care providers.
- * @param navController The nav controller used in this navigation.
- * @param automaticLocalisationEnabled If this nav graph should start with the automatic localisation, or the manual one.
- * @param fromOnboarding If this navigation is shown directly after the onboarding, or from the dashboard.
- */
-fun NavGraphBuilder.addLocalisationNavGraph(
-  navController: NavController,
-  automaticLocalisationEnabled: Boolean,
-  fromOnboarding: Boolean,
-) {
-  val startNavigation =
-    if (automaticLocalisationEnabled) {
-      LocalisationNavigation.OrganizationListAutomatic(fromOnboarding)
-    } else {
-      LocalisationNavigation
-        .AddOrganization
+fun NavGraphBuilder.addLocalisationNavGraph(navController: NavController) {
+  navigation<LocalisationNavigation.Root>(LocalisationNavigation.Manual) {
+    mgoComposableExt<LocalisationNavigation.Manual> {
+      val onNavigateBack: (() -> Unit)? =
+        if (navController.previousBackStackEntry == null) {
+          null
+        } else {
+          { navController.popBackStack() }
+        }
+      ManualLocalisationScreen(
+        onNavigateToDashboard = {
+          // If coming from dashboard, we want to pop back
+          val canPop =
+            navController.popBackStack(
+              route = LocalisationNavigation.Manual,
+              inclusive = true,
+            )
+          // If not coming from dashboard, navigate to it
+          if (!canPop) {
+            navController.navigate(DashboardNavigation.Root) {
+              popUpTo(navController.graph.id) {
+                inclusive = true
+              }
+            }
+          }
+        },
+        onNavigateBack = onNavigateBack,
+      )
     }
-  navigation<LocalisationNavigation.Root>(startNavigation) {
+
     mgoComposableExt<LocalisationNavigation.AddOrganization> {
       val onNavigateBack: (() -> Unit)? =
         if (navController.previousBackStackEntry == null) {

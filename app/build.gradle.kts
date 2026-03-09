@@ -226,4 +226,5 @@ dependencies {
 
   androidTestUtil("androidx.test.services:test-services:1.4.2")
   implementation(projects.data.organization)
+  implementation(projects.feature.localisation.manual)
 }

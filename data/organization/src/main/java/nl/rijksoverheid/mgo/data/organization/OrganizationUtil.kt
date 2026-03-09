@@ -54,19 +54,9 @@ internal fun String.editDistance1Variants(): List<String> {
   return variants.toList()
 }
 
-fun String.toFts5Query(
-  prefix: Boolean = true,
-  fuzzy: Boolean = false,
-): String {
+fun String.toFts5Query(): String {
   val normalized = this.normalizeText()
   val tokens = normalized.split(" ")
-
-  val terms =
-    if (fuzzy) {
-      tokens.flatMap { it.editDistance1Variants() + it }.distinct()
-    } else {
-      tokens
-    }
-
-  return terms.joinToString(" OR ") { if (prefix) "\"$it*\"" else "\"$it\"" }
+  val terms = tokens.flatMap { it.editDistance1Variants() + it }.distinct()
+  return terms.joinToString(" OR ") { "\"$it*\"" }
 }

@@ -155,8 +155,8 @@ private fun ManualLocalisationScreenContent(
             val organization = organizationUi.organization
             val trailing =
               when {
-//                organizationUi.added -> stringResource(CopyR.string.search_organization_already_added)
-//                !organizationUi.supported -> stringResource(CopyR.string.search_organization_not_participating)
+                organization.added == true -> stringResource(CopyR.string.search_organization_already_added)
+                !organizationUi.supported -> stringResource(CopyR.string.search_organization_not_participating)
                 else -> null
               }
             ManualLocalisationCard(

@@ -74,6 +74,6 @@ class ManualLocalisationScreenViewModel
     private fun Organization.toUi(supportedDataServiceIds: List<String>): OrganizationUi =
       OrganizationUi(
         organization = this,
-        supported = false,
+        supported = this.dataServices?.any { dataService -> supportedDataServiceIds.contains(dataService.key) } ?: false,
       )
   }

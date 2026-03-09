@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeToSequence
 import nl.rijksoverheid.mgo.component.organization.Organization
@@ -45,6 +46,7 @@ class OrganizationRepository
                   displayName = organization.displayName,
                   addressLine = organization.addressLine,
                   city = organization.city,
+                  dataServicesJson = json.encodeToString(organization.dataServices),
                   searchBlob = organization.searchBlob.normalizeText(),
                 )
               }
@@ -67,6 +69,7 @@ class OrganizationRepository
               addressLine = searchResult.addressLine ?: "",
               city = searchResult.city ?: "",
               added = searchResult.added != 0L,
+              dataServices = searchResult.dataServicesJson?.let { json.decodeFromString(it) } ?: mapOf(),
             )
           }
         }
@@ -81,6 +84,7 @@ class OrganizationRepository
             addressLine = searchResult.addressLine ?: "",
             city = searchResult.city ?: "",
             added = searchResult.added != 0L,
+            dataServices = searchResult.dataServicesJson?.let { json.decodeFromString(it) } ?: mapOf(),
           )
         }
       }

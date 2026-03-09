@@ -4,6 +4,7 @@ USING fts5(
   displayName UNINDEXED,
   addressLine UNINDEXED,
   city UNINDEXED,
+  dataServicesJson UNINDEXED,
   searchBlob,
   tokenize = 'porter'
 );
@@ -31,8 +32,8 @@ DELETE FROM saved_organizations
 WHERE organizationId = ?;
 
 insertOrganization:
-INSERT INTO organizations(id, displayName, addressLine, city, searchBlob)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO organizations(id, displayName, addressLine, city, dataServicesJson, searchBlob)
+VALUES (?, ?, ?, ?, ?, ?);
 
 searchOrganizations:
 SELECT

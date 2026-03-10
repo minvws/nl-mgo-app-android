@@ -1,16 +1,16 @@
 package nl.rijksoverheid.mgo.data.organization
 
-import android.content.Context
+import androidx.annotation.VisibleForTesting
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeToSequence
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import java.io.InputStream
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.coroutines.CoroutineContext
@@ -20,7 +20,6 @@ class OrganizationRepository
   constructor(
     driver: SqlDriver,
     @Named("supportedDataServiceIds") private val supportedDataServiceIds: List<String>,
-    @ApplicationContext private val context: Context,
   ) {
     private val json = Json { ignoreUnknownKeys = true }
     private val database = OrganizationsDatabase(driver)
@@ -29,12 +28,11 @@ class OrganizationRepository
      * Get all organizations and add them to the database.
      */
     @OptIn(ExperimentalSerializationApi::class)
-    fun sync(organizationsFile: String) {
+    fun sync(organizationsJson: InputStream) {
       // Remove all organizations from database
       database.organizationQueries.deleteAllOrganizations()
 
       // Insert organizations into database
-      val organizationsJson = context.assets.open(organizationsFile)
       organizationsJson.use { inputStream ->
         json
           .decodeToSequence<Organization>(inputStream)
@@ -99,6 +97,20 @@ class OrganizationRepository
 
     fun save(organizationId: String) {
       database.organizationQueries.insertSavedOrganization(organizationId)
+    }
+
+    @VisibleForTesting
+    fun addAndSave(mgoOrganization: MgoOrganization) {
+      val organization = mgoOrganization.toOrganization()
+      database.organizationQueries.insertOrganization(
+        id = organization.id,
+        displayName = organization.displayName,
+        addressLine = organization.addressLine,
+        city = organization.city,
+        dataServicesJson = json.encodeToString(organization.dataServices),
+        searchBlob = organization.searchBlob,
+      )
+      save(organization.id)
     }
 
     fun delete(organizationId: String) {

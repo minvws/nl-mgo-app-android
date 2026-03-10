@@ -128,8 +128,7 @@ class OrganizationRepository
         if (organizationsJson ==
           null
         ) {
-          nl.rijksoverheid.mgo.component.organization
-            .MgoOrganizations(listOf())
+          MgoOrganizations(listOf())
         } else {
           json.decodeFromString<MgoOrganizations>(organizationsJson)
         }
@@ -158,8 +157,7 @@ class OrganizationRepository
         if (organizationsJson ==
           null
         ) {
-          nl.rijksoverheid.mgo.component.organization
-            .MgoOrganizations(listOf())
+          MgoOrganizations(listOf())
         } else {
           json.decodeFromString<MgoOrganizations>(organizationsJson)
         }

@@ -74,7 +74,7 @@ internal class MainViewModel
 
         // Start fetching FHIR data
         launch(ioDispatcher) {
-          fhirResponseSyncer.invoke().collect()
+          fhirResponseSyncer.invoke(coroutineContext).collect()
         }
 
         // Start syncing patient friendly terms

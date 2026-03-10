@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.data.fhir
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.io.File
 
 class TestFhirRepository : FhirRepository {
   private var observeResults: List<FhirResponse> = listOf(TEST_FHIR_RESPONSE_SUCCESS(false))
@@ -40,6 +41,7 @@ class TestFhirRepository : FhirRepository {
   override suspend fun fetchBinary(
     resourceEndpoint: String,
     url: String,
+    fileDir: File,
   ): Result<FhirBinary> = this.fetchBinaryResult
 
   fun setFetchBinaryResult(result: Result<FhirBinary>) {

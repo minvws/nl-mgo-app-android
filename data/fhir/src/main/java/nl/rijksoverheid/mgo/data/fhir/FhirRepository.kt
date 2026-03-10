@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.data.fhir
 
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface FhirRepository {
   fun observe(request: FhirRequest): Flow<FhirResponse>
@@ -19,5 +20,6 @@ interface FhirRepository {
   suspend fun fetchBinary(
     resourceEndpoint: String,
     url: String,
+    fileDir: File,
   ): Result<FhirBinary>
 }

@@ -1,5 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
@@ -22,12 +24,18 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.io.File
 
+@Config(sdk = [34])
+@RunWith(RobolectricTestRunner::class)
 class UISchemaScreenViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
+  private lateinit var context: Context
   private val fhirRepository = TestFhirRepository()
   private val mgoResourceStore = MgoResourceStore()
   private val uiSchemaSectionMapper = UISchemaSectionMapper(mgoResourceStore)
@@ -39,6 +47,7 @@ class UISchemaScreenViewModelTest {
   @Before
   fun setup() =
     runTest {
+      context = ApplicationProvider.getApplicationContext()
       quickJsRepository.create()
     }
 
@@ -214,5 +223,6 @@ class UISchemaScreenViewModelTest {
       mgoResourceStore = mgoResourceStore,
       dvaApiBaseUrl = "",
       ioDispatcher = mainDispatcherRule.testDispatcher,
+      context = context,
     )
 }

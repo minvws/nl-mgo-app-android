@@ -48,7 +48,9 @@ class MainApplication : Application() {
     applicationScope.launch(Dispatchers.IO) {
       launch { quickJsRepository.create() }
       launch { pftRepository.sync() }
-      launch { organisationRepository.sync("organizations.json") }
+      launch {
+        organisationRepository.sync(organizationsJson = applicationContext.assets.open("organizations.json"))
+      }
     }
   }
 }

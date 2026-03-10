@@ -17,20 +17,15 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_LIFESTYLE
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import okhttp3.OkHttpClient
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
-@Config(sdk = [34])
-@RunWith(RobolectricTestRunner::class)
 class HealthCategoriesListItemViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -38,12 +33,13 @@ class HealthCategoriesListItemViewModelTest {
   @get:Rule
   val fhirRepositoryRule = FhirRepositoryRule(MemoryMgoByteArrayStorage())
 
-  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
+  private lateinit var organizationRepository: OrganizationRepository
   private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk = JvmGetDataSetsFromDisk()))
   private lateinit var observeFhirResponses: ObserveFhirResponses
 
   @Before
   fun setup() {
+    organizationRepository = createOrganizationRepositoryForJvm()
     observeFhirResponses = ObserveFhirResponses(getRequests = getRequests, fhirRepository = fhirRepositoryRule.getRepository())
   }
 
@@ -51,7 +47,7 @@ class HealthCategoriesListItemViewModelTest {
   fun testLoading() =
     runTest {
       // Given: Stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: Only first lifestyle response is finished
       fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.DRUG_USE, request = TEST_FHIR_REQUEST_DRUG_USE)
@@ -69,7 +65,7 @@ class HealthCategoriesListItemViewModelTest {
   fun testLoaded() =
     runTest {
       // Given: Stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: All lifestyle responses are success
       fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.DRUG_USE, request = TEST_FHIR_REQUEST_DRUG_USE)
@@ -97,7 +93,7 @@ class HealthCategoriesListItemViewModelTest {
   fun testNoData() =
     runTest {
       // Given: Stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: All lifestyle responses are success but with empty json
       fhirRepositoryRule.enqueueEmptyJson(TEST_FHIR_REQUEST_DRUG_USE)
@@ -122,7 +118,6 @@ class HealthCategoriesListItemViewModelTest {
     filterOrganization = filterOrganization,
     category = category,
     organizationRepository = organizationRepository,
-    fhirRepository = fhirRepositoryRule.getRepository(),
     ioDispatcher = mainDispatcherRule.testDispatcher,
     getRequests = getRequests,
     observeFhirResponses = observeFhirResponses,

@@ -1,44 +1,39 @@
 package nl.rijksoverheid.mgo.data.organization
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
-import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import app.cash.turbine.test
 import io.mockk.InternalPlatformDsl.toStr
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class OrganizationRepositoryTest {
   private val json = Json { ignoreUnknownKeys = true }
-  private lateinit var context: Context
   private lateinit var organisationRepository: OrganizationRepository
 
   @Before
   fun setup() {
-    context = ApplicationProvider.getApplicationContext()
-    val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-    OrganizationsDatabase.Schema.create(driver)
-    organisationRepository = OrganizationRepository(driver = driver, context = context, supportedDataServiceIds = listOf())
+    organisationRepository = createOrganizationRepositoryForJvm()
   }
 
   @Test
   fun runBenchmark() =
     runTest {
       // Load organizations specific for the benchmark
-      organisationRepository.sync("benchmark-organizations.json")
+      organisationRepository.sync(
+        organizationsJson =
+          javaClass.classLoader!!
+            .getResourceAsStream("benchmark-organizations.json"),
+      )
 
       // Read queries file
       val queriesJson =
-        context.assets
-          .open("benchmark-queries.json")
+        javaClass.classLoader!!
+          .getResourceAsStream("benchmark-queries.json")
           .bufferedReader()
           .use { it.readText() }
       val queries: List<BenchmarkQuery> = json.decodeFromString(queriesJson)
@@ -79,11 +74,11 @@ class OrganizationRepositoryTest {
   @Test
   fun testSaved() =
     runTest {
-      // Load organizations specific for the benchmark
-      organisationRepository.sync("benchmark-organizations.json")
+      // Add and save organization
+      organisationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
-      // Mark Het Huisartsenteam Van Beek-Schrijnemaekers as saved
-      organisationRepository.save("agb:01009380")
+      // Mark as saved
+      organisationRepository.save(TEST_MGO_ORGANIZATION.id)
 
       // Verify organization is added
       organisationRepository.getSaved(coroutineContext).test {
@@ -94,14 +89,14 @@ class OrganizationRepositoryTest {
   @Test
   fun testDelete() =
     runTest {
-      // Load organizations specific for the benchmark
-      organisationRepository.sync("benchmark-organizations.json")
+      // Add and save organization
+      organisationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
-      // Mark Het Huisartsenteam Van Beek-Schrijnemaekers as saved
-      organisationRepository.save("agb:01009380")
+      // Mark as saved
+      organisationRepository.save(TEST_MGO_ORGANIZATION.id)
 
-      // Mark Het Huisartsenteam Van Beek-Schrijnemaekers as deleted
-      organisationRepository.delete("agb:01009380")
+      // Mark as deleted
+      organisationRepository.delete(TEST_MGO_ORGANIZATION.id)
 
       // Verify organization is deleted
       organisationRepository.getSaved(coroutineContext).test {

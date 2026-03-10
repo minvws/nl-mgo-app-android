@@ -12,23 +12,18 @@ import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesReposi
 import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MemoryMgoKeyValueStorage
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.TestKeyValueStore
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
-import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
-@Config(sdk = [34])
-@RunWith(RobolectricTestRunner::class)
 internal class HealthCategoriesScreenViewModelTest {
   private val mgoByteArrayStorage = MemoryMgoByteArrayStorage()
 
@@ -44,8 +39,7 @@ internal class HealthCategoriesScreenViewModelTest {
   private val keyValueStorage = MemoryMgoKeyValueStorage()
   private val favoriteRepository = FavoriteHealthCategoriesRepository(keyValueStorage)
 
-  private val okHttpClient = OkHttpClient()
-  private val organizationRepository = OrganizationRepository(okHttpClient = okHttpClient, baseUrl = "", mgoByteArrayStorage = mgoByteArrayStorage)
+  private lateinit var organizationRepository: OrganizationRepository
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val keyValueStore = TestKeyValueStore()
   private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk = JvmGetDataSetsFromDisk()))
@@ -53,7 +47,8 @@ internal class HealthCategoriesScreenViewModelTest {
   @Before
   fun setup() =
     runTest {
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository = createOrganizationRepositoryForJvm()
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
     }
 
   @Test

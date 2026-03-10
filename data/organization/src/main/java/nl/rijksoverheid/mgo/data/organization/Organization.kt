@@ -55,3 +55,21 @@ internal fun Organization.DataService.toMgoOrganizationDataService(
   tokenEndpoint = tokenEndpoint,
   isSupported = isSupported,
 )
+
+internal fun MgoOrganizationDataService.toOrganizationDataService() =
+  Organization.DataService(
+    authEndpoint = authEndpoint,
+    resourceEndpoint = resourceEndpoint,
+    tokenEndpoint = tokenEndpoint,
+  )
+
+internal fun MgoOrganization.toOrganization() =
+  Organization(
+    id = id,
+    displayName = name,
+    searchBlob = "",
+    addressLine = address?.split(", ")?.getOrNull(0) ?: "",
+    city = address?.split(", ")?.getOrNull(1) ?: "",
+    added = added,
+    dataServices = dataServices.associate { dataService -> dataService.id to dataService.toOrganizationDataService() },
+  )

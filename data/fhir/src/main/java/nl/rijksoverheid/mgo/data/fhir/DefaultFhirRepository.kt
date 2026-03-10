@@ -1,7 +1,5 @@
 package nl.rijksoverheid.mgo.data.fhir
 
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -29,7 +27,6 @@ import javax.inject.Singleton
 class DefaultFhirRepository
   @Inject
   constructor(
-    @ApplicationContext private val context: Context,
     private val okHttpClient: OkHttpClient,
     @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
@@ -84,7 +81,7 @@ class DefaultFhirRepository
 
         if (response.isSuccessful) {
           // Get the response
-          val responseBytes = response.body?.bytes() ?: "{}".toByteArray()
+          val responseBytes = response.body.bytes()
 
           // Store the response
           mgoByteArrayStorage.delete(cacheKey)
@@ -145,6 +142,7 @@ class DefaultFhirRepository
     override suspend fun fetchBinary(
       resourceEndpoint: String,
       url: String,
+      fileDir: File,
     ): Result<FhirBinary> {
       val request =
         Request
@@ -159,7 +157,7 @@ class DefaultFhirRepository
         val response = okHttpClient.newCall(request).execute()
 
         if (response.isSuccessful) {
-          val jsonResponse = response.body?.string() ?: "{}"
+          val jsonResponse = response.body.string()
           val id =
             json
               .parseToJsonElement(jsonResponse)
@@ -181,8 +179,7 @@ class DefaultFhirRepository
               ?.jsonPrimitive
               ?.content ?: ""
           val contentBytes = Base64.getDecoder().decode(base64Content)
-
-          val file = File(context.cacheDir, "$id.pdf")
+          val file = File(fileDir, "$id.pdf")
           file.writeBytes(contentBytes)
 
           val fhirBinary =

@@ -1,8 +1,10 @@
 package nl.rijksoverheid.mgo.feature.localisation.manual
 
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+
 data class ManualLocalisationScreenViewState(
   val loading: Boolean,
-  val organizations: List<OrganizationUi>,
+  val organizations: List<MgoOrganization>,
   val error: Boolean,
 ) {
   companion object {

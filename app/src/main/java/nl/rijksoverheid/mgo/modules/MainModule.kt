@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.BuildConfig
+import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
@@ -143,4 +144,9 @@ internal object MainModule {
       is Environment.Demo -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Custom -> environment.url
     }
+
+  @Provides
+  @Singleton
+  @Named("supportedDataServiceIds")
+  fun provideSupportedDataServiceIds(getDataSetsFromDisk: GetDataSetsFromDisk) = getDataSetsFromDisk.invoke().map { dataSet -> dataSet.id }
 }

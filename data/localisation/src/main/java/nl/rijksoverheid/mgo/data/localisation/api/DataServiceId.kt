@@ -54,7 +54,6 @@ internal fun SearchResponse.Organization.toMgoOrganization(
     medMijId = medMijId,
     name = displayName ?: "",
     address = addresses.firstOrNull()?.address,
-    category = types.firstOrNull()?.displayName,
     added = added,
     dataServices =
       dataServices.map { dataService ->
@@ -62,6 +61,8 @@ internal fun SearchResponse.Organization.toMgoOrganization(
           id = dataService.id,
           resourceEndpoint = dataService.roles.first().resourceEndpoint,
           isSupported = supportedDataServiceIds.contains(dataService.id),
+          authEndpoint = "",
+          tokenEndpoint = "",
         )
       },
   )

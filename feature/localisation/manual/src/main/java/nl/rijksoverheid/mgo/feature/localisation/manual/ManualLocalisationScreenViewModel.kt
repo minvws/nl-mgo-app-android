@@ -13,8 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.mgo.component.organization.Organization
-import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import javax.inject.Inject
 import javax.inject.Named
@@ -23,7 +22,6 @@ import javax.inject.Named
 class ManualLocalisationScreenViewModel
   @Inject
   constructor(
-    private val getDataSetsFromDisk: GetDataSetsFromDisk,
     private val organizationRepository: OrganizationRepository,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
   ) : ViewModel() {
@@ -45,16 +43,12 @@ class ManualLocalisationScreenViewModel
             } else {
               _viewState.update { viewState -> viewState.copy(loading = true) }
               delay(500)
-              val organizations = organizationRepository.search(query).first()
-              val supportedDataServiceIds = getDataSetsFromDisk().map { it.id }
+              val organizations = organizationRepository.search(query = query, context = ioDispatcher).first()
               _viewState.update { viewState ->
                 viewState.copy(
                   loading = false,
                   error = false,
-                  organizations =
-                    organizations.map { organization ->
-                      organization.toUi(supportedDataServiceIds)
-                    },
+                  organizations = organizations,
                 )
               }
             }
@@ -64,16 +58,10 @@ class ManualLocalisationScreenViewModel
         }
     }
 
-    fun add(organization: Organization) {
+    fun add(organization: MgoOrganization) {
       viewModelScope.launch(ioDispatcher) {
         organizationRepository.save(organization.id)
         _navigateToDashboard.tryEmit(Unit)
       }
     }
-
-    private fun Organization.toUi(supportedDataServiceIds: List<String>): OrganizationUi =
-      OrganizationUi(
-        organization = this,
-        supported = this.dataServices?.any { dataService -> supportedDataServiceIds.contains(dataService.key) } ?: false,
-      )
   }

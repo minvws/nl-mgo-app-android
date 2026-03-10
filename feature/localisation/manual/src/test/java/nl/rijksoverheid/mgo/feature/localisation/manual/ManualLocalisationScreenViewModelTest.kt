@@ -7,8 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.component.organization.TEST_ORGANIZATION_1
-import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
@@ -25,7 +24,6 @@ class ManualLocalisationScreenViewModelTest {
   private val organizationRepository = mockk<OrganizationRepository>()
   private val viewModel =
     ManualLocalisationScreenViewModel(
-      getDataSetsFromDisk = JvmGetDataSetsFromDisk(),
       organizationRepository = organizationRepository,
       ioDispatcher = mainDispatcherRule.testDispatcher,
     )
@@ -40,7 +38,7 @@ class ManualLocalisationScreenViewModelTest {
   fun testSearch() =
     runTest {
       // Given: Return organization when searching
-      coEvery { organizationRepository.search(any()) } coAnswers { flowOf(listOf(TEST_ORGANIZATION_1)) }
+      coEvery { organizationRepository.search(any(), any()) } coAnswers { flowOf(listOf(TEST_MGO_ORGANIZATION)) }
 
       // When: Searching
       viewModel.search("UMC Groningen")
@@ -51,10 +49,10 @@ class ManualLocalisationScreenViewModelTest {
         val viewState = awaitItem()
         assertEquals(1, viewState.organizations.size)
         assertEquals(
-          "UMC Groningen",
+          "Tandarts Tandje Erbij",
           viewState.organizations
             .first()
-            .organization.displayName,
+            .name,
         )
         assertFalse(viewState.error)
       }
@@ -64,7 +62,7 @@ class ManualLocalisationScreenViewModelTest {
   fun testSearchError() =
     runTest {
       // Given: Searching for organization errors
-      coEvery { organizationRepository.search(any()) } coAnswers { error("Something went wrong") }
+      coEvery { organizationRepository.search(any(), any()) } coAnswers { error("Something went wrong") }
 
       // When: Searching
       viewModel.search("UMC Groningen")
@@ -82,7 +80,7 @@ class ManualLocalisationScreenViewModelTest {
   fun testAdd() =
     runTest {
       viewModel.navigateToDashboard.test {
-        viewModel.add(TEST_ORGANIZATION_1)
+        viewModel.add(TEST_MGO_ORGANIZATION)
         assertEquals(awaitItem(), Unit)
       }
     }

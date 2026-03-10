@@ -26,7 +26,7 @@ class OrganizationRepositoryTest {
     context = ApplicationProvider.getApplicationContext()
     val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
     OrganizationsDatabase.Schema.create(driver)
-    organisationRepository = OrganizationRepository(driver = driver, context = context)
+    organisationRepository = OrganizationRepository(driver = driver, context = context, supportedDataServiceIds = listOf())
   }
 
   @Test
@@ -47,7 +47,7 @@ class OrganizationRepositoryTest {
       val meanReciprocalRanks = mutableListOf<Float>()
       val queryResults = mutableListOf<BenchmarkQueryResult>()
       for (benchmarkQuery in queries) {
-        val organisations = organisationRepository.search(benchmarkQuery.query).first()
+        val organisations = organisationRepository.search(query = benchmarkQuery.query, context = coroutineContext).first()
         val targetIndex = organisations.indexOfFirst { organisation -> organisation.id == benchmarkQuery.targetId }
         val meanReciprocalRank = if (targetIndex == -1) 0f else 1f / (targetIndex.toFloat().coerceAtLeast(1f))
         val queryResult =
@@ -86,7 +86,7 @@ class OrganizationRepositoryTest {
       organisationRepository.save("agb:01009380")
 
       // Verify organization is added
-      organisationRepository.getSaved().test {
+      organisationRepository.getSaved(coroutineContext).test {
         assertEquals(1, awaitItem().size)
       }
     }
@@ -104,7 +104,7 @@ class OrganizationRepositoryTest {
       organisationRepository.delete("agb:01009380")
 
       // Verify organization is deleted
-      organisationRepository.getSaved().test {
+      organisationRepository.getSaved(coroutineContext).test {
         assertEquals(0, awaitItem().size)
       }
     }

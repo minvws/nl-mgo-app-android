@@ -14,7 +14,6 @@ data class MgoOrganization(
   val medMijId: MgoOrganizationMedMijId?,
   val name: String,
   val address: String?,
-  val category: String?,
   val added: Boolean,
   val dataServices: List<MgoOrganizationDataService>,
 ) : Parcelable
@@ -27,7 +26,6 @@ val TEST_MGO_ORGANIZATION =
     medMijId = "1",
     name = "Tandarts Tandje Erbij",
     address = "Boorplatform 5\r\n1234AB Roermond",
-    category = "Tandarts",
     added = false,
     dataServices = listOf(TEST_BGZ_DATA_SERVICE),
   )

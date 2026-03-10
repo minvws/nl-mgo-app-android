@@ -44,7 +44,9 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
-import nl.rijksoverheid.mgo.component.organization.Organization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_BGZ_DATA_SERVICE
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
@@ -68,10 +70,10 @@ fun ManualLocalisationScreen(
     }
   }
 
-  var showAddOrganizationDialog by remember { mutableStateOf<Organization?>(null) }
+  var showAddOrganizationDialog by remember { mutableStateOf<MgoOrganization?>(null) }
   showAddOrganizationDialog?.let { organization ->
     MgoAlertDialog(
-      heading = stringResource(CopyR.string.search_organization_dialog_heading, organization.displayName),
+      heading = stringResource(CopyR.string.search_organization_dialog_heading, organization.name),
       subHeading = stringResource(CopyR.string.search_organization_dialog_subheading),
       positiveButtonText = stringResource(CopyR.string.search_organization_dialog_yes),
       positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
@@ -101,7 +103,7 @@ fun ManualLocalisationScreen(
 private fun ManualLocalisationScreenContent(
   viewState: ManualLocalisationScreenViewState,
   onSearch: (query: String) -> Unit,
-  onAddOrganization: (organization: Organization) -> Unit,
+  onAddOrganization: (organization: MgoOrganization) -> Unit,
   onNavigateBack: (() -> Unit)?,
 ) {
   val lazyListState = rememberLazyListState()
@@ -150,27 +152,18 @@ private fun ManualLocalisationScreenContent(
             )
           }
 
-          items(viewState.organizations.size, key = { viewState.organizations[it].organization.id }) { position ->
-            val organizationUi = viewState.organizations[position]
-            val organization = organizationUi.organization
+          items(viewState.organizations.size, key = { viewState.organizations[it].id }) { position ->
+            val organization = viewState.organizations[position]
             val trailing =
               when {
-                organization.added == true -> stringResource(CopyR.string.search_organization_already_added)
-                !organizationUi.supported -> stringResource(CopyR.string.search_organization_not_participating)
+                organization.added -> stringResource(CopyR.string.search_organization_already_added)
+                organization.dataServices.all { dataService -> !dataService.isSupported } -> stringResource(CopyR.string.search_organization_not_participating)
                 else -> null
               }
             ManualLocalisationCard(
               modifier = Modifier.padding(top = 8.dp).animateItem(),
-              heading = organization.displayName,
-              subheading =
-                buildString {
-                  val address = organization.addressLine
-                  if (address != null) {
-                    append(address)
-                    append(", ")
-                  }
-                  append(organization.city)
-                },
+              heading = organization.name,
+              subheading = organization.address ?: "",
               trailing = trailing,
               onClick =
                 if (trailing == null) {
@@ -315,7 +308,12 @@ internal fun ManualLocalisationScreenPreview() {
       viewState =
         ManualLocalisationScreenViewState(
           loading = false,
-          organizations = listOf(TEST_ORGANIZATION_UI_1, TEST_ORGANIZATION_UI_2, TEST_ORGANIZATION_UI_3),
+          organizations =
+            listOf(
+              TEST_MGO_ORGANIZATION,
+              TEST_MGO_ORGANIZATION.copy(id = "2", added = true),
+              TEST_MGO_ORGANIZATION.copy(id = "3", dataServices = listOf(TEST_BGZ_DATA_SERVICE.copy(isSupported = false))),
+            ),
           error = false,
         ),
       onSearch = {},

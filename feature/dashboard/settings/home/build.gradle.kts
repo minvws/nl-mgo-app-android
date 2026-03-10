@@ -10,10 +10,10 @@ dependencies {
   implementation(projects.framework.environment)
   implementation(projects.framework.storage)
   implementation(projects.data.pincode)
-  implementation(projects.data.localisation)
   implementation(projects.component.organization)
   implementation(projects.data.healthCategories)
+  implementation(projects.data.organization)
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.pincode))
-  testImplementation(testFixtures(projects.data.localisation))
+  testImplementation(testFixtures(projects.data.organization))
 }

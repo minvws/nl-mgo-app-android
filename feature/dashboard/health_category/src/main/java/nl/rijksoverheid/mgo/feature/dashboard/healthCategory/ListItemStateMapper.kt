@@ -1,15 +1,17 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
+import kotlinx.coroutines.flow.first
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseErrorType
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.coroutines.coroutineContext
 
 internal class ListItemStateMapper
   @Inject
@@ -79,7 +81,9 @@ internal class ListItemStateMapper
       val dataSet = dataSets.firstOrNull { dataSet -> dataSet.id == request.dataServiceId } ?: return emptyList()
 
       // Get the organisation that belongs to this response
-      val organization = organizationRepository.get().firstOrNull { organization -> organization.id == request.organizationId } ?: return emptyList()
+      val organization =
+        organizationRepository.getSaved(coroutineContext).first().firstOrNull { organization -> organization.id == request.organizationId }
+          ?: return emptyList()
 
       // Create the mgo resources
       val mgoResources =

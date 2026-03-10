@@ -3,7 +3,6 @@ USING fts5(
   id UNINDEXED,
   displayName UNINDEXED,
   addressLine UNINDEXED,
-  city UNINDEXED,
   dataServicesJson UNINDEXED,
   searchBlob,
   tokenize = 'porter'
@@ -32,8 +31,8 @@ DELETE FROM saved_organizations
 WHERE organizationId = ?;
 
 insertOrganization:
-INSERT INTO organizations(id, displayName, addressLine, city, dataServicesJson, searchBlob)
-VALUES (?, ?, ?, ?, ?, ?);
+INSERT INTO organizations(id, displayName, addressLine, dataServicesJson, searchBlob)
+VALUES (?, ?, ?, ?, ?);
 
 searchOrganizations:
 SELECT
@@ -49,6 +48,9 @@ LEFT JOIN saved_organizations
 WHERE organizations MATCH ?
 ORDER BY score
 LIMIT 100;
+
+deleteAllSavedOrganizations:
+DELETE FROM saved_organizations;
 
 deleteAllOrganizations:
 DELETE FROM organizations;

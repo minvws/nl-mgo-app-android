@@ -2,11 +2,10 @@ package nl.rijksoverheid.mgo.feature.settings.home
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.data.pincode.biometric.TestDeviceHasBiometric
-import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -16,12 +15,12 @@ internal class SettingsHomeScreenViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
+  private lateinit var organizationRepository: OrganizationRepository
 
   @Before
   fun setup() =
     runTest {
-      organizationRepository.deleteAll()
+      organizationRepository = createOrganizationRepositoryForJvm()
     }
 
   @Test

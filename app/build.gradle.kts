@@ -161,8 +161,8 @@ dependencies {
   implementation(projects.feature.dashboard.settings.about.accessibility)
 
   // Localisation
-  implementation(projects.feature.localisation.addOrganization)
-  implementation(projects.feature.localisation.organizationList)
+  implementation(projects.feature.localisation.manual)
+  implementation(projects.data.organization)
 
   // DigiD
   implementation(projects.feature.digid)
@@ -190,7 +190,6 @@ dependencies {
   // ================================
 
   implementation(projects.data.onboarding)
-  implementation(projects.data.localisation)
   implementation(projects.data.pincode)
   implementation(projects.data.digid)
   implementation(libs.androidx.lifecycle.process)
@@ -226,5 +225,4 @@ dependencies {
 
   androidTestUtil("androidx.test.services:test-services:1.4.2")
   implementation(projects.data.organization)
-  implementation(projects.feature.localisation.manual)
 }

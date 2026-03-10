@@ -36,7 +36,7 @@ fun NavGraphBuilder.addDigidNavGraph(
           // This would normally go in a viewmodel after the real DigiD flow has been authenticated
           runBlocking { keyValueStore.setBoolean(KEY_DIGID_AUTHENTICATED, true) }
 
-          navController.navigate(LocalisationNavigation.Root(true)) {
+          navController.navigate(LocalisationNavigation.Root) {
             popUpTo(navController.graph.id) {
               inclusive = true
             }

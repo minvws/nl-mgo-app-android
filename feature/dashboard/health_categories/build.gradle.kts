@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-  implementation(projects.data.localisation)
   implementation(projects.framework.storage)
   implementation(projects.data.healthCategories)
   implementation(projects.data.fhir)
@@ -16,7 +15,6 @@ dependencies {
   implementation(projects.component.fhir)
   implementation(projects.component.error)
   implementation(projects.data.organization)
-  testImplementation(testFixtures(projects.data.localisation))
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.data.fhir))

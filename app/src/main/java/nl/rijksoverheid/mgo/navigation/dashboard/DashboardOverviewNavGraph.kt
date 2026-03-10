@@ -40,7 +40,7 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
       HealthCategoriesScreen(
         appBarTitle = stringResource(R.string.overview_heading),
         onNavigateToLocalisation = {
-          rootNavController.navigate(LocalisationNavigation.Root(false))
+          rootNavController.navigate(LocalisationNavigation.Root)
         },
         onNavigateToHealthCategory = { category, _ ->
           navController.navigate(

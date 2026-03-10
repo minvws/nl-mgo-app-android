@@ -44,7 +44,6 @@ class OrganizationRepository
                   id = organization.id,
                   displayName = organization.displayName,
                   addressLine = organization.addressLine,
-                  city = organization.city,
                   dataServicesJson = json.encodeToString(organization.dataServices),
                   searchBlob = organization.searchBlob.normalizeText(),
                 )
@@ -69,7 +68,6 @@ class OrganizationRepository
               displayName = searchResult.displayName ?: "",
               searchBlob = searchResult.searchBlob ?: "",
               addressLine = searchResult.addressLine ?: "",
-              city = searchResult.city ?: "",
               added = searchResult.added != 0L,
               dataServices = searchResult.dataServicesJson?.let { json.decodeFromString(it) } ?: mapOf(),
             )
@@ -88,7 +86,6 @@ class OrganizationRepository
               displayName = searchResult.displayName ?: "",
               searchBlob = searchResult.searchBlob ?: "",
               addressLine = searchResult.addressLine ?: "",
-              city = searchResult.city ?: "",
               added = searchResult.added != 0L,
               dataServices = searchResult.dataServicesJson?.let { json.decodeFromString(it) } ?: mapOf(),
             )
@@ -106,7 +103,6 @@ class OrganizationRepository
         id = organization.id,
         displayName = organization.displayName,
         addressLine = organization.addressLine,
-        city = organization.city,
         dataServicesJson = json.encodeToString(organization.dataServices),
         searchBlob = organization.searchBlob,
       )
@@ -115,5 +111,9 @@ class OrganizationRepository
 
     fun delete(organizationId: String) {
       database.organizationQueries.deleteSavedOrganization(organizationId)
+    }
+
+    fun deleteAllSaved() {
+      database.organizationQueries.deleteAllSavedOrganizations()
     }
   }

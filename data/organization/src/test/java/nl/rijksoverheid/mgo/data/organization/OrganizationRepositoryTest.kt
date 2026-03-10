@@ -103,6 +103,26 @@ class OrganizationRepositoryTest {
         assertEquals(0, awaitItem().size)
       }
     }
+
+  @Test
+  fun testDeleteAllSaved() =
+    runTest {
+      // Add and save organizations
+      organisationRepository.addAndSave(TEST_MGO_ORGANIZATION)
+      organisationRepository.addAndSave(TEST_MGO_ORGANIZATION.copy(id = "2"))
+
+      // Mark as saved
+      organisationRepository.save(TEST_MGO_ORGANIZATION.id)
+      organisationRepository.save("2")
+
+      // Delete all saved
+      organisationRepository.deleteAllSaved()
+
+      // Verify no organizations exist
+      organisationRepository.getSaved(coroutineContext).test {
+        assertEquals(0, awaitItem().size)
+      }
+    }
 }
 
 @Serializable

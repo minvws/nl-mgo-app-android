@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,9 +27,10 @@ import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
 import javax.inject.Named
+import kotlin.coroutines.coroutineContext
 
 @HiltViewModel(assistedFactory = HealthCategoryScreenViewModel.Factory::class)
 internal class HealthCategoryScreenViewModel
@@ -81,7 +81,7 @@ internal class HealthCategoryScreenViewModel
 
     private suspend fun observeListItemsState() {
       // Get the organizations that we need to get fhir responses from
-      val organizations = if (filterOrganization == null) organizationRepository.get() else listOf(filterOrganization)
+      val organizations = if (filterOrganization == null) organizationRepository.getSaved(coroutineContext).first() else listOf(filterOrganization)
 
       // Get the fhir responses
       val fhirResponses = observeFhirResponses(organizations = organizations, categories = listOf(category))
@@ -98,7 +98,7 @@ internal class HealthCategoryScreenViewModel
 
     private suspend fun observeErrorBanner() {
       // Get the organizations that we need to get fhir responses from
-      val organizations = if (filterOrganization == null) organizationRepository.get() else listOf(filterOrganization)
+      val organizations = if (filterOrganization == null) organizationRepository.getSaved(coroutineContext).first() else listOf(filterOrganization)
 
       // Observe error banner
       getErrorBanner.invoke(categories = listOf(category), organizations = organizations).collectLatest { banner ->
@@ -111,7 +111,7 @@ internal class HealthCategoryScreenViewModel
     fun retry() {
       viewModelScope.launch(ioDispatcher) {
         // Get requests
-        val organizations = if (filterOrganization == null) organizationRepository.get() else listOf(filterOrganization)
+        val organizations = if (filterOrganization == null) organizationRepository.getSaved(coroutineContext).first() else listOf(filterOrganization)
         val requests = getRequests(organizations = organizations, categories = listOf(category))
 
         // Get responses that failed

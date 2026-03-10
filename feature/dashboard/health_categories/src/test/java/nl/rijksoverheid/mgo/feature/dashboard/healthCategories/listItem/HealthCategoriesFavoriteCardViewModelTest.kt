@@ -11,11 +11,11 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import okhttp3.OkHttpClient
 import org.junit.Assert.assertFalse
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,15 +23,20 @@ class HealthCategoriesFavoriteCardViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
+  private lateinit var organizationRepository: OrganizationRepository
   private val fhirRepository = TestFhirRepository()
   private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk = JvmGetDataSetsFromDisk()))
+
+  @Before
+  fun setup() {
+    organizationRepository = createOrganizationRepositoryForJvm()
+  }
 
   @Test
   fun testLoaded() =
     runTest {
       // Given: stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: Fhir repository returns success that is non empty
       fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = false))
@@ -49,7 +54,7 @@ class HealthCategoriesFavoriteCardViewModelTest {
   fun testMissingDataService() =
     runTest {
       // Given: stored organization
-      organizationRepository.save(
+      organizationRepository.addAndSave(
         TEST_MGO_ORGANIZATION.copy(
           dataServices =
             listOf(
@@ -71,7 +76,7 @@ class HealthCategoriesFavoriteCardViewModelTest {
   fun testNoData() =
     runTest {
       // Given: stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: Fhir repository returns success that is non empty
       fhirRepository.setObserveResult(TEST_FHIR_RESPONSE_SUCCESS(isEmpty = true))

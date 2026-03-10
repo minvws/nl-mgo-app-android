@@ -8,24 +8,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class LocalisationNavigation {
   @Serializable
-  data class Root(
-    val checkResults: Boolean,
-  ) : LocalisationNavigation()
+  data object Root : LocalisationNavigation()
 
   @Serializable
   data object Manual : LocalisationNavigation()
-
-  @Serializable
-  data object AddOrganization : LocalisationNavigation()
-
-  @Serializable
-  data class OrganisationListManual(
-    val name: String,
-    val city: String,
-  ) : LocalisationNavigation()
-
-  @Serializable
-  data class OrganizationListAutomatic(
-    val checkResults: Boolean,
-  ) : LocalisationNavigation()
 }

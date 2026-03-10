@@ -115,7 +115,6 @@ internal object MainModule {
       is Environment.Acc -> "https://lo-ad.acc.mgo.irealisatie.nl"
       is Environment.Prod -> "https://lo-ad.acc.mgo.irealisatie.nl"
       is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl"
-      is Environment.Demo -> "https://lo-ad.acc.mgo.irealisatie.nl"
       is Environment.Custom -> environment.url
     }
 
@@ -128,7 +127,6 @@ internal object MainModule {
       is Environment.Acc -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
       is Environment.Prod -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
       is Environment.Tst -> "https://dvp-proxy.test.mgo.irealisatie.nl"
-      is Environment.Demo -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
       is Environment.Custom -> environment.url
     }
 
@@ -141,7 +139,6 @@ internal object MainModule {
       is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
-      is Environment.Demo -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Custom -> environment.url
     }
 

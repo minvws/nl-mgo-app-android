@@ -7,7 +7,6 @@ import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
-import nl.rijksoverheid.mgo.framework.featuretoggle.flagAutomaticLocalisationFeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.flagSecureFeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import javax.inject.Inject
@@ -36,7 +35,6 @@ internal class DefaultFeatureToggleRepository
         // We show a dialog if a screenshot is taken. If this functionality is not available, we disable screenshots all together. Only do this
         // in the production app for development and QA purposes.
         flagSecureFeatureToggle(sdkVersion < Build.VERSION_CODES.UPSIDE_DOWN_CAKE && environment is Environment.Prod),
-        flagAutomaticLocalisationFeatureToggle(environment is Environment.Demo),
       )
     }
 

@@ -47,18 +47,6 @@ internal class SettingsAboutAccessibilityScreenViewModelTest {
   }
 
   @Test
-  fun testUrlDemoEnv() {
-    // Given: Test environment
-    environmentRepository.setEnvironment(Environment.Demo(1, ""))
-
-    // When: Calling get url
-    val url = viewModel.getUrl()
-
-    // Then: Return correct url
-    assertEquals(CopyR.string.settings_accessibility_more_information_url_acc, url)
-  }
-
-  @Test
   fun testUrlCustomEnv() {
     // Given: Test environment
     environmentRepository.setEnvironment(Environment.Custom(1, "", ""))

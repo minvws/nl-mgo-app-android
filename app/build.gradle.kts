@@ -17,25 +17,6 @@ android {
 
   flavorDimensions += listOf("environment")
   productFlavors {
-    // Temporary flavor to demo the app to externals
-    create("demo") {
-      dimension = "environment"
-      applicationIdSuffix = ".demo"
-      versionNameSuffix = "-demo"
-      manifestPlaceholders["appLabel"] = "@string/app_name_demo"
-      manifestPlaceholders["deeplinkHost"] = "mgo-demo"
-      buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
-      buildConfigField(
-        "String",
-        "BASIC_AUTH_PASSWORD",
-        "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"",
-      )
-      buildConfigField(
-        "String",
-        "DEEPLINK_HOST",
-        "\"${manifestPlaceholders["deeplinkHost"]}\"",
-      )
-    }
     create("tst") {
       dimension = "environment"
       applicationIdSuffix = ".tst"
@@ -114,7 +95,6 @@ android {
       productFlavors.getByName("tst").signingConfig = signingConfigs.getByName("release")
       productFlavors.getByName("acc").signingConfig = signingConfigs.getByName("release")
       productFlavors.getByName("prod").signingConfig = signingConfigs.getByName("release")
-      productFlavors.getByName("demo").signingConfig = signingConfigs.getByName("release")
     }
   }
 }

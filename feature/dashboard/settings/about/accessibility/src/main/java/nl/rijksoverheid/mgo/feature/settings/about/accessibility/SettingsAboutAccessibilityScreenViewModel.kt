@@ -15,13 +15,11 @@ internal class SettingsAboutAccessibilityScreenViewModel
     private val environmentRepository: EnvironmentRepository,
   ) : ViewModel() {
     @StringRes
-    fun getUrl(): Int {
-      return when (environmentRepository.getEnvironment()) {
+    fun getUrl(): Int =
+      when (environmentRepository.getEnvironment()) {
         is Environment.Acc -> CopyR.string.settings_accessibility_more_information_url_acc
         is Environment.Custom -> CopyR.string.settings_accessibility_more_information_url_test
-        is Environment.Demo -> CopyR.string.settings_accessibility_more_information_url_acc
         is Environment.Prod -> CopyR.string.settings_accessibility_more_information_url_prod
         is Environment.Tst -> CopyR.string.settings_accessibility_more_information_url_test
       }
-    }
   }

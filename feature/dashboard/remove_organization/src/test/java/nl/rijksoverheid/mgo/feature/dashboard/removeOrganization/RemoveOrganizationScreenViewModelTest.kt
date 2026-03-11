@@ -4,9 +4,9 @@ import app.cash.turbine.turbineScope
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.mgo.snackbar.DefaultLocalDashboardSnackbarPresenter
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
-import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
-import okhttp3.OkHttpClient
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
+import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -15,16 +15,14 @@ import org.junit.Test
 
 internal class RemoveOrganizationScreenViewModelTest {
   @get:Rule
-  val mainDispatcherRule =
-    nl.rijksoverheid.mgo.framework.test.rules
-      .MainDispatcherRule()
+  val mainDispatcherRule = MainDispatcherRule()
 
-  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = MemoryMgoByteArrayStorage())
+  private lateinit var organizationRepository: OrganizationRepository
 
   @Before
   fun setup() =
     runTest {
-      organizationRepository.deleteAll()
+      organizationRepository = createOrganizationRepositoryForJvm()
     }
 
   @Test
@@ -33,7 +31,7 @@ internal class RemoveOrganizationScreenViewModelTest {
       turbineScope {
         // Given
         val snackbarPresenter = DefaultLocalDashboardSnackbarPresenter()
-        organizationRepository.save(TEST_MGO_ORGANIZATION)
+        organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
         val viewModel =
           RemoveOrganizationScreenViewModel(
             organizationRepository = organizationRepository,

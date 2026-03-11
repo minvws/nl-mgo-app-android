@@ -17,25 +17,6 @@ android {
 
   flavorDimensions += listOf("environment")
   productFlavors {
-    // Temporary flavor to demo the app to externals
-    create("demo") {
-      dimension = "environment"
-      applicationIdSuffix = ".demo"
-      versionNameSuffix = "-demo"
-      manifestPlaceholders["appLabel"] = "@string/app_name_demo"
-      manifestPlaceholders["deeplinkHost"] = "mgo-demo"
-      buildConfigField("String", "BASIC_AUTH_USER", "\"${System.getenv("BASIC_AUTH_USER")}\"")
-      buildConfigField(
-        "String",
-        "BASIC_AUTH_PASSWORD",
-        "\"${System.getenv("BASIC_AUTH_PASSWORD")}\"",
-      )
-      buildConfigField(
-        "String",
-        "DEEPLINK_HOST",
-        "\"${manifestPlaceholders["deeplinkHost"]}\"",
-      )
-    }
     create("tst") {
       dimension = "environment"
       applicationIdSuffix = ".tst"
@@ -114,7 +95,6 @@ android {
       productFlavors.getByName("tst").signingConfig = signingConfigs.getByName("release")
       productFlavors.getByName("acc").signingConfig = signingConfigs.getByName("release")
       productFlavors.getByName("prod").signingConfig = signingConfigs.getByName("release")
-      productFlavors.getByName("demo").signingConfig = signingConfigs.getByName("release")
     }
   }
 }
@@ -161,8 +141,8 @@ dependencies {
   implementation(projects.feature.dashboard.settings.about.accessibility)
 
   // Localisation
-  implementation(projects.feature.localisation.addOrganization)
-  implementation(projects.feature.localisation.organizationList)
+  implementation(projects.feature.localisation.manual)
+  implementation(projects.data.organization)
 
   // DigiD
   implementation(projects.feature.digid)
@@ -190,7 +170,6 @@ dependencies {
   // ================================
 
   implementation(projects.data.onboarding)
-  implementation(projects.data.localisation)
   implementation(projects.data.pincode)
   implementation(projects.data.digid)
   implementation(libs.androidx.lifecycle.process)
@@ -225,4 +204,5 @@ dependencies {
   ksp(libs.kotlin.metadata.jvm)
 
   androidTestUtil("androidx.test.services:test-services:1.4.2")
+  implementation(projects.data.organization)
 }

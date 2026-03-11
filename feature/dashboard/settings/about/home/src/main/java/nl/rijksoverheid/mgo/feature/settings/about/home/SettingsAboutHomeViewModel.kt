@@ -27,7 +27,6 @@ internal class SettingsAboutHomeViewModel
             when (environmentRepository.getEnvironment()) {
               is Environment.Acc -> CopyR.string.privacy_link_acc
               is Environment.Custom -> CopyR.string.privacy_link_test
-              is Environment.Demo -> CopyR.string.privacy_link_acc
               is Environment.Prod -> CopyR.string.privacy_link_prod
               is Environment.Tst -> CopyR.string.privacy_link_test
             },

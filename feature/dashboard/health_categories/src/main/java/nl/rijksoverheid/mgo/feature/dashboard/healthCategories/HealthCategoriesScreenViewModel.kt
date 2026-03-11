@@ -27,7 +27,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesReposi
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryId
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import javax.inject.Named
@@ -57,7 +57,7 @@ internal class HealthCategoriesScreenViewModel
     private val initialFavorites = runBlocking(ioDispatcher) { favoriteRepository.observe().firstOrNull() ?: listOf() }
     private val initialViewState =
       HealthCategoriesScreenViewState.initialState(
-        providers = runBlocking { organizationRepository.get() },
+        providers = runBlocking { organizationRepository.getSaved(ioDispatcher).first() },
         automaticLocalisationEnabled = keyValueStore.getBoolean(KEY_AUTOMATIC_LOCALISATION),
         favorites = groups.getFavorites(initialFavorites),
         groups = groups.filterFavorites(initialFavorites),
@@ -67,7 +67,7 @@ internal class HealthCategoriesScreenViewModel
       if (filterOrganization ==
         null
       ) {
-        organizationRepository.storedOrganizationsFlow
+        organizationRepository.getSaved(ioDispatcher)
       } else {
         flow { emit(listOf(filterOrganization)) }
       }
@@ -81,7 +81,7 @@ internal class HealthCategoriesScreenViewModel
     val viewState =
       combine(
         _viewState,
-        organizationRepository.storedOrganizationsFlow,
+        organizationsFlow,
         favoriteRepository.observe(),
         errorBannerFlow,
       ) { viewState, providers, favorites, banner ->
@@ -107,7 +107,7 @@ internal class HealthCategoriesScreenViewModel
         val categories = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten()
 
         // Get requests
-        val organizations = if (filterOrganization == null) organizationRepository.get() else listOf(filterOrganization)
+        val organizations = if (filterOrganization == null) organizationRepository.getSaved(coroutineContext).first() else listOf(filterOrganization)
         val requests = getRequests(organizations = organizations, categories = categories)
 
         // Get responses that failed

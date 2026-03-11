@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import javax.inject.Named
 
 @HiltViewModel(assistedFactory = HealthCategoriesFavoriteCardViewModel.Factory::class)
@@ -40,7 +40,7 @@ internal class HealthCategoriesFavoriteCardViewModel
 
     init {
       viewModelScope.launch(ioDispatcher) {
-        organizationRepository.storedOrganizationsFlow.collectLatest { organizations ->
+        organizationRepository.getSaved(coroutineContext).collectLatest { organizations ->
           // Always start with loading state whenever a organization has been added
           _isLoading.update { true }
 

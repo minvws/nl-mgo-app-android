@@ -57,13 +57,3 @@ fun flagSecureFeatureToggle(initialValue: Boolean) =
     preferenceKey = KEY_FLAG_SECURE,
     initialValue = initialValue,
   )
-
-/**
- * If true, the automatic localisation flow is shown instead of the manual one.
- */
-fun flagAutomaticLocalisationFeatureToggle(initialValue: Boolean) =
-  FeatureToggle(
-    id = FeatureToggleId.AutomaticLocalisation,
-    preferenceKey = KEY_AUTOMATIC_LOCALISATION,
-    initialValue = initialValue,
-  )

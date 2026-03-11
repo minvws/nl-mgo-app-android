@@ -7,6 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -18,12 +19,12 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
-import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import javax.inject.Named
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = HealthCategoriesListItemViewModel.Factory::class)
 internal class HealthCategoriesListItemViewModel
   @AssistedInject
@@ -32,7 +33,6 @@ internal class HealthCategoriesListItemViewModel
     @Assisted private val category: HealthCategoryGroup.HealthCategory,
     private val getRequests: GetRequests,
     private val organizationRepository: OrganizationRepository,
-    private val fhirRepository: FhirRepository,
     private val observeFhirResponses: ObserveFhirResponses,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
   ) : ViewModel() {
@@ -55,10 +55,10 @@ internal class HealthCategoriesListItemViewModel
         val organizationsFlow =
           if (filterOrganization == null) {
             // If we do not want to filter on a specific organization, observe all stored organizations
-            organizationRepository.storedOrganizationsFlow
+            organizationRepository.getSaved(coroutineContext)
           } else {
             // If we want to filter on a specific organization, filter on that one
-            organizationRepository.storedOrganizationsFlow.map { organizations ->
+            organizationRepository.getSaved(coroutineContext).map { organizations ->
               organizations.filter {
                 it.id ==
                   filterOrganization.id

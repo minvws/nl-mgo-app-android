@@ -7,8 +7,9 @@ import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class FhirResponseSyncer
   @Inject
@@ -24,8 +25,8 @@ class FhirResponseSyncer
     @VisibleForTesting
     var previousStoredOrganizations: List<MgoOrganization> = listOf()
 
-    operator fun invoke(): Flow<List<MgoOrganization>> =
-      organizationRepository.storedOrganizationsFlow.onEach { organizations ->
+    operator fun invoke(context: CoroutineContext): Flow<List<MgoOrganization>> =
+      organizationRepository.getSaved(context).onEach { organizations ->
         // If any organizations were deleted, also remove the fhir data for it.
         val removedOrganizations = previousStoredOrganizations - organizations.toSet()
         for (organization in removedOrganizations) {

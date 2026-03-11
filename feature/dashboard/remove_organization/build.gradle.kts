@@ -7,8 +7,8 @@ android {
 }
 
 dependencies {
-  implementation(projects.data.localisation)
   implementation(projects.component.organization)
-  testImplementation(testFixtures((projects.data.localisation)))
+  implementation(projects.data.organization)
   testImplementation(projects.framework.storage)
+  testImplementation(testFixtures(projects.data.organization))
 }

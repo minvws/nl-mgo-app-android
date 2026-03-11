@@ -32,19 +32,19 @@ class DefaultFhirRepositoryTest {
   val testServerRule = TestServerRule()
 
   private val clock = Clock.fixed(Instant.parse("2000-01-01T10:01:00.00Z"), ZoneOffset.UTC)
-  private val context = ApplicationProvider.getApplicationContext<Context>()
   private val okHttpClient = OkHttpClient.Builder().build()
   private val testServer = testServerRule.testServer
   private val fileStorage = MemoryMgoByteArrayStorage()
+  private lateinit var context: Context
   private lateinit var repository: DefaultFhirRepository
 
   @Before
   fun setup() {
+    context = ApplicationProvider.getApplicationContext()
     repository =
       DefaultFhirRepository(
         okHttpClient = okHttpClient,
         mgoByteArrayStorage = fileStorage,
-        context = context,
         dvaApiBaseUrl = testServerRule.testServer.url(),
         clock = clock,
       )
@@ -325,6 +325,7 @@ class DefaultFhirRepositoryTest {
         repository.fetchBinary(
           resourceEndpoint = "",
           url = testServer.url(),
+          fileDir = context.cacheDir,
         )
 
       // Then: Success result is returned
@@ -344,6 +345,7 @@ class DefaultFhirRepositoryTest {
         repository.fetchBinary(
           resourceEndpoint = "",
           url = testServer.url(),
+          fileDir = context.cacheDir,
         )
 
       // Then: Failure result is returned

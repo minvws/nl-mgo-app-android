@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.BuildConfig
+import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
@@ -114,7 +115,6 @@ internal object MainModule {
       is Environment.Acc -> "https://lo-ad.acc.mgo.irealisatie.nl"
       is Environment.Prod -> "https://lo-ad.acc.mgo.irealisatie.nl"
       is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl"
-      is Environment.Demo -> "https://lo-ad.acc.mgo.irealisatie.nl"
       is Environment.Custom -> environment.url
     }
 
@@ -127,7 +127,6 @@ internal object MainModule {
       is Environment.Acc -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
       is Environment.Prod -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
       is Environment.Tst -> "https://dvp-proxy.test.mgo.irealisatie.nl"
-      is Environment.Demo -> "https://dvp-proxy.acc.mgo.irealisatie.nl"
       is Environment.Custom -> environment.url
     }
 
@@ -140,7 +139,11 @@ internal object MainModule {
       is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
-      is Environment.Demo -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Custom -> environment.url
     }
+
+  @Provides
+  @Singleton
+  @Named("supportedDataServiceIds")
+  fun provideSupportedDataServiceIds(getDataSetsFromDisk: GetDataSetsFromDisk) = getDataSetsFromDisk.invoke().map { dataSet -> dataSet.id }
 }

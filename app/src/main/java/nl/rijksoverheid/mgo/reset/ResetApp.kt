@@ -1,6 +1,6 @@
 package nl.rijksoverheid.mgo.reset
 
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
 import javax.inject.Inject
@@ -14,10 +14,10 @@ class ResetApp
     @Named("sharedPreferencesMgoKeyValueStorage") private val keyValueStorage: MgoKeyValueStorage,
     private val organizationRepository: OrganizationRepository,
   ) {
-    suspend operator fun invoke() {
+    operator fun invoke() {
       keyValueStore.clear()
       secureKeyValueStore.clear()
-      organizationRepository.deleteAll()
+      organizationRepository.deleteAllSaved()
       keyValueStorage.deleteAll()
     }
   }

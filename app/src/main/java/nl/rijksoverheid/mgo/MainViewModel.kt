@@ -50,10 +50,10 @@ internal class MainViewModel
     private val fhirResponseSyncer: FhirResponseSyncer,
     private val quickJsRepository: QuickJsRepository,
     private val pftRepository: PftRepository,
+    private val isDigidAuthenticated: IsDigidAuthenticated,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     @Named("keyValueStore") val keyValueStore: KeyValueStore,
     @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
-    val isDigidAuthenticated: IsDigidAuthenticated,
     val appLifecycleRepository: AppLifecycleRepository,
   ) : ViewModel() {
     private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
@@ -74,7 +74,7 @@ internal class MainViewModel
 
         // Start fetching FHIR data
         launch(ioDispatcher) {
-          fhirResponseSyncer.invoke().collect()
+          fhirResponseSyncer.invoke(coroutineContext).collect()
         }
 
         // Start syncing patient friendly terms

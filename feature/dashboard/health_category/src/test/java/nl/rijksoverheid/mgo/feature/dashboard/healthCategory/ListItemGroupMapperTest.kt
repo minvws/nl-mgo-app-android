@@ -9,11 +9,11 @@ import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetHealthCategoriesFromDisk
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
-import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -31,25 +31,25 @@ class ListItemGroupMapperTest {
   private val uiSchemaParser = UiSchemaParser(jsEngineRepository)
   private val getHealthCategoriesFromDisk = JvmGetHealthCategoriesFromDisk()
   private val mgoByteArrayStorage = MemoryMgoByteArrayStorage()
-  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = mgoByteArrayStorage)
   private val mapper =
     ListItemGroupMapper(
       context = context,
       uiSchemaParser = uiSchemaParser,
     )
+  private lateinit var organizationRepository: OrganizationRepository
 
   @Before
   fun setup() =
     runTest {
       jvmQuickJsRepository.create()
-      organizationRepository.deleteAll()
+      organizationRepository = createOrganizationRepositoryForJvm()
     }
 
   @Test
   fun testInvoke() =
     runTest {
       // Given: A organization is stored
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: The lifestyle category
       val category = getHealthCategoriesFromDisk().map { group -> group.categories }.flatten().first { category -> category.id == "lifestyle" }

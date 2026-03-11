@@ -22,7 +22,6 @@ internal class PropositionScreenViewModel
     fun getPrivacyUrl(): String =
       when (environmentRepository.getEnvironment()) {
         is Environment.Tst -> "https://web.test.mgo.irealisatie.nl/privacy"
-        is Environment.Demo -> "https://web.test.mgo.irealisatie.nl/privacy"
         is Environment.Acc -> "https://web.test.mgo.irealisatie.nl/privacy"
         is Environment.Prod -> "https://web.test.mgo.irealisatie.nl/privacy"
         is Environment.Custom -> "https://web.test.mgo.irealisatie.nl/privacy"

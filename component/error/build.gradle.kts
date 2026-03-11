@@ -13,7 +13,6 @@ dependencies {
   implementation(projects.component.fhir)
   implementation(projects.data.fhir)
   implementation(projects.data.healthCategories)
-  implementation(projects.data.localisation)
   implementation(projects.component.mgo)
   implementation(projects.component.organization)
   implementation(projects.component.theme)

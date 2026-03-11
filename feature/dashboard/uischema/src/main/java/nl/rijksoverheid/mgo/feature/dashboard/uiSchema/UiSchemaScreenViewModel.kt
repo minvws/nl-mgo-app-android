@@ -1,11 +1,13 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +39,7 @@ internal class UiSchemaScreenViewModel
     private val mgoResourceStore: MgoResourceStore,
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
+    @ApplicationContext private val context: Context,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -93,7 +96,7 @@ internal class UiSchemaScreenViewModel
 
         // Download file
         fhirRepository
-          .fetchBinary(resourceEndpoint = endpoint, url = "$dvaApiBaseUrl/fhir/${row.binary}")
+          .fetchBinary(resourceEndpoint = endpoint, url = "$dvaApiBaseUrl/fhir/${row.binary}", fileDir = context.cacheDir)
           .onSuccess { binary ->
             val downloadedRow = UISchemaRow.Binary.Downloaded(heading = row.heading, value = row.value, binary = binary)
             updateRow(downloadedRow)

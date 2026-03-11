@@ -1,6 +1,5 @@
 package nl.rijksoverheid.mgo.data.fhir
 
-import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
@@ -23,7 +22,6 @@ class FhirRepositoryRule(
 
     repository =
       DefaultFhirRepository(
-        context = ApplicationProvider.getApplicationContext(),
         okHttpClient = OkHttpClient(),
         mgoByteArrayStorage = byteArrayStorage,
         dvaApiBaseUrl = testServerRule.testServer.url(),

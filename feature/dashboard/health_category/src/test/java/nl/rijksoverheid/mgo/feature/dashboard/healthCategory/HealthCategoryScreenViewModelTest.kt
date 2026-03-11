@@ -28,10 +28,10 @@ import nl.rijksoverheid.mgo.data.healthCategories.GetEndpointsForHealthCategory
 import nl.rijksoverheid.mgo.data.healthCategories.JvmGetDataSetsFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_LIFESTYLE
-import nl.rijksoverheid.mgo.data.localisation.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
-import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -54,7 +54,6 @@ class HealthCategoryScreenViewModelTest {
   val fhirRepositoryRule = FhirRepositoryRule(byteArrayStorage)
 
   private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val organizationRepository = OrganizationRepository(okHttpClient = OkHttpClient(), baseUrl = "", mgoByteArrayStorage = byteArrayStorage)
   private val createPdfForHealthCategories = TestCreatePdfForHealthCategories()
   private val getDataSetsFromDisk = JvmGetDataSetsFromDisk()
   private val quickJsRepository = JvmQuickJsRepository(dispatcher = mainDispatcherRule.testDispatcher)
@@ -68,23 +67,25 @@ class HealthCategoryScreenViewModelTest {
     )
   private val mgoResourceStore = MgoResourceStore()
   private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
-  private val listItemStateMapper =
-    ListItemStateMapper(
-      listItemGroupMapper = listItemGroupMapper,
-      mgoResourceStore = mgoResourceStore,
-      mgoResourceParser = mgoResourceParser,
-      organizationRepository = organizationRepository,
-      mgoByteArrayStorage = byteArrayStorage,
-      getDataSetsFromDisk = getDataSetsFromDisk,
-    )
+  private lateinit var organizationRepository: OrganizationRepository
   private lateinit var observeFhirResponses: ObserveFhirResponses
   private lateinit var getErrorBanner: GetErrorBanner
+  private lateinit var listItemStateMapper: ListItemStateMapper
 
   @Before
   fun setup() =
     runTest {
       quickJsRepository.create()
-      organizationRepository.deleteAll()
+      organizationRepository = createOrganizationRepositoryForJvm()
+      listItemStateMapper =
+        ListItemStateMapper(
+          listItemGroupMapper = listItemGroupMapper,
+          mgoResourceStore = mgoResourceStore,
+          mgoResourceParser = mgoResourceParser,
+          organizationRepository = organizationRepository,
+          mgoByteArrayStorage = byteArrayStorage,
+          getDataSetsFromDisk = getDataSetsFromDisk,
+        )
       observeFhirResponses = ObserveFhirResponses(getRequests = getRequests, fhirRepository = fhirRepositoryRule.getRepository())
       getErrorBanner = DefaultGetErrorBanner(getRequests = getRequests, observeFhirResponses = observeFhirResponses)
     }
@@ -93,7 +94,7 @@ class HealthCategoryScreenViewModelTest {
   fun testInit() =
     runTest {
       // Given: Stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: All lifestyle responses are success
       fhirRepositoryRule.enqueueSuccessResponse(json = FhirResponseJson.DRUG_USE, request = TEST_FHIR_REQUEST_DRUG_USE)
@@ -129,7 +130,7 @@ class HealthCategoryScreenViewModelTest {
   fun testRetry() =
     runTest {
       // Given: Stored organization
-      organizationRepository.save(TEST_MGO_ORGANIZATION)
+      organizationRepository.addAndSave(TEST_MGO_ORGANIZATION)
 
       // Given: All lifestyle responses fail
       fhirRepositoryRule.enqueueErrorResponse(request = TEST_FHIR_REQUEST_DRUG_USE)

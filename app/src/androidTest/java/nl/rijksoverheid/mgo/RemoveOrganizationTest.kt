@@ -2,9 +2,7 @@ package nl.rijksoverheid.mgo
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.launchActivity
-import nl.rijksoverheid.mgo.robots.AddOrganizationScreenRobot
 import nl.rijksoverheid.mgo.robots.DashboardBottomBarScreenRobot
-import nl.rijksoverheid.mgo.robots.OrganizationsScreenRobot
 import nl.rijksoverheid.mgo.rules.SetupAppRule
 import org.junit.Rule
 import org.junit.Test
@@ -17,9 +15,8 @@ class RemoveOrganizationTest {
   val setupAppRule =
     SetupAppRule(
       skipOnboarding = true,
-      pinCode = listOf(1, 2, 3, 4, 5),
       digidAuthenticated = true,
-      skipPinCodeLogin = true,
+      skipDigidLogin = true,
     )
 
   @get:Rule
@@ -32,8 +29,10 @@ class RemoveOrganizationTest {
         .selectOrganizationsTab()
         .gotoOrganizationsScreen()
         .clickAddOrganizationButtonEmptyState()
-        .gotoAddOrganizationScreen()
+        .gotoManualLocalisationScreen()
+        .setSearchInput("testtest")
         .addOrganization("Kwalificatie Medmij: BGZ")
+        .gotoOrganizationsScreen()
         .assertAddedOrganization(amount = 1)
         .clickFirstOrganization()
         .gotoHealthCategoriesScreen()
@@ -45,13 +44,4 @@ class RemoveOrganizationTest {
         .assertNoAddedOrganizations()
     }
   }
-
-  private fun AddOrganizationScreenRobot.addOrganization(name: String): OrganizationsScreenRobot =
-    this
-      .setNameTextInput("test")
-      .setCityTextInput("test")
-      .clickSearchButton()
-      .gotoOrganizationListScreen()
-      .clickOrganization(name)
-      .gotoOrganizationsScreen()
 }

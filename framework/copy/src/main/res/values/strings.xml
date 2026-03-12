@@ -32,7 +32,7 @@
   <string name="add_organization_list.heading">Welke zorgaanbieders wilt u in uw overzicht tonen?</string>
   <string name="add_organization_list.no_results_subheading">U heeft nog geen zorgaanbieders toegevoegd aan deze lijst. U kunt dit nu doen, of later via uw profiel.</string>
   <string name="add_organization_list.subheading">U kunt zelf zorgaanbieders toevoegen of verwijderen. Dit kunt u ook later in uw profiel doen.</string>
-  <string name="overview.heading">Welkom</string>
+  <string name="overview.heading">Overzicht</string>
   <string name="problems.heading">Klachten en diagnoses</string>
   <string name="problems.subheading">Uw diagnoses en gezondheidsklachten, vastgesteld door uw zorgaanbieder.</string>
   <string name="proposition.subheading">In de privacyverklaring leest u hoe Mijn Gezondheidsoverzicht uw gegevens gebruikt en beschermt. Dit zijn de belangrijkste punten:</string>
@@ -243,7 +243,7 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="settings.about_this_app_safety.safe_apps.heading">Download alleen veilige apps</string>
   <string name="settings.about_this_app_safety.safe_apps.subheading">Gebruik alleen apps uit de Google Play Store. Zo voorkomt u dat er virussen of nep-apps op uw mobiel komen.</string>
   <string name="settings.reset_app.dialog.heading">App opnieuw instellen?</string>
-  <string name="settings.reset_app.dialog.subheading">U verwijdert uw zorgaanbieders en toegangscode. Uw gegevens blijven bij uw zorgaanbieders bewaard.</string>
+  <string name="settings.reset_app.dialog.subheading">U verwijdert uw zorgaanbieders uit de app. De gegevens blijven altijd veilig bewaard bij de zorgaanbieder.</string>
   <string name="settings.about_this_app.logo__accessibility">Logo van het Ministerie van Volksgezondheid, Welzijn en Sport.</string>
   <string name="screenshotalert.heading">Screenshot gemaakt</string>
   <string name="screenshotalert.subheading">U heeft een afbeelding opgeslagen van uw medische gegevens. Wees voorzichtig met delen of opslaan.</string>

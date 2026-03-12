@@ -59,7 +59,7 @@ class ManualLocalisationScreenViewModel
     }
 
     fun add(organization: MgoOrganization) {
-      viewModelScope.launch(ioDispatcher) {
+      viewModelScope.launch {
         organizationRepository.save(organization.id)
         _navigateToDashboard.tryEmit(Unit)
       }

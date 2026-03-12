@@ -7,9 +7,8 @@ import org.junit.rules.ExternalResource
 
 class SetupAppRule(
   private val skipOnboarding: Boolean = false,
-  private val pinCode: List<Int>? = null,
   private val digidAuthenticated: Boolean = false,
-  private val skipPinCodeLogin: Boolean = false,
+  private val skipDigidLogin: Boolean = false,
   private val mainApplication: MainApplication = ApplicationProvider.getApplicationContext(),
 ) : ExternalResource() {
   override fun before() =
@@ -17,9 +16,8 @@ class SetupAppRule(
       val appInitializer = mainApplication.appInitializer
       appInitializer.override(
         skipOnboarding = skipOnboarding,
-        pinCode = pinCode,
         digidAuthenticated = digidAuthenticated,
-        skipPinCodeLogin = skipPinCodeLogin,
+        skipDigidLogin = skipDigidLogin,
       )
     }
 

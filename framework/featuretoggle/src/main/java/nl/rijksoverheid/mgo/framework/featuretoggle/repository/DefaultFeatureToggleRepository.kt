@@ -8,7 +8,6 @@ import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggle
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.dataSource.FeatureToggleLocalDataSource
 import nl.rijksoverheid.mgo.framework.featuretoggle.flagSecureFeatureToggle
-import nl.rijksoverheid.mgo.framework.featuretoggle.flagSkipPinFeatureToggle
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -31,7 +30,6 @@ internal class DefaultFeatureToggleRepository
     override fun getAll(): List<FeatureToggle> {
       val environment = environmentRepository.getEnvironment()
       return listOf(
-        flagSkipPinFeatureToggle,
         // We show a dialog if a screenshot is taken. If this functionality is not available, we disable screenshots all together. Only do this
         // in the production app for development and QA purposes.
         flagSecureFeatureToggle(sdkVersion < Build.VERSION_CODES.UPSIDE_DOWN_CAKE && environment is Environment.Prod),

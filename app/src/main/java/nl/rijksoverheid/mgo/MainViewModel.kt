@@ -17,44 +17,34 @@ import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pft.PftRepository
-import nl.rijksoverheid.mgo.data.pincode.HasPinCode
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
 import nl.rijksoverheid.mgo.init.FhirResponseSyncer
-import nl.rijksoverheid.mgo.lifecycle.AppLifecycleRepository
-import nl.rijksoverheid.mgo.lock.AppLocked
-import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
-import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
-import nl.rijksoverheid.mgo.navigation.pincode.PinCodeLoginNavigation
 import nl.rijksoverheid.mgo.reset.ResetApp
 import javax.inject.Inject
 import javax.inject.Named
+
+internal const val KEY_SKIP_DIGID_LOGIN = "KEY_SKIP_DIGID_LOGIN"
 
 @HiltViewModel
 internal class MainViewModel
   @Inject
   constructor(
     val showDeviceRootedDialog: ShowDeviceRootedDialog,
-    private val appLocked: AppLocked,
-    private val saveClosedAppTimestamp: SaveClosedAppTimestamp,
-    private val hasPinCode: HasPinCode,
     private val hasSeenOnboarding: HasSeenOnboarding,
     private val featureToggleRepository: FeatureToggleRepository,
     private val resetApp: ResetApp,
     private val fhirResponseSyncer: FhirResponseSyncer,
     private val quickJsRepository: QuickJsRepository,
     private val pftRepository: PftRepository,
-    private val isDigidAuthenticated: IsDigidAuthenticated,
+    val isDigidAuthenticated: IsDigidAuthenticated,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
-    @Named("keyValueStore") val keyValueStore: KeyValueStore,
     @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
-    val appLifecycleRepository: AppLifecycleRepository,
   ) : ViewModel() {
     private val _flagSecureFeatureToggle = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
     val flagSecureFeatureToggle = _flagSecureFeatureToggle.asSharedFlow()
@@ -108,11 +98,6 @@ internal class MainViewModel
           OnboardingNavigation.Root
         }
 
-        // If the user has not create a pin code, show the create pin code flow.
-        !hasPinCode.invoke() -> {
-          PinCodeCreateNavigation.Root
-        }
-
         // If the user has not yet authenticated with DigiD, show the DigiD flow.
         !isDigidAuthenticated.invoke() -> {
           DigidNavigation.Root
@@ -120,39 +105,13 @@ internal class MainViewModel
 
         // If all above things are not true, then we can show the dashboard.
         else -> {
-          if (featureToggleRepository.get(FeatureToggleId.SkipPin)) {
+          if (keyValueStorage.get<Boolean>(KEY_SKIP_DIGID_LOGIN) == true) {
             DashboardNavigation.Root
           } else {
-            // Lock dashboard with pin code first.
-            PinCodeLoginNavigation.Root
+            DigidNavigation.Root
           }
         }
       }
-
-    /**
-     * Check if the app needs to be locked.
-     */
-    fun checkAppLock() {
-      viewModelScope.launch {
-        val appLocked = appLocked.invoke()
-        if (appLocked) {
-          lockApp()
-        }
-      }
-    }
-
-    fun lockApp() {
-      _navigateDialog.tryEmit(PinCodeLoginNavigation.LoginDialog)
-    }
-
-    /**
-     * Save the timestamp locally so we know if the app needs to be locked when coming back from the background.
-     */
-    fun saveClosedAppTimestamp() {
-      viewModelScope.launch {
-        saveClosedAppTimestamp.invoke()
-      }
-    }
 
     fun resetApp() {
       viewModelScope.launch {

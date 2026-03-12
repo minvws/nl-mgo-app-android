@@ -51,7 +51,7 @@ class OrganizationsScreenRobot(
     return this
   }
 
-  fun gotoAddOrganizationScreen(): AddOrganizationScreenRobot = AddOrganizationScreenRobot(composeTestRule)
+  fun gotoManualLocalisationScreen(): ManualLocalisationScreenRobot = ManualLocalisationScreenRobot(composeTestRule)
 
   fun gotoHealthCategoriesScreen(): HealthCategoriesScreenRobot = HealthCategoriesScreenRobot(composeTestRule)
 }

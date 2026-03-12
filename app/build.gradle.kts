@@ -115,14 +115,6 @@ dependencies {
   implementation(projects.feature.onboarding.introduction)
   implementation(projects.feature.onboarding.proposition)
 
-  // Pin code
-  implementation(projects.feature.pincode.create)
-  implementation(projects.feature.pincode.confirm)
-  implementation(projects.feature.pincode.login)
-  implementation(projects.feature.pincode.biometric)
-  implementation(projects.feature.pincode.forgot)
-  implementation(projects.feature.pincode.deleted)
-
   // Dashboard
   implementation(projects.feature.dashboard.bottombar)
   implementation(projects.feature.dashboard.organizations)
@@ -133,7 +125,6 @@ dependencies {
   implementation(projects.feature.dashboard.removeOrganization)
   implementation(projects.feature.dashboard.settings.home)
   implementation(projects.feature.dashboard.settings.display)
-  implementation(projects.feature.dashboard.settings.security)
   implementation(projects.feature.dashboard.settings.advanced)
   implementation(projects.feature.dashboard.settings.about.home)
   implementation(projects.feature.dashboard.settings.about.safety)
@@ -170,7 +161,6 @@ dependencies {
   // ================================
 
   implementation(projects.data.onboarding)
-  implementation(projects.data.pincode)
   implementation(projects.data.digid)
   implementation(libs.androidx.lifecycle.process)
   implementation(projects.component.pdfViewer)
@@ -180,19 +170,18 @@ dependencies {
   // ================================
 
   testImplementation(testFixtures(projects.data.onboarding))
-  testImplementation(testFixtures(projects.data.pincode))
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.digid))
   testImplementation(testFixtures(projects.framework.featuretoggle))
   testImplementation(libs.mockk.android)
 
+  androidTestImplementation(platform(libs.compose.bom))
   androidTestImplementation(libs.dagger.hilt.testing)
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.test.core)
   androidTestImplementation(libs.compose.ui.test.junit4)
-  androidTestImplementation(projects.component.pincode)
 
   implementation(projects.data.hcimParser)
   implementation(projects.data.fhir)

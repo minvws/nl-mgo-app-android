@@ -12,8 +12,4 @@ data class SettingsAdvancedScreenViewState(
    * True if taking screenshots of the app is enabled.
    */
   val flagSecure: Boolean,
-  /**
-   * True if the pin code should be skipped when launching the app.
-   */
-  val skipPinCode: Boolean,
 )

@@ -26,7 +26,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_FLAG_SECURE
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_SKIP_PIN
 
 /**
  * Composable that shows a screen where developers can easily set different feature toggles for the app.
@@ -78,15 +77,6 @@ private fun SettingsAdvancedScreenContent(
             onClickListItem(KEY_FLAG_SECURE, enabled)
           },
         )
-
-        SettingsAdvancedListItem(
-          modifier = Modifier.padding(top = 16.dp),
-          title = "Skip pin code",
-          enabled = viewState.skipPinCode,
-          onClick = { enabled ->
-            onClickListItem(KEY_SKIP_PIN, enabled)
-          },
-        )
       }
     },
   )
@@ -127,7 +117,6 @@ internal fun SettingsAdvancedScreenPreview() {
         SettingsAdvancedScreenViewState(
           automaticLocalisation = true,
           flagSecure = false,
-          skipPinCode = true,
         ),
       onClickListItem = { _, _ -> },
       onClickBack = {},

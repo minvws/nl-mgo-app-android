@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import app.cash.turbine.turbineScope
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.data.digid.TestDigidRepository
+import nl.rijksoverheid.mgo.data.digid.TestSetDigidAuthenticated
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import nl.rijksoverheid.mgo.framework.util.base64.TestBase64Util
 import org.junit.Assert.assertEquals
@@ -21,6 +22,7 @@ internal class DigidLoginScreenViewModelTest {
       digidRepository = digidRepository,
       base64Util = base64Util,
       ioDispatcher = mainDispatcherRule.testDispatcher,
+      setDigidAuthenticated = TestSetDigidAuthenticated(),
     )
 
   @Test

@@ -44,13 +44,10 @@ import nl.rijksoverheid.mgo.component.theme.theme.DefaultLocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.LocalAppThemeProvider
 import nl.rijksoverheid.mgo.component.theme.theme.isDarkTheme
 import nl.rijksoverheid.mgo.devicerooted.DeviceRootedDialog
-import nl.rijksoverheid.mgo.lifecycle.AppLifecycleState
 import nl.rijksoverheid.mgo.navigation.dashboard.addDashboardNavGraph
 import nl.rijksoverheid.mgo.navigation.digid.addDigidNavGraph
 import nl.rijksoverheid.mgo.navigation.localisation.addLocalisationNavGraph
 import nl.rijksoverheid.mgo.navigation.onboarding.addOnboardingNavGraph
-import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeCreateNavGraph
-import nl.rijksoverheid.mgo.navigation.pincode.addPinCodeLoginNavGraph
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 /**
@@ -97,9 +94,6 @@ class MainActivity : FragmentActivity() {
 
             // Set if taking screenshots is enabled or not
             CheckFlagSecure(viewModel = viewModel)
-
-            // Check if the app needs to be locked (show pin code screen above current screen)
-            CheckAppLock(viewModel = viewModel)
 
             // Handle navigating to a dialog to display
             HandleNavigateDialog(viewModel = viewModel, navController = navController)
@@ -149,30 +143,9 @@ class MainActivity : FragmentActivity() {
       exitTransition = { ExitTransition.None },
     ) {
       addOnboardingNavGraph(navController = navController)
-      addPinCodeCreateNavGraph(navController = navController)
-      addPinCodeLoginNavGraph(navController = navController, activity = this@MainActivity)
       addDashboardNavGraph(rootNavController = navController, mainViewModel = viewModel)
-      addLocalisationNavGraph(
-        navController = navController,
-      )
-      addDigidNavGraph(navController = navController, keyValueStore = viewModel.keyValueStore)
-    }
-  }
-
-  @Composable
-  private fun CheckAppLock(viewModel: MainViewModel) {
-    LaunchedEffect(Unit) {
-      viewModel.appLifecycleRepository.observeLifecycle().collectLatest { state ->
-        when (state) {
-          AppLifecycleState.FromBackground -> {
-            viewModel.checkAppLock()
-          }
-
-          AppLifecycleState.ToBackground -> {
-            viewModel.saveClosedAppTimestamp()
-          }
-        }
-      }
+      addLocalisationNavGraph(navController = navController)
+      addDigidNavGraph(navController = navController, fromOnboarding = !viewModel.isDigidAuthenticated.invoke())
     }
   }
 
@@ -220,9 +193,11 @@ class MainActivity : FragmentActivity() {
               Lifecycle.Event.ON_START -> {
                 registerScreenCaptureCallback(mainExecutor, screenCaptureCallback)
               }
+
               Lifecycle.Event.ON_STOP -> {
                 unregisterScreenCaptureCallback(screenCaptureCallback)
               }
+
               else -> {}
             }
           }

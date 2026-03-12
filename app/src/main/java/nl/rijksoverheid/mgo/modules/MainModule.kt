@@ -17,10 +17,6 @@ import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
 import nl.rijksoverheid.mgo.framework.environment.Environment
 import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
-import nl.rijksoverheid.mgo.lock.AppLocked
-import nl.rijksoverheid.mgo.lock.DefaultAppLocked
-import nl.rijksoverheid.mgo.lock.DefaultSaveClosedAppTimestamp
-import nl.rijksoverheid.mgo.lock.SaveClosedAppTimestamp
 import java.io.File
 import java.time.Clock
 import javax.inject.Named
@@ -85,19 +81,6 @@ internal object MainModule {
     }
     return MgoAuthentication.None
   }
-
-  @Provides
-  fun provideAppLocked(
-    @Named("systemUTC") clock: Clock,
-    @Named("keyValueStore") keyValueStore: KeyValueStore,
-    @Named("secureKeyValueStore") secureKeyValueStore: KeyValueStore,
-  ): AppLocked = DefaultAppLocked(clock = clock, keyValueStore = keyValueStore, secureKeyValueStore = secureKeyValueStore)
-
-  @Provides
-  fun provideSaveClosedAppTimestamp(
-    @Named("systemUTC") clock: Clock,
-    @Named("keyValueStore") keyValueStore: KeyValueStore,
-  ): SaveClosedAppTimestamp = DefaultSaveClosedAppTimestamp(clock = clock, keyValueStore)
 
   @Provides
   @Named("ioDispatcher")

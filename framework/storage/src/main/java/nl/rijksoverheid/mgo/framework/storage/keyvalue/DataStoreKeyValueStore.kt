@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -33,11 +32,6 @@ val KEY_APP_CLOSED_TIMESTAMP = longPreferencesKey("app_closed_timestamp")
 val KEY_FLAG_SECURE = booleanPreferencesKey("flag_secure")
 
 /**
- * Key indicating that the app can skip the login pin code screen.
- */
-val KEY_SKIP_PIN = booleanPreferencesKey("skip_pin")
-
-/**
  * Key indicating that the app shows the automatic localisation flow instead of the manual one.
  */
 val KEY_AUTOMATIC_LOCALISATION = booleanPreferencesKey("automatic_localisation")
@@ -51,8 +45,6 @@ val KEY_LOCAL_FEATURE_TOGGLES_INITIALISED = booleanPreferencesKey("local_feature
  * Key indicating the the user has successfully authenticated with DigiD.
  */
 val KEY_DIGID_AUTHENTICATED = booleanPreferencesKey("digid_authenticated")
-
-val KEY_APP_THEME = stringPreferencesKey("app_theme")
 
 /**
  * Key-value storage system that uses [Preferences] to store data.

@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import nl.rijksoverheid.mgo.feature.onboarding.introduction.IntroductionScreen
 import nl.rijksoverheid.mgo.feature.onboarding.proposition.PropositionOverviewScreen
+import nl.rijksoverheid.mgo.navigation.digid.DigidNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposableExt
-import nl.rijksoverheid.mgo.navigation.pincode.PinCodeCreateNavigation
 
 /**
  * Adds all the navigation destinations that can be found when going through the onboarding.
@@ -28,7 +28,7 @@ fun NavGraphBuilder.addOnboardingNavGraph(navController: NavController) {
           navController.popBackStack()
         },
         onOnboardingFinished = {
-          navController.navigate(PinCodeCreateNavigation.Root)
+          navController.navigate(DigidNavigation.Root)
         },
       )
     }

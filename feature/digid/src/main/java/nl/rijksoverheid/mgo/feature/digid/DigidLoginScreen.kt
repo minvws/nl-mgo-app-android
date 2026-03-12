@@ -44,7 +44,7 @@ import nl.rijksoverheid.mgo.component.mgo.R as ComponentR
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 @Composable
-fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
+fun DigidLoginScreen(onFinishedLogin: () -> Unit) {
   val activity = LocalActivity.current as FragmentActivity
   val viewModel: DigidLoginScreenViewModel = hiltViewModel()
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -88,7 +88,7 @@ fun DigidLoginScreen(onNavigateToDigidMock: () -> Unit) {
 
   LaunchedEffect(Unit) {
     viewModel.loginFinished.collectLatest {
-      onNavigateToDigidMock()
+      onFinishedLogin()
     }
   }
 

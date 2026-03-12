@@ -12,7 +12,6 @@ import nl.rijksoverheid.mgo.feature.settings.about.safety.SettingsAboutSafetyScr
 import nl.rijksoverheid.mgo.feature.settings.advanced.SettingsAdvancedScreen
 import nl.rijksoverheid.mgo.feature.settings.display.SettingsDisplayScreen
 import nl.rijksoverheid.mgo.feature.settings.home.SettingsHomeScreen
-import nl.rijksoverheid.mgo.feature.settings.security.SettingsSecurityScreen
 import nl.rijksoverheid.mgo.navigation.mgoComposableExt
 import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 
@@ -49,14 +48,6 @@ internal fun NavGraphBuilder.addDashboardSettingsNavGraph(
 
     mgoComposableExt<DashboardNavigation.Settings.Display> {
       SettingsDisplayScreen(
-        onNavigateBack = {
-          navController.popBackStack()
-        },
-      )
-    }
-
-    mgoComposableExt<DashboardNavigation.Settings.Security> {
-      SettingsSecurityScreen(
         onNavigateBack = {
           navController.popBackStack()
         },

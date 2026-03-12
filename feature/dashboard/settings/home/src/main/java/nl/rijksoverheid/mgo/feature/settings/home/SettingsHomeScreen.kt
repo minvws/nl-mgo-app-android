@@ -146,17 +146,6 @@ private fun SettingsScreenContent(
                 AppTheme.DARK -> CopyR.string.settings_display_dark
               },
           )
-          if (viewState.deviceHasBiometric) {
-            SettingsListItem(
-              modifier =
-                Modifier
-                  .fillMaxWidth()
-                  .clickable { onClickSecuritySettings() },
-              icon = Icons.Outlined.Lock,
-              heading = CopyR.string.settings_security_heading,
-              hasDivider = viewState.isDebug,
-            )
-          }
           if (viewState.isDebug) {
             SettingsListItem(
               modifier =
@@ -268,7 +257,7 @@ private fun SettingsListItem(
 internal fun SettingsHomeScreenPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(isDebug = true, deviceHasBiometric = true),
+      viewState = SettingsHomeScreenViewState(isDebug = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -283,7 +272,7 @@ internal fun SettingsHomeScreenPreview() {
 internal fun SettingsHomeScreenWithoutBiometricPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(isDebug = true, deviceHasBiometric = false),
+      viewState = SettingsHomeScreenViewState(isDebug = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -298,7 +287,7 @@ internal fun SettingsHomeScreenWithoutBiometricPreview() {
 internal fun SettingsHomeScreenWithoutDebugPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(isDebug = false, deviceHasBiometric = true),
+      viewState = SettingsHomeScreenViewState(isDebug = false),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},

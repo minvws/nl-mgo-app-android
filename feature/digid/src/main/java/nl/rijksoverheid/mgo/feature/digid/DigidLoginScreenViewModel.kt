@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.digid.DigidRepository
-import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
 import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import timber.log.Timber

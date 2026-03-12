@@ -29,6 +29,8 @@ import nl.rijksoverheid.mgo.reset.ResetApp
 import javax.inject.Inject
 import javax.inject.Named
 
+internal const val KEY_SKIP_DIGID_LOGIN = "KEY_SKIP_DIGID_LOGIN"
+
 @HiltViewModel
 internal class MainViewModel
   @Inject
@@ -103,7 +105,11 @@ internal class MainViewModel
 
         // If all above things are not true, then we can show the dashboard.
         else -> {
-          DigidNavigation.Root
+          if (keyValueStorage.get<Boolean>(KEY_SKIP_DIGID_LOGIN) == true) {
+            DashboardNavigation.Root
+          } else {
+            DigidNavigation.Root
+          }
         }
       }
 

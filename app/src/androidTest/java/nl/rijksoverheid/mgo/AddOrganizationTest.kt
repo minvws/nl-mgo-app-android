@@ -17,9 +17,8 @@ class AddOrganizationTest {
   val setupAppRule =
     SetupAppRule(
       skipOnboarding = true,
-      pinCode = listOf(1, 2, 3, 4, 5),
       digidAuthenticated = true,
-      skipPinCodeLogin = true,
+      skipDigidLogin = true,
     )
 
   @get:Rule
@@ -30,13 +29,10 @@ class AddOrganizationTest {
     launchActivity<MainActivity>().use {
       HealthCategoriesScreenRobot(composeTestRule)
         .clickAddOrganizationButton()
-        .gotoAddOrganizationScreen()
-        .setNameTextInput("test")
-        .setCityTextInput("test")
-        .clickSearchButton()
-        .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: BGZ")
-        .gotoHealthCareCategoriesScreen()
+        .gotoManualLocalisationScreen()
+        .setSearchInput("testtest")
+        .addOrganization("Mocky hospital (all dataservices)")
+        .gotoHealthCategoriesScreen()
         .clickCategory("Uitslagen")
         .gotoHealthCategoryScreen()
         .assertCardsExists()
@@ -48,13 +44,10 @@ class AddOrganizationTest {
     launchActivity<MainActivity>().use {
       HealthCategoriesScreenRobot(composeTestRule)
         .clickAddOrganizationButton()
-        .gotoAddOrganizationScreen()
-        .setNameTextInput("test")
-        .setCityTextInput("test")
-        .clickSearchButton()
-        .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: GPDATA")
-        .gotoHealthCareCategoriesScreen()
+        .gotoManualLocalisationScreen()
+        .setSearchInput("testtest")
+        .addOrganization("Mocky hospital (all dataservices)")
+        .gotoHealthCategoriesScreen()
         .clickCategory("Uitslagen")
         .gotoHealthCategoryScreen()
         .assertCardsExists()
@@ -66,13 +59,10 @@ class AddOrganizationTest {
     launchActivity<MainActivity>().use {
       HealthCategoriesScreenRobot(composeTestRule)
         .clickAddOrganizationButton()
-        .gotoAddOrganizationScreen()
-        .setNameTextInput("test")
-        .setCityTextInput("test")
-        .clickSearchButton()
-        .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: PDFA")
-        .gotoHealthCareCategoriesScreen()
+        .gotoManualLocalisationScreen()
+        .setSearchInput("testtest")
+        .addOrganization("Mocky hospital (all dataservices)")
+        .gotoHealthCategoriesScreen()
         .clickCategory("Documenten")
         .gotoHealthCategoryScreen()
         .assertCardsExists()
@@ -84,13 +74,10 @@ class AddOrganizationTest {
     launchActivity<MainActivity>().use {
       HealthCategoriesScreenRobot(composeTestRule)
         .clickAddOrganizationButton()
-        .gotoAddOrganizationScreen()
-        .setNameTextInput("test")
-        .setCityTextInput("test")
-        .clickSearchButton()
-        .gotoOrganizationListScreen()
-        .clickOrganization("Kwalificatie Medmij: VACCINATION_IMMUNIZATION")
-        .gotoHealthCareCategoriesScreen()
+        .gotoManualLocalisationScreen()
+        .setSearchInput("testtest")
+        .addOrganization("Mocky hospital (all dataservices)")
+        .gotoHealthCategoriesScreen()
         .clickCategory("Vaccinaties")
         .gotoHealthCategoryScreen()
         .assertCardsExists()

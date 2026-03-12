@@ -37,7 +37,7 @@ class HealthCategoriesScreenRobot(
     return this
   }
 
-  fun gotoAddOrganizationScreen(): AddOrganizationScreenRobot = AddOrganizationScreenRobot(composeTestRule)
+  fun gotoManualLocalisationScreen(): ManualLocalisationScreenRobot = ManualLocalisationScreenRobot(composeTestRule)
 
   fun gotoHealthCategoryScreen(): HealthCategoryScreenRobot = HealthCategoryScreenRobot(composeTestRule)
 

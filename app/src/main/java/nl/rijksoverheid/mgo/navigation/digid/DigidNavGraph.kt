@@ -3,12 +3,10 @@ package nl.rijksoverheid.mgo.navigation.digid
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import androidx.navigation.toRoute
 import nl.rijksoverheid.mgo.feature.digid.DigidLoginScreen
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposableExt
-import timber.log.Timber
 
 fun NavGraphBuilder.addDigidNavGraph(
   navController: NavController,

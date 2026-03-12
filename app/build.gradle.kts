@@ -175,6 +175,7 @@ dependencies {
   testImplementation(testFixtures(projects.framework.featuretoggle))
   testImplementation(libs.mockk.android)
 
+  androidTestImplementation(platform(libs.compose.bom))
   androidTestImplementation(libs.dagger.hilt.testing)
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.androidx.test.runner)

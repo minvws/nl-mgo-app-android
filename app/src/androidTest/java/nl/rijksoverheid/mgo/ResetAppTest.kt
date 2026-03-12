@@ -15,9 +15,8 @@ class ResetAppTest {
   val setupAppRule =
     SetupAppRule(
       skipOnboarding = true,
-      pinCode = listOf(1, 2, 3, 4, 5),
       digidAuthenticated = true,
-      skipPinCodeLogin = true,
+      skipDigidLogin = true,
     )
 
   @get:Rule

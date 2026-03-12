@@ -40,7 +40,7 @@ internal class MainViewModel
     private val fhirResponseSyncer: FhirResponseSyncer,
     private val quickJsRepository: QuickJsRepository,
     private val pftRepository: PftRepository,
-    private val isDigidAuthenticated: IsDigidAuthenticated,
+    val isDigidAuthenticated: IsDigidAuthenticated,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
   ) : ViewModel() {
@@ -103,7 +103,7 @@ internal class MainViewModel
 
         // If all above things are not true, then we can show the dashboard.
         else -> {
-          DashboardNavigation.Root
+          DigidNavigation.Root
         }
       }
 

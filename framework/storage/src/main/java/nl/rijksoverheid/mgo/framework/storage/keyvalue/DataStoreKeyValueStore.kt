@@ -33,11 +33,6 @@ val KEY_APP_CLOSED_TIMESTAMP = longPreferencesKey("app_closed_timestamp")
 val KEY_FLAG_SECURE = booleanPreferencesKey("flag_secure")
 
 /**
- * Key indicating that the app can skip the login pin code screen.
- */
-val KEY_SKIP_PIN = booleanPreferencesKey("skip_pin")
-
-/**
  * Key indicating that the app shows the automatic localisation flow instead of the manual one.
  */
 val KEY_AUTOMATIC_LOCALISATION = booleanPreferencesKey("automatic_localisation")

@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.data.digid.DigidRepository
+import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
+import nl.rijksoverheid.mgo.data.digid.SetDigidAuthenticated
 import nl.rijksoverheid.mgo.framework.util.base64.Base64Util
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,6 +32,7 @@ internal class DigidLoginScreenViewModel
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val digidRepository: DigidRepository,
     private val base64Util: Base64Util,
+    private val setDigidAuthenticated: SetDigidAuthenticated,
   ) : ViewModel() {
     private val _viewState = MutableStateFlow(DigidLoginScreenViewState(false))
     val viewState = _viewState.asStateFlow()
@@ -53,6 +56,7 @@ internal class DigidLoginScreenViewModel
         digidRepository
           .login()
           .onSuccess { url ->
+            setDigidAuthenticated.invoke()
             _viewState.update { viewState -> viewState.copy(loading = false) }
             _navigateToUrl.tryEmit(url)
           }.onFailure { error ->

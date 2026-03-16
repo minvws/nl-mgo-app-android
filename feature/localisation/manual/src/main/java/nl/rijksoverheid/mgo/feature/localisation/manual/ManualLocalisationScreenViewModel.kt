@@ -39,7 +39,7 @@ class ManualLocalisationScreenViewModel
         viewModelScope.launch(ioDispatcher) {
           try {
             if (query.length <= 2) {
-              _viewState.update { viewState -> viewState.copy(organizations = listOf(), loading = false) }
+              _viewState.update { viewState -> viewState.copy(organizations = null, loading = false) }
             } else {
               _viewState.update { viewState -> viewState.copy(loading = true) }
               delay(500)

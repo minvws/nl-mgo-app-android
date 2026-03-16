@@ -186,6 +186,7 @@ private fun ManualLocalisationScreenContent(
                 heading = organization.name,
                 subheading = organization.address ?: "",
                 trailing = trailing,
+                disabled = organization.dataServices.all { dataService -> !dataService.isSupported },
                 onClick =
                   if (trailing == null) {
                     { onAddOrganization(organization) }

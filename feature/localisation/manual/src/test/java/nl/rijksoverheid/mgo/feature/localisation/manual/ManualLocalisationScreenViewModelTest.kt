@@ -12,6 +12,7 @@ import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -47,12 +48,10 @@ class ManualLocalisationScreenViewModelTest {
       advanceUntilIdle()
       viewModel.viewState.test {
         val viewState = awaitItem()
-        assertEquals(1, viewState.organizations.size)
+        assertEquals(1, viewState.organizations?.size)
         assertEquals(
           "Tandarts Tandje Erbij",
-          viewState.organizations
-            .first()
-            .name,
+          viewState.organizations?.first()?.name,
         )
         assertFalse(viewState.error)
       }
@@ -71,7 +70,7 @@ class ManualLocalisationScreenViewModelTest {
       advanceUntilIdle()
       viewModel.viewState.test {
         val viewState = awaitItem()
-        assertEquals(0, viewState.organizations.size)
+        assertNull(viewState.organizations)
         assertTrue(viewState.error)
       }
     }

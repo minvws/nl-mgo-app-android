@@ -153,40 +153,48 @@ private fun ManualLocalisationScreenContent(
           )
         }
 
-        if (viewState.organizations.isEmpty()) {
-          item(key = "empty") {
-            ManualLocalisationScreenEmpty(modifier = Modifier.padding(top = 32.dp).animateItem())
-          }
-        } else {
-          item {
-            Text(
-              modifier = Modifier.padding(start = 16.dp),
-              text = stringResource(CopyR.string.search_organization_result_count, viewState.organizations.size),
-              style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.LabelsSecondary(),
-            )
-          }
+        val organizations = viewState.organizations
+        if (organizations != null) {
+          if (organizations.isEmpty()) {
+            item(key = "empty") {
+              ManualLocalisationScreenEmpty(modifier = Modifier.padding(top = 32.dp).animateItem())
+            }
+          } else {
+            item {
+              Text(
+                modifier = Modifier.padding(start = 16.dp),
+                text = stringResource(CopyR.string.search_organization_result_count, viewState.organizations.size),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.LabelsSecondary(),
+              )
+            }
 
-          items(viewState.organizations.size, key = { viewState.organizations[it].id }) { position ->
-            val organization = viewState.organizations[position]
-            val trailing =
-              when {
-                organization.added -> stringResource(CopyR.string.search_organization_already_added)
-                organization.dataServices.all { dataService -> !dataService.isSupported } -> stringResource(CopyR.string.search_organization_not_participating)
-                else -> null
-              }
-            ManualLocalisationCard(
-              modifier = Modifier.padding(top = 8.dp).testTag(ManualLocalisationScreenTestTag.CARD).animateItem(),
-              heading = organization.name,
-              subheading = organization.address ?: "",
-              trailing = trailing,
-              onClick =
-                if (trailing == null) {
-                  { onAddOrganization(organization) }
-                } else {
-                  null
-                },
-            )
+            items(viewState.organizations.size, key = { viewState.organizations[it].id }) { position ->
+              val organization = viewState.organizations[position]
+              val trailing =
+                when {
+                  organization.added -> stringResource(CopyR.string.search_organization_already_added)
+
+                  organization.dataServices.all { dataService ->
+                    !dataService.isSupported
+                  } -> stringResource(CopyR.string.search_organization_not_participating)
+
+                  else -> null
+                }
+              ManualLocalisationCard(
+                modifier = Modifier.padding(top = 8.dp).testTag(ManualLocalisationScreenTestTag.CARD).animateItem(),
+                heading = organization.name,
+                subheading = organization.address ?: "",
+                trailing = trailing,
+                disabled = organization.dataServices.all { dataService -> !dataService.isSupported },
+                onClick =
+                  if (trailing == null) {
+                    { onAddOrganization(organization) }
+                  } else {
+                    null
+                  },
+              )
+            }
           }
         }
       }

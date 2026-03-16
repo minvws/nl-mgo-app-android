@@ -4,10 +4,10 @@ import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 
 data class ManualLocalisationScreenViewState(
   val loading: Boolean,
-  val organizations: List<MgoOrganization>,
+  val organizations: List<MgoOrganization>?,
   val error: Boolean,
 ) {
   companion object {
-    val initialState = ManualLocalisationScreenViewState(loading = false, organizations = listOf(), error = false)
+    val initialState = ManualLocalisationScreenViewState(loading = false, organizations = null, error = false)
   }
 }

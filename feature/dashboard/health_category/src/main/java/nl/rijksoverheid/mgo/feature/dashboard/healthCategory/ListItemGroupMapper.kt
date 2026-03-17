@@ -42,14 +42,14 @@ internal class ListItemGroupMapper
             it.value.map { mgoResourceWithOrganization ->
               val organization = mgoResourceWithOrganization.organization
               val mgoResource = mgoResourceWithOrganization.mgoResource
-              val uiSchema =
-                uiSchemaParser.getSummary(
+              val cardDetails =
+                uiSchemaParser.getCardDetail(
                   mgoResourceJson = mgoResource.json,
                   organizationName = organization.name,
                 )
               HealthCategoryScreenListItem(
-                title = uiSchema.label,
-                subtitle = organization.name,
+                title = cardDetails.title,
+                subtitle = cardDetails.description ?: "",
                 mgoResource = mgoResource,
                 organization = organization,
               )

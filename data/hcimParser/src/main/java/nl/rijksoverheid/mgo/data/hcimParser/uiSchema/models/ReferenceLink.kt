@@ -21,6 +21,7 @@ import kotlinx.serialization.Serializable
                 data class ReferenceLink(
     val reference: String,
     val label: String,
+    val id: String,
     val type: String = "REFERENCE_LINK"
 ) : UiElement {
 

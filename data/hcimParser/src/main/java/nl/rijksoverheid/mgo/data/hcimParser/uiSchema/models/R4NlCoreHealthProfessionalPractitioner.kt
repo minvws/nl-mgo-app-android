@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 data class R4NlCoreHealthProfessionalPractitioner(
     val identifier: List<MgoIdentifier>? = null,
     val address: List<Addres>? = null,
-    val gender: MgoCode_Of_unknown_male_female_other? = null,
+    val gender: MgoCode_Of_unknown_other_male_female? = null,
     val profile: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthProfessional-Practitioner",
     val fhirVersion: String = "R4",
     val name: List<R4NlCoreHealthProfessionalPractitionerName>? = null,

@@ -43122,6 +43122,7 @@ ${indent}}` : "}";
   }
   function organization({ formatMessage: formatMessage2 }, organization2) {
     return {
+      id: "summary.organization",
       type: "SINGLE_VALUE",
       label: formatMessage2(`summary.organization`),
       value: { display: organization2?.name }
@@ -43129,9 +43130,11 @@ ${indent}}` : "}";
   }
   function summaryOptions({ formatMessage: formatMessage2 }, i18n2, resource) {
     return {
+      id: formatMessage2(`summary.options`),
       label: formatMessage2(`summary.options`),
       children: [
         {
+          id: `summary.${i18n2}.show_details`,
           type: "REFERENCE_LINK",
           label: formatMessage2(`summary.${i18n2}.show_details`),
           reference: resource.referenceId
@@ -49805,6 +49808,15 @@ ${indent}}` : "}";
       return intl2.formatMessage({ id: label });
     };
   }
+  function createBaseProps(intl2) {
+    const formatLabel = createLabelFormatter(intl2);
+    return function baseProps(label, value2, options = {}) {
+      return {
+        id: label,
+        label: formatLabel(label, value2, options.defaultLabel)
+      };
+    };
+  }
   const intlCache = createIntlCache();
   function createUiContext(options) {
     const { locale, ignoreMissingTranslations, isSummary } = options;
@@ -49816,7 +49828,8 @@ ${indent}}` : "}";
       isSummary,
       intl: intl2,
       ...createHelpers(intl2),
-      formatLabel: createLabelFormatter(intl2)
+      formatLabel: createLabelFormatter(intl2),
+      baseProps: createBaseProps(intl2)
     };
   }
   function isUiSchemaGroup(schema) {
@@ -49864,6 +49877,7 @@ ${indent}}` : "}";
       ...group,
       children: group.children.map((entry) => {
         return isEmptyUiEntry(entry) && !["DOWNLOAD_LINK", "DOWNLOAD_BINARY"].includes(entry.type) ? {
+          id: entry.id,
           label: entry.label,
           type: "SINGLE_VALUE",
           value: { display: formatMessage2("fhir.empty_value") }
@@ -49889,12 +49903,14 @@ ${indent}}` : "}";
     const label = value2?.title ?? formatMessage2("fhir.unknown");
     if (isBinaryReference(value2?.url)) {
       return {
+        id: label,
         type: "DOWNLOAD_BINARY",
         label,
         reference: value2?.url
       };
     }
     return {
+      id: label,
       type: "DOWNLOAD_LINK",
       label,
       url: value2?.url
@@ -49908,24 +49924,24 @@ ${indent}}` : "}";
       display: value2?.text
     };
   };
-  const annotation = ({ formatLabel }) => (label, value2, options = {}) => {
+  const annotation = ({ baseProps }) => (label, value2, options = {}) => {
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map(annotationDisplay).filter(isNonNullish)
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       value: annotationDisplay(value2),
       type: "SINGLE_VALUE"
     };
   };
-  const boolean = ({ formatLabel, formatMessage: formatMessage2 }) => (label, value2, options = {}) => {
+  const boolean = ({ baseProps, formatMessage: formatMessage2 }) => (label, value2, options = {}) => {
     const truthyString = value2?.value ? formatMessage2("fhir.boolean.true") : formatMessage2("fhir.boolean.false");
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: isNonNullish(value2?.value) ? { display: truthyString } : void 0
     };
@@ -49940,9 +49956,9 @@ ${indent}}` : "}";
     return value2;
   }
   function code(context) {
-    const { hasMessage, formatMessage: formatMessage2, formatLabel } = context;
+    const { hasMessage, formatMessage: formatMessage2, baseProps } = context;
     return function(label, value2, options) {
-      const { i18nCode, defaultLabel } = options ?? {};
+      const { i18nCode } = options ?? {};
       function translateCode(code2) {
         const codeValue = valueOf(code2);
         const i18nKey = `codes.${i18nCode}.${codeValue}`;
@@ -49956,13 +49972,13 @@ ${indent}}` : "}";
       }
       if (Array.isArray(value2)) {
         return {
-          label: formatLabel(label, value2, defaultLabel),
+          ...baseProps(label, value2, options),
           type: "MULTIPLE_VALUES",
           value: value2.map(translateCode).filter(isNonNullish)
         };
       }
       return {
-        label: formatLabel(label, value2, defaultLabel),
+        ...baseProps(label, value2, options),
         type: "SINGLE_VALUE",
         value: translateCode(value2)
       };
@@ -50005,36 +50021,36 @@ ${indent}}` : "}";
     });
   };
   const coding = (context) => (label, value2, options = {}) => {
-    const { formatLabel } = context;
+    const { baseProps } = context;
     const formatCoding = codingToDisplay(context);
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map(formatCoding).filter((item) => isNonNullish(item.display))
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: formatCoding(value2)
     };
   };
   const codeableConcept = (context) => (label, value2, options = {}) => {
-    const { formatLabel } = context;
+    const { baseProps } = context;
     const formatCoding = codingToDisplay(context);
     const formatCodeableConcept = (value3) => {
       return value3?.coding.map(formatCoding);
     };
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_GROUPED_VALUES",
         value: value2.map(formatCodeableConcept).filter(isNonNullish)
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "MULTIPLE_VALUES",
       value: formatCodeableConcept(value2)
     };
@@ -50086,6 +50102,7 @@ ${indent}}` : "}";
   }, Symbol.toStringTag, { value: "Module" }));
   const date = (i18nContext) => (label, value2, options = {}) => {
     return {
+      id: label,
       label: i18nContext.formatLabel(label, value2, options.defaultLabel),
       type: "SINGLE_VALUE",
       value: { display: date$1(i18nContext)(value2?.value) }
@@ -50093,23 +50110,23 @@ ${indent}}` : "}";
   };
   const dateTime = (context) => (label, value2, options = {}) => {
     const formatDate2 = date$1(context);
-    const { formatLabel } = context;
+    const { baseProps } = context;
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map((x) => ({ display: formatDate2(valueOf(x)) }))
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: formatDate2(valueOf(value2)) }
     };
   };
-  const decimal = ({ formatLabel }) => (label, value2, options = {}) => {
+  const decimal = ({ baseProps }) => (label, value2, options = {}) => {
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: numberToString(value2?.value) }
     };
@@ -50129,54 +50146,54 @@ ${indent}}` : "}";
     return numberString;
   };
   const quantity = (context) => (label, value2, options = {}) => {
-    const { formatLabel } = context;
+    const { baseProps } = context;
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: `SINGLE_VALUE`,
       value: { display: systemValue(context)(value2) }
     };
   };
   const duration = quantity;
-  const identifier = ({ formatLabel }) => (label, value2, options = {}) => {
+  const identifier = ({ baseProps }) => (label, value2, options = {}) => {
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map((x) => ({ display: x?.value }))
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: value2?.value }
     };
   };
   const instant = (context) => (label, value2, options = {}) => {
     const formatDate2 = date$1(context);
-    const { formatLabel } = context;
+    const { baseProps } = context;
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map((x) => ({ display: formatDate2(x.value) }))
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: formatDate2(value2?.value) }
     };
   };
-  const integer = ({ formatLabel }) => (label, value2, options = {}) => {
+  const integer = ({ baseProps }) => (label, value2, options = {}) => {
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: numberToString(value2?.value) }
     };
   };
-  const integer64 = ({ formatLabel }) => (label, value2, options = {}) => {
+  const integer64 = ({ baseProps }) => (label, value2, options = {}) => {
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: numberToString(value2?.value) }
     };
@@ -50188,100 +50205,98 @@ ${indent}}` : "}";
     const formatDate2 = date$1(context);
     return [
       {
+        id: label,
         label: formatLabel(startLabel, value2, `fhir.period.start`),
         type: `SINGLE_VALUE`,
         value: { display: formatDate2(value2?.start) }
       },
       {
+        id: label,
         label: formatLabel(endLabel, value2, `fhir.period.end`),
         type: `SINGLE_VALUE`,
         value: { display: formatDate2(value2?.end) }
       }
     ];
   };
-  const positiveInt = ({ formatLabel }) => (label, value2, options = {}) => {
+  const positiveInt = ({ baseProps }) => (label, value2, options = {}) => {
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: numberToString(value2?.value) }
     };
   };
   const range = (context) => (label, value2) => {
-    const { formatLabel } = context;
-    const lowLabel = `${label}.low`;
-    const highLabel = `${label}.high`;
+    const { baseProps } = context;
     const formatSystemValue = systemValue(context);
     return [
       {
-        label: formatLabel(lowLabel, value2, `fhir.range.low`),
+        ...baseProps(label, value2, { defaultLabel: `fhir.range.low` }),
         type: `SINGLE_VALUE`,
         value: { display: formatSystemValue(value2?.low) }
       },
       {
-        label: formatLabel(highLabel, value2, `fhir.range.high`),
+        ...baseProps(label, value2, { defaultLabel: `fhir.range.high` }),
         type: `SINGLE_VALUE`,
         value: { display: formatSystemValue(value2?.high) }
       }
     ];
   };
   const ratio = (context) => (label, value2) => {
-    const { formatLabel } = context;
-    const numeratorLabel = `${label}.numerator`;
-    const denominatorLabel = `${label}.denominator`;
+    const { baseProps } = context;
     const formatSystemValue = systemValue(context);
     return [
       {
-        label: formatLabel(numeratorLabel, value2, `fhir.ratio.numerator`),
+        ...baseProps(label, value2, { defaultLabel: `fhir.ratio.numerator` }),
         type: `SINGLE_VALUE`,
         value: { display: formatSystemValue(value2?.numerator) }
       },
       {
-        label: formatLabel(denominatorLabel, value2, `fhir.ratio.denominator`),
+        ...baseProps(label, value2, { defaultLabel: `fhir.ratio.denominator` }),
         type: `SINGLE_VALUE`,
         value: { display: formatSystemValue(value2?.denominator) }
       }
     ];
   };
-  const reference = ({ formatLabel, isSummary }) => (label, value2, options = {}) => {
+  const reference = ({ baseProps, isSummary }) => (label, value2, options = {}) => {
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map((x) => ({ display: x.display }))
       };
     }
     if (isSummary) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "SINGLE_VALUE",
         value: { display: value2?.display }
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "REFERENCE_VALUE",
       display: value2?.display,
       reference: value2?.reference
     };
   };
   const simpleQuantity = (context) => (label, value2, options = {}) => {
-    const { formatLabel } = context;
+    const { baseProps } = context;
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: `SINGLE_VALUE`,
       value: { display: systemValue(context)(value2) }
     };
   };
-  const string = ({ formatLabel }) => (label, value2, options = {}) => {
+  const string = ({ baseProps }) => (label, value2, options = {}) => {
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map((x) => ({ display: valueOf(x) }))
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: valueOf(value2) }
     };
@@ -50293,6 +50308,7 @@ ${indent}}` : "}";
     const formatPositiveInt = positiveInt(context);
     const formatString = string(context);
     return {
+      id: label,
       label: formatLabel(label, null, "fhir.sample_data"),
       children: [
         formatSimpleQuantity(`${label}.origin`, value2?.origin, {
@@ -50320,23 +50336,23 @@ ${indent}}` : "}";
     };
   };
   const time = (context) => (label, value2, options = {}) => {
-    const { formatLabel } = context;
+    const { baseProps } = context;
     if (Array.isArray(value2)) {
       return {
-        label: formatLabel(label, value2, options.defaultLabel),
+        ...baseProps(label, value2, options),
         type: "MULTIPLE_VALUES",
         value: value2.map((x) => ({ display: valueOf(x) }))
       };
     }
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: valueOf(value2) }
     };
   };
-  const unsignedInt = ({ formatLabel }) => (label, value2, options = {}) => {
+  const unsignedInt = ({ baseProps }) => (label, value2, options = {}) => {
     return {
-      label: formatLabel(label, value2, options.defaultLabel),
+      ...baseProps(label, value2, options),
       type: "SINGLE_VALUE",
       value: { display: numberToString(valueOf(value2)) }
     };
@@ -50350,6 +50366,7 @@ ${indent}}` : "}";
     const uiString = string(context);
     const uiUnsignedInt = unsignedInt(context);
     return {
+      id: label,
       label: formatLabel(label, null, "fhir.timing"),
       children: [
         uiCodeableConcept(`${label}.code`, value2?.code, {
@@ -50470,16 +50487,22 @@ ${indent}}` : "}";
     ...value,
     ...date$2
   };
-  const valueWithMax = ({ formatLabel }) => (label, value2, max2) => {
+  function createFormatHelpers(context) {
     return {
-      label: formatLabel(label, value2),
+      date: date$1(context),
+      ...value
+    };
+  }
+  const valueWithMax = ({ baseProps }) => (label, value2, max2) => {
+    return {
+      ...baseProps(label, value2),
       value: { display: format.valueWithMaxValue(value2, max2) },
       type: "SINGLE_VALUE"
     };
   };
-  const valueWithUnit = ({ formatLabel }) => (label, value2, unit) => {
+  const valueWithUnit = ({ baseProps }) => (label, value2, unit) => {
     return {
-      label: formatLabel(label, value2),
+      ...baseProps(label, value2),
       value: { display: format.valueWithUnit(valueOf(value2), valueOf(unit)) },
       type: "SINGLE_VALUE"
     };
@@ -50559,14 +50582,15 @@ ${indent}}` : "}";
     };
   }
   function createGeneratorContext(uiContext, rootPath, fhirVersion) {
-    const { formatMessage: formatMessage2, formatLabel } = uiContext;
+    const { formatMessage: formatMessage2, formatLabel, baseProps } = uiContext;
     const createUiElement = createUiElementHelper(uiContext);
     return {
       formatMessage: formatMessage2,
       formatLabel,
       createUiElement,
       fhirVersion,
-      rootPath
+      rootPath,
+      baseProps
     };
   }
   function getProfileKey(fhirVersion, profile2) {
@@ -50627,7 +50651,7 @@ ${indent}}` : "}";
     }
     return [
       {
-        label: context.formatLabel(path, null),
+        ...context.baseProps(path, null),
         type: "SINGLE_VALUE",
         value: void 0
       }
@@ -50666,6 +50690,7 @@ ${indent}}` : "}";
     if (extraUiElements.length) {
       return [
         {
+          id: path,
           label: path,
           children: getUiElements(elements)
         }
@@ -50683,7 +50708,7 @@ ${indent}}` : "}";
       const valuePath = `${path}.${snakeCase(key)}`;
       if (isNullish(value3)) {
         elements.push({
-          label: context.formatLabel(valuePath, null),
+          ...context.baseProps(valuePath, null),
           type: "SINGLE_VALUE",
           value: void 0
         });
@@ -50694,6 +50719,7 @@ ${indent}}` : "}";
     if (path !== context.rootPath && elements.length > 1) {
       return [
         {
+          id: path,
           label: path,
           children: getUiElements(elements)
         }
@@ -50707,6 +50733,7 @@ ${indent}}` : "}";
     if (isMgoElement(value2)) {
       path = getProfileKey(context.fhirVersion, value2._profile);
       group = {
+        id: path,
         label: getProfileKey(context.fhirVersion, value2._profile),
         children: []
       };
@@ -51076,6 +51103,7 @@ ${indent}}` : "}";
     const formatSystemCode = systemCode(context);
     const referenceRangeSummary = map(resource.referenceRange, (referenceRange) => {
       return {
+        id: `summary.${i18n$7}.reference_range`,
         label: formatSystemCode(referenceRange.type?.coding[0]) ?? formatMessage2("summary.r3.zib_laboratory_test_result_observation.reference_range"),
         children: [
           ...ui.range(`summary.r3.zib_laboratory_test_result_observation.reference_range`, {
@@ -51086,9 +51114,11 @@ ${indent}}` : "}";
       };
     }, true);
     return {
+      id: i18n$7,
       label: capitalize(resource.code?.coding.at(0)?.display) || formatMessage2(i18n$7),
       children: [
         {
+          id: `summary.${i18n$7}.default`,
           children: [
             ...ui.oneOfValueX(`summary.${i18n$7}.effective`, resource, "effective"),
             ...ui.oneOfValueX(`summary.${i18n$7}.value`, resource),
@@ -51096,6 +51126,7 @@ ${indent}}` : "}";
           ]
         },
         {
+          id: `summary.${i18n$7}.group_test_details`,
           label: formatMessage2(`summary.${i18n$7}.group_test_details`),
           children: [
             ui.code(`summary.${i18n$7}.status`, resource.status, {
@@ -51106,6 +51137,7 @@ ${indent}}` : "}";
         },
         ...referenceRangeSummary,
         {
+          id: `summary.${i18n$7}.group_performer`,
           label: formatMessage2(`summary.${i18n$7}.group_performer`),
           children: [
             ui.reference(`summary.${i18n$7}.performer`, resource.performer),
@@ -51190,6 +51222,7 @@ ${indent}}` : "}";
     const { formatMessage: formatMessage2 } = context;
     return {
       ...zibLaboratoryTestResultObservation.summary(resource, context),
+      id: i18n$6,
       label: capitalize(resource.context?.display) || formatMessage2(i18n$6)
     };
   };
@@ -51367,11 +51400,11 @@ ${indent}}` : "}";
     return [addressLine, postalCode?.value, city?.value].filter(Boolean).join(" ");
   }
   const nlCoreAddressSummary = (resource, context) => {
-    const { formatMessage: formatMessage2 } = context;
+    const { baseProps } = context;
     return [
       {
+        ...baseProps(i18n$5, resource),
         type: "SINGLE_VALUE",
-        label: formatMessage2(`${i18n$5}`),
         value: { display: formatAddress(resource) }
       }
     ];
@@ -51482,6 +51515,7 @@ ${indent}}` : "}";
       TimeOfDay: ui.code(`${i18n2}.repeat.when`, repeat2?.when)
     };
     return {
+      id: i18n2,
       label: formatMessage2(i18n2),
       children: [
         ...hcimInstructionsForUse.DoseDuration,
@@ -51535,6 +51569,7 @@ ${indent}}` : "}";
     };
     return [
       {
+        id: i18n$3,
         label: formatMessage2(i18n$3),
         children: [
           hcimInstructionsForUse.Description,
@@ -51553,6 +51588,7 @@ ${indent}}` : "}";
   const summary$6 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
+      id: `summary.${i18n$3}`,
       label: formatMessage2(`summary.${i18n$3}`, { sequence: resource.sequence?.value }),
       children: [
         ui.string(`summary.${i18n$3}.text`, resource.text),
@@ -51727,9 +51763,11 @@ ${indent}}` : "}";
     const patientName = resource.name?.[0];
     const officialAddress = resource.address?.find((x) => x.official?.value);
     return {
+      id: i18n$2,
       label: patientName?.text?.value || formatMessage2("fhir.unknown"),
       children: [
         {
+          id: `summary.${i18n$2}.default`,
           children: [
             ...nlCoreHumannameSummary(patientName, context),
             ui.date(`${i18n$2}.birth_date`, resource.birthDate),
@@ -51738,6 +51776,7 @@ ${indent}}` : "}";
           ]
         },
         {
+          id: `summary.${i18n$2}.group_contact_details`,
           label: formatMessage2(`summary.${i18n$2}.group_contact_details`),
           children: [
             ...nlCoreAddressSummary(officialAddress, context),
@@ -51746,6 +51785,7 @@ ${indent}}` : "}";
           ]
         },
         ...resource.contact?.map((contact, idx) => ({
+          id: `summary.${i18n$2}.group_contacts.${idx}`,
           label: formatMessage2(`summary.${i18n$2}.group_contacts`, { idx: idx + 1 }),
           children: [
             ...nlCoreHumannameSummary(contact.name, context),
@@ -51753,6 +51793,7 @@ ${indent}}` : "}";
           ]
         })) ?? [],
         {
+          id: `summary.${i18n$2}.group_author`,
           label: formatMessage2(`summary.${i18n$2}.group_author`),
           children: [common.organization(context, context.organization)]
         },
@@ -51965,9 +52006,11 @@ ${indent}}` : "}";
     const i18n2 = "r3.e_afspraak_appointment";
     const label = resource.appointmentType?.text ?? formatMessage2(i18n2);
     return {
+      id: i18n2,
       label,
       children: [
         {
+          id: `summary.${i18n2}.default`,
           children: [
             ui.codeableConcept(`${i18n2}.appointment_type`, resource.appointmentType),
             ui.dateTime(`${i18n2}.start`, resource.start),
@@ -51976,6 +52019,7 @@ ${indent}}` : "}";
           ]
         },
         {
+          id: `summary.${i18n2}.group_actor_title`,
           label: formatMessage2(`summary.${i18n2}.group_actor_title`),
           children: [
             ui.reference(`${i18n2}.participant.actor`, resource.participant?.map((p) => p.actor).filter(isNonNullish)),
@@ -52913,15 +52957,26 @@ ${indent}}` : "}";
     parse: parseZibMedicationAgreement,
     uiSchema: generateUiSchema
   };
+  const card = (resource, context) => {
+    const { formatMessage: formatMessage2, format: format2 } = context;
+    const i18n2 = `r3.zib_medication_use`;
+    return {
+      title: capitalize(resource.medicationReference?.display) || resource.id || formatMessage2(i18n2),
+      description: context.organization?.name,
+      detail: format2.date(resource.effectivePeriod?.start)
+    };
+  };
   const summary$3 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     const instructions = map(resource.dosage, (x) => zibInstructionsForUse.summary(x, context), true);
     const hasSingleInstruction = instructions.length === 1;
     const i18n2 = `r3.zib_medication_use`;
     return {
+      id: i18n2,
       label: capitalize(resource.medicationReference?.display) || formatMessage2(i18n2),
       children: [
         {
+          id: `summary.${i18n2}.default`,
           children: [
             ...hasSingleInstruction ? instructions[0].children : [],
             ui.code(`summary.${i18n2}.status`, resource.status, {
@@ -52932,10 +52987,12 @@ ${indent}}` : "}";
         },
         ...hasSingleInstruction ? [] : instructions,
         {
+          id: `summary.${i18n2}.group_period`,
           label: formatMessage2(`summary.${i18n2}.group_period`),
           children: [...ui.period(`${i18n2}.effective_period`, resource.effectivePeriod)]
         },
         {
+          id: `summary.${i18n2}.group_prescriber`,
           label: formatMessage2(`summary.${i18n2}.group_prescriber`),
           children: [
             ui.reference(`summary.${i18n2}.prescriber`, resource.prescriber),
@@ -53018,6 +53075,7 @@ ${indent}}` : "}";
     profile: profile$o,
     parse: parseZibMedicationUse,
     summary: summary$3,
+    card,
     uiSchema: generateUiSchema
   };
   const profile$n = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice";
@@ -53143,9 +53201,11 @@ ${indent}}` : "}";
     const i18n2 = "r3.zib_problem";
     const label = resource.code?.coding.map((x) => x.display).join(", ") ?? formatMessage2(i18n2);
     return {
+      id: label,
       label,
       children: [
         {
+          id: `summary.${i18n2}.default`,
           children: [
             ui.codeableConcept(`${i18n2}.code`, resource.code),
             ui.codeableConcept(`${i18n2}.body_site`, resource.bodySite),
@@ -53154,6 +53214,7 @@ ${indent}}` : "}";
           ]
         },
         {
+          id: `summary.${i18n2}.group_period_of_time`,
           label: formatMessage2(`summary.${i18n2}.group_period_of_time`),
           children: [
             ui.dateTime(`${i18n2}.onset_date_time`, resource.onsetDateTime),
@@ -53161,6 +53222,7 @@ ${indent}}` : "}";
           ]
         },
         {
+          id: `summary.${i18n2}.group_health_professional`,
           label: formatMessage2(`summary.${i18n2}.group_health_professional`),
           children: [common.organization(context, context.organization)]
         },
@@ -53563,21 +53625,25 @@ ${indent}}` : "}";
   const summary$1 = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
+      id: i18n$1,
       label: resource.content?.[0]?.attachment?.title ?? formatMessage2("fhir.unknown"),
       children: [
         {
+          id: `summary.${i18n$1}.default`,
           children: [
             ui.instant(`${i18n$1}.indexed`, resource.indexed),
             ui.codeableConcept(`${i18n$1}.type`, resource.type)
           ]
         },
         {
+          id: `summary.${i18n$1}.group_attachment`,
           label: formatMessage2(`summary.${i18n$1}.group_attachment`),
           children: [
             ...map(resource.content, (content) => ui.attachment(content.attachment), true)
           ]
         },
         {
+          id: `summary.${i18n$1}.group_author`,
           label: formatMessage2(`summary.${i18n$1}.group_author`),
           children: [
             ui.reference(`${i18n$1}.author`, resource.author),
@@ -54251,15 +54317,18 @@ ${indent}}` : "}";
   const summary = (resource, context) => {
     const { ui, formatMessage: formatMessage2 } = context;
     return {
+      id: i18n,
       label: capitalize(resource.vaccineCode?.coding?.at(0)?.display) || context.formatMessage(i18n),
       children: [
         {
+          id: `summary.${i18n}.default`,
           children: [
             ui.dateTime(`${i18n}.occurrence_date_time`, resource.occurrenceDateTime),
             ui.annotation(`${i18n}.note.text`, resource.note)
           ]
         },
         {
+          id: `summary.${i18n}.group_performer`,
           label: formatMessage2(`summary.${i18n}.group_performer`),
           children: [
             ...map(resource.performer, (x) => ui.reference(`${i18n}.performer.administrator.actor`, x.administrator.actor), true),
@@ -54353,9 +54422,11 @@ ${indent}}` : "}";
     const { resources = [], organization: organization2 = void 0, locale, ignoreMissingTranslations, isSummary } = options;
     const uiContext = createUiContext({ locale, ignoreMissingTranslations, isSummary });
     const uiHelpers = createUiHelpers(uiContext);
+    const formatHelpers = createFormatHelpers(uiContext);
     return {
       ...uiContext,
       ui: uiHelpers,
+      format: formatHelpers,
       resources,
       organization: organization2,
       isSummary
@@ -54405,9 +54476,11 @@ ${indent}}` : "}";
         label: resource.id ?? resource.profile,
         children: [
           {
+            id: "options",
             label: "Opties",
             children: [
               {
+                id: "reference_link",
                 type: "REFERENCE_LINK",
                 label: "Bekijk alle gegevens",
                 reference: resource.referenceId
@@ -54426,11 +54499,35 @@ ${indent}}` : "}";
     const summaryUiSchema = config2.summary(resource, context);
     return setEmptyEntries(context)(summaryUiSchema);
   }
+  function getCard(resource, options) {
+    if (!isMgoResource(resource)) {
+      throw new Error(`input does not seem to be a valid MGO Resource. Received MGO resource profile: "${resource?.profile}"`);
+    }
+    const config2 = getResourceConfig(resource.profile, resource.fhirVersion);
+    if (!config2) {
+      throw new Error(`No config found for MGO Resource with profile: "${resource.profile}" and fhir version: "${resource.fhirVersion}"`);
+    }
+    if (!config2.card) {
+      return {
+        title: resource.id ?? "",
+        description: options?.organization?.name
+      };
+    }
+    const context = createSchemaContext({
+      locale: options?.locale ?? "nl-NL",
+      ignoreMissingTranslations: true,
+      isSummary: true,
+      ...options
+    });
+    return config2.card(resource, context);
+  }
   const getBundleResourcesJson = createJsonApi(getBundleResources, { lossless: true });
   const getMgoResourceJson = createJsonApi(getMgoResource, { lossless: true });
+  const getCardJson = createJsonApi(getCard);
   const getSummaryJson = createJsonApi(getSummary);
   const getDetailsJson = createJsonApi(getDetails);
   exports.getBundleResourcesJson = getBundleResourcesJson;
+  exports.getCardJson = getCardJson;
   exports.getDetailsJson = getDetailsJson;
   exports.getMgoResourceJson = getMgoResourceJson;
   exports.getSummaryJson = getSummaryJson;

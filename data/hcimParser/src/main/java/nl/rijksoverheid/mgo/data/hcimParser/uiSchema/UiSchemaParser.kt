@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HcimCardDetails
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
 import javax.inject.Inject
 
@@ -13,6 +14,24 @@ class UiSchemaParser
     private val jsEngineRepository: JsEngineRepository,
   ) {
     private val json = Json { ignoreUnknownKeys = true }
+
+    suspend fun getCardDetail(
+      mgoResourceJson: String,
+      organizationName: String,
+    ): HcimCardDetails {
+      // Map organizationName to expected json
+      val organizationJson = json.encodeToString(OrganizationJson(organization = OrganizationJson.Organization(organizationName)))
+
+      // Get output of javascript call
+      val uiSchemaJsonOutput =
+        jsEngineRepository.executeStringFunction(
+          functionName = "getCardJson",
+          parameters = listOf(mgoResourceJson, organizationJson),
+        )
+
+      // Return object from json
+      return json.decodeFromString<HcimCardDetails>(uiSchemaJsonOutput)
+    }
 
     suspend fun getSummary(
       mgoResourceJson: String,

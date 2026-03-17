@@ -46,14 +46,21 @@ internal class ListItemStateMapper
 
       // Map responses to state
       return when {
-        allError ->
+        allError -> {
           if (hasUserError) {
             HealthCategoryScreenViewState.ListItemsState.Error.UserError
           } else {
             HealthCategoryScreenViewState.ListItemsState.Error.ServerError
           }
-        responses.isEmpty() || allSuccessEmpty -> HealthCategoryScreenViewState.ListItemsState.NoData
-        else -> mapLoaded(responses = successResponses, category = category)
+        }
+
+        responses.isEmpty() || allSuccessEmpty -> {
+          HealthCategoryScreenViewState.ListItemsState.NoData
+        }
+
+        else -> {
+          mapLoaded(responses = successResponses, category = category)
+        }
       }
     }
 
@@ -62,7 +69,7 @@ internal class ListItemStateMapper
       category: HealthCategoryGroup.HealthCategory,
     ): HealthCategoryScreenViewState.ListItemsState {
       // Create mgo resources
-      val mgoResourcesWithOrganization = responses.map { response -> response.toMgoResourcesWithOrganization() }.flatten()
+      val mgoResourcesWithOrganization = responses.flatMap { response -> response.toMgoResourcesWithOrganization() }
 
       // Store all mgo resources in a store, because we need them in the ui schema screen
       for (mgoResource in mgoResourcesWithOrganization.map { it.mgoResource }) {

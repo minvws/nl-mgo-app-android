@@ -41,8 +41,8 @@ data class GpLaboratoryResult(
     val valueString: MgoString? = null,
     val interpretation: Interpretation,
     val effectiveDateTime: MgoDateTime? = null,
-    val valuePeriod: MgoPeriod? = null,
     val valueSampledData: MgoSampledData? = null,
+    val valuePeriod: MgoPeriod? = null,
     val comment: MgoString? = null,
     val category: Category,
     val status: Status,
@@ -98,13 +98,13 @@ data class GpLaboratoryResult(
         private const val cg_str1 = "http://nictiz.nl/fhir/StructureDefinition/gp-LaboratoryResult"
         private const val cg_str2 = "code"
         private val cg_array3 = setOf(
-            "registered",
             "preliminary",
             "final",
             "amended",
+            "entered-in-error",
+            "registered",
             "corrected",
             "cancelled",
-            "entered-in-error",
             "unknown"
         )
     }

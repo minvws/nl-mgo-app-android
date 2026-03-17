@@ -29,7 +29,7 @@ data class EAfspraakAppointment(
     val serviceCategory: MgoCodeableConcept? = null,
     val participant: List<Participant>? = null,
     val referenceId: String,
-    val onlineEditable: ExtensionValue_Of_structure_0_9801008898765888? = null,
+    val onlineEditable: ExtensionValue_Of_structure_0_8985726449134819? = null,
     val fhirVersion: String = "R3",
     val end: MgoDateTime? = null,
     val indication: List<MgoReference>? = null,
@@ -77,8 +77,8 @@ data class EAfspraakAppointment(
         private const val cg_str1 = "R3"
         private const val cg_str2 = "code"
         private val cg_array3 = setOf(
-            "cancelled",
             "entered-in-error",
+            "cancelled",
             "proposed",
             "pending",
             "booked",

@@ -27,35 +27,36 @@ internal fun HealthCategoryCard(
   modifier: Modifier = Modifier,
 ) {
   MgoCard(modifier = modifier.testTag(HealthCategoryScreenTestTag.CARD), onClick = onClick) {
-    Row(modifier = Modifier.padding(16.dp)) {
-      Column(modifier = Modifier.weight(1f)) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      Row {
         Text(
+            modifier = Modifier.weight(1f),
           text = title,
           style = MaterialTheme.typography.bodyMedium,
           fontWeight = FontWeight.Bold,
           maxLines = 2,
           overflow = TextOverflow.Ellipsis,
         )
-        Text(
+        if (detail != null) {
+          Text(
+              modifier = Modifier.weight(1f).padding(start = 16.dp),
+              text = detail,
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.LabelsSecondary(),
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
+              textAlign = TextAlign.End,
+          )
+        }
+      }
+      Text(
           modifier = Modifier.padding(top = 8.dp),
           text = subtitle,
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.LabelsSecondary(),
           maxLines = 2,
           overflow = TextOverflow.Ellipsis,
-        )
-      }
-      if (detail != null) {
-        Text(
-          modifier = Modifier.weight(1f).padding(start = 16.dp),
-          text = detail,
-          style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.LabelsSecondary(),
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          textAlign = TextAlign.End,
-        )
-      }
+      )
     }
   }
 }

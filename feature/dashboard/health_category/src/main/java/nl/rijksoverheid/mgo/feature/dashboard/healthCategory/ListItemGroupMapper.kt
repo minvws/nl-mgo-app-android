@@ -50,6 +50,7 @@ internal class ListItemGroupMapper
               HealthCategoryScreenListItem(
                 title = cardDetails.title,
                 subtitle = cardDetails.description ?: "",
+                detail = cardDetails.detail ?: "",
                 mgoResource = mgoResource,
                 organization = organization,
               )

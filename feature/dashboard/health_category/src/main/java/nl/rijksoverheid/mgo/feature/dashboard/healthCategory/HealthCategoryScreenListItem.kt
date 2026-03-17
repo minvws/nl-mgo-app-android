@@ -8,6 +8,7 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.TEST_MGO_RESOURCE
 data class HealthCategoryScreenListItem(
   val title: String,
   val subtitle: String,
+  val detail: String?,
   val mgoResource: MgoResource,
   val organization: MgoOrganization,
 )
@@ -16,6 +17,7 @@ val TEST_LIST_ITEM_1 =
   HealthCategoryScreenListItem(
     title = "Zestril tablet 10mg",
     subtitle = "Tandarts Tandje Erbij",
+    detail = "01-01-1970",
     mgoResource = TEST_MGO_RESOURCE,
     organization = TEST_MGO_ORGANIZATION,
   )
@@ -24,6 +26,7 @@ val TEST_LIST_ITEM_2 =
   HealthCategoryScreenListItem(
     title = "Atorvastatine Calcium 20 mg Tabletten",
     subtitle = "Streekziekenhuis Willem Alexander",
+    detail = "01-01-1970",
     mgoResource = TEST_MGO_RESOURCE,
     organization = TEST_MGO_ORGANIZATION,
   )
@@ -32,6 +35,7 @@ val TEST_LIST_ITEM_3 =
   HealthCategoryScreenListItem(
     title = "Amoxicilline Trihydraat 500 mg Capsules",
     subtitle = "Huisartsenpraktijk De Haven",
+    detail = "01-01-1970",
     mgoResource = TEST_MGO_RESOURCE,
     organization = TEST_MGO_ORGANIZATION,
   )

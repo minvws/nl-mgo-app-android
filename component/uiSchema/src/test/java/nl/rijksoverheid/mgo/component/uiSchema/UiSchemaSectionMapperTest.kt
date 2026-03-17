@@ -35,10 +35,12 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   DownloadBinary(
+                    id = "",
                     label = "Label",
                     reference = null,
                   ),
                   DownloadBinary(
+                    id = "",
                     label = "Label",
                     reference = "Reference",
                   ),
@@ -67,9 +69,11 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   DownloadLink(
+                    id = "",
                     label = "Label",
                   ),
                   DownloadLink(
+                    id = "",
                     label = "Label",
                     url = "Url",
                   ),
@@ -97,10 +101,12 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   MultipleGroupedValues(
+                    id = "",
                     label = "Label",
                     value = null,
                   ),
                   MultipleGroupedValues(
+                    id = "",
                     label = "Label",
                     value = null,
                   ),
@@ -110,10 +116,12 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   MultipleGroupedValues(
+                    id = "",
                     label = "Label",
                     value = listOf(listOf(DisplayValue(system = "http://snomed.info/sct", code = "123", display = "Display"))),
                   ),
                   MultipleGroupedValues(
+                    id = "",
                     label = "Label",
                     value = listOf(listOf(DisplayValue(display = null))),
                   ),
@@ -142,10 +150,12 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   MultipleValues(
+                    id = "",
                     label = "Label",
                     value = null,
                   ),
                   MultipleValues(
+                    id = "",
                     label = "Label",
                     value = null,
                   ),
@@ -155,10 +165,12 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   MultipleValues(
+                    id = "",
                     label = "Label",
                     value = listOf(DisplayValue(system = "http://snomed.info/sct", code = "123", display = "Display")),
                   ),
                   MultipleValues(
+                    id = "",
                     label = "Label",
                     value = listOf(DisplayValue(display = null)),
                   ),
@@ -187,6 +199,7 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   ReferenceLink(
+                    id = "",
                     label = "Label",
                     reference = "1",
                   ),
@@ -221,6 +234,7 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   ReferenceLink(
+                    id = "",
                     label = "Label",
                     reference = "1",
                   ),
@@ -253,6 +267,7 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   ReferenceValue(
+                    id = "",
                     label = "Label",
                     display = "Display",
                     reference = "1",
@@ -288,6 +303,7 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   ReferenceValue(
+                    id = "",
                     label = "Label",
                     display = "Display",
                     reference = "1",
@@ -321,6 +337,7 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   ReferenceValue(
+                    id = "",
                     label = "Label",
                   ),
                 ),
@@ -348,6 +365,7 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   ReferenceValue(
+                    id = "",
                     label = "Label",
                     reference = "Reference",
                   ),
@@ -376,10 +394,12 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   SingleValue(
+                    id = "",
                     label = "Label",
                     value = null,
                   ),
                   SingleValue(
+                    id = "",
                     label = "Label",
                     value = null,
                   ),
@@ -389,11 +409,13 @@ class UiSchemaSectionMapperTest {
               children =
                 listOf(
                   SingleValue(
+                    id = "",
                     label = "Label",
                     value = DisplayValue(display = "Display"),
                   ),
                   SingleValue(
                     label = "Label",
+                    id = "",
                     value = DisplayValue(display = null),
                   ),
                 ),

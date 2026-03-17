@@ -30,10 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,7 +44,6 @@ import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
-import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
@@ -257,6 +254,7 @@ private fun LazyListScope.LoadedContent(
           modifier = Modifier.padding(bottom = 32.dp).animateItem(),
         )
       }
+
       is ErrorBannerState.Error.ServerError -> {
         ErrorBanner(
           modifier = Modifier.padding(bottom = 32.dp).animateItem(),
@@ -266,6 +264,7 @@ private fun LazyListScope.LoadedContent(
           onClickRetry = onRetryClick,
         )
       }
+
       is ErrorBannerState.Error.UserError -> {
         ErrorBanner(
           modifier = Modifier.padding(bottom = 32.dp).animateItem(),
@@ -275,6 +274,7 @@ private fun LazyListScope.LoadedContent(
           onClickRetry = onRetryClick,
         )
       }
+
       null -> {
       }
     }
@@ -298,6 +298,7 @@ private fun LazyListScope.LoadedContent(
                 .padding(bottom = 16.dp),
             title = listItem.title,
             subtitle = listItem.subtitle,
+            detail = listItem.detail,
             onClick = { onClickListItem(listItem.organization, listItem.mgoResource.referenceId) },
           )
         }
@@ -362,30 +363,6 @@ private fun LazyItemScope.EmptyContent(
       isElevated = false,
       horizontalPadding = 0.dp,
     )
-  }
-}
-
-@Composable
-private fun HealthCategoryCard(
-  title: String,
-  subtitle: String,
-  onClick: () -> Unit,
-  modifier: Modifier = Modifier,
-) {
-  MgoCard(modifier = modifier.testTag(HealthCategoryScreenTestTag.CARD), onClick = onClick) {
-    Column(modifier = Modifier.padding(16.dp)) {
-      Text(
-        text = title,
-        style = MaterialTheme.typography.bodyMedium,
-        fontWeight = FontWeight.Bold,
-      )
-      Text(
-        modifier = Modifier.padding(top = 8.dp),
-        text = subtitle,
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.LabelsSecondary(),
-      )
-    }
   }
 }
 

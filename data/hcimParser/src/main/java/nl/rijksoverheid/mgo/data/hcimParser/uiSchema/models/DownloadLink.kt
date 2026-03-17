@@ -20,6 +20,7 @@ import kotlinx.serialization.Serializable
 @SerialName("DOWNLOAD_LINK")
                 data class DownloadLink(
     val label: String,
+    val id: String,
     val type: String = "DOWNLOAD_LINK",
     val url: String? = null
 ) : UiElement {

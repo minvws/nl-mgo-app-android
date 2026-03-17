@@ -16,5 +16,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class HealthUiGroup(
     val children: List<UiElement>,
+    val id: String? = null,
     val label: String? = null
 )

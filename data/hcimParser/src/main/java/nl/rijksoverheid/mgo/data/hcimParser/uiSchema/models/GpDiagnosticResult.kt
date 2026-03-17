@@ -38,8 +38,8 @@ data class GpDiagnosticResult(
     val bodySite: MgoCodeableConcept? = null,
     val valueString: MgoString? = null,
     val effectiveDateTime: MgoDateTime? = null,
-    val valuePeriod: MgoPeriod? = null,
     val valueSampledData: MgoSampledData? = null,
+    val valuePeriod: MgoPeriod? = null,
     val comment: MgoString? = null,
     val status: Status,
     val resourceType: String
@@ -52,7 +52,7 @@ data class GpDiagnosticResult(
 
     @Serializable
     data class Related(
-        val type: MgoCode_Of_has_member_derived_from_sequel_to_replaces_qualified_by_interfered_by? = null,
+        val type: MgoCode_Of_replaces_has_member_derived_from_sequel_to_qualified_by_interfered_by? = null,
         val target: MgoReference? = null
     )
 

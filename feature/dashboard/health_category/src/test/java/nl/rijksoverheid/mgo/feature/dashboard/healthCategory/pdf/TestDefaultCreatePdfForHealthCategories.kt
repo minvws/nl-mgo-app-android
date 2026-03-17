@@ -56,6 +56,7 @@ internal class TestDefaultCreatePdfForHealthCategories {
                     HealthCategoryScreenListItem(
                       title = "title",
                       subtitle = "subtitle",
+                      detail = null,
                       mgoResource = TEST_MGO_RESOURCE,
                       organization = TEST_MGO_ORGANIZATION,
                     ),

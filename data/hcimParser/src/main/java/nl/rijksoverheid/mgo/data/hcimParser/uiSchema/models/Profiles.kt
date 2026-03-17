@@ -20,7 +20,7 @@ data object Profiles {
     val zibTreatmentDirective: String = "http://nictiz.nl/fhir/StructureDefinition/zib-TreatmentDirective"
     val zibProblem: String = "http://nictiz.nl/fhir/StructureDefinition/zib-Problem"
     val nlCoreHealthcareProvider: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-HealthcareProvider"
-    val nlCorePatient: String = "http://nictiz.nl/fhir/StructureDefinition/nl-core-Patient"
+    val nlCorePatient: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-patient"
     val zibBodyHeight: String = "http://nictiz.nl/fhir/StructureDefinition/zib-BodyHeight"
     val zibNutritionAdvice: String = "http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"
     val nlCoreEpisodeofcare: String = "http://fhir.nl/fhir/StructureDefinition/nl-core-episodeofcare"

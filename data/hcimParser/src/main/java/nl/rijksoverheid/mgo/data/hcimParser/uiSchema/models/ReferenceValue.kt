@@ -22,6 +22,7 @@ import kotlinx.serialization.Serializable
     val reference: String? = null,
     val display: String? = null,
     val label: String,
+    val id: String,
     val type: String = "REFERENCE_VALUE"
 ) : UiElement {
 

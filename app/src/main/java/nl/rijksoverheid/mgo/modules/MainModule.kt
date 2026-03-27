@@ -129,4 +129,26 @@ internal object MainModule {
   @Singleton
   @Named("supportedDataServiceIds")
   fun provideSupportedDataServiceIds(getDataSetsFromDisk: GetDataSetsFromDisk) = getDataSetsFromDisk.invoke().map { dataSet -> dataSet.id }
+
+  @Provides
+  @Singleton
+  @Named("organizationsUrl")
+  fun provideOrganizationsUrl(environmentRepository: EnvironmentRepository): String =
+    when (val environment = environmentRepository.getEnvironment()) {
+      is Environment.Acc -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/temp-organizations.json"
+      is Environment.Prod -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/temp-organizations.json"
+      is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/temp-organizations.json"
+      is Environment.Custom -> environment.url
+    }
+
+  @Provides
+  @Singleton
+  @Named("endpointsUrl")
+  fun provideEndpointsUrl(environmentRepository: EnvironmentRepository): String =
+    when (val environment = environmentRepository.getEnvironment()) {
+      is Environment.Acc -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/temp-endpoints.json"
+      is Environment.Prod -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/temp-endpoints.json"
+      is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/temp-endpoints.json"
+      is Environment.Custom -> environment.url
+    }
 }

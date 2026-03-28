@@ -27,4 +27,5 @@ dependencies {
   implementation(libs.androidx.sqlite.bundled)
   testImplementation(libs.sqldelight.sql.driver)
   testFixturesImplementation(libs.sqldelight.sql.driver)
+  testFixturesImplementation(testFixtures(projects.framework.test))
 }

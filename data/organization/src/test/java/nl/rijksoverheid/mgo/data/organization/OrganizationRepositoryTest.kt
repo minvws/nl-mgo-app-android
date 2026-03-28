@@ -7,28 +7,30 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.data.organization.api.OrganizationApiResponse
+import nl.rijksoverheid.mgo.framework.test.getResource
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class OrganizationRepositoryTest {
   private val json = Json { ignoreUnknownKeys = true }
+
+  private val apiClient = TestOrganizationApiClient()
   private lateinit var organisationRepository: OrganizationRepository
 
   @Before
   fun setup() {
-    organisationRepository = createOrganizationRepositoryForJvm()
+    organisationRepository = createOrganizationRepositoryForJvm(apiClient)
   }
 
   @Test
   fun runBenchmark() =
     runTest {
-      // Load organizations specific for the benchmark
-      organisationRepository.sync(
-        organizationsJson =
-          javaClass.classLoader!!
-            .getResourceAsStream("benchmark-organizations.json"),
-      )
+      // Sync organizations
+      organisationRepository.sync()
 
       // Read queries file
       val queriesJson =
@@ -69,6 +71,54 @@ class OrganizationRepositoryTest {
 
       // Assert the quality of the benchmark
       assertEquals(0.8705706f, benchmarkResult.meanReciprocalRank)
+    }
+
+  @Test
+  fun testSyncCached() =
+    runTest {
+      // Given: Organizations are cached
+      apiClient.setOrganizationsResult(
+        Result.success(
+          OrganizationApiResponse(
+            response = getResource("benchmark-organizations.json"),
+            cached = true,
+          ),
+        ),
+      )
+
+      // Given: Endpoints are cached
+      apiClient.setEndpointsResult(
+        Result.success(
+          OrganizationApiResponse(
+            response = getResource("benchmark-endpoints.json"),
+            cached = true,
+          ),
+        ),
+      )
+
+      // When: Calling sync
+      val success = organisationRepository.sync()
+
+      // Then: Sync is success
+      assertTrue(success)
+    }
+
+  @Test
+  fun testSyncFailed() =
+    runTest {
+      // Given: Organizations are cached
+      apiClient.setOrganizationsResult(
+        Result.failure(IllegalStateException("Something went wrong")),
+      )
+
+      // Given: Endpoints are cached
+      apiClient.setEndpointsResult(Result.failure(IllegalStateException("Something went wrong")))
+
+      // When: Calling sync
+      val success = organisationRepository.sync()
+
+      // Then: Sync is success
+      assertFalse(success)
     }
 
   @Test

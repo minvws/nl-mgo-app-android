@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.data.organization.api
 
+import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.TestServerRule
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -11,7 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 import java.io.File
 
-class RemoteOrganizationApiClientTest {
+class DefaultOrganizationApiClientTest {
   @get:Rule
   val testServerRule = TestServerRule()
 
@@ -28,11 +29,7 @@ class RemoteOrganizationApiClientTest {
     val okHttpClient = getOkHttpClient()
 
     // Given: Organizations succeed from api
-    val organizationsJson =
-      javaClass.classLoader!!
-        .getResourceAsStream("benchmark-organizations-new.json")
-        .bufferedReader()
-        .use { it.readText() }
+    val organizationsJson = readResourceFile("benchmark-organizations.json")
     testServerRule.testServer.enqueueJson(
       organizationsJson,
       headers =
@@ -50,7 +47,7 @@ class RemoteOrganizationApiClientTest {
 
     // Given: Api client
     val repository =
-      RemoteOrganizationApiClient(
+      DefaultOrganizationApiClient(
         okHttpClient = okHttpClient,
         organizationsUrl = testServerRule.testServer.url(),
         endpointsUrl = testServerRule.testServer.url(),
@@ -85,7 +82,7 @@ class RemoteOrganizationApiClientTest {
 
     // Given: Api client
     val repository =
-      RemoteOrganizationApiClient(
+      DefaultOrganizationApiClient(
         okHttpClient = okHttpClient,
         organizationsUrl = testServerRule.testServer.url(),
         endpointsUrl = testServerRule.testServer.url(),
@@ -126,7 +123,7 @@ class RemoteOrganizationApiClientTest {
 
     // Given: Api client
     val repository =
-      RemoteOrganizationApiClient(
+      DefaultOrganizationApiClient(
         okHttpClient = okHttpClient,
         organizationsUrl = testServerRule.testServer.url(),
         endpointsUrl = testServerRule.testServer.url(),
@@ -161,7 +158,7 @@ class RemoteOrganizationApiClientTest {
 
     // Given: Api client
     val repository =
-      RemoteOrganizationApiClient(
+      DefaultOrganizationApiClient(
         okHttpClient = okHttpClient,
         organizationsUrl = testServerRule.testServer.url(),
         endpointsUrl = testServerRule.testServer.url(),

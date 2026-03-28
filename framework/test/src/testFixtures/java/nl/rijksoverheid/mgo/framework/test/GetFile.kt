@@ -3,16 +3,19 @@ package nl.rijksoverheid.mgo.framework.test
 import java.io.InputStream
 
 /**
- * Helper method to load a json file from the resources folder.
+ * Loads a resource file from the test classpath.
  *
- * @param filePath The path of the json file.
+ * Intended for use in JVM tests where resources are located
+ * in the test resources directory.
  */
-fun getJsonFromResources(filePath: String): String {
-  val classLoader = object {}.javaClass.classLoader
-  val `is`: InputStream = requireNotNull(classLoader?.getResourceAsStream(filePath))
-  val size: Int = `is`.available()
-  val buffer = ByteArray(size)
-  `is`.read(buffer)
-  `is`.close()
-  return String(buffer)
+fun getResource(fileName: String): InputStream {
+  val stream =
+    Thread
+      .currentThread()
+      .contextClassLoader
+      ?.getResourceAsStream(fileName)
+
+  return requireNotNull(stream) {
+    "Resource not found: $fileName"
+  }
 }

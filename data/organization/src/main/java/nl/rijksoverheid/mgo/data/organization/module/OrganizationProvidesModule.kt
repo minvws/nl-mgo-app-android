@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.data.organization
+package nl.rijksoverheid.mgo.data.organization.module
 
 import android.content.Context
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
@@ -11,11 +11,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.rijksoverheid.mgo.data.organization.OrganizationsDatabase
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal object OrganizationModule {
+internal object OrganizationProvidesModule {
   @Provides
   @Singleton
   fun provideSqlDriver(
@@ -23,7 +24,11 @@ internal object OrganizationModule {
   ): SqlDriver =
     AndroidxSqliteDriver(
       driver = BundledSQLiteDriver(),
-      databaseType = AndroidxSqliteDatabaseType.FileProvider(context, "organizations.db"),
-      schema = OrganizationsDatabase.Schema,
+      databaseType =
+        AndroidxSqliteDatabaseType.Companion.FileProvider(
+          context,
+          "organizations.db",
+        ),
+      schema = OrganizationsDatabase.Companion.Schema,
     )
 }

@@ -11,14 +11,15 @@ typealias DataServiceId = String
 @Serializable
 internal data class Organization(
   val id: OrganizationId,
-  @SerialName("display_name") val displayName: String,
+  @SerialName("name") val displayName: String,
   @SerialName("search_blob") val searchBlob: String,
-  @SerialName("address_line") val addressLine: String?,
+  @SerialName("address") val addressLine: String?,
   @SerialName("added") val added: Boolean? = false,
-  @SerialName("data_services") val dataServices: Map<DataServiceId, DataService>? = mapOf(),
+  @SerialName("data_services") val dataServices: List<DataService>? = null,
 ) {
   @Serializable
   data class DataService(
+    val id: DataServiceId,
     @SerialName("auth_endpoint") val authEndpoint: String,
     @SerialName("token_endpoint") val tokenEndpoint: String,
     @SerialName("resource_endpoint") val resourceEndpoint: String,
@@ -32,23 +33,24 @@ internal fun Organization.toMgoOrganization(supportedDataServiceIds: List<String
     name = displayName,
     address = addressLine,
     dataServices =
-      dataServices?.map { it.value.toMgoOrganizationDataService(id = it.key, isSupported = supportedDataServiceIds.contains(it.key)) } ?: listOf(),
+      dataServices?.map { dataService ->
+        dataService.toMgoOrganizationDataService(isSupported = supportedDataServiceIds.contains(dataService.id))
+      },
     added = added ?: false,
   )
 
-internal fun Organization.DataService.toMgoOrganizationDataService(
-  id: String,
-  isSupported: Boolean,
-) = MgoOrganizationDataService(
-  id = id,
-  resourceEndpoint = resourceEndpoint,
-  authEndpoint = authEndpoint,
-  tokenEndpoint = tokenEndpoint,
-  isSupported = isSupported,
-)
+internal fun Organization.DataService.toMgoOrganizationDataService(isSupported: Boolean) =
+  MgoOrganizationDataService(
+    id = id,
+    resourceEndpoint = resourceEndpoint,
+    authEndpoint = authEndpoint,
+    tokenEndpoint = tokenEndpoint,
+    isSupported = isSupported,
+  )
 
 internal fun MgoOrganizationDataService.toOrganizationDataService() =
   Organization.DataService(
+    id = id,
     authEndpoint = authEndpoint,
     resourceEndpoint = resourceEndpoint,
     tokenEndpoint = tokenEndpoint,
@@ -61,5 +63,5 @@ internal fun MgoOrganization.toOrganization() =
     searchBlob = "",
     addressLine = address,
     added = added,
-    dataServices = dataServices.associate { dataService -> dataService.id to dataService.toOrganizationDataService() },
+    dataServices = dataServices?.map { dataService -> dataService.toOrganizationDataService() },
   )

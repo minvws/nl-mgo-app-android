@@ -1,12 +1,12 @@
 package nl.rijksoverheid.mgo.data.organization.api
 
-import jakarta.inject.Inject
-import jakarta.inject.Named
 import nl.nl.rijksoverheid.mgo.framework.network.executeRequest
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import javax.inject.Inject
+import javax.inject.Named
 
-class RemoteOrganizationApiClient
+class DefaultOrganizationApiClient
   @Inject
   constructor(
     private val okHttpClient: OkHttpClient,

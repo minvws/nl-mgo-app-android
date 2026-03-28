@@ -171,13 +171,16 @@ private fun ManualLocalisationScreenContent(
 
             items(viewState.organizations.size, key = { viewState.organizations[it].id }) { position ->
               val organization = viewState.organizations[position]
+              val dataServices = organization.dataServices
               val trailing =
                 when {
                   organization.added -> stringResource(CopyR.string.search_organization_already_added)
 
-                  organization.dataServices.all { dataService ->
-                    !dataService.isSupported
-                  } -> stringResource(CopyR.string.search_organization_not_participating)
+                  dataServices != null &&
+                    dataServices.all { dataService ->
+                      !dataService.isSupported
+                    }
+                  -> stringResource(CopyR.string.search_organization_not_participating)
 
                   else -> null
                 }
@@ -186,7 +189,7 @@ private fun ManualLocalisationScreenContent(
                 heading = organization.name,
                 subheading = organization.address ?: "",
                 trailing = trailing,
-                disabled = organization.dataServices.all { dataService -> !dataService.isSupported },
+                disabled = dataServices != null && dataServices.all { dataService -> !dataService.isSupported },
                 onClick =
                   if (trailing == null) {
                     { onAddOrganization(organization) }

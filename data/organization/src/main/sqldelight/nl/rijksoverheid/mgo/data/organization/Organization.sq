@@ -12,6 +12,11 @@ CREATE TABLE IF NOT EXISTS saved_organizations (
     organizationId TEXT PRIMARY KEY
 );
 
+CREATE TABLE IF NOT EXISTS endpoints (
+    id TEXT PRIMARY KEY,
+    url TEXT NOT NULL
+);
+
 getSavedOrganizations:
 SELECT
     organizations.*,
@@ -54,3 +59,15 @@ DELETE FROM saved_organizations;
 
 deleteAllOrganizations:
 DELETE FROM organizations;
+
+insertEndpoint:
+INSERT OR REPLACE INTO endpoints (id, url)
+VALUES (?, ?);
+
+getEndpointById:
+SELECT *
+FROM endpoints
+WHERE id = ?;
+
+deleteAllEndpoints:
+DELETE FROM endpoints;

@@ -8,7 +8,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
-import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.data.pft.PftRepository
 import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
 import nl.rijksoverheid.mgo.init.AppInitializer
@@ -36,9 +35,6 @@ class MainApplication : Application() {
   @Inject
   lateinit var quickJsRepository: QuickJsRepository
 
-  @Inject
-  lateinit var organisationRepository: OrganizationRepository
-
   override fun onCreate() {
     super.onCreate()
     if (BuildConfig.DEBUG) {
@@ -48,9 +44,6 @@ class MainApplication : Application() {
     applicationScope.launch(Dispatchers.IO) {
       launch { quickJsRepository.create() }
       launch { pftRepository.sync() }
-      launch {
-        organisationRepository.sync(organizationsJson = applicationContext.assets.open("organizations.json"))
-      }
     }
   }
 }

@@ -15,10 +15,10 @@ data class MgoOrganization(
   val name: String,
   val address: String?,
   val added: Boolean,
-  val dataServices: List<MgoOrganizationDataService>,
+  val dataServices: List<MgoOrganizationDataService>?,
 ) : Parcelable
 
-fun MgoOrganization.getDocumentsResourceEndpoint(): String? = dataServices.firstOrNull { service -> service.id == "51" }?.resourceEndpoint
+fun MgoOrganization.getDocumentsResourceEndpoint(): String? = dataServices?.firstOrNull { service -> service.id == "51" }?.resourceEndpoint
 
 val TEST_MGO_ORGANIZATION =
   MgoOrganization(

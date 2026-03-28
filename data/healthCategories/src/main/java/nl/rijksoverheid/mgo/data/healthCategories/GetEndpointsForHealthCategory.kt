@@ -15,10 +15,10 @@ class GetEndpointsForHealthCategory
       organization: MgoOrganization,
     ): List<Endpoint> {
       val dataSets = getDataSetsFromDisk()
-      val profilesForCategory = category.subcategories.map { subcategory -> subcategory.profiles }.flatten()
+      val profilesForCategory = category.subcategories.flatMap { subcategory -> subcategory.profiles }
 
       return organization.dataServices
-        .mapNotNull { dataService ->
+        ?.mapNotNull { dataService ->
           val dataSet = dataSets.firstOrNull { dataSet -> dataSet.id == dataService.id } ?: return@mapNotNull null
           val dataSetEndpoints = dataSet.endpoints.filter { endpoint -> endpoint.profiles.any { it in profilesForCategory } }
           dataSetEndpoints.map { dataSetEndpoint ->
@@ -31,6 +31,6 @@ class GetEndpointsForHealthCategory
               organization = organization,
             )
           }
-        }.flatten()
+        }?.flatten() ?: listOf()
     }
   }

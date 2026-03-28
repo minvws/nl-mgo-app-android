@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.localisation.manual
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
@@ -55,6 +57,7 @@ import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
+import kotlin.collections.all
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object ManualLocalisationScreenTestTag {
@@ -153,51 +156,32 @@ private fun ManualLocalisationScreenContent(
           )
         }
 
-        val organizations = viewState.organizations
-        if (organizations != null) {
-          if (organizations.isEmpty()) {
+        when {
+          viewState.error -> {
+            item(key = "error") {
+              ManualLocalisationScreenEmpty(
+                heading = CopyR.string.search_organization_error_heading,
+                subheading = CopyR.string.search_organization_error_subheading,
+                modifier = Modifier.padding(top = 32.dp).animateItem(),
+              )
+            }
+          }
+
+          viewState.organizations.isNullOrEmpty() -> {
             item(key = "empty") {
-              ManualLocalisationScreenEmpty(modifier = Modifier.padding(top = 32.dp).animateItem())
-            }
-          } else {
-            item {
-              Text(
-                modifier = Modifier.padding(start = 16.dp),
-                text = stringResource(CopyR.string.search_organization_result_count, viewState.organizations.size),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.LabelsSecondary(),
+              ManualLocalisationScreenEmpty(
+                heading = CopyR.string.search_organization_no_results_heading,
+                subheading = CopyR.string.search_organization_no_results_subheading,
+                modifier = Modifier.padding(top = 32.dp).animateItem(),
               )
             }
+          }
 
-            items(viewState.organizations.size, key = { viewState.organizations[it].id }) { position ->
-              val organization = viewState.organizations[position]
-              val dataServices = organization.dataServices
-              val trailing =
-                when {
-                  organization.added -> stringResource(CopyR.string.search_organization_already_added)
-
-                  dataServices != null &&
-                    dataServices.all { dataService ->
-                      !dataService.isSupported
-                    }
-                  -> stringResource(CopyR.string.search_organization_not_participating)
-
-                  else -> null
-                }
-              ManualLocalisationCard(
-                modifier = Modifier.padding(top = 8.dp).testTag(ManualLocalisationScreenTestTag.CARD).animateItem(),
-                heading = organization.name,
-                subheading = organization.address ?: "",
-                trailing = trailing,
-                disabled = dataServices != null && dataServices.all { dataService -> !dataService.isSupported },
-                onClick =
-                  if (trailing == null) {
-                    { onAddOrganization(organization) }
-                  } else {
-                    null
-                  },
-              )
-            }
+          else -> {
+            ManualLocalisationScreenSearchResults(
+              organizations = viewState.organizations,
+              onAddOrganization = onAddOrganization,
+            )
           }
         }
       }
@@ -206,7 +190,11 @@ private fun ManualLocalisationScreenContent(
 }
 
 @Composable
-private fun ManualLocalisationScreenEmpty(modifier: Modifier = Modifier) {
+private fun ManualLocalisationScreenEmpty(
+  @StringRes heading: Int,
+  @StringRes subheading: Int,
+  modifier: Modifier = Modifier,
+) {
   Box(
     modifier = modifier,
     contentAlignment = Alignment.Center,
@@ -215,19 +203,63 @@ private fun ManualLocalisationScreenEmpty(modifier: Modifier = Modifier) {
       Image(painter = painterResource(R.drawable.illustration_empty), contentDescription = null)
       Text(
         modifier = Modifier.padding(top = 24.dp),
-        text = stringResource(id = CopyR.string.search_organization_no_results_heading),
+        text = stringResource(id = heading),
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
       )
       Text(
         modifier = Modifier.padding(top = 8.dp),
-        text = stringResource(id = CopyR.string.search_organization_no_results_subheading),
+        text = stringResource(id = subheading),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.LabelsSecondary(),
         textAlign = TextAlign.Center,
       )
     }
+  }
+}
+
+private fun LazyListScope.ManualLocalisationScreenSearchResults(
+  organizations: List<MgoOrganization>,
+  onAddOrganization: (organization: MgoOrganization) -> Unit,
+) {
+  item {
+    Text(
+      modifier = Modifier.padding(start = 16.dp),
+      text = stringResource(CopyR.string.search_organization_result_count, organizations.size),
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.LabelsSecondary(),
+    )
+  }
+
+  items(organizations.size, key = { organizations[it].id }) { position ->
+    val organization = organizations[position]
+    val dataServices = organization.dataServices
+    val trailing =
+      when {
+        organization.added -> stringResource(CopyR.string.search_organization_already_added)
+
+        dataServices != null &&
+          dataServices.all { dataService ->
+            !dataService.isSupported
+          }
+        -> stringResource(CopyR.string.search_organization_not_participating)
+
+        else -> null
+      }
+    ManualLocalisationCard(
+      modifier = Modifier.padding(top = 8.dp).testTag(ManualLocalisationScreenTestTag.CARD).animateItem(),
+      heading = organization.name,
+      subheading = organization.address ?: "",
+      trailing = trailing,
+      disabled = dataServices != null && dataServices.all { dataService -> !dataService.isSupported },
+      onClick =
+        if (trailing == null) {
+          { onAddOrganization(organization) }
+        } else {
+          null
+        },
+    )
   }
 }
 
@@ -319,6 +351,24 @@ internal fun ManualLocalisationScreenEmptyPreview() {
           loading = false,
           organizations = listOf(),
           error = false,
+        ),
+      onSearch = {},
+      onAddOrganization = {},
+      onNavigateBack = null,
+    )
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun ManualLocalisationScreenErrorPreview() {
+  MgoTheme {
+    ManualLocalisationScreenContent(
+      viewState =
+        ManualLocalisationScreenViewState(
+          loading = false,
+          organizations = listOf(),
+          error = true,
         ),
       onSearch = {},
       onAddOrganization = {},

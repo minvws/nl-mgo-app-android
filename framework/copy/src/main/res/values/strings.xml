@@ -345,4 +345,6 @@ Komt u toch iets tegen dat niet goed werkt of lastig is om te gebruiken? Laat he
   <string name="dialog.add_organization_yes">Ja, toevoegen</string>
   <string name="search_organization.not_participating">Deelt geen gegevens</string>
   <string name="search_organization.already_added">Al toegevoegd</string>
+  <string name="search_organization.error.heading">Er is iets misgegaan</string>
+  <string name="search_organization.error.subheading">Het zoeken naar zorgaanbieders is niet gelukt. Probeer het opnieuw.</string>
 </resources>

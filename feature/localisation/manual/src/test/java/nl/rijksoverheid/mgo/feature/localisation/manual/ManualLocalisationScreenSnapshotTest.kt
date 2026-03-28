@@ -16,6 +16,13 @@ internal class ManualLocalisationScreenSnapshotTest {
   }
 
   @Test
+  fun testError() {
+    snapshotTestRule.snapshots {
+      ManualLocalisationScreenErrorPreview()
+    }
+  }
+
+  @Test
   fun testNotEmpty() {
     snapshotTestRule.snapshots {
       ManualLocalisationScreenPreview()

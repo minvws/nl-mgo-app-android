@@ -14,6 +14,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.decodeToSequence
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_BGZ_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.organization.api.OrganizationApiClient
 import timber.log.Timber
 import java.io.InputStream
@@ -28,7 +29,7 @@ class OrganizationRepository
     @Named("supportedDataServiceIds") private val supportedDataServiceIds: List<String>,
   ) {
     private val json = Json { ignoreUnknownKeys = true }
-    val database = OrganizationsDatabase(driver)
+    private val database = OrganizationsDatabase(driver)
 
     suspend fun sync(): Boolean =
       coroutineScope {
@@ -124,7 +125,20 @@ class OrganizationRepository
               dataServices = searchResult.dataServicesJson?.let { json.decodeFromString(it) },
             )
           }
-        }.map { organizations -> organizations.map { organization -> organization.toMgoOrganization(supportedDataServiceIds = supportedDataServiceIds) } }
+        }.map { organizations ->
+          organizations.map { organization ->
+            organization.toMgoOrganization(
+              supportedDataServiceIds = supportedDataServiceIds,
+              getEndpoint = { id ->
+                database
+                  .organizationQueries
+                  .getEndpointById(id)
+                  .executeAsOne()
+                  .url
+              },
+            )
+          }
+        }
 
     fun getSaved(context: CoroutineContext): Flow<List<MgoOrganization>> =
       database.organizationQueries
@@ -142,23 +156,23 @@ class OrganizationRepository
               dataServices = searchResult.dataServicesJson?.let { json.decodeFromString(it) },
             )
           }
-        }.map { organizations -> organizations.map { organization -> organization.toMgoOrganization(supportedDataServiceIds = supportedDataServiceIds) } }
+        }.map { organizations ->
+          organizations.map { organization ->
+            organization.toMgoOrganization(
+              supportedDataServiceIds = supportedDataServiceIds,
+              getEndpoint = { id ->
+                database
+                  .organizationQueries
+                  .getEndpointById(id)
+                  .executeAsOne()
+                  .url
+              },
+            )
+          }
+        }
 
     fun save(organizationId: String) {
       database.organizationQueries.insertSavedOrganization(organizationId)
-    }
-
-    @VisibleForTesting
-    fun addAndSave(mgoOrganization: MgoOrganization) {
-      val organization = mgoOrganization.toOrganization()
-      database.organizationQueries.insertOrganization(
-        id = organization.id,
-        displayName = organization.displayName,
-        addressLine = organization.addressLine,
-        dataServicesJson = json.encodeToString(organization.dataServices),
-        searchBlob = organization.searchBlob,
-      )
-      save(organization.id)
     }
 
     fun delete(organizationId: String) {
@@ -167,5 +181,22 @@ class OrganizationRepository
 
     fun deleteAllSaved() {
       database.organizationQueries.deleteAllSavedOrganizations()
+    }
+
+    /**
+     * Only for testing purposes so we can quickly add and save a organization to the database.
+     */
+    @VisibleForTesting
+    fun addAndSave(organization: MgoOrganization) {
+      val dataService = listOf(Organization.DataService(id = TEST_BGZ_DATA_SERVICE.id, authEndpointId = "1", tokenEndpointId = "1", resourceEndpointId = "1"))
+      database.organizationQueries.insertOrganization(
+        id = organization.id,
+        displayName = organization.name,
+        addressLine = organization.address,
+        dataServicesJson = json.encodeToString(dataService),
+        searchBlob = null,
+      )
+      database.organizationQueries.insertEndpoint(id = "1", url = "")
+      save(organization.id)
     }
   }

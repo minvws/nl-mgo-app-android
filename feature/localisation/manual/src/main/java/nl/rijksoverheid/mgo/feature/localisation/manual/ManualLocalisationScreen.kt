@@ -178,7 +178,7 @@ private fun ManualLocalisationScreenContent(
           }
 
           else -> {
-            ManualLocalisationScreenSearchResults(
+            manualLocalisationScreenSearchResults(
               organizations = viewState.organizations,
               onAddOrganization = onAddOrganization,
             )
@@ -219,7 +219,7 @@ private fun ManualLocalisationScreenEmpty(
   }
 }
 
-private fun LazyListScope.ManualLocalisationScreenSearchResults(
+private fun LazyListScope.manualLocalisationScreenSearchResults(
   organizations: List<MgoOrganization>,
   onAddOrganization: (organization: MgoOrganization) -> Unit,
 ) {
@@ -239,7 +239,7 @@ private fun LazyListScope.ManualLocalisationScreenSearchResults(
       when {
         organization.added -> stringResource(CopyR.string.search_organization_already_added)
 
-        dataServices != null &&
+        dataServices == null ||
           dataServices.all { dataService ->
             !dataService.isSupported
           }
@@ -252,7 +252,7 @@ private fun LazyListScope.ManualLocalisationScreenSearchResults(
       heading = organization.name,
       subheading = organization.address ?: "",
       trailing = trailing,
-      disabled = dataServices != null && dataServices.all { dataService -> !dataService.isSupported },
+      disabled = dataServices == null || dataServices.all { dataService -> !dataService.isSupported },
       onClick =
         if (trailing == null) {
           { onAddOrganization(organization) }

@@ -28,4 +28,5 @@ dependencies {
   testImplementation(libs.sqldelight.sql.driver)
   testFixturesImplementation(libs.sqldelight.sql.driver)
   testFixturesImplementation(testFixtures(projects.framework.test))
+  testFixturesImplementation(projects.component.organization)
 }

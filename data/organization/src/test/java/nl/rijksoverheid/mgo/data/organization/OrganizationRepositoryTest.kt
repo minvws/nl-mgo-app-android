@@ -29,6 +29,26 @@ class OrganizationRepositoryTest {
   @Test
   fun runBenchmark() =
     runTest {
+      // Sync benchmark organizations
+      apiClient.setOrganizationsResult(
+        Result.success(
+          OrganizationApiResponse(
+            response = getResource("benchmark-organizations.json"),
+            cached = false,
+          ),
+        ),
+      )
+
+      // Sync benchmark endpoints
+      apiClient.setEndpointsResult(
+        Result.success(
+          OrganizationApiResponse(
+            response = getResource("benchmark-endpoints.json"),
+            cached = false,
+          ),
+        ),
+      )
+
       // Sync organizations
       organisationRepository.sync()
 
@@ -80,7 +100,7 @@ class OrganizationRepositoryTest {
       apiClient.setOrganizationsResult(
         Result.success(
           OrganizationApiResponse(
-            response = getResource("benchmark-organizations.json"),
+            response = getResource("organizations.json"),
             cached = true,
           ),
         ),
@@ -90,7 +110,7 @@ class OrganizationRepositoryTest {
       apiClient.setEndpointsResult(
         Result.success(
           OrganizationApiResponse(
-            response = getResource("benchmark-endpoints.json"),
+            response = getResource("endpoints.json"),
             cached = true,
           ),
         ),

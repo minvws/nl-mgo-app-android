@@ -15,7 +15,7 @@ class GetEndpointsForHealthCategoryTest {
   fun testGetEndpoints() {
     // Given: The lifestyle health category
     val groups = getHealthCategoriesFromDisk()
-    val categories = groups.map { group -> group.categories }.flatten()
+    val categories = groups.flatMap { group -> group.categories }
     val category = categories.first { category -> category.id == "lifestyle" }
 
     // When: Calling get endpoints

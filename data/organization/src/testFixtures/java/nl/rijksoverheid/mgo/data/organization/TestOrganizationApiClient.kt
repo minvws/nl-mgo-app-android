@@ -8,14 +8,14 @@ class TestOrganizationApiClient : OrganizationApiClient {
   private var organizationsResult =
     Result.success(
       OrganizationApiResponse(
-        response = getResource("benchmark-organizations.json"),
+        response = getResource("organizations.json"),
         cached = false,
       ),
     )
   private var endpointsResult =
     Result.success(
       OrganizationApiResponse(
-        response = getResource("benchmark-endpoints.json"),
+        response = getResource("endpoints.json"),
         cached = false,
       ),
     )

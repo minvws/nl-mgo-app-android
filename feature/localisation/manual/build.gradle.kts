@@ -11,4 +11,5 @@ dependencies {
   implementation(projects.data.organization)
   implementation(projects.data.healthCategories)
   testImplementation(testFixtures(projects.data.healthCategories))
+  testImplementation(testFixtures(projects.data.organization))
 }

@@ -1,77 +1,99 @@
 package nl.rijksoverheid.mgo.feature.localisation.manual
 
 import app.cash.turbine.test
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
+import nl.rijksoverheid.mgo.data.organization.TestOrganizationApiClient
+import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ManualLocalisationScreenViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val organizationRepository = mockk<OrganizationRepository>()
-  private val viewModel =
-    ManualLocalisationScreenViewModel(
-      organizationRepository = organizationRepository,
-      ioDispatcher = mainDispatcherRule.testDispatcher,
-    )
+  private val apiClient = TestOrganizationApiClient()
+  private lateinit var organizationRepository: OrganizationRepository
+  private lateinit var viewModel: ManualLocalisationScreenViewModel
 
   @Before
   fun setup() {
-    coEvery { organizationRepository.save(any()) } answers { }
+    organizationRepository = createOrganizationRepositoryForJvm(apiClient)
+    viewModel =
+      ManualLocalisationScreenViewModel(
+        organizationRepository = organizationRepository,
+        ioDispatcher = mainDispatcherRule.testDispatcher,
+      )
   }
 
-  @OptIn(ExperimentalCoroutinesApi::class)
   @Test
-  fun testSearch() =
+  fun testSearchShortQuery() =
     runTest {
-      // Given: Return organization when searching
-      coEvery { organizationRepository.search(any(), any()) } coAnswers { flowOf(listOf(TEST_MGO_ORGANIZATION)) }
+      // Given: User searches one query
+      val query = "a"
 
-      // When: Searching
-      viewModel.search("UMC Groningen")
+      // When: Calling search
+      viewModel.search(query)
 
-      // Then: organization exists in view state
-      advanceUntilIdle()
+      // Then: View state is updated
       viewModel.viewState.test {
         val viewState = awaitItem()
-        assertEquals(1, viewState.organizations?.size)
-        assertEquals(
-          "Tandarts Tandje Erbij",
-          viewState.organizations?.first()?.name,
-        )
+        assertFalse(viewState.loading)
         assertFalse(viewState.error)
+        assertNull(viewState.organizations)
       }
     }
 
   @Test
-  fun testSearchError() =
+  fun testSearchSyncSuccess() =
     runTest {
-      // Given: Searching for organization errors
-      coEvery { organizationRepository.search(any(), any()) } coAnswers { error("Something went wrong") }
+      // Given: User searches one query
+      val query = "abc"
 
-      // When: Searching
-      viewModel.search("UMC Groningen")
-
-      // Then: organization exists in view state
+      // When: Calling search
+      viewModel.search(query)
       advanceUntilIdle()
+
+      // Then: View state is updated
       viewModel.viewState.test {
         val viewState = awaitItem()
-        assertNull(viewState.organizations)
+        assertFalse(viewState.loading)
+        assertFalse(viewState.error)
+        assertNotNull(viewState.organizations)
+      }
+    }
+
+  @Test
+  fun testSearchSyncFailed() =
+    runTest {
+      // Given sync fails
+      apiClient.setOrganizationsResult(Result.failure(IllegalStateException("Something went wrong")))
+      apiClient.setEndpointsResult(Result.failure(IllegalStateException("Something went wrong")))
+
+      // Given: User searches one query
+      val query = "abc"
+
+      // When: Calling search
+      viewModel.search(query)
+      advanceUntilIdle()
+
+      // Then: View state is updated
+      viewModel.viewState.test {
+        val viewState = awaitItem()
+        assertFalse(viewState.loading)
         assertTrue(viewState.error)
+        assertNull(viewState.organizations)
       }
     }
 

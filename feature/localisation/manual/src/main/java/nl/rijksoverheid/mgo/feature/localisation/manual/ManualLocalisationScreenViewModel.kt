@@ -37,23 +37,34 @@ class ManualLocalisationScreenViewModel
       searchJob?.cancel()
       searchJob =
         viewModelScope.launch(ioDispatcher) {
-          try {
-            if (query.length <= 2) {
-              _viewState.update { viewState -> viewState.copy(organizations = null, loading = false) }
-            } else {
-              _viewState.update { viewState -> viewState.copy(loading = true) }
-              delay(500)
-              val organizations = organizationRepository.search(query = query, context = ioDispatcher).first()
-              _viewState.update { viewState ->
-                viewState.copy(
-                  loading = false,
-                  error = false,
-                  organizations = organizations,
-                )
-              }
+          // Only start searching if the user types more than two characters
+          if (query.length <= 2) {
+            _viewState.update { viewState -> viewState.copy(loading = false, organizations = null, error = false) }
+            return@launch
+          }
+
+          // Show loading state
+          _viewState.update { viewState -> viewState.copy(loading = true, organizations = null, error = false) }
+
+          // Make sure organizations in the local database are up to date
+          val success = organizationRepository.sync()
+
+          if (success) {
+            // Delay so that UI does not get updated on every keypress
+            delay(500)
+
+            // Search for organizations
+            val organizations = organizationRepository.search(query = query, context = ioDispatcher).first()
+            _viewState.update { viewState ->
+              viewState.copy(
+                loading = false,
+                error = false,
+                organizations = organizations,
+              )
             }
-          } catch (error: Throwable) {
-            _viewState.update { viewState -> viewState.copy(loading = false, error = true) }
+          } else {
+            // If syncing of organizations in database failed, show error state
+            _viewState.update { viewState -> viewState.copy(loading = false, organizations = null, error = true) }
           }
         }
     }

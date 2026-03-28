@@ -90,10 +90,10 @@ class OrganizationRepository
 
     @OptIn(ExperimentalSerializationApi::class)
     private fun insertEndpointsInDb(endpoints: InputStream) {
-      val endpoints: Map<String, String> = json.decodeFromStream(endpoints)
-      endpoints.asSequence().chunked(100).forEach { endpoint ->
-        database.organizationQueries.transaction {
-          database.organizationQueries.deleteAllEndpoints()
+      database.organizationQueries.transaction {
+        database.organizationQueries.deleteAllEndpoints()
+        val endpoints: Map<String, String> = json.decodeFromStream(endpoints)
+        endpoints.asSequence().chunked(100).forEach { endpoint ->
           for (endpoint in endpoints) {
             database.organizationQueries.insertEndpoint(
               id = endpoint.key,

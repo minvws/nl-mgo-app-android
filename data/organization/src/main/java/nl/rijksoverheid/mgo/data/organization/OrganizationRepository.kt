@@ -133,8 +133,8 @@ class OrganizationRepository
                 database
                   .organizationQueries
                   .getEndpointById(id)
-                  .executeAsOne()
-                  .url
+                  .executeAsOneOrNull()
+                  ?.url
               },
             )
           }
@@ -164,8 +164,8 @@ class OrganizationRepository
                 database
                   .organizationQueries
                   .getEndpointById(id)
-                  .executeAsOne()
-                  .url
+                  .executeAsOneOrNull()
+                  ?.url
               },
             )
           }

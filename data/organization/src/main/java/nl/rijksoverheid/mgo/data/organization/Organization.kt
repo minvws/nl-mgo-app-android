@@ -29,14 +29,14 @@ internal data class Organization(
 
 internal fun Organization.toMgoOrganization(
   supportedDataServiceIds: List<String>,
-  getEndpoint: (id: EndpointId) -> String,
+  getEndpoint: (id: EndpointId) -> String?,
 ) = MgoOrganization(
   id = id,
   medMijId = id,
   name = displayName,
   address = addressLine,
   dataServices =
-    dataServices?.map { dataService ->
+    dataServices?.mapNotNull { dataService ->
       dataService.toMgoOrganizationDataService(isSupported = supportedDataServiceIds.contains(dataService.id), getEndpoint = getEndpoint)
     },
   added = added ?: false,
@@ -44,11 +44,16 @@ internal fun Organization.toMgoOrganization(
 
 internal fun Organization.DataService.toMgoOrganizationDataService(
   isSupported: Boolean,
-  getEndpoint: (id: EndpointId) -> String,
-) = MgoOrganizationDataService(
-  id = id,
-  resourceEndpoint = getEndpoint(resourceEndpointId),
-  authEndpoint = getEndpoint(authEndpointId),
-  tokenEndpoint = getEndpoint(tokenEndpointId),
-  isSupported = isSupported,
-)
+  getEndpoint: (id: EndpointId) -> String?,
+): MgoOrganizationDataService? {
+  val resourceEndpoint = getEndpoint(resourceEndpointId) ?: return null
+  val authEndpoint = getEndpoint(authEndpointId) ?: return null
+  val tokenEndpoint = getEndpoint(tokenEndpointId) ?: return null
+  return MgoOrganizationDataService(
+    id = id,
+    resourceEndpoint = resourceEndpoint,
+    authEndpoint = authEndpoint,
+    tokenEndpoint = tokenEndpoint,
+    isSupported = isSupported,
+  )
+}

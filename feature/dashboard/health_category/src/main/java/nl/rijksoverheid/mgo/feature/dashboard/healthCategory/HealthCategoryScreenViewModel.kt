@@ -22,6 +22,8 @@ import nl.rijksoverheid.mgo.component.error.GetErrorBanner
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.pdf.CreatePdf
+import nl.rijksoverheid.mgo.component.pdf.CreatePdfForUiSchemas
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
@@ -47,6 +49,7 @@ internal class HealthCategoryScreenViewModel
     private val observeFhirResponses: ObserveFhirResponses,
     private val listItemStateMapper: ListItemStateMapper,
     private val getRequests: GetRequests,
+    private val createPdfForUiSchemas: CreatePdfForUiSchemas,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -133,12 +136,7 @@ internal class HealthCategoryScreenViewModel
     fun generatePdf() {
       viewModelScope.launch(ioDispatcher) {
         _openPdfViewer.tryEmit(PdfViewerState.Loading)
-        val listItemGroups = (_viewState.value.listItemsState as? HealthCategoryScreenViewState.ListItemsState.Loaded)?.listItemsGroup ?: listOf()
-        val file =
-          createPdf.invoke(
-            category = category,
-            listItemGroups = listItemGroups,
-          )
+        val file = createPdfForUiSchemas.invoke()
         _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
       }
     }

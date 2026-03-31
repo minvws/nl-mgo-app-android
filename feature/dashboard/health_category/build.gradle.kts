@@ -24,6 +24,7 @@ dependencies {
   implementation(projects.component.error)
   implementation(projects.component.fhir)
   implementation(projects.data.organization)
+  implementation(projects.component.pdf)
   testImplementation(testFixtures(projects.data.hcimParser))
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.data.fhir))

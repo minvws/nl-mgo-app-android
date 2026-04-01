@@ -18,6 +18,7 @@ class MgoResourceParser
     suspend operator fun invoke(
       fhirResponse: String,
       fhirVersion: FhirVersion,
+      organizationName: String,
     ): List<MgoResource> {
       // Get output of javascript call from getBundleResourcesJson
       val getBundleResourcesJsonOutput =
@@ -65,6 +66,7 @@ class MgoResourceParser
             referenceId = referenceId,
             profile = profile,
             json = getMgoResourceJsonOutput,
+            organizationName = organizationName,
           )
 
         mgoResources.add(mgoResource)

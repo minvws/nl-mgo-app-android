@@ -8,6 +8,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,6 +28,7 @@ import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
@@ -41,7 +43,6 @@ internal class HealthCategoryScreenViewModel
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
-    private val createPdf: CreatePdfForHealthCategories,
     private val fhirRepository: FhirRepository,
     private val mgoResourceStore: MgoResourceStore,
     private val getErrorBanner: GetErrorBanner,
@@ -49,6 +50,7 @@ internal class HealthCategoryScreenViewModel
     private val listItemStateMapper: ListItemStateMapper,
     private val getRequests: GetRequests,
     private val createPdfForUiSchemas: CreatePdfForUiSchemas,
+    private val uiSchemaParser: UiSchemaParser,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -83,7 +85,7 @@ internal class HealthCategoryScreenViewModel
 
     private suspend fun observeListItemsState() {
       // Get the organizations that we need to get fhir responses from
-      val organizations = if (filterOrganization == null) organizationRepository.getSaved(coroutineContext).first() else listOf(filterOrganization)
+      val organizations = if (filterOrganization == null) organizationRepository.getSaved(currentCoroutineContext()).first() else listOf(filterOrganization)
 
       // Get the fhir responses
       val fhirResponses = observeFhirResponses(organizations = organizations, categories = listOf(category))
@@ -134,8 +136,17 @@ internal class HealthCategoryScreenViewModel
 
     fun generatePdf() {
       viewModelScope.launch(ioDispatcher) {
+        // Communicate to UI that pdf is being created
         _openPdfViewer.tryEmit(PdfViewerState.Loading)
-        val file = createPdfForUiSchemas.invoke()
+
+        // Create pdf from ui schemas
+        val uiSchemas =
+          mgoResourceStore.get().map { mgoResource ->
+            uiSchemaParser.getSummary(mgoResourceJson = mgoResource.json, mgoResource.organizationName)
+          }
+        val file = createPdfForUiSchemas.invoke(uiSchemas)
+
+        // Communicate to UI that pdf has been created
         _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
       }
     }

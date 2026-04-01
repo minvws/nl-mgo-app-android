@@ -1,5 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseErrorType
@@ -87,9 +88,9 @@ internal class ListItemStateMapper
       // Get the data set that belongs to this response
       val dataSet = dataSets.firstOrNull { dataSet -> dataSet.id == request.dataServiceId } ?: return emptyList()
 
-      // Get the organisation that belongs to this response
+      // Get the organization that belongs to this response
       val organization =
-        organizationRepository.getSaved(coroutineContext).first().firstOrNull { organization -> organization.id == request.organizationId }
+        organizationRepository.getSaved(currentCoroutineContext()).first().firstOrNull { organization -> organization.id == request.organizationId }
           ?: return emptyList()
 
       // Create the mgo resources
@@ -97,6 +98,7 @@ internal class ListItemStateMapper
         mgoResourceParser.invoke(
           fhirResponse = mgoByteArrayStorage.get(this.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
           fhirVersion = dataSet.fhirVersion,
+          organizationName = organization.name,
         )
       return mgoResources.map { mgoResource -> MgoResourceWithOrganization(mgoResource = mgoResource, organization = organization) }
     }

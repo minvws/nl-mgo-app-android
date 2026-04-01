@@ -6,7 +6,7 @@ import nl.rijksoverheid.mgo.component.theme.Gray500
 import nl.rijksoverheid.mgo.component.theme.Gray600
 
 data class MgoPdf(
-  val fileName: String,
+  val fileName: MgoPdfFileName,
   val heading: String,
   val subheading: String,
   val tables: List<Tables>,

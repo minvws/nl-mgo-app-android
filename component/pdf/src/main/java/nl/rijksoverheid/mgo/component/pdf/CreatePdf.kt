@@ -49,14 +49,15 @@ private object CreatePdfSettings {
   val FOOTER_TEXT_COLOR = Gray600.toArgb().toDeviceRgb()
 }
 
-class CreatePdf
+internal class CreatePdf
   @Inject
   constructor(
     @ApplicationContext private val context: Context,
+    private val store: MgoPdfStore,
   ) {
     operator fun invoke(pdf: MgoPdf): File {
       // Create pdf document
-      val file = File(context.cacheDir, pdf.fileName)
+      val file = store.get(pdf.fileName)
       val pdfWriter = PdfWriter(file)
       val pdfDoc = PdfDocument(pdfWriter)
       val document = Document(pdfDoc, PageSize.A4, false)

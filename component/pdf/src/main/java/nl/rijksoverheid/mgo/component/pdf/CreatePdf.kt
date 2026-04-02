@@ -193,7 +193,7 @@ class CreatePdf
 
         val innerTable =
           if (row.labelIcon != null) {
-            Table(floatArrayOf(16f, 1f))
+            Table(floatArrayOf(11f, 1f))
           } else {
             Table(1)
           }.apply {

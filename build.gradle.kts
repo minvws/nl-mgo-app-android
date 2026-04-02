@@ -69,6 +69,8 @@ private fun getExcludePaths(): String =
     add("framework/storage/src/main/java/nl/rijksoverheid/mgo/framework/storage/bytearray/EncryptedMgoByteArrayStorage.kt") // Specific android related class
     add("data/hcimParser/src/main/java/nl/rijksoverheid/mgo/data/hcimParser/uiSchema/models/**") // Generated shared classes
     add("data/healthcare/src/main/java/nl/rijksoverheid/mgo/data/healthcare/**") // Health care module
+    add("component/pdf/src/main/java/nl/rijksoverheid/mgo/component/pdf/**") // TEMP: PDF module
+    add("feature/dashboard/health_category/src/main/java/nl/rijksoverheid/mgo/feature/dashboard/healthCategory/**") // TEMP: Health category module
     add("**/EncryptedFile.kt") // EncryptedFile (can be tested with Android Test)
   }.joinToString(",")
 

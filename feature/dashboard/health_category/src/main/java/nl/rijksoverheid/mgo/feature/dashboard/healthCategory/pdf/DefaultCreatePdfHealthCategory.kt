@@ -96,9 +96,11 @@ class DefaultCreatePdfHealthCategory
     }
 
     private suspend fun Map<HealthCategoryGroup.HealthCategory.Subcategory, List<MgoResource>>.toTables(): List<MgoPdf.Tables> =
-      map {
+      mapNotNull {
         val subcategory = it.key
         val mgoResources = it.value
+        val tables = mgoResources.toTables()
+        if (tables.isEmpty()) return@mapNotNull null
         MgoPdf.Tables(
           heading = context.getString(subcategory.heading),
           tables = mgoResources.toTables(),
@@ -106,8 +108,9 @@ class DefaultCreatePdfHealthCategory
       }
 
     private suspend fun List<MgoResource>.toTables(): List<MgoPdf.Table> =
-      map { mgoResource ->
+      mapNotNull { mgoResource ->
         val uiSchema = uiSchemaParser.getSummary(mgoResourceJson = mgoResource.json, organizationName = mgoResource.organizationName)
+        if (uiSchema.children.isEmpty()) return@mapNotNull null
         MgoPdf.Table(
           sections =
             uiSchema.children.filterNot { it.excludeFromPrint ?: false }.mapIndexed { index, group ->

@@ -209,7 +209,7 @@ class UiSchemaSectionMapperTest {
       )
 
     // Given: The mgo resource exists in the store
-    val mgoResource = MgoResource(referenceId = "1", profile = "", json = "")
+    val mgoResource = MgoResource(referenceId = "1", organizationId = "1", organizationName = "", profile = "", json = "")
     mgoResourceStore.store(mgoResource)
 
     // When: Calling map
@@ -278,7 +278,7 @@ class UiSchemaSectionMapperTest {
       )
 
     // Given: The mgo resource exists in the store
-    val mgoResource = MgoResource(referenceId = "1", profile = "", json = "")
+    val mgoResource = MgoResource(referenceId = "1", organizationId = "1", organizationName = "", profile = "", json = "")
     mgoResourceStore.store(mgoResource)
 
     // When: Calling map

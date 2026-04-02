@@ -2,7 +2,6 @@ package nl.rijksoverheid.mgo.component.pdf
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import nl.rijksoverheid.mgo.component.theme.Gray500
 import nl.rijksoverheid.mgo.component.theme.Gray600
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
 

@@ -67,6 +67,7 @@ class DefaultFhirRepositoryTest {
           resourceEndpoint = "https://www.google.com",
           fhirVersion = FhirVersion.R3,
           endpointPath = "",
+          organizationName = "Tandarts Tandje Erbij",
         )
       repository.fetch(
         request = fhirRequest,
@@ -92,6 +93,7 @@ class DefaultFhirRepositoryTest {
       val fhirRequest =
         FhirRequest(
           organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
           medmijId = "medmij_1",
           dataServiceId = "1",
           endpointId = "alcoholUse",
@@ -134,6 +136,7 @@ class DefaultFhirRepositoryTest {
       val fhirRequest =
         FhirRequest(
           organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
           medmijId = "medmij_1",
           dataServiceId = "1",
           endpointId = "alcoholUse",
@@ -173,6 +176,7 @@ class DefaultFhirRepositoryTest {
       val fhirRequest =
         FhirRequest(
           organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
           medmijId = "1",
           dataServiceId = "1",
           endpointId = "emptyBundle",
@@ -212,6 +216,7 @@ class DefaultFhirRepositoryTest {
       val fhirRequest =
         FhirRequest(
           organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
           medmijId = "1",
           dataServiceId = "1",
           endpointId = "1",
@@ -242,6 +247,7 @@ class DefaultFhirRepositoryTest {
       val fhirRequest =
         FhirRequest(
           organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
           medmijId = "1",
           dataServiceId = "1",
           endpointId = "1",
@@ -262,6 +268,7 @@ class DefaultFhirRepositoryTest {
       val request =
         FhirRequest(
           organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
           medmijId = "1",
           dataServiceId = "1",
           endpointId = "1",
@@ -289,6 +296,7 @@ class DefaultFhirRepositoryTest {
       val request =
         FhirRequest(
           organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
           medmijId = "1",
           dataServiceId = "1",
           endpointId = "1",

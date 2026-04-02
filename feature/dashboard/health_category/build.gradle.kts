@@ -12,7 +12,6 @@ android {
 
 dependencies {
   implementation(projects.framework.environment)
-  implementation(projects.component.pdfViewer)
   implementation(projects.data.fhir)
   implementation(projects.data.healthCategories)
   implementation(projects.data.hcimParser)

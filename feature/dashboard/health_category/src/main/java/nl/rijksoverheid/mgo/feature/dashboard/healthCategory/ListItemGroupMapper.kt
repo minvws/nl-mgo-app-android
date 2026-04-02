@@ -5,14 +5,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import getString
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
-import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.coroutines.coroutineContext
 
 @Singleton
 internal class ListItemGroupMapper

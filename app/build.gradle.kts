@@ -163,7 +163,6 @@ dependencies {
   implementation(projects.data.onboarding)
   implementation(projects.data.digid)
   implementation(libs.androidx.lifecycle.process)
-  implementation(projects.component.pdfViewer)
 
   // ================================
   // TESTING

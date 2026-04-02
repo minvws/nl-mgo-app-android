@@ -16,7 +16,7 @@ data class FhirRequest(
 val TEST_FHIR_REQUEST =
   FhirRequest(
     organizationId = "1",
-    organizationName = "",
+    organizationName = "Tandarts Tandje Erbij",
     medmijId = "1",
     dataServiceId = "1",
     endpointId = "1",
@@ -28,7 +28,7 @@ val TEST_FHIR_REQUEST =
 val TEST_FHIR_REQUEST_ALCOHOL_USE =
   FhirRequest(
     organizationId = "1",
-    organizationName = "",
+    organizationName = "Tandarts Tandje Erbij",
     medmijId = "1",
     dataServiceId = "48",
     endpointId = "alcoholUse",
@@ -40,7 +40,7 @@ val TEST_FHIR_REQUEST_ALCOHOL_USE =
 val TEST_FHIR_REQUEST_DRUG_USE =
   FhirRequest(
     organizationId = "1",
-    organizationName = "",
+    organizationName = "Tandarts Tandje Erbij",
     medmijId = "1",
     dataServiceId = "48",
     endpointId = "drugUse",
@@ -52,7 +52,7 @@ val TEST_FHIR_REQUEST_DRUG_USE =
 val TEST_FHIR_REQUEST_TOBACCO_USE =
   FhirRequest(
     organizationId = "1",
-    organizationName = "",
+    organizationName = "Tandarts Tandje Erbij",
     medmijId = "1",
     dataServiceId = "48",
     endpointId = "tobaccoUse",
@@ -64,7 +64,7 @@ val TEST_FHIR_REQUEST_TOBACCO_USE =
 val TEST_FHIR_REQUEST_LIVING_SITUATION =
   FhirRequest(
     organizationId = "1",
-    organizationName = "",
+    organizationName = "Tandarts Tandje Erbij",
     medmijId = "1",
     dataServiceId = "48",
     endpointId = "livingSituation",
@@ -76,7 +76,7 @@ val TEST_FHIR_REQUEST_LIVING_SITUATION =
 val TEST_FHIR_REQUEST_NUTRITION_ADVICE =
   FhirRequest(
     organizationId = "1",
-    organizationName = "",
+    organizationName = "Tandarts Tandje Erbij",
     medmijId = "1",
     dataServiceId = "48",
     endpointId = "nutritionAdvice",

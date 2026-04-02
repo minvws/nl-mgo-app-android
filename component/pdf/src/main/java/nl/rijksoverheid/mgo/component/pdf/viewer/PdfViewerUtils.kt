@@ -1,8 +1,10 @@
-package nl.rijksoverheid.mgo.component.pdfViewer
+package nl.rijksoverheid.mgo.component.pdf.viewer
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
+import androidx.core.graphics.createBitmap
 import timber.log.Timber
 import java.io.File
 
@@ -44,7 +46,7 @@ fun createBitmaps(pdf: File): List<Bitmap> {
  * @return A Bitmap representing the rendered page.
  */
 private fun createBitmap(page: PdfRenderer.Page): Bitmap =
-  androidx.core.graphics.createBitmap(page.width, page.height).apply {
-    eraseColor(android.graphics.Color.WHITE) // Fill the background with white
+  createBitmap(page.width, page.height).apply {
+    eraseColor(Color.WHITE) // Fill the background with white
     page.render(this, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY) // Render the page onto the Bitmap
   }

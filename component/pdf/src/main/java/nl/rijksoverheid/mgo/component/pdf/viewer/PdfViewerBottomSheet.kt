@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.pdfViewer
+package nl.rijksoverheid.mgo.component.pdf.viewer
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
@@ -110,6 +110,7 @@ fun PdfViewerBottomSheet(
           is PdfViewerState.Loading -> {
             PdfLoadingContent()
           }
+
           is PdfViewerState.Loaded -> {
             var bitmaps: List<Bitmap> by remember { mutableStateOf(listOf()) }
             LaunchedEffect(Unit) {
@@ -136,12 +137,12 @@ fun PdfViewerBottomSheet(
 private fun PdfLoadingContent() {
   Column(modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
     CircularProgressIndicator(
-        modifier =
-            Modifier
-                .size(48.dp),
-        strokeWidth = 6.dp,
-        trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
-        color = MaterialTheme.colorScheme.CategoriesRijkslint(),
+      modifier =
+        Modifier
+          .size(48.dp),
+      strokeWidth = 6.dp,
+      trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
+      color = MaterialTheme.colorScheme.CategoriesRijkslint(),
     )
     Text(
       modifier = Modifier.padding(top = 16.dp),
@@ -155,7 +156,7 @@ private fun PdfLoadingContent() {
 @OptIn(ExperimentalZoomableApi::class)
 @Composable
 private fun PdfLoadedContent(bitmaps: List<Bitmap>) {
-  LazyColumn(modifier = Modifier.zoomableWithScroll(rememberZoomState()), contentPadding = PaddingValues(top = 16.dp)) {
+  LazyColumn(modifier = Modifier.Companion.zoomableWithScroll(rememberZoomState()), contentPadding = PaddingValues(top = 16.dp)) {
     items(bitmaps.size) { position ->
       val bitmap = bitmaps[position]
       MgoCard(

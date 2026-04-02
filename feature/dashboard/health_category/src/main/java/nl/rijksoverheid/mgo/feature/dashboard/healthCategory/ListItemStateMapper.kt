@@ -1,7 +1,5 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.flow.first
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseErrorType
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
@@ -13,7 +11,6 @@ import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.coroutineContext
 
 internal class ListItemStateMapper
   @Inject

@@ -3,7 +3,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.material3.MaterialTheme
 import androidx.core.graphics.drawable.toBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import getString

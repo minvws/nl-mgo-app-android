@@ -23,17 +23,14 @@ import nl.rijksoverheid.mgo.component.error.GetErrorBanner
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
-import nl.rijksoverheid.mgo.component.pdf.CreatePdfForUiSchemas
-import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
+import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfHealthCategory
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.DefaultCreatePdfHealthCategory
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Named
 
@@ -52,7 +49,7 @@ internal class HealthCategoryScreenViewModel
     private val listItemStateMapper: ListItemStateMapper,
     private val getRequests: GetRequests,
     private val mgoResourceParser: MgoResourceParser,
-    private val createPdfHealthCategories: CreatePdfHealthCategory,
+    private val createPdfHealthCategory: CreatePdfHealthCategory,
     @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : ViewModel() {
     @AssistedFactory
@@ -163,7 +160,7 @@ internal class HealthCategoryScreenViewModel
 
         // Create pdf
         val mgoResources = _viewState.value.listItemsState.getMgoResources()
-        val file = createPdfHealthCategories(mgoResources = mgoResources, category = category)
+        val file = createPdfHealthCategory(mgoResources = mgoResources, category = category)
 
         // Communicate to UI that pdf has been created
         _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))

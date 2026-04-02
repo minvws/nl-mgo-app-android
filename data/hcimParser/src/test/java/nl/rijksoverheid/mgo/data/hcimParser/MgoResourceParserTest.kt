@@ -29,7 +29,7 @@ class MgoResourceParserTest {
           .readText(Charsets.UTF_8)
 
       // When: Calling the parser
-      val mgoResources = mgoResourceParser.invoke(fhirResponse = fhirResponse, fhirVersion = FhirVersion.R3, organizationName = "")
+      val mgoResources = mgoResourceParser.invoke(fhirResponse = fhirResponse, fhirVersion = FhirVersion.R3, organizationId = "1", organizationName = "")
 
       // Then: Mgo resources are returned
       assertEquals(1, mgoResources.size)

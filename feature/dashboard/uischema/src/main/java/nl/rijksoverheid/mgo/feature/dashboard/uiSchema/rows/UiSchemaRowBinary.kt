@@ -30,8 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
-import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
+import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerBottomSheet
+import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme

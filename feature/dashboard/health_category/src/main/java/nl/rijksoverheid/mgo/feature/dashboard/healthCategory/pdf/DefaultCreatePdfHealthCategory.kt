@@ -1,10 +1,15 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
+import android.graphics.Bitmap
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.material3.MaterialTheme
+import androidx.core.graphics.drawable.toBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import getString
 import nl.rijksoverheid.mgo.component.pdf.CreatePdf
 import nl.rijksoverheid.mgo.component.pdf.MgoPdf
+import nl.rijksoverheid.mgo.component.theme.LogoBlue500
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
@@ -17,8 +22,9 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.UiElement
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.R
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.groupBySubCategory
-import nl.rijksoverheid.mgo.framework.copy.R
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Clock
 import java.time.LocalDateTime
@@ -84,7 +90,7 @@ class DefaultCreatePdfHealthCategory
       val mediumDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(deviceLocale)
       val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(deviceLocale)
       return context.getString(
-        R.string.export_pdf_subheading,
+        CopyR.string.export_pdf_subheading,
         now.format(mediumDateFormatter),
         now.format(timeFormatter),
       )
@@ -121,13 +127,48 @@ class DefaultCreatePdfHealthCategory
     private fun UiElement.toRow(): MgoPdf.Row {
       val emptyText = context.getString(CopyR.string.common_unknown)
       return when (this) {
-        is DownloadBinary -> MgoPdf.Row(label = label, content = listOf())
-        is DownloadLink -> MgoPdf.Row(label = label, content = listOf())
-        is MultipleGroupedValues -> MgoPdf.Row(label = label, content = listOf())
-        is MultipleValues -> MgoPdf.Row(label = label, content = value?.map { display -> display.display ?: emptyText } ?: listOf())
-        is ReferenceLink -> MgoPdf.Row(label = label, content = listOf())
-        is ReferenceValue -> MgoPdf.Row(label = label, content = listOf(reference ?: emptyText))
-        is SingleValue -> MgoPdf.Row(label = label, content = listOf(value?.display ?: emptyText))
+        is DownloadBinary -> {
+          MgoPdf.Row(label = label, content = listOf(), labelColor = LogoBlue500, labelIcon = getAttachmentIconBytes())
+        }
+
+        is DownloadLink -> {
+          MgoPdf.Row(label = label, content = listOf(), labelColor = LogoBlue500, labelIcon = getAttachmentIconBytes())
+        }
+
+        is MultipleGroupedValues -> {
+          MgoPdf.Row(
+            label = label,
+            content =
+              value?.flatMap { value -> value.map { display -> display.display ?: emptyText } } ?: listOf(),
+          )
+        }
+
+        is MultipleValues -> {
+          MgoPdf.Row(label = label, content = value?.map { display -> display.display ?: emptyText } ?: listOf())
+        }
+
+        is ReferenceLink -> {
+          MgoPdf.Row(label = label, content = listOf())
+        }
+
+        is ReferenceValue -> {
+          MgoPdf.Row(label = label, content = listOf(reference ?: emptyText))
+        }
+
+        is SingleValue -> {
+          MgoPdf.Row(label = label, content = listOf(value?.display ?: emptyText))
+        }
       }
     }
+
+    private fun getAttachmentIconBytes(): ByteArray? =
+      AppCompatResources
+        .getDrawable(context, R.drawable.ic_attachment)
+        ?.toBitmap()
+        ?.let { bitmap ->
+          ByteArrayOutputStream().use { stream ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.toByteArray()
+          }
+        }
   }

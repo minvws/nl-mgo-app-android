@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.component.pdf
 import android.content.Context
 import androidx.compose.ui.graphics.toArgb
 import com.itextpdf.io.font.constants.StandardFonts
+import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.font.PdfFontFactory
 import com.itextpdf.kernel.geom.PageSize
@@ -16,10 +17,12 @@ import com.itextpdf.layout.borders.Border
 import com.itextpdf.layout.borders.SolidBorder
 import com.itextpdf.layout.element.AreaBreak
 import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.AreaBreakType
 import com.itextpdf.layout.properties.TextAlignment
+import com.itextpdf.layout.properties.VerticalAlignment
 import dagger.hilt.android.qualifiers.ApplicationContext
 import nl.rijksoverheid.mgo.component.theme.Gray100
 import nl.rijksoverheid.mgo.component.theme.Gray500
@@ -181,15 +184,63 @@ class CreatePdf
 
       // Add rows
       section.rows.forEachIndexed { index, row ->
-        val paddingBottom = if (index == section.rows.lastIndex) CreatePdfSettings.TABLE_SPACING else 0f
-        val labelHeading =
-          Paragraph(
-            row.label,
-          ).setFontSize(
-            CreatePdfSettings.SECTION_TEXT_SIZE,
-          ).setFontColor(row.labelColor.toArgb().toDeviceRgb())
-            .setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
-        val labelCell = Cell().add(labelHeading).setPadding(0f).setBorder(Border.NO_BORDER)
+        val paddingBottom =
+          if (index == section.rows.lastIndex) {
+            CreatePdfSettings.TABLE_SPACING
+          } else {
+            0f
+          }
+
+        val innerTable =
+          if (row.labelIcon != null) {
+            Table(floatArrayOf(16f, 1f))
+          } else {
+            Table(1)
+          }.apply {
+            setBorder(Border.NO_BORDER)
+            setPadding(0f)
+          }
+
+        if (row.labelIcon != null) {
+          val labelImage =
+            Image(ImageDataFactory.create(row.labelIcon))
+              .setWidth(11f)
+              .setHeight(11f)
+
+          val imageCell =
+            Cell()
+              .add(labelImage)
+              .setBorder(Border.NO_BORDER)
+              .setPadding(0f)
+              .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
+          innerTable.addCell(imageCell)
+        }
+
+        val textParagraph =
+          Paragraph(row.label)
+            .setFontSize(CreatePdfSettings.SECTION_TEXT_SIZE)
+            .setFontColor(row.labelColor.toArgb().toDeviceRgb())
+
+        val textCell =
+          Cell()
+            .add(textParagraph)
+            .setBorder(Border.NO_BORDER)
+            .setPaddingLeft(if (row.labelIcon != null) 4f else 0f)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
+        innerTable.addCell(textCell)
+
+        val labelCell =
+          Cell()
+            .add(innerTable)
+            .setPaddingTop(4f)
+            .setPaddingBottom(paddingBottom)
+            .setPaddingLeft(CreatePdfSettings.TABLE_SPACING)
+            .setPaddingRight(CreatePdfSettings.TABLE_SPACING)
+            .setBorder(Border.NO_BORDER)
+            .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
         addCell(labelCell)
 
         if (row.content.isEmpty()) {
@@ -197,11 +248,9 @@ class CreatePdf
           addCell(contentCell)
         } else {
           val contentHeading =
-            Paragraph(
-              row.content.first(),
-            ).setFontSize(
-              CreatePdfSettings.SECTION_TEXT_SIZE,
-            ).setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
+            Paragraph(row.content.joinToString("\n"))
+              .setFontSize(CreatePdfSettings.SECTION_TEXT_SIZE)
+              .setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
           val contentCell = Cell().add(contentHeading).setPadding(0f).setBorder(Border.NO_BORDER)
           addCell(contentCell)
         }

@@ -30,7 +30,7 @@ data class MgoPdf(
     val label: String?,
     val content: List<String>,
     val labelColor: Color = Gray600,
-    @field:DrawableRes val icon: Int? = null,
+    @field:DrawableRes val labelIcon: ByteArray? = null,
   )
 }
 

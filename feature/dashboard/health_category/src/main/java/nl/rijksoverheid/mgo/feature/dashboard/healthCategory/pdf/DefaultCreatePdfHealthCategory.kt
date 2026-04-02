@@ -28,6 +28,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Named
+import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 class DefaultCreatePdfHealthCategory
   @Inject
@@ -117,14 +118,16 @@ class DefaultCreatePdfHealthCategory
         rows = children.map { uiElement -> uiElement.toRow() },
       )
 
-    private fun UiElement.toRow(): MgoPdf.Row =
-      when (this) {
+    private fun UiElement.toRow(): MgoPdf.Row {
+      val emptyText = context.getString(CopyR.string.common_unknown)
+      return when (this) {
         is DownloadBinary -> MgoPdf.Row(label = label, content = listOf())
         is DownloadLink -> MgoPdf.Row(label = label, content = listOf())
         is MultipleGroupedValues -> MgoPdf.Row(label = label, content = listOf())
-        is MultipleValues -> MgoPdf.Row(label = label, content = value?.map { display -> display.display ?: "" } ?: listOf())
+        is MultipleValues -> MgoPdf.Row(label = label, content = value?.map { display -> display.display ?: emptyText } ?: listOf())
         is ReferenceLink -> MgoPdf.Row(label = label, content = listOf())
-        is ReferenceValue -> MgoPdf.Row(label = label, content = listOf(reference ?: ""))
-        is SingleValue -> MgoPdf.Row(label = label, content = listOf(value?.display ?: ""))
+        is ReferenceValue -> MgoPdf.Row(label = label, content = listOf(reference ?: emptyText))
+        is SingleValue -> MgoPdf.Row(label = label, content = listOf(value?.display ?: emptyText))
       }
+    }
   }

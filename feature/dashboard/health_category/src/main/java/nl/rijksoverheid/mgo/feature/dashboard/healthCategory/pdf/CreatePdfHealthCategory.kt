@@ -6,7 +6,7 @@ import java.io.File
 
 interface CreatePdfHealthCategory {
   suspend operator fun invoke(
-    mgoResources: List<MgoResource>,
+    uiSchemas: List<GroupedHealthUiSchemas>,
     category: HealthCategoryGroup.HealthCategory,
   ): File
 }

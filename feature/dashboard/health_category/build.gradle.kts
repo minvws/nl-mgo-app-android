@@ -24,6 +24,7 @@ dependencies {
   implementation(projects.component.fhir)
   implementation(projects.data.organization)
   implementation(projects.component.pdf)
+  testImplementation(libs.itext7.core)
   testImplementation(testFixtures(projects.data.hcimParser))
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.data.fhir))

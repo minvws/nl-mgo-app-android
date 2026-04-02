@@ -3,6 +3,7 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import getString
@@ -14,6 +15,7 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleGroupedValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
@@ -40,25 +42,23 @@ class DefaultCreatePdfHealthCategory
   constructor(
     @ApplicationContext private val context: Context,
     @Named("systemDefaultZone") private val clock: Clock,
-    private val uiSchemaParser: UiSchemaParser,
     private val createPdf: CreatePdf,
   ) : CreatePdfHealthCategory {
     override suspend operator fun invoke(
-      mgoResources: List<MgoResource>,
+      uiSchemas: List<GroupedHealthUiSchemas>,
       category: HealthCategoryGroup.HealthCategory,
     ): File {
-      val groupedMgoResources = mgoResources.groupBySubCategory(subcategories = category.subcategories)
-      val pdf = groupedMgoResources.toMgoPdf(category)
+      val pdf = uiSchemas.toMgoPdf(category)
       return createPdf(pdf)
     }
 
-    private suspend fun Map<HealthCategoryGroup.HealthCategory.Subcategory, List<MgoResource>>.toMgoPdf(category: HealthCategoryGroup.HealthCategory): MgoPdf {
+    private suspend fun List<GroupedHealthUiSchemas>.toMgoPdf(category: HealthCategoryGroup.HealthCategory): MgoPdf {
       val heading = context.getString(category.heading)
       return MgoPdf(
         fileName = getFileName(heading),
         heading = heading,
         subheading = getSubheading(),
-        tables = toTables(),
+        tables = fromGroupedHealthUiSchemasToTable(),
       )
     }
 
@@ -83,7 +83,7 @@ class DefaultCreatePdfHealthCategory
       }
     }
 
-    private suspend fun getSubheading(): String {
+    private fun getSubheading(): String {
       val deviceLocale = Locale.getDefault()
       val now = LocalDateTime.now(clock)
       val mediumDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(deviceLocale)
@@ -95,21 +95,18 @@ class DefaultCreatePdfHealthCategory
       )
     }
 
-    private suspend fun Map<HealthCategoryGroup.HealthCategory.Subcategory, List<MgoResource>>.toTables(): List<MgoPdf.Tables> =
-      mapNotNull {
-        val subcategory = it.key
-        val mgoResources = it.value
-        val tables = mgoResources.toTables()
+    private suspend fun List<GroupedHealthUiSchemas>.fromGroupedHealthUiSchemasToTable(): List<MgoPdf.Tables> =
+      mapNotNull { groupedUiSchemas ->
+        val tables = groupedUiSchemas.uiSchemas.fromHealthUiSchemaToTables()
         if (tables.isEmpty()) return@mapNotNull null
         MgoPdf.Tables(
-          heading = context.getString(subcategory.heading),
-          tables = mgoResources.toTables(),
+          heading = context.getString(groupedUiSchemas.heading),
+          tables = tables,
         )
       }
 
-    private suspend fun List<MgoResource>.toTables(): List<MgoPdf.Table> =
-      mapNotNull { mgoResource ->
-        val uiSchema = uiSchemaParser.getSummary(mgoResourceJson = mgoResource.json, organizationName = mgoResource.organizationName)
+    private suspend fun List<HealthUiSchema>.fromHealthUiSchemaToTables(): List<MgoPdf.Table> =
+      mapNotNull { uiSchema ->
         if (uiSchema.children.isEmpty()) return@mapNotNull null
         MgoPdf.Table(
           sections =
@@ -163,14 +160,13 @@ class DefaultCreatePdfHealthCategory
       }
     }
 
-    private fun getAttachmentIconBytes(): ByteArray? =
-      AppCompatResources
-        .getDrawable(context, R.drawable.ic_attachment)
-        ?.toBitmap()
-        ?.let { bitmap ->
-          ByteArrayOutputStream().use { stream ->
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            stream.toByteArray()
-          }
+    private fun getAttachmentIconBytes(): ByteArray? {
+      val drawable = ContextCompat.getDrawable(context, R.drawable.ic_attachment)
+      return drawable?.toBitmap()?.let { bitmap ->
+        ByteArrayOutputStream().use { stream ->
+          bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+          stream.toByteArray()
         }
+      }
+    }
   }

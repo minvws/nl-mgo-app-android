@@ -14,7 +14,7 @@ import java.io.File
 
 @Config(qualifiers = "nl-rNL", sdk = [34])
 @RunWith(RobolectricTestRunner::class)
-class CreatePdfFOrUiSchemasTest {
+class CreatePdfTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
   private val pdfStore = MgoPdfStore(context)
   private val createPdf = CreatePdf(context = context, store = pdfStore)

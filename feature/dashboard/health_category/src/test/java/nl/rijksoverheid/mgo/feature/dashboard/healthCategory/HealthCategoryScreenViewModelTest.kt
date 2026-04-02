@@ -238,5 +238,6 @@ class HealthCategoryScreenViewModelTest {
     getRequests = getRequests,
     mgoResourceParser = MgoResourceParser(jsEngineRepository),
     mgoByteArrayStorage = byteArrayStorage,
+    uiSchemaParser = uiSchemaParser,
   )
 }

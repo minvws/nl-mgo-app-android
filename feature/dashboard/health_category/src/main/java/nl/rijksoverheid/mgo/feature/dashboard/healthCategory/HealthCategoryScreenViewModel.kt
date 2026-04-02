@@ -28,9 +28,11 @@ import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfHealthCategory
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.GroupedHealthUiSchemas
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Named
 
@@ -50,6 +52,7 @@ internal class HealthCategoryScreenViewModel
     private val getRequests: GetRequests,
     private val mgoResourceParser: MgoResourceParser,
     private val createPdfHealthCategory: CreatePdfHealthCategory,
+    private val uiSchemaParser: UiSchemaParser,
     @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : ViewModel() {
     @AssistedFactory
@@ -160,7 +163,13 @@ internal class HealthCategoryScreenViewModel
 
         // Create pdf
         val mgoResources = _viewState.value.listItemsState.getMgoResources()
-        val file = createPdfHealthCategory(mgoResources = mgoResources, category = category)
+        val groupedMgoResources = mgoResources.groupBySubCategory(subcategories = category.subcategories)
+        val uiSchemas =
+          groupedMgoResources.map {
+            val uiSchemas = it.value.map { mgoResource -> uiSchemaParser.getSummary(mgoResource.json, organizationName = mgoResource.organizationName) }
+            GroupedHealthUiSchemas(heading = it.key.heading, uiSchemas = uiSchemas)
+          }
+        val file = createPdfHealthCategory(uiSchemas = uiSchemas, category = category)
 
         // Communicate to UI that pdf has been created
         _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))

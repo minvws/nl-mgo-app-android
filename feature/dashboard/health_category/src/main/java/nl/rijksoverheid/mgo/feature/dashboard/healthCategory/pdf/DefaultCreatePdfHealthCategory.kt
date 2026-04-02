@@ -111,7 +111,7 @@ class DefaultCreatePdfHealthCategory
         val uiSchema = uiSchemaParser.getSummary(mgoResourceJson = mgoResource.json, organizationName = mgoResource.organizationName)
         MgoPdf.Table(
           sections =
-            uiSchema.children.mapIndexed { index, group ->
+            uiSchema.children.filterNot { it.excludeFromPrint ?: false }.mapIndexed { index, group ->
               val heading = if (index == 0) uiSchema.label else group.label ?: ""
               group.toSections(heading)
             },

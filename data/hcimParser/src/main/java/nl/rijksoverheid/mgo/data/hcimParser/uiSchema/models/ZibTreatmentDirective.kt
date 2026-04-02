@@ -32,7 +32,7 @@ data class ZibTreatmentDirective(
     val treatmentPermitted: ExtensionValue_Of_MgoCodeableConcept? = null,
     val comment: ExtensionValue_Of_MgoString? = null,
     val id: String? = null,
-    val verification: ExtensionValue_Of_structure_0_39661369522723877? = null,
+    val verification: ExtensionValue_Of_structure_0_47375291598761593? = null,
     val resourceType: String
 ) {
 

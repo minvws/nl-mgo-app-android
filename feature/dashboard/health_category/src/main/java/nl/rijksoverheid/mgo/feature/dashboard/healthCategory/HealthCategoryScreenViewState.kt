@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import nl.rijksoverheid.mgo.component.error.ErrorBannerState
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 
 internal data class HealthCategoryScreenViewState(
@@ -24,3 +25,10 @@ internal data class HealthCategoryScreenViewState(
     }
   }
 }
+
+internal fun HealthCategoryScreenViewState.ListItemsState.getMgoResources(): List<MgoResource> =
+  (this as? HealthCategoryScreenViewState.ListItemsState.Loaded)
+    ?.listItemsGroup
+    ?.flatMap { group ->
+      group.items
+    }?.map { item -> item.mgoResource } ?: listOf()

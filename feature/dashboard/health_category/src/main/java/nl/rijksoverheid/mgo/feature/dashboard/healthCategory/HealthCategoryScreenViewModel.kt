@@ -27,13 +27,15 @@ import nl.rijksoverheid.mgo.component.pdf.CreatePdfForUiSchemas
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfHealthCategory
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.DefaultCreatePdfHealthCategory
+import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
 import javax.inject.Named
-import kotlin.coroutines.coroutineContext
 
 @HiltViewModel(assistedFactory = HealthCategoryScreenViewModel.Factory::class)
 internal class HealthCategoryScreenViewModel
@@ -49,8 +51,9 @@ internal class HealthCategoryScreenViewModel
     private val observeFhirResponses: ObserveFhirResponses,
     private val listItemStateMapper: ListItemStateMapper,
     private val getRequests: GetRequests,
-    private val createPdfForUiSchemas: CreatePdfForUiSchemas,
-    private val uiSchemaParser: UiSchemaParser,
+    private val mgoResourceParser: MgoResourceParser,
+    private val createPdfHealthCategories: CreatePdfHealthCategory,
+    @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -92,8 +95,27 @@ internal class HealthCategoryScreenViewModel
 
       // Observe fhir responses
       fhirResponses.collectLatest { responses ->
+
+        // Create mgo resources
+        val mgoResources =
+          responses
+            .filterIsInstance<FhirResponse.Success>()
+            .flatMap { response ->
+              mgoResourceParser(
+                fhirResponse = mgoByteArrayStorage.get(response.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
+                fhirVersion = response.request.fhirVersion,
+                organizationId = response.request.organizationId,
+                organizationName = response.request.organizationName,
+              )
+            }
+
+        // Cache mgo resources
+        for (mgoResource in mgoResources) {
+          mgoResourceStore.store(mgoResource)
+        }
+
         // Map fhir responses to list item state
-        val listItemState = listItemStateMapper(responses = responses, category = category)
+        val listItemState = listItemStateMapper(responses = responses, mgoResources = mgoResources, category = category)
 
         // Update view state
         _viewState.update { viewState -> viewState.copy(listItemsState = listItemState) }
@@ -102,7 +124,7 @@ internal class HealthCategoryScreenViewModel
 
     private suspend fun observeErrorBanner() {
       // Get the organizations that we need to get fhir responses from
-      val organizations = if (filterOrganization == null) organizationRepository.getSaved(coroutineContext).first() else listOf(filterOrganization)
+      val organizations = if (filterOrganization == null) organizationRepository.getSaved(currentCoroutineContext()).first() else listOf(filterOrganization)
 
       // Observe error banner
       getErrorBanner.invoke(categories = listOf(category), organizations = organizations).collectLatest { banner ->
@@ -139,12 +161,9 @@ internal class HealthCategoryScreenViewModel
         // Communicate to UI that pdf is being created
         _openPdfViewer.tryEmit(PdfViewerState.Loading)
 
-        // Create pdf from ui schemas
-        val uiSchemas =
-          mgoResourceStore.get().map { mgoResource ->
-            uiSchemaParser.getSummary(mgoResourceJson = mgoResource.json, mgoResource.organizationName)
-          }
-        val file = createPdfForUiSchemas.invoke(uiSchemas)
+        // Create pdf
+        val mgoResources = _viewState.value.listItemsState.getMgoResources()
+        val file = createPdfHealthCategories(mgoResources = mgoResources, category = category)
 
         // Communicate to UI that pdf has been created
         _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))

@@ -49,7 +49,7 @@ private object CreatePdfSettings {
   val FOOTER_TEXT_COLOR = Gray600.toArgb().toDeviceRgb()
 }
 
-internal class CreatePdf
+class CreatePdf
   @Inject
   constructor(
     @ApplicationContext private val context: Context,
@@ -148,6 +148,7 @@ internal class CreatePdf
         Table(columnWidths)
           .setBorder(SolidBorder(CreatePdfSettings.TABLE_CELL_COLOR, 1f))
           .setMargins(CreatePdfSettings.TABLE_SPACING, 0f, CreatePdfSettings.TABLE_SPACING, 0f)
+          .setKeepTogether(true)
 
       mgoTable.sections.forEachIndexed { index, section ->
         val headingSize = if (index == 0) CreatePdfSettings.SECTION_HEADING_FIRST_TEXT_SIZE else CreatePdfSettings.SECTION_HEADING_TEXT_SIZE
@@ -190,12 +191,20 @@ internal class CreatePdf
             .setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
         val labelCell = Cell().add(labelHeading).setPadding(0f).setBorder(Border.NO_BORDER)
         addCell(labelCell)
-        val contentHeading =
-          Paragraph(
-            row.content.first(),
-          ).setFontSize(CreatePdfSettings.SECTION_TEXT_SIZE).setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
-        val contentCell = Cell().add(contentHeading).setPadding(0f).setBorder(Border.NO_BORDER)
-        addCell(contentCell)
+
+        if (row.content.isEmpty()) {
+          val contentCell = Cell().setBorder(Border.NO_BORDER)
+          addCell(contentCell)
+        } else {
+          val contentHeading =
+            Paragraph(
+              row.content.first(),
+            ).setFontSize(
+              CreatePdfSettings.SECTION_TEXT_SIZE,
+            ).setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
+          val contentCell = Cell().add(contentHeading).setPadding(0f).setBorder(Border.NO_BORDER)
+          addCell(contentCell)
+        }
       }
     }
 

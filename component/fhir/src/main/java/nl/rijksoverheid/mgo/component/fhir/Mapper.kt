@@ -12,4 +12,5 @@ fun Endpoint.toFhirRequest(): FhirRequest =
     fhirVersion = fhirVersion,
     organizationId = organization.id,
     medmijId = organization.medMijId,
+    organizationName = organization.name,
   )

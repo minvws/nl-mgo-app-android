@@ -50,6 +50,7 @@ import net.engawapg.lib.zoomable.zoomableWithScroll
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
+import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import sendFileToOtherApp
@@ -135,8 +136,12 @@ fun PdfViewerBottomSheet(
 private fun PdfLoadingContent() {
   Column(modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
     CircularProgressIndicator(
-      modifier = Modifier.size(48.dp),
-      strokeWidth = 6.dp,
+        modifier =
+            Modifier
+                .size(48.dp),
+        strokeWidth = 6.dp,
+        trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
+        color = MaterialTheme.colorScheme.CategoriesRijkslint(),
     )
     Text(
       modifier = Modifier.padding(top = 16.dp),

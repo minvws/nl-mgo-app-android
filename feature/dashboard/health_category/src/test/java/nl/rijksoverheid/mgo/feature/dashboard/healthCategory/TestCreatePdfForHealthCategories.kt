@@ -1,7 +1,6 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfForHealthCategories
 import java.io.File
 
 internal class TestCreatePdfForHealthCategories : CreatePdfForHealthCategories {

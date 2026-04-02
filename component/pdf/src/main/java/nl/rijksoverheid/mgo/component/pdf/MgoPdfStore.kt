@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 typealias MgoPdfFileName = String
 
-internal class MgoPdfStore
+class MgoPdfStore
   @Inject
   constructor(
     @ApplicationContext private val context: Context,

@@ -14,6 +14,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.decodeToSequence
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.MgoOrganizationId
 import nl.rijksoverheid.mgo.component.organization.TEST_BGZ_DATA_SERVICE
 import nl.rijksoverheid.mgo.data.organization.api.OrganizationApiClient
 import timber.log.Timber

@@ -4,6 +4,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseErrorType
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
@@ -28,6 +29,7 @@ internal class ListItemStateMapper
 
     suspend operator fun invoke(
       responses: List<FhirResponse>,
+      mgoResources: List<MgoResource>,
       category: HealthCategoryGroup.HealthCategory,
     ): HealthCategoryScreenViewState.ListItemsState {
       // All the responses that have failed
@@ -60,46 +62,9 @@ internal class ListItemStateMapper
         }
 
         else -> {
-          mapLoaded(responses = successResponses, category = category)
+          val listItemGroups = listItemGroupMapper.invoke(category = category, mgoResources = mgoResources)
+          HealthCategoryScreenViewState.ListItemsState.Loaded(listItemGroups)
         }
       }
-    }
-
-    private suspend fun mapLoaded(
-      responses: List<FhirResponse.Success>,
-      category: HealthCategoryGroup.HealthCategory,
-    ): HealthCategoryScreenViewState.ListItemsState {
-      // Create mgo resources
-      val mgoResourcesWithOrganization = responses.flatMap { response -> response.toMgoResourcesWithOrganization() }
-
-      // Store all mgo resources in a store, because we need them in the ui schema screen
-      for (mgoResource in mgoResourcesWithOrganization.map { it.mgoResource }) {
-        mgoResourceStore.store(mgoResource)
-      }
-
-      // Create list items from them to show in the UI
-      val listItemGroups = listItemGroupMapper.invoke(category = category, mgoResourcesWithOrganization = mgoResourcesWithOrganization)
-
-      // Return view state
-      return HealthCategoryScreenViewState.ListItemsState.Loaded(listItemGroups)
-    }
-
-    private suspend fun FhirResponse.Success.toMgoResourcesWithOrganization(): List<MgoResourceWithOrganization> {
-      // Get the data set that belongs to this response
-      val dataSet = dataSets.firstOrNull { dataSet -> dataSet.id == request.dataServiceId } ?: return emptyList()
-
-      // Get the organization that belongs to this response
-      val organization =
-        organizationRepository.getSaved(currentCoroutineContext()).first().firstOrNull { organization -> organization.id == request.organizationId }
-          ?: return emptyList()
-
-      // Create the mgo resources
-      val mgoResources =
-        mgoResourceParser.invoke(
-          fhirResponse = mgoByteArrayStorage.get(this.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
-          fhirVersion = dataSet.fhirVersion,
-          organizationName = organization.name,
-        )
-      return mgoResources.map { mgoResource -> MgoResourceWithOrganization(mgoResource = mgoResource, organization = organization) }
     }
   }

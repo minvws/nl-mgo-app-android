@@ -62,7 +62,7 @@ class DefaultCreatePdfHealthCategory
       )
     }
 
-    private suspend fun getFileName(heading: String): String {
+    private fun getFileName(heading: String): String {
       val now = LocalDateTime.now(clock)
       return buildString {
         append("mgo")
@@ -105,9 +105,15 @@ class DefaultCreatePdfHealthCategory
         )
       }
 
-    private suspend fun List<HealthUiSchema>.fromHealthUiSchemaToTables(): List<MgoPdf.Table> =
+    private fun List<HealthUiSchema>.fromHealthUiSchemaToTables(): List<MgoPdf.Table> =
       mapNotNull { uiSchema ->
-        if (uiSchema.children.isEmpty()) return@mapNotNull null
+        // Only show sections that we want in the pdf
+        val sections = uiSchema.children.filterNot { it.excludeFromPrint ?: false }
+
+        // If there are no sections do not show the table
+        if (sections.isEmpty()) return@mapNotNull null
+
+        // Create the table
         MgoPdf.Table(
           sections =
             uiSchema.children.filterNot { it.excludeFromPrint ?: false }.mapIndexed { index, group ->

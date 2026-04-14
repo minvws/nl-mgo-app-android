@@ -82,7 +82,7 @@ class CreatePdf
       // Add tables
       pdf.tables.forEachIndexed { index, tables ->
         document.addTables(tables)
-        if (index != tables.tables.lastIndex) {
+        if (index != pdf.tables.lastIndex) {
           document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
         }
       }
@@ -231,8 +231,11 @@ class CreatePdf
 
         innerTable.addCell(textCell)
 
+        // Make cell full width if there is no content for the other cell
+        val columnSpan = if (row.content.isEmpty()) 2 else 1
+
         val labelCell =
-          Cell()
+          Cell(1, columnSpan)
             .add(innerTable)
             .setPaddingTop(4f)
             .setPaddingBottom(paddingBottom)
@@ -243,10 +246,7 @@ class CreatePdf
 
         addCell(labelCell)
 
-        if (row.content.isEmpty()) {
-          val contentCell = Cell().setBorder(Border.NO_BORDER)
-          addCell(contentCell)
-        } else {
+        if (row.content.isNotEmpty()) {
           val contentHeading =
             Paragraph(row.content.joinToString("\n"))
               .setFontColor(row.contentColor.toArgb().toDeviceRgb())

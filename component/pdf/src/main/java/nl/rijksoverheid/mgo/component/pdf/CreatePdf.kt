@@ -239,7 +239,7 @@ class CreatePdf
             .setPaddingLeft(CreatePdfSettings.TABLE_SPACING)
             .setPaddingRight(CreatePdfSettings.TABLE_SPACING)
             .setBorder(Border.NO_BORDER)
-            .setVerticalAlignment(VerticalAlignment.MIDDLE)
+            .setVerticalAlignment(VerticalAlignment.TOP)
 
         addCell(labelCell)
 
@@ -249,6 +249,7 @@ class CreatePdf
         } else {
           val contentHeading =
             Paragraph(row.content.joinToString("\n"))
+              .setFontColor(row.contentColor.toArgb().toDeviceRgb())
               .setFontSize(CreatePdfSettings.SECTION_TEXT_SIZE)
               .setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
           val contentCell = Cell().add(contentHeading).setPadding(0f).setBorder(Border.NO_BORDER)

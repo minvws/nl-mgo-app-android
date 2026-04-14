@@ -2,16 +2,15 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import getString
 import nl.rijksoverheid.mgo.component.pdf.CreatePdf
 import nl.rijksoverheid.mgo.component.pdf.MgoPdf
+import nl.rijksoverheid.mgo.component.theme.Black
+import nl.rijksoverheid.mgo.component.theme.Gray600
 import nl.rijksoverheid.mgo.component.theme.LogoBlue500
-import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
@@ -24,7 +23,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.UiElement
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.R
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.groupBySubCategory
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Clock
@@ -141,15 +139,17 @@ class DefaultCreatePdfHealthCategory
         }
 
         is MultipleGroupedValues -> {
+          val content = value?.flatMap { value -> value.map { display -> display.display ?: emptyText } } ?: listOf(emptyText)
           MgoPdf.Row(
             label = label,
-            content =
-              value?.flatMap { value -> value.map { display -> display.display ?: emptyText } } ?: listOf(),
+            content = content,
+            contentColor = if (content.contains(emptyText)) Gray600 else Black,
           )
         }
 
         is MultipleValues -> {
-          MgoPdf.Row(label = label, content = value?.map { display -> display.display ?: emptyText } ?: listOf())
+          val content = value?.map { display -> display.display ?: emptyText } ?: listOf(emptyText)
+          MgoPdf.Row(label = label, content = content, contentColor = if (content.contains(emptyText)) Gray600 else Black)
         }
 
         is ReferenceLink -> {
@@ -157,11 +157,13 @@ class DefaultCreatePdfHealthCategory
         }
 
         is ReferenceValue -> {
-          MgoPdf.Row(label = label, content = listOf(reference ?: emptyText))
+          val content = listOf(reference ?: emptyText)
+          MgoPdf.Row(label = label, content = content, contentColor = if (content.contains(emptyText)) Gray600 else Black)
         }
 
         is SingleValue -> {
-          MgoPdf.Row(label = label, content = listOf(value?.display ?: emptyText))
+          val content = listOf(value?.display ?: emptyText)
+          MgoPdf.Row(label = label, content = content, contentColor = if (content.contains(emptyText)) Gray600 else Black)
         }
       }
     }

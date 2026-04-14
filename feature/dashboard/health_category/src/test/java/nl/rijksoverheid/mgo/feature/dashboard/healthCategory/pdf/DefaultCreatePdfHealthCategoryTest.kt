@@ -29,13 +29,12 @@ import java.io.File
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
-import kotlin.intArrayOf
 
 @Config(qualifiers = "nl-rNL", sdk = [34])
 @RunWith(RobolectricTestRunner::class)
 class DefaultCreatePdfHealthCategoryTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val clock = Clock.fixed(Instant.parse("2000-01-01T10:01:00.00Z"), ZoneOffset.UTC)
+  private val clock = Clock.fixed(Instant.parse("2026-04-14T14:26:00.00Z"), ZoneOffset.UTC)
   private val createPdf = CreatePdf(context = context, store = MgoPdfStore(context))
   private val createPdfHealthCategory = DefaultCreatePdfHealthCategory(context = context, clock = clock, createPdf = createPdf)
 
@@ -76,15 +75,6 @@ class DefaultCreatePdfHealthCategoryTest {
                       label = "Multiple Grouped Values Empty",
                       value = null,
                     ),
-                    DownloadBinary(
-                      id = "1",
-                      label = "Download Binary",
-                      reference = null,
-                    ),
-                    DownloadLink(
-                      id = "1",
-                      label = "Download Link",
-                    ),
                     ReferenceLink(
                       id = "1",
                       reference = "",
@@ -99,6 +89,21 @@ class DefaultCreatePdfHealthCategoryTest {
                       id = "1",
                       label = "Reference Value Empty",
                       reference = null,
+                    ),
+                  ),
+              ),
+              HealthUiGroup(
+                label = "Downloads",
+                children =
+                  listOf(
+                    DownloadBinary(
+                      id = "1",
+                      label = "Download Binary",
+                      reference = null,
+                    ),
+                    DownloadLink(
+                      id = "1",
+                      label = "Download Link",
                     ),
                   ),
               ),

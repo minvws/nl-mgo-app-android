@@ -2,6 +2,7 @@ package nl.rijksoverheid.mgo.component.pdf
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
+import nl.rijksoverheid.mgo.component.theme.Black
 import nl.rijksoverheid.mgo.component.theme.Gray600
 
 data class MgoPdf(
@@ -28,6 +29,7 @@ data class MgoPdf(
     val label: String?,
     val content: List<String>,
     val labelColor: Color = Gray600,
+    val contentColor: Color = Black,
     @field:DrawableRes val labelIcon: ByteArray? = null,
   ) {
     override fun equals(other: Any?): Boolean {

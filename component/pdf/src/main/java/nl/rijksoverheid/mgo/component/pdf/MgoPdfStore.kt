@@ -1,11 +1,13 @@
-package nl.rijksoverheid.mgo.component.pdfViewer
+package nl.rijksoverheid.mgo.component.pdf
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 
-class PdfFileRepository
+typealias MgoPdfFileName = String
+
+class MgoPdfStore
   @Inject
   constructor(
     @ApplicationContext private val context: Context,
@@ -15,9 +17,9 @@ class PdfFileRepository
         if (!exists()) mkdirs()
       }
 
-    fun get(fileName: String): File = File(dir, fileName)
+    fun get(fileName: MgoPdfFileName): File = File(dir, fileName)
 
-    fun clearAll() {
+    fun clear() {
       dir.deleteRecursively()
     }
   }

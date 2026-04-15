@@ -197,13 +197,27 @@ class UISchemaScreenViewModelTest {
     }
 
   private suspend fun setAlcoholUseMgoResource(): MgoResourceReferenceId {
-    val mgoResource = mgoResourceParser.invoke(fhirResponse = readResourceFile("alcoholUse.json"), fhirVersion = FhirVersion.R3).first()
+    val mgoResource =
+      mgoResourceParser
+        .invoke(
+          fhirResponse = readResourceFile("alcoholUse.json"),
+          fhirVersion = FhirVersion.R3,
+          organizationId = "1",
+          organizationName = "Tandarts Tandje ERbij",
+        ).first()
     mgoResourceStore.store(mgoResource)
     return mgoResource.referenceId
   }
 
   private suspend fun setDocumentReferenceMgoResource(): MgoResourceReferenceId {
-    val mgoResource = mgoResourceParser.invoke(fhirResponse = readResourceFile("documentReference.json"), fhirVersion = FhirVersion.R3).first()
+    val mgoResource =
+      mgoResourceParser
+        .invoke(
+          fhirResponse = readResourceFile("documentReference.json"),
+          fhirVersion = FhirVersion.R3,
+          organizationId = "1",
+          organizationName = "Tandarts Tandje Erbij",
+        ).first()
     mgoResourceStore.store(mgoResource)
     return mgoResource.referenceId
   }

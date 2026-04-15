@@ -12,7 +12,6 @@ android {
 
 dependencies {
   implementation(projects.framework.environment)
-  implementation(projects.component.pdfViewer)
   implementation(projects.data.fhir)
   implementation(projects.data.healthCategories)
   implementation(projects.data.hcimParser)
@@ -24,6 +23,9 @@ dependencies {
   implementation(projects.component.error)
   implementation(projects.component.fhir)
   implementation(projects.data.organization)
+  implementation(projects.component.pdf)
+  implementation(projects.component.pdfViewer)
+  testImplementation(libs.itext7.core)
   testImplementation(testFixtures(projects.data.hcimParser))
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.data.fhir))

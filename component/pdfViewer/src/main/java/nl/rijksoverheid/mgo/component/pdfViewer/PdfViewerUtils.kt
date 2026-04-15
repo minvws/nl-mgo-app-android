@@ -1,8 +1,10 @@
 package nl.rijksoverheid.mgo.component.pdfViewer
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
+import androidx.core.graphics.createBitmap
 import timber.log.Timber
 import java.io.File
 
@@ -12,7 +14,7 @@ import java.io.File
  * @param pdf The PDF file to render.
  * @return A list of Bitmap objects, each representing a page in the PDF.
  */
-fun createBitmaps(pdf: File): List<Bitmap> {
+internal fun createBitmaps(pdf: File): List<Bitmap> {
   val bitmaps = mutableListOf<Bitmap>()
 
   // Open the PDF file in read-only mode
@@ -44,7 +46,7 @@ fun createBitmaps(pdf: File): List<Bitmap> {
  * @return A Bitmap representing the rendered page.
  */
 private fun createBitmap(page: PdfRenderer.Page): Bitmap =
-  androidx.core.graphics.createBitmap(page.width, page.height).apply {
-    eraseColor(android.graphics.Color.WHITE) // Fill the background with white
+  createBitmap(page.width, page.height).apply {
+    eraseColor(Color.WHITE) // Fill the background with white
     page.render(this, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY) // Render the page onto the Bitmap
   }

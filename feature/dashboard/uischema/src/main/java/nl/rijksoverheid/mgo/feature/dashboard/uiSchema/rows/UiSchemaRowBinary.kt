@@ -88,6 +88,7 @@ internal fun UiSchemaRowBinary(
           },
       )
     }
+
     is UISchemaRow.Binary.NotDownloaded.Error -> {
       UISchemaRowError(
         icon = R.drawable.ic_error,

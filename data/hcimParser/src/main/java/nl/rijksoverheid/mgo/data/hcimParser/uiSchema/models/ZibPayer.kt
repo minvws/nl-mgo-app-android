@@ -36,7 +36,7 @@ data class ZibPayer(
     @Serializable
     data class Payor(
         val reference: String? = null,
-        val bankInformation: List<ExtensionValue_Of_structure_0_930843438080291>,
+        val bankInformation: List<ExtensionValue_Of_structure_0_622709202460404>,
         val display: String? = null,
         val _type: String? = null
     ) {

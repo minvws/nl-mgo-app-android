@@ -23,6 +23,7 @@ import nl.rijksoverheid.mgo.component.error.GetErrorBanner
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.pdf.MgoPdfStore
 import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
@@ -53,6 +54,7 @@ internal class HealthCategoryScreenViewModel
     private val mgoResourceParser: MgoResourceParser,
     private val createPdfHealthCategory: CreatePdfHealthCategory,
     private val uiSchemaParser: UiSchemaParser,
+    private val mgoPdfStore: MgoPdfStore,
     @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
   ) : ViewModel() {
     @AssistedFactory
@@ -184,5 +186,6 @@ internal class HealthCategoryScreenViewModel
     @VisibleForTesting
     fun clear() {
       mgoResourceStore.clear()
+      mgoPdfStore.clear()
     }
   }

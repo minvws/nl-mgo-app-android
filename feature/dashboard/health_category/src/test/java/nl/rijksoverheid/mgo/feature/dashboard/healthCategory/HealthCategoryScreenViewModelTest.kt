@@ -10,6 +10,7 @@ import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.pdf.MgoPdfStore
 import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepositoryRule
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseJson
@@ -33,6 +34,7 @@ import nl.rijksoverheid.mgo.data.organization.createOrganizationRepositoryForJvm
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.TestCreatePdfHealthCategory
 import nl.rijksoverheid.mgo.framework.storage.bytearray.MemoryMgoByteArrayStorage
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -62,6 +64,8 @@ class HealthCategoryScreenViewModelTest {
   private val mgoResourceParser = MgoResourceParser(jsEngineRepository)
   private val uiSchemaParser = UiSchemaParser(jsEngineRepository)
   private val mgoResourceStore = MgoResourceStore()
+
+  private val pdfStore = MgoPdfStore(context)
   private val getRequests = GetRequests(getEndpointsForHealthCategory = GetEndpointsForHealthCategory(getDataSetsFromDisk))
   private lateinit var organizationRepository: OrganizationRepository
   private lateinit var observeFhirResponses: ObserveFhirResponses
@@ -214,10 +218,16 @@ class HealthCategoryScreenViewModelTest {
       // Given: Mgo resource is stored in store
       mgoResourceStore.store(TEST_MGO_RESOURCE)
 
+      // Given: PDF is stored
+      pdfStore.get("test.pdf").createNewFile()
+
       // When: Calling onCleared
       viewModel.clear()
 
-      // Then: Store is cleared
+      // Then: Pdf does not exist
+      Assert.assertFalse(pdfStore.get("test.pdf").exists())
+
+      // Then: Mgo resource does not exist
       mgoResourceStore.get("1")
     }
 
@@ -239,5 +249,6 @@ class HealthCategoryScreenViewModelTest {
     mgoResourceParser = MgoResourceParser(jsEngineRepository),
     mgoByteArrayStorage = byteArrayStorage,
     uiSchemaParser = uiSchemaParser,
+    mgoPdfStore = pdfStore,
   )
 }

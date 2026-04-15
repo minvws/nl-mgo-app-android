@@ -11,7 +11,7 @@ import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.pdf.MgoPdfStore
-import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerState
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepositoryRule
 import nl.rijksoverheid.mgo.data.fhir.FhirResponseJson
 import nl.rijksoverheid.mgo.data.fhir.TEST_FHIR_REQUEST_ALCOHOL_USE

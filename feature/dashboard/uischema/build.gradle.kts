@@ -13,7 +13,7 @@ dependencies {
   implementation(projects.component.uiSchema)
   implementation(projects.data.pft)
   implementation(projects.component.organization)
-  implementation(projects.component.pdf)
+  implementation(projects.component.pdfViewer)
   testImplementation(testFixtures(projects.framework.util))
   testImplementation(testFixtures(projects.data.fhir))
   testImplementation(testFixtures(projects.data.hcimParser))

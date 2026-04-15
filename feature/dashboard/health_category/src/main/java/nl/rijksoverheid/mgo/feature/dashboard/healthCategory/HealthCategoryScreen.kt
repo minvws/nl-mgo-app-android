@@ -47,8 +47,8 @@ import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
-import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerBottomSheet
-import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerState
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews

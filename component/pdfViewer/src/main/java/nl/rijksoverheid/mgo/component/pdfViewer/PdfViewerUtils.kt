@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.pdf.viewer
+package nl.rijksoverheid.mgo.component.pdfViewer
 
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -14,7 +14,7 @@ import java.io.File
  * @param pdf The PDF file to render.
  * @return A list of Bitmap objects, each representing a page in the PDF.
  */
-fun createBitmaps(pdf: File): List<Bitmap> {
+internal fun createBitmaps(pdf: File): List<Bitmap> {
   val bitmaps = mutableListOf<Bitmap>()
 
   // Open the PDF file in read-only mode

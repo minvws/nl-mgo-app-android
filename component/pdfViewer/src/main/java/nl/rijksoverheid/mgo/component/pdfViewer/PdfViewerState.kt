@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.component.pdf.viewer
+package nl.rijksoverheid.mgo.component.pdfViewer
 
 import java.io.File
 

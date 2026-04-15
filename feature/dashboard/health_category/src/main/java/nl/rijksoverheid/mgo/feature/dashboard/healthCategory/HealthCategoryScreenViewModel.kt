@@ -24,7 +24,7 @@ import nl.rijksoverheid.mgo.component.fhir.GetRequests
 import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.pdf.MgoPdfStore
-import nl.rijksoverheid.mgo.component.pdf.viewer.PdfViewerState
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.fhir.FhirResponse
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser

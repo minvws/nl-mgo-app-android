@@ -1,4 +1,4 @@
-package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
+package nl.rijksoverheid.mgo.feature.dashboard.uiSchema.pdf
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -15,7 +15,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
-import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_MEDICATION
 import nl.rijksoverheid.mgo.framework.test.extractPdfText
 import nl.rijksoverheid.mgo.framework.test.writeToHost
 import org.junit.Assert.assertEquals
@@ -30,11 +29,11 @@ import java.time.ZoneOffset
 
 @Config(qualifiers = "nl-rNL", sdk = [34])
 @RunWith(RobolectricTestRunner::class)
-class DefaultCreatePdfHealthCategoryTest {
+class DefaultCreatePdfUiSchemaTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val clock = Clock.fixed(Instant.parse("2026-04-14T14:26:00.00Z"), ZoneOffset.UTC)
+  private val clock = Clock.fixed(Instant.parse("2026-04-20T14:46:00.00Z"), ZoneOffset.UTC)
   private val createPdf = CreatePdf(context = context, store = MgoPdfStore(context))
-  private val createPdfHealthCategory = DefaultCreatePdfHealthCategory(context = context, clock = clock, createPdf = createPdf)
+  private val createPdfUiSchema = DefaultCreatePdfUiSchema(context = context, clock = clock, createPdf = createPdf)
 
   @Test
   fun testCreatePdf() =
@@ -107,14 +106,9 @@ class DefaultCreatePdfHealthCategoryTest {
               ),
             ),
         )
-      val groupedUiSchemas =
-        listOf(
-          GroupedHealthUiSchemas(heading = "Heading", uiSchemas = listOf(uiSchema, uiSchema)),
-          GroupedHealthUiSchemas(heading = "Heading", uiSchemas = listOf(uiSchema, uiSchema)),
-        )
 
       // When: Creating PDF
-      val outputPdfFile = createPdfHealthCategory(uiSchemas = groupedUiSchemas, category = TEST_HEALTH_CATEGORY_MEDICATION)
+      val outputPdfFile = createPdfUiSchema(uiSchema = uiSchema)
       println(outputPdfFile.writeToHost().absolutePath)
 
       // Then: Created PDF is the same as test.pdf

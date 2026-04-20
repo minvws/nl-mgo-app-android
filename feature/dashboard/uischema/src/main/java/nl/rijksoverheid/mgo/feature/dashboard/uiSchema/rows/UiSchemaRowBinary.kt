@@ -17,21 +17,16 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
-import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -46,26 +41,14 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 @Composable
 internal fun UiSchemaRowBinary(
   row: UISchemaRow.Binary,
+  onShowPdf: (file: File) -> Unit,
   onClick: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  var openPdfViewer: File? by remember { mutableStateOf(null) }
-  openPdfViewer?.let { file ->
-    if (!LocalInspectionMode.current) {
-      PdfViewerBottomSheet(
-        appBarTitle = file.name,
-        state = PdfViewerState.Loaded(file),
-        onDismissRequest = {
-          openPdfViewer = null
-        },
-      )
-    }
-  }
-
   // Immediately share file when it is finished downloading
   LaunchedEffect(row) {
     if (row is UISchemaRow.Binary.Downloaded) {
-      openPdfViewer = row.binary.file
+      onShowPdf(row.binary.file)
     }
   }
 
@@ -84,7 +67,7 @@ internal fun UiSchemaRowBinary(
         loading = false,
         modifier =
           modifier.clickable {
-            openPdfViewer = row.binary.file
+            onShowPdf(row.binary.file)
           },
       )
     }
@@ -195,6 +178,7 @@ internal fun UiSchemaRowBinaryIdlePreview() {
     UiSchemaRowBinary(
       row = UISchemaRow.Binary.NotDownloaded.Idle(heading = "Heading", value = "Value", binary = ""),
       onClick = {},
+      onShowPdf = {},
     )
   }
 }
@@ -206,6 +190,7 @@ internal fun UiSchemaRowBinaryLoadingPreview() {
     UiSchemaRowBinary(
       row = UISchemaRow.Binary.Loading(heading = "Heading", value = "Value"),
       onClick = {},
+      onShowPdf = {},
     )
   }
 }
@@ -217,6 +202,7 @@ internal fun UiSchemaRowBinaryDownloadedPreview() {
     UiSchemaRowBinary(
       row = UISchemaRow.Binary.Downloaded(heading = "Heading", value = "Value", binary = FhirBinary(file = File(""), contentType = "application/pdf")),
       onClick = {},
+      onShowPdf = {},
     )
   }
 }
@@ -228,6 +214,7 @@ internal fun UiSchemaRowBinaryEmptyPreview() {
     UiSchemaRowBinary(
       row = UISchemaRow.Binary.Empty(heading = "Heading", value = "Value"),
       onClick = {},
+      onShowPdf = {},
     )
   }
 }
@@ -239,6 +226,7 @@ internal fun UiSchemaRowBinaryErrorPreview() {
     UiSchemaRowBinary(
       row = UISchemaRow.Binary.NotDownloaded.Error(heading = "Heading", value = "Value", binary = ""),
       onClick = {},
+      onShowPdf = {},
     )
   }
 }

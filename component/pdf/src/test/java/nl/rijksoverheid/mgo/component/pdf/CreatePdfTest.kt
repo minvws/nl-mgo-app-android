@@ -2,9 +2,7 @@ package nl.rijksoverheid.mgo.component.pdf
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfReader
-import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
+import nl.rijksoverheid.mgo.framework.test.extractPdfText
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -64,15 +62,5 @@ class CreatePdfTest {
         .let { File(it) }
 
     assertEquals(extractPdfText(testPdfFile), extractPdfText(outputPdfFile))
-  }
-
-  private fun extractPdfText(file: File): String {
-    val pdfDoc = PdfDocument(PdfReader(file))
-    val text = StringBuilder()
-    for (i in 1..pdfDoc.numberOfPages) {
-      text.append(PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i)))
-    }
-    pdfDoc.close()
-    return text.toString()
   }
 }

@@ -6,16 +6,8 @@ import getString
 import nl.rijksoverheid.mgo.component.pdf.CreatePdf
 import nl.rijksoverheid.mgo.component.pdf.MgoPdf
 import nl.rijksoverheid.mgo.component.pdf.toRow
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DisplayValue
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleGroupedValues
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
 import java.io.File
 import java.time.Clock
 import java.time.LocalDateTime

@@ -17,4 +17,5 @@ dependencies {
   testFixturesImplementation(libs.androidx.test.runner)
   testFixturesImplementation(libs.androidx.test.core)
   testFixturesImplementation(libs.dagger.hilt.testing)
+  testFixturesImplementation(libs.itext7.core)
 }

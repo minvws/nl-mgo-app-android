@@ -228,6 +228,30 @@ class UISchemaScreenViewModelTest {
       }
     }
 
+  @Test
+  fun testShowPdf() =
+    runTest {
+      // Given alcohol use mgo resource is stored
+      val referenceId = setAlcoholUseMgoResource()
+
+      // Given: summary viewmodel
+      val viewModel =
+        createViewModel(
+          organization = TEST_MGO_ORGANIZATION,
+          referenceId = referenceId,
+          isSummary = true,
+        )
+
+      viewModel.openPdfViewer.test {
+        // When: Calling openPdf
+        val file = File("")
+        viewModel.showPdf(file)
+
+        // Then: Pdf is shown
+        assertEquals(awaitItem(), PdfViewerState.Loaded(file))
+      }
+    }
+
   private suspend fun setAlcoholUseMgoResource(): MgoResourceReferenceId {
     val mgoResource =
       mgoResourceParser

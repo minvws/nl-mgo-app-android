@@ -11,7 +11,6 @@ import nl.rijksoverheid.mgo.component.theme.Gray600
 import nl.rijksoverheid.mgo.component.theme.LogoBlue500
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleGroupedValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink

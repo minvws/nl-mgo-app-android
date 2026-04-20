@@ -5,6 +5,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import getString
 import nl.rijksoverheid.mgo.component.pdf.CreatePdf
 import nl.rijksoverheid.mgo.component.pdf.MgoPdf
+import nl.rijksoverheid.mgo.component.pdf.toRow
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
 import java.io.File
 import java.time.Clock
@@ -34,7 +36,7 @@ internal class DefaultCreatePdfUiSchema
         fileName = getFileName(label),
         heading = label,
         subheading = getSubheading(),
-        tables = listOf(),
+        tables = children.filterNot { it.excludeFromPrint ?: false }.map { group -> group.toTables() },
       )
 
     private fun getFileName(label: String): String {
@@ -69,4 +71,11 @@ internal class DefaultCreatePdfUiSchema
         now.format(timeFormatter),
       )
     }
+
+    private fun HealthUiGroup.toTables() =
+      MgoPdf.Tables(
+        heading = label,
+        tables =
+          listOf(MgoPdf.Table(sections = listOf(MgoPdf.Section(heading = null, rows = children.map { child -> child.toRow(context) })))),
+      )
   }

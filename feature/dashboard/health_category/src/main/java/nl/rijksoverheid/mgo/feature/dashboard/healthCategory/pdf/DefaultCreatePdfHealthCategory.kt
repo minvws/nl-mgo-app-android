@@ -1,29 +1,14 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
-import android.graphics.Bitmap
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import getString
 import nl.rijksoverheid.mgo.component.pdf.CreatePdf
 import nl.rijksoverheid.mgo.component.pdf.MgoPdf
-import nl.rijksoverheid.mgo.component.theme.Black
-import nl.rijksoverheid.mgo.component.theme.Gray600
-import nl.rijksoverheid.mgo.component.theme.LogoBlue500
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
+import nl.rijksoverheid.mgo.component.pdf.toRow
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleGroupedValues
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.UiElement
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.R
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Clock
 import java.time.LocalDateTime
@@ -50,7 +35,7 @@ class DefaultCreatePdfHealthCategory
       return createPdf(pdf)
     }
 
-    private suspend fun List<GroupedHealthUiSchemas>.toMgoPdf(category: HealthCategoryGroup.HealthCategory): MgoPdf {
+    private fun List<GroupedHealthUiSchemas>.toMgoPdf(category: HealthCategoryGroup.HealthCategory): MgoPdf {
       val heading = context.getString(category.heading)
       return MgoPdf(
         fileName = getFileName(heading),
@@ -93,7 +78,7 @@ class DefaultCreatePdfHealthCategory
       )
     }
 
-    private suspend fun List<GroupedHealthUiSchemas>.fromGroupedHealthUiSchemasToTable(): List<MgoPdf.Tables> =
+    private fun List<GroupedHealthUiSchemas>.fromGroupedHealthUiSchemasToTable(): List<MgoPdf.Tables> =
       mapNotNull { groupedUiSchemas ->
         val tables = groupedUiSchemas.uiSchemas.fromHealthUiSchemaToTables()
         if (tables.isEmpty()) return@mapNotNull null
@@ -105,76 +90,30 @@ class DefaultCreatePdfHealthCategory
 
     private fun List<HealthUiSchema>.fromHealthUiSchemaToTables(): List<MgoPdf.Table> =
       mapNotNull { uiSchema ->
-        // Only show sections that we want in the pdf
-        val sections = uiSchema.children.filterNot { it.excludeFromPrint ?: false }
-
-        // If there are no sections do not show the table
-        if (sections.isEmpty()) return@mapNotNull null
-
-        // Create the table
-        MgoPdf.Table(
-          sections =
-            uiSchema.children.filterNot { it.excludeFromPrint ?: false }.mapIndexed { index, group ->
-              val heading = if (index == 0) uiSchema.label else group.label ?: ""
-              group.toSections(heading)
-            },
-        )
+        uiSchema.toMgoPdfTable(context)
       }
 
-    private fun HealthUiGroup.toSections(heading: String) =
-      MgoPdf.Section(
-        heading = heading,
-        rows = children.map { uiElement -> uiElement.toRow() },
+    private fun HealthUiSchema.toMgoPdfTable(context: Context): MgoPdf.Table? {
+      val sections = children.filterNot { it.excludeFromPrint ?: false }
+
+      // If there are no sections do not show the table
+      if (sections.isEmpty()) return null
+
+      // Create the table
+      return MgoPdf.Table(
+        sections =
+          children.filterNot { it.excludeFromPrint ?: false }.mapIndexed { index, group ->
+            val heading = if (index == 0) label else group.label ?: ""
+            group.toSections(context = context, heading = heading)
+          },
       )
-
-    private fun UiElement.toRow(): MgoPdf.Row {
-      val emptyText = context.getString(CopyR.string.common_unknown)
-      return when (this) {
-        is DownloadBinary -> {
-          MgoPdf.Row(label = label, content = listOf(), labelColor = LogoBlue500, labelIcon = getAttachmentIconBytes())
-        }
-
-        is DownloadLink -> {
-          MgoPdf.Row(label = label, content = listOf(), labelColor = LogoBlue500, labelIcon = getAttachmentIconBytes())
-        }
-
-        is MultipleGroupedValues -> {
-          val content = value?.flatMap { value -> value.map { display -> display.display ?: emptyText } } ?: listOf(emptyText)
-          MgoPdf.Row(
-            label = label,
-            content = content,
-            contentColor = if (content.contains(emptyText)) Gray600 else Black,
-          )
-        }
-
-        is MultipleValues -> {
-          val content = value?.map { display -> display.display ?: emptyText } ?: listOf(emptyText)
-          MgoPdf.Row(label = label, content = content, contentColor = if (content.contains(emptyText)) Gray600 else Black)
-        }
-
-        is ReferenceLink -> {
-          MgoPdf.Row(label = label, content = listOf())
-        }
-
-        is ReferenceValue -> {
-          val content = listOf(reference ?: emptyText)
-          MgoPdf.Row(label = label, content = content, contentColor = if (content.contains(emptyText)) Gray600 else Black)
-        }
-
-        is SingleValue -> {
-          val content = listOf(value?.display ?: emptyText)
-          MgoPdf.Row(label = label, content = content, contentColor = if (content.contains(emptyText)) Gray600 else Black)
-        }
-      }
     }
 
-    private fun getAttachmentIconBytes(): ByteArray? {
-      val drawable = ContextCompat.getDrawable(context, R.drawable.ic_attachment)
-      return drawable?.toBitmap()?.let { bitmap ->
-        ByteArrayOutputStream().use { stream ->
-          bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-          stream.toByteArray()
-        }
-      }
-    }
+    private fun HealthUiGroup.toSections(
+      context: Context,
+      heading: String,
+    ) = MgoPdf.Section(
+      heading = heading,
+      rows = children.map { uiElement -> uiElement.toRow(context) },
+    )
   }

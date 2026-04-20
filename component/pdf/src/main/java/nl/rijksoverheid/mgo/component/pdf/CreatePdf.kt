@@ -15,12 +15,10 @@ import com.itextpdf.layout.Canvas
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.borders.Border
 import com.itextpdf.layout.borders.SolidBorder
-import com.itextpdf.layout.element.AreaBreak
 import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
-import com.itextpdf.layout.properties.AreaBreakType
 import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -33,7 +31,10 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 private object CreatePdfSettings {
   const val PAGE_SPACING: Float = 28f
-  const val TABLE_SPACING: Float = 12f
+  const val TABLE_SPACING_MARGIN: Float = 12f
+  const val TABLE_SPACING_PADDING_VERTICAL_SMALL: Float = 4f
+  const val TABLE_SPACING_PADDING_VERTICAL_BIG: Float = 12f
+  const val TABLE_SPACING_PADDING_HORIZONTAL: Float = 12f
 
   const val HEADING_TEXT_SIZE: Float = 24f
 
@@ -80,11 +81,8 @@ class CreatePdf
       addSubheading(text = pdf.subheading, page = pdfDoc.firstPage)
 
       // Add tables
-      pdf.tables.forEachIndexed { index, tables ->
+      pdf.tables.forEach { tables ->
         document.addTables(tables)
-        if (index != pdf.tables.lastIndex) {
-          document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
-        }
       }
 
       // Add footer text and page numbers
@@ -130,12 +128,14 @@ class CreatePdf
     }
 
     private fun Document.addTables(tables: MgoPdf.Tables) {
-      val heading =
-        Paragraph(tables.heading)
-          .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
-          .setFontSize(CreatePdfSettings.TABLE_HEADING_TEXT_SIZE)
-          .setPadding(0f)
-      add(heading)
+      if (tables.heading != null) {
+        val heading =
+          Paragraph(tables.heading)
+            .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
+            .setFontSize(CreatePdfSettings.TABLE_HEADING_TEXT_SIZE)
+            .setPadding(0f)
+        add(heading)
+      }
 
       for (table in tables.tables) {
         addTable(table)
@@ -150,13 +150,23 @@ class CreatePdf
       val table =
         Table(columnWidths)
           .setBorder(SolidBorder(CreatePdfSettings.TABLE_CELL_COLOR, 1f))
-          .setMargins(CreatePdfSettings.TABLE_SPACING, 0f, CreatePdfSettings.TABLE_SPACING, 0f)
+          .setMargins(CreatePdfSettings.TABLE_SPACING_MARGIN, 0f, CreatePdfSettings.TABLE_SPACING_MARGIN, 0f)
           .setKeepTogether(true)
 
       mgoTable.sections.forEachIndexed { index, section ->
         val headingSize = if (index == 0) CreatePdfSettings.SECTION_HEADING_FIRST_TEXT_SIZE else CreatePdfSettings.SECTION_HEADING_TEXT_SIZE
-        val headingPaddingTop = if (index == 0) CreatePdfSettings.TABLE_SPACING else 0f
-        val headingPaddingBottom = if (index == 0) 4f else 0f
+        val headingPaddingTop =
+          when {
+            section.heading == null -> CreatePdfSettings.TABLE_SPACING_PADDING_VERTICAL_SMALL
+            index == 0 -> CreatePdfSettings.TABLE_SPACING_PADDING_VERTICAL_BIG
+            else -> 0f
+          }
+        val headingPaddingBottom =
+          when {
+            section.heading == null -> 0f
+            index == 0 -> 4f
+            else -> 0f
+          }
         table.addTableSection(section = section, headingSize = headingSize, headingPaddingTop = headingPaddingTop, headingPaddingBottom = headingPaddingBottom)
       }
 
@@ -171,22 +181,30 @@ class CreatePdf
     ) {
       // Add heading
       val heading =
-        Paragraph(section.heading)
+        Paragraph(section.heading ?: "")
           .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))
           .setFontSize(headingSize)
 
       val headingCell =
         Cell(1, 2)
           .add(heading)
-          .setPaddings(headingPaddingTop, CreatePdfSettings.TABLE_SPACING, headingPaddingBottom, CreatePdfSettings.TABLE_SPACING)
-          .setBorder(Border.NO_BORDER)
+          .setPaddings(
+            headingPaddingTop,
+            CreatePdfSettings.TABLE_SPACING_PADDING_HORIZONTAL,
+            headingPaddingBottom,
+            CreatePdfSettings.TABLE_SPACING_PADDING_HORIZONTAL,
+          ).setBorder(Border.NO_BORDER)
       addCell(headingCell)
 
       // Add rows
       section.rows.forEachIndexed { index, row ->
         val paddingBottom =
           if (index == section.rows.lastIndex) {
-            CreatePdfSettings.TABLE_SPACING
+            if (section.heading == null) {
+              CreatePdfSettings.TABLE_SPACING_PADDING_VERTICAL_SMALL
+            } else {
+              CreatePdfSettings.TABLE_SPACING_PADDING_VERTICAL_BIG
+            }
           } else {
             0f
           }
@@ -237,10 +255,10 @@ class CreatePdf
         val labelCell =
           Cell(1, columnSpan)
             .add(innerTable)
-            .setPaddingTop(4f)
+            .setPaddingTop(2f)
             .setPaddingBottom(paddingBottom)
-            .setPaddingLeft(CreatePdfSettings.TABLE_SPACING)
-            .setPaddingRight(CreatePdfSettings.TABLE_SPACING)
+            .setPaddingLeft(CreatePdfSettings.TABLE_SPACING_PADDING_HORIZONTAL)
+            .setPaddingRight(CreatePdfSettings.TABLE_SPACING_PADDING_HORIZONTAL)
             .setBorder(Border.NO_BORDER)
             .setVerticalAlignment(VerticalAlignment.TOP)
 
@@ -251,7 +269,7 @@ class CreatePdf
             Paragraph(row.content.joinToString("\n"))
               .setFontColor(row.contentColor.toArgb().toDeviceRgb())
               .setFontSize(CreatePdfSettings.SECTION_TEXT_SIZE)
-              .setPaddings(4f, CreatePdfSettings.TABLE_SPACING, paddingBottom, CreatePdfSettings.TABLE_SPACING)
+              .setPaddings(2f, CreatePdfSettings.TABLE_SPACING_PADDING_HORIZONTAL, paddingBottom, CreatePdfSettings.TABLE_SPACING_PADDING_HORIZONTAL)
           val contentCell = Cell().add(contentHeading).setPadding(0f).setBorder(Border.NO_BORDER)
           addCell(contentCell)
         }

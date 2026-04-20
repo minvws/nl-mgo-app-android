@@ -11,6 +11,7 @@ import java.time.Clock
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.time.format.TextStyle
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Named
@@ -28,13 +29,34 @@ internal class DefaultCreatePdfUiSchema
       return createPdf(pdf)
     }
 
-    private suspend fun HealthUiSchema.toMgoPdf(): MgoPdf =
+    private fun HealthUiSchema.toMgoPdf(): MgoPdf =
       MgoPdf(
-        fileName = "test.pdf",
+        fileName = getFileName(label),
         heading = label,
         subheading = getSubheading(),
         tables = listOf(),
       )
+
+    private fun getFileName(label: String): String {
+      val now = LocalDateTime.now(clock)
+      return buildString {
+        append("mgo")
+        append("_")
+        append(label.lowercase().replace(" ", "_"))
+        append("_")
+        append(now.dayOfMonth)
+        append("_")
+        append(
+          now.month
+            .getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            .lowercase()
+            .replace(".", ""),
+        )
+        append("_")
+        append(now.year)
+        append(".pdf")
+      }
+    }
 
     private fun getSubheading(): String {
       val deviceLocale = Locale.getDefault()

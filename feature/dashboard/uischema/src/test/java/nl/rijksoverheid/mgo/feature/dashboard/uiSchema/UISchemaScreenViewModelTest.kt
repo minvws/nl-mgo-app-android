@@ -5,7 +5,9 @@ import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.organization.TEST_DOCUMENTS_DATA_SERVICE
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.fhir.FhirBinary
@@ -16,11 +18,14 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.pdf.TestCreatePdfUiSchema
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import nl.rijksoverheid.mgo.framework.test.rules.MainDispatcherRule
 import org.junit.Assert
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -130,7 +135,7 @@ class UISchemaScreenViewModelTest {
             TEST_MGO_ORGANIZATION.copy(
               dataServices =
                 listOf(
-                  nl.rijksoverheid.mgo.component.organization.TEST_DOCUMENTS_DATA_SERVICE,
+                  TEST_DOCUMENTS_DATA_SERVICE,
                 ),
             ),
           referenceId = referenceId,
@@ -171,7 +176,7 @@ class UISchemaScreenViewModelTest {
             TEST_MGO_ORGANIZATION.copy(
               dataServices =
                 listOf(
-                  nl.rijksoverheid.mgo.component.organization.TEST_DOCUMENTS_DATA_SERVICE,
+                  TEST_DOCUMENTS_DATA_SERVICE,
                 ),
             ),
           referenceId = referenceId,
@@ -193,6 +198,33 @@ class UISchemaScreenViewModelTest {
             .rows
             .first() is UISchemaRow.Binary.NotDownloaded,
         )
+      }
+    }
+
+  @Test
+  fun testGeneratePdf() =
+    runTest {
+      // Given alcohol use mgo resource is stored
+      val referenceId = setAlcoholUseMgoResource()
+
+      // Given: summary viewmodel
+      val viewModel =
+        createViewModel(
+          organization = TEST_MGO_ORGANIZATION,
+          referenceId = referenceId,
+          isSummary = true,
+        )
+
+      viewModel.openPdfViewer.test {
+        // When: Calling generatePdf
+        viewModel.generatePdf(HealthUiSchema(children = listOf(), label = ""))
+
+        // Then: Loading state is emitted
+        assertTrue(awaitItem() is PdfViewerState.Loading)
+
+        // Then: Loaded state is emitted
+        assertTrue(awaitItem() is PdfViewerState.Loaded)
+        expectNoEvents()
       }
     }
 
@@ -238,5 +270,6 @@ class UISchemaScreenViewModelTest {
       dvaApiBaseUrl = "",
       ioDispatcher = mainDispatcherRule.testDispatcher,
       context = context,
+      TestCreatePdfUiSchema(),
     )
 }

@@ -17,13 +17,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.getDocumentsResourceEndpoint
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.fhir.FhirRepository
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
+import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.pdf.CreatePdfUiSchema
 import timber.log.Timber
+import java.io.File
 import javax.inject.Named
 
 @HiltViewModel(assistedFactory = UiSchemaScreenViewModel.Factory::class)
@@ -40,6 +44,7 @@ internal class UiSchemaScreenViewModel
     @Named("dvaApiBaseUrl") private val dvaApiBaseUrl: String,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     @ApplicationContext private val context: Context,
+    private val createPdfUiSchema: CreatePdfUiSchema,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -53,7 +58,10 @@ internal class UiSchemaScreenViewModel
     private val _navigate = MutableSharedFlow<MgoResourceReferenceId>(extraBufferCapacity = 1)
     val navigate = _navigate.asSharedFlow()
 
-    private val _viewState = MutableStateFlow(UiSchemaScreenViewState(toolbarTitle = "", sections = listOf()))
+    private val _openPdfViewer = MutableSharedFlow<PdfViewerState>(extraBufferCapacity = 2)
+    val openPdfViewer = _openPdfViewer.asSharedFlow()
+
+    private val _viewState = MutableStateFlow(UiSchemaScreenViewState(toolbarTitle = "", uiSchema = null, sections = listOf()))
     val viewState = _viewState.asStateFlow()
 
     init {
@@ -73,7 +81,7 @@ internal class UiSchemaScreenViewModel
           }
         val uiSchemaSections = uiSchemaSectionMapper.map(uiSchema)
         _viewState.update { viewState ->
-          viewState.copy(toolbarTitle = uiSchema.label, sections = uiSchemaSections)
+          viewState.copy(toolbarTitle = uiSchema.label, uiSchema = uiSchema, sections = uiSchemaSections)
         }
       }
     }
@@ -106,6 +114,18 @@ internal class UiSchemaScreenViewModel
             updateRow(errorRow)
           }
       }
+    }
+
+    fun generatePdf(uiSchema: HealthUiSchema) {
+      viewModelScope.launch(ioDispatcher) {
+        _openPdfViewer.tryEmit(PdfViewerState.Loading)
+        val file = createPdfUiSchema(uiSchema)
+        _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
+      }
+    }
+
+    fun showPdf(pdfFile: File) {
+      _openPdfViewer.tryEmit(PdfViewerState.Loaded(pdfFile))
     }
 
     /**

@@ -14,6 +14,7 @@ dependencies {
   implementation(projects.data.pft)
   implementation(projects.component.organization)
   implementation(projects.component.pdfViewer)
+  implementation(projects.component.pdf)
   testImplementation(testFixtures(projects.framework.util))
   testImplementation(testFixtures(projects.data.fhir))
   testImplementation(testFixtures(projects.data.hcimParser))

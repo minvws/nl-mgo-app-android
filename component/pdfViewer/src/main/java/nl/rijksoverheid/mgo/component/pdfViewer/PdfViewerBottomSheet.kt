@@ -61,13 +61,11 @@ import nl.rijksoverheid.mgo.framework.copy.R as CopyR
  *
  * This composable presents the contents of the given PDF file inside a modal bottom sheet.
  *
- * @param appBarTitle The text to display in the app bar.
  * @param state The state of the PDF file. Either loading or providing a pdf file to display.
  * @param onDismissRequest Callback invoked when the user requests to dismiss the sheet.
  */
 @Composable
 fun PdfViewerBottomSheet(
-  appBarTitle: String,
   state: PdfViewerState,
   onDismissRequest: () -> Unit,
 ) {
@@ -82,6 +80,11 @@ fun PdfViewerBottomSheet(
     dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
     SetCorrectStatusBarIconColor()
+    val appBarTitle =
+      when (state) {
+        PdfViewerState.Loading -> ""
+        is PdfViewerState.Loaded -> state.file.name
+      }
     Scaffold(
       modifier = Modifier.fillMaxWidth().fillMaxHeight(0.95f),
       topBar = {

@@ -80,7 +80,6 @@ fun HealthCategoryScreen(
   var pdfViewerState: PdfViewerState? by remember { mutableStateOf(null) }
   pdfViewerState?.let { state ->
     PdfViewerBottomSheet(
-      appBarTitle = LocalContext.current.getString(category.heading),
       state = state,
       onDismissRequest = {
         pdfViewerState = null

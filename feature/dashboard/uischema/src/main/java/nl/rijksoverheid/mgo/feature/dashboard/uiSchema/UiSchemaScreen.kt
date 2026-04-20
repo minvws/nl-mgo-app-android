@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,17 +36,21 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRowStaticValue
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSection
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
 import nl.rijksoverheid.mgo.data.pft.Pft
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowBinary
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowLink
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowReference
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.rows.UiSchemaRowStatic
+import java.io.File
 
 object UiSchemaScreenTestTag {
   const val LIST = "UiSchemaScreenList"
@@ -76,11 +83,28 @@ fun UiSchemaScreen(
     )
   }
 
+  var pdfViewerState: PdfViewerState? by remember { mutableStateOf(null) }
+  pdfViewerState?.let { state ->
+    PdfViewerBottomSheet(
+      state = state,
+      onDismissRequest = {
+        pdfViewerState = null
+      },
+    )
+  }
+
   val viewModel =
     hiltViewModel<UiSchemaScreenViewModel, UiSchemaScreenViewModel.Factory>(
       creationCallback = { factory -> factory.create(organization = organization, referenceId = referenceId, isSummary = isSummary) },
     )
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+
+  // Handle opening pdf in a pdf bottom sheet
+  LaunchedEffect(Unit) {
+    viewModel.openPdfViewer.collectLatest {
+      pdfViewerState = it
+    }
+  }
 
   LaunchedEffect(Unit) {
     viewModel.navigate.collectLatest { navigateToReferenceId ->
@@ -102,6 +126,10 @@ fun UiSchemaScreen(
     onClickFile = { row ->
       viewModel.onClickFileRow(row)
     },
+    onGeneratePdf = { uiSchema -> viewModel.generatePdf(uiSchema) },
+    onShowPdf = { file ->
+      viewModel.showPdf(file)
+    },
     onShowPft = { pft ->
       pftBottomSheet = pft
     },
@@ -116,6 +144,8 @@ private fun UiSchemaScreenContent(
   isBottomSheet: Boolean,
   onClickReference: (row: UISchemaRow.Reference) -> Unit,
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  onGeneratePdf: (uiSchema: HealthUiSchema) -> Unit,
+  onShowPdf: (file: File) -> Unit,
   onShowPft: (pft: Pft) -> Unit,
   onNavigateBack: (() -> Unit)?,
 ) {
@@ -132,6 +162,14 @@ private fun UiSchemaScreenContent(
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
         windowInsets = if (isBottomSheet) WindowInsets(0) else TopAppBarDefaults.windowInsets,
+        actions = {
+          val uiSchema = viewState.uiSchema
+          if (uiSchema != null) {
+            IconButton({ onGeneratePdf(uiSchema) }) {
+              Icon(painter = painterResource(R.drawable.ic_download), null)
+            }
+          }
+        },
       )
     },
     content = { contentPadding ->
@@ -148,6 +186,7 @@ private fun UiSchemaScreenContent(
               onClickReference = onClickReference,
               onClickFile = onClickFile,
               onClickPft = onShowPft,
+              onShowPdf = onShowPdf,
               modifier = Modifier.padding(bottom = 32.dp),
             )
           }
@@ -162,6 +201,7 @@ private fun UiSchemaSection(
   section: UISchemaSection,
   onClickReference: (row: UISchemaRow.Reference) -> Unit,
   onClickFile: (row: UISchemaRow.Binary.NotDownloaded) -> Unit,
+  onShowPdf: (file: File) -> Unit,
   onClickPft: (pft: Pft) -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -203,6 +243,7 @@ private fun UiSchemaSection(
                 modifier = Modifier.testTag(UiSchemaScreenTestTag.LIST_ITEM),
                 row = row,
                 onClick = onClickFile,
+                onShowPdf = onShowPdf,
               )
             }
 
@@ -235,6 +276,7 @@ internal fun UiSchemaScreenContentPreview() {
       viewState =
         UiSchemaScreenViewState(
           toolbarTitle = "Titel",
+          uiSchema = null,
           sections =
             listOf(
               UISchemaSection(
@@ -301,6 +343,8 @@ internal fun UiSchemaScreenContentPreview() {
       onNavigateBack = {},
       isBottomSheet = false,
       onShowPft = {},
+      onGeneratePdf = {},
+      onShowPdf = {},
     )
   }
 }

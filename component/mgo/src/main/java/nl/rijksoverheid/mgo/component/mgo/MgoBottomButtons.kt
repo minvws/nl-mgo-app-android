@@ -57,30 +57,30 @@ fun MgoBottomButtons(
       HorizontalDivider(color = DividerDefaults.color.copy(alpha = 0.25f))
     }
     Column(modifier = Modifier.then(if (hasNavigationBarsPadding) Modifier.navigationBarsPadding() else Modifier).padding(horizontalPadding)) {
+        MgoButton(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .testTag(MgoBottomButtonsTestTag.PRIMARY_BUTTON),
+            buttonText = primaryButton.text,
+            onClick = primaryButton.onClick,
+            buttonTheme = MgoButtonTheme.SOLID,
+            isLoading = primaryButton.isLoading,
+            icon = primaryButton.icon,
+        )
       if (secondaryButton != null) {
         MgoButton(
-          modifier =
-            Modifier
-              .fillMaxWidth()
-              .padding(bottom = 16.dp)
-              .testTag(MgoBottomButtonsTestTag.SECONDARY_BUTTON),
-          buttonText = secondaryButton.text,
-          onClick = secondaryButton.onClick,
-          buttonTheme = MgoButtonTheme.TONAL,
-          icon = secondaryButton.icon,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+                    .testTag(MgoBottomButtonsTestTag.SECONDARY_BUTTON),
+            buttonText = secondaryButton.text,
+            onClick = secondaryButton.onClick,
+            buttonTheme = MgoButtonTheme.TONAL,
+            icon = secondaryButton.icon,
         )
       }
-      MgoButton(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .testTag(MgoBottomButtonsTestTag.PRIMARY_BUTTON),
-        buttonText = primaryButton.text,
-        onClick = primaryButton.onClick,
-        buttonTheme = MgoButtonTheme.SOLID,
-        isLoading = primaryButton.isLoading,
-        icon = primaryButton.icon,
-      )
     }
   }
 }

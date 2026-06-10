@@ -12,7 +12,7 @@ android {
 
 dependencies {
   api(projects.framework.fhir)
-  api(libs.quickjs.wrapper.android)
-  testImplementation(libs.quickjs.wrapper.java)
-  testImplementation(testFixtures(projects.data.hcimParser))
+  implementation(projects.framework.javascript)
+  testImplementation(testFixtures(projects.framework.javascript))
+  testFixturesImplementation(testFixtures(projects.framework.javascript))
 }

@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -42,9 +40,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import getString
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomSheet
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
-import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
 import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
@@ -70,13 +68,10 @@ fun EditOverviewBottomSheet(onDismissRequest: () -> Unit) {
     }
   }
 
-  ModalBottomSheet(
-    contentWindowInsets = { WindowInsets(0) },
+  MgoBottomSheet(
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
-    dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
-    SetCorrectStatusBarIconColor()
     EditOverviewBottomSheetContent(
       viewState = viewState,
       onClickSave = { favorites, nonFavorites -> viewModel.save(favorites = favorites, nonFavorites = nonFavorites) },

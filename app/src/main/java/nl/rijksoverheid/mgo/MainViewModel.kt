@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.theme.theme.KEY_APP_THEME
 import nl.rijksoverheid.mgo.component.theme.theme.getAppTheme
 import nl.rijksoverheid.mgo.data.digid.IsDigidAuthenticated
-import nl.rijksoverheid.mgo.data.hcimParser.javascript.QuickJsRepository
 import nl.rijksoverheid.mgo.data.onboarding.HasSeenOnboarding
 import nl.rijksoverheid.mgo.data.pft.PftRepository
 import nl.rijksoverheid.mgo.devicerooted.ShowDeviceRootedDialog
-import nl.rijksoverheid.mgo.framework.featuretoggle.FeatureToggleId
-import nl.rijksoverheid.mgo.framework.featuretoggle.repository.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.environment.featureToggle.FEATURE_TOGGLE_SKIP_DIGID_LOGIN
+import nl.rijksoverheid.mgo.framework.environment.featureToggle.FeatureToggleRepository
+import nl.rijksoverheid.mgo.framework.javascript.JavascriptEngineRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.MgoKeyValueStorage
 import nl.rijksoverheid.mgo.init.FhirResponseSyncer
 import nl.rijksoverheid.mgo.navigation.dashboard.DashboardNavigation
@@ -28,8 +28,6 @@ import nl.rijksoverheid.mgo.navigation.onboarding.OnboardingNavigation
 import nl.rijksoverheid.mgo.reset.ResetApp
 import javax.inject.Inject
 import javax.inject.Named
-
-internal const val KEY_SKIP_DIGID_LOGIN = "KEY_SKIP_DIGID_LOGIN"
 
 @HiltViewModel
 internal class MainViewModel
@@ -40,8 +38,8 @@ internal class MainViewModel
     private val featureToggleRepository: FeatureToggleRepository,
     private val resetApp: ResetApp,
     private val fhirResponseSyncer: FhirResponseSyncer,
-    private val quickJsRepository: QuickJsRepository,
     private val pftRepository: PftRepository,
+    private val javascriptEngineRepository: JavascriptEngineRepository,
     val isDigidAuthenticated: IsDigidAuthenticated,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     @Named("sharedPreferencesMgoKeyValueStorage") val keyValueStorage: MgoKeyValueStorage,
@@ -59,7 +57,10 @@ internal class MainViewModel
       viewModelScope.launch {
         // Initialize javascript runtime
         launch(ioDispatcher) {
-          quickJsRepository.create()
+          // Create javascript engine
+          javascriptEngineRepository.create()
+          // Load javascript file for hcim parser
+          javascriptEngineRepository.load("mgo-hcim-api.iife.js")
         }
 
         // Start fetching FHIR data
@@ -74,8 +75,8 @@ internal class MainViewModel
 
         // Handle if the flag secure (allow screenshots) feature toggle is enabled
         launch(ioDispatcher) {
-          featureToggleRepository.observe(FeatureToggleId.FlagSecure).collectLatest { enabled ->
-            _flagSecureFeatureToggle.tryEmit(enabled)
+          featureToggleRepository.observe(FEATURE_TOGGLE_SKIP_DIGID_LOGIN).collectLatest { entry ->
+            _flagSecureFeatureToggle.tryEmit(entry.value)
           }
         }
 
@@ -105,7 +106,7 @@ internal class MainViewModel
 
         // If all above things are not true, then we can show the dashboard.
         else -> {
-          if (keyValueStorage.get<Boolean>(KEY_SKIP_DIGID_LOGIN) == true) {
+          if (featureToggleRepository.get(FEATURE_TOGGLE_SKIP_DIGID_LOGIN).value) {
             DashboardNavigation.Root
           } else {
             DigidNavigation.Root

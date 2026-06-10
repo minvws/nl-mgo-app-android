@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,17 +39,17 @@ import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.error.ErrorBanner
 import nl.rijksoverheid.mgo.component.error.ErrorBannerLoading
 import nl.rijksoverheid.mgo.component.error.ErrorBannerState
-import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoAutoScrollLazyColumn
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButton
 import nl.rijksoverheid.mgo.component.mgo.MgoBottomButtons
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicator
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicatorType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerAlertDialog
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
-import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
-import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -58,6 +57,8 @@ import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_MEDICATION
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.listItemGroup.ListItemsGroup
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.type.HealthCategoryScreenType
 import nl.rijksoverheid.mgo.framework.copy.R as CopyR
 
 object HealthCategoryScreenTestTag {
@@ -95,13 +96,7 @@ fun HealthCategoryScreen(
 
   var showExportPdfDialog by remember { mutableStateOf(false) }
   if (showExportPdfDialog) {
-    MgoAlertDialog(
-      heading = stringResource(CopyR.string.export_pdf_dialog_heading, LocalContext.current.getString(category.heading).lowercase()),
-      subHeading = stringResource(CopyR.string.export_pdf_dialog_subheading),
-      positiveButtonText = stringResource(CopyR.string.export_pdf_dialog_create_document),
-      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
-      negativeButtonText = stringResource(CopyR.string.common_cancel),
-      negativeButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
+    PdfViewerAlertDialog(
       onClickPositiveButton = {
         showExportPdfDialog = false
         viewModel.generatePdf()
@@ -202,6 +197,7 @@ private fun HealthCategoryScreenContent(
 
             is HealthCategoryScreenViewState.ListItemsState.Loaded -> {
               LoadedContent(
+                type = viewState.type,
                 listItemsGroup = listItemState.listItemsGroup,
                 onClickListItem = onClickListItem,
                 banner = viewState.banner,
@@ -222,14 +218,7 @@ private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
     contentAlignment = Alignment.Center,
   ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-      CircularProgressIndicator(
-        modifier =
-          Modifier
-            .size(40.dp),
-        strokeWidth = 4.dp,
-        trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
-        color = MaterialTheme.colorScheme.CategoriesRijkslint(),
-      )
+      MgoProgressIndicator(type = MgoProgressIndicatorType.LARGE)
       Text(
         modifier = Modifier.padding(top = 16.dp),
         text = stringResource(id = CopyR.string.errorstate_loading),
@@ -241,7 +230,8 @@ private fun LazyItemScope.LoadingContent(canScroll: Boolean) {
 
 @Suppress("ktlint:standard:function-naming")
 private fun LazyListScope.LoadedContent(
-  listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
+  type: HealthCategoryScreenType,
+  listItemsGroup: List<ListItemsGroup>,
   onClickListItem: (organization: MgoOrganization, referenceId: MgoResourceReferenceId) -> Unit,
   banner: ErrorBannerState?,
   onRetryClick: () -> Unit,
@@ -279,30 +269,20 @@ private fun LazyListScope.LoadedContent(
     }
   }
 
-  for (listItemGroup in listItemsGroup) {
-    if (listItemGroup.items.isNotEmpty()) {
-      item {
-        Text(
-          modifier = Modifier.padding(bottom = 8.dp),
-          text = listItemGroup.heading,
-          style = MaterialTheme.typography.headlineMedium,
-        )
-      }
-      for (listItem in listItemGroup.items) {
-        item {
-          HealthCategoryCard(
-            modifier =
-              Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            title = listItem.title,
-            subtitle = listItem.subtitle,
-            detail = listItem.detail,
-            onClick = { onClickListItem(listItem.organization, listItem.mgoResource.referenceId) },
-          )
-        }
-      }
-    }
+  item(key = "amount") {
+    val amount = listItemsGroup.sumOf { group -> group.items.size }
+    val amountText = pluralStringResource(CopyR.plurals.health_category_num_results, amount, amount)
+    Text(
+      modifier = Modifier.padding(bottom = 12.dp),
+      text = amountText,
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.LabelsSecondary(),
+    )
+  }
+
+  when (type) {
+    HealthCategoryScreenType.DATE -> ListItemsGroupedByDate(listItemGroups = listItemsGroup, onClickListItem = onClickListItem)
+    HealthCategoryScreenType.SUBCATEGORY -> ListItemsGroupedBySubcategory(listItemGroups = listItemsGroup, onClickListItem = onClickListItem)
   }
 }
 
@@ -375,6 +355,7 @@ internal fun HealthCategoryScreenLoadingPreview() {
           category = TEST_HEALTH_CATEGORY_PROBLEMS,
           listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
           banner = null,
+          type = HealthCategoryScreenType.SUBCATEGORY,
         ),
       onClickListItem = { _, _ -> },
       onRetry = {},
@@ -386,7 +367,7 @@ internal fun HealthCategoryScreenLoadingPreview() {
 
 @DefaultPreviews
 @Composable
-internal fun HealthCategoryScreenLoadedPreview() {
+internal fun HealthCategoryScreenLoadedGroupedBySubcategoryPreview() {
   MgoTheme {
     HealthCategoryScreenContent(
       viewState =
@@ -394,9 +375,33 @@ internal fun HealthCategoryScreenLoadedPreview() {
           category = TEST_HEALTH_CATEGORY_MEDICATION,
           listItemsState =
             HealthCategoryScreenViewState.ListItemsState.Loaded(
-              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP),
+              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_GROUPED_BY_SUBCATEGORY),
             ),
           banner = null,
+          type = HealthCategoryScreenType.SUBCATEGORY,
+        ),
+      onClickListItem = { _, _ -> },
+      onRetry = {},
+      onGeneratePdf = {},
+      onNavigateBack = {},
+    )
+  }
+}
+
+@DefaultPreviews
+@Composable
+internal fun HealthCategoryScreenLoadedGroupedByDatePreview() {
+  MgoTheme {
+    HealthCategoryScreenContent(
+      viewState =
+        HealthCategoryScreenViewState(
+          category = TEST_HEALTH_CATEGORY_MEDICATION,
+          listItemsState =
+            HealthCategoryScreenViewState.ListItemsState.Loaded(
+              listItemsGroup = listOf(TEST_LIST_ITEM_GROUP_GROUPED_BY_DATE_1, TEST_LIST_ITEM_GROUP_GROUPED_BY_DATE_2, TEST_LIST_ITEM_GROUP_GROUPED_BY_DATE_3),
+            ),
+          banner = null,
+          type = HealthCategoryScreenType.DATE,
         ),
       onClickListItem = { _, _ -> },
       onRetry = {},
@@ -417,6 +422,7 @@ internal fun HealthCategoryScreenNoDataPreview() {
             category = TEST_HEALTH_CATEGORY_MEDICATION,
             listItemsState = HealthCategoryScreenViewState.ListItemsState.NoData,
             banner = null,
+            type = HealthCategoryScreenType.SUBCATEGORY,
           ),
         onClickListItem = { _, _ -> },
         onRetry = {},
@@ -438,6 +444,7 @@ internal fun HealthCategoryScreenUserErrorPreview() {
             category = TEST_HEALTH_CATEGORY_MEDICATION,
             listItemsState = HealthCategoryScreenViewState.ListItemsState.Error.UserError,
             banner = null,
+            type = HealthCategoryScreenType.SUBCATEGORY,
           ),
         onClickListItem = { _, _ -> },
         onRetry = {},
@@ -459,6 +466,7 @@ internal fun HealthCategoryScreenServerErrorPreview() {
             category = TEST_HEALTH_CATEGORY_MEDICATION,
             listItemsState = HealthCategoryScreenViewState.ListItemsState.Error.ServerError,
             banner = null,
+            type = HealthCategoryScreenType.SUBCATEGORY,
           ),
         onClickListItem = { _, _ -> },
         onRetry = {},

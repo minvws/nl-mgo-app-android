@@ -70,7 +70,7 @@ class DefaultFhirRepository
           .Builder()
           .url("$dvaApiBaseUrl/fhir$modifiedEndpointPath")
           .get()
-          .addHeader("X-MGO-HEALTHCARE-PROVIDER-ID", request.medmijId ?: "none")
+          .addHeader("X-MGO-HEALTHCARE-MEDMIJ-ID", request.medmijId ?: "none")
           .addHeader("X-MGO-DATASERVICE-ID", request.dataServiceId)
           .addHeader("X-MGO-DVA-TARGET", request.resourceEndpoint)
           .addHeader("Accept", "application/fhir+json; fhirVersion=${request.fhirVersion.stringValue}")

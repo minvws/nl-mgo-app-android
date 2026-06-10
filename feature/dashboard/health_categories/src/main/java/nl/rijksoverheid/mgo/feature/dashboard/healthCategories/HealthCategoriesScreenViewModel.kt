@@ -7,8 +7,10 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -27,6 +29,7 @@ import nl.rijksoverheid.mgo.data.healthCategories.FavoriteHealthCategoriesReposi
 import nl.rijksoverheid.mgo.data.healthCategories.GetHealthCategoriesFromDisk
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryId
+import nl.rijksoverheid.mgo.data.organization.OrganizationId
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
 import nl.rijksoverheid.mgo.framework.storage.keyvalue.KeyValueStore
@@ -63,6 +66,9 @@ internal class HealthCategoriesScreenViewModel
         groups = groups.filterFavorites(initialFavorites),
       )
     private val _viewState = MutableStateFlow(initialViewState)
+
+    private val _onOrganizationRemoved = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val onOrganizationRemoved = _onOrganizationRemoved.asSharedFlow()
     private val organizationsFlow =
       if (filterOrganization ==
         null
@@ -124,5 +130,10 @@ internal class HealthCategoriesScreenViewModel
         // Retry
         fhirRepository.retry(failedRequests)
       }
+    }
+
+    fun removeOrganization(organizationId: OrganizationId) {
+      organizationRepository.delete(organizationId)
+      _onOrganizationRemoved.tryEmit(Unit)
     }
   }

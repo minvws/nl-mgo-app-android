@@ -67,12 +67,13 @@ class OrganizationRepository
 
     @OptIn(ExperimentalSerializationApi::class)
     private fun insertOrganisationsInDb(organizations: InputStream) {
+      var total = 0
       organizations.use {
         database.organizationQueries.transaction {
           database.organizationQueries.deleteAllOrganizations()
           json
             .decodeToSequence<Organization>(organizations)
-            .chunked(100)
+            .chunked(1000)
             .forEach { organizations ->
               for (organization in organizations) {
                 database.organizationQueries.insertOrganization(
@@ -80,12 +81,14 @@ class OrganizationRepository
                   displayName = organization.displayName,
                   addressLine = organization.addressLine,
                   dataServicesJson = json.encodeToString(organization.dataServices),
-                  searchBlob = organization.searchBlob.normalizeText(),
+                  searchBlob = organization.searchBlob?.normalizeText(),
                 )
               }
+              total += organizations.size
               Timber.v("Inserted: ${organizations.size} organizations in the database")
             }
         }
+        Timber.v("Done inserting: $total organizations in the database")
       }
     }
 

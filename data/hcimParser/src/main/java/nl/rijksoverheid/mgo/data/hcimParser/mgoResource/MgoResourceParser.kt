@@ -4,14 +4,17 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.IheMhdMinimalDocumentReference
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.Profiles
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.R4BbsDocumentReference
 import nl.rijksoverheid.mgo.framework.fhir.FhirVersion
+import nl.rijksoverheid.mgo.framework.javascript.ExecuteJavascript
 import javax.inject.Inject
 
 class MgoResourceParser
   @Inject
   constructor(
-    private val jsEngineRepository: JsEngineRepository,
+    private val executeJavascript: ExecuteJavascript,
   ) {
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -23,7 +26,8 @@ class MgoResourceParser
     ): List<MgoResource> {
       // Get output of javascript call from getBundleResourcesJson
       val getBundleResourcesJsonOutput =
-        jsEngineRepository.executeStringFunction(
+        executeJavascript(
+          objectName = "HcimApi",
           functionName = "getBundleResourcesJson",
           parameters = listOf(fhirResponse),
         )
@@ -38,7 +42,8 @@ class MgoResourceParser
 
         // Get output of javascript call from getMgoResourceJson
         val getMgoResourceJsonOutput =
-          jsEngineRepository.executeStringFunction(
+          executeJavascript(
+            objectName = "HcimApi",
             functionName = "getMgoResourceJson",
             parameters =
               listOf(
@@ -69,6 +74,7 @@ class MgoResourceParser
             json = getMgoResourceJsonOutput,
             organizationId = organizationId,
             organizationName = organizationName,
+            decodedObject = getDecodedObject(profile = profile, resourceJson = getMgoResourceJsonOutput),
           )
 
         mgoResources.add(mgoResource)
@@ -84,4 +90,14 @@ class MgoResourceParser
           "fhirVersion" to this.toString(),
         ),
       )
+
+    private fun getDecodedObject(
+      profile: String,
+      resourceJson: String,
+    ): Any? =
+      when (profile) {
+        Profiles.iHEMHDMinimalDocumentReference -> json.decodeFromString<IheMhdMinimalDocumentReference>(resourceJson)
+        Profiles.bbsDocumentReference -> json.decodeFromString<R4BbsDocumentReference>(resourceJson)
+        else -> null
+      }
   }

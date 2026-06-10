@@ -20,21 +20,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.component.error.GetErrorBanner
-import nl.rijksoverheid.mgo.component.fhir.GetRequests
-import nl.rijksoverheid.mgo.component.fhir.ObserveFhirResponses
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
-import nl.rijksoverheid.mgo.component.pdf.MgoPdfStore
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
-import nl.rijksoverheid.mgo.data.fhir.FhirRepository
-import nl.rijksoverheid.mgo.data.fhir.FhirResponse
-import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
-import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.organization.OrganizationRepository
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.CreatePdfHealthCategory
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf.GroupedHealthUiSchemas
-import nl.rijksoverheid.mgo.framework.storage.bytearray.MgoByteArrayStorage
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.type.GetHealthCategoryScreenType
 import javax.inject.Named
 
 @HiltViewModel(assistedFactory = HealthCategoryScreenViewModel.Factory::class)
@@ -45,17 +36,12 @@ internal class HealthCategoryScreenViewModel
     @Assisted("filterOrganization") private val filterOrganization: MgoOrganization? = null,
     @Named("ioDispatcher") private val ioDispatcher: CoroutineDispatcher,
     private val organizationRepository: OrganizationRepository,
-    private val fhirRepository: FhirRepository,
-    private val mgoResourceStore: MgoResourceStore,
     private val getErrorBanner: GetErrorBanner,
-    private val observeFhirResponses: ObserveFhirResponses,
-    private val listItemStateMapper: ListItemStateMapper,
-    private val getRequests: GetRequests,
-    private val mgoResourceParser: MgoResourceParser,
     private val createPdfHealthCategory: CreatePdfHealthCategory,
-    private val uiSchemaParser: UiSchemaParser,
-    private val mgoPdfStore: MgoPdfStore,
-    @Named("encryptedMgoByteArrayStorage") private val mgoByteArrayStorage: MgoByteArrayStorage,
+    private val observeListItemsState: ObserveListItemsState,
+    private val retryFailedRequests: RetryFailedRequests,
+    private val onClearScreen: OnClearScreen,
+    getHealthCategoryScreenType: GetHealthCategoryScreenType,
   ) : ViewModel() {
     @AssistedFactory
     interface Factory {
@@ -65,11 +51,14 @@ internal class HealthCategoryScreenViewModel
       ): HealthCategoryScreenViewModel
     }
 
+    private val type = getHealthCategoryScreenType(category)
+
     private val initialState =
       HealthCategoryScreenViewState(
         category = category,
         listItemsState = HealthCategoryScreenViewState.ListItemsState.Loading,
         banner = ErrorBannerState.Loading,
+        type = type,
       )
     private val _viewState: MutableStateFlow<HealthCategoryScreenViewState> = MutableStateFlow(initialState)
     val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
@@ -79,82 +68,29 @@ internal class HealthCategoryScreenViewModel
 
     init {
       viewModelScope.launch(ioDispatcher) {
+        val organizations = getOrganizations()
+
+        // Observe list items
         launch {
-          observeListItemsState()
+          observeListItemsState(type = type, category = category, organizations = organizations).collectLatest { listItemState ->
+            _viewState.update { viewState -> viewState.copy(listItemsState = listItemState) }
+          }
         }
+
+        // Observe error banner
         launch {
-          observeErrorBanner()
+          getErrorBanner.invoke(categories = listOf(category), organizations = organizations).collectLatest { banner ->
+            // Update view state
+            _viewState.update { viewState -> viewState.copy(banner = banner) }
+          }
         }
-      }
-    }
-
-    private suspend fun observeListItemsState() {
-      // Get the organizations that we need to get fhir responses from
-      val organizations = if (filterOrganization == null) organizationRepository.getSaved(currentCoroutineContext()).first() else listOf(filterOrganization)
-
-      // Get the fhir responses
-      val fhirResponses = observeFhirResponses(organizations = organizations, categories = listOf(category))
-
-      // Observe fhir responses
-      fhirResponses.collectLatest { responses ->
-
-        // Create mgo resources
-        val mgoResources =
-          responses
-            .filterIsInstance<FhirResponse.Success>()
-            .flatMap { response ->
-              mgoResourceParser(
-                fhirResponse = mgoByteArrayStorage.get(response.cacheKey)?.toString(Charsets.UTF_8) ?: "{}",
-                fhirVersion = response.request.fhirVersion,
-                organizationId = response.request.organizationId,
-                organizationName = response.request.organizationName,
-              )
-            }
-
-        // Cache mgo resources
-        for (mgoResource in mgoResources) {
-          mgoResourceStore.store(mgoResource)
-        }
-
-        // Map fhir responses to list item state
-        val listItemState = listItemStateMapper(responses = responses, mgoResources = mgoResources, category = category)
-
-        // Update view state
-        _viewState.update { viewState -> viewState.copy(listItemsState = listItemState) }
-      }
-    }
-
-    private suspend fun observeErrorBanner() {
-      // Get the organizations that we need to get fhir responses from
-      val organizations = if (filterOrganization == null) organizationRepository.getSaved(currentCoroutineContext()).first() else listOf(filterOrganization)
-
-      // Observe error banner
-      getErrorBanner.invoke(categories = listOf(category), organizations = organizations).collectLatest { banner ->
-
-        // Update view state
-        _viewState.update { viewState -> viewState.copy(banner = banner) }
       }
     }
 
     fun retry() {
       viewModelScope.launch(ioDispatcher) {
-        // Get requests
-        val organizations = if (filterOrganization == null) organizationRepository.getSaved(coroutineContext).first() else listOf(filterOrganization)
-        val requests = getRequests(organizations = organizations, categories = listOf(category))
-
-        // Get responses that failed
-        val failedResponses =
-          fhirRepository
-            .observe()
-            .first()
-            .filterIsInstance<FhirResponse.Error>()
-            .filter { response -> requests.contains(response.request) }
-
-        // Map to requests
-        val failedRequests = failedResponses.map { response -> response.request }
-
-        // Retry
-        fhirRepository.retry(failedRequests)
+        val organizations = getOrganizations()
+        retryFailedRequests.invoke(category = category, organizations = organizations)
       }
     }
 
@@ -165,13 +101,7 @@ internal class HealthCategoryScreenViewModel
 
         // Create pdf
         val mgoResources = _viewState.value.listItemsState.getMgoResources()
-        val groupedMgoResources = mgoResources.groupBySubCategory(subcategories = category.subcategories)
-        val uiSchemas =
-          groupedMgoResources.map {
-            val uiSchemas = it.value.map { mgoResource -> uiSchemaParser.getSummary(mgoResource.json, organizationName = mgoResource.organizationName) }
-            GroupedHealthUiSchemas(heading = it.key.heading, uiSchemas = uiSchemas)
-          }
-        val file = createPdfHealthCategory(uiSchemas = uiSchemas, category = category)
+        val file = createPdfHealthCategory(mgoResources = mgoResources, category = category)
 
         // Communicate to UI that pdf has been created
         _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
@@ -184,8 +114,17 @@ internal class HealthCategoryScreenViewModel
     }
 
     @VisibleForTesting
+    suspend fun getOrganizations() =
+      if (filterOrganization ==
+        null
+      ) {
+        organizationRepository.getSaved(currentCoroutineContext()).first()
+      } else {
+        listOf(filterOrganization)
+      }
+
+    @VisibleForTesting
     fun clear() {
-      mgoResourceStore.clear()
-      mgoPdfStore.clear()
+      onClearScreen.invoke()
     }
   }

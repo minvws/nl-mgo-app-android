@@ -3,15 +3,15 @@ package nl.rijksoverheid.mgo.data.hcimParser.uiSchema
 import android.annotation.SuppressLint
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HcimCardDetails
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
+import nl.rijksoverheid.mgo.framework.javascript.ExecuteJavascript
 import javax.inject.Inject
 
 class UiSchemaParser
   @Inject
   constructor(
-    private val jsEngineRepository: JsEngineRepository,
+    private val executeJavascript: ExecuteJavascript,
   ) {
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -24,7 +24,8 @@ class UiSchemaParser
 
       // Get output of javascript call
       val uiSchemaJsonOutput =
-        jsEngineRepository.executeStringFunction(
+        executeJavascript(
+          objectName = "HcimApi",
           functionName = "getCardJson",
           parameters = listOf(mgoResourceJson, organizationJson),
         )
@@ -53,7 +54,8 @@ class UiSchemaParser
 
       // Get output of javascript call
       val uiSchemaJsonOutput =
-        jsEngineRepository.executeStringFunction(
+        executeJavascript(
+          objectName = "HcimApi",
           functionName = functionName,
           parameters = listOf(mgoResourceJson, organizationJson),
         )

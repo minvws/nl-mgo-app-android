@@ -17,6 +17,6 @@ class AndroidGetDataSetsFromDiskTest {
   @Test
   fun testInvoke() {
     val dataSets = usecase.invoke()
-    assertEquals(6, dataSets.size)
+    assertEquals(8, dataSets.size)
   }
 }

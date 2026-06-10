@@ -6,9 +6,12 @@ import getString
 import nl.rijksoverheid.mgo.component.pdf.CreatePdf
 import nl.rijksoverheid.mgo.component.pdf.MgoPdf
 import nl.rijksoverheid.mgo.component.pdf.toRow
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.listItemGroup.groupBySubCategory
 import java.io.File
 import java.time.Clock
 import java.time.LocalDateTime
@@ -26,11 +29,18 @@ class DefaultCreatePdfHealthCategory
     @ApplicationContext private val context: Context,
     @Named("systemDefaultZone") private val clock: Clock,
     private val createPdf: CreatePdf,
+    private val uiSchemaParser: UiSchemaParser,
   ) : CreatePdfHealthCategory {
     override suspend operator fun invoke(
-      uiSchemas: List<GroupedHealthUiSchemas>,
+      mgoResources: List<MgoResource>,
       category: HealthCategoryGroup.HealthCategory,
     ): File {
+      val groupedMgoResources = mgoResources.groupBySubCategory(subcategories = category.subcategories)
+      val uiSchemas =
+        groupedMgoResources.map {
+          val uiSchemas = it.value.map { mgoResource -> uiSchemaParser.getSummary(mgoResource.json, organizationName = mgoResource.organizationName) }
+          GroupedHealthUiSchemas(heading = it.key.heading, uiSchemas = uiSchemas)
+        }
       val pdf = uiSchemas.toMgoPdf(category)
       return createPdf(pdf)
     }

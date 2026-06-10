@@ -1,15 +1,7 @@
 package nl.rijksoverheid.mgo.feature.settings.advanced
 
-/**
- * The view state for [SettingsAdvancedScreen].
- */
+import nl.rijksoverheid.mgo.framework.environment.featureToggle.FeatureToggleEntry
+
 data class SettingsAdvancedScreenViewState(
-  /**
-   * True if automatic localisation is enabled.
-   */
-  val automaticLocalisation: Boolean,
-  /**
-   * True if taking screenshots of the app is enabled.
-   */
-  val flagSecure: Boolean,
+  val featureToggles: List<FeatureToggleEntry<*>>,
 )

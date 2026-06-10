@@ -122,7 +122,6 @@ dependencies {
   implementation(projects.feature.dashboard.editOverview)
   implementation(projects.feature.dashboard.healthCategory)
   implementation(projects.feature.dashboard.uischema)
-  implementation(projects.feature.dashboard.removeOrganization)
   implementation(projects.feature.dashboard.settings.home)
   implementation(projects.feature.dashboard.settings.display)
   implementation(projects.feature.dashboard.settings.advanced)
@@ -154,7 +153,6 @@ dependencies {
   implementation(projects.framework.environment)
   implementation(projects.framework.storage)
   implementation(projects.framework.network)
-  implementation(projects.framework.featuretoggle)
 
   // ================================
   // DATA
@@ -171,7 +169,6 @@ dependencies {
   testImplementation(testFixtures(projects.data.onboarding))
   testImplementation(testFixtures(projects.framework.storage))
   testImplementation(testFixtures(projects.data.digid))
-  testImplementation(testFixtures(projects.framework.featuretoggle))
   testImplementation(libs.mockk.android)
 
   androidTestImplementation(platform(libs.compose.bom))
@@ -193,4 +190,5 @@ dependencies {
 
   androidTestUtil("androidx.test.services:test-services:1.4.2")
   implementation(projects.data.organization)
+  implementation(projects.framework.javascript)
 }

@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,7 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import nl.rijksoverheid.mgo.component.mgo.MgoButton
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicator
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicatorType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
@@ -41,12 +40,7 @@ fun ErrorBannerLoading(modifier: Modifier = Modifier) {
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      CircularProgressIndicator(
-        modifier = Modifier.size(40.dp),
-        strokeWidth = 4.dp,
-        trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
-        color = MaterialTheme.colorScheme.CategoriesRijkslint(),
-      )
+      MgoProgressIndicator(type = MgoProgressIndicatorType.LARGE)
 
       Text(
         modifier = Modifier.padding(top = 16.dp),

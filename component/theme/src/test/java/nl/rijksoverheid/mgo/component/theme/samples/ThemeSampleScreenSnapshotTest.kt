@@ -24,6 +24,13 @@ internal class ThemeSampleScreenSnapshotTest {
   }
 
   @Test
+  fun separators() {
+    snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
+      SeparatorsPreview()
+    }
+  }
+
+  @Test
   fun symbols() {
     snapshotTestRule.snapshots(devices = SnapshotDevices.PhoneLightDarkPortrait) {
       SymbolsPreview()

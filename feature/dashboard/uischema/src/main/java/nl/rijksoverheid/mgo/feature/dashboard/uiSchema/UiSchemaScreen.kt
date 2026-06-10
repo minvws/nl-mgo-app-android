@@ -36,6 +36,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
+import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerAlertDialog
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerBottomSheet
 import nl.rijksoverheid.mgo.component.pdfViewer.PdfViewerState
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
@@ -93,6 +94,22 @@ fun UiSchemaScreen(
     )
   }
 
+  var showExportPdfDialog: PdfViewerState? by remember { mutableStateOf(null) }
+  showExportPdfDialog?.let {
+    PdfViewerAlertDialog(
+      onClickPositiveButton = {
+        showExportPdfDialog = null
+        pdfViewerState = it
+      },
+      onClickNegativeButton = {
+        showExportPdfDialog = null
+      },
+      onDismissRequest = {
+        showExportPdfDialog = null
+      },
+    )
+  }
+
   val viewModel =
     hiltViewModel<UiSchemaScreenViewModel, UiSchemaScreenViewModel.Factory>(
       creationCallback = { factory -> factory.create(organization = organization, referenceId = referenceId, isSummary = isSummary) },
@@ -102,7 +119,7 @@ fun UiSchemaScreen(
   // Handle opening pdf in a pdf bottom sheet
   LaunchedEffect(Unit) {
     viewModel.openPdfViewer.collectLatest {
-      pdfViewerState = it
+      showExportPdfDialog = it
     }
   }
 
@@ -128,7 +145,7 @@ fun UiSchemaScreen(
     },
     onGeneratePdf = { uiSchema -> viewModel.generatePdf(uiSchema) },
     onShowPdf = { file ->
-      viewModel.showPdf(file)
+      pdfViewerState = PdfViewerState.Loaded(file)
     },
     onShowPft = { pft ->
       pftBottomSheet = pft

@@ -2,9 +2,6 @@ package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomSheet
 import nl.rijksoverheid.mgo.component.mgo.navigation.mgoComposable
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
@@ -41,14 +38,11 @@ fun UiSchemaBottomSheet(
   val navController = rememberNavController()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  ModalBottomSheet(
+  MgoBottomSheet(
     modifier = Modifier.testTag(UiSchemaBottomSheetTestTag.SHEET),
-    contentWindowInsets = { WindowInsets(0) },
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
-    dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
-    SetCorrectStatusBarIconColor()
     NavHost(
       navController = navController,
       startDestination = Root,

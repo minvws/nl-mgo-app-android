@@ -47,7 +47,6 @@ fun NavGraphBuilder.addDashboardOverviewNavGraph(
             DashboardNavigation.Overview.HealthCareCategory(category = category),
           )
         },
-        onNavigateRemoveOrganization = { },
         onShowBottomSheet = {
           showBottomSheet = true
         },

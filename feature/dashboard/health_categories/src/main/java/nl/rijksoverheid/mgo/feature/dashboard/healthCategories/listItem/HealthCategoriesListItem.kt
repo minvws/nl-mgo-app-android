@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,8 +29,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import getString
 import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicator
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicatorType
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
-import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -117,14 +117,9 @@ internal fun HealthCategoriesListItemContent(
       }
       when (listItemState) {
         HealthCategoriesListItemState.LOADING -> {
-          CircularProgressIndicator(
-            modifier =
-              Modifier
-                .padding(start = 8.dp)
-                .size(24.dp),
-            strokeWidth = 2.dp,
-            trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
-            color = MaterialTheme.colorScheme.SymbolsSecondary(),
+          MgoProgressIndicator(
+            modifier = Modifier.padding(start = 8.dp),
+            type = MgoProgressIndicatorType.SMALL,
           )
         }
         HealthCategoriesListItemState.LOADED -> {

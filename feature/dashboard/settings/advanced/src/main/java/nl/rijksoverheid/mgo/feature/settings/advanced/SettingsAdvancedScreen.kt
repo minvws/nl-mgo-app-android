@@ -16,22 +16,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.datastore.preferences.core.Preferences
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
+import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.framework.copy.R
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_AUTOMATIC_LOCALISATION
-import nl.rijksoverheid.mgo.framework.storage.keyvalue.KEY_FLAG_SECURE
+import nl.rijksoverheid.mgo.framework.environment.featureToggle.FeatureToggle
+import nl.rijksoverheid.mgo.framework.environment.featureToggle.FeatureToggleEntry
 
-/**
- * Composable that shows a screen where developers can easily set different feature toggles for the app.
- *
- * @param onNavigateBack Called when requested to navigate back.
- */
 @Composable
 fun SettingsAdvancedScreen(onNavigateBack: () -> Unit) {
   val viewModel = hiltViewModel<SettingsAdvancedScreenViewModel>()
@@ -39,8 +34,8 @@ fun SettingsAdvancedScreen(onNavigateBack: () -> Unit) {
 
   SettingsAdvancedScreenContent(
     viewState = viewState,
-    onClickListItem = { key, enabled ->
-      viewModel.setToggle(key, enabled)
+    onClickListItem = { entry, enabled ->
+      viewModel.setToggle(entry.toggle, enabled)
     },
     onClickBack = onNavigateBack,
   )
@@ -49,7 +44,7 @@ fun SettingsAdvancedScreen(onNavigateBack: () -> Unit) {
 @Composable
 private fun SettingsAdvancedScreenContent(
   viewState: SettingsAdvancedScreenViewState,
-  onClickListItem: (key: Preferences.Key<Boolean>, enabled: Boolean) -> Unit,
+  onClickListItem: (toggle: FeatureToggleEntry<*>, enabled: Boolean) -> Unit,
   onClickBack: () -> Unit,
 ) {
   Scaffold(
@@ -61,22 +56,17 @@ private fun SettingsAdvancedScreenContent(
     },
     content = { contentPadding ->
       Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(contentPadding).padding(16.dp)) {
-        SettingsAdvancedListItem(
-          title = "Automatische lokalisatie",
-          enabled = viewState.automaticLocalisation,
-          onClick = { enabled ->
-            onClickListItem(KEY_AUTOMATIC_LOCALISATION, enabled)
-          },
-        )
-
-        SettingsAdvancedListItem(
-          modifier = Modifier.padding(top = 16.dp),
-          title = "Flag secure",
-          enabled = viewState.flagSecure,
-          onClick = { enabled ->
-            onClickListItem(KEY_FLAG_SECURE, enabled)
-          },
-        )
+        for (featureToggle in viewState.featureToggles) {
+          SettingsAdvancedListItem(
+            modifier = Modifier.padding(bottom = 8.dp),
+            heading = featureToggle.toggle.name,
+            subheading = featureToggle.toggle.description,
+            enabled = featureToggle.value as Boolean,
+            onClick = { value ->
+              onClickListItem(featureToggle, value)
+            },
+          )
+        }
       }
     },
   )
@@ -84,7 +74,8 @@ private fun SettingsAdvancedScreenContent(
 
 @Composable
 private fun SettingsAdvancedListItem(
-  title: String,
+  heading: String,
+  subheading: String,
   enabled: Boolean,
   onClick: (enabled: Boolean) -> Unit,
   modifier: Modifier = Modifier,
@@ -97,11 +88,18 @@ private fun SettingsAdvancedListItem(
           .padding(16.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      Text(
-        modifier = Modifier.weight(1f),
-        text = title,
-        style = MaterialTheme.typography.bodyMedium,
-      )
+      Column(modifier = Modifier.weight(1f)) {
+        Text(
+          text = heading,
+          style = MaterialTheme.typography.bodyMedium,
+        )
+        Text(
+          modifier = Modifier.padding(top = 4.dp),
+          text = subheading,
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.LabelsSecondary(),
+        )
+      }
 
       Switch(checked = enabled, onCheckedChange = onClick)
     }
@@ -115,8 +113,17 @@ internal fun SettingsAdvancedScreenPreview() {
     SettingsAdvancedScreenContent(
       viewState =
         SettingsAdvancedScreenViewState(
-          automaticLocalisation = true,
-          flagSecure = false,
+          featureToggles =
+            listOf(
+              FeatureToggleEntry(
+                toggle = FeatureToggle<Boolean>(id = "1", name = "Feature toggle #1", description = "This is the first feature toggle", initialValue = true),
+                true,
+              ),
+              FeatureToggleEntry(
+                toggle = FeatureToggle<Boolean>(id = "2", name = "Feature toggle #2", description = "This is the second feature toggle", initialValue = false),
+                false,
+              ),
+            ),
         ),
       onClickListItem = { _, _ -> },
       onClickBack = {},

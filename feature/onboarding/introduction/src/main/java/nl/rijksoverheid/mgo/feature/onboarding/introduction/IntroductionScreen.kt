@@ -1,9 +1,11 @@
 package nl.rijksoverheid.mgo.feature.onboarding.introduction
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -12,10 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -67,13 +69,14 @@ fun IntroductionScreen(onNavigateToProposition: () -> Unit) {
 
           Spacer(modifier = Modifier.weight(1f))
 
-          Image(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-            contentScale = ContentScale.Crop,
-            painter = painterResource(id = R.drawable.illustration_introduction_new),
-            contentDescription = null,
-            alignment = Alignment.BottomCenter,
-          )
+          Box(modifier = Modifier.fillMaxSize().padding(top = 16.dp), contentAlignment = Alignment.Center) {
+            Image(
+              modifier = Modifier.fillMaxWidth(),
+              painter = painterResource(id = R.drawable.illustration_introduction),
+              contentDescription = null,
+              alignment = Alignment.BottomCenter,
+            )
+          }
         }
 
         MgoBottomButtons(

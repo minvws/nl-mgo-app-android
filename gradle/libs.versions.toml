@@ -65,6 +65,7 @@ kotlin-metadata-jvm = "2.3.0-Beta1"
 sqldelight = "2.2.1"
 sqldelight-androidx-driver = "0.0.17"
 androix-sqlite-bundled = "2.6.2"
+lottie = "6.7.1"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -113,6 +114,7 @@ mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "moc
 quickjs-wrapper-java = { group = "wang.harlon.quickjs", name = "wrapper-java", version.ref = "quickjs-wrapper" }
 quickjs-wrapper-android = { group = "wang.harlon.quickjs", name = "wrapper-android", version.ref = "quickjs-wrapper" }
 kotlin-metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "kotlin-metadata-jvm" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Google will start forcing 16 KB page sizes (https://developer.android.com/guide/practices/page-sizes#kotlin).
 # The eclipse j2v8 library is not 16 KB page aligned, but somebody made a fork that is.
@@ -140,6 +142,7 @@ sqldelight-sql-driver = { group = "app.cash.sqldelight", name = "sqlite-driver",
 sqldelight-coroutines-extensions = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-androidx-driver = { group = "com.eygraber", name = "sqldelight-androidx-driver", version.ref = "sqldelight-androidx-driver" }
 androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androix-sqlite-bundled" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

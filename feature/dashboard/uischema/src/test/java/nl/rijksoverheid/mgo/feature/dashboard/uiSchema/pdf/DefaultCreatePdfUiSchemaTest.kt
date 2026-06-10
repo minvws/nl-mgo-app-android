@@ -80,7 +80,7 @@ class DefaultCreatePdfUiSchemaTest {
                     ReferenceValue(
                       id = "1",
                       label = "Reference Value",
-                      reference = "Reference",
+                      display = "Reference",
                     ),
                     ReferenceValue(
                       id = "1",

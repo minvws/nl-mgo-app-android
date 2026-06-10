@@ -37,6 +37,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
+import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -86,13 +87,14 @@ private fun SettingsScreenContent(
   if (showResetAppDialog) {
     MgoAlertDialog(
       onDismissRequest = { showResetAppDialog = false },
-      positiveButtonText = stringResource(CopyR.string.common_yes),
-      negativeButtonText = stringResource(CopyR.string.common_no),
+      positiveButtonText = stringResource(CopyR.string.settings_reset_app_dialog_action),
+      negativeButtonText = stringResource(CopyR.string.common_cancel),
       onClickPositiveButton = {
         onClickResetApp()
         showResetAppDialog = false
       },
       onClickNegativeButton = { showResetAppDialog = false },
+      positiveButtonTextColor = MaterialTheme.colorScheme.ActionsGhostText(),
       heading = stringResource(CopyR.string.settings_reset_app_dialog_heading),
       subHeading = stringResource(CopyR.string.settings_reset_app_dialog_subheading),
     )
@@ -144,8 +146,9 @@ private fun SettingsScreenContent(
                 AppTheme.LIGHT -> CopyR.string.settings_display_light
                 AppTheme.DARK -> CopyR.string.settings_display_dark
               },
+            hasDivider = viewState.showAdvancedScreen,
           )
-          if (viewState.isDebug) {
+          if (viewState.showAdvancedScreen) {
             SettingsListItem(
               modifier =
                 Modifier
@@ -256,7 +259,7 @@ private fun SettingsListItem(
 internal fun SettingsHomeScreenPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(isDebug = true),
+      viewState = SettingsHomeScreenViewState(showAdvancedScreen = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -271,7 +274,7 @@ internal fun SettingsHomeScreenPreview() {
 internal fun SettingsHomeScreenWithoutBiometricPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(isDebug = true),
+      viewState = SettingsHomeScreenViewState(showAdvancedScreen = true),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},
@@ -286,7 +289,7 @@ internal fun SettingsHomeScreenWithoutBiometricPreview() {
 internal fun SettingsHomeScreenWithoutDebugPreview() {
   MgoTheme {
     SettingsScreenContent(
-      viewState = SettingsHomeScreenViewState(isDebug = false),
+      viewState = SettingsHomeScreenViewState(showAdvancedScreen = false),
       onClickDisplaySettings = {},
       onClickSecuritySettings = {},
       onClickAdvancedSettings = {},

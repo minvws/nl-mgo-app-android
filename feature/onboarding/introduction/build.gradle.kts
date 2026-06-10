@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+  implementation(libs.lottie.compose)
   implementation(project(":data:onboarding"))
 }

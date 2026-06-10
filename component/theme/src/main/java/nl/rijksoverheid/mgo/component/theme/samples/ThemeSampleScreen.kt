@@ -51,6 +51,7 @@ import nl.rijksoverheid.mgo.component.theme.LabelsVibrant
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.SeparatorsInvert
 import nl.rijksoverheid.mgo.component.theme.SeparatorsSecondary
+import nl.rijksoverheid.mgo.component.theme.SeparatorsTimeline
 import nl.rijksoverheid.mgo.component.theme.SeperatorsPrimary
 import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.component.theme.StatesInformative
@@ -93,6 +94,7 @@ private fun Separators() {
       ThemeSample(theme = MaterialTheme.colorScheme.SeperatorsPrimary(), text = "Separators Primary")
       ThemeSample(theme = MaterialTheme.colorScheme.SeparatorsSecondary(), text = "Separators Secondary")
       ThemeSample(theme = MaterialTheme.colorScheme.SeparatorsInvert(), text = "Separators Invert")
+      ThemeSample(theme = MaterialTheme.colorScheme.SeparatorsTimeline(), text = "Separators Timeline")
     }
   }
 }
@@ -220,6 +222,16 @@ internal fun LabelsPreview() {
   MgoTheme {
     Box(modifier = Modifier.padding(16.dp)) {
       Labels()
+    }
+  }
+}
+
+@PreviewLightDark
+@Composable
+internal fun SeparatorsPreview() {
+  MgoTheme {
+    Box(modifier = Modifier.padding(16.dp)) {
+      Separators()
     }
   }
 }

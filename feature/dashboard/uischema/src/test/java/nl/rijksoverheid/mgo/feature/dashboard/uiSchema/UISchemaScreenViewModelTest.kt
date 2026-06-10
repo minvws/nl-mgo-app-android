@@ -12,8 +12,8 @@ import nl.rijksoverheid.mgo.component.uiSchema.UISchemaRow
 import nl.rijksoverheid.mgo.component.uiSchema.UISchemaSectionMapper
 import nl.rijksoverheid.mgo.data.fhir.FhirBinary
 import nl.rijksoverheid.mgo.data.fhir.TestFhirRepository
-import nl.rijksoverheid.mgo.data.hcimParser.JvmQuickJsRepository
-import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
+import nl.rijksoverheid.mgo.data.hcimParser.MgoResourceParserFactory
+import nl.rijksoverheid.mgo.data.hcimParser.UiSchemaParserFactory
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceParser
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceReferenceId
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResourceStore
@@ -44,16 +44,15 @@ class UISchemaScreenViewModelTest {
   private val fhirRepository = TestFhirRepository()
   private val mgoResourceStore = MgoResourceStore()
   private val uiSchemaSectionMapper = UISchemaSectionMapper(mgoResourceStore)
-  private val quickJsRepository = JvmQuickJsRepository(mainDispatcherRule.testDispatcher)
-  private val jsEngineRepository = JsEngineRepository(quickJsRepository)
-  private val mgoResourceParser = MgoResourceParser(jsEngineRepository)
-  private val uiSchemaParser = UiSchemaParser(jsEngineRepository)
+  private lateinit var mgoResourceParser: MgoResourceParser
+  private lateinit var uiSchemaParser: UiSchemaParser
 
   @Before
   fun setup() =
     runTest {
       context = ApplicationProvider.getApplicationContext()
-      quickJsRepository.create()
+      mgoResourceParser = MgoResourceParserFactory.createForJvm(mainDispatcherRule.testDispatcher)
+      uiSchemaParser = UiSchemaParserFactory.createForJvm(mainDispatcherRule.testDispatcher)
     }
 
   @Test
@@ -151,7 +150,7 @@ class UISchemaScreenViewModelTest {
 
       // Then: View state is updated
       viewModel.viewState.test {
-        Assert.assertTrue(
+        assertTrue(
           awaitItem()
             .sections[1]
             .rows
@@ -225,30 +224,6 @@ class UISchemaScreenViewModelTest {
         // Then: Loaded state is emitted
         assertTrue(awaitItem() is PdfViewerState.Loaded)
         expectNoEvents()
-      }
-    }
-
-  @Test
-  fun testShowPdf() =
-    runTest {
-      // Given alcohol use mgo resource is stored
-      val referenceId = setAlcoholUseMgoResource()
-
-      // Given: summary viewmodel
-      val viewModel =
-        createViewModel(
-          organization = TEST_MGO_ORGANIZATION,
-          referenceId = referenceId,
-          isSummary = true,
-        )
-
-      viewModel.openPdfViewer.test {
-        // When: Calling openPdf
-        val file = File("")
-        viewModel.showPdf(file)
-
-        // Then: Pdf is shown
-        assertEquals(awaitItem(), PdfViewerState.Loaded(file))
       }
     }
 

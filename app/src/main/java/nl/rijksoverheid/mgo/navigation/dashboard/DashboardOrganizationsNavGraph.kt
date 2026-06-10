@@ -4,11 +4,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import nl.rijksoverheid.mgo.component.mgo.navigation.mgoComposableDialog
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreen
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.HealthCategoryScreen
 import nl.rijksoverheid.mgo.feature.dashboard.organizations.OrganizationsScreen
-import nl.rijksoverheid.mgo.feature.dashboard.removeOrganization.RemoveOrganizationScreen
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.UiSchemaScreen
 import nl.rijksoverheid.mgo.navigation.localisation.LocalisationNavigation
 import nl.rijksoverheid.mgo.navigation.mgoComposableExt
@@ -49,12 +47,6 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
               category = category,
               filterOrganization = filterOrganization!!,
             ),
-          )
-        },
-        onNavigateRemoveOrganization = { organization ->
-          navController.navigate(
-            DashboardNavigation.Organizations
-              .RemoveOrganization(organizationId = organization.id, organizationName = organization.name),
           )
         },
         onShowBottomSheet = null,
@@ -99,21 +91,6 @@ fun NavGraphBuilder.addDashboardOrganizationsNavGraph(
         },
         onNavigateBack = {
           navController.popBackStack()
-        },
-      )
-    }
-
-    mgoComposableDialog<DashboardNavigation.Organizations.RemoveOrganization> { backStackEntry ->
-      val route = backStackEntry.toRoute<DashboardNavigation.Organizations.RemoveOrganization>()
-      RemoveOrganizationScreen(
-        providerId = route.organizationId,
-        providerName = route.organizationName,
-        onNavigateBack = { navController.popBackStack() },
-        onNavigateToDashboard = {
-          navController.popBackStack(
-            route = DashboardNavigation.Organizations.List,
-            inclusive = false,
-          )
         },
       )
     }

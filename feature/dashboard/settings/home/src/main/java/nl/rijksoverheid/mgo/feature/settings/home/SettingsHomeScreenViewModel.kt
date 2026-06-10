@@ -6,21 +6,22 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import nl.rijksoverheid.mgo.framework.environment.Environment
+import nl.rijksoverheid.mgo.framework.environment.EnvironmentRepository
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 internal class SettingsHomeScreenViewModel
   @Inject
   constructor(
-    @Named("isDebug") isDebug: Boolean,
+    val environmentRepository: EnvironmentRepository,
   ) : ViewModel() {
     private val initialViewState =
       SettingsHomeScreenViewState(
-        isDebug = isDebug,
+        showAdvancedScreen = environmentRepository.getEnvironment() is Environment.Tst,
       )
     private val _viewState =
-      MutableStateFlow(SettingsHomeScreenViewState(isDebug = isDebug))
+      MutableStateFlow(initialViewState)
 
     val viewState = _viewState.stateIn(viewModelScope, SharingStarted.Lazily, initialViewState)
   }

@@ -2,128 +2,75 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory.pdf
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.pdf.CreatePdf
-import nl.rijksoverheid.mgo.component.pdf.MgoPdfStore
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DisplayValue
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadBinary
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.DownloadLink
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiGroup
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleGroupedValues
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.MultipleValues
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceLink
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.ReferenceValue
-import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.SingleValue
-import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_MEDICATION
-import nl.rijksoverheid.mgo.framework.test.extractPdfText
-import nl.rijksoverheid.mgo.framework.test.writeToHost
-import org.junit.Assert.assertEquals
+import nl.rijksoverheid.mgo.data.hcimParser.UiSchemaParserFactory
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.TEST_ZIB_PROBLEM
+import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.createMgoResource
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
+import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.Profiles
+import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.io.File
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
 
-@Config(qualifiers = "nl-rNL", sdk = [34])
+@Config(sdk = [34])
 @RunWith(RobolectricTestRunner::class)
-class DefaultCreatePdfHealthCategoryTest {
+internal class DefaultCreatePdfHealthCategoryTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val clock = Clock.fixed(Instant.parse("2026-04-14T14:26:00.00Z"), ZoneOffset.UTC)
-  private val createPdf = CreatePdf(context = context, store = MgoPdfStore(context))
-  private val createPdfHealthCategory = DefaultCreatePdfHealthCategory(context = context, clock = clock, createPdf = createPdf)
+  private val clock = Clock.fixed(Instant.parse("2000-01-01T10:01:00.00Z"), ZoneOffset.UTC)
+  private val createPdf = mockk<CreatePdf>(relaxed = true)
+  private lateinit var uiSchemaParser: UiSchemaParser
+  private lateinit var usecase: DefaultCreatePdfHealthCategory
+
+  @Before
+  fun setup() =
+    runTest {
+      uiSchemaParser = UiSchemaParserFactory.createForJvm()
+      usecase =
+        DefaultCreatePdfHealthCategory(
+          context = context,
+          clock = clock,
+          createPdf = createPdf,
+          uiSchemaParser = uiSchemaParser,
+        )
+    }
 
   @Test
-  fun testCreatePdf() =
+  fun testInvoke() =
     runTest {
-      // Given: UI Schemas
-      val uiSchema =
-        HealthUiSchema(
-          label = "Label",
-          children =
-            listOf(
-              HealthUiGroup(
-                children =
-                  listOf(
-                    SingleValue(id = "1", label = "Single Value", value = DisplayValue(display = "Value")),
-                    SingleValue(id = "1", label = "Single Value Empty", value = DisplayValue(display = null)),
-                    MultipleValues(
-                      id = "1",
-                      label = "Multiple Value",
-                      value = listOf(DisplayValue(display = "Value 1"), DisplayValue(display = "Value 2")),
-                    ),
-                    MultipleValues(id = "1", label = "Multiple Value Empty", value = null),
-                    MultipleGroupedValues(
-                      id = "1",
-                      label = "Multiple Grouped Values",
-                      value =
-                        listOf(
-                          listOf(
-                            DisplayValue(display = "Value 1"),
-                            DisplayValue(display = "Value 2"),
-                          ),
-                          listOf(DisplayValue(display = "Value 3"), DisplayValue(display = "Value 4")),
-                        ),
-                    ),
-                    MultipleGroupedValues(
-                      id = "1",
-                      label = "Multiple Grouped Values Empty",
-                      value = null,
-                    ),
-                    ReferenceLink(
-                      id = "1",
-                      reference = "",
-                      label = "Reference Link",
-                    ),
-                    ReferenceValue(
-                      id = "1",
-                      label = "Reference Value",
-                      reference = "Reference",
-                    ),
-                    ReferenceValue(
-                      id = "1",
-                      label = "Reference Value Empty",
-                      reference = null,
-                    ),
-                  ),
-              ),
-              HealthUiGroup(
-                label = "Downloads",
-                children =
-                  listOf(
-                    DownloadBinary(
-                      id = "1",
-                      label = "Download Binary",
-                      reference = null,
-                    ),
-                    DownloadLink(
-                      id = "1",
-                      label = "Download Link",
-                    ),
-                  ),
-              ),
-            ),
-        )
-      val groupedUiSchemas =
-        listOf(
-          GroupedHealthUiSchemas(heading = "Heading", uiSchemas = listOf(uiSchema, uiSchema)),
-          GroupedHealthUiSchemas(heading = "Heading", uiSchemas = listOf(uiSchema, uiSchema)),
+      // Given: Health category
+      val category = TEST_HEALTH_CATEGORY_PROBLEMS
+
+      // Given: Mgo resource
+      val mgoResource =
+        createMgoResource(
+          organizationId = TEST_MGO_ORGANIZATION.id,
+          profile = Profiles.zibProblem,
+          decodedObject = TEST_ZIB_PROBLEM(),
         )
 
-      // When: Creating PDF
-      val outputPdfFile = createPdfHealthCategory(uiSchemas = groupedUiSchemas, category = TEST_HEALTH_CATEGORY_MEDICATION)
-      println(outputPdfFile.writeToHost().absolutePath)
+      // When: Calling invoke
+      usecase.invoke(mgoResources = listOf(mgoResource), category = category)
 
-      // Then: Created PDF is the same as test.pdf
-      val testPdfFile =
-        javaClass.classLoader!!
-          .getResource("test.pdf")
-          .toURI()
-          .let { File(it) }
-
-      assertEquals(extractPdfText(testPdfFile), extractPdfText(outputPdfFile))
+      // Then: Pdf is created
+      verify(exactly = 1) {
+        createPdf(
+          match {
+            it.fileName == "mgo_medische_klachten_1_jan_2000.pdf" &&
+              it.heading == "Medische klachten" &&
+              it.subheading.contains("10:01") &&
+              it.subheading.contains("AM")
+          },
+        )
+      }
     }
 }

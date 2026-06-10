@@ -1,12 +1,9 @@
 package nl.rijksoverheid.mgo.feature.dashboard.uiSchema
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -16,7 +13,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomSheet
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -31,14 +28,11 @@ fun PftBottomSheet(
 ) {
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 
-  ModalBottomSheet(
+  MgoBottomSheet(
     modifier = Modifier.testTag(UiSchemaBottomSheetTestTag.SHEET),
-    contentWindowInsets = { WindowInsets(0) },
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
-    dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
-    SetCorrectStatusBarIconColor()
     PftBottomSheetContent(pft)
   }
 }

@@ -8,6 +8,7 @@ typealias HealthCategoryStringResource = String
 typealias HealthCategoryProfile = String
 typealias HealthCategoryId = String
 typealias HealthCategoryIcon = String
+typealias HealthSubcategoryId = String
 
 @Serializable
 data class HealthCategoryGroup(
@@ -27,6 +28,7 @@ data class HealthCategoryGroup(
     @Serializable
     @Parcelize
     data class Subcategory(
+      val id: HealthSubcategoryId,
       val heading: HealthCategoryStringResource,
       val profiles: List<String>,
     ) : Parcelable
@@ -42,6 +44,7 @@ val TEST_HEALTH_CATEGORY_PROBLEMS =
     subcategories =
       listOf(
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "medical_complaints",
           heading = "zib_problem.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-Problem"),
         ),
@@ -57,6 +60,7 @@ val TEST_HEALTH_CATEGORY_ALLERGIES =
     subcategories =
       listOf(
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "allergies_intolerances",
           heading = "zib_allergy_intolerance.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"),
         ),
@@ -72,22 +76,27 @@ val TEST_HEALTH_CATEGORY_LIFESTYLE =
     subcategories =
       listOf(
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "living_conditions",
           heading = "zib_living_situation.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-LivingSituation"),
         ),
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "drug_use",
           heading = "zib_drug_use.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-DrugUse"),
         ),
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "alcohol_use",
           heading = "zib_alcohol_use.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-AlcoholUse"),
         ),
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "tobacco_use",
           heading = "zib_tobacco_use.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-TobaccoUse"),
         ),
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "nutrition_advice",
           heading = "zib_nutrition_advice.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-NutritionAdvice"),
         ),
@@ -103,14 +112,17 @@ val TEST_HEALTH_CATEGORY_MEDICATION =
     subcategories =
       listOf(
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "current_medication",
           heading = "zib_medication_use.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationUse"),
         ),
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "medication_agreements",
           heading = "zib_medication_agreement.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-MedicationAgreement"),
         ),
         HealthCategoryGroup.HealthCategory.Subcategory(
+          id = "medication_administration_plan",
           heading = "zib_administration_agreement.heading",
           profiles = listOf("http://nictiz.nl/fhir/StructureDefinition/zib-AdministrationAgreement"),
         ),

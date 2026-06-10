@@ -16,9 +16,16 @@ internal class HealthCategoryScreenSnapshotTest {
   }
 
   @Test
-  fun loaded() {
+  fun loadedGroupedBySubcategory() {
     snapshotTestRule.snapshots {
-      HealthCategoryScreenLoadedPreview()
+      HealthCategoryScreenLoadedGroupedBySubcategoryPreview()
+    }
+  }
+
+  @Test
+  fun loadedGroupedByDate() {
+    snapshotTestRule.snapshots {
+      HealthCategoryScreenLoadedGroupedByDatePreview()
     }
   }
 

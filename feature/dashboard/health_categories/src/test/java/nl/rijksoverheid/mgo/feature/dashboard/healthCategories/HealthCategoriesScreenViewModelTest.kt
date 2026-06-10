@@ -1,6 +1,7 @@
 package nl.rijksoverheid.mgo.feature.dashboard.healthCategories
 
 import app.cash.turbine.test
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.mgo.component.error.TestGetErrorBanner
 import nl.rijksoverheid.mgo.component.fhir.GetRequests
@@ -93,7 +94,26 @@ internal class HealthCategoriesScreenViewModelTest {
       }
     }
 
-  private fun createViewModel() =
+  @Test
+  fun testRemoveOrganization() =
+    runTest {
+      // Given: view model
+      val viewModel = createViewModel(organizationRepository = organizationRepository)
+
+      viewModel.onOrganizationRemoved.test {
+        // When: Calling remove organization
+        viewModel.removeOrganization(organizationId = "1")
+
+        // Then: Organization is removed
+        val organizations = organizationRepository.getSaved(coroutineContext).first()
+        assertEquals(0, organizations.size)
+
+        // Then: UI is notified
+        assertEquals(Unit, awaitItem())
+      }
+    }
+
+  private fun createViewModel(organizationRepository: OrganizationRepository = this@HealthCategoriesScreenViewModelTest.organizationRepository) =
     HealthCategoriesScreenViewModel(
       favoriteRepository = favoriteRepository,
       organizationRepository = organizationRepository,

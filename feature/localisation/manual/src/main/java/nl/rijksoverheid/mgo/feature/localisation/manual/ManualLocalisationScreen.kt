@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -46,13 +45,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.mgo.MgoAlertDialog
 import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicator
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicatorType
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_BGZ_DATA_SERVICE
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
 import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
-import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
@@ -167,7 +167,7 @@ private fun ManualLocalisationScreenContent(
             }
           }
 
-          viewState.organizations.isNullOrEmpty() -> {
+          viewState.organizations?.isEmpty() == true -> {
             item(key = "empty") {
               ManualLocalisationScreenEmpty(
                 heading = CopyR.string.search_organization_no_results_heading,
@@ -177,7 +177,7 @@ private fun ManualLocalisationScreenContent(
             }
           }
 
-          else -> {
+          viewState.organizations != null -> {
             manualLocalisationScreenSearchResults(
               organizations = viewState.organizations,
               onAddOrganization = onAddOrganization,
@@ -294,7 +294,7 @@ private fun SearchTextField(
         onExpandedChange = { },
         leadingIcon = {
           if (loading) {
-            SearchTextFieldProgressBar()
+            MgoProgressIndicator(type = MgoProgressIndicatorType.SMALL)
           } else {
             Icon(painter = painterResource(R.drawable.ic_search), contentDescription = stringResource(CopyR.string.common_search))
           }
@@ -328,16 +328,6 @@ private fun SearchTextField(
     expanded = false,
     onExpandedChange = {},
     content = {},
-  )
-}
-
-@Composable
-private fun SearchTextFieldProgressBar() {
-  CircularProgressIndicator(
-    modifier = Modifier.size(24.dp),
-    strokeWidth = 2.dp,
-    trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
-    color = MaterialTheme.colorScheme.CategoriesRijkslint(),
   )
 }
 

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,10 +32,10 @@ import getString
 import nl.rijksoverheid.mgo.component.healthCategories.getColor
 import nl.rijksoverheid.mgo.component.healthCategories.getDrawable
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
-import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicator
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicatorType
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
-import nl.rijksoverheid.mgo.component.theme.SymbolsSecondary
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_PROBLEMS
 
@@ -83,12 +82,7 @@ private fun HealthCategoriesFavoriteCardContent(
           Icon(painterResource(category.icon.getDrawable()), tint = category.icon.getColor(), contentDescription = null)
         }
         if (loading) {
-          CircularProgressIndicator(
-            modifier = Modifier.size(24.dp),
-            strokeWidth = 2.dp,
-            trackColor = MaterialTheme.colorScheme.BackgroundsTertiary().copy(alpha = 0.5f),
-            color = MaterialTheme.colorScheme.SymbolsSecondary(),
-          )
+          MgoProgressIndicator(type = MgoProgressIndicatorType.SMALL)
         }
       }
 

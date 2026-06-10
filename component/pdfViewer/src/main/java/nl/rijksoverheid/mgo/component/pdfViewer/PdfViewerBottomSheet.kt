@@ -16,12 +16,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -47,10 +44,11 @@ import kotlinx.coroutines.withContext
 import net.engawapg.lib.zoomable.ExperimentalZoomableApi
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomableWithScroll
+import nl.rijksoverheid.mgo.component.mgo.MgoBottomSheet
 import nl.rijksoverheid.mgo.component.mgo.MgoCard
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicator
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicatorType
 import nl.rijksoverheid.mgo.component.mgo.MgoTopAppBar
-import nl.rijksoverheid.mgo.component.mgo.SetCorrectStatusBarIconColor
-import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.LabelsSecondary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import sendFileToOtherApp
@@ -73,13 +71,10 @@ fun PdfViewerBottomSheet(
   val coroutineScope = rememberCoroutineScope()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  ModalBottomSheet(
-    contentWindowInsets = { WindowInsets(0) },
+  MgoBottomSheet(
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
-    dragHandle = { BottomSheetDefaults.DragHandle() },
   ) {
-    SetCorrectStatusBarIconColor()
     val appBarTitle =
       when (state) {
         PdfViewerState.Loading -> ""
@@ -139,14 +134,7 @@ fun PdfViewerBottomSheet(
 @Composable
 private fun PdfLoadingContent() {
   Column(modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-    CircularProgressIndicator(
-      modifier =
-        Modifier
-          .size(48.dp),
-      strokeWidth = 6.dp,
-      trackColor = MaterialTheme.colorScheme.CategoriesRijkslint().copy(alpha = 0.15f),
-      color = MaterialTheme.colorScheme.CategoriesRijkslint(),
-    )
+    MgoProgressIndicator(type = MgoProgressIndicatorType.LARGE)
     Text(
       modifier = Modifier.padding(top = 16.dp),
       text = stringResource(CopyR.string.pdf_viewer_loading),

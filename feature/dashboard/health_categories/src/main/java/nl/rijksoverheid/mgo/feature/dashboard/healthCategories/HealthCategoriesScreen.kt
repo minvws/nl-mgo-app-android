@@ -16,13 +16,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -36,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import getString
+import kotlinx.coroutines.flow.collectLatest
 import nl.rijksoverheid.mgo.component.error.ErrorBanner
 import nl.rijksoverheid.mgo.component.error.ErrorBannerLoading
 import nl.rijksoverheid.mgo.component.error.ErrorBannerState
@@ -47,6 +58,7 @@ import nl.rijksoverheid.mgo.component.mgo.MgoLargeTopAppBar
 import nl.rijksoverheid.mgo.component.mgo.getMgoAppBarScrollBehaviour
 import nl.rijksoverheid.mgo.component.organization.MgoOrganization
 import nl.rijksoverheid.mgo.component.organization.TEST_MGO_ORGANIZATION
+import nl.rijksoverheid.mgo.component.theme.BackgroundsSecondary
 import nl.rijksoverheid.mgo.component.theme.CategoriesRijkslint
 import nl.rijksoverheid.mgo.component.theme.DefaultPreviews
 import nl.rijksoverheid.mgo.component.theme.LabelsPrimary
@@ -55,7 +67,6 @@ import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
 import nl.rijksoverheid.mgo.data.healthCategories.models.TEST_HEALTH_CATEGORY_GROUP_HEALTH
-import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.HealthCategoriesScreenTestTag.DELETE_ORGANIZATION_BUTTON
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesFavoriteCard
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesListItem
 import nl.rijksoverheid.mgo.feature.dashboard.healthCategories.listItem.HealthCategoriesNoFavoriteCard
@@ -69,7 +80,6 @@ object HealthCategoriesScreenTestTag {
 @Composable
 fun HealthCategoriesScreen(
   appBarTitle: String,
-  onNavigateRemoveOrganization: (organization: MgoOrganization) -> Unit,
   onNavigateToLocalisation: () -> Unit,
   onNavigateToHealthCategory: (
     category: HealthCategoryGroup.HealthCategory,
@@ -85,13 +95,38 @@ fun HealthCategoriesScreen(
     )
   val viewState: HealthCategoriesScreenViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
+  var showRemoveOrganizationDialog by remember { mutableStateOf<MgoOrganization?>(null) }
+  showRemoveOrganizationDialog?.let { organization ->
+    RemoveOrganizationDialog(
+      organizationName = organization.name,
+      onClickPositiveButton = {
+        viewModel.removeOrganization(organization.id)
+        showRemoveOrganizationDialog = null
+      },
+      onClickNegativeButton = {
+        showRemoveOrganizationDialog = null
+      },
+      onDismissRequest = {
+        showRemoveOrganizationDialog = null
+      },
+    )
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.onOrganizationRemoved.collectLatest {
+      onNavigateBack?.invoke()
+    }
+  }
+
   HealthCategoriesScreenContent(
     appBarTitle = appBarTitle,
     viewState = viewState,
     onNavigateBack = onNavigateBack,
     onClickAddProvider = onNavigateToLocalisation,
     onClickListItem = { category -> onNavigateToHealthCategory(category, organization) },
-    onClickRemoveOrganization = onNavigateRemoveOrganization,
+    onClickRemoveOrganization = {
+      showRemoveOrganizationDialog = organization
+    },
     onShowBottomSheet = onShowBottomSheet,
     organization = organization,
     onRetry = {
@@ -112,6 +147,7 @@ private fun HealthCategoriesScreenContent(
   onShowBottomSheet: (() -> Unit)? = null,
   onNavigateBack: (() -> Unit)? = null,
 ) {
+  var menuExpanded by remember { mutableStateOf(false) }
   val lazyListState = rememberLazyListState()
   val scrollBehavior = getMgoAppBarScrollBehaviour(lazyListState.canScrollForward, lazyListState.canScrollBackward)
   val primaryButton =
@@ -143,6 +179,42 @@ private fun HealthCategoriesScreenContent(
         title = appBarTitle,
         onNavigateBack = onNavigateBack,
         scrollBehavior = scrollBehavior,
+        actions = {
+          if (organization != null) {
+            Box {
+              IconButton(onClick = { menuExpanded = true }) {
+                Icon(Icons.Default.MoreVert, contentDescription = stringResource(CopyR.string.settings_accessibility_more_information))
+              }
+              DropdownMenu(
+                containerColor = MaterialTheme.colorScheme.BackgroundsSecondary(),
+                expanded = menuExpanded,
+                onDismissRequest = { menuExpanded = false },
+              ) {
+                DropdownMenuItem(
+                  text = {
+                    Text(
+                      stringResource(CopyR.string.organizations_remove_organization),
+                      color = MaterialTheme.colorScheme.StatesCritical(),
+                      style = MaterialTheme.typography.bodyMedium,
+                    )
+                  },
+                  trailingIcon = {
+                    Icon(
+                      modifier = Modifier.padding(start = 48.dp),
+                      painter = painterResource(R.drawable.ic_delete),
+                      contentDescription = null,
+                      tint = MaterialTheme.colorScheme.StatesCritical(),
+                    )
+                  },
+                  onClick = {
+                    onClickRemoveOrganization(organization)
+                    menuExpanded = false
+                  },
+                )
+              }
+            }
+          }
+        },
       )
     },
     content = { contentPadding ->
@@ -248,7 +320,8 @@ private fun LazyListScope.WithProviders(
   item(key = banner.hashCode()) {
     when (banner) {
       null -> {}
-      ErrorBannerState.Loading ->
+
+      ErrorBannerState.Loading -> {
         ErrorBannerLoading(
           modifier =
             Modifier
@@ -256,7 +329,9 @@ private fun LazyListScope.WithProviders(
                 bottom = 32.dp,
               ).animateItem(),
         )
-      is ErrorBannerState.Error.ServerError ->
+      }
+
+      is ErrorBannerState.Error.ServerError -> {
         ErrorBanner(
           modifier = Modifier.padding(bottom = 32.dp).animateItem(),
           state =
@@ -264,7 +339,9 @@ private fun LazyListScope.WithProviders(
               .ServerError(banner.partial),
           onClickRetry = onRetry,
         )
-      is ErrorBannerState.Error.UserError ->
+      }
+
+      is ErrorBannerState.Error.UserError -> {
         ErrorBanner(
           modifier = Modifier.padding(bottom = 32.dp).animateItem(),
           state =
@@ -272,6 +349,7 @@ private fun LazyListScope.WithProviders(
               .UserError(banner.partial),
           onClickRetry = onRetry,
         )
+      }
     }
   }
 
@@ -347,31 +425,6 @@ private fun LazyListScope.WithProviders(
 
       item {
         Spacer(modifier = Modifier.height(32.dp))
-      }
-    }
-  }
-
-  if (organization != null) {
-    item {
-      Column(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .testTag(DELETE_ORGANIZATION_BUTTON),
-      ) {
-        TextButton(
-          modifier =
-            Modifier
-              .align(Alignment.CenterHorizontally),
-          onClick = { onClickRemoveOrganization(organization) },
-        ) {
-          Text(
-            text = stringResource(id = CopyR.string.organizations_remove_organization),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.StatesCritical(),
-          )
-        }
       }
     }
   }

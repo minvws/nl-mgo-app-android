@@ -12,6 +12,7 @@ android {
 
 dependencies {
   api(libs.okhttp)
+  implementation(libs.okhttp.logging.interceptor)
   debugImplementation(libs.chucker)
   releaseImplementation(libs.chucker.no.op)
 }

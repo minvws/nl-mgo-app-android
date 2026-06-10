@@ -26,9 +26,9 @@ dependencies {
   implementation(projects.component.pdf)
   implementation(projects.component.pdfViewer)
   testImplementation(libs.itext7.core)
-  testImplementation(testFixtures(projects.data.hcimParser))
   testImplementation(testFixtures(projects.data.healthCategories))
   testImplementation(testFixtures(projects.data.fhir))
   testImplementation(testFixtures(projects.component.error))
   testImplementation(testFixtures(projects.data.organization))
+  testImplementation(testFixtures(projects.data.hcimParser))
 }

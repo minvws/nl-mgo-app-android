@@ -63,9 +63,8 @@ private fun getExcludePaths(): String =
     add("app/src/main/java/nl/rijksoverheid/mgo/navigation/**") // Navigation classes
     add("app/src/main/java/nl/rijksoverheid/mgo/lifecycle/**") // Lifecycle classes
     add("framework/util/src/main/java/nl/rijksoverheid/mgo/framework/util/**") // Util module
-    add("framework/featuretoggle/src/main/java/nl/rijksoverheid/mgo/framework/featuretoggle/**") // Feature toggle module
     add("data/fhirParser/src/main/java/nl/rijksoverheid/mgo/data/fhirParser/**") // Fhir parser module
-    add("data/hcimParser/src/main/java/nl/rijksoverheid/mgo/data/hcimParser/javascript/AndroidQuickJsRepository.kt") // Specific android related javascript class
+    add("framework/javascript/src/main/java/nl/rijksoverheid/mgo/framework/javascript/AndroidJavascriptEngineRepository.kt") // Specific android related javascript class
     add("framework/storage/src/main/java/nl/rijksoverheid/mgo/framework/storage/bytearray/EncryptedMgoByteArrayStorage.kt") // Specific android related class
     add("data/hcimParser/src/main/java/nl/rijksoverheid/mgo/data/hcimParser/uiSchema/models/**") // Generated shared classes
     add("data/healthcare/src/main/java/nl/rijksoverheid/mgo/data/healthcare/**") // Health care module

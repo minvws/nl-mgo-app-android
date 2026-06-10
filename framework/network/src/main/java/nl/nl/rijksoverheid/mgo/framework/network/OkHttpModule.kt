@@ -31,7 +31,9 @@ internal object OkHttpModule {
       OkHttpClient
         .Builder()
         .cache(cache)
+        // .addInterceptor(HttpLoggingInterceptor().also { it.setLevel(HttpLoggingInterceptor.Level.BODY) })
         .addInterceptor(ChuckerInterceptor(context))
+
     if (mgoAuthentication is MgoAuthentication.Basic) {
       builder.addInterceptor(BasicAuthInterceptor(user = mgoAuthentication.user, password = mgoAuthentication.password))
     }

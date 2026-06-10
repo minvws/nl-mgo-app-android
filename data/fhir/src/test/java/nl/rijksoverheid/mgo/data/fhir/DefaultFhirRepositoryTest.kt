@@ -77,7 +77,7 @@ class DefaultFhirRepositoryTest {
       // Then: Request has expected headers set
       val request = testServer.getRequest()
       assertEquals("1", request?.headers?.get("X-MGO-DATASERVICE-ID"))
-      assertEquals("medmij_1", request?.headers?.get("X-MGO-HEALTHCARE-PROVIDER-ID"))
+      assertEquals("medmij_1", request?.headers?.get("X-MGO-HEALTHCARE-MEDMIJ-ID"))
       assertEquals("https://www.google.com", request?.headers?.get("X-MGO-DVA-TARGET"))
       assertEquals("application/fhir+json; fhirVersion=3.0", request?.headers?.get("Accept"))
     }

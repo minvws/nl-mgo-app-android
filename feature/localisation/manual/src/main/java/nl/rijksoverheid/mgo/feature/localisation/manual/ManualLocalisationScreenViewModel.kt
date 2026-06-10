@@ -46,13 +46,13 @@ class ManualLocalisationScreenViewModel
           // Show loading state
           _viewState.update { viewState -> viewState.copy(loading = true, organizations = null, error = false) }
 
+          // Delay so that UI does not get updated on every keypress
+          delay(500)
+
           // Make sure organizations in the local database are up to date
           val success = organizationRepository.sync()
 
           if (success) {
-            // Delay so that UI does not get updated on every keypress
-            delay(500)
-
             // Search for organizations
             val organizations = organizationRepository.search(query = query, context = ioDispatcher).first()
             _viewState.update { viewState ->

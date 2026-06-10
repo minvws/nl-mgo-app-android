@@ -10,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
 import nl.nl.rijksoverheid.mgo.framework.network.auth.MgoAuthentication
 import nl.rijksoverheid.mgo.BuildConfig
 import nl.rijksoverheid.mgo.data.healthCategories.GetDataSetsFromDisk
@@ -119,8 +120,8 @@ internal object MainModule {
   @Named("pftUrl")
   fun providePftUrl(environmentRepository: EnvironmentRepository): String =
     when (val environment = environmentRepository.getEnvironment()) {
-      is Environment.Acc -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
-      is Environment.Prod -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Acc -> "https://app-api.acc.mgo.irealisatie.nl/v1/mgo/pft.json"
+      is Environment.Prod -> "https://app-api.acc.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Tst -> "https://app-api.test.mgo.irealisatie.nl/v1/mgo/pft.json"
       is Environment.Custom -> environment.url
     }
@@ -135,8 +136,8 @@ internal object MainModule {
   @Named("organizationsUrl")
   fun provideOrganizationsUrl(environmentRepository: EnvironmentRepository): String =
     when (val environment = environmentRepository.getEnvironment()) {
-      is Environment.Acc -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/organizations.json"
-      is Environment.Prod -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/organizations.json"
+      is Environment.Acc -> "https://lo-ad.acc.mgo.irealisatie.nl/static/search/organizations.json"
+      is Environment.Prod -> "https://lo-ad.acc.mgo.irealisatie.nl/static/search/organizations.json"
       is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/organizations.json"
       is Environment.Custom -> environment.url
     }
@@ -146,9 +147,14 @@ internal object MainModule {
   @Named("endpointsUrl")
   fun provideEndpointsUrl(environmentRepository: EnvironmentRepository): String =
     when (val environment = environmentRepository.getEnvironment()) {
-      is Environment.Acc -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/endpoints.json"
-      is Environment.Prod -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/endpoints.json"
+      is Environment.Acc -> "https://lo-ad.acc.mgo.irealisatie.nl/static/search/endpoints.json"
+      is Environment.Prod -> "https://lo-ad.acc.mgo.irealisatie.nl/static/search/endpoints.json"
       is Environment.Tst -> "https://lo-ad.test.mgo.irealisatie.nl/static/search/endpoints.json"
       is Environment.Custom -> environment.url
     }
+
+  @Provides
+  @Singleton
+  @Named("defaultJson")
+  fun provideJson(): Json = Json { ignoreUnknownKeys = true }
 }

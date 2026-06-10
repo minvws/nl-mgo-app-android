@@ -101,7 +101,7 @@ fun UiElement.toRow(context: Context): MgoPdf.Row {
     }
 
     is ReferenceValue -> {
-      val content = listOf(reference ?: emptyText)
+      val content = listOf(display ?: emptyText)
       MgoPdf.Row(label = label, content = content, contentColor = if (content.contains(emptyText)) Gray600 else Black)
     }
 

@@ -1,22 +1,24 @@
 package nl.rijksoverheid.mgo.data.hcimParser
 
 import kotlinx.coroutines.test.runTest
-import nl.rijksoverheid.mgo.data.hcimParser.javascript.JsEngineRepository
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
+import nl.rijksoverheid.mgo.framework.javascript.ExecuteJavascript
+import nl.rijksoverheid.mgo.framework.javascript.JvmJavascriptEngineRepository
 import nl.rijksoverheid.mgo.framework.test.readResourceFile
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class UiSchemaParserTest {
-  private val jvmQuickJsRepository = JvmQuickJsRepository()
-  private val jsEngineRepository = JsEngineRepository(jvmQuickJsRepository)
-  private val uiSchemaParser = UiSchemaParser(jsEngineRepository)
+  private val javascriptEngineRepository = JvmJavascriptEngineRepository()
+  private val executeJavascript = ExecuteJavascript(javascriptEngineRepository)
+  private val uiSchemaParser = UiSchemaParser(executeJavascript)
 
   @Before
   fun before() =
     runTest {
-      jvmQuickJsRepository.create()
+      javascriptEngineRepository.create()
+      javascriptEngineRepository.load("mgo-hcim-api.iife.js")
     }
 
   @Test

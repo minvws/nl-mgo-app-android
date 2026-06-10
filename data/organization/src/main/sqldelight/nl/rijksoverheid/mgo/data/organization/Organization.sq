@@ -1,7 +1,7 @@
 CREATE VIRTUAL TABLE organizations
 USING fts5(
   id UNINDEXED,
-  displayName UNINDEXED,
+  displayName,
   addressLine UNINDEXED,
   dataServicesJson UNINDEXED,
   searchBlob,

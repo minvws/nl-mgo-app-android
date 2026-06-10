@@ -61,12 +61,6 @@ sealed class DashboardNavigation {
       val referenceId: MgoResourceReferenceId,
       val isSummary: Boolean,
     ) : Organizations()
-
-    @Serializable
-    data class RemoveOrganization(
-      val organizationId: String,
-      val organizationName: String,
-    ) : Organizations()
   }
 
   @Serializable

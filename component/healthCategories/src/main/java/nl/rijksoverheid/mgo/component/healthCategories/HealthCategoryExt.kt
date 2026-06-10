@@ -38,8 +38,8 @@ fun HealthCategoryIcon.getDrawable() =
     "folder" -> R.drawable.ic_folder
     "patient_list" -> R.drawable.ic_patient_list
     "health_and_safety" -> R.drawable.ic_health_and_safety
-    "person" -> R.drawable.ic_person
-    "account_balance" -> R.drawable.ic_account_balance
+    "medical_information" -> R.drawable.ic_medical_information
+    "group" -> R.drawable.ic_care_team
     else -> R.drawable.ic_health_cross
   }
 
@@ -60,7 +60,7 @@ fun HealthCategoryIcon.getColor() =
     "folder" -> MaterialTheme.colorScheme.CategoriesDocuments()
     "patient_list" -> MaterialTheme.colorScheme.CategoriesPlan()
     "health_and_safety" -> MaterialTheme.colorScheme.CategoriesDevice()
-    "person" -> MaterialTheme.colorScheme.CategoriesAdministration()
-    "account_balance" -> MaterialTheme.colorScheme.CategoriesProviders()
+    "medical_information" -> MaterialTheme.colorScheme.CategoriesAdministration()
+    "group" -> MaterialTheme.colorScheme.CategoriesProviders()
     else -> MaterialTheme.colorScheme.CategoriesProblems()
   }

@@ -120,6 +120,10 @@ fun ColorScheme.SeparatorsSecondary(isSystemDarkTheme: Boolean = LocalAppThemePr
 @Composable
 fun ColorScheme.SeparatorsInvert(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) = if (isSystemDarkTheme) White else Black
 
+@Composable
+fun ColorScheme.SeparatorsTimeline(isSystemDarkTheme: Boolean = LocalAppThemeProvider.current.appTheme.isDarkTheme()) =
+  if (isSystemDarkTheme) LogoBlue300.copy(alpha = 0.30f) else LogoBlue500.copy(alpha = 0.15f)
+
 // Symbols
 
 @Composable

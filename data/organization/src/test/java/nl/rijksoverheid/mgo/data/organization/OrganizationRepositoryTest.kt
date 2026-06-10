@@ -90,7 +90,7 @@ class OrganizationRepositoryTest {
       println(benchmarkResultJsonString)
 
       // Assert the quality of the benchmark
-      assertEquals(0.8705706f, benchmarkResult.meanReciprocalRank)
+      assertEquals(0.8811686f, benchmarkResult.meanReciprocalRank)
     }
 
   @Test

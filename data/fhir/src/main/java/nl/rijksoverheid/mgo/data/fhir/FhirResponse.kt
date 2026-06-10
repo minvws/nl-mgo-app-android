@@ -30,3 +30,17 @@ fun TEST_FHIR_RESPONSE_SUCCESS(isEmpty: Boolean = false) =
     cacheKey = "",
     isEmpty = isEmpty,
   )
+
+val TEST_FHIR_RESPONSE_USER_ERROR =
+  FhirResponse.Error(
+    type = FhirResponseErrorType.USER,
+    request = TEST_FHIR_REQUEST,
+    error = IllegalStateException("Something went wrong"),
+  )
+
+val TEST_FHIR_RESPONSE_SERVER_ERROR =
+  FhirResponse.Error(
+    type = FhirResponseErrorType.SERVER,
+    request = TEST_FHIR_REQUEST,
+    error = IllegalStateException("Something went wrong"),
+  )

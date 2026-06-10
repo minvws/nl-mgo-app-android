@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,8 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicator
+import nl.rijksoverheid.mgo.component.mgo.MgoProgressIndicatorType
 import nl.rijksoverheid.mgo.component.theme.ActionsGhostText
-import nl.rijksoverheid.mgo.component.theme.BackgroundsTertiary
 import nl.rijksoverheid.mgo.component.theme.MgoTheme
 import nl.rijksoverheid.mgo.component.theme.StatesCritical
 import nl.rijksoverheid.mgo.component.theme.StatesInformative
@@ -118,12 +117,7 @@ private fun UiSchemaRowBinary(
     )
 
     if (loading) {
-      CircularProgressIndicator(
-        modifier = Modifier.size(24.dp),
-        strokeWidth = 3.dp,
-        trackColor = MaterialTheme.colorScheme.ActionsGhostText(),
-        color = MaterialTheme.colorScheme.BackgroundsTertiary(),
-      )
+      MgoProgressIndicator(type = MgoProgressIndicatorType.SMALL)
     } else {
       Icon(
         painter = painterResource(R.drawable.ic_attachment),

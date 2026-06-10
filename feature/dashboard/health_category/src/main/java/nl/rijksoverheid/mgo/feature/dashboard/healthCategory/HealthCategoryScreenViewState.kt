@@ -3,8 +3,11 @@ package nl.rijksoverheid.mgo.feature.dashboard.healthCategory
 import nl.rijksoverheid.mgo.component.error.ErrorBannerState
 import nl.rijksoverheid.mgo.data.hcimParser.mgoResource.MgoResource
 import nl.rijksoverheid.mgo.data.healthCategories.models.HealthCategoryGroup
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.listItemGroup.ListItemsGroup
+import nl.rijksoverheid.mgo.feature.dashboard.healthCategory.type.HealthCategoryScreenType
 
 internal data class HealthCategoryScreenViewState(
+  val type: HealthCategoryScreenType,
   val category: HealthCategoryGroup.HealthCategory,
   val listItemsState: ListItemsState,
   val banner: ErrorBannerState?,
@@ -13,7 +16,7 @@ internal data class HealthCategoryScreenViewState(
     data object Loading : ListItemsState()
 
     data class Loaded(
-      val listItemsGroup: List<HealthCategoryScreenListItemsGroup>,
+      val listItemsGroup: List<ListItemsGroup>,
     ) : ListItemsState()
 
     data object NoData : ListItemsState()

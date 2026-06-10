@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -96,7 +95,7 @@ internal fun UiSchemaRowStatic(
               ) {
                 Modifier
               } else {
-                Modifier.dottedLine(text = value.value, color = textColor, layoutResult = textLayoutResult).clickable { onClickPft(pft) }
+                Modifier.dottedLine(color = textColor, layoutResult = textLayoutResult).clickable { onClickPft(pft) }
               },
           )
         }
@@ -109,30 +108,39 @@ internal fun UiSchemaRowStatic(
  * Get a modifier that draws a dotted line under text.
  */
 private fun Modifier.dottedLine(
-  text: String,
   color: Color,
   layoutResult: TextLayoutResult?,
 ) = this.drawBehind {
   layoutResult?.let { layout ->
-    val strokeWidth = 1.dp.toPx()
-    val pathEffect = PathEffect.dashPathEffect(floatArrayOf(1f, 1f), 0f)
-    val verticalOffset = 5.dp.toPx()
 
-    // De hele tekst gebruiken
-    val start = 0
-    val end = text.length.coerceAtMost(layout.layoutInput.text.length)
+    val radius = 0.5.dp.toPx()
 
-    for (i in start until end) {
-      val box = layout.getBoundingBox(i)
-      val baseline = layout.getLineBaseline(layout.getLineForOffset(i)) + verticalOffset
+    val gap = 2.dp.toPx()
 
-      drawLine(
-        color = color,
-        start = Offset(box.left, baseline),
-        end = Offset(box.right, baseline),
-        strokeWidth = strokeWidth,
-        pathEffect = pathEffect,
-      )
+    val verticalOffset = 8.dp.toPx()
+
+    for (lineIndex in 0 until layout.lineCount) {
+      val baseline =
+
+        layout.getLineBaseline(lineIndex) + verticalOffset
+
+      // 🔥 dit is de fix
+
+      val startX = layout.getLineLeft(lineIndex)
+
+      val endX = layout.getLineRight(lineIndex)
+
+      var x = startX + radius
+
+      while (x < endX) {
+        drawCircle(
+          color = color,
+          radius = radius,
+          center = Offset(x, baseline),
+        )
+
+        x += gap
+      }
     }
   }
 }

@@ -27,7 +27,6 @@ import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.UiSchemaParser
 import nl.rijksoverheid.mgo.data.hcimParser.uiSchema.models.HealthUiSchema
 import nl.rijksoverheid.mgo.feature.dashboard.uiSchema.pdf.CreatePdfUiSchema
 import timber.log.Timber
-import java.io.File
 import javax.inject.Named
 
 @HiltViewModel(assistedFactory = UiSchemaScreenViewModel.Factory::class)
@@ -122,10 +121,6 @@ internal class UiSchemaScreenViewModel
         val file = createPdfUiSchema(uiSchema)
         _openPdfViewer.tryEmit(PdfViewerState.Loaded(file))
       }
-    }
-
-    fun showPdf(pdfFile: File) {
-      _openPdfViewer.tryEmit(PdfViewerState.Loaded(pdfFile))
     }
 
     /**
